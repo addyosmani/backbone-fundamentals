@@ -1,6 +1,6 @@
 
 #Backbone.js Fundamentals
-##A work-in-progress by Addy Osmani
+A work-in-progress by Addy Osmani
 
 ##Index
 
@@ -16,8 +16,9 @@
 
 * ####Advanced
 * Modular JavaScript
-* Require.js, AMD & Backbone
-* External templates
+* Organizing modules with Require.js and AMD
+* Keeping your templates external
+* Compiling your app with r.js (to be started)
 * Backbone & jQuery Mobile
 
 * ####Practical 
@@ -737,7 +738,7 @@ Whilst native solutions to these problems will be arriving in ES Harmony, the go
 In this next part of the book, we're going to look at how to use the AMD module format and Require.js for cleanly wrapping units of code in your application into managable modules.
 
 
-###Require.js, AMD and Backbone
+##Organizing modules with Require.js and AMD
 
 In case you haven't used it before, Require.js is a popular script loader written by James Burke - a developer who has been quite instrumental in helping shape the AMD module format, which we'll discuss more shortly. Some of Require.js's capabilities include helping to load multiple script files, helping define modules with or without dependencies and loading in non-script dependencies such as text files.
 
@@ -753,7 +754,7 @@ Think about the GMail web-client for a moment. When users initially load up the 
 
 I've previously written a detailed article covering both AMD and other module formats and script loaders here (http://addyosmani.com/writing-modular-js) in case you'd like to explore this topic further. The takeaway is that although it's perfectly fine to develop applications without a script loader or clean module format in place, it can be of significant benefit to consider using these tools in your application development.
 
-####Writing AMD modules with Require.js
+###Writing AMD modules with Require.js
 
 As discussed above, the overall goal for the AMD format is to provide a solution for modular JavaScript that developers can use today. The two key concepts you need to be aware of when using it with a script-loader are a <code>define()</code> method for facilitating module definition and a <code>require()</code> method for handling dependency loading. <em>define()</em> is used to define named or unnamed modules based on the proposal using the following signature:</p>
 
