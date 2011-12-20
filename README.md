@@ -807,22 +807,55 @@ require(['foo', 'bar'], function ( foo, bar ) {
 </pre>
 
 
-<strong>Defining AMD Modules With Backbone.js and Require.js</strong>
+<strong>Wrapping modules, views and other components with AMD</strong>
 
-//Todo: explain and demonstrate how to wrap views etc. inside AMD modules and how that all works.
+Now that we've taken a look at how to define AMD modules, let's review how to go about wrapping components like views and collections so that they can also be easily loaded as dependencies for any parts of your application that require them. At it's simplest, a Backbone model may just require Backbone and Underscore.js. These are considered it's dependencies and so, to write an AMD model module, we would simply do this:
 
 <pre>
-require(['app/myModule'], 
-    function( myModule ){
-        // start the main module which in-turn
-        // loads other modules
-        var module = new myModule();
-        module.doStuff();
+define(['underscore', 'backbone'], function(_, Backbone) {
+  var myModel = Backbone.Model.extend({
+
+    // Default attributes 
+    defaults: {
+      content: "hello world",
+    },
+
+    // A dummy initialization method
+    initialize: function() {
+      if (!this.get("content")) {
+        this.set({"content": this.defaults.content});
+      }
+    },
+
+    clear: function() {
+      this.destroy();
+      this.view.remove();
+    }
+
+  });
+  return myModel;
 });
 </pre>
 
+Note how we alias Underscore.js's instance to "_" and Backbone to just 'Backbone', making it very trivial to convert non-AMD code over to using this module format. For a view that might require other dependencies such as jQuery, this can similarly be done as follows:
 
-###External [Underscore/Handlebars/Mustache] templates using Require.js
+<pre>
+define([
+  'jquery',
+  'underscore', 
+  'backbone',
+  'collections/mycollection',
+  'views/myview'
+  ], function($, _, Backbone, myCollection, myView){
+
+  var AppView = Backbone.View.extend({
+  ...
+</pre>
+
+Aliasing to the dollar-sign ($), once again makes it very easy to encapsulate any part of an application you wish using AMD.
+
+
+##External [Underscore/Handlebars/Mustache] templates using Require.js
 
 Moving your [Underscore/Mustache/Handlebars] templates to external files is actually quite straight-forward. As this application makes use of Require.js, I'll discuss how to implement external templates using this specific script loader.
 
@@ -899,9 +932,9 @@ All templating solutions will have their own custom methods for handling templat
 
 <strong>Note:</strong> You may also be interested in looking at https://github.com/ZeeAgency/requirejs-tpl. It's an AMD-compatible version of the Underscore templating system that also includes support for optimization (pre-compiled templates) which can lead to better performance and no evals. I have yet to use it myself, but it comes as a recommended resource.
 
-###Backbone and jQuery Mobile
+##Backbone and jQuery Mobile
 
-####Resolving the routing conflicts
+###Resolving the routing conflicts
 
 The first major hurdle developers typically run into when building Backbone applications with jQuery Mobile is that both frameworks have their own opinions about how to handle application navigation. 
 
