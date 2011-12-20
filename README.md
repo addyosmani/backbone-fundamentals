@@ -26,6 +26,8 @@ A work-in-progress by Addy Osmani
 * A sample jQuery mobile app
 
 
+Other sections of interest: dynamic asset loading, perhaps something on the Backbone layout manager etc. Bocoup have been working on, any other tips for modular JS development with backbone. There's still a lot to be fleshed out here. Happy to have any contributions made at all if others are up for it. 
+
 ##Introduction
 
 In this mini-book, I'll be covering a complete run-down of Backbone's models, views, collections and routers but also taking you through advanced topics like modular development with Backbone.js. I'll also give you some tips including what scaffolding tool that can save time setting up your initial application, the ideal number of routers to use and more.
