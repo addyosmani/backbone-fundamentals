@@ -1,5 +1,6 @@
 
-#Backbone.js Fundamentals
+#Backbone.js Fundamentals: 
+(or, how to write modular JavaScript apps for desktop and mobile)
 A work-in-progress by Addy Osmani
 
 ##Index
