@@ -957,7 +957,6 @@ define(['jquery','backbone','underscore', collections/sample','views/test'],
     function($,Backbone, _, Sample, Test){
         //...
     });
-
 </pre>
 
 will combine fine, however inline dependencies such as:
