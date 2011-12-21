@@ -18,7 +18,7 @@ A work-in-progress by Addy Osmani
 * Modular JavaScript
 * Organizing modules with RequireJS and AMD
 * Keeping your templates external
-* Optimizing your Backbone app with r.js (to be written)
+* Optimizing Backbone apps for production with the RequireJS Optimizer
 * Backbone & jQuery Mobile
 
 * ####Practical 
@@ -933,6 +933,88 @@ collection.someview.el.html( compiled_template( { results: collection.models } )
 All templating solutions will have their own custom methods for handling template compilation, but if you understand the above, substituting Underscore's micro-templating for any other solution should be fairly trivial.
 
 <strong>Note:</strong> You may also be interested in looking at https://github.com/ZeeAgency/requirejs-tpl. It's an AMD-compatible version of the Underscore templating system that also includes support for optimization (pre-compiled templates) which can lead to better performance and no evals. I have yet to use it myself, but it comes as a recommended resource.
+
+
+
+
+##Optimizing Backbone apps for production with the RequireJS Optimizer
+
+
+As experienced developers may know, an essential final step when writing both small and large JavaScript web applications is the build process.  The majority of non-trivial apps are likely to consist of more than one or two scripts and so optimizing, minimizing and concatenating your scripts prior to pushing them to production will require your users to download a reduced number (if not just one) script file. 
+
+Note: If you haven't looked at build processes before and this is your first time hearing about them, you might find my post and screencast on this topic useful http://addyosmani.com/blog/client-side-build-process/.
+
+With some other structural JavaScript frameworks, my recommendation would normally be to implicitly use YUI Compressor or Google's closure compiler tools, but we have a slightly more elegant when it comes to Backbone if you're using RequireJS. RequireJS has a command line optimization tool called r.js which has a number of capabilities, including:
+
+* Concatenating specific scripts and minifiying them using external tools such as UglifyJS (which is used by default) or Google's Closure Compiler for optimal browser delivery, whilst preserving the ability to dynamically load modules
+* Optimizing CSS and stylesheets by inlining CSS files imported using @import, stripping out comments etc.
+* The ability to run AMD projects in both Node and Rhino (more on this later)
+
+You'll notice that I mentioned the word 'specific' in the first bullet point. The RequireJS optimizer only concatenates module scripts that have been specified in arrays of string literals passed to top-level (i.e non-local) require and define calls. As clarified by the optimizer docs here (http://requirejs.org/docs/optimization.html) this means that Backbone modules defined like this..
+
+<pre>
+define(['jquery','backbone','underscore', collections/sample','views/test'], 
+    function($,Backbone, _, Sample, Test){
+        //...
+    });
+
+</pre>
+
+will combine fine, however inline dependencies such as:
+
+<pre>
+var models = someCondition ? ['models/ab','models/ac'] : ['models/ba','models/bc'];
+</pre>
+
+will be ignored. This is by design as it ensures that dynamic dependency/module loading can still take place even after optimization. 
+
+Although the RequireJS optimizer works fine in both Node and Java environments, it's strongly recommended to run it under Node as it executes significantly faster there. In my experience, it's a piece of cake to get setup with either environment, so go for whichever you feel most comfortable with. 
+
+To get started with r.js, grab it from the RequireJS download page (http://requirejs.org/docs/download.html#rjs) or through NPM as specified here (http://requirejs.org/docs/optimization.html#download). Now, the RequireJS optimizer works absolutely fine for single script and CSS files, but for most cases you'll want to actually optimize an entire Backbone project. You *could* do this completely from the command-line, but but a cleaner option is using build profiles.
+
+Below is an example of a build file taken from the modular jQuery Mobile app referenced later in this book. A <strong>build profile</strong> (commonly named app.build.js) informs RequireJS to copy all of the content of <code>appDir</code> to a directory defined by <code>dir</code> (in this case '../release'). This will apply all of the necessary optimizations inside the release folder. The <code>baseUrl</code> is used to resolve the paths for your modules. It should ideally be relative to <code>appDir</code>.
+
+Near the bottom of this sample file, you'll see an array called <code>modules</code>. This is where you specify the module names you wish to have optimized. In this case we're optimizing the main application called 'app', which maps to <code>appDir/app.js</code>. If we had set the <code>baseUrl</code> to 'scripts', it would be mapped to <code>appDir/scripts/app.js</code>.
+
+<pre>
+({
+    appDir: "./",
+    baseUrl: "./",
+    dir: "../release",
+    paths: {
+       'backbone':          'libs/AMDbackbone-0.5.3',
+        'underscore':       'libs/underscore-1.2.2',
+        'jquery':           'libs/jQuery-1.7.1',
+        'json2':            'libs/json2',
+        'datepicker':       'libs/jQuery.ui.datepicker',
+        'datepickermobile': 'libs/jquery.ui.datepicker.mobile',
+        'jquerymobile':     'libs/jquery.mobile-1.0'
+    },
+    optimize: "uglify",
+    modules: [
+        {
+            name: "app",
+            exclude: [
+                // If you prefer not to include certain libs exclude them here
+            ]
+        }
+    ]
+})
+</pre>
+
+The way the build system in r.js works is that it traverses app.js (whatever modules you've passed) and resolved dependencies, concatenating them into the final <code>release</code>(dir) folder. CSS is treated the same way. 
+
+The build profile is usually placed inside the 'scripts' or 'js' directory of your project. As per the docs, thie file can however exist anywhere you wish, but you'll need to edit the contents of your build profile accordingly. 
+
+Finally, to run the build, execute the following command once insice your <code>appDir</code> or <code>appDir/scripts</code> directory:
+
+<pre>
+node ../../r.js -o app.build.js
+</pre>
+
+
+That's it. As long as you have UglifyJS/Closure tools setup correctly, r.js should be able to easily optimize your entire Backbone project in just a few key-strokes. If you would like to learn more about build profiles, James Burke has a heavily commented sample file with all the possible options available here: https://github.com/jrburke/r.js/blob/master/build/example.build.js
+
 
 ##Backbone and jQuery Mobile
 
