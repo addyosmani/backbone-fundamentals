@@ -17,9 +17,9 @@ A work-in-progress by Addy Osmani
 
 * ####Advanced
 * Modular JavaScript
-* Organizing modules with Require.js and AMD
+* Organizing modules with RequireJS and AMD
 * Keeping your templates external
-* Compiling your app with r.js (to be started)
+* Optimizing your Backbone app with r.js (to be written)
 * Backbone & jQuery Mobile
 
 * ####Practical 
@@ -738,18 +738,18 @@ Instead, developers at present are left to fall back on variations of the module
 
 Whilst native solutions to these problems will be arriving in ES Harmony, the good news is that writing modular JavaScript has never been easier and you can start doing it today.
 
-In this next part of the book, we're going to look at how to use the AMD module format and Require.js for cleanly wrapping units of code in your application into managable modules.
+In this next part of the book, we're going to look at how to use the AMD module format and RequireJS for cleanly wrapping units of code in your application into managable modules.
 
 
-##Organizing modules with Require.js and AMD
+##Organizing modules with RequireJS and AMD
 
-In case you haven't used it before, Require.js is a popular script loader written by James Burke - a developer who has been quite instrumental in helping shape the AMD module format, which we'll discuss more shortly. Some of Require.js's capabilities include helping to load multiple script files, helping define modules with or without dependencies and loading in non-script dependencies such as text files.
+In case you haven't used it before, RequireJS is a popular script loader written by James Burke - a developer who has been quite instrumental in helping shape the AMD module format, which we'll discuss more shortly. Some of RequireJS's capabilities include helping to load multiple script files, helping define modules with or without dependencies and loading in non-script dependencies such as text files.
 
-So, why use Require.js with Backbone?. Although Backbone is excellent when it comes to providing a sanitary structure to your applications, there are a few key areas where some additional help could be used:
+So, why use RequireJS with Backbone?. Although Backbone is excellent when it comes to providing a sanitary structure to your applications, there are a few key areas where some additional help could be used:
 
 1) Backbone doesn't endorse a particular approach to modular-development. Although this means it's quite open-ended for developers to opt for classical patterns like the module-pattern or object literals for structuring their apps (which both work fine), it also means developers aren't sure of what works best when other concerns come into play, such as dependency management.
 
-Require.js is compatible with the AMD (Asynchronous Module Definition) format, a format which was born from a desire to write something better than the 'write lots of script tags with implicit dependencies and manage them manually' approach to development. In addition to allowing you to clearly declare dependencies, AMD works well in the browser, supports string IDs for dependencies, declaring multiple modules in the same file and gives you easy-to-use tools to avoid polluting the global namespace.
+RequireJS is compatible with the AMD (Asynchronous Module Definition) format, a format which was born from a desire to write something better than the 'write lots of script tags with implicit dependencies and manage them manually' approach to development. In addition to allowing you to clearly declare dependencies, AMD works well in the browser, supports string IDs for dependencies, declaring multiple modules in the same file and gives you easy-to-use tools to avoid polluting the global namespace.
 
 2) Let's discuss dependency management a little more as it can actually be quite challenging to get right if you're doing it by hand. When we write modules in JavaScript, we ideally want to be able to handle the reuse of code units intelligently and sometimes this will mean pulling in other modules at run-time whilst at other times you may want to do this dynamically to avoid a large pay-load when the user first hits your application.
 
@@ -757,7 +757,7 @@ Think about the GMail web-client for a moment. When users initially load up the 
 
 I've previously written a detailed article covering both AMD and other module formats and script loaders here (http://addyosmani.com/writing-modular-js) in case you'd like to explore this topic further. The takeaway is that although it's perfectly fine to develop applications without a script loader or clean module format in place, it can be of significant benefit to consider using these tools in your application development.
 
-###Writing AMD modules with Require.js
+###Writing AMD modules with RequireJS
 
 As discussed above, the overall goal for the AMD format is to provide a solution for modular JavaScript that developers can use today. The two key concepts you need to be aware of when using it with a script-loader are a <code>define()</code> method for facilitating module definition and a <code>require()</code> method for handling dependency loading. <em>define()</em> is used to define named or unnamed modules based on the proposal using the following signature:</p>
 
@@ -771,7 +771,7 @@ define(
 
 As you can tell by the inline comments, the <code>module_id</code> is an optional argument which is typically only required when non-AMD concatenation tools are being used (there may be some other edge cases where it's useful too). When this argument is left out, we call the module 'anonymous'. When working with anonymous modules, the idea of a module's identity is DRY, making it trivial to avoid duplication of filenames and code. 
 
-Back to the define signature, the dependencies argument represents an array of dependencies which are required by the module you are defining and the third argument ('definition function') is a function that's executed to instantiate your module. A barebone module (compatible with Require.js) could be defined using <code>define()</code> as follows: </p>
+Back to the define signature, the dependencies argument represents an array of dependencies which are required by the module you are defining and the third argument ('definition function') is a function that's executed to instantiate your module. A barebone module (compatible with RequireJS) could be defined using <code>define()</code> as follows: </p>
 
 <pre>
 // A module ID has been omitted here to make the module anonymous
@@ -858,15 +858,15 @@ define([
 Aliasing to the dollar-sign ($), once again makes it very easy to encapsulate any part of an application you wish using AMD.
 
 
-##External [Underscore/Handlebars/Mustache] templates using Require.js
+##External [Underscore/Handlebars/Mustache] templates using RequireJS
 
-Moving your [Underscore/Mustache/Handlebars] templates to external files is actually quite straight-forward. As this application makes use of Require.js, I'll discuss how to implement external templates using this specific script loader.
+Moving your [Underscore/Mustache/Handlebars] templates to external files is actually quite straight-forward. As this application makes use of RequireJS, I'll discuss how to implement external templates using this specific script loader.
 
 RequireJS has a special plugin called text.js which is used to load in text file dependencies. To use the text plugin, simply follow these simple steps:
 
 1. Download the plugin from http://requirejs.org/docs/download.html#text and place it in either the same directory as your application's main JS file or a suitable sub-directory.
 
-2. Next, include the text.js plugin in your initial Require.js configuration options. In the code snippet below, we assume that require.js is being included in our page prior to this code snippet being executed. Any of the other scripts being loaded are just there for the sake of example.
+2. Next, include the text.js plugin in your initial RequireJS configuration options. In the code snippet below, we assume that RequireJS is being included in our page prior to this code snippet being executed. Any of the other scripts being loaded are just there for the sake of example.
  
 <pre>
 require.config( {
@@ -884,7 +884,7 @@ require.config( {
 } );
 </pre>
 
-3. When the <code>text!</code> prefix is used for a dependency, Require.js will automatically load the text plugin and treat the dependency as a text resource. A typical example of this in action may look like..
+3. When the <code>text!</code> prefix is used for a dependency, RequireJS will automatically load the text plugin and treat the dependency as a text resource. A typical example of this in action may look like..
 
 <pre>
 require(['js/app', 'text!templates/mainView.html'],
@@ -913,7 +913,7 @@ JS:
 var compiled_template = _.template( $('#mainViewTemplate').html() );
 </pre>
 
-With Require.js and the text plugin however, it's as simple as saving your template into an external text file (say, mainView.html) and doing the following:
+With RequireJS and the text plugin however, it's as simple as saving your template into an external text file (say, mainView.html) and doing the following:
 
 <pre>
 require(['js/app', 'text!templates/mainView.html'],
@@ -973,17 +973,17 @@ In the above sample, <code>url</code> can refer to a URL or a hash identifier to
 <strong>Note:</strong> For some parallel work being done to explore how well the jQuery Mobile Router plugin works with Backbone, you may be interested in checking out https://github.com/Filirom1/jquery-mobile-backbone-requirejs.
 
 
-###Practical: A Backbone + Require.js/AMD app
+###Practical: A Backbone + RequireJS/AMD app
 
 //This section needs to be heavily expanded.
 
-My side-project TodoMVC now includes a modular Backbone example using AMD and Require.js (thanks to Thomas Davis) for anyone wishing to look at a sample without any of the jQuery Mobile code included:
+My side-project TodoMVC now includes a modular Backbone example using AMD and RequireJS (thanks to Thomas Davis) for anyone wishing to look at a sample without any of the jQuery Mobile code included:
 
 https://github.com/addyosmani/todomvc/tree/master/todo-example/backbone+require
 
 This covers how to wrap your views, models, modules etc. using AMD and also cleanly demonstrates handling dependency management as well as Flickly does.
 
-###Practical: A Backbone, Require.js/AMD app with jQuery Mobile
+###Practical: A Backbone, RequireJS/AMD app with jQuery Mobile
 
 ###Getting started
 
