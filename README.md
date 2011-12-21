@@ -224,7 +224,7 @@ Photo = new Backbone.Model.extend({
     }
 });
  
-var myPhoto = new Photo({ title "Fishing at the lake", src:"fishing.jpg")});
+var myPhoto = new Photo({ title:"Fishing at the lake", src:"fishing.jpg")});
 myPhoto.setTitle('Fishing at sea'); 
 //logs my title has been changed to.. Fishing at sea
 </pre>
