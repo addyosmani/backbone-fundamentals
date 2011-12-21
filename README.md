@@ -26,17 +26,17 @@ A work-in-progress by Addy Osmani
 * A sample jQuery mobile app
 
 
-Other sections of interest: dynamic asset loading, perhaps something on the Backbone layout manager etc. Bocoup have been working on, any other tips for modular JS development with backbone. There's still a lot to be fleshed out here. Happy to have any contributions made at all if others are up for it. 
-
 ##Introduction
 
-In this mini-book, I'll be covering a complete run-down of Backbone's models, views, collections and routers but also taking you through advanced topics like modular development with Backbone.js. I'll also give you some tips including what scaffolding tool that can save time setting up your initial application, the ideal number of routers to use and more.
+In this mini-book, I'll be covering a complete run-down of Backbone.js; including models, views, collections and routers. I'll also be taking you through advanced topics like modular development with Backbone.js and AMD (with RequireJS), how to solve the routing problems with Backbone and jQuery Mobile, tips about scaffolding tools that can save time setting up your initial application and more.
 
 If this is your first time looking at Backbone.js and you're still unsure whether to give it a try or not, why not take a look at how a Todo application might be implemented in Backbone and most of the other alternatives before reading further? http://github.com/addyosmani/todomvc.
 
+The goal of this mini-book is to create a free, centralized repository of information that can help those developing real-world apps with Backbone. If you come across a section or topic which you think could be improved or expanded on, please feel free to submit a pull-request. It won't take long and you'll be helping other developers avoid problems you've run into before.
+
 ###What is Backbone?
 
-Backbone.js is one of a number of JavaScript frameworks for creating MVC-like web applications. On the front-end, it's my architectural framework of choice as it's both mature, relatively lightweight and can be easily tested using third-party toolkits such as Jasmine or QUnit. Other MVC options you may be familiar with include Ember.js (SproutCore 2.0), Spine and JavaScriptMVC.
+Backbone.js is one of a number of JavaScript frameworks for creating MVC-like web applications. On the front-end, it's my architectural framework of choice as it's both mature, relatively lightweight and can be easily tested using third-party toolkits such as Jasmine or QUnit. Other MVC options you may be familiar with include Ember.js (SproutCore 2.0), Spine, YUILibrary and JavaScriptMVC.
 
 Backbone is maintained by a number of contributors, most notably: Jeremy Ashkenas, creator of CoffeeScript, Docco and Underscore.js. As Jeremy is a believer in detailed documentation, there's a level of comfort in knowing you're unlikely to run into issues which are either not explained in the official docs or which can't be nailed down with some assistance from the #documentcloud IRC channel. I strongly recommend using the latter if you find yourself getting stuck.
 
