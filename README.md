@@ -1,4 +1,3 @@
-
 #Backbone.js Fundamentals: 
 (or, how to write modular JavaScript apps for desktop and mobile)
 A work-in-progress by Addy Osmani
@@ -284,7 +283,7 @@ var PhotoSearch = Backbone.View.extend({
         //executed when a form '#searchForm' has been submitted
     },
     reset: function( event ){
-        //executed when an element with class "go" has been clicked.
+        //executed when an element with class "reset" has been clicked.
     },
     //etc
 });
