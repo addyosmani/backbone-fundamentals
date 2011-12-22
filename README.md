@@ -135,7 +135,7 @@ var myAttributes = myPhoto.attributes;
 console.log(myAttributes);
 ```
 
-Note: It is best practice to use Model.set() or direct instantiation to set the values of a model's attributes. Accessing Model.attributes directly is fine for reading or cloning data, but ideally shouldn't be used to for attribute manipulation.
+Note: It is best practice to use Model.set() or direct instantiation to set the values of a model's attributes. Accessing Model.attributes directly is fine for reading or cloning data, but ideally shouldn't be used for attribute manipulation.
 
 Finally, if you would like to copy a model's attributes for JSON stringification (e.g. for serialization prior to being passed to a view), this can be achieved using Model.toJSON():
 
