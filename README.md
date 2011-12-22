@@ -150,7 +150,7 @@ console.log(myAttributes);
 
 ####Model.set()
 
-Model.set() allows us to pass parameters into an instance of our model. Attributes can either be set during initialization or later on.
+Model.set() allows us to pass attributes into an instance of our model. Attributes can either be set during initialization or later on.
 
 ```javascript
 Photo = new Backbone.Model.extend({
