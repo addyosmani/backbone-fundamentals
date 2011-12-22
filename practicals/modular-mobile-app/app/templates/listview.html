@@ -1,8 +1,0 @@
-<% _.each( results, function( item, i ){ %>
-        <li>
-<a class='ui-result' title='<%= item.get("title") %>' data-ajax="false" href="#photo/<%= item.get("id") %>">
-        <img title="<%= item.get("title") %>" src="<%= 'http://farm' + item.get("farm") + '.static.flickr.com/' + item.get("server") + '/' + item.get("id") + '_' + item.get("secret") + '_s.jpg' %>"/>
-        <h3><%= item.get("title") %></h3>
-         </a>
-       </li>
-    <% }); %>
