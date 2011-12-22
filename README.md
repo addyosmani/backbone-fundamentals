@@ -48,7 +48,7 @@ Backbone's main benefits, regardless of your target platform or device, include 
 * Simplify server-side persistence
 * Decouple the DOM from your page's data
 * Model data, views and routers in a succinct manner
-* Provide DOM, model and collection syncronization
+* Provide DOM, model and collection synchronization
 
 In ways, the real question is why you should consider applying the MVC-pattern to your JavaScript projects and the one word answer is simply structure.
 
@@ -260,7 +260,7 @@ myPhoto.set({ title: "On the beach" });
 
 ###Views
 
-Views in Backbone don't contain the markup for your application, but rather are there to support models by defining how they should be visually represented to the user. This is usually achieved using JavaScript templating (e.g. Mustache, jQuery tmpl etc). When a model updates, rather than the entire page needing to be refreshed, we can simply bind a view's render() function to a model's change() event, allowing the view to always be up to date.
+Views in Backbone don't contain the markup for your application, but rather they are there to support models by defining how they should be visually represented to the user. This is usually achieved using JavaScript templating (e.g. Mustache, jQuery tmpl etc). When a model updates, rather than the entire page needing to be refreshed, we can simply bind a view's render() function to a model's change() event, allowing the view to always be up to date.
 
 ####Creating new views
 
@@ -275,9 +275,9 @@ var PhotoSearch = Backbone.View.extend({
         return this; //recommended as this enables calls to be chained.
     },
     events: {
-        "submit #searchForm':  "search",
-        "click .reset': "reset",
-        "click .advanced": 'switchContext"
+        "submit #searchForm":  "search",
+        "click .reset": "reset",
+        "click .advanced": "switchContext"
     },
     search: function( event ){
         //executed when a form '#searchForm' has been submitted
@@ -289,9 +289,9 @@ var PhotoSearch = Backbone.View.extend({
 });
 </pre>
 
-####What is 'el'?
+####What is '<code>el</code>'?
 
-el is basically a reference to a DOM element and all views must have one, however Backbone allows you to specify this in four different ways. You can either directly use an id, a tagName, className or if you don't state anything el will simply default to a plain div element without any id or class. Here are some quick examples of how these may be used:
+<code>el</code> is basically a reference to a DOM element and all views must have one, however Backbone allows you to specify this in four different ways. You can either directly use an id, a tagName, className or if you don't state anything <code>el</code> will simply default to a plain div element without any id or class. Here are some quick examples of how these may be used:
 
 <pre>
 el: $('#results')  //select based on ID or jQuery selector.
@@ -304,13 +304,13 @@ el: '' //defaults to a div without an id, name or class.
 
 render() is a function that should always be overridden to define how you would like a template to be rendered. Backbone allows you to use any JavaScript templating solution of your choice for this but for the purposes of this example, we'll opt for underscore's micro-templating.
 
-The _.template method in underscore compiles JavaScript templates into functions which can be evaluated for rendering. Here, I'm passing the markup from a template with id 'results-template' to be compiled. Next, I set the html for el (our DOM element for this view) the output of processing a JSON version of the model associated with the view through the compiled template.
+The _.template method in underscore compiles JavaScript templates into functions which can be evaluated for rendering. Here, I'm passing the markup from a template with id 'results-template' to be compiled. Next, I set the html for <code>el</code> (our DOM element for this view) the output of processing a JSON version of the model associated with the view through the compiled template.
 
 Presto! This populates the template, giving you a data-complete set of markup in just a few short lines of code.
 
 <strong>The 'events' attribute</strong>
 
-The Backbone events attribute allows us to attach event listeners to either custom selectors or el if no selector is provided. An event takes the form {"eventName selector": "callbackFunction"} and a number of event-types are supported, including 'click', 'submit', 'mouseover', 'dblclick' and more.
+The Backbone events attribute allows us to attach event listeners to either custom selectors or <code>el</code> if no selector is provided. An event takes the form {"eventName selector": "callbackFunction"} and a number of event-types are supported, including 'click', 'submit', 'mouseover', 'dblclick' and more.
 
 What isn't instantly obvious is that under the bonnet, Backbone uses jQuery's .delegate() to provide instant support for event delegation but goes a little further, extending it so that 'this' always refers to the current view object. The only thing to really keep in mind is that any string callback supplied to the events attribute must have a corresponding function with the same name within the scope of your view otherwise you may incur exceptions.
 
@@ -510,16 +510,16 @@ Note: In Backbone 0.5+, it's possible to opt-in for HTML5 pushState support via 
 
 ####Backbone.history
 
-Next, we need to initialize Backbone.history as it handles hashchange events in our application. This will automatically handle routes that have been defined and trigger callbacks when they've been accessed.
+Next, we need to initialize Backbone.history as it handles <code>hashchange</code> events in our application. This will automatically handle routes that have been defined and trigger callbacks when they've been accessed.
 
-The Backbone.history.start() method will simply tell Backbone that it's OK to begin monitoring all hashchange events as follows:
+The Backbone.history.start() method will simply tell Backbone that it's OK to begin monitoring all <code>hashchange</code> events as follows:
 
 <pre>
 Backbone.history.start();
 Controller.saveLocation();
 </pre>
 
-As an aside, if you would like to save application state to the URL at a particular point you can use the .saveLocation() method to achieve this. It simply updates your URL fragment without the need to trigger the hashchange event.
+As an aside, if you would like to save application state to the URL at a particular point you can use the .saveLocation() method to achieve this. It simply updates your URL fragment without the need to trigger the <code>hashchange</code> event.
 
 <pre>
 /*Lets imagine we would like a specific fragment for when a user zooms into a photo*/
@@ -543,7 +543,7 @@ JavaScript doesn't really have built-in support for namespaces like other langua
 In this section we'll be taking a look shortly at some examples of how you can namespace your models, views, routers and other components specifically. The patterns we'll be examining are:
 
 * Single global variables
-* Object literals
+* Object Literals
 * Nested namespacing
 * Single global variables
 
@@ -569,7 +569,7 @@ var myViews = (function(){
     return {
         PhotoView: Backbone.View.extend({ .. }),
         GalleryView: Backbone.View.extend({ .. }),
-          AboutView: Backbone.View.extend({ .. });
+        AboutView: Backbone.View.extend({ .. });
         //etc.
     };
 })();
@@ -590,9 +590,9 @@ For more on Peter's views about the single global variable pattern, read his exc
 
 Note: There are several other variations on the single global variable pattern out in the wild, however having reviewed quite a few, I felt these applied best to Backbone.
 
-<strong>Object literals</strong>
+<strong>Object Literals</strong>
 
-Object literals have the advantage of not polluting the global namespace but assist in organizing code and parameters logically. They're beneficial if you wish to create easily-readable structures that can be expanded to support deep nesting. Unlike simple global variables, object literals often also take into account tests for the existence of a variable by the same name so the chances of collision occurring are significantly reduced.
+Object Literals have the advantage of not polluting the global namespace but assist in organizing code and parameters logically. They're beneficial if you wish to create easily-readable structures that can be expanded to support deep nesting. Unlike simple global variables, Object Literals often also take into account tests for the existence of a variable by the same name so the chances of collision occurring are significantly reduced.
 
 The code at the very top of the next sample demonstrates the different ways in which you can check to see if a namespace already exists before defining it. I commonly use Option 3.
 
@@ -627,7 +627,7 @@ myGalleryViews.galleryView = Backbone.View.extend({});
 
 The benefit of this pattern is that you're able to easily encapsulate all of your models, views, routers etc. in a way that clearly separates them and provides a solid foundation for extending your code.
 
-This pattern has a number of useful applications. It's often of benefit to decouple the default configuration for your application into a single area that can be easily modified without the need to search through your entire codebase just to alter them - object literals work great for this purpose. Here's an example of a hypothetical object literal for configuration:
+This pattern has a number of useful applications. It's often of benefit to decouple the default configuration for your application into a single area that can be easily modified without the need to search through your entire codebase just to alter them - Object Literals work great for this purpose. Here's an example of a hypothetical Object Literal for configuration:
 
 <pre>
 var myConfig = {
@@ -647,13 +647,13 @@ var myConfig = {
 }
 </pre>
 
-Note that there are really only minor syntactical differences between the object literal pattern and a standard JSON data set. If for any reason you wish to use JSON for storing your configurations instead (e.g. for simpler storage when sending to the back-end), feel free to.
+Note that there are really only minor syntactical differences between the Object Literal pattern and a standard JSON data set. If for any reason you wish to use JSON for storing your configurations instead (e.g. for simpler storage when sending to the back-end), feel free to.
 
-For more on the object literal pattern, I recommend reading Rebecca Murphey's excellent article on the topic.
+For more on the Object Literal pattern, I recommend reading Rebecca Murphey's excellent article on the topic: (http://blog.rebeccamurphey.com/2009/10/15/using-objects-to-organize-your-code).
 
 <strong>Nested namespacing</strong>
 
-An extension of the object literal pattern is nested namespacing. It's another common pattern used that offers a lower risk of collision due to the fact that even if a namespace already exists, it's unlikely the same nested children do.
+An extension of the Object Literal pattern is nested namespacing. It's another common pattern used that offers a lower risk of collision due to the fact that even if a namespace already exists, it's unlikely the same nested children do.
 
 Does this look familiar?
 
@@ -746,7 +746,7 @@ In case you haven't used it before, RequireJS is a popular script loader written
 
 So, why use RequireJS with Backbone?. Although Backbone is excellent when it comes to providing a sanitary structure to your applications, there are a few key areas where some additional help could be used:
 
-1) Backbone doesn't endorse a particular approach to modular-development. Although this means it's quite open-ended for developers to opt for classical patterns like the module-pattern or object literals for structuring their apps (which both work fine), it also means developers aren't sure of what works best when other concerns come into play, such as dependency management.
+1) Backbone doesn't endorse a particular approach to modular-development. Although this means it's quite open-ended for developers to opt for classical patterns like the module-pattern or Object Literals for structuring their apps (which both work fine), it also means developers aren't sure of what works best when other concerns come into play, such as dependency management.
 
 RequireJS is compatible with the AMD (Asynchronous Module Definition) format, a format which was born from a desire to write something better than the 'write lots of script tags with implicit dependencies and manage them manually' approach to development. In addition to allowing you to clearly declare dependencies, AMD works well in the browser, supports string IDs for dependencies, declaring multiple modules in the same file and gives you easy-to-use tools to avoid polluting the global namespace.
 
@@ -839,7 +839,7 @@ define(['underscore', 'backbone'], function(_, Backbone) {
 });
 </pre>
 
-Note how we alias Underscore.js's instance to "_" and Backbone to just 'Backbone', making it very trivial to convert non-AMD code over to using this module format. For a view that might require other dependencies such as jQuery, this can similarly be done as follows:
+Note how we alias Underscore.js's instance to "_" and Backbone to just 'Backbone', making it very trivial to convert non-AMD code over to using this module format. For a view which might require other dependencies such as jQuery, this can similarly be done as follows:
 
 <pre>
 define([
@@ -969,7 +969,7 @@ will be ignored. This is by design as it ensures that dynamic dependency/module 
 
 Although the RequireJS optimizer works fine in both Node and Java environments, it's strongly recommended to run it under Node as it executes significantly faster there. In my experience, it's a piece of cake to get setup with either environment, so go for whichever you feel most comfortable with. 
 
-To get started with r.js, grab it from the RequireJS download page (http://requirejs.org/docs/download.html#rjs) or through NPM as specified here (http://requirejs.org/docs/optimization.html#download). Now, the RequireJS optimizer works absolutely fine for single script and CSS files, but for most cases you'll want to actually optimize an entire Backbone project. You *could* do this completely from the command-line, but but a cleaner option is using build profiles.
+To get started with r.js, grab it from the RequireJS download page (http://requirejs.org/docs/download.html#rjs) or through NPM as specified here (http://requirejs.org/docs/optimization.html#download). Now, the RequireJS optimizer works absolutely fine for single script and CSS files, but for most cases you'll want to actually optimize an entire Backbone project. You *could* do this completely from the command-line, but a cleaner option is using build profiles.
 
 Below is an example of a build file taken from the modular jQuery Mobile app referenced later in this book. A <strong>build profile</strong> (commonly named app.build.js) informs RequireJS to copy all of the content of <code>appDir</code> to a directory defined by <code>dir</code> (in this case '../release'). This will apply all of the necessary optimizations inside the release folder. The <code>baseUrl</code> is used to resolve the paths for your modules. It should ideally be relative to <code>appDir</code>.
 
@@ -1003,7 +1003,7 @@ Near the bottom of this sample file, you'll see an array called <code>modules</c
 
 The way the build system in r.js works is that it traverses app.js (whatever modules you've passed) and resolved dependencies, concatenating them into the final <code>release</code>(dir) folder. CSS is treated the same way. 
 
-The build profile is usually placed inside the 'scripts' or 'js' directory of your project. As per the docs, thie file can however exist anywhere you wish, but you'll need to edit the contents of your build profile accordingly. 
+The build profile is usually placed inside the 'scripts' or 'js' directory of your project. As per the docs, this file can however exist anywhere you wish, but you'll need to edit the contents of your build profile accordingly. 
 
 Finally, to run the build, execute the following command once insice your <code>appDir</code> or <code>appDir/scripts</code> directory:
 
