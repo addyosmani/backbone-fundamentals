@@ -12,6 +12,7 @@ How to write modular JavaScript apps for desktop and mobile
 * [Models](#models)
     * [Initialization](#models-initialization)
     * [Getters & Setters](#models-getters-setters)
+    * [Model.get()](#models-model-get)
     * [Model.set()](#models-model-set)
     * [Default values](#models-default-values)
     * [Listening for changes](#models-event-listeners)
@@ -147,7 +148,7 @@ var myPhoto = new Photo;
 
 ####<a name="models-getters-setters">Getters & Setters</a>
 
-<strong>Model.get()</strong>
+####<a name="models-get">Model.get()</a>
 
 Model.get() provides easy access to a model's attributes. Attributes below which are passed through to the model on instantiation are then instantly available for retrieval.
 
