@@ -4,7 +4,7 @@ How to write modular JavaScript apps for desktop and mobile
 
 ##Index
 
-* Introduction
+* [Introduction](#introduction)
 
 * ####The Basics
 * Models
@@ -26,7 +26,7 @@ How to write modular JavaScript apps for desktop and mobile
 * A sample jQuery mobile app
 
 
-##Introduction
+##<a id="introduction">Introduction</a>
 
 In this mini-book, I'll be covering a complete run-down of Backbone.js; including models, views, collections and routers. I'll also be taking you through advanced topics like modular development with Backbone.js and AMD (with RequireJS), how to solve the routing problems with Backbone and jQuery Mobile, tips about scaffolding tools that can save time setting up your initial application and more.
 
