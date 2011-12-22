@@ -17,13 +17,12 @@ How to write modular JavaScript apps for desktop and mobile
 * ####Advanced
 * Modular JavaScript
 * Organizing modules with RequireJS and AMD
-* Keeping your templates external
+* Keeping your templates external with the RequireJS text plugin
 * Optimizing Backbone apps for production with the RequireJS Optimizer
+* Practical: Building a modular app with AMD & RequireJS
 * Backbone & jQuery Mobile
+* Practical: Building a modular mobile app using jQuery Mobile
 
-* ####Practical 
-* A sample modular app
-* A sample jQuery mobile app
 
 
 ##Introduction
@@ -1042,6 +1041,373 @@ node ../../r.js -o app.build.js
 That's it. As long as you have UglifyJS/Closure tools setup correctly, r.js should be able to easily optimize your entire Backbone project in just a few key-strokes. If you would like to learn more about build profiles, James Burke has a heavily commented sample file with all the possible options available here: https://github.com/jrburke/r.js/blob/master/build/example.build.js
 
 
+
+##[Practical: Building a modular Backbone Todo app with AMD & RequireJS](#practical_modularapp)
+
+In this chapter, we'll look at our first practical Backbone & RequireJS project - how to build a modular Todo application. The application will allow us to add new todos, edit new todos and clear todo items that have been marked as completed. For a more advanced practical, see the section on mobile Backbone development.
+
+The complete code for the application can can be found in the 'practicals/modular-todo-app' folder of this repo (thanks to Thomas Davis and J&eacute;r&ocirc;me Gravel-Niquet). Alternatively grab a copy of my side-project <a href="https://github.com/addyosmani/todomvc">TodoMVC</a> which contains the sources to both AMD and non-AMD versions.
+
+<strong>Note:</strong> Thomas may be covering a practical on this exercise in more detail on <a href="http://backbonetutorials.com">backbonetutorials.com</a> at some point soon, but for this section I'll be covering what I consider the core concepts.
+
+###Overview
+
+Writing a 'modular' Backbone application can be a straight-forward process. There are however, some key conceptual differences to be aware of if opting to use AMD as your module format of choice:
+
+* As AMD isn't a standard native to JavaScript or the browser, it's necessary to use a script loader (such as RequireJS or curl.js) in order to support defining components and modules using this module format. As we've already reviewed, there are a number of advantages to using the AMD as well as RequireJS to assist here.
+* Models, views, controllers and routers need to be encapsulated *using* the AMD-format. This allows each component of our Backbone application to cleanly manage dependencies (e.g collections required by a view) in the same way that AMD allows non-Backbone modules to.
+* Non-Backbone components/modules (such as utilities or application helpers) can also be encapsulated using AMD. I encourage you to try developing these modules in such a way that they can both be used and tested independent of your Backbone code as this will increase their ability to be re-used elsewhere.
+
+Now that we've reviewed the basics, let's take a look at developing our application. For reference, the structure of our app is as follows:
+
+<pre>
+index.html
+...js/
+    main.js
+    .../models
+            todo.js
+    .../views
+            app.js
+            todos.js
+    .../collections
+            todos.js
+    .../templates
+            stats.html
+            todos.html
+    ../libs
+        .../backbone
+        .../jquery
+        .../underscore
+        .../require
+                require.js
+                text.js
+...css/
+</pre>
+
+###Markup
+
+The markup for the application is relatively simple and consists of three primary parts: an input section for entering new todo items (<code>create-todo</code>), a list section to display existing items (which can also be edited in-place) (<code>todo-list</code>) and finally a section summarizing how many items are left to be completed (<code>todo-stats</code>).
+
+<pre>
+&lt;div id=&quot;todoapp&quot;&gt;
+
+      &lt;div class=&quot;content&quot;&gt;
+
+        &lt;div id=&quot;create-todo&quot;&gt;
+          &lt;input id=&quot;new-todo&quot; placeholder=&quot;What needs to be done?&quot; type=&quot;text&quot; /&gt;
+          &lt;span class=&quot;ui-tooltip-top&quot;&gt;Press Enter to save this task&lt;/span&gt;
+        &lt;/div&gt;
+
+        &lt;div id=&quot;todos&quot;&gt;
+          &lt;ul id=&quot;todo-list&quot;&gt;&lt;/ul&gt;
+        &lt;/div&gt;
+
+        &lt;div id=&quot;todo-stats&quot;&gt;&lt;/div&gt;
+
+      &lt;/div&gt;
+
+&lt;/div&gt;
+</pre>
+
+The the rest of the tutorial will now focus on the JavaScript side of the practical.
+
+###Configuration options
+
+If you've read the earlier chapter on AMD, you may have noticed that explicitly needing to define each dependency a Backbone module (view, collection or other module) may require with it can get a little tedious. This can however be improved.
+
+In order to simplify referencing common paths the modules in our application may use, we use a RequireJS [configuration object](http://requirejs.org/docs/api.html#config), which is typically defined as a top-level script file. Configuration objects have a number of useful capabilities, the most useful being mode name-mapping. Name-maps are basically a key:value pair, where the key defines the alias you wish to use for a path and key represents the true location of the path.
+
+In the code-sample below, you can see some typical examples of common name-maps which include: <code>backbone</code>, <code>underscore</code>, <code>jquery</code> and depending on your choice, the RequireJS <code>text</code> plugin, which assists with loading text assets like templates.
+
+<strong>main.js</strong>
+
+```javascript
+require.config({
+  baseUrl:'../',
+  paths: {
+    jquery: 'libs/jquery/jquery-min',
+    underscore: 'libs/underscore/underscore-min',
+    backbone: 'libs/backbone/backbone-optamd3-min',
+    text: 'libs/require/text'
+  }
+});
+
+require(['views/app'], function(AppView){
+  var app_view = new AppView;
+});
+```
+
+The <code>require()</code> at the end of our main.js file is simply there so we can load and instantiation the primary view for our application (<code>views/app.js</code>). You'll commonly see both this and the configuration object included the most top-level script file for a project.
+
+In addition to offering name-mapping, the configuration object can be used to define additional properties such as <code>waitSeconds</code> - the number of seconds to wait before script loading times out and <code>locale</code>, should you wish to load up i118n bundles for custom languages. The <code>baseUrl</code> is simply the path to use for module lookups.
+
+For more information on configuration objects, please feel free to check out the excellent guide to them in the RequireJS docs: http://requirejs.org/docs/api.html#config.
+
+
+###Modularizing our models, views and collections
+
+Before we dive into AMD-wrapped versions of our Backbone components, let's review a sample of a non-AMD view. The following view listens for changes to it's model (a Todo item) and re-renders if a user edits the value of the item.   
+
+```javascript
+var TodoView = Backbone.View.extend({
+
+    //... is a list tag.
+    tagName:  "li",
+
+    // Cache the template function for a single item.
+    template: _.template($('#item-template').html()),
+
+    // The DOM events specific to an item.
+    events: {
+      "click .check"              : "toggleDone",
+      "dblclick div.todo-content" : "edit",
+      "click span.todo-destroy"   : "clear",
+      "keypress .todo-input"      : "updateOnEnter"
+    },
+
+    // The TodoView listens for changes to its model, re-rendering. Since there's
+    // a one-to-one correspondence between a **Todo** and a **TodoView** in this
+    // app, we set a direct reference on the model for convenience.
+    initialize: function() {
+      _.bindAll(this, 'render', 'close');
+      this.model.bind('change', this.render);
+      this.model.view = this;
+    },
+    ...
+```
+Note how for templating the common practice of referencing a script by an ID (or other selector) and obtaining it's value is used.
+This of course requires that the template being accessed is implicitly defined in our markup. The following is the 'embedded' version of our template being referenced above: 
+
+<pre>
+&lt;script type=&quot;text/template&quot; id=&quot;item-template&quot;&gt;
+      &lt;div class=&quot;todo &lt;%= done ? &#39;done&#39; : &#39;&#39; %&gt;&quot;&gt;
+        &lt;div class=&quot;display&quot;&gt;
+          &lt;input class=&quot;check&quot; type=&quot;checkbox&quot; &lt;%= done ? &#39;checked=&quot;checked&quot;&#39; : &#39;&#39; %&gt; /&gt;
+          &lt;div class=&quot;todo-content&quot;&gt;&lt;/div&gt;
+          &lt;span class=&quot;todo-destroy&quot;&gt;&lt;/span&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;edit&quot;&gt;
+          &lt;input class=&quot;todo-input&quot; type=&quot;text&quot; value=&quot;&quot; /&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+&lt;/script&gt;
+</pre>
+
+Whilst there is nothing wrong with the template itself, once we begin to develop larger applications requiring multiple templates, including them all in our markup on page-load can quickly become both unmanageable and come with performance costs. We'll look at solving this problem in a minute.
+
+Let's now take a look at the AMD-version of our view. As discussed earlier, the 'module' is wrapped using AMD's <code>define()</code> which allows us to specify the dependencies our view requires. Using the mapped paths to 'jquery' etc. simplifies referencing common dependencies and instances of dependencies are themselves mapped to local variables that we can access (e.g 'jquery' is mapped to <code>$</code>).
+
+<strong>views/todos.js</strong>
+
+```javascript
+define([
+  'jquery', 
+  'underscore', 
+  'backbone',
+  'text!templates/todos.html'
+  ], function($, _, Backbone, todosTemplate){
+  var TodoView = Backbone.View.extend({
+
+    //... is a list tag.
+    tagName:  "li",
+
+    // Cache the template function for a single item.
+    template: _.template(todosTemplate),
+
+    // The DOM events specific to an item.
+    events: {
+      "click .check"              : "toggleDone",
+      "dblclick div.todo-content" : "edit",
+      "click span.todo-destroy"   : "clear",
+      "keypress .todo-input"      : "updateOnEnter"
+    },
+
+    // The TodoView listens for changes to its model, re-rendering. Since there's
+    // a one-to-one correspondence between a **Todo** and a **TodoView** in this
+    // app, we set a direct reference on the model for convenience.
+    initialize: function() {
+      _.bindAll(this, 'render', 'close');
+      this.model.bind('change', this.render);
+      this.model.view = this;
+    },
+
+    // Re-render the contents of the todo item.
+    render: function() {
+      $(this.el).html(this.template(this.model.toJSON()));
+      this.setContent();
+      return this;
+    },
+
+    // Use `jQuery.text` to set the contents of the todo item.
+    setContent: function() {
+      var content = this.model.get('content');
+      this.$('.todo-content').text(content);
+      this.input = this.$('.todo-input');
+      this.input.bind('blur', this.close);
+      this.input.val(content);
+    },
+    ...
+```
+
+ From a maintenance perspective, there's nothing logically different in this version of our view, except for how we approach templating. 
+
+ Using the RequireJS text plugin (the dependency marked <code>text</code>), we can actally store all of the contents for the template we looked at earlier in an external file (todos.html). 
+
+<strong>templates/todos.html</strong>
+
+<pre>
+&lt;div class=&quot;todo &lt;%= done ? &#39;done&#39; : &#39;&#39; %&gt;&quot;&gt;
+    &lt;div class=&quot;display&quot;&gt;
+      &lt;input class=&quot;check&quot; type=&quot;checkbox&quot; &lt;%= done ? &#39;checked=&quot;checked&quot;&#39; : &#39;&#39; %&gt; /&gt;
+      &lt;div class=&quot;todo-content&quot;&gt;&lt;/div&gt;
+      &lt;span class=&quot;todo-destroy&quot;&gt;&lt;/span&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;edit&quot;&gt;
+      &lt;input class=&quot;todo-input&quot; type=&quot;text&quot; value=&quot;&quot; /&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+</pre>
+
+There's no longer a need to be concerned with IDs for the template as we can map it's contents to a local variable (in this case <code>todosTemplate</code>). We then simply pass this to the Underscore.js templating function <code>_.template()</code> the same way we normally would have the value of our template script.
+
+Next, let's look at how to define models as dependencies which can be pulled into collections. Here's an AMD-compatible model module, which has two default values: a <code>content</code> attribute for the content of a Todo item and a boolean <code>done</code> state, allowing us to trigger whether the item has been completed or not.
+
+<strong>models/todo.js</strong>
+
+```javascript
+define(['underscore', 'backbone'], function(_, Backbone) {
+  var TodoModel = Backbone.Model.extend({
+
+    // Default attributes for the todo.
+    defaults: {
+      content: "empty todo...",
+      done: false
+    },
+
+    // Ensure that each todo created has `content`.
+    initialize: function() {
+      if (!this.get("content")) {
+        this.set({"content": this.defaults.content});
+      }
+    },
+
+    // Toggle the `done` state of this todo item.
+    toggle: function() {
+      this.save({done: !this.get("done")});
+    },
+
+    // Remove this Todo from *localStorage* and delete its view.
+    clear: function() {
+      this.destroy();
+      this.view.remove();
+    }
+
+  });
+  return TodoModel;
+});
+```
+
+As per other types of dependencies, we can easily map our model module to a local variable (in this case <code>Todo</code>) so it can be referenced as the model to use for our <code>TodosCollection</code>. This collection also supports a simple <code>done()</code> filter for narrowing down Todo items that have been completed and a <code>remaining()</code> filter for those that are still outstanding. 
+
+<strong>collections/todos.js</strong>
+
+```javascript
+define([
+  'underscore', 
+  'backbone', 
+  'libs/backbone/localstorage', 
+  'models/todo'
+  ], function(_, Backbone, Store, Todo){
+
+    var TodosCollection = Backbone.Collection.extend({
+
+    // Reference to this collection's model.
+    model: Todo,
+
+    // Save all of the todo items under the `"todos"` namespace.
+    localStorage: new Store("todos"),
+
+    // Filter down the list of all todo items that are finished.
+    done: function() {
+      return this.filter(function(todo){ return todo.get('done'); });
+    },
+
+    // Filter down the list to only todo items that are still not finished.
+    remaining: function() {
+      return this.without.apply(this, this.done());
+    },
+    ...
+```
+
+In addition to allowing users to add new Todo items from views (which we then insert as models in a collection), we ideally also want to be able to display how many items have been completed and how many are remaining. We've already defined filters that can provide us this information in the above collection, so let's use them in our main application view.
+
+<strong>views/app.js</strong>
+
+```javascript
+define([
+  'jquery',
+  'underscore', 
+  'backbone',
+  'collections/todos',
+  'views/todos',
+  'text!templates/stats.html'
+  ], function($, _, Backbone, Todos, TodoView, statsTemplate){
+
+  var AppView = Backbone.View.extend({
+
+    // Instead of generating a new element, bind to the existing skeleton of
+    // the App already present in the HTML.
+    el: $("#todoapp"),
+
+    // Our template for the line of statistics at the bottom of the app.
+    statsTemplate: _.template(statsTemplate),
+
+    // ...events, initialize() etc. can be seen in the complete file
+
+    // Re-rendering the App just means refreshing the statistics -- the rest
+    // of the app doesn't change.
+    render: function() {
+      var done = Todos.done().length;
+      this.$('#todo-stats').html(this.statsTemplate({
+        total:      Todos.length,
+        done:       Todos.done().length,
+        remaining:  Todos.remaining().length
+      }));
+    },
+    ...
+```
+
+Above, we map the second template for this project, <code>templates/stats.html</code> to <code>statsTemplate</code> which is used for rendering the overall <code>done</code> and <code>remaining</code> states. This works by simply passing our template the length of our overall Todos collection (<code>Todos.length</code> - the number of Todo items created so far) and similarly the length (counts) for items that have been completed (<code>Todos.done().length</code>) or are remaining (<code>Todos.remaining().length</code>).
+
+The contents of our <code>statsTemplate</code> can be seen below. It's nothing too complicated, but does use ternary conditions to evaluate whether we should state there's "1 item" or "2 item<i>s</i>" in a particular state. 
+
+<pre>
+ &lt;% if (total) { %&gt;
+        &lt;span class=&quot;todo-count&quot;&gt;
+          &lt;span class=&quot;number&quot;&gt;&lt;%= remaining %&gt;&lt;/span&gt;
+          &lt;span class=&quot;word&quot;&gt;&lt;%= remaining == 1 ? &#39;item&#39; : &#39;items&#39; %&gt;&lt;/span&gt; left.
+        &lt;/span&gt;
+      &lt;% } %&gt;
+      &lt;% if (done) { %&gt;
+        &lt;span class=&quot;todo-clear&quot;&gt;
+          &lt;a href=&quot;#&quot;&gt;
+            Clear &lt;span class=&quot;number-done&quot;&gt;&lt;%= done %&gt;&lt;/span&gt;
+            completed &lt;span class=&quot;word-done&quot;&gt;&lt;%= done == 1 ? &#39;item&#39; : &#39;items&#39; %&gt;&lt;/span&gt;
+          &lt;/a&gt;
+        &lt;/span&gt;
+      &lt;% } %&gt;
+</pre>
+
+
+
+The rest of the source for the Todo app mainly consists of code for handling user and application events, but that rounds up most of the core concepts for this practical. 
+
+To see how everything ties together, feel free to grab the source by cloning this repo or browse it <a href="https://github.com/addyosmani/backbone-fundamentals/tree/master/practicals/modular-todo-app">online<a/> to learn more. I hope you find it helpful!.
+
+<strong>Note:</strong> While this first practical doesn't use a build profile at outlined in the chapter on using the RequireJS optimizer, we will be using one in the section on building mobile Backbone applications.
+
+
+
 ##Backbone and jQuery Mobile
 
 ###Resolving the routing conflicts
@@ -1080,15 +1446,6 @@ In the above sample, <code>url</code> can refer to a URL or a hash identifier to
 <strong>Note:</strong> For some parallel work being done to explore how well the jQuery Mobile Router plugin works with Backbone, you may be interested in checking out https://github.com/Filirom1/jquery-mobile-backbone-requirejs.
 
 
-###Practical: A Backbone + RequireJS/AMD app
-
-//This section needs to be heavily expanded.
-
-My side-project TodoMVC now includes a modular Backbone example using AMD and RequireJS (thanks to Thomas Davis) for anyone wishing to look at a sample without any of the jQuery Mobile code included:
-
-https://github.com/addyosmani/todomvc/tree/master/todo-example/backbone+require
-
-This covers how to wrap your views, models, modules etc. using AMD and also cleanly demonstrates handling dependency management as well as Flickly does.
 
 ###Practical: A Backbone, RequireJS/AMD app with jQuery Mobile
 
