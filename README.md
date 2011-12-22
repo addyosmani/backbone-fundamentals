@@ -265,13 +265,13 @@ Views in Backbone don't contain the markup for your application, but rather they
 
 ####Creating new views
 
-Similar to the previous sections, creating a new view is relatively straight-forward. We simply extend Backbone.View. Here's an example of a one possible implementation of this, which I'll explain shortly:
+Similar to the previous sections, creating a new view is relatively straight-forward. We simply extend Backbone.View. Here's an example of a possible implementation of this, which I'll explain shortly:
 
 ```javascript
 var PhotoSearch = Backbone.View.extend({
     el: $('#results'),
     render: function( event ){
-        var compiled_template = _.template( $("#results-template").html());
+        var compiled_template = _.template( $("#results-template").html() );
         this.el.html( compiled_template(this.model.toJSON()) );
         return this; //recommended as this enables calls to be chained.
     },
@@ -337,7 +337,7 @@ There are a few different options for retrieving a model from a collection. The 
 var skiingEpicness = PhotoCollection.get(2);
 ```
 
-Sometimes you may also want get a model based on something called the client id. This is an id that is internally assigned automatically when creating models that have not yet been saved, should you need to reference them. You can find out what a model's client id is by accessing its .cid property.
+Sometimes you may also want to get a model based on something called the client id. This is an id that is internally assigned automatically when creating models that have not yet been saved, should you need to reference them. You can find out what a model's client id is by accessing its .cid property.
 
 ```javascript
 var mySkiingCrash = PhotoCollection.getByCid(456);
