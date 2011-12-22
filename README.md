@@ -792,7 +792,9 @@ define(['foo', 'bar'],
         return myModule;
 });
 ```
-There is also a [sugared version](http://requirejs.org/docs/whyamd.html#sugar) of `define()` available that would allow the previous code snippet to be written as:
+####Alternate syntax
+There is also a [sugared version](http://requirejs.org/docs/whyamd.html#sugar) of `define()` available that allows you to declare your dependencies as local variables using `require()`. This will feel familiar to anyone who's used node, and can be easier to add or remove dependencies.
+Here is the previous snippet using the alternate syntax:
 
 ```javascript
 // A module ID has been omitted here to make the module anonymous
@@ -816,7 +818,7 @@ define(function(require){
         return myModule;
 });
 ```
-Some people feel sytax is a more natural and maintainable way to specify your dependencies.
+
 
 The `require()` method is typically used to load code in a top-level JavaScript file or within a module should you wish to dynamically fetch dependencies. An example of its usage is:</p>
 
