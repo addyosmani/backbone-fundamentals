@@ -260,7 +260,7 @@ myPhoto.set({ title: "On the beach" });
 
 ###Views
 
-Views in Backbone don't contain the markup for your application, but rather are there to support models by defining how they should be visually represented to the user. This is usually achieved using JavaScript templating (e.g. Mustache, jQuery tmpl etc). When a model updates, rather than the entire page needing to be refreshed, we can simply bind a view's render() function to a model's change() event, allowing the view to always be up to date.
+Views in Backbone don't contain the markup for your application, but rather they are there to support models by defining how they should be visually represented to the user. This is usually achieved using JavaScript templating (e.g. Mustache, jQuery tmpl etc). When a model updates, rather than the entire page needing to be refreshed, we can simply bind a view's render() function to a model's change() event, allowing the view to always be up to date.
 
 ####Creating new views
 
@@ -275,9 +275,9 @@ var PhotoSearch = Backbone.View.extend({
         return this; //recommended as this enables calls to be chained.
     },
     events: {
-        "submit #searchForm':  "search",
-        "click .reset': "reset",
-        "click .advanced": 'switchContext"
+        "submit #searchForm":  "search",
+        "click .reset": "reset",
+        "click .advanced": "switchContext"
     },
     search: function( event ){
         //executed when a form '#searchForm' has been submitted
@@ -969,7 +969,7 @@ will be ignored. This is by design as it ensures that dynamic dependency/module 
 
 Although the RequireJS optimizer works fine in both Node and Java environments, it's strongly recommended to run it under Node as it executes significantly faster there. In my experience, it's a piece of cake to get setup with either environment, so go for whichever you feel most comfortable with. 
 
-To get started with r.js, grab it from the RequireJS download page (http://requirejs.org/docs/download.html#rjs) or through NPM as specified here (http://requirejs.org/docs/optimization.html#download). Now, the RequireJS optimizer works absolutely fine for single script and CSS files, but for most cases you'll want to actually optimize an entire Backbone project. You *could* do this completely from the command-line, but but a cleaner option is using build profiles.
+To get started with r.js, grab it from the RequireJS download page (http://requirejs.org/docs/download.html#rjs) or through NPM as specified here (http://requirejs.org/docs/optimization.html#download). Now, the RequireJS optimizer works absolutely fine for single script and CSS files, but for most cases you'll want to actually optimize an entire Backbone project. You *could* do this completely from the command-line, but a cleaner option is using build profiles.
 
 Below is an example of a build file taken from the modular jQuery Mobile app referenced later in this book. A <strong>build profile</strong> (commonly named app.build.js) informs RequireJS to copy all of the content of <code>appDir</code> to a directory defined by <code>dir</code> (in this case '../release'). This will apply all of the necessary optimizations inside the release folder. The <code>baseUrl</code> is used to resolve the paths for your modules. It should ideally be relative to <code>appDir</code>.
 
@@ -1003,7 +1003,7 @@ Near the bottom of this sample file, you'll see an array called <code>modules</c
 
 The way the build system in r.js works is that it traverses app.js (whatever modules you've passed) and resolved dependencies, concatenating them into the final <code>release</code>(dir) folder. CSS is treated the same way. 
 
-The build profile is usually placed inside the 'scripts' or 'js' directory of your project. As per the docs, thie file can however exist anywhere you wish, but you'll need to edit the contents of your build profile accordingly. 
+The build profile is usually placed inside the 'scripts' or 'js' directory of your project. As per the docs, this file can however exist anywhere you wish, but you'll need to edit the contents of your build profile accordingly. 
 
 Finally, to run the build, execute the following command once insice your <code>appDir</code> or <code>appDir/scripts</code> directory:
 
