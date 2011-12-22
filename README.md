@@ -13,15 +13,28 @@ How to write modular JavaScript apps for desktop and mobile
     * [Initialization](#models-initialization)
     * [Getters & Setters](#models-getters-setters)
     * [Model.set()](#models-model-set)
+    * [Default values](#models-default-values)
+    * [Listening for changes](#models-event-listeners)
+    * [Validation](#models-validation)
 * [Views](#views)
     * [Creating new views](#views-creating)
     * [What is <code>el</code>?](#views-what-is-el)
+    * [Understanding <code>render()</code>](#views-render)
+    * [The 'events' attribute](#views-events-attribute)
 * [Collections](#collections)
+    * [Getters & Setters](#collections-getters-setters)
+    * [Listening for events](#collections-event-listeners)
+    * [Fetching models from the server](#collections-fetching-models)
+    * [Resetting/Refreshing Collections](#collections-resetting-refreshing)
     * [Underscore utility functions](#collections-underscore)
 * [Routers](#routers)
     * [Backbone.history](#routers-backbone-history)
 * [Namespacing](#namespacing)
     * [What is namespacing](#namespacing-what-is-it)
+    * [Single Global Variable](#namespacing-single-global)
+    * [Object literals](#namespacing-object-literals)
+    * [Nested Namespacing](#namespacing-nested)
+    * [Recommendation](#namespacing-recommendation)
 * [Additional tips](#tips)
     * [Automated Backbone Scaffolding](#tips-automated-scaffolding)
     * [Clarifications on Backbone's MVC](#tips-backbone-mvc)
@@ -32,6 +45,7 @@ How to write modular JavaScript apps for desktop and mobile
 * [Modular JavaScript](#modular-javascript)
 * [Organizing modules with RequireJS and AMD](#organizing-modules)
     * [Writing AMD Modules with RequireJS](#writing-amd-modules)
+    * [Wrapping modules, views, and other components with AMD](#writing-amd-wrapping-components)
 * [Keeping your templates external](#external-templates)
 * [Optimizing Backbone apps for production with the RequireJS Optimizer](#optimizing-backbone-with-requirejs)
 * [Backbone & jQuery Mobile](#backbone-and-jquery-mobile)
@@ -41,6 +55,10 @@ How to write modular JavaScript apps for desktop and mobile
 * [A sample modular app](#sample-module-app)
 * [A sample jQuery mobile app](#sample-mobile-app)
     * [Getting Started](#mobile-app-getting-started)
+    * [Namespacing](#mobile-app-namespacing)
+    * [Models](#mobile-app-models)
+    * [Views](#mobile-app-views)
+    * [Routers](#mobile-app-routers)
     * [jQuery Mobile: Going beyond mobile application development](#jquery-mobile)
 
 
@@ -185,7 +203,7 @@ var myPhoto2 = new Photo();
 myPhoto2.set({ title:'Vacation in Florida', location: 'Florida' });
 ```
 
-<strong>Default values</strong>
+####<a name="models-default-values">Default values</a>
 
 There are times when you want your model to have a set of default values (e.g. in scenario where a complete set of data isn't provided by the user). This can be set using a property called 'defaults' in your model.
 
@@ -209,7 +227,7 @@ var myPhoto = new Photo({ location: "Boston",
     photoSrc = myPhoto.get("src"); //placeholder.jpg
 ```
 
-<strong>Listening for changes to your model</strong>
+####<a name="models-event-listeners">Listening for changes to your model</a>
 
 Any and all of the attributes in a Backbone model can have listeners bound to them which detect when their values change. This can be easily added to the initialize() function as follows:
 
@@ -247,7 +265,7 @@ myPhoto.setTitle('Fishing at sea');
 //logs my title has been changed to.. Fishing at sea
 ```
 
-<strong>Validation</strong>
+####<a name="models-validation">Validation</a>
 
 Backbone supports model validation through Model.validate(), which allows checking the attribute values for a model prior to them being set.
 
@@ -318,7 +336,7 @@ className: 'items' //similar to the above, this will also result in el being der
 el: '' //defaults to a div without an id, name or class.
 ```
 
-<strong>Understanding render()</strong>
+####<a name="views-render">Understanding <code>render()</code></a>
 
 render() is a function that should always be overridden to define how you would like a template to be rendered. Backbone allows you to use any JavaScript templating solution of your choice for this but for the purposes of this example, we'll opt for underscore's micro-templating.
 
@@ -326,7 +344,7 @@ The _.template method in underscore compiles JavaScript templates into functions
 
 Presto! This populates the template, giving you a data-complete set of markup in just a few short lines of code.
 
-<strong>The 'events' attribute</strong>
+####<a name='views-events-attribute">The 'events' attribute</a>
 
 The Backbone events attribute allows us to attach event listeners to either custom selectors or <code>el</code> if no selector is provided. An event takes the form {"eventName selector": "callbackFunction"} and a number of event-types are supported, including 'click', 'submit', 'mouseover', 'dblclick' and more.
 
@@ -346,7 +364,7 @@ PhotoCollection = Backbone.Collection.extend({
 });
 ```
 
-<strong>Getters and Setters</strong>
+####<a name="collections-getters-setters>Getters & Setters</a>
 
 There are a few different options for retrieving a model from a collection. The most straight-forward is using Collection.get() which accepts a single id as follows:
 
@@ -370,7 +388,7 @@ var photoCollection = new Backbone.Collection([a,b]);
 photoCollection.remove([a,b]);
 ```
 
-<strong>Listening for events</strong>
+####<a name="collections-event-listeners">Listening for events</a>
 
 As collections represent a group of items, we're also able to listen for add and remove events for when new models are added or removed from the collection. Here's an example:
 
@@ -395,7 +413,7 @@ PhotoCollection.bind("change:title", function(){
 });
 ```
 
-<strong>Fetching models from the server</strong>
+####<a name="collections-fetching-models">Fetching models from the server</a>
 
 Collections.fetch() provides you with a simple way to fetch a default set of models from the server in the form of a JSON array. When this data returns, the current collection will refresh.
 
@@ -415,7 +433,7 @@ Backbone.sync = function(method, model) {
 };
 ```
 
-<strong>Resetting/Refreshing Collections</strong>
+####<a name="collections-resetting-refreshing">Resetting/Refreshing Collections</a>
 
 Rather than adding or removing models individually, you occasionally wish to update an entire collection at once. Collection.reset() allows us to replace an entire collection with new models as follows:
 
@@ -565,7 +583,7 @@ In this section we'll be taking a look shortly at some examples of how you can n
 * Nested namespacing
 * Single global variables
 
-<strong>Single global variables</strong>
+####<a name="namespacing-single-global">Single global variables</a>
 
 One popular pattern for namespacing in JavaScript is opting for a single global variable as your primary object of reference. A skeleton implementation of this where we return an object with functions and properties can be found below:
 
@@ -608,7 +626,7 @@ For more on Peter's views about the single global variable pattern, read his exc
 
 Note: There are several other variations on the single global variable pattern out in the wild, however having reviewed quite a few, I felt these applied best to Backbone.
 
-<strong>Object Literals</strong>
+####<a name="namespacing-object-literals">Object Literals</a>
 
 Object Literals have the advantage of not polluting the global namespace but assist in organizing code and parameters logically. They're beneficial if you wish to create easily-readable structures that can be expanded to support deep nesting. Unlike simple global variables, Object Literals often also take into account tests for the existence of a variable by the same name so the chances of collision occurring are significantly reduced.
 
@@ -669,7 +687,7 @@ Note that there are really only minor syntactical differences between the Object
 
 For more on the Object Literal pattern, I recommend reading Rebecca Murphey's excellent article on the topic: (http://blog.rebeccamurphey.com/2009/10/15/using-objects-to-organize-your-code).
 
-<strong>Nested namespacing</strong>
+####<a name="namespacing-nested">Nested namespacing</a>
 
 An extension of the Object Literal pattern is nested namespacing. It's another common pattern used that offers a lower risk of collision due to the fact that even if a namespace already exists, it's unlikely the same nested children do.
 
@@ -707,7 +725,7 @@ The only real caveat however is that it requires your browser's JavaScript engin
 
 This can mean an increased amount of work to perform lookups, however developers such as Juriy Zaytsev (kangax) have previously tested and found the performance differences between single object namespacing vs the 'nested' approach to be quite negligible.
 
-<strong>Recommendation</strong>
+####<a name="namespacing-recommendation">Recommendation</a>
 
 Reviewing the namespace patterns above, the option that I would personally use with Backbone is nested object namespacing with the object literal pattern.
 
@@ -826,7 +844,7 @@ require(['foo', 'bar'], function ( foo, bar ) {
 ```
 
 
-<strong>Wrapping modules, views and other components with AMD</strong>
+####<a name="writing-amd-wrapping-components">Wrapping modules, views and other components with AMD</a>
 
 Now that we've taken a look at how to define AMD modules, let's review how to go about wrapping components like views and collections so that they can also be easily loaded as dependencies for any parts of your application that require them. At it's simplest, a Backbone model may just require Backbone and Underscore.js. These are considered it's dependencies and so, to write an AMD model module, we would simply do this:
 
@@ -1086,7 +1104,7 @@ This covers how to wrap your views, models, modules etc. using AMD and also clea
 
 Once you feel comfortable with the Backbone fundamentals (http://msdn.microsoft.com/en-us/scriptjunkie/hh377172.aspx) and you've put together a rough wireframe of the app you may wish to build, start to think about your application architecture. Ideally, you'll want to logically separate concerns so that it's as easy as possible to maintain the app in the future.
 
-<strong>Namespacing</strong>
+####<a name="mobile-app-namespacing">Namespacing</a>
 
 For this application, I opted for the nested namespacing pattern. Implemented correctly, this enables you to clearly identify if items being referenced in your app are views, other modules and so on. This initial structure is a sane place to also include application defaults (unless you prefer maintaining those in a separate file).
 
@@ -1108,7 +1126,7 @@ window.mobileSearch = window.mobileSearch || {
 }
 ```
 
-<strong>Models</strong>
+####<a name="mobile-app-models">Models</a>
 
 In the Flickly application, there are at least two unique types of data that need to be modelled - search results and individual photos, both of which contain additional meta-data like photo titles. If you simplify this down, search results are actually groups of photos in their own right, so the application only requires:
 
@@ -1116,11 +1134,11 @@ In the Flickly application, there are at least two unique types of data that nee
 * A result collection (containing a group of result entries) for search results
 * A photo collection (containing one or more result entries) for individual photos or photos with more than one image
 
-<strong>Views</strong>
+####<a name="mobile-app-views">Views</a>
 
 The views we'll need include an application view, a search results view and a photo view. Static views or pages of the single-page application which do not require a dynamic element to them (e.g an 'about' page) can be easily coded up in your document's markup, independant of Backbone. 
 
-<strong>Routers</strong>
+####<a name="mobile-app-routers>Routers</a>
 
 A number of possible routes need to be taken into consideration:
 
