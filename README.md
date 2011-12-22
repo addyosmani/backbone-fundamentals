@@ -1,6 +1,6 @@
 #Backbone.js Fundamentals: 
 How to write modular JavaScript apps for desktop and mobile
-<p>A work-in-progress by Addy Osmani released for free under a [CC](http://creativecommons.org/licenses/by-nc-sa/3.0/)-license. My extended thanks to [these](https://github.com/addyosmani/backbone-fundamentals/contributors) members of the community for their tweaks and contributions.</p>
+<p>A work-in-progress by <a href="http://twitter.com/addyosmani">Addy Osmani</a> released for free under a <a href="http://creativecommons.org/licenses/by-nc-sa/3.0/">CC</a>-license. My extended thanks to <a href="https://github.com/addyosmani/backbone-fundamentals/contributors">these</a> members of the community for their tweaks and contributions.</p>
 
 ##Index
 
