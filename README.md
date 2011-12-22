@@ -39,7 +39,7 @@ How to write modular JavaScript apps for desktop and mobile
 * [Additional tips](#tips)
     * [Automated Backbone Scaffolding](#tips-automated-scaffolding)
     * [Clarifications on Backbone's MVC](#tips-backbone-mvc)
-    * [Is there a limit to the number of routers](#tips-router-limot)
+    * [Is there a limit to the number of routers](#tips-router-limit)
     * [Is Backbone too small for my application's needs](#tips-is-backbone-too-small)
 
 ####[Advanced](#advanced)
@@ -148,7 +148,7 @@ var myPhoto = new Photo;
 
 ####<a name="models-getters-setters">Getters & Setters</a>
 
-####<a name="models-get">Model.get()</a>
+####<a name="models-model-get">Model.get()</a>
 
 Model.get() provides easy access to a model's attributes. Attributes below which are passed through to the model on instantiation are then instantly available for retrieval.
 
@@ -345,13 +345,13 @@ The _.template method in underscore compiles JavaScript templates into functions
 
 Presto! This populates the template, giving you a data-complete set of markup in just a few short lines of code.
 
-####<a name='views-events-attribute">The 'events' attribute</a>
+####<a name="views-events-attribute">The 'events' attribute</a>
 
 The Backbone events attribute allows us to attach event listeners to either custom selectors or <code>el</code> if no selector is provided. An event takes the form {"eventName selector": "callbackFunction"} and a number of event-types are supported, including 'click', 'submit', 'mouseover', 'dblclick' and more.
 
 What isn't instantly obvious is that under the bonnet, Backbone uses jQuery's .delegate() to provide instant support for event delegation but goes a little further, extending it so that 'this' always refers to the current view object. The only thing to really keep in mind is that any string callback supplied to the events attribute must have a corresponding function with the same name within the scope of your view otherwise you may incur exceptions.
 
-###[Collections](#collections)
+###<a name="collections">Collections</a>
 
 Collections are basically sets of models and can be easily created by extending Backbone.Collection.
 
@@ -365,7 +365,7 @@ PhotoCollection = Backbone.Collection.extend({
 });
 ```
 
-####<a name="collections-getters-setters>Getters & Setters</a>
+####<a name="collections-getters-setters">Getters & Setters</a>
 
 There are a few different options for retrieving a model from a collection. The most straight-forward is using Collection.get() which accepts a single id as follows:
 
@@ -1139,7 +1139,7 @@ In the Flickly application, there are at least two unique types of data that nee
 
 The views we'll need include an application view, a search results view and a photo view. Static views or pages of the single-page application which do not require a dynamic element to them (e.g an 'about' page) can be easily coded up in your document's markup, independant of Backbone. 
 
-####<a name="mobile-app-routers>Routers</a>
+####<a name="mobile-app-routers">Routers</a>
 
 A number of possible routes need to be taken into consideration:
 
