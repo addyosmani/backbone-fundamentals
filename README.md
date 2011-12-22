@@ -4,26 +4,44 @@ How to write modular JavaScript apps for desktop and mobile
 
 ##Index
 
-* [Introduction](#introduction)
+* ####[Introduction](#introduction)
+* [What is Backbone?](#what-is-backbone)
+* [Why should you consider using it?](#why-should-you-use-it)
 
-* ####The Basics
-* Models
-* Views
-* Collections
-* Routers
-* Namespacing
-* Additional tips
+* ####[The Basics](#the-basics)
+* [Models](#models)
+    * [Initialization](#models-initialization)
+    * [Getters & Setters](#models-getters-setters)
+    * [Model.set()](#models-model-set)
+* [Views](#views)
+    * [Creating new views](#views-creating)
+    * [What is <code>el</code>?](#views-what-is-el)
+* [Collections](#collections)
+    * [Underscore utility functions](#collections-underscore)
+* [Routers](#routers)
+    * [Backbone.history](#routers-backbone-history)
+* [Namespacing](#namespacing)
+    * [What is namespacing](#namespacing-what-is-it)
+* [Additional tips](#tips)
+    * [Automated Backbone Scaffolding](#tips-automated-scaffolding)
+    * [Clarifications on Backbone's MVC](#tips-backbone-mvc)
+    * [Is there a limit to the number of routers](#tips-router-limot)
+    * [Is Backbone too small for my application's needs](#tips-is-backbone-too-small)
 
-* ####Advanced
-* Modular JavaScript
-* Organizing modules with RequireJS and AMD
-* Keeping your templates external
-* Optimizing Backbone apps for production with the RequireJS Optimizer
-* Backbone & jQuery Mobile
+* ####[Advanced](#advanced)
+* [Modular JavaScript](#modular-javascript)
+* [Organizing modules with RequireJS and AMD](#organizing-modules)
+    * [Writing AMD Modules with RequireJS](#writing-amd-modules)
+* [Keeping your templates external](#external-templates)
+* [Optimizing Backbone apps for production with the RequireJS Optimizer](#optimizing-backbone-with-requirejs)
+* [Backbone & jQuery Mobile](#backbone-and-jquery-mobile)
+    * [Resolving routing conflicts](#bajm-resolving-routing-conflicts)
 
-* ####Practical 
-* A sample modular app
-* A sample jQuery mobile app
+* ####[Practical](#practical)
+* [A sample modular app](#sample-module-app)
+* [A sample jQuery mobile app](#sample-mobile-app)
+    * [Getting Started](#mobile-app-getting-started)
+    * [jQuery Mobile: Going beyond mobile application development](#jquery-mobile)
 
 
 ##<a name="introduction">Introduction</a>
@@ -34,13 +52,13 @@ If this is your first time looking at Backbone.js and you're still unsure whethe
 
 The goal of this mini-book is to create a free, centralized repository of information that can help those developing real-world apps with Backbone. If you come across a section or topic which you think could be improved or expanded on, please feel free to submit a pull-request. It won't take long and you'll be helping other developers avoid problems you've run into before.
 
-###What is Backbone?
+###<a name="what-is-backbone">What is Backbone?</a>
 
 Backbone.js is one of a number of JavaScript frameworks for creating MVC-like web applications. On the front-end, it's my architectural framework of choice as it's both mature, relatively lightweight and can be easily tested using third-party toolkits such as Jasmine or QUnit. Other MVC options you may be familiar with include Ember.js (SproutCore 2.0), Spine, YUILibrary and JavaScriptMVC.
 
 Backbone is maintained by a number of contributors, most notably: Jeremy Ashkenas, creator of CoffeeScript, Docco and Underscore.js. As Jeremy is a believer in detailed documentation, there's a level of comfort in knowing you're unlikely to run into issues which are either not explained in the official docs or which can't be nailed down with some assistance from the #documentcloud IRC channel. I strongly recommend using the latter if you find yourself getting stuck.
 
-###Why should you consider using it?
+###<a name="why-should-you-use-it">Why should you consider using it?</a>
 
 Backbone's main benefits, regardless of your target platform or device, include helping:
 
@@ -56,7 +74,7 @@ If opting to use jQuery, zepto or another qSA-based selection library to produce
 
 Remember that if you have experience with structuring applications using the MVVM (Model-View ViewModel) pattern, modules or otherwise, these are also equally as valid but do require you to know what you're doing. For most single-page applications, I find that the MVC pattern works well so Backbone is a perfect fit for our needs.
 
-##The Basics
+##<a name="the-basics">The Basics<a>
 
 In this section, you'll learn the essentials about Backbone's models, views, collections and routers. Whilst this isn't meant as a replacement for the official documentation, it will help you understand many of the core concepts behind Backbone before we build mobile applications with it. I will also be covering some tips on effective namespacing.
 
@@ -66,7 +84,7 @@ In this section, you'll learn the essentials about Backbone's models, views, col
 * Views
 * Namespacing
 
-###Models
+###<a name="models">Models</a>
 
 Backbone models contain interactive data for an application as well as the logic around this data. For example, we can use a model to represent the concept of a photo object including its attributes like tags, titles and a location.
 
@@ -94,7 +112,7 @@ var somePhoto = new Photo({ src: "test.jpg", title:"testing"});
 
 ```
 
-####Initialization
+####<a name="models-initialization">Initialization</a>
 
 The initialize() method is called when creating a new instance of a model. It's considered optional, however we'll be reviewing some reasons it might come in useful very shortly.
 
@@ -109,7 +127,7 @@ Photo = new Backbone.Model.extend({
 var myPhoto = new Photo;
 ```
 
-####Getters & Setters
+####<a name="models-getters-setters">Getters & Setters</a>
 
 <strong>Model.get()</strong>
 
@@ -147,7 +165,7 @@ console.log(myAttributes);
              tags:['the big game', 'vacation']}*/
 ```
 
-####Model.set()
+####<a name="models-model-set">Model.set()</a>
 
 Model.set() allows us to pass parameters into an instance of our model. Attributes can either be set during initialization or later on.
 
@@ -258,11 +276,11 @@ myPhoto.set({ title: "On the beach" });
 ```
 
 
-###Views
+###<a name="views">Views</a>
 
 Views in Backbone don't contain the markup for your application, but rather they are there to support models by defining how they should be visually represented to the user. This is usually achieved using JavaScript templating (e.g. Mustache, jQuery tmpl etc). When a model updates, rather than the entire page needing to be refreshed, we can simply bind a view's render() function to a model's change() event, allowing the view to always be up to date.
 
-####Creating new views
+####<a name="views-creating">Creating new views</a>
 
 Similar to the previous sections, creating a new view is relatively straight-forward. We simply extend Backbone.View. Here's an example of a one possible implementation of this, which I'll explain shortly:
 
@@ -289,7 +307,7 @@ var PhotoSearch = Backbone.View.extend({
 });
 ```
 
-####What is '<code>el</code>'?
+####<a name="views-what-is-el">What is '<code>el</code>'?</a>
 
 <code>el</code> is basically a reference to a DOM element and all views must have one, however Backbone allows you to specify this in four different ways. You can either directly use an id, a tagName, className or if you don't state anything <code>el</code> will simply default to a plain div element without any id or class. Here are some quick examples of how these may be used:
 
@@ -314,7 +332,7 @@ The Backbone events attribute allows us to attach event listeners to either cust
 
 What isn't instantly obvious is that under the bonnet, Backbone uses jQuery's .delegate() to provide instant support for event delegation but goes a little further, extending it so that 'this' always refers to the current view object. The only thing to really keep in mind is that any string callback supplied to the events attribute must have a corresponding function with the same name within the scope of your view otherwise you may incur exceptions.
 
-###Collections
+###[Collections](#collections)
 
 Collections are basically sets of models and can be easily created by extending Backbone.Collection.
 
@@ -408,7 +426,7 @@ PhotoCollection.reset([
   {title: "Latest snap of lock-ness", src: "lockness.jpg"}]);
 ```
 
-###Underscore utility functions
+####<a name="collections-underscore">Underscore utility functions</a>
 
 As Backbone requires Underscore as a hard dependency, we're able to use many of the utilities it has to offer to aid with our application development. Here's an example of how Underscore's sortBy() method can be used to sort a collection of photos based on a particular attribute.
 
@@ -419,7 +437,7 @@ var sortedByAlphabet = PhotoCollection.sortBy(function(photo)){
 ```
 The complete list of what it can do is beyond the scope of this guide, but can be found in the official docs.
 
-###Routers
+###<a name="routers">Routers</a>
 
 In Backbone, routers are used to handle routing for your application. This is achieved using hash-tags with URL fragments which you can read more about if you wish. Some examples of valid routes may be seen below:
 
@@ -508,7 +526,7 @@ var myGalleryController = new GalleryController;
 
 Note: In Backbone 0.5+, it's possible to opt-in for HTML5 pushState support via window.history.pushState. This effectively permits non-hashtag routes such as http://www.scriptjunkie.com/just/an/example to be supported with automatic degradation should your browser not support it. For the purposes of this tutorial, we won't be relying on this newer functionality as there have been reports about issues with it under iOS/Mobile Safari. Backbone's hash-based routes should however suffice for our needs.
 
-####Backbone.history
+####<a name="routers-backbone-history">Backbone.history</a>
 
 Next, we need to initialize Backbone.history as it handles <code>hashchange</code> events in our application. This will automatically handle routes that have been defined and trigger callbacks when they've been accessed.
 
@@ -530,11 +548,11 @@ zoomPhoto: function(factor){
 ```
 
 
-###Namespacing
+###<a name="namespacing">Namespacing</a>
 
 When learning how to use Backbone, one important area that that is very commonly overlooked in tutorials is namespacing. If you already have experience with how to namespace in JavaScript, the following section will provide some advice on how to specifically apply concepts you know to Backbone, however I will also be covering explanations for beginners to ensure everyone is on the same page.
 
-####What is namespacing?
+####<a name="namespacing-what-is-it">What is namespacing?</a>
 
 The basic idea around namespacing is to avoid collisions with other objects or variables in the global namespace. They're important as it's best to safeguard your code from breaking in the event of another script on the page using the same variable names as you are. As a good 'citizen' of the global namespace, it's also imperative that you do your best to similarly not prevent other developer's scripts executing due to the same issues.
 
@@ -695,9 +713,9 @@ Reviewing the namespace patterns above, the option that I would personally use w
 
 Single global variables may work fine for applications that are relatively trivial, however, larger codebases requiring both namespaces and deep sub-namespaces require a succinct solution that promotes readability and scales. I feel this pattern achieves all of these objectives well and is a perfect companion for Backbone development.
 
-###Additional Tips
+###<a name="tips">Additional Tips</a>
 
-####Automated Backbone Scaffolding
+####<a name="tips-automated-scaffolding">Automated Backbone Scaffolding</a>
 
 Scaffolding can assist in expediting how quickly you can begin a new application by creating the basic files required for a project automatically. If you enjoy the idea of automated MVC scaffolding using Backbone, I'm happy to recommend checking out a tool called Brunch.
 
@@ -705,7 +723,7 @@ It works very well with Backbone, Underscore, jQuery and CoffeeScript and is eve
 
 Brunch can easily be installed via the nodejs package manager and takes just little to no time to get started with. If you happen to use Vim or Textmate as your editor of choice, you may be happy to know that there are also Brunch bundles available for both.
 
-####Clarifications on Backbone's MVC
+####<a name="tips-backbone-mvc">Clarifications on Backbone's MVC</a>
 
 As Thomas Davis has previously noted, Backbone.js's MVC is a loose interpretation of traditional MVC, something common to many client-side MVC solutions. Backbone's views are what could be considered a wrapper for templating solutions such as the Mustache.js and Backbone.View is the equivalent of a controller in traditional MVC. Backbone.Model is however the same as a classical 'model'.
 
@@ -713,11 +731,11 @@ Whilst Backbone is not the only client-side MVC solution that could use some imp
 
 The official Backbone docs do attempt to clarify that their routers aren't really the C in MVC, but it's important to understand where these fit rather than considering client-side MVC a 1:1 equivalent to the pattern you've probably seen in server-side development.
 
-####Is there a limit to the number of routers I should be using?
+####<a name="tips-router-limit">Is there a limit to the number of routers I should be using?</a>
 
 Andrew de Andrade has pointed out that DocumentCloud themselves usually only use a single controller in most of their applications. You're very likely to not require more than one or two routers in your own projects as the majority of your application routing can be kept organized in a single controller without it getting unwieldy.
 
-####Is Backbone too small for my application's needs?
+####<a name="tips-is-backbone-too-small">Is Backbone too small for my application's needs?</a>
 
 If you find yourself unsure of whether or not your application is too large to use Backbone, I recommend reading my post on building large-scale jQuery & JavaScript applications or reviewing my slides on client-side MVC architecture options. In both, I cover alternative solutions and my thoughts on the suitability of current MVC solutions for scaled application development.
 
@@ -725,9 +743,8 @@ Backbone can be used for building both trivial and complex applications as demon
 
 At the end of the day, the key to building large applications is not to build large applications in the first place. If you however find Backbone doesn't cut it for your requirements I strongly recommend checking out JavaScriptMVC or SproutCore as these both offer a little more than Backbone out of the box. Dojo and Dojo Mobile may also be of interest as these have also been used to build significantly complex apps by other developers.
 
-
-
-##Modular JavaScript
+##<a name="advanced">Advanced</a>
+###<a name="modular-javascript">Modular JavaScript</a>
 
 When we say an application is modular, we generally mean it's composed of a set of highly decoupled, distinct pieces of functionality stored in modules. As you probably know, loose coupling facilitates easier maintainability of apps by removing dependencies where possible. When this is implemented efficiently, its quite easy to see how changes to one part of a system may affect another.
 
@@ -740,7 +757,7 @@ Whilst native solutions to these problems will be arriving in ES Harmony, the go
 In this next part of the book, we're going to look at how to use the AMD module format and RequireJS for cleanly wrapping units of code in your application into managable modules.
 
 
-##Organizing modules with RequireJS and AMD
+###<a name="organizing-modules">Organizing modules with RequireJS and AMD</a>
 
 In case you haven't used it before, RequireJS is a popular script loader written by James Burke - a developer who has been quite instrumental in helping shape the AMD module format, which we'll discuss more shortly. Some of RequireJS's capabilities include helping to load multiple script files, helping define modules with or without dependencies and loading in non-script dependencies such as text files.
 
@@ -756,7 +773,7 @@ Think about the GMail web-client for a moment. When users initially load up the 
 
 I've previously written a detailed article covering both AMD and other module formats and script loaders here (http://addyosmani.com/writing-modular-js) in case you'd like to explore this topic further. The takeaway is that although it's perfectly fine to develop applications without a script loader or clean module format in place, it can be of significant benefit to consider using these tools in your application development.
 
-###Writing AMD modules with RequireJS
+###<a name="writing-amd-modules">Writing AMD modules with RequireJS</a>
 
 As discussed above, the overall goal for the AMD format is to provide a solution for modular JavaScript that developers can use today. The two key concepts you need to be aware of when using it with a script-loader are a <code>define()</code> method for facilitating module definition and a <code>require()</code> method for handling dependency loading. <em>define()</em> is used to define named or unnamed modules based on the proposal using the following signature:</p>
 
@@ -857,7 +874,7 @@ define([
 Aliasing to the dollar-sign ($), once again makes it very easy to encapsulate any part of an application you wish using AMD.
 
 
-##External [Underscore/Handlebars/Mustache] templates using RequireJS
+###<a name="external-templates">External [Underscore/Handlebars/Mustache] templates using RequireJS</a>
 
 Moving your [Underscore/Mustache/Handlebars] templates to external files is actually quite straight-forward. As this application makes use of RequireJS, I'll discuss how to implement external templates using this specific script loader.
 
@@ -937,7 +954,7 @@ All templating solutions will have their own custom methods for handling templat
 
 
 
-##Optimizing Backbone apps for production with the RequireJS Optimizer
+###<a name="optimizing-backbone-with-requirejs">Optimizing Backbone apps for production with the RequireJS Optimizer</a>
 
 
 As experienced developers may know, an essential final step when writing both small and large JavaScript web applications is the build process.  The majority of non-trivial apps are likely to consist of more than one or two scripts and so optimizing, minimizing and concatenating your scripts prior to pushing them to production will require your users to download a reduced number (if not just one) script file. 
@@ -1015,9 +1032,9 @@ node ../../r.js -o app.build.js
 That's it. As long as you have UglifyJS/Closure tools setup correctly, r.js should be able to easily optimize your entire Backbone project in just a few key-strokes. If you would like to learn more about build profiles, James Burke has a heavily commented sample file with all the possible options available here: https://github.com/jrburke/r.js/blob/master/build/example.build.js
 
 
-##Backbone and jQuery Mobile
+###<a name="backbone-and-jquery-mobile">Backbone and jQuery Mobile<a>
 
-###Resolving the routing conflicts
+####<a name="bajm-resolving-routing-conflicts">Resolving the routing conflicts</a>
 
 The first major hurdle developers typically run into when building Backbone applications with jQuery Mobile is that both frameworks have their own opinions about how to handle application navigation. 
 
@@ -1052,8 +1069,8 @@ In the above sample, <code>url</code> can refer to a URL or a hash identifier to
 
 <strong>Note:</strong> For some parallel work being done to explore how well the jQuery Mobile Router plugin works with Backbone, you may be interested in checking out https://github.com/Filirom1/jquery-mobile-backbone-requirejs.
 
-
-###Practical: A Backbone + RequireJS/AMD app
+##<a name="practical">Practical</a>
+###<a name="sample-module-app">Practical: A Backbone + RequireJS/AMD app</a>
 
 //This section needs to be heavily expanded.
 
@@ -1063,9 +1080,9 @@ https://github.com/addyosmani/todomvc/tree/master/todo-example/backbone+require
 
 This covers how to wrap your views, models, modules etc. using AMD and also cleanly demonstrates handling dependency management as well as Flickly does.
 
-###Practical: A Backbone, RequireJS/AMD app with jQuery Mobile
+###<a name="sample-mobile-app">Practical: A Backbone, RequireJS/AMD app with jQuery Mobile</a>
 
-###Getting started
+####<a name="mobile-app-getting-started">Getting started</a>
 
 Once you feel comfortable with the Backbone fundamentals (http://msdn.microsoft.com/en-us/scriptjunkie/hh377172.aspx) and you've put together a rough wireframe of the app you may wish to build, start to think about your application architecture. Ideally, you'll want to logically separate concerns so that it's as easy as possible to maintain the app in the future.
 
@@ -1113,7 +1130,7 @@ A number of possible routes need to be taken into consideration:
 * A default route (no parameters passed)
 
 
-###jQuery Mobile: Going beyond mobile application development
+####<a name="jquery-mobile">jQuery Mobile: Going beyond mobile application development</a>
 
 The majority of jQM apps I've seen in production have been developed for the purpose of providing an optimal experience to users on mobile devices. Given that the framework was developed for this purpose, there's nothing fundamentally wrong with this, but many developers forget that jQM is a UI framework not dissimilar to jQuery UI. It's using the widget factory and is capable of being used for a lot more than we give it credit for.
 
