@@ -1,0 +1,19 @@
+<% _.each( results, function( item, i ){ %>
+
+        <img alt="<%= item.get("title")._content  %>" title="<%= item.get("title")._content  %>" src="<%= 'http://farm' + item.get("farm") + '.static.flickr.com/' + item.get("server") + '/' + item.get("id") + '_' + item.get("secret") + '_m.jpg' %>"/>
+
+    <ul data-role="listview" data-inset="true">
+        <li><span class="key">Title:</span> <%= item.get("title")._content %></li>
+        <li><span class="key">Description:</span> <%= item.get("description")._content %></li>
+        <li><span class="key">Views:</span> <%= item.get("views") %></li>
+        <li><span class="key">Location:</span> <%= item.get("owner").location %></li>
+        <li><span class="key">Taken by:</span> <%= item.get("owner").realname %></li>
+        <li><span class="key">Date taken:</span> <%= item.get("dates").taken %></li>
+        <li><span class="key">Date uploaded:</span> <%= new Date( item.get("dateuploaded") * 1000).toDateString() %></li>
+        <li class="ext"><iframe src="http://www.facebook.com/plugins/like.php?href=<%= item.get("urls").url[0]._content %>&amp;send=false&amp;layout=standard&amp;width=450&amp;show_faces=true&amp;action=like&amp;colorscheme=light&amp;font&amp;height=80&amp;appId=160332214053450" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:450px; height:80px;" allowTransparency="true"></iframe></li>
+         <li class="ext"><a class="external_link" href="<%= item.get("urls").url[0]._content %>">View Original On Flickr.com</a></li>
+
+         
+    </ul>
+
+<% }); %>
