@@ -97,7 +97,7 @@ somePhoto.changeSrc("magic.jpg"); // which triggers "change:src" and logs an upd
 
 ####Initialization
 
-The initialize() method is called when creating a new instance of a model. It's considered optional, however we'll be reviewing some reasons it might come in useful very shortly.
+The initialize() method is called when creating a new instance of a model. It's considered optional, however we'll be reviewing some reasons it might be useful very shortly.
 
 ```javascript
 Photo = new Backbone.Model.extend({
