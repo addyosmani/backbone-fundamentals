@@ -97,7 +97,7 @@ somePhoto.changeSrc("magic.jpg"); // which triggers "change:src" and logs an upd
 
 ####Initialization
 
-The initialize() method is called when creating a new instance of a model. It's considered optional, however we'll be reviewing some reasons it might come in useful very shortly.
+The initialize() method is called when creating a new instance of a model. It's considered optional, however we'll be reviewing some reasons it might be useful very shortly.
 
 ```javascript
 Photo = new Backbone.Model.extend({
@@ -114,7 +114,7 @@ var myPhoto = new Photo;
 
 <strong>Model.get()</strong>
 
-Model.get() provides easy access to a model's attributes. Attributes below which are passed through to the model on instantiation are then instantly available for retrieval.
+Model.get() provides easy access to a model's attributes. Attributes which are passed through to the model on instantiation are instantly available for retrieval.
 
 ```javascript
 var myPhoto = new Photo({ title: "My awesome photo", 
@@ -135,7 +135,7 @@ var myAttributes = myPhoto.attributes;
 console.log(myAttributes);
 ```
 
-Note: It is best practice to use Model.set() or direct instantiation to set the values of a model's attributes. Accessing Model.attributes directly is fine for reading or cloning data, but ideally shouldn't be used to for attribute manipulation.
+Note: It is best practice to use Model.set() or direct instantiation to set the values of a model's attributes. Accessing Model.attributes directly is fine for reading or cloning data, but ideally shouldn't be used for attribute manipulation.
 
 Finally, if you would like to copy a model's attributes for JSON stringification (e.g. for serialization prior to being passed to a view), this can be achieved using Model.toJSON():
 
@@ -150,7 +150,7 @@ console.log(myAttributes);
 
 ####Model.set()
 
-Model.set() allows us to pass parameters into an instance of our model. Attributes can either be set during initialization or later on.
+Model.set() allows us to pass attributes into an instance of our model. Attributes can either be set during initialization or later on.
 
 ```javascript
 Photo = new Backbone.Model.extend({
