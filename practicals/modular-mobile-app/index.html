@@ -1,0 +1,281 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8"/>
+    <title>Flickly</title>
+    
+    <link rel="shortcut" href="img/flickly.jpg">
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.0/jquery.mobile-1.0.min.css"/>
+    <link rel="stylesheet" href="css/jquery.ui.datepicker.css"/>
+    <link rel="stylesheet" href="css/custom_mobile_theme.css"/>
+    <link rel="stylesheet" href="css/style.css"/>
+    <script data-main="app/main" type="text/javascript" src="app/libs/require/require-1.0.2.min.js"></script>
+</head>
+
+<body lang="en">
+
+
+<!--
+/********************************************************
+*  Index/Home 
+*********************************************************/
+-->
+
+<div id="index" data-role="page" data-theme="d">
+
+    <div class="app-header" data-role="header">
+        <h1 class="app-title">Flickly</h1>
+        <a href="#options" data-icon="gear" class="ui-btn-right">Options</a>
+    </div>
+
+
+    <!--menu-->
+    <div class="nav-glyphish-example app-nav" data-position="fixed">
+        <div data-role="navbar" class="nav-glyphish-example" data-grid="d" data-theme="b">
+            <ul>
+                <li><a href="#index" id="search-icon" data-icon="custom">Search</a></li>
+                <li><a href="#options" id="options-icon" data-icon="custom">Options</a></li>
+                <li><a href="#instructions" id="instructions-icon" data-icon="custom">Help</a></li>
+                <li><a href="#source" id="source-icon" data-icon="custom">API Docs</a></li>
+                <li><a href="#about" id="about-icon" data-icon="custom">About</a></li>
+            </ul>
+        </div>
+    </div>
+    <!--end menu-->
+
+
+    <div class="app-logo-cont">
+        <img class="app-logo" src="img/flickly.jpg"/>
+    </div>
+
+
+    <div data-role="content" data-theme="d" id="content-main">
+
+
+        <div id="appview">
+
+            <div id="homeheader">
+            </div>
+
+
+            <form method="post" action="#" id='queryForm' name="queryForm" onsubmit="return false">
+                <input id="searchbox" type="search" name="searchbox" placeholder="Keywords"/>
+            </form>
+
+
+            <!--search type-->
+            <select id="sortBy" data-native-menu="false" data-theme="b">
+                <option value="" selected>Search by:</option>
+                <option value="interestingness-asc">Interesting</option>
+                <option value="relevance">Relevance</option>
+                <option value="date-posted-asc">Date Posted</option>
+            </select>
+            <!--end search type-->
+
+
+            <div class="search-meta">
+            </div>
+
+
+            <!--end search section-->
+
+        </div>
+    </div>
+    <!-- /content -->
+
+    <div class="app-message"><p>
+        <strong>Tip: </strong>For more search options, see the 'Options' tab below for advanced filters.</p>
+    </div>
+
+
+</div>
+
+
+<!--
+/********************************************************
+*  Options
+*********************************************************/
+-->
+
+
+<div id="options" data-role="page" data-theme="b">
+    <div data-role="header" data-theme="a">
+        <h1>Options</h1>
+    </div>
+    <div data-role="content">
+
+        <!--safe search-->
+        <label for="safeSearch" class="select ui-select">Safe search:</label>
+        <select id="safeSearch" data-native-menu="false">
+            <option value="1">Safe</option>
+            <option value="2" selected>Moderate</option>
+            <option value="3">Restricted</option>
+        </select>
+        <!--end safe search-->
+
+        <!--max results shown slider-->
+        <div data-role="fieldcontain">
+            <label for="slider">Results per page:</label>
+            <input type="range" name="slider" id="slider" value="15" min="5" max="25"/>
+        </div>
+        <!--end slider-->
+
+        <!--is geo-->
+        <fieldset data-role="controlgroup" data-type="horizontal" data-role="fieldcontain">
+            <legend>Geo-tagged? :</legend>
+            <input type="radio" name="geo-choice-z1" id="geo-choice-y1" value="1"/>
+            <label for="geo-choice-y1">On</label>
+            <input type="radio" name="radio-choice-z1" id="geo-choice-z1" value="0" checked="checked"/>
+            <label for="geo-choice-z1">Off</label>
+        </fieldset>
+        <!--end geo-->
+
+        <!--date pickers for max min taken-->
+        <div data-role="collapsible" data-collapsed="true">
+            <h3>Select date ranges</h3>
+
+            <form action="#" method="get">
+                <div data-role="fieldcontain">
+                    <label for="date">Min taken date:</label>
+                    <input type="date" name="date" id="date-min" value=""/>
+                </div>
+
+                <div data-role="fieldcontain">
+                    <label for="date">Max taken date:</label>
+                    <input type="date" name="date" id="date-max" value=""/>
+                </div>
+
+            </form>
+        </div>
+        <!--end datepickers-->
+    </div>
+
+
+</div>
+
+
+<!--
+/********************************************************
+*  Instructions
+*********************************************************/
+-->
+
+
+<div id="instructions" data-role="page" data-theme="b">
+    <div data-role="header" data-theme="a">
+        <h1>Help</h1>
+    </div>
+    <div data-role="content">
+        <ul data-role="listview">
+            <li data-role="list-divider">Quick guidelines to get started</li>
+            <li>
+                <h3>Searching</h3>
+
+                <p><strong>Looking up photos on Flickr is simple.</strong></p>
+
+                <p>Enter a term and hit 'enter' or search</p>
+
+            </li>
+            <li>
+                <h3>Options</h3>
+
+                <p><strong>Advanced search options are available.</strong></p>
+
+                <p>Search by type, geo-location and more.</p>
+            </li>
+        </ul>
+    </div>
+</div>
+
+
+<!--
+/********************************************************
+*  Source
+*********************************************************/
+-->
+
+
+<div id="source" data-role="page" data-theme="b">
+    <div data-role="header" data-theme="a">
+        <h1>API Docs</h1>
+    </div>
+    <div data-role="content">
+        <p>For the complete <strong>Flickr API Documentation</strong> with references to the methods and formats supported, see <a href="http://www.flickr.com/services/api/">here</a>.</p>
+        <p>You can also sign-up for your own <a href="http://www.flickr.com/services/api/keys/">API keys</a>.</p>
+    </div>
+</div>
+
+<!--
+/********************************************************
+*  About
+*********************************************************/
+-->
+
+
+<div id="about" data-role="page" data-theme="b">
+    <div data-role="header" data-theme="a">
+        <h1>About</h1>
+    </div>
+    <div data-role="content">
+        <p>Flickly is a demo application written using <a href="http://documentcloud.github.com/backbone/">Backbone.js</a> and <a href="http://jquerymobile.com">jQuery Mobile</a>. <a href="http://requirejs.org/">Require.js</a> and the <a href="https://github.com/amdjs/amdjs-api/wiki/AMD">AMD</a> module format are used for breaking components down into modules whilst <a href="http://documentcloud.github.com/underscore/">Underscore.js</a> is used for templating.</p>
+    </div>
+</div>
+
+<!--
+/********************************************************
+*  PhotoView template
+*********************************************************/
+-->
+
+
+<div id="photo" data-role="page" data-theme="d">
+    <div data-role="header" data-theme="a">
+        <h1>Viewing photo</h1>
+    </div>
+    <div data-role="content">
+        <div id="photoview"></div>
+        <ul id="photoviewholder" data-role="listview" data-inset="true" data-theme="c" data-dividertheme="c">
+        </ul>
+    </div>
+
+</div>
+
+<!--
+/********************************************************
+*  ListView
+*********************************************************/
+-->
+
+<div id="search" data-role="page" data-theme="d">
+
+    <div data-role="header" data-theme="a" data-role="controlgroup">
+        <h1>Search Results</h1>
+        <a href="#" id="prevSet">Previous</a>
+        <a href="#" class="ui-btn-active" id="nextSet">Next</a>
+    </div>
+
+
+    <div data-role="content">
+        <ul id="listviewholder" data-role="listview" data-inset="true" data-theme="c" data-dividertheme="c">
+
+        </ul>
+    </div>
+
+    <div data-role="footer" data-position="fixed">
+        <div data-role="navbar">
+            <ul><a href="/" class="ui-btn-active" data-ajax="false" class="ui-btn-right" data-direction="reverse">New
+                Search</a></ul>
+        </div>
+    </div>
+
+</div>
+
+
+
+<div class="ui-tint">
+</div>
+
+
+</body>
+</html>

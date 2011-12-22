@@ -1,0 +1,55 @@
+/*This theme was part-customized using the mobile theme builder from productscape.com, which predated
+the Adobe/official jQuery Mobile themeroller*/
+
+/* z
+-----------------------------------------------------------------------------------------------------------*/
+.ui-mobile-viewport{
+	background:#234986;
+	background-image: -webkit-linear-gradient(top, #234986, #173159); /* Chrome 10+, Saf5.1+ */
+	background-image:    -moz-linear-gradient(top, #234986, #173159); /* FF3.6 */
+	background-image:     -ms-linear-gradient(top, #234986, #173159); /* IE10 */
+	background-image:      -o-linear-gradient(top, #234986, #173159); /* Opera 11.10+ */
+	background-image:         linear-gradient(top, #234986, #173159);}
+}
+.ui-bar-z {
+	border: 1px solid #0C182C;
+	background: #173159;
+	color: #ffffff;
+	font-weight: bold;text-shadow: 0 -1px 1px #000000;
+	
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#234986), to(#173159)); /* Saf4+, Chrome */
+	background-image: -webkit-linear-gradient(top, #234986, #173159); /* Chrome 10+, Saf5.1+ */
+	background-image:    -moz-linear-gradient(top, #234986, #173159); /* FF3.6 */
+	background-image:     -ms-linear-gradient(top, #234986, #173159); /* IE10 */
+	background-image:      -o-linear-gradient(top, #234986, #173159); /* Opera 11.10+ */
+	background-image:         linear-gradient(top, #234986, #173159);
+	
+	}
+	
+	.ui-bar-z, .ui-bar-z input, .ui-bar-z select, .ui-bar-z textarea,.ui-bar-z button {font-family: Helvetica, Arial, sans-serif;}.ui-bar-z .ui-link-inherit {color: #ffffff;}.ui-bar-z .ui-link {color: #0C182C;font-weight: bold;}.ui-body-z {border: 1px solid #0C182C;background: #173159;color: #ffffff; text-shadow: 0 1px 0 #000;font-weight: normal;
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#A7B6CF), to(#173159)); /* Saf4+, Chrome */
+	background-image: -webkit-linear-gradient(top, #A7B6CF, #173159); /* Chrome 10+, Saf5.1+ */
+	background-image:    -moz-linear-gradient(top, #A7B6CF, #173159); /* FF3.6 */
+	background-image:     -ms-linear-gradient(top, #A7B6CF, #173159); /* IE10 */
+	background-image:      -o-linear-gradient(top, #A7B6CF, #173159); /* Opera 11.10+ */
+	background-image:         linear-gradient(top, #A7B6CF, #173159);}.ui-body-z,.ui-body-z input,.ui-body-z select,.ui-body-z textarea,.ui-body-z button {font-family: Helvetica, Arial, sans-serif;}.ui-body-z .ui-link-inherit {color: #ffffff;}.ui-body-z .ui-link {color: #ffffff;font-weight: bold;}.ui-br {border-bottom: rgb(130,130,130);border-bottom: rgba(130,130,130,.3);border-bottom-width: 1px;border-bottom-style: solid;}.ui-btn-up-z {border: 1px solid #222;background: #234986;font-weight: bold;color: #ffffff;text-shadow: 0 -1px 1px #000;background-image: -webkit-gradient(linear, left top, left bottom, from(#5A77A4), to(#234986)); /* Saf4+, Chrome */
+	background-image: -webkit-linear-gradient(top, #5A77A4, #234986); /* Chrome 10+, Saf5.1+ */
+	background-image:    -moz-linear-gradient(top, #5A77A4, #234986); /* FF3.6 */
+	background-image:     -ms-linear-gradient(top, #5A77A4, #234986); /* IE10 */
+	background-image:      -o-linear-gradient(top, #5A77A4, #234986); /* Opera 11.10+ */
+	background-image:         linear-gradient(top, #5A77A4, #234986);}.ui-btn-up-z a.ui-link-inherit {color: #ffffff;}.ui-btn-hover-z {border: 1px solid #000;background: #5A77A4;font-weight: bold;color: #ffffff;text-shadow: 0 -1px 1px #000;background-image: -webkit-gradient(linear, left top, left bottom, from(#A7B6CF), to(#5A77A4)); /* Saf4+, Chrome */
+	background-image: -webkit-linear-gradient(top, #A7B6CF, #5A77A4); /* Chrome 10+, Saf5.1+ */
+	background-image:    -moz-linear-gradient(top, #A7B6CF, #5A77A4); /* FF3.6 */
+	background-image:     -ms-linear-gradient(top, #A7B6CF, #5A77A4); /* IE10 */
+	background-image:      -o-linear-gradient(top, #A7B6CF, #5A77A4); /* Opera 11.10+ */
+	background-image:         linear-gradient(top, #A7B6CF, #5A77A4);}.ui-btn-hover-a a.ui-link-inherit {color: #ffffff;}.ui-btn-down-z {border: 1px solid #000;background: #5A77A4;font-weight: bold;color: #ffffff;text-shadow: 0 -1px 1px #000;background-image: -webkit-gradient(linear, left top, left bottom, from(#234986), to(#5A77A4)); /* Saf4+, Chrome */
+	background-image: -webkit-linear-gradient(top, #234986, #173159); /* Chrome 10+, Saf5.1+ */
+	background-image:    -moz-linear-gradient(top, #234986, #5A77A4); /* FF3.6 */
+	background-image:     -ms-linear-gradient(top, #234986, #5A77A4); /* IE10 */
+	background-image:      -o-linear-gradient(top, #234986, #5A77A4); /* Opera 11.10+ */
+	background-image:         linear-gradient(top, #234986, #5A77A4);}.ui-btn-down-z a.ui-link-inherit {color: #ffffff;}.ui-btn-up-z,.ui-btn-hover-z,.ui-btn-down-z {font-family: Helvetica, Arial, sans-serif;text-decoration: none;}
+
+
+.ui-page .ui-header{
+	background-image:url('../img/bg_header.png');	
+}
