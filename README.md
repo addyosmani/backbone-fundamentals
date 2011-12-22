@@ -4,11 +4,11 @@ How to write modular JavaScript apps for desktop and mobile
 
 ##Index
 
-* ####[Introduction](#introduction)
+####[Introduction](#introduction)
 * [What is Backbone?](#what-is-backbone)
 * [Why should you consider using it?](#why-should-you-use-it)
 
-* ####[The Basics](#the-basics)
+####[The Basics](#the-basics)
 * [Models](#models)
     * [Initialization](#models-initialization)
     * [Getters & Setters](#models-getters-setters)
@@ -28,7 +28,7 @@ How to write modular JavaScript apps for desktop and mobile
     * [Is there a limit to the number of routers](#tips-router-limot)
     * [Is Backbone too small for my application's needs](#tips-is-backbone-too-small)
 
-* ####[Advanced](#advanced)
+####[Advanced](#advanced)
 * [Modular JavaScript](#modular-javascript)
 * [Organizing modules with RequireJS and AMD](#organizing-modules)
     * [Writing AMD Modules with RequireJS](#writing-amd-modules)
@@ -37,7 +37,7 @@ How to write modular JavaScript apps for desktop and mobile
 * [Backbone & jQuery Mobile](#backbone-and-jquery-mobile)
     * [Resolving routing conflicts](#bajm-resolving-routing-conflicts)
 
-* ####[Practical](#practical)
+####[Practical](#practical)
 * [A sample modular app](#sample-module-app)
 * [A sample jQuery mobile app](#sample-mobile-app)
     * [Getting Started](#mobile-app-getting-started)
