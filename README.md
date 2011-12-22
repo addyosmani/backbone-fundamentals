@@ -82,7 +82,7 @@ Photo = Backbone.Model.extend({
     initialize: function(){
         this.bind("change:src", function(){
             var src = this.get("src"); 
-            console.log('Image source updated to ' + src)
+            console.log('Image source updated to ' + src);
         });
     },
     changeSrc: function( source ){
@@ -91,6 +91,7 @@ Photo = Backbone.Model.extend({
 });
  
 var somePhoto = new Photo({ src: "test.jpg", title:"testing"});
+somePhoto.changeSrc(magic.jpg'); // which triggers "change:src" and logs an update message to the console.
 
 ```
 
