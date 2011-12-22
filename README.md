@@ -114,7 +114,7 @@ var myPhoto = new Photo;
 
 <strong>Model.get()</strong>
 
-Model.get() provides easy access to a model's attributes. Attributes below which are passed through to the model on instantiation are then instantly available for retrieval.
+Model.get() provides easy access to a model's attributes. Attributes which are passed through to the model on instantiation are instantly available for retrieval.
 
 ```javascript
 var myPhoto = new Photo({ title: "My awesome photo", 
