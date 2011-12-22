@@ -76,7 +76,7 @@ Models are quite straight-forward to create and can be constructed by extending 
 Photo = Backbone.Model.extend({
     defaults: {
         src: 'placeholder.jpg',
-        title: 'an image placeholder,
+        title: 'an image placeholder',
         coordinates: [0,0]
     },
     initialize: function(){
