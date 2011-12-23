@@ -136,7 +136,7 @@ console.log(myAttributes);
 
 It is best practice to use Model.set() or direct instantiation to set the values of a model's attributes.
  
-Accessing <code>Model.attributes</code> directly is generally discouraged. Instead, should you need to read or clone data, <code>Model.toJSON()<code> is recommended for this purpose. If you would like to access or copy a model's attributes for purposes such as JSON stringification (e.g. for serialization prior to being passed to a view), this can be achieved using Model.toJSON():
+Accessing <code>Model.attributes</code> directly is generally discouraged. Instead, should you need to read or clone data, <code>Model.toJSON()</code> is recommended for this purpose. If you would like to access or copy a model's attributes for purposes such as JSON stringification (e.g. for serialization prior to being passed to a view), this can be achieved using <code>Model.toJSON()</code>:
 
 ```javascript
 var myAttributes = myPhoto.toJSON();
@@ -319,9 +319,9 @@ Presto! This populates the template, giving you a data-complete set of markup in
 
 <strong>The 'events' attribute</strong>
 
-The Backbone events attribute allows us to attach event listeners to either custom selectors or <code>el</code> if no selector is provided. An event takes the form {"eventName selector": "callbackFunction"} and a number of event-types are supported, including 'click', 'submit', 'mouseover', 'dblclick' and more.
+The Backbone events attribute allows us to attach event listeners to either custom selectors or <code>el</code> if no selector is provided. An event takes the form <code>{"eventName selector": "callbackFunction"}</code> and a number of event-types are supported, including 'click', 'submit', 'mouseover', 'dblclick' and more.
 
-What isn't instantly obvious is that under the bonnet, Backbone uses jQuery's .delegate() to provide instant support for event delegation but goes a little further, extending it so that 'this' always refers to the current view object. The only thing to really keep in mind is that any string callback supplied to the events attribute must have a corresponding function with the same name within the scope of your view otherwise you may incur exceptions.
+What isn't instantly obvious is that under the bonnet, Backbone uses jQuery's <code>.delegate()</code> to provide instant support for event delegation but goes a little further, extending it so that 'this' always refers to the current view object. The only thing to really keep in mind is that any string callback supplied to the events attribute must have a corresponding function with the same name within the scope of your view otherwise you may incur exceptions.
 
 ###Collections
 
