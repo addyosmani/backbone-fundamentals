@@ -96,7 +96,7 @@ somePhoto.changeSrc("magic.jpg"); // which triggers "change:src" and logs an upd
 
 ####Initialization
 
-The initialize() method is called when creating a new instance of a model. It's considered optional, however we'll be reviewing some reasons it might be useful very shortly.
+The initialize() method is called when creating a new instance of a model. It's use is optional, however we'll be reviewing some reasons you may want to use it shortly.
 
 ```javascript
 Photo = new Backbone.Model.extend({
@@ -121,7 +121,7 @@ var myPhoto = new Photo({ title: "My awesome photo",
                           location: "Boston", 
                           tags:['the big game', 'vacation']}),
                           
-    title   = myPhoto.get("title"), //my awesome photo
+    title = myPhoto.get("title"), //my awesome photo
     location = myPhoto.get("location"), //Boston
     tags = myPhoto.get("tags"), // ['the big game','vacation']
     photoSrc = myPhoto.get("src"); //boston.jpg
@@ -134,9 +134,9 @@ var myAttributes = myPhoto.attributes;
 console.log(myAttributes);
 ```
 
-Note: It is best practice to use Model.set() or direct instantiation to set the values of a model's attributes. Accessing Model.attributes directly is fine for reading or cloning data, but ideally shouldn't be used for attribute manipulation.
-
-Finally, if you would like to copy a model's attributes for JSON stringification (e.g. for serialization prior to being passed to a view), this can be achieved using Model.toJSON():
+It is best practice to use Model.set() or direct instantiation to set the values of a model's attributes.
+ 
+Accessing <code>Model.attributes</code> directly is generally discouraged. Instead, should you need to read or clone data, <code>Model.toJSON()<code> is recommended for this purpose. If you would like to access or copy a model's attributes for purposes such as JSON stringification (e.g. for serialization prior to being passed to a view), this can be achieved using Model.toJSON():
 
 ```javascript
 var myAttributes = myPhoto.toJSON();
@@ -169,7 +169,7 @@ myPhoto2.set({ title:'Vacation in Florida', location: 'Florida' });
 
 <strong>Default values</strong>
 
-There are times when you want your model to have a set of default values (e.g. in scenario where a complete set of data isn't provided by the user). This can be set using a property called 'defaults' in your model.
+There are times when you want your model to have a set of default values (e.g. in a scenario where a complete set of data isn't provided by the user). This can be set using a property called 'defaults' in your model.
 
 ```javascript
 Photo = new Backbone.Model.extend({
@@ -294,17 +294,26 @@ var PhotoSearch = Backbone.View.extend({
 <code>el</code> is basically a reference to a DOM element and all views must have one, however Backbone allows you to specify this in four different ways. You can either directly use an id, a tagName, className or if you don't state anything <code>el</code> will simply default to a plain div element without any id or class. Here are some quick examples of how these may be used:
 
 ```javascript
-el: $('#results')  //select based on ID or jQuery selector.
+el: $('#results')  //select based on an ID or other valid jQuery selector.
 tagName: 'li' //select based on a specific tag. Here el itself will be derived from the tagName
 className: 'items' //similar to the above, this will also result in el being derived from it
 el: '' //defaults to a div without an id, name or class.
 ```
 
+<strong>Note:</strong> A combination of these methods can also be used to define <code>el</code>. For example:
+
+```javascript
+tagName: "li",
+className: "container"
+```
+will use specific tags with a particular <code>className</code>.
+
+
 <strong>Understanding render()</strong>
 
-render() is a function that should always be overridden to define how you would like a template to be rendered. Backbone allows you to use any JavaScript templating solution of your choice for this but for the purposes of this example, we'll opt for underscore's micro-templating.
+render() is an optional function to define how you would like a template to be rendered. Backbone allows you to use any JavaScript templating solution of your choice for this but for the purposes of this book, we'll opt for Underscore's micro-templating.
 
-The _.template method in underscore compiles JavaScript templates into functions which can be evaluated for rendering. Here, I'm passing the markup from a template with id 'results-template' to be compiled. Next, I set the html for <code>el</code> (our DOM element for this view) the output of processing a JSON version of the model associated with the view through the compiled template.
+The _.template method in underscore compiles JavaScript templates into functions which can be evaluated for rendering. In the above view, I'm passing the markup from a template with id 'results-template' to be compiled. Next, I set the html for <code>el</code> (our DOM element for this view) the output of processing a JSON version of the model associated with the view through the compiled template.
 
 Presto! This populates the template, giving you a data-complete set of markup in just a few short lines of code.
 
@@ -348,7 +357,7 @@ Backbone Collections don't have setters as such, but do support adding new model
 var a = new Backbone.Model({ title: 'my vacation'}),
     b = new Backbone.Model({ title: 'my holiday'});
 
-var photoCollection = new Backbone.Collection([a,b]);
+var photoCollection = new PhotoCollec([a,b]);
 photoCollection.remove([a,b]);
 ```
 
