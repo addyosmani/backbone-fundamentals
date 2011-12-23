@@ -1,6 +1,7 @@
 #Backbone.js Fundamentals: 
 How to write modular JavaScript apps for desktop and mobile
-<p>A work-in-progress by <a href="http://twitter.com/addyosmani">Addy Osmani</a> released for free under a <a href="http://creativecommons.org/licenses/by-nc-sa/3.0/">CC</a>-license. My extended thanks to <a href="https://github.com/addyosmani/backbone-fundamentals/contributors">these</a> members of the community for their tweaks and contributions.</p>
+
+A work-in-progress by [Addy Osmani](http://twitter.com/addyosmani) released for free under a [CC](http://creativecommons.org/licenses/by-nc-sa/3.0/)-license. My extended thanks to [these](https://github.com/addyosmani/backbone-fundamentals/contributors) members of the community for their tweaks and contributions.
 
 ##Index
 
@@ -69,7 +70,7 @@ In this section, you'll learn the essentials about Backbone's models, views, col
 
 Backbone models contain interactive data for an application as well as the logic around this data. For example, we can use a model to represent the concept of a photo object including its attributes like tags, titles and a location.
 
-Models are quite straight-forward to create and can be constructed by extending Backbone.Model as follows:
+Models are quite straight-forward to create and can be constructed by extending `Backbone.Model` as follows:
 
 ```javascript
 Photo = Backbone.Model.extend({
@@ -96,7 +97,7 @@ somePhoto.changeSrc("magic.jpg"); // which triggers "change:src" and logs an upd
 
 ####Initialization
 
-The initialize() method is called when creating a new instance of a model. It's use is optional, however we'll be reviewing some reasons you may want to use it shortly.
+The `initialize()` method is called when creating a new instance of a model. It's use is optional, however we'll be reviewing some reasons you may want to use it shortly.
 
 ```javascript
 Photo = new Backbone.Model.extend({
@@ -111,9 +112,9 @@ var myPhoto = new Photo;
 
 ####Getters & Setters
 
-<strong>Model.get()</strong>
+**Model.get()**
 
-Model.get() provides easy access to a model's attributes. Attributes which are passed through to the model on instantiation are instantly available for retrieval.
+`Model.get()` provides easy access to a model's attributes. Attributes which are passed through to the model on instantiation are instantly available for retrieval.
 
 ```javascript
 var myPhoto = new Photo({ title: "My awesome photo", 
@@ -134,9 +135,9 @@ var myAttributes = myPhoto.attributes;
 console.log(myAttributes);
 ```
 
-It is best practice to use Model.set() or direct instantiation to set the values of a model's attributes.
- 
-Accessing <code>Model.attributes</code> directly is generally discouraged. Instead, should you need to read or clone data, <code>Model.toJSON()</code> is recommended for this purpose. If you would like to access or copy a model's attributes for purposes such as JSON stringification (e.g. for serialization prior to being passed to a view), this can be achieved using <code>Model.toJSON()</code>:
+It is best practice to use `Model.set()` or direct instantiation to set the values of a model's attributes.
+
+Accessing `Model.attributes` directly is generally discouraged. Instead, should you need to read or clone data, `Model.toJSON()` is recommended for this purpose. If you would like to access or copy a model's attributes for purposes such as JSON stringification (e.g. for serialization prior to being passed to a view), this can be achieved using `Model.toJSON()`:
 
 ```javascript
 var myAttributes = myPhoto.toJSON();
@@ -149,7 +150,7 @@ console.log(myAttributes);
 
 ####Model.set()
 
-Model.set() allows us to pass attributes into an instance of our model. Attributes can either be set during initialization or later on.
+`Model.set()` allows us to pass attributes into an instance of our model. Attributes can either be set during initialization or later on.
 
 ```javascript
 Photo = new Backbone.Model.extend({
@@ -167,9 +168,9 @@ var myPhoto2 = new Photo();
 myPhoto2.set({ title:'Vacation in Florida', location: 'Florida' });
 ```
 
-<strong>Default values</strong>
+**Default values**
 
-There are times when you want your model to have a set of default values (e.g. in a scenario where a complete set of data isn't provided by the user). This can be set using a property called 'defaults' in your model.
+There are times when you want your model to have a set of default values (e.g. in a scenario where a complete set of data isn't provided by the user). This can be set using a property called `defaults` in your model.
 
 ```javascript
 Photo = new Backbone.Model.extend({
@@ -191,9 +192,9 @@ var myPhoto = new Photo({ location: "Boston",
     photoSrc = myPhoto.get("src"); //placeholder.jpg
 ```
 
-<strong>Listening for changes to your model</strong>
+**Listening for changes to your model**
 
-Any and all of the attributes in a Backbone model can have listeners bound to them which detect when their values change. This can be easily added to the initialize() function as follows:
+Any and all of the attributes in a Backbone model can have listeners bound to them which detect when their values change. This can be easily added to the `initialize()` function as follows:
 
 ```javascript
 this.bind('change', function(){
@@ -229,11 +230,11 @@ myPhoto.setTitle('Fishing at sea');
 //logs my title has been changed to.. Fishing at sea
 ```
 
-<strong>Validation</strong>
+**Validation**
 
-Backbone supports model validation through Model.validate(), which allows checking the attribute values for a model prior to them being set.
+Backbone supports model validation through `Model.validate()`, which allows checking the attribute values for a model prior to them being set.
 
-It supports including as complex or terse validation rules against attributes and is quite straight-forward to use. If the attributes provided are valid, nothing should be returned from .validate(), however if they are invalid a custom error can be returned instead.
+It supports including as complex or terse validation rules against attributes and is quite straight-forward to use. If the attributes provided are valid, nothing should be returned from `.validate()`, however if they are invalid a custom error can be returned instead.
 
 A basic example for validation can be seen below:
 
@@ -260,11 +261,11 @@ myPhoto.set({ title: "On the beach" });
 
 ###Views
 
-Views in Backbone don't contain the markup for your application, but rather they are there to support models by defining how they should be visually represented to the user. This is usually achieved using JavaScript templating (e.g. Mustache, jQuery tmpl etc). When a model updates, rather than the entire page needing to be refreshed, we can simply bind a view's render() function to a model's change() event, allowing the view to always be up to date.
+Views in Backbone don't contain the markup for your application, but rather they are there to support models by defining how they should be visually represented to the user. This is usually achieved using JavaScript templating (e.g. Mustache, jQuery tmpl etc). When a model updates, rather than the entire page needing to be refreshed, we can simply bind a view's `render()` function to a model's `change()` event, allowing the view to always be up to date.
 
 ####Creating new views
 
-Similar to the previous sections, creating a new view is relatively straight-forward. We simply extend Backbone.View. Here's an example of a possible implementation of this, which I'll explain shortly:
+Similar to the previous sections, creating a new view is relatively straight-forward. We simply extend `Backbone.View`. Here's an example of a possible implementation of this, which I'll explain shortly:
 
 ```javascript
 var PhotoSearch = Backbone.View.extend({
@@ -289,9 +290,9 @@ var PhotoSearch = Backbone.View.extend({
 });
 ```
 
-####What is '<code>el</code>'?
+####What is '`el`'?
 
-<code>el</code> is basically a reference to a DOM element and all views must have one, however Backbone allows you to specify this in four different ways. You can either directly use an id, a tagName, className or if you don't state anything <code>el</code> will simply default to a plain div element without any id or class. Here are some quick examples of how these may be used:
+`el` is basically a reference to a DOM element and all views must have one, however Backbone allows you to specify this in four different ways. You can either directly use an `id`, a `tagName`, `className` or if you don't state anything `el` will simply default to a plain div element without any id or class. Here are some quick examples of how these may be used:
 
 ```javascript
 el: $('#results')  //select based on an ID or other valid jQuery selector.
@@ -300,32 +301,32 @@ className: 'items' //similar to the above, this will also result in el being der
 el: '' //defaults to a div without an id, name or class.
 ```
 
-<strong>Note:</strong> A combination of these methods can also be used to define <code>el</code>. For example:
+**Note:** A combination of these methods can also be used to define `el`. For example:
 
 ```javascript
 tagName: "li",
 className: "container"
 ```
-will use specific tags with a particular <code>className</code>.
+will use specific tags with a particular `className`.
 
 
-<strong>Understanding render()</strong>
+**Understanding render()**
 
-render() is an optional function to define how you would like a template to be rendered. Backbone allows you to use any JavaScript templating solution of your choice for this but for the purposes of this book, we'll opt for Underscore's micro-templating.
+`render()` is an optional function to define how you would like a template to be rendered. Backbone allows you to use any JavaScript templating solution of your choice for this but for the purposes of this book, we'll opt for Underscore's micro-templating.
 
-The _.template method in underscore compiles JavaScript templates into functions which can be evaluated for rendering. In the above view, I'm passing the markup from a template with id 'results-template' to be compiled. Next, I set the html for <code>el</code> (our DOM element for this view) the output of processing a JSON version of the model associated with the view through the compiled template.
+The `_.template` method in underscore compiles JavaScript templates into functions which can be evaluated for rendering. In the above view, I'm passing the markup from a template with id `results-template` to be compiled. Next, I set the html for `el` (our DOM element for this view) the output of processing a JSON version of the model associated with the view through the compiled template.
 
 Presto! This populates the template, giving you a data-complete set of markup in just a few short lines of code.
 
-<strong>The 'events' attribute</strong>
+**The 'events' attribute**
 
-The Backbone events attribute allows us to attach event listeners to either custom selectors or <code>el</code> if no selector is provided. An event takes the form <code>{"eventName selector": "callbackFunction"}</code> and a number of event-types are supported, including 'click', 'submit', 'mouseover', 'dblclick' and more.
+The Backbone events attribute allows us to attach event listeners to either custom selectors or `el` if no selector is provided. An event takes the form `{"eventName selector": "callbackFunction"}` and a number of event-types are supported, including 'click', 'submit', 'mouseover', 'dblclick' and more.
 
-What isn't instantly obvious is that under the bonnet, Backbone uses jQuery's <code>.delegate()</code> to provide instant support for event delegation but goes a little further, extending it so that 'this' always refers to the current view object. The only thing to really keep in mind is that any string callback supplied to the events attribute must have a corresponding function with the same name within the scope of your view otherwise you may incur exceptions.
+What isn't instantly obvious is that under the bonnet, Backbone uses jQuery's `.delegate()` to provide instant support for event delegation but goes a little further, extending it so that `this` always refers to the current view object. The only thing to really keep in mind is that any string callback supplied to the events attribute must have a corresponding function with the same name within the scope of your view otherwise you may incur exceptions.
 
 ###Collections
 
-Collections are basically sets of models and can be easily created by extending Backbone.Collection.
+Collections are basically sets of models and can be easily created by extending `Backbone.Collection`.
 
 Normally, when creating a collection you'll also want to pass through a property specifying the model that your collection will contain as well as any instance properties required.
 
@@ -337,21 +338,21 @@ PhotoCollection = Backbone.Collection.extend({
 });
 ```
 
-<strong>Getters and Setters</strong>
+**Getters and Setters**
 
-There are a few different options for retrieving a model from a collection. The most straight-forward is using Collection.get() which accepts a single id as follows:
+There are a few different options for retrieving a model from a collection. The most straight-forward is using `Collection.get()` which accepts a single id as follows:
 
 ```javascript
 var skiingEpicness = PhotoCollection.get(2);
 ```
 
-Sometimes you may also want to get a model based on something called the client id. This is an id that is internally assigned automatically when creating models that have not yet been saved, should you need to reference them. You can find out what a model's client id is by accessing its .cid property.
+Sometimes you may also want to get a model based on something called the client id. This is an id that is internally assigned automatically when creating models that have not yet been saved, should you need to reference them. You can find out what a model's client id is by accessing its `.cid` property.
 
 ```javascript
 var mySkiingCrash = PhotoCollection.getByCid(456);
 ```
 
-Backbone Collections don't have setters as such, but do support adding new models via .add() and removing models via .remove().
+Backbone Collections don't have setters as such, but do support adding new models via `.add()` and removing models via `.remove()`.
 
 ```javascript
 var a = new Backbone.Model({ title: 'my vacation'}),
@@ -361,9 +362,9 @@ var photoCollection = new PhotoCollec([a,b]);
 photoCollection.remove([a,b]);
 ```
 
-<strong>Listening for events</strong>
+**Listening for events**
 
-As collections represent a group of items, we're also able to listen for add and remove events for when new models are added or removed from the collection. Here's an example:
+As collections represent a group of items, we're also able to listen for `add` and `remove` events for when new models are added or removed from the collection. Here's an example:
 
 ```javascript
 PhotoCollection = new Backbone.Collection;
@@ -378,7 +379,7 @@ PhotoCollection.add([
 ]);
 ```
 
-In addition, we're able to bind a 'change' event to listen for changes to models in the collection.
+In addition, we're able to bind a `change` event to listen for changes to models in the collection.
 
 ```javascript
 PhotoCollection.bind("change:title", function(){
@@ -386,9 +387,9 @@ PhotoCollection.bind("change:title", function(){
 });
 ```
 
-<strong>Fetching models from the server</strong>
+**Fetching models from the server**
 
-Collections.fetch() provides you with a simple way to fetch a default set of models from the server in the form of a JSON array. When this data returns, the current collection will refresh.
+`Collections.fetch()` provides you with a simple way to fetch a default set of models from the server in the form of a JSON array. When this data returns, the current collection will refresh.
 
 ```javascript
 var PhotoCollection = new Backbone.Collection;
@@ -396,9 +397,9 @@ PhotoCollection.url = '/photos';
 PhotoCollection.fetch();
 ```
 
-Under the covers, Backbone.sync is the function called every time Backbone tries to read (or save) models to the server. It uses jQuery or Zepto's ajax implementations to make these RESTful requests, however this can be overridden as per your needs.
+Under the covers, `Backbone.sync` is the function called every time Backbone tries to read (or save) models to the server. It uses jQuery or Zepto's ajax implementations to make these RESTful requests, however this can be overridden as per your needs.
 
-In the above fetch example if we wish to log an event when .sync() gets called, we can simply achieve this as follows:
+In the above fetch example if we wish to log an event when `.sync()` gets called, we can simply achieve this as follows:
 
 ```javascript
 Backbone.sync = function(method, model) {
@@ -406,9 +407,9 @@ Backbone.sync = function(method, model) {
 };
 ```
 
-<strong>Resetting/Refreshing Collections</strong>
+**Resetting/Refreshing Collections**
 
-Rather than adding or removing models individually, you occasionally wish to update an entire collection at once. Collection.reset() allows us to replace an entire collection with new models as follows:
+Rather than adding or removing models individually, you occasionally wish to update an entire collection at once. `Collection.reset()` allows us to replace an entire collection with new models as follows:
 
 ```javascript
 PhotoCollection.reset([
@@ -419,7 +420,7 @@ PhotoCollection.reset([
 
 ###Underscore utility functions
 
-As Backbone requires Underscore as a hard dependency, we're able to use many of the utilities it has to offer to aid with our application development. Here's an example of how Underscore's sortBy() method can be used to sort a collection of photos based on a particular attribute.
+As Backbone requires Underscore as a hard dependency, we're able to use many of the utilities it has to offer to aid with our application development. Here's an example of how Underscore's `sortBy()` method can be used to sort a collection of photos based on a particular attribute.
 
 ```javascript
 var sortedByAlphabet = PhotoCollection.sortBy(function(photo)){
@@ -443,7 +444,7 @@ Note: A router will usually have at least one URL route defined as well as a fun
 "/route" : "mappedFunction"
 ```
 
-Let us now define our first controller by extending Backbone.Router. For the purposes of this guide, we're going to continue pretending we're creating a photo gallery application that requires a GalleryController.
+Let us now define our first controller by extending `Backbone.Router`. For the purposes of this guide, we're going to continue pretending we're creating a photo gallery application that requires a GalleryController.
 
 Note the inline comments in the code example below as they continue the rest of the lesson on routers.
 
@@ -515,20 +516,20 @@ GalleryController = Backbone.Router.extend({
 var myGalleryController = new GalleryController;
 ```
 
-Note: In Backbone 0.5+, it's possible to opt-in for HTML5 pushState support via window.history.pushState. This effectively permits non-hashtag routes such as http://www.scriptjunkie.com/just/an/example to be supported with automatic degradation should your browser not support it. For the purposes of this tutorial, we won't be relying on this newer functionality as there have been reports about issues with it under iOS/Mobile Safari. Backbone's hash-based routes should however suffice for our needs.
+Note: In Backbone 0.5+, it's possible to opt-in for HTML5 pushState support via `window.history.pushState`. This effectively permits non-hashtag routes such as http://www.scriptjunkie.com/just/an/example to be supported with automatic degradation should your browser not support it. For the purposes of this tutorial, we won't be relying on this newer functionality as there have been reports about issues with it under iOS/Mobile Safari. Backbone's hash-based routes should however suffice for our needs.
 
 ####Backbone.history
 
-Next, we need to initialize Backbone.history as it handles <code>hashchange</code> events in our application. This will automatically handle routes that have been defined and trigger callbacks when they've been accessed.
+Next, we need to initialize `Backbone.history` as it handles `hashchange` events in our application. This will automatically handle routes that have been defined and trigger callbacks when they've been accessed.
 
-The Backbone.history.start() method will simply tell Backbone that it's OK to begin monitoring all <code>hashchange</code> events as follows:
+The `Backbone.history.start()` method will simply tell Backbone that it's OK to begin monitoring all `hashchange` events as follows:
 
 ```javascript
 Backbone.history.start();
 Controller.saveLocation();
 ```
 
-As an aside, if you would like to save application state to the URL at a particular point you can use the .saveLocation() method to achieve this. It simply updates your URL fragment without the need to trigger the <code>hashchange</code> event.
+As an aside, if you would like to save application state to the URL at a particular point you can use the `.saveLocation()` method to achieve this. It simply updates your URL fragment without the need to trigger the `hashchange` event.
 
 ```javascript
 /*Lets imagine we would like a specific fragment for when a user zooms into a photo*/
@@ -556,7 +557,7 @@ In this section we'll be taking a look shortly at some examples of how you can n
 * Nested namespacing
 * Single global variables
 
-<strong>Single global variables</strong>
+**Single global variables**
 
 One popular pattern for namespacing in JavaScript is opting for a single global variable as your primary object of reference. A skeleton implementation of this where we return an object with functions and properties can be found below:
 
@@ -586,7 +587,7 @@ var myViews = (function(){
 
 Here we can return a set of views or even an entire collection of models, views and routers depending on how you decide to structure your application. Although this works for certain situations, the biggest challenge with the single global variable pattern is ensuring that no one else has used the same global variable name as you have in the page.
 
-One solution to this problem, as mentioned by Peter Michaux, is to use prefix namespacing. It's a simple concept at heart, but the idea is you select a basic prefix namespace you wish to use (in this example, myApplication_) and then define any methods, variables or other objects after the prefix.
+One solution to this problem, as mentioned by Peter Michaux, is to use prefix namespacing. It's a simple concept at heart, but the idea is you select a basic prefix namespace you wish to use (in this example, `myApplication_`) and then define any methods, variables or other objects after the prefix.
 
 ```javascript
 var myApplication_photoView = Backbone.View.extend({}),
@@ -595,11 +596,11 @@ myApplication_galleryView = Backbone.View.extend({});
 
 This is effective from the perspective of trying to lower the chances of a particular variable existing in the global scope, but remember that a uniquely named object can have the same effect. This aside, the biggest issue with the pattern is that it can result in a large number of global objects once your application starts to grow.
 
-For more on Peter's views about the single global variable pattern, read his excellent post on them here: http://michaux.ca/articles/javascript-namespacing
+For more on Peter's views about the single global variable pattern, read his [excellent post on them](http://michaux.ca/articles/javascript-namespacing).
 
 Note: There are several other variations on the single global variable pattern out in the wild, however having reviewed quite a few, I felt these applied best to Backbone.
 
-<strong>Object Literals</strong>
+**Object Literals**
 
 Object Literals have the advantage of not polluting the global namespace but assist in organizing code and parameters logically. They're beneficial if you wish to create easily-readable structures that can be expanded to support deep nesting. Unlike simple global variables, Object Literals often also take into account tests for the existence of a variable by the same name so the chances of collision occurring are significantly reduced.
 
@@ -658,9 +659,9 @@ var myConfig = {
 
 Note that there are really only minor syntactical differences between the Object Literal pattern and a standard JSON data set. If for any reason you wish to use JSON for storing your configurations instead (e.g. for simpler storage when sending to the back-end), feel free to.
 
-For more on the Object Literal pattern, I recommend reading Rebecca Murphey's excellent article on the topic: (http://blog.rebeccamurphey.com/2009/10/15/using-objects-to-organize-your-code).
+For more on the Object Literal pattern, I recommend reading Rebecca Murphey's [excellent article on the topic](http://blog.rebeccamurphey.com/2009/10/15/using-objects-to-organize-your-code).
 
-<strong>Nested namespacing</strong>
+**Nested namespacing**
 
 An extension of the Object Literal pattern is nested namespacing. It's another common pattern used that offers a lower risk of collision due to the fact that even if a namespace already exists, it's unlikely the same nested children do.
 
@@ -698,7 +699,7 @@ The only real caveat however is that it requires your browser's JavaScript engin
 
 This can mean an increased amount of work to perform lookups, however developers such as Juriy Zaytsev (kangax) have previously tested and found the performance differences between single object namespacing vs the 'nested' approach to be quite negligible.
 
-<strong>Recommendation</strong>
+**Recommendation**
 
 Reviewing the namespace patterns above, the option that I would personally use with Backbone is nested object namespacing with the object literal pattern.
 
@@ -716,9 +717,9 @@ Brunch can easily be installed via the nodejs package manager and takes just lit
 
 ####Clarifications on Backbone's MVC
 
-As Thomas Davis has previously noted, Backbone.js's MVC is a loose interpretation of traditional MVC, something common to many client-side MVC solutions. Backbone's views are what could be considered a wrapper for templating solutions such as the Mustache.js and Backbone.View is the equivalent of a controller in traditional MVC. Backbone.Model is however the same as a classical 'model'.
+As Thomas Davis has previously noted, Backbone.js's MVC is a loose interpretation of traditional MVC, something common to many client-side MVC solutions. Backbone's views are what could be considered a wrapper for templating solutions such as the Mustache.js and `Backbone.View` is the equivalent of a controller in traditional MVC. `Backbone.Model` is however the same as a classical 'model'.
 
-Whilst Backbone is not the only client-side MVC solution that could use some improvements in it's naming conventions, Backbone.Controller was probably the most central source of some confusion but has been renamed a router in more recent versions. This won't prevent you from using Backbone effectively, however this is being pointed out just to help avoid any confusion if for any reason you opt to use an older version of the framework.
+Whilst Backbone is not the only client-side MVC solution that could use some improvements in it's naming conventions, `Backbone.Controller` was probably the most central source of some confusion but has been renamed a router in more recent versions. This won't prevent you from using Backbone effectively, however this is being pointed out just to help avoid any confusion if for any reason you opt to use an older version of the framework.
 
 The official Backbone docs do attempt to clarify that their routers aren't really the C in MVC, but it's important to understand where these fit rather than considering client-side MVC a 1:1 equivalent to the pattern you've probably seen in server-side development.
 
@@ -763,11 +764,11 @@ RequireJS is compatible with the AMD (Asynchronous Module Definition) format, a 
 
 Think about the GMail web-client for a moment. When users initially load up the page on their first visit, Google can simply hide widgets such as the chat module until a user has indicated (by clicking 'expand') that they wish to use it. Through dynamic dependency loading, Google could load up the chat module only then, rather than forcing all users to load it when the page first initializes. This can improve performance and load times and can definitely prove useful when building larger applications.
 
-I've previously written a detailed article covering both AMD and other module formats and script loaders here (http://addyosmani.com/writing-modular-js) in case you'd like to explore this topic further. The takeaway is that although it's perfectly fine to develop applications without a script loader or clean module format in place, it can be of significant benefit to consider using these tools in your application development.
+I've previously written [a detailed article](http://addyosmani.com/writing-modular-js) covering both AMD and other module formats and script loaders in case you'd like to explore this topic further. The takeaway is that although it's perfectly fine to develop applications without a script loader or clean module format in place, it can be of significant benefit to consider using these tools in your application development.
 
 ###Writing AMD modules with RequireJS
 
-As discussed above, the overall goal for the AMD format is to provide a solution for modular JavaScript that developers can use today. The two key concepts you need to be aware of when using it with a script-loader are a <code>define()</code> method for facilitating module definition and a <code>require()</code> method for handling dependency loading. <em>define()</em> is used to define named or unnamed modules based on the proposal using the following signature:</p>
+As discussed above, the overall goal for the AMD format is to provide a solution for modular JavaScript that developers can use today. The two key concepts you need to be aware of when using it with a script-loader are a `define()` method for facilitating module definition and a `require()` method for handling dependency loading. `define()` is used to define named or unnamed modules based on the proposal using the following signature:
 
 ```javascript
 define(
@@ -777,9 +778,9 @@ define(
 );
 ```
 
-As you can tell by the inline comments, the <code>module_id</code> is an optional argument which is typically only required when non-AMD concatenation tools are being used (there may be some other edge cases where it's useful too). When this argument is left out, we call the module 'anonymous'. When working with anonymous modules, the idea of a module's identity is DRY, making it trivial to avoid duplication of filenames and code. 
+As you can tell by the inline comments, the `module_id` is an optional argument which is typically only required when non-AMD concatenation tools are being used (there may be some other edge cases where it's useful too). When this argument is left out, we call the module 'anonymous'. When working with anonymous modules, the idea of a module's identity is DRY, making it trivial to avoid duplication of filenames and code.
 
-Back to the define signature, the dependencies argument represents an array of dependencies which are required by the module you are defining and the third argument ('definition function') is a function that's executed to instantiate your module. A barebone module (compatible with RequireJS) could be defined using <code>define()</code> as follows: </p>
+Back to the define signature, the dependencies argument represents an array of dependencies which are required by the module you are defining and the third argument ('definition function') is a function that's executed to instantiate your module. A barebone module (compatible with RequireJS) could be defined using `define()` as follows:
 
 ```javascript
 // A module ID has been omitted here to make the module anonymous
@@ -828,8 +829,7 @@ define(function(require){
 });
 ```
 
-
-The `require()` method is typically used to load code in a top-level JavaScript file or within a module should you wish to dynamically fetch dependencies. An example of its usage is:</p>
+The `require()` method is typically used to load code in a top-level JavaScript file or within a module should you wish to dynamically fetch dependencies. An example of its usage is:
 
 ```javascript
 // Consider 'foo' and 'bar' are two external modules
@@ -844,7 +844,7 @@ require(['foo', 'bar'], function ( foo, bar ) {
 ```
 
 
-<strong>Wrapping modules, views and other components with AMD</strong>
+**Wrapping modules, views and other components with AMD**
 
 Now that we've taken a look at how to define AMD modules, let's review how to go about wrapping components like views and collections so that they can also be easily loaded as dependencies for any parts of your application that require them. At it's simplest, a Backbone model may just require Backbone and Underscore.js. These are considered it's dependencies and so, to write an AMD model module, we would simply do this:
 
@@ -874,7 +874,7 @@ define(['underscore', 'backbone'], function(_, Backbone) {
 });
 ```
 
-Note how we alias Underscore.js's instance to "_" and Backbone to just 'Backbone', making it very trivial to convert non-AMD code over to using this module format. For a view which might require other dependencies such as jQuery, this can similarly be done as follows:
+Note how we alias Underscore.js's instance to `_` and Backbone to just `Backbone`, making it very trivial to convert non-AMD code over to using this module format. For a view which might require other dependencies such as jQuery, this can similarly be done as follows:
 
 ```javascript
 define([
@@ -889,7 +889,7 @@ define([
   ...
 ```
 
-Aliasing to the dollar-sign ($), once again makes it very easy to encapsulate any part of an application you wish using AMD.
+Aliasing to the dollar-sign (`$`), once again makes it very easy to encapsulate any part of an application you wish using AMD.
 
 
 ##External [Underscore/Handlebars/Mustache] templates using RequireJS
@@ -918,7 +918,7 @@ require.config( {
 } );
 ```
 
-3. When the <code>text!</code> prefix is used for a dependency, RequireJS will automatically load the text plugin and treat the dependency as a text resource. A typical example of this in action may look like..
+3. When the `text!` prefix is used for a dependency, RequireJS will automatically load the text plugin and treat the dependency as a text resource. A typical example of this in action may look like..
 
 ```javascript
 require(['js/app', 'text!templates/mainView.html'],
@@ -929,7 +929,7 @@ require(['js/app', 'text!templates/mainView.html'],
 );
 ```
 
-4. Finally we can use the text resource that's been loaded for templating purposes. You're probably used to storing your HTML templates inline using a script with a specific identifier. 
+4. Finally we can use the text resource that's been loaded for templating purposes. You're probably used to storing your HTML templates inline using a script with a specific identifier.
 
 With Underscore.js's micro-templating (and jQuery) this would typically be:
 
@@ -947,7 +947,7 @@ JS:
 var compiled_template = _.template( $('#mainViewTemplate').html() );
 ```
 
-With RequireJS and the text plugin however, it's as simple as saving your template into an external text file (say, mainView.html) and doing the following:
+With RequireJS and the text plugin however, it's as simple as saving your template into an external text file (say, `mainView.html`) and doing the following:
 
 ```javascript
 require(['js/app', 'text!templates/mainView.html'],
@@ -967,17 +967,14 @@ collection.someview.el.html( compiled_template( { results: collection.models } )
 
 All templating solutions will have their own custom methods for handling template compilation, but if you understand the above, substituting Underscore's micro-templating for any other solution should be fairly trivial.
 
-<strong>Note:</strong> You may also be interested in looking at https://github.com/ZeeAgency/requirejs-tpl. It's an AMD-compatible version of the Underscore templating system that also includes support for optimization (pre-compiled templates) which can lead to better performance and no evals. I have yet to use it myself, but it comes as a recommended resource.
-
-
+**Note:** You may also be interested in looking at [Require.js tpl](https://github.com/ZeeAgency/requirejs-tpl). It's an AMD-compatible version of the Underscore templating system that also includes support for optimization (pre-compiled templates) which can lead to better performance and no evals. I have yet to use it myself, but it comes as a recommended resource.
 
 
 ##Optimizing Backbone apps for production with the RequireJS Optimizer
 
+As experienced developers may know, an essential final step when writing both small and large JavaScript web applications is the build process.  The majority of non-trivial apps are likely to consist of more than one or two scripts and so optimizing, minimizing and concatenating your scripts prior to pushing them to production will require your users to download a reduced number (if not just one) script file.
 
-As experienced developers may know, an essential final step when writing both small and large JavaScript web applications is the build process.  The majority of non-trivial apps are likely to consist of more than one or two scripts and so optimizing, minimizing and concatenating your scripts prior to pushing them to production will require your users to download a reduced number (if not just one) script file. 
-
-Note: If you haven't looked at build processes before and this is your first time hearing about them, you might find my post and screencast on this topic useful http://addyosmani.com/blog/client-side-build-process/.
+Note: If you haven't looked at build processes before and this is your first time hearing about them, you might find [my post and screencast on this topic](http://addyosmani.com/blog/client-side-build-process/) useful.
 
 With some other structural JavaScript frameworks, my recommendation would normally be to implicitly use YUI Compressor or Google's closure compiler tools, but we have a slightly more elegant when it comes to Backbone if you're using RequireJS. RequireJS has a command line optimization tool called r.js which has a number of capabilities, including:
 
@@ -985,7 +982,7 @@ With some other structural JavaScript frameworks, my recommendation would normal
 * Optimizing CSS and stylesheets by inlining CSS files imported using @import, stripping out comments etc.
 * The ability to run AMD projects in both Node and Rhino (more on this later)
 
-You'll notice that I mentioned the word 'specific' in the first bullet point. The RequireJS optimizer only concatenates module scripts that have been specified in arrays of string literals passed to top-level (i.e non-local) require and define calls. As clarified by the optimizer docs here (http://requirejs.org/docs/optimization.html) this means that Backbone modules defined like this..
+You'll notice that I mentioned the word 'specific' in the first bullet point. The RequireJS optimizer only concatenates module scripts that have been specified in arrays of string literals passed to top-level (i.e non-local) require and define calls. As clarified by the [optimizer docs](http://requirejs.org/docs/optimization.html) this means that Backbone modules defined like this:
 
 ```javascript
 define(['jquery','backbone','underscore', collections/sample','views/test'], 
@@ -1004,11 +1001,11 @@ will be ignored. This is by design as it ensures that dynamic dependency/module 
 
 Although the RequireJS optimizer works fine in both Node and Java environments, it's strongly recommended to run it under Node as it executes significantly faster there. In my experience, it's a piece of cake to get setup with either environment, so go for whichever you feel most comfortable with. 
 
-To get started with r.js, grab it from the RequireJS download page (http://requirejs.org/docs/download.html#rjs) or through NPM as specified here (http://requirejs.org/docs/optimization.html#download). Now, the RequireJS optimizer works absolutely fine for single script and CSS files, but for most cases you'll want to actually optimize an entire Backbone project. You *could* do this completely from the command-line, but a cleaner option is using build profiles.
+To get started with r.js, grab it from the [RequireJS download page](http://requirejs.org/docs/download.html#rjs) or [through NPM](http://requirejs.org/docs/optimization.html#download). Now, the RequireJS optimizer works absolutely fine for single script and CSS files, but for most cases you'll want to actually optimize an entire Backbone project. You *could* do this completely from the command-line, but a cleaner option is using build profiles.
 
-Below is an example of a build file taken from the modular jQuery Mobile app referenced later in this book. A <strong>build profile</strong> (commonly named app.build.js) informs RequireJS to copy all of the content of <code>appDir</code> to a directory defined by <code>dir</code> (in this case '../release'). This will apply all of the necessary optimizations inside the release folder. The <code>baseUrl</code> is used to resolve the paths for your modules. It should ideally be relative to <code>appDir</code>.
+Below is an example of a build file taken from the modular jQuery Mobile app referenced later in this book. A **build profile** (commonly named `app.build.js`) informs RequireJS to copy all of the content of `appDir` to a directory defined by `dir` (in this case `../release`). This will apply all of the necessary optimizations inside the release folder. The `baseUrl` is used to resolve the paths for your modules. It should ideally be relative to `appDir`.
 
-Near the bottom of this sample file, you'll see an array called <code>modules</code>. This is where you specify the module names you wish to have optimized. In this case we're optimizing the main application called 'app', which maps to <code>appDir/app.js</code>. If we had set the <code>baseUrl</code> to 'scripts', it would be mapped to <code>appDir/scripts/app.js</code>.
+Near the bottom of this sample file, you'll see an array called `modules`. This is where you specify the module names you wish to have optimized. In this case we're optimizing the main application called 'app', which maps to `appDir/app.js`. If we had set the `baseUrl` to 'scripts', it would be mapped to `appDir/scripts/app.js`.
 
 ```javascript
 ({
@@ -1036,28 +1033,26 @@ Near the bottom of this sample file, you'll see an array called <code>modules</c
 })
 ```
 
-The way the build system in r.js works is that it traverses app.js (whatever modules you've passed) and resolved dependencies, concatenating them into the final <code>release</code>(dir) folder. CSS is treated the same way. 
+The way the build system in r.js works is that it traverses app.js (whatever modules you've passed) and resolved dependencies, concatenating them into the final `release`(dir) folder. CSS is treated the same way.
 
 The build profile is usually placed inside the 'scripts' or 'js' directory of your project. As per the docs, this file can however exist anywhere you wish, but you'll need to edit the contents of your build profile accordingly. 
 
-Finally, to run the build, execute the following command once insice your <code>appDir</code> or <code>appDir/scripts</code> directory:
+Finally, to run the build, execute the following command once insice your `appDir` or `appDir/scripts` directory:
 
 ```javascript
 node ../../r.js -o app.build.js
 ```
 
-
-That's it. As long as you have UglifyJS/Closure tools setup correctly, r.js should be able to easily optimize your entire Backbone project in just a few key-strokes. If you would like to learn more about build profiles, James Burke has a heavily commented sample file with all the possible options available here: https://github.com/jrburke/r.js/blob/master/build/example.build.js
-
+That's it. As long as you have UglifyJS/Closure tools setup correctly, r.js should be able to easily optimize your entire Backbone project in just a few key-strokes. If you would like to learn more about build profiles, James Burke has a [heavily commented sample file](https://github.com/jrburke/r.js/blob/master/build/example.build.js) with all the possible options available.
 
 
 ##[Practical: Building a modular Backbone Todo app with AMD & RequireJS](#practical_modularapp)
 
 In this chapter, we'll look at our first practical Backbone & RequireJS project - how to build a modular Todo application. The application will allow us to add new todos, edit new todos and clear todo items that have been marked as completed. For a more advanced practical, see the section on mobile Backbone development.
 
-The complete code for the application can can be found in the 'practicals/modular-todo-app' folder of this repo (thanks to Thomas Davis and J&eacute;r&ocirc;me Gravel-Niquet). Alternatively grab a copy of my side-project <a href="https://github.com/addyosmani/todomvc">TodoMVC</a> which contains the sources to both AMD and non-AMD versions.
+The complete code for the application can can be found in the `practicals/modular-todo-app` folder of this repo (thanks to Thomas Davis and J&eacute;r&ocirc;me Gravel-Niquet). Alternatively grab a copy of my side-project [TodoMVC](https://github.com/addyosmani/todomvc) which contains the sources to both AMD and non-AMD versions.
 
-<strong>Note:</strong> Thomas may be covering a practical on this exercise in more detail on <a href="http://backbonetutorials.com">backbonetutorials.com</a> at some point soon, but for this section I'll be covering what I consider the core concepts.
+**Note:** Thomas may be covering a practical on this exercise in more detail on [backbonetutorials.com](http://backbonetutorials.com) at some point soon, but for this section I'll be covering what I consider the core concepts.
 
 ###Overview
 
@@ -1095,7 +1090,7 @@ index.html
 
 ###Markup
 
-The markup for the application is relatively simple and consists of three primary parts: an input section for entering new todo items (<code>create-todo</code>), a list section to display existing items (which can also be edited in-place) (<code>todo-list</code>) and finally a section summarizing how many items are left to be completed (<code>todo-stats</code>).
+The markup for the application is relatively simple and consists of three primary parts: an input section for entering new todo items (`create-todo`), a list section to display existing items (which can also be edited in-place) (`todo-list`) and finally a section summarizing how many items are left to be completed (`todo-stats`).
 
 <pre>
 &lt;div id=&quot;todoapp&quot;&gt;
@@ -1126,9 +1121,9 @@ If you've read the earlier chapter on AMD, you may have noticed that explicitly 
 
 In order to simplify referencing common paths the modules in our application may use, we use a RequireJS [configuration object](http://requirejs.org/docs/api.html#config), which is typically defined as a top-level script file. Configuration objects have a number of useful capabilities, the most useful being mode name-mapping. Name-maps are basically a key:value pair, where the key defines the alias you wish to use for a path and key represents the true location of the path.
 
-In the code-sample below, you can see some typical examples of common name-maps which include: <code>backbone</code>, <code>underscore</code>, <code>jquery</code> and depending on your choice, the RequireJS <code>text</code> plugin, which assists with loading text assets like templates.
+In the code-sample below, you can see some typical examples of common name-maps which include: `backbone`, `underscore`, `jquery` and depending on your choice, the RequireJS `text` plugin, which assists with loading text assets like templates.
 
-<strong>main.js</strong>
+**main.js**
 
 ```javascript
 require.config({
@@ -1146,11 +1141,11 @@ require(['views/app'], function(AppView){
 });
 ```
 
-The <code>require()</code> at the end of our main.js file is simply there so we can load and instantiation the primary view for our application (<code>views/app.js</code>). You'll commonly see both this and the configuration object included the most top-level script file for a project.
+The `require()` at the end of our main.js file is simply there so we can load and instantiation the primary view for our application (`views/app.js`). You'll commonly see both this and the configuration object included the most top-level script file for a project.
 
-In addition to offering name-mapping, the configuration object can be used to define additional properties such as <code>waitSeconds</code> - the number of seconds to wait before script loading times out and <code>locale</code>, should you wish to load up i118n bundles for custom languages. The <code>baseUrl</code> is simply the path to use for module lookups.
+In addition to offering name-mapping, the configuration object can be used to define additional properties such as `waitSeconds` - the number of seconds to wait before script loading times out and `locale`, should you wish to load up i118n bundles for custom languages. The `baseUrl` is simply the path to use for module lookups.
 
-For more information on configuration objects, please feel free to check out the excellent guide to them in the RequireJS docs: http://requirejs.org/docs/api.html#config.
+For more information on configuration objects, please feel free to check out the excellent guide to them in the [RequireJS docs](http://requirejs.org/docs/api.html#config).
 
 
 ###Modularizing our models, views and collections
@@ -1184,8 +1179,8 @@ var TodoView = Backbone.View.extend({
     },
     ...
 ```
-Note how for templating the common practice of referencing a script by an ID (or other selector) and obtaining it's value is used.
-This of course requires that the template being accessed is implicitly defined in our markup. The following is the 'embedded' version of our template being referenced above: 
+
+Note how for templating the common practice of referencing a script by an ID (or other selector) and obtaining it's value is used. This of course requires that the template being accessed is implicitly defined in our markup. The following is the 'embedded' version of our template being referenced above:
 
 <pre>
 &lt;script type=&quot;text/template&quot; id=&quot;item-template&quot;&gt;
@@ -1204,9 +1199,9 @@ This of course requires that the template being accessed is implicitly defined i
 
 Whilst there is nothing wrong with the template itself, once we begin to develop larger applications requiring multiple templates, including them all in our markup on page-load can quickly become both unmanageable and come with performance costs. We'll look at solving this problem in a minute.
 
-Let's now take a look at the AMD-version of our view. As discussed earlier, the 'module' is wrapped using AMD's <code>define()</code> which allows us to specify the dependencies our view requires. Using the mapped paths to 'jquery' etc. simplifies referencing common dependencies and instances of dependencies are themselves mapped to local variables that we can access (e.g 'jquery' is mapped to <code>$</code>).
+Let's now take a look at the AMD-version of our view. As discussed earlier, the 'module' is wrapped using AMD's `define()` which allows us to specify the dependencies our view requires. Using the mapped paths to 'jquery' etc. simplifies referencing common dependencies and instances of dependencies are themselves mapped to local variables that we can access (e.g 'jquery' is mapped to `$`).
 
-<strong>views/todos.js</strong>
+**views/todos.js**
 
 ```javascript
 define([
@@ -1260,9 +1255,9 @@ define([
 
  From a maintenance perspective, there's nothing logically different in this version of our view, except for how we approach templating. 
 
- Using the RequireJS text plugin (the dependency marked <code>text</code>), we can actally store all of the contents for the template we looked at earlier in an external file (todos.html). 
+Using the RequireJS text plugin (the dependency marked `text`), we can actally store all of the contents for the template we looked at earlier in an external file (todos.html).
 
-<strong>templates/todos.html</strong>
+**templates/todos.html**
 
 <pre>
 &lt;div class=&quot;todo &lt;%= done ? &#39;done&#39; : &#39;&#39; %&gt;&quot;&gt;
@@ -1277,11 +1272,11 @@ define([
 &lt;/div&gt;
 </pre>
 
-There's no longer a need to be concerned with IDs for the template as we can map it's contents to a local variable (in this case <code>todosTemplate</code>). We then simply pass this to the Underscore.js templating function <code>_.template()</code> the same way we normally would have the value of our template script.
+There's no longer a need to be concerned with IDs for the template as we can map it's contents to a local variable (in this case `todosTemplate`). We then simply pass this to the Underscore.js templating function `_.template()` the same way we normally would have the value of our template script.
 
-Next, let's look at how to define models as dependencies which can be pulled into collections. Here's an AMD-compatible model module, which has two default values: a <code>content</code> attribute for the content of a Todo item and a boolean <code>done</code> state, allowing us to trigger whether the item has been completed or not.
+Next, let's look at how to define models as dependencies which can be pulled into collections. Here's an AMD-compatible model module, which has two default values: a `content` attribute for the content of a Todo item and a boolean `done` state, allowing us to trigger whether the item has been completed or not.
 
-<strong>models/todo.js</strong>
+**models/todo.js**
 
 ```javascript
 define(['underscore', 'backbone'], function(_, Backbone) {
@@ -1316,9 +1311,9 @@ define(['underscore', 'backbone'], function(_, Backbone) {
 });
 ```
 
-As per other types of dependencies, we can easily map our model module to a local variable (in this case <code>Todo</code>) so it can be referenced as the model to use for our <code>TodosCollection</code>. This collection also supports a simple <code>done()</code> filter for narrowing down Todo items that have been completed and a <code>remaining()</code> filter for those that are still outstanding. 
+As per other types of dependencies, we can easily map our model module to a local variable (in this case `Todo`) so it can be referenced as the model to use for our `TodosCollection`. This collection also supports a simple `done()` filter for narrowing down Todo items that have been completed and a `remaining()` filter for those that are still outstanding.
 
-<strong>collections/todos.js</strong>
+**collections/todos.js**
 
 ```javascript
 define([
@@ -1350,7 +1345,7 @@ define([
 
 In addition to allowing users to add new Todo items from views (which we then insert as models in a collection), we ideally also want to be able to display how many items have been completed and how many are remaining. We've already defined filters that can provide us this information in the above collection, so let's use them in our main application view.
 
-<strong>views/app.js</strong>
+**views/app.js**
 
 ```javascript
 define([
@@ -1386,9 +1381,9 @@ define([
     ...
 ```
 
-Above, we map the second template for this project, <code>templates/stats.html</code> to <code>statsTemplate</code> which is used for rendering the overall <code>done</code> and <code>remaining</code> states. This works by simply passing our template the length of our overall Todos collection (<code>Todos.length</code> - the number of Todo items created so far) and similarly the length (counts) for items that have been completed (<code>Todos.done().length</code>) or are remaining (<code>Todos.remaining().length</code>).
+Above, we map the second template for this project, `templates/stats.html` to `statsTemplate` which is used for rendering the overall `done` and `remaining` states. This works by simply passing our template the length of our overall Todos collection (`Todos.length` - the number of Todo items created so far) and similarly the length (counts) for items that have been completed (`Todos.done().length`) or are remaining (`Todos.remaining().length`).
 
-The contents of our <code>statsTemplate</code> can be seen below. It's nothing too complicated, but does use ternary conditions to evaluate whether we should state there's "1 item" or "2 item<i>s</i>" in a particular state. 
+The contents of our `statsTemplate` can be seen below. It's nothing too complicated, but does use ternary conditions to evaluate whether we should state there's "1 item" or "2 item<i>s</i>" in a particular state.
 
 <pre>
  &lt;% if (total) { %&gt;
@@ -1411,9 +1406,9 @@ The contents of our <code>statsTemplate</code> can be seen below. It's nothing t
 
 The rest of the source for the Todo app mainly consists of code for handling user and application events, but that rounds up most of the core concepts for this practical. 
 
-To see how everything ties together, feel free to grab the source by cloning this repo or browse it <a href="https://github.com/addyosmani/backbone-fundamentals/tree/master/practicals/modular-todo-app">online<a/> to learn more. I hope you find it helpful!.
+To see how everything ties together, feel free to grab the source by cloning this repo or browse it [online](https://github.com/addyosmani/backbone-fundamentals/tree/master/practicals/modular-todo-app) to learn more. I hope you find it helpful!.
 
-<strong>Note:</strong> While this first practical doesn't use a build profile at outlined in the chapter on using the RequireJS optimizer, we will be using one in the section on building mobile Backbone applications.
+**Note:** While this first practical doesn't use a build profile at outlined in the chapter on using the RequireJS optimizer, we will be using one in the section on building mobile Backbone applications.
 
 
 
@@ -1423,11 +1418,11 @@ To see how everything ties together, feel free to grab the source by cloning thi
 
 The first major hurdle developers typically run into when building Backbone applications with jQuery Mobile is that both frameworks have their own opinions about how to handle application navigation. 
 
-Backbone's routers offer an explicit way to define custom navigation routes through Backbone.Router, whilst jQuery Mobile encourages the use of URL hash fragments to reference separate 'pages' or views in the same document. jQuery Mobile also supports automatically pulling in external content for links through XHR calls meaning that there can be quite a lot of inter-framework confusion about what a link pointing at '#/photo/id' should actually be doing. 
+Backbone's routers offer an explicit way to define custom navigation routes through `Backbone.Router`, whilst jQuery Mobile encourages the use of URL hash fragments to reference separate 'pages' or views in the same document. jQuery Mobile also supports automatically pulling in external content for links through XHR calls meaning that there can be quite a lot of inter-framework confusion about what a link pointing at '#/photo/id' should actually be doing.
 
 Some of the solutions that have been previously proposed to work-around this problem included manually patching Backbone or jQuery Mobile. I discourage opting for these techniques as it becomes necessary to manually patch your framework builds when new releases get made upstream. 
 
-There's also https://github.com/azicchetti/jquerymobile-router, which tries to solve this problem differently, however I think my proposed solution is both simpler and allows both frameworks to cohabit quite peacefully without the need to extend either. What we're after is a way to prevent one framework from listening to hash changes so that we can fully rely on the other (e.g. Backbone.Router) to handle this for us exclusively. 
+There's also https://github.com/azicchetti/jquerymobile-router, which tries to solve this problem differently, however I think my proposed solution is both simpler and allows both frameworks to cohabit quite peacefully without the need to extend either. What we're after is a way to prevent one framework from listening to hash changes so that we can fully rely on the other (e.g. `Backbone.Router`) to handle this for us exclusively.
 
 Using jQuery Mobile this can be done by setting: 
 
@@ -1439,7 +1434,7 @@ prior to initializing any of your other code.
 
 I discovered this method looking through some jQuery Mobile commits that didn't make their way into the official docs, but am happy to see that they are now covered here http://jquerymobile.com/test/docs/api/globalconfig.html in more detail.
 
-The next question that arises is, if we're preventing jQuery Mobile from listening to URL hash changes, how can we still get the benefit of being able to navigate to other sections in a document using the built-in transitions and effects supported?. Good question. This can now be solve by simply calling <code>$.mobile.changePage()</code> as follows:
+The next question that arises is, if we're preventing jQuery Mobile from listening to URL hash changes, how can we still get the benefit of being able to navigate to other sections in a document using the built-in transitions and effects supported? Good question. This can now be solve by simply calling `$.mobile.changePage()` as follows:
 
 ```javascript
 var url = '#about',
@@ -1450,10 +1445,9 @@ var url = '#about',
 $.mobile.changePage( url , { transition: effect}, reverse, changeHash );
 ```
 
-In the above sample, <code>url</code> can refer to a URL or a hash identifier to navigate to, <code>effect</code> is simply the transition effect to animate the page in with and the final two parameters decide the direction for the transition (<code>reverse</code>) and whether or not the hash in the address bar should be updated (<code>changeHash</code>). With respect to the latter, I typically set this to false to avoid managing two sources for hash updates, but feel free to set this to true if you're comfortable doing so. 
+In the above sample, `url` can refer to a URL or a hash identifier to navigate to, `effect` is simply the transition effect to animate the page in with and the final two parameters decide the direction for the transition (`reverse`) and whether or not the hash in the address bar should be updated (`changeHash`). With respect to the latter, I typically set this to false to avoid managing two sources for hash updates, but feel free to set this to true if you're comfortable doing so.
 
-<strong>Note:</strong> For some parallel work being done to explore how well the jQuery Mobile Router plugin works with Backbone, you may be interested in checking out https://github.com/Filirom1/jquery-mobile-backbone-requirejs.
-
+**Note:** For some parallel work being done to explore how well the jQuery Mobile Router plugin works with Backbone, you may be interested in checking out https://github.com/Filirom1/jquery-mobile-backbone-requirejs.
 
 
 ###Practical: A Backbone, RequireJS/AMD app with jQuery Mobile
@@ -1462,7 +1456,7 @@ In the above sample, <code>url</code> can refer to a URL or a hash identifier to
 
 Once you feel comfortable with the Backbone fundamentals (http://msdn.microsoft.com/en-us/scriptjunkie/hh377172.aspx) and you've put together a rough wireframe of the app you may wish to build, start to think about your application architecture. Ideally, you'll want to logically separate concerns so that it's as easy as possible to maintain the app in the future.
 
-<strong>Namespacing</strong>
+**Namespacing**
 
 For this application, I opted for the nested namespacing pattern. Implemented correctly, this enables you to clearly identify if items being referenced in your app are views, other modules and so on. This initial structure is a sane place to also include application defaults (unless you prefer maintaining those in a separate file).
 
@@ -1484,7 +1478,7 @@ window.mobileSearch = window.mobileSearch || {
 }
 ```
 
-<strong>Models</strong>
+**Models**
 
 In the Flickly application, there are at least two unique types of data that need to be modelled - search results and individual photos, both of which contain additional meta-data like photo titles. If you simplify this down, search results are actually groups of photos in their own right, so the application only requires:
 
@@ -1492,17 +1486,17 @@ In the Flickly application, there are at least two unique types of data that nee
 * A result collection (containing a group of result entries) for search results
 * A photo collection (containing one or more result entries) for individual photos or photos with more than one image
 
-<strong>Views</strong>
+**Views**
 
-The views we'll need include an application view, a search results view and a photo view. Static views or pages of the single-page application which do not require a dynamic element to them (e.g an 'about' page) can be easily coded up in your document's markup, independant of Backbone. 
+The views we'll need include an application view, a search results view and a photo view. Static views or pages of the single-page application which do not require a dynamic element to them (e.g an 'about' page) can be easily coded up in your document's markup, independant of Backbone.
 
-<strong>Routers</strong>
+**Routers**
 
 A number of possible routes need to be taken into consideration:
 
-* Basic search queries <code>#search/kiwis</code>
-* Search queries with additional parameters (e.g sort, pagination) <code>#search/kiwis/srelevance/p7</code>
-* Queries for specific photos <code>#photo/93839</code>
+* Basic search queries `#search/kiwis`
+* Search queries with additional parameters (e.g sort, pagination) `#search/kiwis/srelevance/p7`
+* Queries for specific photos `#photo/93839`
 * A default route (no parameters passed)
 
 
@@ -1512,11 +1506,11 @@ The majority of jQM apps I've seen in production have been developed for the pur
 
 If you open up Flickly in a desktop browser, you'll get an image search UI that's modelled on Google.com, however, review the components (buttons, text inputs, tabs) on the page for a moment. The desktop UI doesn't look anything like a mobile application yet I'm still using jQM for theming mobile components; the tabs, date-picker, sliders - everything in the desktop UI is re-using what jQM would be providing users on mobile devices. Thanks to some media queries, the desktop UI can make optimal use of whitespace, expanding component blocks out and providing alternative layouts whilst still making use of jQM as a component framework.
 
-The benefit of this is that I don't need to go pulling in jQuery UI separately to be able to take advantage of these features. Thanks to the recent ThemeRoller my components can look pretty much exactly how I would like them to and users of the app can get a jQM UI for lower-resolutions and a jQM-ish UI for everything else. 
+The benefit of this is that I don't need to go pulling in jQuery UI separately to be able to take advantage of these features. Thanks to the recent ThemeRoller my components can look pretty much exactly how I would like them to and users of the app can get a jQM UI for lower-resolutions and a jQM-ish UI for everything else.
 
-The takeaway here is just to remember that if you're not (already) going through the hassle of conditional script/style loading based on screen-resolution (using matchMedia.js etc), there are simpler approaches that can be taken to cross-device component theming. 
+The takeaway here is just to remember that if you're not (already) going through the hassle of conditional script/style loading based on screen-resolution (using matchMedia.js etc), there are simpler approaches that can be taken to cross-device component theming.
 
-                                  
+
 ##Resources
 
 Whilst we get with Backbone out of the box can be terribly useful, there are some equally as beneficial add-ons that can help simplify our development process. These include:
