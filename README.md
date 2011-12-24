@@ -934,15 +934,17 @@ require(['js/app', 'text!templates/mainView.html'],
 With Underscore.js's micro-templating (and jQuery) this would typically be:
 
 HTML:
-```javascript
-&lt;script type=&quot;text/template&quot; id=&quot;mainViewTemplate&quot;&gt;
-    &lt;% _.each( person, function( person_item ){ %&gt;
-                &lt;li&gt;&lt;%= person_item.get(&quot;name&quot;) %&gt;&lt;/li&gt;  
-     &lt;% }); %&gt;
-&lt;/script&gt;
+
+```html
+<script type="text/template" id="mainViewTemplate">
+    <% _.each( person, function( person_item ){ %>
+        <li><%= person_item.get("name") %></li>  
+    <% }); %>
+</script>
 ```
 
 JS:
+
 ```javascript
 var compiled_template = _.template( $('#mainViewTemplate').html() );
 ```
