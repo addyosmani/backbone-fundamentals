@@ -25,7 +25,6 @@ A work-in-progress by [Addy Osmani](http://twitter.com/addyosmani) released for 
 * Backbone & jQuery Mobile
 * Practical: Building a modular mobile app with Backbone & jQuery Mobile
 
-
 * ####Testing (todo)
 * Jasmine basics
 * Models
@@ -41,7 +40,7 @@ A work-in-progress by [Addy Osmani](http://twitter.com/addyosmani) released for 
 
 In this mini-book, I'll be covering a complete run-down of Backbone.js; including models, views, collections and routers. I'll also be taking you through advanced topics like modular development with Backbone.js and AMD (with RequireJS), how to solve the routing problems with Backbone and jQuery Mobile, tips about scaffolding tools that can save time setting up your initial application and more.
 
-If this is your first time looking at Backbone.js and you're still unsure whether to give it a try or not, why not take a look at how a Todo application might be implemented in Backbone and most of the other alternatives before reading further? http://github.com/addyosmani/todomvc.
+If this is your first time looking at Backbone.js and you're still unsure whether or not to give it a try, why not take a look at how [a Todo application](http://github.com/addyosmani/todomvc) might be implemented in Backbone and most of the other alternatives before reading further?
 
 The goal of this mini-book is to create a free, centralized repository of information that can help those developing real-world apps with Backbone. If you come across a section or topic which you think could be improved or expanded on, please feel free to submit a pull-request. It won't take long and you'll be helping other developers avoid problems you've run into before.
 
@@ -301,7 +300,7 @@ var PhotoSearch = Backbone.View.extend({
 });
 ```
 
-####What is '`el`'?
+####What is `el`?
 
 `el` is basically a reference to a DOM element and all views must have one, however Backbone allows you to specify this in four different ways. You can either directly use an `id`, a `tagName`, `className` or if you don't state anything `el` will simply default to a plain div element without any id or class. Here are some quick examples of how these may be used:
 
@@ -321,7 +320,7 @@ className: "container"
 will use specific tags with a particular `className`.
 
 
-**Understanding render()**
+**Understanding `render()`**
 
 `render()` is an optional function to define how you would like a template to be rendered. Backbone allows you to use any JavaScript templating solution of your choice for this but for the purposes of this book, we'll opt for Underscore's micro-templating.
 
@@ -329,9 +328,9 @@ The `_.template` method in underscore compiles JavaScript templates into functio
 
 Presto! This populates the template, giving you a data-complete set of markup in just a few short lines of code.
 
-**The 'events' attribute**
+**The `events` attribute**
 
-The Backbone events attribute allows us to attach event listeners to either custom selectors or `el` if no selector is provided. An event takes the form `{"eventName selector": "callbackFunction"}` and a number of event-types are supported, including 'click', 'submit', 'mouseover', 'dblclick' and more.
+The Backbone `events` attribute allows us to attach event listeners to either custom selectors, or `el` if no selector is provided. An event takes the form `{"eventName selector": "callbackFunction"}` and a number of event-types are supported, including 'click', 'submit', 'mouseover', 'dblclick' and more.
 
 What isn't instantly obvious is that under the bonnet, Backbone uses jQuery's `.delegate()` to provide instant support for event delegation but goes a little further, extending it so that `this` always refers to the current view object. The only thing to really keep in mind is that any string callback supplied to the events attribute must have a corresponding function with the same name within the scope of your view otherwise you may incur exceptions.
 
@@ -489,8 +488,7 @@ GalleryController = Backbone.Router.extend({
         /*If you wish to use splats for anything beyond default routing, it's probably a good 
         idea to leave them at the end of a URL otherwise you may need to apply regular
         expression parsing on your fragment*/
-        
-        
+         
         "*other"    : "defaultRoute"
         //This is a default route with that also uses a *splat. Consider the
         //default route a wildcard for URLs that are either not matched or where
@@ -553,7 +551,7 @@ zoomPhoto: function(factor){
 
 ###Namespacing
 
-When learning how to use Backbone, one important area that is very commonly overlooked in tutorials is namespacing. If you already have experience with how to namespace in JavaScript, the following section will provide some advice on how to specifically apply concepts you know to Backbone, however I will also be covering explanations for beginners to ensure everyone is on the same page.
+When learning how to use Backbone, an important and commonly overlooked area by tutorials is namespacing. If you already have experience with namespacing in JavaScript, the following section will provide some advice on how to specifically apply concepts you know to Backbone, however I will also be covering explanations for beginners to ensure everyone is on the same page.
 
 ####What is namespacing?
 
@@ -1435,7 +1433,7 @@ Backbone's routers offer an explicit way to define custom navigation routes thro
 
 Some of the solutions that have been previously proposed to work-around this problem included manually patching Backbone or jQuery Mobile. I discourage opting for these techniques as it becomes necessary to manually patch your framework builds when new releases get made upstream. 
 
-There's also https://github.com/azicchetti/jquerymobile-router, which tries to solve this problem differently, however I think my proposed solution is both simpler and allows both frameworks to cohabit quite peacefully without the need to extend either. What we're after is a way to prevent one framework from listening to hash changes so that we can fully rely on the other (e.g. `Backbone.Router`) to handle this for us exclusively.
+There's also [jQueryMobile router](https://github.com/azicchetti/jquerymobile-router), which tries to solve this problem differently, however I think my proposed solution is both simpler and allows both frameworks to cohabit quite peacefully without the need to extend either. What we're after is a way to prevent one framework from listening to hash changes so that we can fully rely on the other (e.g. `Backbone.Router`) to handle this for us exclusively.
 
 Using jQuery Mobile this can be done by setting: 
 
@@ -1467,7 +1465,7 @@ In the above sample, `url` can refer to a URL or a hash identifier to navigate t
 
 ###Getting started
 
-Once you feel comfortable with the Backbone fundamentals (http://msdn.microsoft.com/en-us/scriptjunkie/hh377172.aspx) and you've put together a rough wireframe of the app you may wish to build, start to think about your application architecture. Ideally, you'll want to logically separate concerns so that it's as easy as possible to maintain the app in the future.
+Once you feel comfortable with the [Backbone fundamentals](http://msdn.microsoft.com/en-us/scriptjunkie/hh377172.aspx) and you've put together a rough wireframe of the app you may wish to build, start to think about your application architecture. Ideally, you'll want to logically separate concerns so that it's as easy as possible to maintain the app in the future.
 
 **Namespacing**
 
@@ -1536,6 +1534,4 @@ Whilst we get with Backbone out of the box can be terribly useful, there are som
 * [Backbone Validations - HTML5 inspired validations](https://github.com/n-time/backbone.validations)
 
 In time, there will be tutorials in the book covering some of these resources but until then, please feel free to check them out. 
-
-
 
