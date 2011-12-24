@@ -328,9 +328,9 @@ The `_.template` method in underscore compiles JavaScript templates into functio
 
 Presto! This populates the template, giving you a data-complete set of markup in just a few short lines of code.
 
-**The 'events' attribute**
+**The `events` attribute**
 
-The Backbone events attribute allows us to attach event listeners to either custom selectors or `el` if no selector is provided. An event takes the form `{"eventName selector": "callbackFunction"}` and a number of event-types are supported, including 'click', 'submit', 'mouseover', 'dblclick' and more.
+The Backbone `events` attribute allows us to attach event listeners to either custom selectors, or `el` if no selector is provided. An event takes the form `{"eventName selector": "callbackFunction"}` and a number of event-types are supported, including 'click', 'submit', 'mouseover', 'dblclick' and more.
 
 What isn't instantly obvious is that under the bonnet, Backbone uses jQuery's `.delegate()` to provide instant support for event delegation but goes a little further, extending it so that `this` always refers to the current view object. The only thing to really keep in mind is that any string callback supplied to the events attribute must have a corresponding function with the same name within the scope of your view otherwise you may incur exceptions.
 
@@ -488,8 +488,7 @@ GalleryController = Backbone.Router.extend({
         /*If you wish to use splats for anything beyond default routing, it's probably a good 
         idea to leave them at the end of a URL otherwise you may need to apply regular
         expression parsing on your fragment*/
-        
-        
+         
         "*other"    : "defaultRoute"
         //This is a default route with that also uses a *splat. Consider the
         //default route a wildcard for URLs that are either not matched or where
@@ -552,7 +551,7 @@ zoomPhoto: function(factor){
 
 ###Namespacing
 
-When learning how to use Backbone, one important area that is very commonly overlooked in tutorials is namespacing. If you already have experience with how to namespace in JavaScript, the following section will provide some advice on how to specifically apply concepts you know to Backbone, however I will also be covering explanations for beginners to ensure everyone is on the same page.
+When learning how to use Backbone, an important and commonly area overlooked by tutorials is namespacing. If you already have experience with namespacing in JavaScript, the following section will provide some advice on how to specifically apply concepts you know to Backbone, however I will also be covering explanations for beginners to ensure everyone is on the same page.
 
 ####What is namespacing?
 
