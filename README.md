@@ -1786,6 +1786,8 @@ In the above sample, `url` can refer to a URL or a hash identifier to navigate t
 
 ###Practical: A Backbone, RequireJS/AMD app with jQuery Mobile
 
+**Note:** The code for this practical can be found in <code>practicals/modular-mobile-app</code>
+
 ###Getting started
 
 Once you feel comfortable with the [Backbone fundamentals](http://msdn.microsoft.com/en-us/scriptjunkie/hh377172.aspx) and you've put together a rough wireframe of the app you may wish to build, start to think about your application architecture. Ideally, you'll want to logically separate concerns so that it's as easy as possible to maintain the app in the future.
@@ -1832,6 +1834,9 @@ A number of possible routes need to be taken into consideration:
 * Search queries with additional parameters (e.g sort, pagination) `#search/kiwis/srelevance/p7`
 * Queries for specific photos `#photo/93839`
 * A default route (no parameters passed)
+
+
+This tutorial will be expanded shortly to fully cover the demo application. In the mean time, please see the practicals folder for the completed application that demonstrates the router resolution discussed earlier between Backbone and jQuery Mobile.
 
 
 ###jQuery Mobile: Going beyond mobile application development
