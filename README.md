@@ -25,7 +25,6 @@ A work-in-progress by [Addy Osmani](http://twitter.com/addyosmani) released for 
 * Backbone & jQuery Mobile
 * Practical: Building a modular mobile app with Backbone & jQuery Mobile
 
-
 * ####Testing (todo)
 * Jasmine basics
 * Models
@@ -301,7 +300,7 @@ var PhotoSearch = Backbone.View.extend({
 });
 ```
 
-####What is '`el`'?
+####What is `el`?
 
 `el` is basically a reference to a DOM element and all views must have one, however Backbone allows you to specify this in four different ways. You can either directly use an `id`, a `tagName`, `className` or if you don't state anything `el` will simply default to a plain div element without any id or class. Here are some quick examples of how these may be used:
 
@@ -321,7 +320,7 @@ className: "container"
 will use specific tags with a particular `className`.
 
 
-**Understanding render()**
+**Understanding `render()`**
 
 `render()` is an optional function to define how you would like a template to be rendered. Backbone allows you to use any JavaScript templating solution of your choice for this but for the purposes of this book, we'll opt for Underscore's micro-templating.
 
