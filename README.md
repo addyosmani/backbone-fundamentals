@@ -40,7 +40,7 @@ A work-in-progress by [Addy Osmani](http://twitter.com/addyosmani) released for 
 
 In this mini-book, I'll be covering a complete run-down of Backbone.js; including models, views, collections and routers. I'll also be taking you through advanced topics like modular development with Backbone.js and AMD (with RequireJS), how to solve the routing problems with Backbone and jQuery Mobile, tips about scaffolding tools that can save time setting up your initial application and more.
 
-If this is your first time looking at Backbone.js and you're still unsure whether to give it a try or not, why not take a look at how a Todo application might be implemented in Backbone and most of the other alternatives before reading further? http://github.com/addyosmani/todomvc.
+If this is your first time looking at Backbone.js and you're still unsure whether or not to give it a try, why not take a look at how [a Todo application](http://github.com/addyosmani/todomvc) might be implemented in Backbone and most of the other alternatives before reading further?
 
 The goal of this mini-book is to create a free, centralized repository of information that can help those developing real-world apps with Backbone. If you come across a section or topic which you think could be improved or expanded on, please feel free to submit a pull-request. It won't take long and you'll be helping other developers avoid problems you've run into before.
 
@@ -1433,7 +1433,7 @@ Backbone's routers offer an explicit way to define custom navigation routes thro
 
 Some of the solutions that have been previously proposed to work-around this problem included manually patching Backbone or jQuery Mobile. I discourage opting for these techniques as it becomes necessary to manually patch your framework builds when new releases get made upstream. 
 
-There's also https://github.com/azicchetti/jquerymobile-router, which tries to solve this problem differently, however I think my proposed solution is both simpler and allows both frameworks to cohabit quite peacefully without the need to extend either. What we're after is a way to prevent one framework from listening to hash changes so that we can fully rely on the other (e.g. `Backbone.Router`) to handle this for us exclusively.
+There's also [jQueryMobile router](https://github.com/azicchetti/jquerymobile-router), which tries to solve this problem differently, however I think my proposed solution is both simpler and allows both frameworks to cohabit quite peacefully without the need to extend either. What we're after is a way to prevent one framework from listening to hash changes so that we can fully rely on the other (e.g. `Backbone.Router`) to handle this for us exclusively.
 
 Using jQuery Mobile this can be done by setting: 
 
@@ -1465,7 +1465,7 @@ In the above sample, `url` can refer to a URL or a hash identifier to navigate t
 
 ###Getting started
 
-Once you feel comfortable with the Backbone fundamentals (http://msdn.microsoft.com/en-us/scriptjunkie/hh377172.aspx) and you've put together a rough wireframe of the app you may wish to build, start to think about your application architecture. Ideally, you'll want to logically separate concerns so that it's as easy as possible to maintain the app in the future.
+Once you feel comfortable with the [Backbone fundamentals](http://msdn.microsoft.com/en-us/scriptjunkie/hh377172.aspx) and you've put together a rough wireframe of the app you may wish to build, start to think about your application architecture. Ideally, you'll want to logically separate concerns so that it's as easy as possible to maintain the app in the future.
 
 **Namespacing**
 
@@ -1534,6 +1534,4 @@ Whilst we get with Backbone out of the box can be terribly useful, there are som
 * [Backbone Validations - HTML5 inspired validations](https://github.com/n-time/backbone.validations)
 
 In time, there will be tutorials in the book covering some of these resources but until then, please feel free to check them out. 
-
-
 
