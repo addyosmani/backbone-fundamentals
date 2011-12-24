@@ -111,14 +111,14 @@ somePhoto.changeSrc("magic.jpg"); // which triggers "change:src" and logs an upd
 The `initialize()` method is called when creating a new instance of a model. It's use is optional, however we'll be reviewing some reasons you may want to use it shortly.
 
 ```javascript
-Photo = new Backbone.Model.extend({
+Photo = Backbone.Model.extend({
     initialize: function(){
         console.log('this model has been initialized');
     }
 });
  
 /*We can then create our own instance of a photo as follows:*/
-var myPhoto = new Photo;
+var myPhoto = new Photo();
 ```
 
 ####Getters & Setters
@@ -164,7 +164,7 @@ console.log(myAttributes);
 `Model.set()` allows us to pass attributes into an instance of our model. Attributes can either be set during initialization or later on.
 
 ```javascript
-Photo = new Backbone.Model.extend({
+Photo = Backbone.Model.extend({
     initialize: function(){
         console.log('this model has been initialized');
     }
@@ -184,7 +184,7 @@ myPhoto2.set({ title:'Vacation in Florida', location: 'Florida' });
 There are times when you want your model to have a set of default values (e.g. in a scenario where a complete set of data isn't provided by the user). This can be set using a property called `defaults` in your model.
 
 ```javascript
-Photo = new Backbone.Model.extend({
+Photo = Backbone.Model.extend({
     defaults:{
         title: 'Another photo!',
         tags:  ['untagged'],
@@ -216,7 +216,7 @@ this.bind('change', function(){
 In the following example, we can also log a message whenever a specific attribute (the title of our Photo model) is altered.
 
 ```javascript
-Photo = new Backbone.Model.extend({
+Photo = Backbone.Model.extend({
     defaults:{
         title: 'Another photo!',
         tags:  ['untagged'],
@@ -250,7 +250,7 @@ It supports including as complex or terse validation rules against attributes an
 A basic example for validation can be seen below:
 
 ```javascript
-Photo = new Backbone.Model.extend({
+Photo = Backbone.Model.extend({
     validate: function(attribs){
         if(attribs.src == "placeholder.jpg"){
             return "Remember to set a source for your image!";
@@ -378,7 +378,7 @@ photoCollection.remove([a,b]);
 As collections represent a group of items, we're also able to listen for `add` and `remove` events for when new models are added or removed from the collection. Here's an example:
 
 ```javascript
-PhotoCollection = new Backbone.Collection;
+var PhotoCollection = new Backbone.Collection;
 PhotoCollection.bind("add", function(photo) {
   console.log("I liked " + photo.get("title") + ' its this one, right? '  + photo.src);
 });
@@ -455,13 +455,13 @@ Note: A router will usually have at least one URL route defined as well as a fun
 "/route" : "mappedFunction"
 ```
 
-Let us now define our first controller by extending `Backbone.Router`. For the purposes of this guide, we're going to continue pretending we're creating a photo gallery application that requires a GalleryController.
+Let us now define our first controller by extending `Backbone.Router`. For the purposes of this guide, we're going to continue pretending we're creating a photo gallery application that requires a GalleryRouter.
 
 Note the inline comments in the code example below as they continue the rest of the lesson on routers.
 
 ```javascript
-GalleryController = Backbone.Router.extend({
-    /* define the route and function maps for this controller */
+GalleryRouter = Backbone.Router.extend({
+    /* define the route and function maps for this router */
     routes:{
         "/about" : "showAbout",
         /*Sample usage: http://unicorns.com/#/about"*/
@@ -522,9 +522,9 @@ GalleryController = Backbone.Router.extend({
     }
 });
  
-/* Now that we have a controller setup, remember to instantiate it*/
+/* Now that we have a router setup, remember to instantiate it*/
  
-var myGalleryController = new GalleryController;
+var myGalleryRouter = new GalleryRouter;
 ```
 
 Note: In Backbone 0.5+, it's possible to opt-in for HTML5 pushState support via `window.history.pushState`. This effectively permits non-hashtag routes such as http://www.scriptjunkie.com/just/an/example to be supported with automatic degradation should your browser not support it. For the purposes of this tutorial, we won't be relying on this newer functionality as there have been reports about issues with it under iOS/Mobile Safari. Backbone's hash-based routes should however suffice for our needs.
