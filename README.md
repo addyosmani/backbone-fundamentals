@@ -367,7 +367,7 @@ Backbone Collections don't have setters as such, but do support adding new model
 var a = new Backbone.Model({ title: 'my vacation'}),
     b = new Backbone.Model({ title: 'my holiday'});
 
-var photoCollection = new PhotoCollec([a,b]);
+var photoCollection = new PhotoCollection([a,b]);
 photoCollection.remove([a,b]);
 ```
 
