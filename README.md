@@ -857,7 +857,7 @@ require(['foo', 'bar'], function ( foo, bar ) {
 Now that we've taken a look at how to define AMD modules, let's review how to go about wrapping components like views and collections so that they can also be easily loaded as dependencies for any parts of your application that require them. At it's simplest, a Backbone model may just require Backbone and Underscore.js. These are considered it's dependencies and so, to write an AMD model module, we would simply do this:
 
 ```javascript
-define(['underscore', 'backbone'], function(_, Backbone) {
+require(['underscore', 'backbone'], function(_, Backbone) {
   var myModel = Backbone.Model.extend({
 
     // Default attributes 
