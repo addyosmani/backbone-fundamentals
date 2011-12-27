@@ -563,7 +563,6 @@ In this section we'll be taking a look shortly at some examples of how you can n
 * Single global variables
 * Object Literals
 * Nested namespacing
-* Single global variables
 
 **Single global variables**
 
