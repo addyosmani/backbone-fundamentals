@@ -1448,7 +1448,7 @@ With some other structural JavaScript frameworks, my recommendation would normal
 You'll notice that I mentioned the word 'specific' in the first bullet point. The RequireJS optimizer only concatenates module scripts that have been specified in arrays of string literals passed to top-level (i.e non-local) require and define calls. As clarified by the [optimizer docs](http://requirejs.org/docs/optimization.html) this means that Backbone modules defined like this:
 
 ```javascript
-define(['jquery','backbone','underscore', collections/sample','views/test'], 
+define(['jquery','backbone','underscore', 'collections/sample','views/test'], 
     function($,Backbone, _, Sample, Test){
         //...
     });
