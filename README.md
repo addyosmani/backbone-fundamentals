@@ -796,19 +796,19 @@ var application_root = __dirname,
   mongoose = require('mongoose');
 ```
 
-Next, create a new Express server. <code>express.createServer()</code> is a simple way of creating an instance of express.HTTPServer, which we'll be using to pass in our routes.
+Next, create a new Express server. `express.createServer()` is a simple way of creating an instance of express.HTTPServer, which we'll be using to pass in our routes.
 
 ```javascript
 var app = express.createServer();
 ```
 
-After this, connect Mongoose up to a database (in our case, localhost should suffice). Should you require the ability to pass in authentication information, here's a sample containing all of the supported URL parameters: <code>mongodb://[username:password@]host1[:port1][,host2[:port2],...[,hostN[:portN]]][/[database][?options]]</code>
+After this, connect Mongoose up to a database (in our case, localhost should suffice). Should you require the ability to pass in authentication information, here's a sample containing all of the supported URL parameters: `mongodb://[username:password@]host1[:port1][,host2[:port2],...[,hostN[:portN]]][/[database][?options]]`
 
 ```javascript
 mongoose.connect('mongodb://localhost/my_database');
 ```
 
-A Mongoose model for any Todo item can now be easily defined by passing a schema instance to <code>mongoose.model</code>. In our case the schema covers a Todo item's <code>text</code> content, its <code>done</code> state and <code>order</code> position in the overall Todo list.
+A Mongoose model for any Todo item can now be easily defined by passing a schema instance to `mongoose.model`. In our case the schema covers a Todo item's `text` content, its `done` state and `order` position in the overall Todo list.
 
 ```javascript
 var Todo = mongoose.model('Todo', new mongoose.Schema({
@@ -818,7 +818,7 @@ var Todo = mongoose.model('Todo', new mongoose.Schema({
 }));
 ```
 
-The <code>configure()</code> methods allows us to setup what we need for the current environment with our Express server. Note that lower down in the configuration are two view/view related lines. The last one explicitly sets the viewing/templating engine to be used as Jade <code>app.set('view engine', 'jade')</code>. We can avoid these if we wish to use plain HTML/JS for our templates instead.
+The `configure()` methods allows us to setup what we need for the current environment with our Express server. Note that lower down in the configuration are two view/view related lines. The last one explicitly sets the viewing/templating engine to be used as Jade `app.set('view engine', 'jade')`. We can avoid these if we wish to use plain HTML/JS for our templates instead.
 
 ```javascript
 app.configure(function(){
@@ -835,7 +835,7 @@ app.configure(function(){
 ```
 
 Should would prefer to switch out Jade for an alternative view engine, this can be done fairly trivially. See the section under 'Templating' here:
-https://github.com/joyent/node/wiki/modules. For example, to switch to EJS, you would simply write <code>app.set('view engine', 'ejs')</code>
+https://github.com/joyent/node/wiki/modules. For example, to switch to EJS, you would simply write `app.set('view engine', 'ejs')`
 
 
 Express makes use of commong HTTP verbs (get, put, post etc.) to provide easy to use, expressive routing API based on CRUD (Create, Read, Update and Delete). Below for example, we can define what happens when the browser requests the root '/'. As a trivial route in this application, it doesn't do anything particularly exciting, however getters typically read or retrieve data.
@@ -936,9 +936,9 @@ app.listen(3000);
 
 **script.js - updating our Backbone.js app**
 
-In the <code>/public/js</code> folder of options 1 (HTML templates) and 2 (Jade) for the practical, you'll find a version of the Backbone Todo app originally by Jerome Gravel-Niquet. Let's pay attention to [script.js](https://github.com/addyosmani/backbone-boilerplates/blob/master/option2/public/js/script.js). In order to change the application to work with our new back-end, we'll need to make some very minor changes to this. 
+In the `/public/js` folder of options 1 (HTML templates) and 2 (Jade) for the practical, you'll find a version of the Backbone Todo app originally by Jerome Gravel-Niquet. Let's pay attention to [script.js](https://github.com/addyosmani/backbone-boilerplates/blob/master/option2/public/js/script.js). In order to change the application to work with our new back-end, we'll need to make some very minor changes to this.
 
-Reviewing <code>window.TodoList</code> (a Backbone Collection), you'll notice that it has a property called <code>localStorage</code>, which uses the Backbone [localStorage](https://github.com/jeromegn/Backbone.localStorage) adapter in order to facilitate storing data using the browser's localStorage features.
+Reviewing `window.TodoList` (a Backbone Collection), you'll notice that it has a property called `localStorage`, which uses the Backbone [localStorage](https://github.com/jeromegn/Backbone.localStorage) adapter in order to facilitate storing data using the browser's localStorage features.
 
 ```javascript
 window.TodoList = Backbone.Collection.extend({
@@ -951,7 +951,7 @@ window.TodoList = Backbone.Collection.extend({
     localStorage: new Store("todos"),
 ```
 
-In order to switch it over to our RESTful backend, we're going to make use of the <code>url</code> property or function on a collection to reference its location on the server. Models inside of a collection then use <code>url</code> to construct URLs of their own. As all of the CRUD for our RESTful API works on the base route '/api/todos', this is the value we set <code>url</code> to.
+In order to switch it over to our RESTful backend, we're going to make use of the `url` property or function on a collection to reference its location on the server. Models inside of a collection then use `url` to construct URLs of their own. As all of the CRUD for our RESTful API works on the base route '/api/todos', this is the value we set `url` to.
 
 ```javascript
     // localStorage: new Store("todos"),
@@ -1145,13 +1145,13 @@ sudo chown `id -u` /data/db
 
 Once this is done, open up two terminal windows. 
 
-In the first, <code>cd</code> to your MongoDB bin directory or type in the complete path to it. You'll need to start <cpde>mongod</code>.
+In the first, `cd` to your MongoDB bin directory or type in the complete path to it. You'll need to start <cpde>mongod`.
 
 <pre>
 $ ./bin/mongod
 </pre>
 
-Next, in the second terminal, start the <code>mongo</code shell which will connect up to localhost by default.
+Next, in the second terminal, start the `mongo</code shell which will connect up to localhost by default.
 
 <pre>
 $ ./bin/mongo
@@ -1164,7 +1164,7 @@ That's it!.
 Option 1 (HTML) and Option 2 (Jade) of the practical download both come with an install.sh bash script. This allows you to easily install Express, Mongoose, Jade (and optionally MongoDB if you prefer to) through npm (the node package manager). 
 
 * Make sure you have Node.js installed. If not, you can grab it [here](http://nodejs.org/#download)
-* Next run <code>$ ./install.sh</code> at the terminal to install the rest of our dependencies. To see the exact contents of the install.sh file, see below:
+* Next run `$ ./install.sh` at the terminal to install the rest of our dependencies. To see the exact contents of the install.sh file, see below:
 
 **install.sh**
 
@@ -1185,12 +1185,12 @@ cd option2
 node app.js
 </pre>
 
-For option1 (without Jade), simply cd into option1 and run <code>node app.js</code> from there.
+For option1 (without Jade), simply cd into option1 and run `node app.js` from there.
 
 Finally, either of the example apps can now be accessed by navigating to:
 
-* Option 1: <code>http://localhost:3000/static.html</code>
-* Option 2: <code>http://localhost:3000/todo</code>
+* Option 1: `http://localhost:3000/static.html`
+* Option 2: `http://localhost:3000/todo`
 
 That's it! Whilst there's a lot more than can be done to expand on the concepts covered so far, the base we're reviewed should be enough to get you up and running with this stack if you wish to use them with Backbone. 
 
@@ -1913,9 +1913,9 @@ All subscriptions from modules go through a facade (or sandbox). What this does 
 
 **Mediator**
 
-Found in <code>aura/mediator.js</code>
+Found in `aura/mediator.js`
 
-Below is a very simple AMD-wrapped implementation of the mediator pattern, based on prior work by Ryan Florence. It accepts as it's input an object, to which it attaches <code>publish()</code> and <code>subscribe()</code> methods. In a larger application, the mediator can contain additional utilities, such as handlers for initialising, starting and stopping modules, but for demonstration purposes, these two methods should work fine for our needs.
+Below is a very simple AMD-wrapped implementation of the mediator pattern, based on prior work by Ryan Florence. It accepts as it's input an object, to which it attaches `publish()` and `subscribe()` methods. In a larger application, the mediator can contain additional utilities, such as handlers for initialising, starting and stopping modules, but for demonstration purposes, these two methods should work fine for our needs.
 
 ```javascript
 define([], function(obj){
@@ -1944,7 +1944,7 @@ define([], function(obj){
 
 **Facade**
 
-Found in <code>aura/facade.js</code>
+Found in `aura/facade.js`
 
 Next, we have an implementation of the facade pattern. Now the classical facade pattern applied to JavaScript would probably look a little like this: 
 
@@ -1983,7 +1983,7 @@ module.facade({run: true, val:10});
 
 It's effectively a variation of the module pattern, where instead of simply returning an interface of supported methods, your API can completely hide the true implementation powering it, returning something simpler. This allows the logic being performed in the background to be as complex as necessary, whilst all the end-user experiences is a simplified API they pass options to (note how in our case, a single method abstraction is exposed). This is a beautiful way of providing APIs that can be easily consumed.
 
-That said, to keep things simple, our implementation of an AMD-compatible facade will act a little more like a proxy. Modules will communicate directly through the facade to access the mediator's <code>publish()</code> and <code>subscribe()</code> methods, however, they won't as such touch the mediator directly.This enables the facade to provide application-level validation of any subscriptions and publications made. 
+That said, to keep things simple, our implementation of an AMD-compatible facade will act a little more like a proxy. Modules will communicate directly through the facade to access the mediator's `publish()` and `subscribe()` methods, however, they won't as such touch the mediator directly.This enables the facade to provide application-level validation of any subscriptions and publications made.
 
 It also allows us to implement a simple, but flexible, permissions checker (as seen below) which will validate subscriptions made against a permissions configuration to see whether it's permitted or not. 
 
@@ -2014,7 +2014,7 @@ define([ "../aura/mediator" , "../aura/permissions" ], function (mediator, permi
 
 **Permissions**
 
-Found in <code>aura/permissions.js</code>
+Found in `aura/permissions.js`
 
 In our simple permissions configuration, we support checking against subscription requests to establish whether they are allowed to clear. This enforces a flexible security layer for the application.
 
@@ -2082,7 +2082,7 @@ define([], function () {
 
 **Subscribers**
 
-Found in <code>subscribers.js</code>
+Found in `subscribers.js`
 
 Subscriber 'modules' communicate through the facade back to the mediator and perform actions when a notification event of a particular name is published. 
 
@@ -2090,7 +2090,7 @@ For example, when a user enters in a new piece of text for a Todo item and hits 
 
 In order to update your Backbone application to primarily use pub/sub, a lot of the work you may end up doing will be moving logic coupled inside of specific views to modules outside of it which are reactionary. 
 
-Take the <code>todoSaver</code> for example - it's responsibility is saving new Todo items to models once the a <code>notificationName</code> called 'newContentAvailable' has fired. If you take a look at the permissions structure in the last code sample, you'll notice that 'newContentAvailable' is present there. If I wanted to prevent subscribers from being able to subscribe to this notification, I simply set it to a boolean value of <code>false</code>.
+Take the `todoSaver` for example - it's responsibility is saving new Todo items to models once the a `notificationName` called 'newContentAvailable' has fired. If you take a look at the permissions structure in the last code sample, you'll notice that 'newContentAvailable' is present there. If I wanted to prevent subscribers from being able to subscribe to this notification, I simply set it to a boolean value of `false`.
 
 Again, this is a massive oversimplification of how advanced your permissions structures could get, but it's certainly one way of controlling what parts of your application can or can't be accessed by specific modules at any time.
 
@@ -2239,7 +2239,7 @@ In the above sample, `url` can refer to a URL or a hash identifier to navigate t
 
 ###Practical: A Backbone, RequireJS/AMD app with jQuery Mobile
 
-**Note:** The code for this practical can be found in <code>practicals/modular-mobile-app</code>
+**Note:** The code for this practical can be found in `practicals/modular-mobile-app`.
 
 ###Getting started
 
