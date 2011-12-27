@@ -2070,7 +2070,7 @@ define([], function () {
 
     permissions.validate = function(subscriber, channel){
         var test = permissions[channel][subscriber];
-        return test===undefined? false: test;
+        return typeof test === "undefined" ? false : test;
     };
 
     return permissions;
