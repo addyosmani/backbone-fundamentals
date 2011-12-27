@@ -525,7 +525,7 @@ GalleryRouter = Backbone.Router.extend({
  
 /* Now that we have a router setup, remember to instantiate it*/
  
-var myGalleryRouter = new GalleryRouter;
+var myGalleryRouter = new GalleryRouter();
 ```
 
 Note: In Backbone 0.5+, it's possible to opt-in for HTML5 pushState support via `window.history.pushState`. This effectively permits non-hashtag routes such as http://www.scriptjunkie.com/just/an/example to be supported with automatic degradation should your browser not support it. For the purposes of this tutorial, we won't be relying on this newer functionality as there have been reports about issues with it under iOS/Mobile Safari. Backbone's hash-based routes should however suffice for our needs.
