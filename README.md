@@ -698,7 +698,7 @@ galleryApp.routers.Workspace   = Backbone.Router.extend({});
 galleryApp.routers.PhotoSearch = Backbone.Router.extend({}); 
  
 /*models*/
-galleryApp.model.Photo      = Backbone.Model.extend({}); 
+galleryApp.model.Photo   = Backbone.Model.extend({});
 galleryApp.model.Comment = Backbone.Model.extend({}); 
  
 /*special models*/
