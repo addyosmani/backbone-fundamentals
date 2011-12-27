@@ -65,7 +65,7 @@ Backbone's main benefits, regardless of your target platform or device, include 
 
 In ways, the real question is why you should consider applying the MVC-pattern to your JavaScript projects and the one word answer is simply structure.
 
-If opting to use jQuery, zepto or another querySelectorAll-based selection library to produce a non-trivial application it can become very easy to produce an unwieldy amount of code; that is - unless you have a plan for how you're going to structure and organize your application. Separating concerns into models, views and controllers (or routers) is one way of solving this.
+If opting to use jQuery, Zepto or another querySelectorAll-based selection library to produce a non-trivial application it can become very easy to produce an unwieldy amount of code; that is - unless you have a plan for how you're going to structure and organize your application. Separating concerns into models, views and controllers (or routers) is one way of solving this.
 
 Remember that if you have experience with structuring applications using the MVVM (Model-View ViewModel) pattern, modules or otherwise, these are also equally as valid but do require you to know what you're doing. For most single-page applications, I find that the MVC pattern works well so Backbone is a perfect fit for our needs.
 
