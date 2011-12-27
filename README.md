@@ -380,7 +380,7 @@ photoCollection.remove([a,b]);
 As collections represent a group of items, we're also able to listen for `add` and `remove` events for when new models are added or removed from the collection. Here's an example:
 
 ```javascript
-var PhotoCollection = new Backbone.Collection;
+var PhotoCollection = new Backbone.Collection();
 PhotoCollection.bind("add", function(photo) {
   console.log("I liked " + photo.get("title") + ' its this one, right? '  + photo.src);
 });
