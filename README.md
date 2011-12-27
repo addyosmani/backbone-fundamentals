@@ -574,13 +574,13 @@ In this section we'll be taking a look shortly at some examples of how you can n
 One popular pattern for namespacing in JavaScript is opting for a single global variable as your primary object of reference. A skeleton implementation of this where we return an object with functions and properties can be found below:
 
 ```javascript
-var myApplication =  (function(){ 
-        function(){
-            ...
-        },
-        return{
-            ...
-        }
+var myApplication = (function(){
+    function(){
+      // ...
+    },
+    return {
+      // ...
+    }
 })();
 ```
 
