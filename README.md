@@ -1179,7 +1179,7 @@ npm install jade
 * After you've installed all of the dependencies for the stack, we can get to cloning the repo containing our practicals and running them. Start by running the below lines:
    
 <pre>
-git clone git://github.com/addyosmani/addyosmani/backbone-boilerplates.git
+git clone git://github.com/addyosmani/backbone-boilerplates.git
 cd option2
 node app.js
 </pre>
