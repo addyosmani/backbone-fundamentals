@@ -1469,6 +1469,8 @@ Below is an example of a build file taken from the modular jQuery Mobile app ref
 
 Near the bottom of this sample file, you'll see an array called `modules`. This is where you specify the module names you wish to have optimized. In this case we're optimizing the main application called 'app', which maps to `appDir/app.js`. If we had set the `baseUrl` to 'scripts', it would be mapped to `appDir/scripts/app.js`.
 
+### Build profile to optimize all dependencies required in app.js inside the `appDir`
+
 ```javascript
 ({
     appDir: "./",
@@ -1506,6 +1508,214 @@ node ../../r.js -o app.build.js
 ```
 
 That's it. As long as you have UglifyJS/Closure tools setup correctly, r.js should be able to easily optimize your entire Backbone project in just a few key-strokes. If you would like to learn more about build profiles, James Burke has a [heavily commented sample file](https://github.com/jrburke/r.js/blob/master/build/example.build.js) with all the possible options available.
+
+### Build profile to optimize modular dependencies with code organized in packages
+
+Assume the following directories and file organization, with app.build.js as the build profile as sibling to both source and release directories.  
+
+```text  
+.-- app.build.js
+|-- app-release
+`-- app-src
+    |-- collections
+    |   |-- base.js
+    |   |-- sections-segments.js
+    |   `-- sections.js
+    |-- docs
+    |   `--docco.css
+    |-- models
+    |   |-- base.js
+    |   |-- branding.js
+    |   `-- section.js
+    |-- packages
+    |   |-- header
+    |   |   |-- models
+    |   |   |   |-- nav.js
+    |   |   |   `-- link.js
+    |   |   |-- templates
+    |   |   |   |-- branding.js
+    |   |   |   |-- nav.js
+    |   |   |   `-- links.js
+    |   |   `-- views
+    |   |       |-- nav.js
+    |   |       |-- branding.js
+    |   |       `-- link.js
+    |   |-- header.js
+    |   `-- ... more packages here e.g. cart, checkout ...
+    |-- syncs
+    |   |-- rest
+    |   |   `-- sections.js
+    |   |-- factory.js
+    |   `-- localstorage.js
+    |-- test
+    |   |-- fixtures
+    |   |   `-- sections.json
+    |   |-- header
+    |   |   |-- index.html
+    |   |   `-- spec.js
+    |   |-- lib
+    |   |   `-- Jasmine
+    |   |-- models
+    |   |-- utils
+    |   |-- global-spec.js
+    |-- utils
+    |   |-- ajax.js
+    |   |-- baselib.js
+    |   |-- debug.js
+    |   |-- localstorage.js
+    |   `-- shims.js
+    |-- vendor
+    |-- |-- backbone-min.js
+    |   |-- jquery-1.7.1.min.js
+    |   |-- jquery.mobile-1.0.min.js
+    |   |-- json2.js
+    |   |-- modernizr-1.6.min.js
+    |   |-- mustache.js
+    |   |-- require.js
+    |   |-- text.js
+    |   `-- underscore.js
+    |-- views
+    |   |-- base.js
+    |   `-- collection.js
+    |-- application.js
+    |-- collections.js
+    |-- index.html
+    |-- main.js
+    |-- models.js
+    |-- syncs.js
+    |-- utils.js
+    |-- vendor.js
+    `-- views.js
+```
+
+The build profile can be organized to divide parallel downloads for various sections of the application code base (<http://requirejs.org/docs/faq-optimization.html#priority>). 
+
+This strategy demonstrated builds common or site-wide groups of (core) `models`, `views`, `collections` which are extended from a base.js constructor which extends the appropriate backbone method, e.g. Backbone.Model. The `packages` directory organizes code by section / responsibility, e.g. cart, checkout, etc. Notice that within the example `header` package the directory structure is similar to the app root directory file structure. A `package` (of modularized code) has dependencies from the common libraries in your application and also has specific code for the packages execution alone; other packages should not require another packages dependencies. A `utils` directory has shims, helpers, and common library code to support the application. A `syncs` directory to define persistence with your RESTful api and/or localStorage.  The `vendor` libraries folder will not be built, there is no need to do so, you may decide to use a CDN (then set these paths to : "empty:" <http://requirejs.org/docs/optimization.html#empty>). And finally a `test` directory for `Jasmine` unit test specs, which may be ignored in the build as well if you choose.
+
+Also notice the there are .js files named the same as the directories, these are the files listed in the paths. these are strategic to group sets of files to build, examples follow the build profile below.  
+
+```javascript
+({
+    appDir: './app-src',
+    baseUrl: './',
+    dir: './app-build',
+    optimize: 'uglify',
+    paths: {
+        // will not build 3rd party code, it's already built
+        'text'         : 'vendor/text',
+        'json2'        : 'vendor/json2.min',
+        'modernizr'    : 'vendor/modernizr-1.6.min',
+        'jquery'       : 'vendor/jquery-1.7.1',
+        'jquerymobile' : 'vendor/jquery.mobile-1.0.min.js',
+        'underscore'   : 'vendor/underscore',
+        'mustache'     : 'vendor/mustache',
+        'backbone'     : 'vendor/backbone',
+        // files that define dependencies...
+        // ignore vendor libraries, but need a group to do so
+        'vendor'       : 'vendor',
+        // application modules/packages these files define dependencies
+        // and may also group modules into objects if needed to require
+        // by groups rather than individual files
+        'utils'        : 'utils',
+        'models'       : 'models',
+        'views'        : 'views',
+        'collections'  : 'collections',
+        // packages to build
+        'header'       : 'packages/header'
+        //... more packages
+    },
+    modules: [
+        // Common libraries, Utilities, Syncs, Models, Views, Collections
+        {
+            name: 'utils',
+            exclude: ['vendor']
+        },
+        {
+            name: 'syncs',
+            exclude: ['vendor', 'utils']
+        },
+        {
+            name: 'models',
+            exclude: ['vendor', 'utils', 'syncs']
+        },
+        {
+            name: 'views',
+            exclude: ['vendor', 'utils', 'syncs', 'models']
+        },
+        {
+            name: 'collections',
+            exclude: ['vendor', 'utils', 'syncs', 'models', 'views']
+        },
+        // Packages
+        {
+            name: 'header',
+            exclude: ['vendor', 'utils', 'syncs', 'models', 'views', 'collections']
+        }
+        // ... and so much more ...
+    ]
+})
+```
+
+The above build profile is designed for balancing scalability and performance.  
+
+**Examples of the grouped sets of code dependencies**  
+
+The contents of the vendor.js with is not built may use some *no conflict* calls as well.  
+
+```javascript
+// List of vendor libraries, e.g. jQuery, Underscore, Backbone, etc.  
+// this module is used with the r.js optimizer tool during build  
+// @see <http://requirejs.org/docs/faq-optimization.html>
+define([ "jquery", "underscore", "backbone", "modernizr", "mustache" ], 
+function ($,        _,            Backbone,   Modernizr,   Mustache) {
+    // call no conflicts so if needed you can use multiple versions of $
+    $.noConflict();
+    _.noConflict();
+    Backbone.noConflict();
+});
+```
+
+For your application common library code.  
+
+```javascript
+// List of utility libraries,
+define([ "utils/ajax", "utils/baselib", "utils/localstorage", "utils/debug", "utils/shims" ], 
+function (ajax,         baselib,         localstorage,         debug) {
+    // do nothing here, the shim only extend JavaScript when needed, e.g. Object.create
+});
+```
+
+An example where you intend to use require the common models in another package file.  
+
+```javascript
+// List of models  
+// models in this directory are intended for site-wide usage  
+// grouping site-wide models in this module (object)
+// optimizes the performance and keeps dependencies organized
+// when the (build) optimizer is run.
+define([ "models/branding", "models/section" ], 
+function (Branding,          Section) {
+    return {
+        'Branding' : Branding,
+        'Section'  : Section
+    };
+});
+```
+
+A quick note on code standards, notice that in the above examples the parameters may begin with 
+lower or upper case characters. The variable names uses in the parameters that begin with 
+`Uppercase` are `Constructors` and the `lowercase` variable names are not, they may be instances
+created by a constructor, or perhaps an object or function that is not meant to used with `new`.
+
+The convention recommended is to use Upper CamelCase for constructors and lower camelCase for others. 
+
+If you intalled r.js with Node's npm (package manager) like so...
+
+    > npm install requirejs
+
+...you can execute the build on the command line:
+
+    > r.js -o app.build.js
 
 
 ##[Practical: Building a modular Backbone Todo app with AMD & RequireJS](#practical_modularapp)
