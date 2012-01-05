@@ -86,7 +86,7 @@ Backbone models contain interactive data for an application as well as the logic
 Models are quite straight-forward to create and can be constructed by extending `Backbone.Model` as follows:
 
 ```javascript
-Photo = Backbone.Model.extend({
+var Photo = Backbone.Model.extend({
     defaults: {
         src: 'placeholder.jpg',
         title: 'an image placeholder',
@@ -113,7 +113,7 @@ somePhoto.changeSrc("magic.jpg"); // which triggers "change:src" and logs an upd
 The `initialize()` method is called when creating a new instance of a model. It's use is optional, however we'll be reviewing some reasons you may want to use it shortly.
 
 ```javascript
-Photo = Backbone.Model.extend({
+var Photo = Backbone.Model.extend({
     initialize: function(){
         console.log('this model has been initialized');
     }
@@ -166,7 +166,7 @@ console.log(myAttributes);
 `Model.set()` allows us to pass attributes into an instance of our model. Attributes can either be set during initialization or later on.
 
 ```javascript
-Photo = Backbone.Model.extend({
+var Photo = Backbone.Model.extend({
     initialize: function(){
         console.log('this model has been initialized');
     }
@@ -186,7 +186,7 @@ myPhoto2.set({ title:'Vacation in Florida', location: 'Florida' });
 There are times when you want your model to have a set of default values (e.g. in a scenario where a complete set of data isn't provided by the user). This can be set using a property called `defaults` in your model.
 
 ```javascript
-Photo = Backbone.Model.extend({
+var Photo = Backbone.Model.extend({
     defaults:{
         title: 'Another photo!',
         tags:  ['untagged'],
@@ -218,7 +218,7 @@ this.bind('change', function(){
 In the following example, we can also log a message whenever a specific attribute (the title of our Photo model) is altered.
 
 ```javascript
-Photo = Backbone.Model.extend({
+var Photo = Backbone.Model.extend({
     defaults:{
         title: 'Another photo!',
         tags:  ['untagged'],
@@ -252,7 +252,7 @@ It supports including as complex or terse validation rules against attributes an
 A basic example for validation can be seen below:
 
 ```javascript
-Photo = Backbone.Model.extend({
+var Photo = Backbone.Model.extend({
     validate: function(attribs){
         if(attribs.src === undefined){
             return "Remember to set a source for your image!";
