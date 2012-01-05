@@ -254,7 +254,7 @@ A basic example for validation can be seen below:
 ```javascript
 Photo = Backbone.Model.extend({
     validate: function(attribs){
-        if(attribs.src == "placeholder.jpg"){
+        if(attribs.src === undefined){
             return "Remember to set a source for your image!";
         }
     },
@@ -270,6 +270,7 @@ Photo = Backbone.Model.extend({
 var myPhoto = new Photo();
 myPhoto.set({ title: "On the beach" });
 ```
+
 
 
 ###Views
