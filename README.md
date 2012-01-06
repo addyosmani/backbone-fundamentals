@@ -383,7 +383,7 @@ As collections represent a group of items, we're also able to listen for `add` a
 ```javascript
 var PhotoCollection = new Backbone.Collection();
 PhotoCollection.bind("add", function(photo) {
-  console.log("I liked " + photo.get("title") + ' its this one, right? '  + photo.src);
+  console.log("I liked " + photo.get("title") + ' its this one, right? '  + photo.get("src"));
 });
  
 PhotoCollection.add([
