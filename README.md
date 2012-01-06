@@ -310,7 +310,7 @@ var PhotoSearch = Backbone.View.extend({
 `el` is basically a reference to a DOM element and all views must have one, however Backbone allows you to specify this in four different ways. You can either directly use an `id`, a `tagName`, `className` or if you don't state anything `el` will simply default to a plain div element without any id or class. Here are some quick examples of how these may be used:
 
 ```javascript
-el: $('#results')  //select based on an ID or other valid jQuery selector.
+id: $('#results')  //select based on an ID or other valid jQuery selector.
 tagName: 'li' //select based on a specific tag. Here el itself will be derived from the tagName
 className: 'items' //similar to the above, this will also result in el being derived from it
 el: '' //defaults to a div without an id, name or class.
