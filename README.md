@@ -1,7 +1,7 @@
 #Backbone.js Fundamentals: 
 How to write modular JavaScript apps for desktop and mobile
 
-A work-in-progress by [Addy Osmani](http://twitter.com/addyosmani) released for free under a [CC](http://creativecommons.org/licenses/by-nc-sa/3.0/)-license. My extended thanks to [these](https://github.com/addyosmani/backbone-fundamentals/contributors) members of the community for their tweaks and contributions.
+A work-in-progress book by [Addy Osmani](http://twitter.com/addyosmani) released for free under a [CC](http://creativecommons.org/licenses/by-nc-sa/3.0/)-license. My extended thanks to [these](https://github.com/addyosmani/backbone-fundamentals/contributors) members of the community for their assistance tweaking the project.
 
 ##Index
 
@@ -35,7 +35,7 @@ A work-in-progress by [Addy Osmani](http://twitter.com/addyosmani) released for 
 * Testing Views
 
 
-* ####Resources
+* ####[Resources](#resources)
 
 
 ##<a name="introduction">Introduction</a>
@@ -3196,7 +3196,7 @@ As an exercise, I recommend now downloading [Backbone Koans](http://github.com/a
 
 
 
-#Resources
+#<a name="resources">Resources</a>
 
 Whilst we get with Backbone out of the box can be terribly useful, there are some equally as beneficial add-ons that can help simplify our development process. These include:
 
