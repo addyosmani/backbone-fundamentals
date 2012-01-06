@@ -348,7 +348,7 @@ Normally, when creating a collection you'll also want to pass through a property
 In the following example, we're creating a PhotoCollection containing the Photo models we previously defined.
 
 ```javascript
-PhotoCollection = Backbone.Collection.extend({
+var PhotoCollection = Backbone.Collection.extend({
     model: Photo
 });
 ```
@@ -464,7 +464,7 @@ Let us now define our first controller by extending `Backbone.Router`. For the p
 Note the inline comments in the code example below as they continue the rest of the lesson on routers.
 
 ```javascript
-GalleryRouter = Backbone.Router.extend({
+var GalleryRouter = Backbone.Router.extend({
     /* define the route and function maps for this router */
     routes:{
         "/about" : "showAbout",
@@ -540,19 +540,27 @@ The `Backbone.history.start()` method will simply tell Backbone that it's OK to 
 
 ```javascript
 Backbone.history.start();
-Controller.saveLocation();
+Router.navigate();
 ```
 
-As an aside, if you would like to save application state to the URL at a particular point you can use the `.saveLocation()` method to achieve this. It simply updates your URL fragment without the need to trigger the `hashchange` event.
+As an aside, if you would like to save application state to the URL at a particular point you can use the `.navigate()` method to achieve this. It simply updates your URL fragment without the need to trigger the `hashchange` event.
 
 ```javascript
 /*Lets imagine we would like a specific fragment for when a user zooms into a photo*/
 zoomPhoto: function(factor){
     this.zoom(factor); //imagine this zooms into the image
-    this.saveLocation("zoom/" + factor); //updates the fragment for us
+    this.navigate("zoom/" + factor); //updates the fragment for us, but doesn't trigger the route
 }
 ```
 
+It is also possible for `Router.navigate()` to trigger the route aswell as updating the URL fragment.
+
+```javascript
+zoomPhoto: function(factor){
+    this.zoom(factor); //imagine this zooms into the image
+    this.navigate("zoom/" + factor, true); //updates the fragment for us and triggers the route
+}
+```
 
 ###Namespacing
 
