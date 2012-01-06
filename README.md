@@ -497,7 +497,7 @@ var GalleryRouter = Backbone.Router.extend({
         expression parsing on your fragment*/
          
         "*other"    : "defaultRoute"
-        //This is a default route with that also uses a *splat. Consider the
+        //This is a default route that also uses a *splat. Consider the
         //default route a wildcard for URLs that are either not matched or where
         //the user has incorrectly typed in a route path manually
         /*Sample usage: http://unicorns.com/#/anything*/
