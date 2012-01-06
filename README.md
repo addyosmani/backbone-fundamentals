@@ -440,7 +440,7 @@ PhotoCollection.reset([
 As Backbone requires Underscore as a hard dependency, we're able to use many of the utilities it has to offer to aid with our application development. Here's an example of how Underscore's `sortBy()` method can be used to sort a collection of photos based on a particular attribute.
 
 ```javascript
-var sortedByAlphabet = PhotoCollection.sortBy(function(photo)){
+var sortedByAlphabet = PhotoCollection.sortBy(function (photo) {
     return photo.get("title").toLowerCase();
 });
 ```
