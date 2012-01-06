@@ -2829,7 +2829,7 @@ some.fixture.html:
 
 Next, inside our actual test we would load it as follows:
 
-```
+```javascript
 loadFixtures('some.fixture.html')
 $('some-fixture').myTestedPlugin();
 expect($('#some-fixture')).to<the rest of your matcher would go here>
@@ -2839,7 +2839,7 @@ The jasmine-jquery plugin is by default setup to load fixtures from a specific d
 
 Finally, jasmine-jquery includes support for spying on jQuery events without the need for any extra plumbing work. This can be done using the ```spyOnEvent()``` and ```assert(eventName).toHaveBeenTriggered(selector)``` functions. An example of usage may look as follows:
 
-```
+```javascript
 spyOnEvent($('#el'), 'click');
 $('#el').click();
 expect('click').toHaveBeenTriggeredOn($('#el'));
@@ -2877,11 +2877,10 @@ The first spec useful to write is a check that the TodoView we've created is usi
 Backbone views typically create empty DOM elements once initialized, however these elements are not attached to the visible DOM in order to allow them to be constructed without an impact on the performance of rendering. 
 
 ```javascript
-    it('Should be tied to a DOM element when created, based off the property provided.', function() {
-        //what html element tag name represents this view?
-        expect(todoView.el.tagName.toLowerCase()).toBe('li');
-    });
-   
+it('Should be tied to a DOM element when created, based off the property provided.', function() {
+    //what html element tag name represents this view?
+    expect(todoView.el.tagName.toLowerCase()).toBe('li');
+});
 ```
  
 Once again, if the TodoView has not already been written, we will experience failing specs. Thankfully, solving this is as simple as creating a new Backbone.View with a specific ```tagName```.
@@ -2905,13 +2904,13 @@ The ```toHaveClass()``` matcher operates on jQuery objects and if the plugin had
 You may have noticed that in ```beforeEach()```, we passed our view an initial (albeit unfilled) Todo model. Views should be backed by a model instance which provides data. As this is quite important to our view's ability to function, we can write a spec to ensure a model is both defined (using the ```toBeDefined()``` matcher) and then test attributes of the model to ensure defaults both exist and are the value we expect them to be.
 
 ```javascript
-    it('Is backed by a model instance, which provides the data.', function() {
+it('Is backed by a model instance, which provides the data.', function() {
 
-        expect(todoView.model).toBeDefined();
+    expect(todoView.model).toBeDefined();
 
-        // what's the value for Todo.get('done') here?
-        expect(todoView.model.get('done')).toBe(false); //or toBeFalsy()
-    });
+    // what's the value for Todo.get('done') here?
+    expect(todoView.model.get('done')).toBe(false); //or toBeFalsy()
+});
 ```
 
 ##View rendering
@@ -2973,7 +2972,7 @@ Once these specs are run, only the second one ('produces the correct HTML') fail
         <div class="edit">
           <input class="todo-input" type="text" value="<%= content %>" />
         </div>
-      </div>
+</div>
 ```
 
 
