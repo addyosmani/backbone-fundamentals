@@ -635,7 +635,7 @@ var myApplication = {};
  
 /*
 Does check for existence. If already defined, we use that instance.
-Option 1:   if(!MyApplication) MyApplication = {};
+Option 1:   if(!myApplication) myApplication = {};
 Option 2:   var myApplication = myApplication = myApplication || {}
 Option 3:   var myApplication = myApplication || {};
 We can then populate our object literal to support models, views and collections (or any data, really):
