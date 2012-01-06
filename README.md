@@ -301,7 +301,9 @@ var PhotoSearch = Backbone.View.extend({
     reset: function( event ){
         //executed when an element with class "reset" has been clicked.
     },
-    //etc
+    switchContext: function( event ){
+        //executed when an element with class "advanced" has been clicked.
+    }
 });
 ```
 
@@ -310,7 +312,7 @@ var PhotoSearch = Backbone.View.extend({
 `el` is basically a reference to a DOM element and all views must have one, however Backbone allows you to specify this in four different ways. You can either directly use an `id`, a `tagName`, `className` or if you don't state anything `el` will simply default to a plain div element without any id or class. Here are some quick examples of how these may be used:
 
 ```javascript
-el: $('#results')  //select based on an ID or other valid jQuery selector.
+id: $('#results')  //select based on an ID or other valid jQuery selector.
 tagName: 'li' //select based on a specific tag. Here el itself will be derived from the tagName
 className: 'items' //similar to the above, this will also result in el being derived from it
 el: '' //defaults to a div without an id, name or class.
@@ -438,7 +440,7 @@ PhotoCollection.reset([
 As Backbone requires Underscore as a hard dependency, we're able to use many of the utilities it has to offer to aid with our application development. Here's an example of how Underscore's `sortBy()` method can be used to sort a collection of photos based on a particular attribute.
 
 ```javascript
-var sortedByAlphabet = PhotoCollection.sortBy(function(photo)){
+var sortedByAlphabet = PhotoCollection.sortBy(function (photo) {
     return photo.get("title").toLowerCase();
 });
 ```
@@ -495,7 +497,7 @@ var GalleryRouter = Backbone.Router.extend({
         expression parsing on your fragment*/
          
         "*other"    : "defaultRoute"
-        //This is a default route with that also uses a *splat. Consider the
+        //This is a default route that also uses a *splat. Consider the
         //default route a wildcard for URLs that are either not matched or where
         //the user has incorrectly typed in a route path manually
         /*Sample usage: http://unicorns.com/#/anything*/
@@ -633,7 +635,7 @@ var myApplication = {};
  
 /*
 Does check for existence. If already defined, we use that instance.
-Option 1:   if(!MyApplication) MyApplication = {};
+Option 1:   if(!myApplication) myApplication = {};
 Option 2:   var myApplication = myApplication = myApplication || {}
 Option 3:   var myApplication = myApplication || {};
 We can then populate our object literal to support models, views and collections (or any data, really):
