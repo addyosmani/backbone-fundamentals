@@ -28,6 +28,7 @@ A work-in-progress by [Addy Osmani](http://twitter.com/addyosmani) released for 
 * Practical: Building a modular mobile app with Backbone & jQuery Mobile
 
 * ####[Testing](#testing)
+* Unit Testing Backbone Applications With Jasmine
 * An Introduction to Jasmine
 * Testing Models
 * Testing Collections
@@ -2305,6 +2306,8 @@ The takeaway here is just to remember that if you're not (already) going through
 
 
 ##<a name="testing">Testing</a>
+
+#Unit Testing Backbone Applications With Jasmine
 
 ##Introduction
 
