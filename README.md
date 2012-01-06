@@ -301,7 +301,9 @@ var PhotoSearch = Backbone.View.extend({
     reset: function( event ){
         //executed when an element with class "reset" has been clicked.
     },
-    //etc
+    switchContext: function( event ){
+        //executed when an element with class "advanced" has been clicked.
+    }
 });
 ```
 
