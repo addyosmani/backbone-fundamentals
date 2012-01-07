@@ -1,0 +1,25 @@
+mkdir './build'
+pandoc -s -S --css=style.css --toc --epub-metadata=metadata.xml -o 'build/index.html' title.txt \
+  1_prolog.md \
+  3_intro.md \
+  4_basics.md \
+  5_stacks.md \
+  6_modular.md \
+  7_mobile.md \
+  8_testing.md \
+  9_resources.md 
+
+
+cp style.css './build'
+
+
+
+pandoc -s -S --css=style.css --toc --epub-metadata=metadata.xml -o 'build/index.epub' title.txt \
+  1_prolog.md \
+  3_intro.md \
+  4_basics.md \
+  5_stacks.md \
+  6_modular.md \
+  7_mobile.md \
+  8_testing.md \
+  9_resources.md 
