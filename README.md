@@ -1509,9 +1509,23 @@ node ../../r.js -o app.build.js
 
 That's it. As long as you have UglifyJS/Closure tools setup correctly, r.js should be able to easily optimize your entire Backbone project in just a few key-strokes. If you would like to learn more about build profiles, James Burke has a [heavily commented sample file](https://github.com/jrburke/r.js/blob/master/build/example.build.js) with all the possible options available.
 
-### Build profile to optimize modular dependencies with code organized in packages
+### Optimize and Build a Backbone.js JavaScript application with Require.JS using Packages 
 
-Assume the following directories and file organization, with app.build.js as the build profile as sibling to both source and release directories.  
+When a JavaScript application is to complex or large to build in a single file, grouping the application's components into packages allows for script dependencies to download in parallel; and facilitates only loading **packaged** and other modular code as the site experience requires the specific set of dependencies.
+
+Require.JS, the (JavaScript) module loading library, has an [optimizer](http://requirejs.org/docs/optimization.html "Require.JS optimizer") to build a JavaScript based application and provides various options. A build profile is the recipe for your build, much like a build.xml file is used to build a project with ANT. The benefit of building with **r.js** not only results in speedy script loading with minified code, but also provides a way to package components of your application.
+
+* [Optimizing one JavaScript file](http://requirejs.org/docs/optimization.html#onejs "Optimizing one JavaScript file")
+* [Optimizing a whole project](http://requirejs.org/docs/optimization.html#wholeproject "Optimizing a whole project")
+* [Optimizing a project in layers or packages](http://requirejs.org/docs/faq-optimization.html#priority "Optimizing a project in layers or packages")
+
+In a complex application, organizing code into *packages* is an attractive build strategy. The build profile in this article is based on an test application currently under development (files list below). The application framework is built with open source libraries. The main objective in this build profile is to optimize an application developed with [Backbone.js](http://documentcloud.github.com/backbone/ "Backbone.js") using modular code, following the [Asynchronous Module Definition (AMD)](https://github.com/amdjs/amdjs-api/wiki/AMD "Asynchronous Module Definition (AMD) wiki page") format. AMD and Require.JS provide the structure for writing modular code with dependencies. Backbone.js provides the code organization for developing models, views and collections and also interactions with a RESTful API.
+
+Below is an outline of the application's file organization, followed by the build profile to build modular (or packaged) layers a JavaScript driven application.
+
+#### File organization
+
+Assume the following directories and file organization, with app.build.js as the build profile (a sibling to both source and release directories). Note that the files in the list below named *section* can be any component of the application, e.g. *header*, *login*)
 
 ```text  
 .-- app.build.js
@@ -1588,11 +1602,13 @@ Assume the following directories and file organization, with app.build.js as the
     `-- views.js
 ```
 
-The build profile can be organized to divide parallel downloads for various sections of the application code base (<http://requirejs.org/docs/faq-optimization.html#priority>). 
+#### Build profile to optimize modular dependencies with code organized in packages
 
-This strategy demonstrated builds common or site-wide groups of (core) `models`, `views`, `collections` which are extended from a base.js constructor which extends the appropriate backbone method, e.g. Backbone.Model. The `packages` directory organizes code by section / responsibility, e.g. cart, checkout, etc. Notice that within the example `header` package the directory structure is similar to the app root directory file structure. A `package` (of modularized code) has dependencies from the common libraries in your application and also has specific code for the packages execution alone; other packages should not require another packages dependencies. A `utils` directory has shims, helpers, and common library code to support the application. A `syncs` directory to define persistence with your RESTful api and/or localStorage.  The `vendor` libraries folder will not be built, there is no need to do so, you may decide to use a CDN (then set these paths to : "empty:" <http://requirejs.org/docs/optimization.html#empty>). And finally a `test` directory for `Jasmine` unit test specs, which may be ignored in the build as well if you choose.
+The build profile can be organized to [divide parallel downloads for various sections of the application](http://requirejs.org/docs/faq-optimization.html#priority "optimize modular dependencies in packages"). 
 
-Also notice the there are .js files named the same as the directories, these are the files listed in the paths. these are strategic to group sets of files to build, examples follow the build profile below.  
+This strategy demonstrated builds common or site-wide groups of (core) *models*, *views*, *collections* which are extended from a base.js constructor which extends the appropriate backbone method, e.g. Backbone.Model. The *packages* directory organizes code by section / responsibility, e.g. cart, checkout, etc. Notice that within the example *header* package the directory structure is similar to the app root directory file structure. A *package* (of modularized code) has dependencies from the common libraries in your application and also has specific code for the packages execution alone; other packages should not require another packages dependencies. A *utils* directory has shims, helpers, and common library code to support the application. A *syncs* directory to define persistence with your RESTful api and/or localStorage.  The *vendor* libraries folder will not be built, there is no need to do so, you may decide to use a CDN (then set these paths to : *[empty:](http://requirejs.org/docs/optimization.html#empty "empty:")*. And finally a *test* directory for *Jasmine* unit test specs, which may be ignored in the build as well if you choose.
+
+Also notice the there are .js files named the same as the directories, these are the files listed in the paths. these are strategic to group sets of files to build, examples follow the build profile below.   
 
 ```javascript
 ({
@@ -1702,10 +1718,7 @@ function (Branding,          Section) {
 });
 ```
 
-A quick note on code standards, notice that in the above examples the parameters may begin with 
-lower or upper case characters. The variable names uses in the parameters that begin with 
-`Uppercase` are `Constructors` and the `lowercase` variable names are not, they may be instances
-created by a constructor, or perhaps an object or function that is not meant to used with `new`.
+Notice that in the above examples the parameters may begin with lower or upper case characters. The variable names uses in the parameters that begin with *Uppercase* are *Constructors* and the *lowercase* variable names are not, they may be instances created by a constructor, or perhaps an object or function that is not meant to used with *new*.
 
 The convention recommended is to use Upper CamelCase for constructors and lower camelCase for others. 
 
