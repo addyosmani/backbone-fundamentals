@@ -627,7 +627,7 @@ Note: There are several other variations on the single global variable pattern o
 
 Object Literals have the advantage of not polluting the global namespace but assist in organizing code and parameters logically. They're beneficial if you wish to create easily-readable structures that can be expanded to support deep nesting. Unlike simple global variables, Object Literals often also take into account tests for the existence of a variable by the same name so the chances of collision occurring are significantly reduced.
 
-The code at the very top of the next sample demonstrates the different ways in which you can check to see if a namespace already exists before defining it. I commonly use Option 3.
+The code at the very top of the next sample demonstrates the different ways in which you can check to see if a namespace already exists before defining it. I commonly use Option 2.
 
 ```javascript
 /*Doesn't check for existence of myApplication*/
@@ -636,8 +636,7 @@ var myApplication = {};
 /*
 Does check for existence. If already defined, we use that instance.
 Option 1:   if(!myApplication) myApplication = {};
-Option 2:   var myApplication = myApplication = myApplication || {}
-Option 3:   var myApplication = myApplication || {};
+Option 2:   var myApplication = myApplication || {};
 We can then populate our object literal to support models, views and collections (or any data, really):
 */
  
