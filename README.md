@@ -230,7 +230,7 @@ var Photo = Backbone.Model.extend({
         console.log('this model has been initialized');
         this.bind("change:title", function(){
             var title = this.get("title");
-            console.log("My title has been changed to.." + title);
+            console.log("My title has been changed to.. " + title);
         });
     },
     
@@ -241,7 +241,7 @@ var Photo = Backbone.Model.extend({
  
 var myPhoto = new Photo({ title:"Fishing at the lake", src:"fishing.jpg"});
 myPhoto.setTitle('Fishing at sea'); 
-//logs my title has been changed to.. Fishing at sea
+//logs My title has been changed to.. Fishing at sea
 ```
 
 **Validation**
@@ -270,6 +270,7 @@ var Photo = Backbone.Model.extend({
  
 var myPhoto = new Photo();
 myPhoto.set({ title: "On the beach" });
+//logs Remember to set a source for your image!
 ```
 
 
