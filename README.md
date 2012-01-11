@@ -136,7 +136,7 @@ var myPhoto = new Photo({ title: "My awesome photo",
                           location: "Boston", 
                           tags:['the big game', 'vacation']}),
                           
-    title = myPhoto.get("title"), //my awesome photo
+    title = myPhoto.get("title"), //My awesome photo
     location = myPhoto.get("location"), //Boston
     tags = myPhoto.get("tags"), // ['the big game','vacation']
     photoSrc = myPhoto.get("src"); //boston.jpg
