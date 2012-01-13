@@ -327,7 +327,12 @@ className: 'mastHead', // optional, you can assign multiple classes to this prop
 id: 'header', // optional
 ```
 
-The above code creates the DOMElement  `<p id="header" class="mast-head"></p>`.
+The above code creates the DOMElement below but doesn't append it to the DOM.
+
+<pre>
+	&lt;p id=&quot;header&quot; class=&quot;todo&quot; class=&quot;todo&quot;&gt;
+&lt;p id="header" class="mast-head"&gt&lt;/p&gt`
+</pre>
 
 
 
