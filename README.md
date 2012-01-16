@@ -450,7 +450,7 @@ The complete list of what it can do is beyond the scope of this guide, but can b
 
 In Backbone, routers are used to handle routing for your application. This is achieved using hash-tags with URL fragments which you can read more about if you wish. Some examples of valid routes may be seen below:
 
-```javascript
+```html
 http://unicorns.com/#/whatsup
 http://unicorns.com/#/search/seasonal-horns/page2
 ```
