@@ -1646,9 +1646,8 @@ var TodoView = Backbone.View.extend({
     // The TodoView listens for changes to its model, re-rendering. Since there's
     // a one-to-one correspondence between a **Todo** and a **TodoView** in this
     // app, we set a direct reference on the model for convenience.
-    initialize: function() {
-      _.bindAll(this, 'render', 'close');
-      this.model.bind('change', this.render);
+    initialize: function() {      
+      this.model.bind('change', this.render, this);
       this.model.view = this;
     },
     ...
@@ -1703,9 +1702,8 @@ define([
     // The TodoView listens for changes to its model, re-rendering. Since there's
     // a one-to-one correspondence between a **Todo** and a **TodoView** in this
     // app, we set a direct reference on the model for convenience.
-    initialize: function() {
-      _.bindAll(this, 'render', 'close');
-      this.model.bind('change', this.render);
+    initialize: function() {      
+      this.model.bind('change', this.render, this);
       this.model.view = this;
     },
 
