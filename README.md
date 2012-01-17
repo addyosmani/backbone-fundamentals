@@ -1,13 +1,13 @@
 #Backbone.js Fundamentals: 
-How to write modular JavaScript apps for desktop and mobile
+A book on Backbone.js targeted at beginners and advanced users alike
 
-A work-in-progress book by [Addy Osmani](http://twitter.com/addyosmani) released for free under a [CC](http://creativecommons.org/licenses/by-nc-sa/3.0/)-license. My extended thanks to [these](https://github.com/addyosmani/backbone-fundamentals/contributors) members of the community for their assistance tweaking the project.
+A work-in-progress by [Addy Osmani](http://twitter.com/addyosmani) released for free under a [CC](http://creativecommons.org/licenses/by-nc-sa/3.0/)-license. My extended thanks to [these](https://github.com/addyosmani/backbone-fundamentals/contributors) members of the community for their assistance tweaking the project.
 
 ##Index
 
 * [Introduction](#introduction)
 
-* ###[Fundamentals](#fundamentals)
+* ####[Fundamentals](#fundamentals)
 * [Understanding MVC & MVP](#mvcmvp)
 
 * ####[The Basics](#thebasics)
