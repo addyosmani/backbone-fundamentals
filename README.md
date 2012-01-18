@@ -43,63 +43,63 @@ This repo contains a work-in-progress by [Addy Osmani](http://twitter.com/addyos
 
 ##<a name="introduction">Introduction</a>
 
-As JavaScript developers, we are at an interesting point in time where not only do we have mature solutions to help organize the JavaScript powering our applications based on a separation of concerns, but developers looking to build non-trivial apps are almost spoiled for choice for frameworks that can help achieve this goal. 
+As JavaScript developers, we are at an interesting point in time where not only do we have mature solutions to help organize the JavaScript powering our applications based on a separation of concerns, but developers looking to build non-trivial projects are almost spoiled for choice for frameworks that can help structure their applications. 
 
-Maturity in software (framework) development isn't simply about how long a framework has been around. It's about how solid the framework is and more importantly how well it's evolved to fill it's role. Has it become more effective at solving the problems developers use it for?. A few have continued to improve and evolve over time as developers build larger and more complex applications with them.  
+Maturity in software (framework) development isn't simply about how long a framework has been around. It's about how solid the framework is and more importantly how well it's evolved to fill its role. Has it become more effective at solving common problems? Does it continue to improve as developers build larger and more complex applications with it?  
 
-In this book, I will be covering a complete run-down of the popular Backbone.js framework for structuring JavaScript applications, which I consider the best of these options. 
+In this book, I will be covering the popular Backbone.js, which I consider the best of the current family of Jasvacript frameworks. 
 
-Topics will include MVC theory and how to build applications using Backbone's models, views, collections and routers. I'll also be taking you through advanced topics like modular development with Backbone.js and AMD (via RequireJS), how to build applications using modern tech stacks (like Node and Express), how to solve the routing problems with Backbone and jQuery Mobile, tips about scaffolding tools and a lot more.
+Topics will include MVC theory and how to build applications using Backbone's models, views, collections and routers. I'll also be taking you through advanced topics like modular development with Backbone.js and AMD (via RequireJS), how to build applications using modern software stacks (like Node and Express), how to solve the routing problems with Backbone and jQuery Mobile, tips about scaffolding tools, and a lot more.
 
-If this is your first time looking at Backbone.js and you're still unsure whether or not to give it a try, why not take a look at how [a Todo application](http://github.com/addyosmani/todomvc) might be implemented in Backbone and most of the other alternatives before reading further?
+If this is your first time looking at Backbone.js and you're still unsure whether or not to give it a try, why not take a look at how [a Todo application](http://github.com/addyosmani/todomvc) can be implemented in Backbone and several other popular Javascript frameworks before reading further?
 
 The goal of this book is to create an authoritative and centralized repository of information that can help those developing real-world apps with Backbone. If you come across a section or topic which you think could be improved or expanded on, please feel free to submit a pull-request. It won't take long and you'll be helping other developers avoid problems you've run into before.
 
 
 ##<a name="fundamentals">Fundamentals</a>
 
-In this section we are going to cover some of the fundamentals required to appreciate where a framework like Backbone.js fits in. Let's begin our journey into understanding Backbone better with a look at code architecture. 
+In this section we are going to cover the context into which a framework like Backbone.js fits. Let's begin our journey into understanding Backbone better with a look at code architecture. 
 
 ###Understanding MVC And MVP (For JavaScript Developers)
 
-Before exploring any JavaScript frameworks that assist in structuring applications, it can be useful to gain a basic understanding of architectural design patterns. Design patterns are proven solutions to common development problems and can suggest structural paradigms to help guide us in adding some organization to our application. 
+Before exploring any JavaScript frameworks that assist in structuring applications, it can be useful to gain a basic understanding of architectural design patterns. Design patterns are proven solutions to common development problems and can suggest structural approaches to help guide developers in adding some organization to their applications. 
 
-I think patterns are exciting as they're effectively a grass roots effort that build upon the collective experience of skilled developers who have previously faced similar problems as we do now. Although developers 10 or 20 years ago may not have been using the same programming languages for implementing patterns, there are many lessons we can learn from their efforts.
+Patterns are useful because they're a set of practices that build upon the collective experience of developers who have repeatedly solved similar problems. Although developers 10 or 20 years ago may not have been using the same programming languages when implementing patterns in their projects, there are many lessons we can learn from their efforts.
 
-In this section, we're going to review two popular patterns - MVC and MVP. The context of our exploration will be how these patterns are related to the popular JavaScript framework Backbone.js, which will be explored in greater detail later on.
+In this section, we're going to review two popular patterns - MVC and MVP. We'll be exploring in greater detail how Backbone.js implements these patterns later in this book.
 
 
 ##MVC
 
-MVC (Model-View-Controller) is an architectural design pattern that encourages improved application organization through a separation of concerns. It enforces the isolation of business data (Models) from user interfaces (Views), with a third component (Controllers) (traditionally) managing logic, user-input and coordinating both the models and views. The pattern was originally designed by [Trygve Reenskaug](http://en.wikipedia.org/wiki/Trygve_Reenskaug) during his time working on Smalltalk-80 (1979) where it was initially called Model-View-Controller-Editor. MVC went on to be described in depth in [“Design Patterns: Elements of Reusable Object-Oriented Software”](http://www.amazon.co.uk/Design-patterns-elements-reusable-object-oriented/dp/0201633612) (The "GoF" or “Gang of Four” book) in 1994, which played a role in popularizing its use.
+MVC (Model-View-Controller) is an architectural design pattern that encourages improved application organization through a separation of concerns. It enforces the isolation of business data (Models) from user interfaces (Views), with a third component (Controllers) often present to manage logic, user-input and the coordination of models and views. The pattern was originally designed by [Trygve Reenskaug](http://en.wikipedia.org/wiki/Trygve_Reenskaug) while working on Smalltalk-80 (1979), where it was initially called Model-View-Controller-Editor. MVC was described in depth in [“Design Patterns: Elements of Reusable Object-Oriented Software”](http://www.amazon.co.uk/Design-patterns-elements-reusable-object-oriented/dp/0201633612) (The "GoF" or “Gang of Four” book) in 1994, which played a role in popularizing its use.
 
 
 ###Smalltalk-80 MVC
 
-It's important to understand what the original MVC pattern was aiming to solve as it's mutated quite heavily since the days of it's origin. Back in the 70's, graphical user-interfaces were far and few between and a concept known as [Separated Presentation](http://martinfowler.com/eaaDev/uiArchs.html) began to be used as a means to make a clear division between domain objects which modelled concepts in the real world (e.g a photo, a person) and the presentation objects which were rendered to the user's screen.
+It's important to understand the problem the original MVC pattern was aiming to solve, as it's evolved quite a bit. Back in the 70's, graphical user-interfaces were far and few between. An apoprach known as [Separated Presentation](http://martinfowler.com/eaaDev/uiArchs.html) began to be used as a means to make a clear division between domain objects which modelled concepts in the real world (e.g a photo, a person), and the presentation objects which were rendered to the user's screen.
 
-The Smalltalk-80 implementaion of MVC took this concept further and had an objective of separating out the application logic from the user interface. The idea was that decoupling these parts of the application would also allow the reuse of models for other interfaces in the application. There are some interesting points worth noting about Smalltalk-80's MVC architecture:
+The Smalltalk-80 implementaion of MVC took this concept further, with the goal of completely separating out the application logic from the user interface. In theory, decoupling these components of the application could allow the reuse of models across multiple interfaces. There are some interesting points worth noting about Smalltalk-80's MVC architecture:
 
-* A Domain element was known as a Model and were ignorant of the user-interface (Views and Controllers)
-* Presentation was taken care of by the View and the Controller, but there wasn't just a single view and controller. A View-Controller pair was required for each element being displayed on the screen and so there was no true separation between them
-* The Controller's role in this pair was handling user input (such as key-presses and click events), doing something sensible with them. 
-* The Observer pattern was relied upon for updating the View whenever the Model changed
+* A Domain element was known as a Model and should be ignorant of the user interface (Views and Controllers)
+* Presentation is taken care of by the View and the Controller, but there need not be just a single view and controller. A View-Controller pair is required for each element being displayed on the screen and so there is no true separation between them
+* The Controller's role in this pair is to handle user input (such as key-presses and click events), doing something sensible with it. 
+* The Observer pattern is used to update the View whenever the Model changes
 
-Developers are sometimes surprised when they learn that the Observer pattern (nowadays commonly implemented as a Publish/Subscribe system) was included as a part of MVC's architecture many decades ago. In Smalltalk-80's MVC, the View and Controller both observe the Model. As mentioned in the bullet point above, anytime the Model changes, the Views react. A simple example of this is an application backed by stock market data - in order for the application to be useful, any change to the data in our Models should result in the View being refreshed instantly. 
+Developers are sometimes surprised when they learn that the Observer pattern (nowadays commonly implemented as a Publish/Subscribe system) was included as a part of MVC's architecture decades ago. In Smalltalk-80's MVC, the View and Controller both observe the Model: anytime the Model changes, the Views react. A simple example of this is an application backed by stock market data - for the application to show real-time information, any change to the data in its Models should result in the View being refreshed instantly. 
 
-Martin Fowler has done an excellent job of writing about the [origins](http://martinfowler.com/eaaDev/uiArchs.html) of MVC over the years and if you are interested in some further historical information about Smalltalk-80's MVC, I recommend reading his work. 
+Martin Fowler has done an excellent job of writing about the [origins](http://martinfowler.com/eaaDev/uiArchs.html) of MVC over the years and if you are interested in further historical information about Smalltalk-80's MVC, I recommend reading his work. 
 
 
 ##MVC As We Know It
-We've reviewed the 70's, but let us now return to the here and now. In modern times, the MVC pattern has been applied to a diverse range of programming languages including of most relevance to us: JavaScript. JavaScript now has a number of frameworks boasting support for MVC (or variations on it, which we refer to as the MV* family), allowing developers to easily add structure to their applications without great effort. You've likely come across at least one of these such frameworks, but they include the likes of Backbone, Ember.js and JavaScriptMVC. Given the importance of avoiding "spaghetti" code, a term which describes code that is very difficult to read or maintain due to its lack of structure, it's imperative that the modern JavaScript developer understand what this pattern provides. This allows us to effectively appreciate what these frameworks enable us to do differently.
+We've reviewed the 70's, but let us now return to the here and now. The MVC pattern has been applied to a diverse range of programming languages. For example, the popular Ruby on Rails is an implementation of a web application framework based on MVC for the Ruby language. JavaScript now has a number of MVC frameworks, including Ember.js, JavaScriptMVC, and of course Backbone.js. Given the importance of avoiding "spaghetti" code, a term which describes code that is very difficult to read or maintain due to its lack of structure, let's look at what the MVC pattern enables the Javascript developer to do.
 
-We know that MVC is composed of three core components:
+MVC is composed of three core components:
 
 ###Models 
 
-Models manage the data for an application. They are concerned with neither the user-interface nor presentation layers but instead represent unique forms of data that an application may require. When a model changes (e.g when it is updated), it will typically notify its observers (e.g views, a concept we will cover shortly) that a change has occurred so that they may react accordingly.
+Models manage the data for an application. They are concerned with neither the user-interface nor presentation layers, but instead represent structured data that an application may require. When a model changes (e.g when it is updated), it will typically notify its observers (e.g views, a concept we will cover shortly) that a change has occurred so that they may react accordingly.
 
-To understand models further, let us imagine we have a JavaScript photo gallery application. In a photo gallery, the concept of a photo would merit its own model as it represents a unique kind of domain-specific data. Such a model may contain related attributes such as a caption, image source and additional meta-data. A specific photo would be stored in an instance of a model and a model may also be reusable. Below we can see an example of a very simplistic model implemented using Backbone.
+To understand models better, let us imagine we have a JavaScript photo gallery application. In a photo gallery, a photo would merit its own model, as it represents a unique kind of domain-specific data. The Photo model may represent attributes such as a caption, image source and additional meta-data. A specific photo would be stored in an instance of a model. Here's an example of a simple Photo model implemented with Backbone.js:
 
 
 ```javascript
@@ -112,7 +112,7 @@ var Photo = Backbone.Model.extend({
     viewed: false
     },
 
-    // Ensure that each photo created has an `src`.
+    // Ensure that each photo created has a `src`.
     initialize: function() {
        this.set({"src": this.defaults.src});
     }
@@ -120,13 +120,13 @@ var Photo = Backbone.Model.extend({
 });
 ```
 
-The built-in capabilities of models vary across frameworks, however it is quite common for them to support validation of attributes, where attributes represent the properties of the model, such as a model identifier. When using models in real-world applications we generally also desire model persistence. Persistence allows us to edit and update models with the knowledge that its most recent state will be saved in either: memory, in a user's localStorage data-store or synchronized with a database.
+The built-in capabilities of models vary across frameworks, however it's common for them to support validation of attributes, where attributes represent the properties of the model, such as a model identifier. When using models in real-world applications we generally also need a way of persisting models. Persistence allows us to edit and update models with the knowledge that their most recent states will be saved somewhere, for example in a web browser's localStorage data-store or synchronized with a database.
 
-In addition, a model may also have multiple views observing it. If say, our photo model contained meta-data such as its location (longitude and latitude), friends that were present in the a photo (a list of identifiers) and a list of tags, a developer may decide to provide a single view to display each of these three facets. 
+A model may also have multiple views observing it. Imagine our Photo model contained meta-data such as the longitude and latitude where the photo was taken, a list of people present in the photo, and a list of tags. A developer could create a single view that displayed all these attributes, or might create three seperate views to display each attribute. The important detail is that the Photo model doesn't care how these views are organized, it simply announces updates to its data as necessary. We'll come back to Views in more detail later.
 
-It is not uncommon for modern MVC/MV* frameworks to provide a means to group models together (e.g in Backbone, these groups are referred to as "collections"). Managing models in groups allows us to write application logic based on notifications from the group should any model it contains be changed. This avoids the need to manually observe individual model instances.
+It is not uncommon for modern MVC/MV* frameworks to provide a means to group models together. In Backbone, these groups are called "Collections". Managing models in groups allows us to write application logic based on notifications from the group should any model it contains change. This avoids the need to manually observe individual model instances.
 
-A sample grouping of models into a simplified Backbone collection can be seen below.
+Here's howe we might group Photo models into a simplified Backbone Collection:
 
 ```javascript
 var PhotoGallery = Backbone.Collection.extend({
@@ -147,28 +147,25 @@ var PhotoGallery = Backbone.Collection.extend({
 });
 ```
 
-Should you read any of the older texts on MVC, you may come across a description of models as also managing application 'state'. In JavaScript applications "state" has a different meaning, typically referring to the current "state" i.e view or sub-view (with specific data) on a users screen at a fixed point. State is a topic which is regularly discussed when looking at Single-page applications, where the concept of state needs to be simulated.
-
-So to summarize, models are primarily concerned with business data.
-
+If you read older texts on MVC, you may come across a description of models as also managing application 'state'. In JavaScript applications "state" has a specific meaning, typically referring to the current "state" of a view or sub-view on a users screen at a fixed time. State is a topic which is regularly discussed when looking at Single-page applications, where the concept of state needs to be simulated.
 
 ###Views
 
-Views are a visual representation of models that present a filtered view of their current state. A view typically observes a model and is notified when the model changes, allowing the view to update itself accordingly. Design pattern literature commonly refers to views as 'dumb' given that their knowledge of models and controllers in an application is limited.
+Views are a visual representation of models that present a filtered view of their current state. A view typically observes a model and is notified when the model changes, allowing the view to update itself accordingly. Design pattern literature commonly refers to views as 'dumb', given that their knowledge of models and controllers in an application is limited.
 
-Users are able to interact with views and this includes the ability to read and edit (i.e get or set the attribute values in) models. As the view is the presentation layer, we generally present the ability to edit and update in a user-friendly fashion. For example, in the former photo gallery application we discussed earlier, model editing could be facilitated through an "edit" view where a user who has selected a specific photo could edit its meta-data. 
+Users interact with views, which usually means reading and editing model data. For example, in our photo gallery application example, model viewing might happen in a user interface with a big image, a caption, and a list of tags. Model editing could be done through an "edit", view where a user who has selected a specific photo could edit its caption, tags, or other metadata in a form.
 
-The actual task of updating the model falls to controllers (which we'll be covering shortly).
+In MVC, the actual task of updating the Model falls to Controllers, which we'll be covering shortly.
 
-Let's explore views a little further using a vanilla JavaScript sample implementation. Below we can see a function that creates a single Photo view, consuming both a model instance and a controller instance. 
+Let's explore Views a little further using a simple JavaScript example. Below we can see a function that creates a single Photo view, consuming both a model instance and a controller instance. 
 
 We define a ```render()``` utility within our view which is responsible for rendering the contents of the ```photoModel``` using a JavaScript templating engine (Underscore templating) and updating the contents of our view, referenced by ```photoEl```. 
 
-The ```photoModel``` then adds our ```render()``` callback as one of it's subscribers so that through the Observer pattern we can trigger the view to update when the model changes. 
+The ```photoModel``` then adds our ```render()``` callback as one of its subscribers, so that through the Observer pattern it can trigger the view to update when the model changes. 
 
-You may wonder where user-interaction comes into play here. When users click on any elements within the view, it's not the view's responsibility to know what to do next. It relies on a controller to make this decision for it. In our sample implementation, this is achieved by adding an event listener to ```photoEl``` which will delegate handling the click behaviour back to the controller, passing the model information along with it in case it's needed.
+You may wonder where user interaction comes into play here. When users click on any elements within the view, it's not the view's responsibility to know what to do next. A Controller makes this decision. In our sample implementation, this is achieved by adding an event listener to ```photoEl``` which will delegate handling the click behaviour back to the controller, passing the model information along with it in case it's needed.
 
-The benefit of this architecture is that each component plays it's own separate role in making the application function as needed.
+The benefit of this architecture is that each component plays its own separate role in making the application function as needed.
 
 
 ```javascript
@@ -212,13 +209,13 @@ var buildPhotoView = function( photoModel, photoController ){
 
 **Templating**
 
-In the context of JavaScript frameworks that support MVC/MV*, it is worth briefly discussing JavaScript templating and its relationship to views as we briefly touched upon it in the last section.
+In the context of JavaScript frameworks that support MVC/MV*, it is worth looking more closely at JavaScript templating and its relationship to Views.
 
-It has long been considered (and proven) a performance bad practice to manually create large blocks of HTML markup in-memory through string concatenation. Developers doing so have fallen prey to inperformantly iterating through their data, wrapping it in nested divs and using outdated techniques such as ```document.write``` to inject the 'template' into the DOM. As this typically means keeping scripted markup inline with your standard markup, it can quickly become both difficult to read and more importantly, maintain such disasters, especially when building non-trivially sized applications.
+It has long been considered bad practice (and computationally expensive) to manually create large blocks of HTML markup in-memory through string concatenation. Developers using this technique often find themselves iterating through their data, wrapping it in nested divs and using outdated techniques such as ```document.write``` to inject the 'template' into the DOM. This approach often means keeping scripted markup inline with standard markup, which can quickly become difficult to read and maintain, especially when building large applications.
 
-JavaScript templating solutions (such as Handlebars.js and Mustache) are often used to define templates for views as markup (either stored externally or within script tags with a custom type - e.g text/template) containing template variables. Variables may be deliminated using a variable syntax (e.g {{name}}) and frameworks are typically smart enough to accept data in a JSON form (of which model instances can be converted to) such that we only need be concerned with maintaining clean models and clean templates. Most of the grunt work to do with population is taken care of by the framework itself. This has a large number of benefits, particularly when opting to store templates externally as this can give way to templates being dynamically loaded on an as-needed basis when it comes to building larger applications.
+JavaScript templating libraries (such as Handlebars.js or Mustache) are often used to define templates for views as HTML markup containing template variables. These template blocks can be either stored externally or within script tags with a custom type (e.g 'text/template'). Variables are deliminated using a variable syntax (e.g {{name}}). Javascript template libraries typically accept data in JSON, and the grunt work of populating templates with data is taken care of by the framework itself. This has a several benefits, particularly when opting to store templates externally as this can let applications load templates dynamically on an as-needed basis. 
 
-Below we can see two examples of HTML templates. One implemented using the popular Handlebars.js framework and another using Underscore's templates.
+Let's compare two examples of HTML templates. One is implemented using the popular Handlebars.js library, and the other uses Underscore's 'microtemplates'.
 
 **Handlebars.js:**
 
@@ -245,34 +242,30 @@ Below we can see two examples of HTML templates. One implemented using the popul
 ```
 
 
-It is also worth noting that in classical web development, navigating between independent views required the use of a page refresh. In Single-page JavaScript applications however, once data is fetched from a server via Ajax, it can simply be dynamically rendered in a new view within the same page without any such refresh being necessary. The role of navigation thus falls to a "router", which assists in managing application state (e.g allowing users to bookmark a particular view they have navigated to). As routers are however neither a part of MVC nor present in every MVC-like framework, I will not be going into them in greater detail in this section.
-
-To summarize, views are a visual representation of our application data.
-
+It is also worth noting that in classical web development, navigating between independent views required the use of a page refresh. In single-page JavaScript applications, however, once data is fetched from a server via Ajax, it can be dynamically rendered in a new view within the same page. Since this doesn't automatically update the URL, the role of navigation thus falls to a "router", which assists in managing application state (e.g allowing users to bookmark a particular view they have navigated to). As routers are however neither a part of MVC nor present in every MVC-like framework, I will not be going into them in greater detail in this section.
 
 ###Controllers
 
-Controllers are an intermediary between models and views which are classically responsible for two tasks: they both update the view when the model changes and update the model when the user manipulates the view. 
+Controllers are an intermediary between Models and Views. In MVC they are responsible for two tasks: updating the view when the model changes and updating the model when the user manipulates the view. 
 
 In our photo gallery application, a controller would be responsible for handling changes the user made to the edit view for a particular photo, updating a specific photo model when a user has finished editing.
 
-In terms of where most JavaScript MVC frameworks detract from what is conventionally considered "MVC" however, it is with controllers. The reasons for this vary, but in my honest opinion it is that framework authors initially look at the server-side interpretation of MVC, realize that it doesn't translate 1:1 on the client-side and re-interpret the C in MVC to mean something they feel makes more sense. The issue with this however is that it is subjective, increases the complexity in both understanding the classical MVC pattern and of course the role of controllers in modern frameworks.
+It's here that most JavaScript MVC frameworks depart from this interpretation of the MVC pattern. The reasons for this vary, but in my opinion, Javascript framework authors likely initially looked at server-side interpretations of MVC (such as Ruby on Rails), realized that that approach didn't translate 1:1 on the client-side, and so re-interpreted the C in MVC to solve their state management problem. This was a clever approach, but it can make it hard for developers coming to MVC for the first time to understand the both the classical MVC pattern and the "proper" role of controllers in other non-Javascript frameworks. 
 
-As an example, let's briefly review the architecture of the popular architectural framework Backbone.js. Backbone contains models and views (somewhat similar to what we reviewed earlier), however it doesn't actually have true controllers. Its views and routers act a little similar to a controller, but neither are actually controllers on their own. 
+So does Backbone.js have Controllers? Not really. Backbone's Views typically contain "controller" logic, and Routers (discussed below) are used to help manage application state, but neither are true Controllers according to classical MVC. 
 
-In this respect, contrary to what might be mentioned in the official documentation or in blog posts, Backbone is neither a truly MVC/MVP nor MVVM framework. It's in fact better to consider it a member of the MV* family which approaches architecture in its own way. There is of course nothing wrong with this, but it is important to distinguish between classical MVC and MV* should you be relying on advice from classical literature on the former to help with the latter.
+In this respect, contrary to what might be mentioned in the official documentation or in blog posts, Backbone is neither a truly MVC/MVP nor MVVM framework. It's in fact better to see it a member of the MV* family which approaches architecture in its own way. There is of course nothing wrong with this, but it is important to distinguish between classical MVC and MV* should you be relying on discussions of MVCt to help with your Backbone projects.
 
 ### Controllers in Spine.vs vs Backbone.js
 
 
 **Spine.js**
 
-We now know that controllers are traditionally responsible for updating the view when the model changes (and similarly the model when the user updates the view). As the framework we'll be discussing in this book (Backbone) doesn't have it's **own** explicit controllers, it can be useful for us to review the controller from another MVC framework to appreciate the difference in implementations. For this, let's take a look at a sample controller from Spine.js:
-
+We now know that controllers are traditionally responsible for updating the view when the model changes (and similarly the model when the user updates the view). Since Backbone doesn't have it's **own** explicit controllers, it's useful to review the controller from another MVC framework to appreciate the difference in implementations. Let's take a look at [Spine.js](http://spinejs.com/):
 
 In this example, we're going to have a controller called ```PhotosController`` which will be in charge of individual photos in the application. It will ensure that when the view updates (e.g a user editd the photo meta-data) the corresonding model does too. 
 
-Note: We won't be delving heavily into Spine.js at all, but will just take a ten-foot view of what it's controllers can do:
+(Note: We won't be delving heavily into Spine.js beyond this example, but it's worth looking at it to learn more about Javascript frameworks in general.)
 
 ```javascript
 // Controllers in Spine are created by inheriting from Spine.Controller
@@ -298,7 +291,7 @@ var PhotosController = Spine.Controller.sub({
 
 In Spine, controllers are considered the glue for an application, adding and responding to DOM events, rendering templates and ensuring that views and models are kept in sync (which makes sense in the context of what we know to be a controller).
 
-What we're doing in the above example is setting up listeners in the ```update``` and ```destroy``` events using ```render()``` and ```remove()```. When a photo entry gets updated , we re-render the view to reflect the changes to the meta-data. Similarly, if the photo gets deleted from the gallery, we remove it from the view. In case you were wondering about the ```tmpl()``` function in the code snippet: in the ```render()``` function, we're using this to render a JavaScript template called #photoTemplate which simply returns a HTML string used to replace the controller's current element.
+What we're doing in the above example is setting up listeners in the ```update``` and ```destroy``` events using ```render()``` and ```remove()```. When a photo entry gets updated , we re-render the view to reflect the changes to the meta-data. Similarly, if the photo gets deleted from the gallery, we remove it from the view. In case you're wondering about the ```tmpl()``` function in the code snippet: in the ```render()``` function, we're using this to render a JavaScript template called #photoTemplate which simply returns a HTML string used to replace the controller's current element.
 
 What this provides us with is a very lightweight, simple way to manage changes between the model and the view.
 
@@ -307,9 +300,9 @@ What this provides us with is a very lightweight, simple way to manage changes b
 
 Later on in this section we're going to revisit the differences between Backbone and traditional MVC, but for now let's focus on controllers. 
 
-In Backbone, one shares the responsibility of a controller with both the Backbone.View and Backbone.Router. Some time ago Backbone did once come with it's own Backbone.Controller, but as the naming for this component didn't make sense for the context in which it was being used, it was later renamed to Router.
+In Backbone, controller logic is shared between Backbone.View and Backbone.Router. Earlier releases of Backbone contained something called Backbone.Controller, but it was renamed to Router to clarify its role.
 
-Routers handle a little more of the controller responsibility as it's possible to bind the events there for models and have your view respond to DOM events and rendering. As Tim Branyen (another Bocoup-based Backbone contributor) has also previously pointed out, it's possible to get away with not needing Backbone.Router at all for this, so a way to think about it using the Router paradigm is probably:
+Routers' main purpose is to translate URL requests into application states. When a user browses to the URL www.example.com/photos/42, a Router could be used to show the photo with that ID, and to define what application behavior should be run in response to that request. Routers *can* contain traditional controller responsibilities, such as binding the events between models and views, or rendering parts of the page. However, Backbone contributor Tim Branyen has pointed out that it's possible to get away without needing Backbone.Router at all for this, so a way to think about it using the Router paradigm is probably:
 
 ```javascript
 var PhotoRouter = Backbone.Router.extend({
@@ -324,37 +317,31 @@ var PhotoRouter = Backbone.Router.extend({
 }):
 ```
 
-
-To summarize, the takeaway from this section is that controllers manage the logic and coordination between models and views in an application.
-
-
 ##What does MVC give us?
 
-This separation of concerns in MVC facilitates simpler modularization of an application's functionality and enables:
+To summarize, the separation of concerns in MVC facilitates modularization of an application's functionality and enables:
 
-* Easier overall maintenance. When updates need to be made to the application it is very clear whether the changes are data-centric, meaning changes to models and possibly controllers, or merely visual, meaning changes to views.
-* Decoupling models and views means that it is significantly more straight-forward to write unit tests for business logic
-* Duplication of low-level model and controller code (i.e what you may have been using instead) is eliminated across the application
+* Easier overall maintenance. When updates need to be made to the application it is clear whether the changes are data-centric, meaning changes to models and possibly controllers, or merely visual, meaning changes to views.
+* Decoupling models and views means that it's straight-forward to write unit tests for business logic
+* Duplication of low-level model and controller code is eliminated across the application
 * Depending on the size of the application and separation of roles, this modularity allows developers responsible for core logic and developers working on the user-interfaces to work simultaneously
 
 
 ###Delving deeper
 
-Right now, you likely have a basic understanding of what the MVC pattern provides, but for the curious, we can explore it a little further. 
+Right now, you likely have a basic understanding of what the MVC pattern provides, but for the curious, we'll explore it a little further. 
 
 The GoF (Gang of Four) do not refer to MVC as a design pattern, but rather consider it a "set of classes to build a user interface". In their view, it's actually a variation of three other classical design patterns: the Observer (Pub/Sub), Strategy and Composite patterns. Depending on how MVC has been implemented in a framework, it may also use the Factory and Decorator patterns. I've covered some of these patterns in my other free book, JavaScript Design Patterns For Beginners if you would like to read into them further.
 
-As we've discussed, models represent application data whilst views are what the user is presented on screen. As such, MVC relies on Pub/Sub for some of its core communication (something that surprisingly isn't cover in many articles about the MVC pattern). When a model is changed it notifies the rest of the application it has been updated. The controller then updates the view accordingly. The observer nature of this relationship is what facilitates multiple views being attached to the same model. 
+As we've discussed, models represent application data, while views handle what the user is presented on screen. As such, MVC relies on Pub/Sub for some of its core communication (something that surprisingly isn't covered in many articles about the MVC pattern). When a model is changed it "publishes" to the rest of the application that it has been updated. The "subscriber"--generally a Controller--then updates the view accordingly. The observer-viewer nature of this relationship is what facilitates multiple views being attached to the same model. 
 
-For developers interested in knowing more about the decoupled nature of MVC (once again, depending on the implement), one of the goal's of the pattern is to help define one-to-many relationships between a topic and its observers. When a topic changes, its observers are updated. Views and controllers have a slightly different relationship. Controllers facilitate views to respond to different user input and are an example of the Strategy pattern.
+For developers interested in knowing more about the decoupled nature of MVC (once again, depending on the implementation), one of the goals of the pattern is to help define one-to-many relationships between a topic and its observers. When a topic changes, its observers are updated. Views and controllers have a slightly different relationship. Controllers facilitate views to respond to different user input and are an example of the Strategy pattern.
 
 ###Summary
 
-Having reviewed the classical MVC pattern, we should now understand how it allows us to cleanly separate concerns in an application. We should also now appreciate how JavaScript MVC frameworks may differ in their interpretation of the MVC pattern, which although quite open to variation, still shares some of the fundamental concepts the original pattern has to offer. 
+Having reviewed the classical MVC pattern, your should now understand how it allows developers to cleanly separate concerns in an application. You should also now appreciate how JavaScript MVC frameworks may differ in their interpretation of MVC, and how they share some of the fundamental concepts the of the original pattern. 
 
-When reviewing a new JavaScript MVC/MV* framework, remember - it can be useful to step back and review how it's opted to approach architecture (specifically, how it supports implementing models, views, controllers or other alternatives) as this can better help you grok how the framework expects to be used.
-
-
+When reviewing a new JavaScript MVC/MV* framework, remember - it can be useful to step back and consider how it's opted to approach Models, Views, Controllers or other alternatives, as this can better help you grok how the framework expects to be used.
 
 ##MVP
 
@@ -393,13 +380,13 @@ At the end of the day, the underlying concerns you may have with MVC will likely
 
 There are very few, if any architectural JavaScript frameworks that claim to implement the MVC or MVC patterns in their classical form as many JavaScript developers don't view MVC and MVP as being mutually exclusive (we are actually more likely to see MVP strictly implemented when looking at web frameworks such as ASP.net or GWT). This is because it's possible to have additional presenter/view logic in your application and yet still consider it a flavor of MVC. 
 
-Backbone contributor [Irene Ros](http://ireneros.com/) (of Boston-based Bocoup) subscribes to this way of thinking as when she separates views out into their own distinct components, she needs something to actually assemble them for her. This could either be a controller route (such as a ```Backbone.Router```, covered later in the book) or a callback in response to data being fetched.
+Backbone contributor [Irene Ros](http://ireneros.com/) subscribes to this way of thinking as when she separates views out into their own distinct components, she needs something to actually assemble them for her. This could either be a controller route (such as a ```Backbone.Router```, covered later in the book) or a callback in response to data being fetched.
 
 That said, some developers do however feel that Backbone.js better fits the description of MVP than it does MVC
 . Their view is that:
 
 * The presenter in MVP better describes the ```Backbone.View``` (the layer between View templates and the data bound to it) than a controller does
-* The model fits ```Backbone.Model``` (it isn't greatly different to the models in MVC at all)
+* The model fits ```Backbone.Model``` (it isn't that different from the classical MVC "Model")
 * The views best represent templates (e.g Handlebars/Mustache markup templates)
 
 A response to this could be that the view can also just be a View (as per MVC) because Backbone is flexible enough to let it be used for multiple purposes. The V in MVC and the P in MVP can both be accomplished by ```Backbone.View``` because they're able to achieve two purposes: both rendering atomic components and assembling those components rendered by other views. 
@@ -459,16 +446,16 @@ It *is* however worth understanding where and why these concepts originated, so 
 
 ###Backbone.js
 
-* Core components: Model, View, Collection, Router. It enforces its own flavor of MV*
-* More complete documentation than some frameworks (at the time of writing e.g Ember.js) with more improvements on the way
+* Core components: Model, View, Collection, Router. Enforces its own flavor of MV*
+* Good documentation, with more improvements on the way
 * Used by large companies such as SoundCloud and Foursquare to build non-trivial applications
-* Event-driven communication between views and models means more complete control over what's happening. It's relatively straight-forward to add event listeners to any attribute in a model meaning more control over what changes in the view
+* Event-driven communication between views and models. As we'll see, it's relatively straight-forward to add event listeners to any attribute in a model, giving developers fine-grained control over what changes in the view
 * Supports data bindings through manual events or a separate Key-value observing (KVO) library
-* Great support for RESTful interfaces out of the box so models can be easily tied to a backend
+* Great support for RESTful interfaces out of the box, so models can be easily tied to a backend
 * Extensive eventing system. It's [trivial](http://lostechies.com/derickbailey/2011/07/19/references-routing-and-the-event-aggregator-coordinating-views-in-backbone-js/) to add support for pub/sub in Backbone
-* Prototypes are instantiated with the ```new``` keyword which some enjoy
-* No default templating engine, however Underscore's micro-templating is often assumed for this. Also works well with solutions like Handlebars if you drop them in
-* Doesn't support deeply nested models out of the box, but like many common problems there exist Backbone plugins such as [this](https://github.com/PaulUithol/Backbone-relational) which can easily help
+* Prototypes are instantiated with the ```new``` keyword, which some developers prefer
+* Agnostic about templating frameworks, however Underscore's micro-templating is available by default. Backbone works well with libraries like Handlebars
+* Doesn't support deeply nested models, though there are Backbone plugins such as [this](https://github.com/PaulUithol/Backbone-relational) which can help
 * Clear and flexible conventions for structuring applications. Backbone doesn't force usage of all of its components and can work with only those needed.
 
 
@@ -493,15 +480,9 @@ Backbone's main benefits, regardless of your target platform or device, include 
 * Model data, views and routers in a succinct manner
 * Provide DOM, model and collection synchronization
 
-In ways, the real question is why you should consider applying the MVC-pattern to your JavaScript projects and the one word answer is simply structure.
-
-If opting to use jQuery, Zepto or another querySelectorAll-based selection library to produce a non-trivial application it can become very easy to produce an unwieldy amount of code; that is - unless you have a plan for how you're going to structure and organize your application. Separating concerns into models, views and controllers (or routers) is one way of solving this.
-
-Remember that if you have experience with structuring applications using the MVVM (Model-View ViewModel) pattern, modules or otherwise, these are also equally as valid but do require you to know what you're doing. For most single-page applications, I find that the MVC pattern works well so Backbone is a perfect fit for our needs.
-
 ##The Basics
 
-In this section, you'll learn the essentials about Backbone's models, views, collections and routers. Whilst this isn't meant as a replacement for the official documentation, it will help you understand many of the core concepts behind Backbone before we build mobile applications with it. I will also be covering some tips on effective namespacing.
+In this section, you'll learn the essentials of Backbone's models, views, collections and routers, as well as about using Namespacing to organize your code. This isn't meant as a replacement for the official documentation, but it will help you understand many of the core concepts behind Backbone before you start building applications with it.
 
 * Models
 * Collections
@@ -511,9 +492,9 @@ In this section, you'll learn the essentials about Backbone's models, views, col
 
 ###Models
 
-Backbone models contain interactive data for an application as well as the logic around this data. For example, we can use a model to represent the concept of a photo object including its attributes like tags, titles and a location.
+As we've seen, Backbone models contain interactive data for an application, as well as the logic around this data. We'll go back to our Photo gallery example.
 
-Models are quite straight-forward to create and can be constructed by extending `Backbone.Model` as follows:
+Models are quite straight-forward to create by extending `Backbone.Model` as follows:
 
 ```javascript
 var Photo = Backbone.Model.extend({
@@ -540,7 +521,7 @@ somePhoto.changeSrc("magic.jpg"); // which triggers "change:src" and logs an upd
 
 ####Initialization
 
-The `initialize()` method is called when creating a new instance of a model. It's use is optional, however we'll be reviewing some reasons you may want to use it shortly.
+The `initialize()` method is called when a new instance of a model is created. Its use is optional, however you'll see why it's good practice to use it below.
 
 ```javascript
 var Photo = Backbone.Model.extend({
@@ -557,7 +538,7 @@ var myPhoto = new Photo();
 
 **Model.get()**
 
-`Model.get()` provides easy access to a model's attributes. Attributes which are passed through to the model on instantiation are instantly available for retrieval.
+`Model.get()` provides access to a model's attributes. Attributes which are passed through to the model on instantiation are instantly available for retrieval.
 
 ```javascript
 var myPhoto = new Photo({ title: "My awesome photo", 
@@ -571,16 +552,14 @@ var myPhoto = new Photo({ title: "My awesome photo",
     photoSrc = myPhoto.get("src"); //boston.jpg
 ```
 
-Alternatively, if you wish to directly access all of the attributes in an model's instance directly, you can achieve this as follows:
+It's also possible to directly access all of the attributes in an model's instance:
 
 ```javascript
 var myAttributes = myPhoto.attributes;
 console.log(myAttributes);
 ```
 
-It is best practice to use `Model.set()` or direct instantiation to set the values of a model's attributes.
-
-Accessing `Model.attributes` directly is generally discouraged. Instead, should you need to read or clone data, `Model.toJSON()` is recommended for this purpose. If you would like to access or copy a model's attributes for purposes such as JSON stringification (e.g. for serialization prior to being passed to a view), this can be achieved using `Model.toJSON()`:
+Note that accessing `Model.attributes` directly is generally discouraged. Instead, should you need to read or clone data, call `Model.toJSON()`. For example, it's common way to passing a model's attributes to a view using 'Model.toJSON()'.
 
 ```javascript
 var myAttributes = myPhoto.toJSON();
@@ -593,7 +572,7 @@ console.log(myAttributes);
 
 ####Model.set()
 
-`Model.set()` allows us to pass attributes into an instance of our model. Attributes can either be set during initialization or later on.
+`Model.set()` allows us to pass attributes into an instance of our model. Attributes can either be set during initialization or at any time afterwards. It's important to avoid tring to set a Model's attributes directly (for example Model.caption = 'A new caption'). Backbone uses Model.set() to know when to broadcast that a model's data has changed.
 
 ```javascript
 var Photo = Backbone.Model.extend({
@@ -645,7 +624,7 @@ this.bind('change', function(){
 });
 ```
 
-In the following example, we can also log a message whenever a specific attribute (the title of our Photo model) is altered.
+In the following example, we log a message whenever a specific attribute (the title of our Photo model) is altered.
 
 ```javascript
 var Photo = Backbone.Model.extend({
@@ -677,7 +656,7 @@ myPhoto.setTitle('Fishing at sea');
 
 Backbone supports model validation through `Model.validate()`, which allows checking the attribute values for a model prior to them being set.
 
-It supports including as complex or terse validation rules against attributes and is quite straight-forward to use. If the attributes provided are valid, nothing should be returned from `.validate()`, however if they are invalid a custom error can be returned instead.
+Validation functions can as be simple or complex as necessary. If the attributes provided are valid, nothing should be returned from `.validate()`. If they are invalid, a custom error can be returned instead.
 
 A basic example for validation can be seen below:
 
@@ -705,11 +684,11 @@ myPhoto.set({ title: "On the beach" });
 
 ###Views
 
-Views in Backbone don't contain the markup for your application, but rather they are there to support models by defining how they should be visually represented to the user. This is usually achieved using JavaScript templating (e.g. Mustache, jQuery tmpl etc). When a model updates, rather than the entire page needing to be refreshed, we can simply bind a view's `render()` function to a model's `change()` event, allowing the view to always be up to date.
+Views in Backbone don't contain the markup for your application, but rather they are there to support models by defining how they should be visually represented to the user. This is usually achieved using JavaScript templating (e.g. Mustache, jQuery tmpl etc). A view's `render()` function can be bound to a model's `change()` event, allowing the view to always be up to date without reuiring a full page refresh.
 
 ####Creating new views
 
-Similar to the previous sections, creating a new view is relatively straight-forward. We simply extend `Backbone.View`. Here's an example of a possible implementation of this, which I'll explain shortly:
+To create a new View, extend `Backbone.View`. I'll explain this code in detail below:
 
 ```javascript
 var PhotoSearch = Backbone.View.extend({
@@ -738,7 +717,7 @@ var PhotoSearch = Backbone.View.extend({
 
 ####What is `el`?
 
-`el` is basically a reference to a DOM element and all views must have one, however Backbone allows you to specify this in four different ways. You can either directly use an `id`, a `tagName`, `className` or if you don't state anything `el` will simply default to a plain div element without any id or class. Here are some quick examples of how these may be used:
+`el` is a reference to a DOM element, and all views must have one. Backbone allows you to specify it in four different ways: you can directly provide an `id`, a `tagName`, `className` or if you don't provide anything `el` will simply default to a plain div element without any id or class. Here are some quick examples of how to define `el`:
 
 ```javascript
 id: $('#results')  //select based on an ID or other valid jQuery selector.
@@ -753,12 +732,12 @@ el: '' //defaults to a div without an id, name or class.
 tagName: "li",
 className: "container"
 ```
-will use specific tags with a particular `className`.
+will use `li` tags with `className` of `container`.
 
 
 **Understanding `render()`**
 
-`render()` is an optional function to define how you would like a template to be rendered. Backbone allows you to use any JavaScript templating solution of your choice for this but for the purposes of this book, we'll opt for Underscore's micro-templating.
+`render()` is an optional function that defines the logic for rendering a template. Backbone allows you to use any JavaScript templating solution, for this but for the purposes of this book, we'll opt for Underscore's micro-templating.
 
 The `_.template` method in underscore compiles JavaScript templates into functions which can be evaluated for rendering. In the above view, I'm passing the markup from a template with id `results-template` to be compiled. Next, I set the html for `el` (our DOM element for this view) the output of processing a JSON version of the model associated with the view through the compiled template.
 
