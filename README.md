@@ -830,7 +830,7 @@ Backbone.sync = function(method, model) {
 
 **Resetting/Refreshing Collections**
 
-Rather than adding or removing models individually, you occasionally wish to update an entire collection at once. `Collection.reset()` allows us to replace an entire collection with new models as follows:
+Rather than adding or removing models individually, you might occasionally wish to update an entire collection at once. `Collection.reset()` allows us to replace an entire collection with new models as follows:
 
 ```javascript
 PhotoCollection.reset([
@@ -841,33 +841,31 @@ PhotoCollection.reset([
 
 ###Underscore utility functions
 
-As Backbone requires Underscore as a hard dependency, we're able to use many of the utilities it has to offer to aid with our application development. Here's an example of how Underscore's `sortBy()` method can be used to sort a collection of photos based on a particular attribute.
+As Backbone requires Underscore as a hard dependency, its utilities are available to your code. Here's an example of how Underscore's `sortBy()` method can be used to sort a collection of photos based on a particular attribute:
 
 ```javascript
 var sortedByAlphabet = PhotoCollection.sortBy(function (photo) {
     return photo.get("title").toLowerCase();
 });
 ```
-The complete list of what it can do is beyond the scope of this guide, but can be found in the official docs.
+The complete list of what Underscore can do is beyond the scope of this guide, but can be found in its official [docs](http://documentcloud.github.com/underscore/).
 
 ###Routers
 
-In Backbone, routers are used to handle routing for your application. This is achieved using hash-tags with URL fragments which you can read more about if you wish. Some examples of valid routes may be seen below:
+In Backbone, routers are used to help manage application state and for connecting URLs to application events. This is achieved using hash-tags with URL fragments, or using the browser's pushState and History API. Some examples of routes may be seen below:
 
 ```html
 http://unicorns.com/#/whatsup
 http://unicorns.com/#/search/seasonal-horns/page2
 ```
 
-Note: A router will usually have at least one URL route defined as well as a function that maps what happens when you reach that particular route. This type of key/value pair may resemble:
+An application will usually have at least one route mapping a URL route to a function that determines what happens when a  user reaches that particular route. This relationship is defined as follows:
 
 ```javascript
 "/route" : "mappedFunction"
 ```
 
-Let us now define our first controller by extending `Backbone.Router`. For the purposes of this guide, we're going to continue pretending we're creating a photo gallery application that requires a GalleryRouter.
-
-Note the inline comments in the code example below as they continue the rest of the lesson on routers.
+Let us now define our first router by extending `Backbone.Router`. We'll create a GalleryRouteror our photo gallery application. Be sure to follow the comments in this code:
 
 ```javascript
 var GalleryRouter = Backbone.Router.extend({
@@ -913,8 +911,7 @@ var GalleryRouter = Backbone.Router.extend({
     
     getPhoto: function(id){
         /* 
-        in this case, the id matched in the above route will be passed through
-        to our function getPhoto and we can then use this as we please.
+        Note that the id matched in the above route will be passed to this function
         */
         console.log("You are trying to reach photo " + id);
     },
@@ -936,20 +933,20 @@ var GalleryRouter = Backbone.Router.extend({
 var myGalleryRouter = new GalleryRouter();
 ```
 
-Note: In Backbone 0.5+, it's possible to opt-in for HTML5 pushState support via `window.history.pushState`. This effectively permits non-hashtag routes such as http://www.scriptjunkie.com/just/an/example to be supported with automatic degradation should your browser not support it. For the purposes of this tutorial, we won't be relying on this newer functionality as there have been reports about issues with it under iOS/Mobile Safari. Backbone's hash-based routes should however suffice for our needs.
+As of Backbone 0.5+, it's possible to opt-in for HTML5 pushState support via `window.history.pushState`. This permits you to define routes such as http://www.scriptjunkie.com/just/an/example. This be supported with automatic degradation when a user's browser doesn't support pushState. For the purposes of this tutorial, we'll use the hashtag method.
 
 ####Backbone.history
 
 Next, we need to initialize `Backbone.history` as it handles `hashchange` events in our application. This will automatically handle routes that have been defined and trigger callbacks when they've been accessed.
 
-The `Backbone.history.start()` method will simply tell Backbone that it's OK to begin monitoring all `hashchange` events as follows:
+The `Backbone.history.start()` method tells Backbone that it's OK to begin monitoring all `hashchange` events as follows:
 
 ```javascript
 Backbone.history.start();
 Router.navigate();
 ```
 
-As an aside, if you would like to save application state to the URL at a particular point you can use the `.navigate()` method to achieve this. It simply updates your URL fragment without the need to trigger the `hashchange` event.
+As an aside, if you would like to save application state to the URL at a particular point you can use the `.navigate()` method to achieve this. It simply updates your URL fragment without the need to trigger the `hashchange` event:
 
 ```javascript
 /*Lets imagine we would like a specific fragment for when a user zooms into a photo*/
@@ -959,7 +956,7 @@ zoomPhoto: function(factor){
 }
 ```
 
-It is also possible for `Router.navigate()` to trigger the route aswell as updating the URL fragment.
+It is also possible for `Router.navigate()` to trigger the route as well as updating the URL fragment:
 
 ```javascript
 zoomPhoto: function(factor){
@@ -970,15 +967,13 @@ zoomPhoto: function(factor){
 
 ###Namespacing
 
-When learning how to use Backbone, an important and commonly overlooked area by tutorials is namespacing. If you already have experience with namespacing in JavaScript, the following section will provide some advice on how to specifically apply concepts you know to Backbone, however I will also be covering explanations for beginners to ensure everyone is on the same page.
+When learning how to use Backbone, one code organization practice to be aware of is namespacing. Even if you already have experience with namespacing in JavaScript, the following section will provide some advice on how to specifically apply concepts you know to Backbone.
 
 ####What is namespacing?
 
-The basic idea around namespacing is to avoid collisions with other objects or variables in the global namespace. They're important as it's best to safeguard your code from breaking in the event of another script on the page using the same variable names as you are. As a good 'citizen' of the global namespace, it's also imperative that you do your best to similarly not prevent other developer's scripts executing due to the same issues.
+The basic idea of namespacing is to organize your code into a small number of uniquely-named pieces. This helps avoid collisions between your objects and variables you create, and other identically-named objects or variables in the global namespace. For example, if your code relies on an object named "Photo", but another script on the page also creates an object named "Photo", the results can be unpredictable and hard to debug. It's not just a defense mechanism: as a good 'citizen' of the global namespace, it's important that you do your best to avoid causing problems in other developer's scripts.
 
-JavaScript doesn't really have built-in support for namespaces like other languages, however it does have closures which can be used to achieve a similar effect.
-
-In this section we'll be taking a look shortly at some examples of how you can namespace your models, views, routers and other components specifically. The patterns we'll be examining are:
+JavaScript doesn't natively support namespaces like other languages, so some approaches to namespacing are more convention than guarantee. Javascript does support closures which can be used to encapsulate code. In this section we'll be taking a look shortly at some examples of how you can namespace your models, views, routers and other components specifically. The patterns we'll be examining are:
 
 * Single global variables
 * Object Literals
@@ -986,7 +981,7 @@ In this section we'll be taking a look shortly at some examples of how you can n
 
 **Single global variables**
 
-One popular pattern for namespacing in JavaScript is opting for a single global variable as your primary object of reference. A skeleton implementation of this where we return an object with functions and properties can be found below:
+One popular pattern for namespacing in JavaScript is opting for a single global variable as your primary object of reference. Here's the start of an implementation of this where we create a single object with functions and properties:
 
 ```javascript
 var myApplication = (function(){
@@ -999,7 +994,7 @@ var myApplication = (function(){
 })();
 ```
 
-which you're likely to have seen before. A Backbone-specific example which may be more useful is:
+You've probably seen this technique before. A Backbone-specific example might look like this:
 
 ```javascript
 var myViews = (function(){
@@ -1012,9 +1007,9 @@ var myViews = (function(){
 })();
 ```
 
-Here we can return a set of views or even an entire collection of models, views and routers depending on how you decide to structure your application. Although this works for certain situations, the biggest challenge with the single global variable pattern is ensuring that no one else has used the same global variable name as you have in the page.
+Here we can return a set of views, but the same technique could return an entire collection of models, views and routers depending on how you decide to structure your application. Although this works for certain situations, the biggest challenge with the single global variable pattern is ensuring that no one else has used the same global variable name as you have in the page.
 
-One solution to this problem, as mentioned by Peter Michaux, is to use prefix namespacing. It's a simple concept at heart, but the idea is you select a basic prefix namespace you wish to use (in this example, `myApplication_`) and then define any methods, variables or other objects after the prefix.
+One solution to this problem, as mentioned by Peter Michaux, is to use prefix namespacing. It's a simple concept at heart, but the idea is you select a common prefix name (in this example, `myApplication_`) and then define any methods, variables or other objects after the prefix.
 
 ```javascript
 var myApplication_photoView = Backbone.View.extend({}),
@@ -1025,13 +1020,13 @@ This is effective from the perspective of trying to lower the chances of a parti
 
 For more on Peter's views about the single global variable pattern, read his [excellent post on them](http://michaux.ca/articles/javascript-namespacing).
 
-Note: There are several other variations on the single global variable pattern out in the wild, however having reviewed quite a few, I felt these applied best to Backbone.
+Note: There are several other variations on the single global variable pattern out in the wild, however having reviewed quite a few, I felt the prefixing approach applied best to Backbone.
 
 **Object Literals**
 
-Object Literals have the advantage of not polluting the global namespace but assist in organizing code and parameters logically. They're beneficial if you wish to create easily-readable structures that can be expanded to support deep nesting. Unlike simple global variables, Object Literals often also take into account tests for the existence of a variable by the same name so the chances of collision occurring are significantly reduced.
+Object Literals have the advantage of not polluting the global namespace but assist in organizing code and parameters logically. They're beneficial if you wish to create easily readable structures that can be expanded to support deep nesting. Unlike simple global variables, Object Literals often also take into account tests for the existence of a variable by the same name, which helps reduce the chances of collision.
 
-The code at the very top of the next sample demonstrates the different ways in which you can check to see if a namespace already exists before defining it. I commonly use Option 2.
+This example demonstrates two ways you can check to see if a namespace already exists before defining it. I commonly use Option 2.
 
 ```javascript
 /*Doesn't check for existence of myApplication*/
@@ -1053,7 +1048,7 @@ var myApplication = {
 };
 ```
 
-One can also opt for adding properties directly to the namespace (such as your views, in the following example):
+You can also add properties directly to the namespace:
 
 ```javascript
 var myGalleryViews = myGalleryViews || {};
@@ -1061,9 +1056,9 @@ myGalleryViews.photoView = Backbone.View.extend({});
 myGalleryViews.galleryView = Backbone.View.extend({});
 ```
 
-The benefit of this pattern is that you're able to easily encapsulate all of your models, views, routers etc. in a way that clearly separates them and provides a solid foundation for extending your code.
+The benefit of this pattern is that you're able to easily encapsulate all of your models, views, routers, or other objects in a way that clearly separates them and provides a solid foundation for extending your code.
 
-This pattern has a number of useful applications. It's often of benefit to decouple the default configuration for your application into a single area that can be easily modified without the need to search through your entire codebase just to alter them - Object Literals work great for this purpose. Here's an example of a hypothetical Object Literal for configuration:
+This pattern has a number of benefit. It's often a good idea to decouple the default configuration for your application into a single area that can be easily modified without the need to search through your entire codebase just to alter it. Here's an example of a hypothetical object literal that stores application configuration settings:
 
 ```javascript
 var myConfig = {
@@ -1083,21 +1078,19 @@ var myConfig = {
 }
 ```
 
-Note that there are really only minor syntactical differences between the Object Literal pattern and a standard JSON data set. If for any reason you wish to use JSON for storing your configurations instead (e.g. for simpler storage when sending to the back-end), feel free to.
+Note that there are only minor syntactical differences between the Object Literal pattern and a standard JSON data set. If for any reason you wish to use JSON for storing your configurations instead (e.g. for simpler storage when sending to the back-end), feel free to.
 
 For more on the Object Literal pattern, I recommend reading Rebecca Murphey's [excellent article on the topic](http://blog.rebeccamurphey.com/2009/10/15/using-objects-to-organize-your-code).
 
 **Nested namespacing**
 
-An extension of the Object Literal pattern is nested namespacing. It's another common pattern used that offers a lower risk of collision due to the fact that even if a namespace already exists, it's unlikely the same nested children do.
-
-Does this look familiar?
+An extension of the Object Literal pattern is nested namespacing. It's another common pattern used that offers a lower risk of collision due to the fact that even if a top-level namespace already exists, it's unlikely the same nested children do. For example, Yahoo's YUI uses the nested object namespacing pattern extensively: 
 
 ```javascript
 YAHOO.util.Dom.getElementsByClassName('test');
 ```
 
-Yahoo's YUI uses the nested object namespacing pattern regularly and even DocumentCloud (the creators of Backbone) use the nested namespacing pattern in their main applications. A sample implementation of nested namespacing with Backbone may look like this:
+Here's an example of nested namespacing with Backbone:
 
 ```javascript
 var galleryApp =  galleryApp || {};
@@ -1119,35 +1112,25 @@ galleryApp.model.Comment = Backbone.Model.extend({});
 galleryApp.model.special.Admin = Backbone.Model.extend({});
 ```
 
-This is both readable, organized and is a relatively safe way of namespacing your Backbone application in a similar fashion to what you may be used to in other languages.
+This is readable, clearly organized, and is a relatively safe way of namespacing your Backbone application. It may be familiar if you've used other languages.
 
-The only real caveat however is that it requires your browser's JavaScript engine first locating the galleryApp object and then digging down until it gets to the function you actually wish to use.
-
-This can mean an increased amount of work to perform lookups, however developers such as Juriy Zaytsev (kangax) have previously tested and found the performance differences between single object namespacing vs the 'nested' approach to be quite negligible.
+This approach does require your browser's JavaScript engine to first locate the galleryApp object, then dig down until it gets to the function you're calling. However, developers such as Juriy Zaytsev (kangax) have tested and found the performance differences between single object namespacing vs the 'nested' approach to be quite negligible.
 
 **Recommendation**
 
-Reviewing the namespace patterns above, the option that I would personally use with Backbone is nested object namespacing with the object literal pattern.
+Reviewing the namespace patterns above, the option that I prefer when writing Backbone applications is nested object namespacing with the object literal pattern.
 
-Single global variables may work fine for applications that are relatively trivial, however, larger codebases requiring both namespaces and deep sub-namespaces require a succinct solution that promotes readability and scales. I feel this pattern achieves all of these objectives well and is a perfect companion for Backbone development.
+Single global variables may work fine for applications that are relatively trivial, however, larger codebases requiring both namespaces and deep sub-namespaces require a succinct solution that's both readable and scaleable. I feel this pattern achieves both of these objectives and is a good choice for most Backbone development.
 
 ###Additional Tips
 
-####Automated Backbone Scaffolding
+####Is there a tool that can help me write Backbone apps?
 
-Scaffolding can assist in expediting how quickly you can begin a new application by creating the basic files required for a project automatically. If you enjoy the idea of automated MVC scaffolding using Backbone, I'm happy to recommend checking out a tool called [Brunch](https://github.com/brunch/brunch).
+Scaffolding can assist in expediting how quickly you can begin a new application by creating the basic files required for a project automatically. If you enjoy the idea of automated MVC scaffolding using Backbone, I can reccommend a tool called [Brunch](https://github.com/brunch/brunch).
 
-It works very well with Backbone, Underscore, jQuery and CoffeeScript and is even used by companies such as Red Bull and Jim Bean. You may have to update any third party dependencies (e.g. latest jQuery or Zepto) when using it, but other than that it should be fairly stable to use right out of the box.
+It works well with Backbone, Underscore, jQuery and CoffeeScript, and is even used by companies such as Red Bull and Jim Bean. You may have to update any third party dependencies (e.g. latest jQuery or Zepto) when using it, but other than that it should be fairly stable to use right out of the box.
 
-Brunch can easily be installed via the nodejs package manager and takes just little to no time to get started with. If you happen to use Vim or Textmate as your editor of choice, you may be happy to know that there are also Brunch bundles available for both.
-
-####Clarifications on Backbone's MVC
-
-As Thomas Davis has previously noted, Backbone.js's MVC is a loose interpretation of traditional MVC, something common to many client-side MVC solutions. Backbone's views are what could be considered a wrapper for templating solutions such as the Mustache.js and `Backbone.View` is the equivalent of a controller in traditional MVC. `Backbone.Model` is however the same as a classical 'model'.
-
-Whilst Backbone is not the only client-side MVC solution that could use some improvements in it's naming conventions, `Backbone.Controller` was probably the most central source of some confusion but has been renamed `Backbone.Router` in more recent versions. This won't prevent you from using Backbone effectively, however this is being pointed out just to help avoid any confusion if for any reason you opt to use an older version of the framework.
-
-The official Backbone docs do attempt to clarify that their routers aren't really the C in MVC, but it's important to understand where these fit rather than considering client-side MVC a 1:1 equivalent to the pattern you've probably seen in server-side development.
+Brunch can be installed via the nodejs package manager and is easy to get started with. If you happen to use Vim or Textmate as your editor of choice, you'll be happy to know that there are Brunch bundles available for both.
 
 ####Is there a limit to the number of routers I should be using?
 
@@ -1155,11 +1138,11 @@ Andrew de Andrade has pointed out that DocumentCloud themselves usually only use
 
 ####Is Backbone too small for my application's needs?
 
-If you find yourself unsure of whether or not your application is too large to use Backbone, I recommend reading my post on building large-scale jQuery & JavaScript applications or reviewing my slides on client-side MVC architecture options. In both, I cover alternative solutions and my thoughts on the suitability of current MVC solutions for scaled application development.
+At the end of the day, the key to building large applications is not to build large applications in the first place. Instead, try to build smaller, independant pieces that can function together. If you find yourself unsure of whether or not your application is too large to use Backbone, I recommend reading my post on building large-scale jQuery & JavaScript applications or reviewing my slides on client-side MVC architecture options. In both, I cover alternative solutions and my thoughts on the suitability of current MVC solutions for scaled application development.
 
-Backbone can be used for building both trivial and complex applications as demonstrated by the many examples Ashkenas has been referencing in the Backbone documentation. As with any MVC framework however, it's important to dedicate time towards planning out what models and views your application really needs. Diving straight into development without doing this can result in either spaghetti code or a large refactor later on and it's best to avoid this where possible.
+Backbone can be used for building both trivial and complex applications. Jeremy Ashkenas has added many examples of each in the Backbone documentation. As with any MVC framework however, it's important to dedicate time towards planning out what models and views your application really needs. Diving straight into development without planning can result in  spaghetti code or a large refactor later on.
 
-At the end of the day, the key to building large applications is not to build large applications in the first place. If you however find Backbone doesn't cut it for your requirements I strongly recommend checking out JavaScriptMVC or SproutCore as these both offer a little more than Backbone out of the box. Dojo and Dojo Mobile may also be of interest as these have also been used to build significantly complex apps by other developers.
+If you however find Backbone doesn't cut it for your requirements I strongly recommend checking out JavaScriptMVC or SproutCore as these both offer a little more than Backbone out of the box. Dojo and Dojo Mobile may also be of interest as these have also been used to build very complex apps.
 
 
 ##<a name="advanced">Advanced</a>
