@@ -1,7 +1,7 @@
 #Backbone.js Fundamentals: 
 A book on Backbone.js targeted at beginners and advanced users alike
 
-A work-in-progress by [Addy Osmani](http://twitter.com/addyosmani) released for free under a [CC](http://creativecommons.org/licenses/by-nc-sa/3.0/)-license. My extended thanks to [these](https://github.com/addyosmani/backbone-fundamentals/contributors) members of the community for their assistance tweaking the project.
+This repo contains a work-in-progress by [Addy Osmani](http://twitter.com/addyosmani) released for free under a [CC](http://creativecommons.org/licenses/by-nc-sa/3.0/)-license. My extended thanks to [these](https://github.com/addyosmani/backbone-fundamentals/contributors) members of the community for their assistance tweaking the project.
 
 ##Index
 
@@ -43,16 +43,22 @@ A work-in-progress by [Addy Osmani](http://twitter.com/addyosmani) released for 
 
 ##<a name="introduction">Introduction</a>
 
-In this book, I will be covering a complete run-down of DocumentCloud's Backbone.js; including MVC theory and how to build applications using Backbone's models, views, collections and routers. I'll also be taking you through advanced topics like modular development with Backbone.js and AMD (with RequireJS), how to solve the routing problems with Backbone and jQuery Mobile, tips about scaffolding tools that can save time setting up your initial application and more.
+As JavaScript developers, we are at an interesting point in time where not only do we have mature solutions to help organize the JavaScript powering our applications based on a separation of concerns, but developers looking to build non-trivial apps are almost spoiled for choice for frameworks that can help achieve this goal. 
+
+Maturity in software (framework) development isn't simply about how long a framework has been around. It's about how solid the framework is and more importantly how well it's evolved to fill it's role. Has it become more effective at solving the problems developers use it for?. A few have continued to improve and evolve over time as developers build larger and more complex applications with them.  
+
+In this book, I will be covering a complete run-down of the popular Backbone.js framework for structuring JavaScript applications, which I consider the best of these options. 
+
+Topics will include MVC theory and how to build applications using Backbone's models, views, collections and routers. I'll also be taking you through advanced topics like modular development with Backbone.js and AMD (via RequireJS), how to build applications using modern tech stacks (like Node and Express), how to solve the routing problems with Backbone and jQuery Mobile, tips about scaffolding tools and a lot more.
 
 If this is your first time looking at Backbone.js and you're still unsure whether or not to give it a try, why not take a look at how [a Todo application](http://github.com/addyosmani/todomvc) might be implemented in Backbone and most of the other alternatives before reading further?
 
-The goal of this book is to create a free, centralized repository of information that can help those developing real-world apps with Backbone. If you come across a section or topic which you think could be improved or expanded on, please feel free to submit a pull-request. It won't take long and you'll be helping other developers avoid problems you've run into before.
+The goal of this book is to create an authoritative and centralized repository of information that can help those developing real-world apps with Backbone. If you come across a section or topic which you think could be improved or expanded on, please feel free to submit a pull-request. It won't take long and you'll be helping other developers avoid problems you've run into before.
 
 
-##<a name="fundamentals">Fundamentals></a>
+##<a name="fundamentals">Fundamentals</a>
 
-In this section we are going to cover some of the fundamentals required to appreciate where a framework like Backbone.js fits in. Let's begin our journey into understanding Backbone better with a look at code architecure. 
+In this section we are going to cover some of the fundamentals required to appreciate where a framework like Backbone.js fits in. Let's begin our journey into understanding Backbone better with a look at code architecture. 
 
 ###Understanding MVC And MVP (For JavaScript Developers)
 
