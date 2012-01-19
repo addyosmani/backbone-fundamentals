@@ -24,8 +24,7 @@ define([
     // a one-to-one correspondence between a **Todo** and a **TodoView** in this
     // app, we set a direct reference on the model for convenience.
     initialize: function() {
-      _.bindAll(this, 'render', 'close');
-      this.model.bind('change', this.render);
+      this.model.bind('change', this.render, this);
       this.model.view = this;
     },
 
@@ -42,7 +41,7 @@ define([
       var content = this.model.get('content');
       this.$('.todo-content').text(content);
       this.input = this.$('.todo-input');
-      this.input.bind('blur', this.close);
+      this.input.bind('blur', this.close, this);
       this.input.val(content);
     },
 
