@@ -26,13 +26,11 @@ define([
     // collection, when items are added or changed. Kick things off by
     // loading any preexisting todos that might be saved in *localStorage*.
     initialize: function() {
-      _.bindAll(this, 'addOne', 'addAll', 'render');
-
       this.input    = this.$("#new-todo");
 
-      Todos.bind('add',     this.addOne);
-      Todos.bind('reset',   this.addAll);
-      Todos.bind('all',     this.render);
+      Todos.bind('add',     this.addOne, this);
+      Todos.bind('reset',   this.addAll, this);
+      Todos.bind('all',     this.render, this);
 
       Todos.fetch();
     },
