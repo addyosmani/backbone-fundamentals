@@ -78,7 +78,7 @@ MVC (Model-View-Controller) is an architectural design pattern that encourages i
 
 It's important to understand what the original MVC pattern was aiming to solve as it's mutated quite heavily since the days of it's origin. Back in the 70's, graphical user-interfaces were far and few between and a concept known as [Separated Presentation](http://martinfowler.com/eaaDev/uiArchs.html) began to be used as a means to make a clear division between domain objects which modelled concepts in the real world (e.g a photo, a person) and the presentation objects which were rendered to the user's screen.
 
-The Smalltalk-80 implementaion of MVC took this concept further and had an objective of separating out the application logic from the user interface. The idea was that decoupling these parts of the application would also allow the reuse of models for other interfaces in the application. There are some interesting points worth noting about Smalltalk-80's MVC architecture:
+The Smalltalk-80 implementation of MVC took this concept further and had an objective of separating out the application logic from the user interface. The idea was that decoupling these parts of the application would also allow the reuse of models for other interfaces in the application. There are some interesting points worth noting about Smalltalk-80's MVC architecture:
 
 * A Domain element was known as a Model and were ignorant of the user-interface (Views and Controllers)
 * Presentation was taken care of by the View and the Controller, but there wasn't just a single view and controller. A View-Controller pair was required for each element being displayed on the screen and so there was no true separation between them
@@ -1227,7 +1227,7 @@ Jade is a template engine influenced by Haml (which we'll be looking at later). 
 
 ###Practical
 
-For this practical, we're going to once again look at extending the popular Backbone Todo application. Rather than relying on localStorage for data persistance, we're going to switch to storing Todos in a MongoDB document-store instead. The code for this practical can be found at: https://github.com/addyosmani/backbone-boilerplates/tree/master/option2
+For this practical, we're going to once again look at extending the popular Backbone Todo application. Rather than relying on localStorage for data persistence, we're going to switch to storing Todos in a MongoDB document-store instead. The code for this practical can be found at: https://github.com/addyosmani/backbone-boilerplates/tree/master/option2
 
 
 **app.js**
@@ -2163,7 +2163,7 @@ define([
 
  From a maintenance perspective, there's nothing logically different in this version of our view, except for how we approach templating. 
 
-Using the RequireJS text plugin (the dependency marked `text`), we can actally store all of the contents for the template we looked at earlier in an external file (todos.html).
+Using the RequireJS text plugin (the dependency marked `text`), we can actually store all of the contents for the template we looked at earlier in an external file (todos.html).
 
 **templates/todos.html**
 
@@ -2328,7 +2328,7 @@ In this section we'll discuss applying some of the concepts I cover in my articl
 At a high-level, one architecture that works for such applications is something which is:
 
 * **Highly decoupled**: encouraging modules to only publish and subscribe to events of interest rather than directly communicating with each other. This helps us to build applications which who's units of code aren't highly tied (coupled) together and can thus be reused more easily.
-* **Supports module-level security**: whereby modules are only able to execute behaviour they've been permitted to. Application security is an area which is often overlooked in JavaScript applications, but can be quite easily implemented in a flexible manner.
+* **Supports module-level security**: whereby modules are only able to execute behavior they've been permitted to. Application security is an area which is often overlooked in JavaScript applications, but can be quite easily implemented in a flexible manner.
 * **Supports failover**: allowing an application continuing to function even if particular modules fail. The typical example I give of this is the GMail chat widget. Imagine being able to build applications in a way that if one widget on the page fails (e.g chat), the rest of your application (mail) can continue to function without being affected.
 
 This is an architecture which has been implemented by a number of different companies in the past, including Yahoo! (for their modularized homepage - which Nicholas Zakas has [spoken](http://www.youtube.com/watch?v=vXjVFPosQHw) about) and AOL for some of our upcoming projects. 
@@ -2714,7 +2714,7 @@ window.mobileSearch = window.mobileSearch || {
 
 **Models**
 
-In the Flickly application, there are at least two unique types of data that need to be modelled - search results and individual photos, both of which contain additional meta-data like photo titles. If you simplify this down, search results are actually groups of photos in their own right, so the application only requires:
+In the Flickly application, there are at least two unique types of data that need to be modeled - search results and individual photos, both of which contain additional meta-data like photo titles. If you simplify this down, search results are actually groups of photos in their own right, so the application only requires:
 
 * A single model (a photo or 'result' entry)
 * A result collection (containing a group of result entries) for search results
@@ -2722,7 +2722,7 @@ In the Flickly application, there are at least two unique types of data that nee
 
 **Views**
 
-The views we'll need include an application view, a search results view and a photo view. Static views or pages of the single-page application which do not require a dynamic element to them (e.g an 'about' page) can be easily coded up in your document's markup, independant of Backbone.
+The views we'll need include an application view, a search results view and a photo view. Static views or pages of the single-page application which do not require a dynamic element to them (e.g an 'about' page) can be easily coded up in your document's markup, independent of Backbone.
 
 **Routers**
 
@@ -2764,9 +2764,9 @@ When building modern web-applications, it's typically considered best-practice t
 
 ##Jasmine
 
-Jasmine describes itself as a behaviour-driven development (BDD) framework for testing JavaScript code. Before we jump into how the framework works, it's useful to understand exactly what [BDD](http://en.wikipedia.org/wiki/Behavior_Driven_Development) is.
+Jasmine describes itself as a behavior-driven development (BDD) framework for testing JavaScript code. Before we jump into how the framework works, it's useful to understand exactly what [BDD](http://en.wikipedia.org/wiki/Behavior_Driven_Development) is.
 
-BDD is a second-generation testing approach first described by [Dan North](http://dannorth.net/introducing-bdd/) (the authority on BDD) which attempts to test the behaviour of software. It's considered second-generation as it came out of merging ideas from Domain driven design (DDD) and lean software development, helping teams to deliver high quality software by answering many of the more confusing questions early on in the agile process. Such questions commonly include those concerning documentation and testing.
+BDD is a second-generation testing approach first described by [Dan North](http://dannorth.net/introducing-bdd/) (the authority on BDD) which attempts to test the behavior of software. It's considered second-generation as it came out of merging ideas from Domain driven design (DDD) and lean software development, helping teams to deliver high quality software by answering many of the more confusing questions early on in the agile process. Such questions commonly include those concerning documentation and testing.
 
 If you were to read a book on BDD, it's likely to also be described as being 'outside-in and pull-based'. The reason for this is that it borrows the idea of of pulling features from Lean manufacturing which effectively ensures that the right software solutions are being written by a) focusing on expected outputs of the system and b) ensuring these outputs are achieved.
 
@@ -2792,7 +2792,7 @@ Developers often implement BDD in unison with another testing paradigm known as 
 
 In this chapter we're going to use both BDD (with TDD) to write unit tests for a Backbone application.
 
-***Note:*** I've seen a lot of developers also opt for writing tests to validate behaviour of their code after having written it. While this is fine, note that it can come with pitfalls such as only testing for behaviour your code currently supports, rather than behaviour the problem needs to be supported.
+***Note:*** I've seen a lot of developers also opt for writing tests to validate behavior of their code after having written it. While this is fine, note that it can come with pitfalls such as only testing for behavior your code currently supports, rather than behavior the problem needs to be supported.
 
 
 ##Suites, Specs & Spies
@@ -2808,7 +2808,7 @@ it('should be incrementing in value', function(){
 });
 ```
 
-On it's own, a spec isn't particularly useful until expectations are set about the behaviour of the code. Expectations in specs are defined using the ```expect()``` function and an [expectation matcher](https://github.com/pivotal/jasmine/wiki/Matchers) (e.g toEqual(), toBeTruthy(), toContain()). A revised example using an expectation matcher would look like:
+On it's own, a spec isn't particularly useful until expectations are set about the behavior of the code. Expectations in specs are defined using the ```expect()``` function and an [expectation matcher](https://github.com/pivotal/jasmine/wiki/Matchers) (e.g toEqual(), toBeTruthy(), toContain()). A revised example using an expectation matcher would look like:
 
 ```javascript
 it('should be incrementing in value', function(){
@@ -2817,7 +2817,7 @@ it('should be incrementing in value', function(){
     expect(counter).toEqual(1);
 });
 ``` 
-The above code passes our behavioural expectation as ```counter`` equals 1. Notice how easy this was to read the expectation on the last line (you probably grokked it without any explanation).
+The above code passes our behavioral expectation as ```counter`` equals 1. Notice how easy this was to read the expectation on the last line (you probably grokked it without any explanation).
 
 Specs are grouped into suites which we describe using Jasmine's ```describe()``` function, again passing a string as a description and a function. The name/description for your suite is typically that of the component or module you're testing. 
 
@@ -2857,7 +2857,7 @@ describe('Stats', function(){
 
 ***Note:*** Suites are executed in the order in which their are described, which can be useful to know if you would prefer to see test results for specific parts of your application reported first.
 
-Jasmine also supports **spies** - a way to mock, spy and fake behaviour in our unit tests. Spies replace the function they're spying on, allowing us to simulate behaviour we would like to mock (i.e test free of the actual implementation).
+Jasmine also supports **spies** - a way to mock, spy and fake behavior in our unit tests. Spies replace the function they're spying on, allowing us to simulate behavior we would like to mock (i.e test free of the actual implementation).
 
 In the below example, we're spying on the ```setComplete``` method of a dummy Todo function to test that arguments can be passed to it as expected. 
 
@@ -2886,7 +2886,7 @@ describe('a simple spy', function(){
 });
 ```
 
-What you're more likely to use spies for is testing [asynchronous](http://en.wikipedia.org/wiki/Asynchronous_communication) behaviour in your application such as AJAX requests. Jasmine supports:
+What you're more likely to use spies for is testing [asynchronous](http://en.wikipedia.org/wiki/Asynchronous_communication) behavior in your application such as AJAX requests. Jasmine supports:
 
 * Writing tests which can mock AJAX requests using spies. This allows us to test code which runs before an AJAX request and right after. It's also possible to mock/fake responses the server can return and the benefit of this type of testing is that it's faster as no real calls are being made to a server
 * Asynchronous tests which don't rely on spies
@@ -2950,7 +2950,7 @@ function getTodo(id, callback) {
 }
 ```
 
-***Note:*** It's useful to remember that when making real requests to a web server in your unit tests, this has the potential to massively slow down the speed at which tests run (due to many factors including server latency). As this also introduces an external dependency that can (and should) be minimised in your unit testing, it is strongly recommended that you opt for spies to remove the need for a web server to be used here.
+***Note:*** It's useful to remember that when making real requests to a web server in your unit tests, this has the potential to massively slow down the speed at which tests run (due to many factors including server latency). As this also introduces an external dependency that can (and should) be minimized in your unit testing, it is strongly recommended that you opt for spies to remove the need for a web server to be used here.
 
 ##beforeEach and afterEach()
 
@@ -3027,7 +3027,7 @@ First, we begin our suite for model testing using ```describe()```:
 describe('Tests for Todo', function() {
 ```
 
-Models should ideally have default values for attributes. This helps ensure that when creating instances without a value set for any specific attribute, a default one (e.g "") is used instead. The idea here is to allow your application to interact with models without any unexpected behaviour. 
+Models should ideally have default values for attributes. This helps ensure that when creating instances without a value set for any specific attribute, a default one (e.g "") is used instead. The idea here is to allow your application to interact with models without any unexpected behavior. 
 
 In the following spec, we create a new Todo without any attributes passed then check to find out what the value of the ```text``` attribute is. As no value has been set, we expect a default value of ```""`` to be returned.
 
@@ -3067,7 +3067,7 @@ it('Will set passed attributes on the model instance when created.', function() 
 });
 ```
 
-Backbone models support a model.change() event which is triggered when the state of a model changes. In the following example, by 'state' I'm referring to the value of a Todo model's attributes. The reason changes of state are important to test are that there may be state-dependant events in your application e.g you may wish to display a confirmation view once a Todo model has been updated.
+Backbone models support a model.change() event which is triggered when the state of a model changes. In the following example, by 'state' I'm referring to the value of a Todo model's attributes. The reason changes of state are important to test are that there may be state-dependent events in your application e.g you may wish to display a confirmation view once a Todo model has been updated.
 
 ```javascript
 it('Fires a custom event when the state changes.', function() {
@@ -3368,7 +3368,7 @@ In smaller applications, those new to BDD might argue that visual confirmation o
 
 We're going to begin testing views by writing two specs. The first spec will check that the view's ```render()``` method is correctly returning the view instance, which is necessary for chaining. Our second spec will check that the HTML produced is exactly what we expect based on the properties of the model instance that's been associated with our TodoView.
 
-Unlike some of the previous specs we've covered, this section will make greater use of ```beforeEach()``` to both demonstrate how to use nested suites and also ensure a consistant set of conditions for our specs. In our first view spec for TodoView, we're simply going to create a sample model (based on Todo) and instantiate a TodoView which associates it with the model.
+Unlike some of the previous specs we've covered, this section will make greater use of ```beforeEach()``` to both demonstrate how to use nested suites and also ensure a consistent set of conditions for our specs. In our first view spec for TodoView, we're simply going to create a sample model (based on Todo) and instantiate a TodoView which associates it with the model.
 
 ```javascript
 describe("TodoView", function() {
@@ -3403,7 +3403,7 @@ describe("TodoView", function() {
 ```
 
 
-Once these specs are run, only the second one ('produces the correct HTML') fails. Our first spec ('returns the view object'), which is testing that the TodoView instance is returned from ```render()```, only passed as this is Backbone's default behaviour. We haven't yet overwritten the ```render()``` method with our own version.
+Once these specs are run, only the second one ('produces the correct HTML') fails. Our first spec ('returns the view object'), which is testing that the TodoView instance is returned from ```render()```, only passed as this is Backbone's default behavior. We haven't yet overwritten the ```render()``` method with our own version.
 
 **Note:** For the purposes of maintaining readability, all template examples in this section will use a minimal version of the following Todo view template. As it's relatively trivial to expand this, please feel free to refer to this sample if needed: 
 
@@ -3498,7 +3498,7 @@ What we're now doing in the above spec is appending the rendered todo item into 
 
 JavaScript templating systems (such as Handlebars, Mustache and even Underscore's own Micro-templating) support conditional logic in template strings. What this effectively means is that we can add if/else/ternery expressions inline which can then be evaluated as needed, allowing us to build even more powerful templates. 
 
-In our case, when a user sets a Todo item to be complete (done), we may wish to provide them with visual feedback (such as a striked line through the text) to differenciate the item from those that are remaining. This can be done by attaching a new class to the item. Let's begin by writing a test we would ideally like to work:
+In our case, when a user sets a Todo item to be complete (done), we may wish to provide them with visual feedback (such as a striked line through the text) to differentiate the item from those that are remaining. This can be done by attaching a new class to the item. Let's begin by writing a test we would ideally like to work:
 
 
 ```javascript
@@ -3540,7 +3540,7 @@ render: function() {
 ```
  
 
-This can however get unweildly fairly quickly. As the logic in our templates increases, so does the complexity involved. This is where templates libraries can help. As mentioned earlier, there are a number of popular options available, but for the purposes of this chapter we're going to stick to using Underscore's built-in Microtemplating. Whilst there are more advanced options you're free to explore, the benefit of this is that no additional files are required and we can easily change the existing Jasmine specs without too much adjustment.
+This can however get unwieldly fairly quickly. As the logic in our templates increases, so does the complexity involved. This is where templates libraries can help. As mentioned earlier, there are a number of popular options available, but for the purposes of this chapter we're going to stick to using Underscore's built-in Microtemplating. Whilst there are more advanced options you're free to explore, the benefit of this is that no additional files are required and we can easily change the existing Jasmine specs without too much adjustment.
 
 The TodoView object modified to use Underscore templating would look as follows:
 
