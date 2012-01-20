@@ -745,9 +745,10 @@ var PhotoSearch = Backbone.View.extend({
 
 ####What is `el`?
 
-`el` is basically a reference to a DOM element and all views must have one. It allows for the contents of the view to be inserted into the DOM structure all at once, which makes for a fast rendering because the browser is doing the minimum number of reflows and repaints.
-There a two ways to attach a DOMElement to a view: the element already exists in the page or the a new element is created for the view and added manually by the developer.
-If the element already exists in the page, you can set `el` as either a CSS selector that matches the element or a simple reference to the DOMElement.
+`el` is basically a reference to a DOM element and all views must have one. It allows for all of the contents of a view to be inserted into the DOM at once, which makes for faster rendering as browser performs the minimum required reflows and repaints.
+
+There a two ways to attach a ```DOMElement``` to a view: the element already exists in the page or a new element is created for the view and added manually by the developer.
+If the element already exists in the page, you can set `el` as either a CSS selector that matches the element or a simple reference to the ```DOMElement```.
 
 ````javascript
 el: '#footer', 
@@ -759,16 +760,15 @@ If you want to create a new element for you view, set any combination of the fol
 
 ````javascript
 tagName: 'p', // required, but defaults to 'div' if not set
-className: 'mastHead', // optional, you can assign multiple classes to this property like so 'mastHead homepage'
+className: 'container', // optional, you can assign multiple classes to this property like so 'container homepage'
 id: 'header', // optional
 ```
 
-The above code creates the DOMElement below but doesn't append it to the DOM.
+The above code creates the ```DOMElement``` below but doesn't append it to the DOM.
 
-<pre>
-	&lt;p id=&quot;header&quot; class=&quot;mastHead&quot;&gt;&lt;/p&gt;
+<pre>  
+    &lt;p id=&quot;header&quot; class=&quot;container&quot;&gt;&lt;/p&gt;    
 </pre>
-
 
 
 **Understanding `render()`**
