@@ -244,6 +244,13 @@ Below we can see two examples of HTML templates. One implemented using the popul
 </li>
 ```
 
+**Microtemplates interpolation**
+
+You may also use double curly bracket (or any other tag you feel comfortable with) in Microtemplates. In case of curly brackets you need to set underscore templateSettings attribute:
+
+```
+_.templateSettings = { interpolate : /\{\{(.+?)\}\}/g };
+```
 
 It is also worth noting that in classical web development, navigating between independent views required the use of a page refresh. In Single-page JavaScript applications however, once data is fetched from a server via Ajax, it can simply be dynamically rendered in a new view within the same page without any such refresh being necessary. The role of navigation thus falls to a "router", which assists in managing application state (e.g allowing users to bookmark a particular view they have navigated to). As routers are however neither a part of MVC nor present in every MVC-like framework, I will not be going into them in greater detail in this section.
 
