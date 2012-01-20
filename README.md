@@ -745,22 +745,30 @@ var PhotoSearch = Backbone.View.extend({
 
 ####What is `el`?
 
-`el` is basically a reference to a DOM element and all views must have one, however Backbone allows you to specify this in four different ways. You can either directly use an `id`, a `tagName`, `className` or if you don't state anything `el` will simply default to a plain div element without any id or class. Here are some quick examples of how these may be used:
+`el` is basically a reference to a DOM element and all views must have one. It allows for the contents of the view to be inserted into the DOM structure all at once, which makes for a fast rendering because the browser is doing the minimum number of reflows and repaints.
+There a two ways to attach a DOMElement to a view: the element already exists in the page or the a new element is created for the view and added manually by the developer.
+If the element already exists in the page, you can set `el` as either a CSS selector that matches the element or a simple reference to the DOMElement.
 
-```javascript
-id: $('#results')  //select based on an ID or other valid jQuery selector.
-tagName: 'li' //select based on a specific tag. Here el itself will be derived from the tagName
-className: 'items' //similar to the above, this will also result in el being derived from it
-el: '' //defaults to a div without an id, name or class.
+````javascript
+el: '#footer', 
+// OR
+el: document.getElementById( 'footer' )
 ```
 
-**Note:** A combination of these methods can also be used to define `el`. For example:
+If you want to create a new element for you view, set any combination of the following view's properties: `tagName`, `id` and `className`. A new element will be created for you by the framework and a reference to it will be available at the `el` property.
 
-```javascript
-tagName: "li",
-className: "container"
+````javascript
+tagName: 'p', // required, but defaults to 'div' if not set
+className: 'mastHead', // optional, you can assign multiple classes to this property like so 'mastHead homepage'
+id: 'header', // optional
 ```
-will use specific tags with a particular `className`.
+
+The above code creates the DOMElement below but doesn't append it to the DOM.
+
+<pre>
+	&lt;p id=&quot;header&quot; class=&quot;mastHead&quot;&gt;&lt;/p&gt;
+</pre>
+
 
 
 **Understanding `render()`**
