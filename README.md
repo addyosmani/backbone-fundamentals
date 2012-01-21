@@ -1154,7 +1154,7 @@ In this section of the book, we're going to take a look at developing RESTful ap
 
 ##Stack 1: Using Node.js, Express, Mongoose and MongoDB
 
-The first stack we'll be looking at is:
+The first stack we'll look at is:
 
 * [Node.js](nodejs.org)
 * [Express](http://expressjs.com/)
