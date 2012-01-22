@@ -1178,14 +1178,14 @@ Jade is a template engine influenced by Haml (which we'll be looking at later). 
 
 ###Practical
 
-For this practical, we're going to once again look at extending the popular Backbone Todo application. Rather than relying on localStorage for data persistance, we're going to switch to storing Todos in a MongoDB document-store instead. The code for this practical can be found at: https://github.com/addyosmani/backbone-boilerplates/tree/master/option2
+For this practical, we're going to look at extending [a popular Backbone Todo application](http://documentcloud.github.com/backbone/examples/todos/index.html). That version relies on localStorage for data persistance, but we're going to switch to storing Todos in a MongoDB document-store instead. The code for this practical can be found at: https://github.com/addyosmani/backbone-boilerplates/tree/master/option2
 
 
 **app.js**
 
 (See [here](https://github.com/addyosmani/backbone-boilerplates/blob/master/option2/app.js) for the source)
 
-We must first include the node dependencies required by our application. These are Express, Mongoose and Path (a module containing utilities for dealing with file paths.
+First include the node dependencies required by the application. These are Express, Mongoose and Path (a module containing utilities for dealing with file paths.
 
 ```javascript
 var application_root = __dirname,
@@ -1194,13 +1194,13 @@ var application_root = __dirname,
   mongoose = require('mongoose');
 ```
 
-Next, create a new Express server. `express.createServer()` is a simple way of creating an instance of express.HTTPServer, which we'll be using to pass in our routes.
+Next, create a new Express server, which we'll be using to pass in our routes.
 
 ```javascript
 var app = express.createServer();
 ```
 
-After this, connect Mongoose up to a database (in our case, localhost should suffice). Should you require the ability to pass in authentication information, here's a sample containing all of the supported URL parameters: `mongodb://[username:password@]host1[:port1][,host2[:port2],...[,hostN[:portN]]][/[database][?options]]`
+After this, we'll connect Mongoose to a database (in our case, localhost should suffice). Should you require the ability to pass in authentication information, here's a sample containing all of the supported URL parameters: `mongodb://[username:password@]host1[:port1][,host2[:port2],...[,hostN[:portN]]][/[database][?options]]`
 
 ```javascript
 mongoose.connect('mongodb://localhost/my_database');
@@ -1216,7 +1216,7 @@ var Todo = mongoose.model('Todo', new mongoose.Schema({
 }));
 ```
 
-The `configure()` methods allows us to setup what we need for the current environment with our Express server. Note that lower down in the configuration are two view/view related lines. The last one explicitly sets the viewing/templating engine to be used as Jade `app.set('view engine', 'jade')`. We can avoid these if we wish to use plain HTML/JS for our templates instead.
+The `configure()` method allows us to setup what we need for the current environment with our Express server. Note that lower down in the configuration are two view/view related lines. The last one explicitly sets the viewing/templating engine to be used as Jade `app.set('view engine', 'jade')`. We can avoid these if we wish to use plain HTML/JS for our templates instead.
 
 ```javascript
 app.configure(function(){
@@ -1232,11 +1232,11 @@ app.configure(function(){
 
 ```
 
-Should you prefer to switch out Jade for an alternative view engine, this can be done fairly trivially. See the section under 'Templating' here:
+Should you prefer to switch out Jade for an alternative view engine, this can be done fairly easily. See the section under 'Templating' here:
 https://github.com/joyent/node/wiki/modules. For example, to switch to EJS, you would simply write `app.set('view engine', 'ejs')`
 
 
-Express makes use of commong HTTP verbs (get, put, post etc.) to provide easy to use, expressive routing API based on CRUD (Create, Read, Update and Delete). Below for example, we can define what happens when the browser requests the root '/'. As a trivial route in this application, it doesn't do anything particularly exciting, however getters typically read or retrieve data.
+Express makes use of common HTTP verbs (get, put, post etc.) to provide easy to use, expressive routing API based on CRUD (Create, Read, Update and Delete). Below for example, we define what happens when the browser requests the root '/'. As a trivial route in this application, it doesn't do anything particularly exciting, however getters like this typically read or retrieve data.
 
 ```javascript
 app.get('/', function(req, res){
@@ -1244,7 +1244,7 @@ app.get('/', function(req, res){
 });
 ```
 
-Onto something a little more useful and in our next route, navigating to '/todo' will actually render our Jade view 'todo.jade', as seen in the callback. Additional configuration values can be passed as the second parameter, such as the custom title specified below.
+Let's do something a little more useful. In our next route, navigating to '/todo' will actually render our Jade view 'todo.jade', as seen in the callback. Additional configuration values can be passed as the second parameter, such as the custom title specified below.
 
 ```javascript
 app.get('/todo', function(req, res){
@@ -1262,7 +1262,7 @@ app.get('/api/todos', function(req, res){
 });
 ```
 
-The calback to our next route supports querying for todos based on a specific ID. The route string itself (once compiled) will be converted from '/api/todos/:id' to a regular expression. As you might have guessed, this is a hint that routes can also be regular expression literals if we wished to do something more complex.
+The calback to our next route supports getting a single todos based on its ID. The route string itself (once compiled) will be converted from '/api/todos/:id' to a regular expression. As you might have guessed, this is a hint that routes can also be regular expression literals if we need them to be more complex.
 
 ```javascript
 app.get('/api/todos/:id', function(req, res){
@@ -1274,7 +1274,7 @@ app.get('/api/todos/:id', function(req, res){
 });
 ```
 
-Simplarly, we want to support updating todos based on a specific ID as well. The following allows us to query a todo by ID and then update the values of it's three attributes (text, done, order) easily. 
+We also want to support updating todos. The following allows us to query a todo by ID and then update the values of its three attributes: text, done, order. 
 
 ```javascript
 app.put('/api/todos/:id', function(req, res){
@@ -1311,7 +1311,7 @@ app.post('/api/todos', function(req, res){
 });
 ```
 
-We of course also want to support deleting todos (e.g if a todo has been 'cleared', it should be deleted). This also works based on a specific todo ID.
+We of course also want our application to delete todos (e.g if a todo has been 'cleared', it should be deleted). This also works based on a specific todo ID.
 
 ```javascript
 app.delete('/api/todos/:id', function(req, res){
@@ -1326,7 +1326,7 @@ app.delete('/api/todos/:id', function(req, res){
 });
 ```
 
-Finally, this last line is to ensure we're only listening on the port app.js is running.
+Finally, this last line is to ensure we're only listening on the port where app.js is running.
 
 ```javascript
 app.listen(3000);
@@ -1334,9 +1334,9 @@ app.listen(3000);
 
 **script.js - updating our Backbone.js app**
 
-In the `/public/js` folder of options 1 (HTML templates) and 2 (Jade) for the practical, you'll find a version of the Backbone Todo app originally by Jerome Gravel-Niquet. Let's pay attention to [script.js](https://github.com/addyosmani/backbone-boilerplates/blob/master/option2/public/js/script.js). In order to change the application to work with our new back-end, we'll need to make some very minor changes to this.
+In the `/public/js` folder of options 1 (HTML templates) and 2 (Jade) for the practical, you'll find a version of the Backbone Todo app originally by Jerome Gravel-Niquet. Let's pay attention to [script.js](https://github.com/addyosmani/backbone-boilerplates/blob/master/option2/public/js/script.js). In order to make this application to work with the backend we created above, we'll need to make some changes to this code.
 
-Reviewing `window.TodoList` (a Backbone Collection), you'll notice that it has a property called `localStorage`, which uses the Backbone [localStorage](https://github.com/jeromegn/Backbone.localStorage) adapter in order to facilitate storing data using the browser's localStorage features.
+Reviewing `window.TodoList` (a Backbone Collection), you'll notice that it has a property called `localStorage`, which uses the Backbone [localStorage](https://github.com/jeromegn/Backbone.localStorage) adapter in order to store data using the browser's localStorage features.
 
 ```javascript
 window.TodoList = Backbone.Collection.extend({
@@ -1349,7 +1349,7 @@ window.TodoList = Backbone.Collection.extend({
     localStorage: new Store("todos"),
 ```
 
-In order to switch it over to our RESTful backend, we're going to make use of the `url` property or function on a collection to reference its location on the server. Models inside of a collection then use `url` to construct URLs of their own. As all of the CRUD for our RESTful API works on the base route '/api/todos', this is the value we set `url` to.
+In order to connect to our RESTful backend, we're going to make use of Backbone.Collection's `url` property or function to point to a location on the server. Models inside of the collection will then use `url` to construct URLs of their own. As all of the CRUD for our RESTful API works on the base route '/api/todos', that's the value we'll set for `url`.
 
 ```javascript
     // localStorage: new Store("todos"),
@@ -1357,7 +1357,6 @@ In order to switch it over to our RESTful backend, we're going to make use of th
 ```
 
 This is the only change necessary to our existing Backbone application in order to get things working. Pretty easy, right?
-
 
 
 **todo.jade**
@@ -1468,7 +1467,7 @@ body
 
 **static.html**
 
-Alternatively, a static version of our index which doesn't rely on Jade can be put together as follows. See [here](https://github.com/addyosmani/backbone-boilerplates/blob/master/option1/public/static.html) for the complete file or below for a sample.
+Alternatively, we could create a static version of our index which doesn't rely on Jade. See [here](https://github.com/addyosmani/backbone-boilerplates/blob/master/option1/public/static.html) for the complete file or below for a sample.
 
 <pre>
  &lt;div id=&quot;container&quot;&gt;
@@ -1543,26 +1542,26 @@ sudo chown `id -u` /data/db
 
 Once this is done, open up two terminal windows. 
 
-In the first, `cd` to your MongoDB bin directory or type in the complete path to it. You'll need to start <cpde>mongod`.
+In the first, `cd` to your MongoDB bin directory or type in the complete path to it. You'll need to start `mongod`.
 
 <pre>
 $ ./bin/mongod
 </pre>
 
-Next, in the second terminal, start the `mongo</code shell which will connect up to localhost by default.
+Next, in the second terminal, start the `mongo` shell, which will connect to localhost by default.
 
 <pre>
 $ ./bin/mongo
 </pre>
 
-That's it!.
+That's it!
 
 ####Express and Mongoose
 
-Option 1 (HTML) and Option 2 (Jade) of the practical download both come with an install.sh bash script. This allows you to easily install Express, Mongoose, Jade (and optionally MongoDB if you prefer to) through npm (the node package manager). 
+Option 1 (HTML) and Option 2 (Jade) of the practical download both come with an install.sh bash script. This allows you to install Express, Mongoose, Jade (and optionally MongoDB if you prefer to) easily through npm (the Node package manager). 
 
 * Make sure you have Node.js installed. If not, you can grab it [here](http://nodejs.org/#download)
-* Next run `$ ./install.sh` at the terminal to install the rest of our dependencies. To see the exact contents of the install.sh file, see below:
+* Next run `$ ./install.sh` at the terminal to install the rest of our dependencies. Here's what install.sh looks like:
 
 **install.sh**
 
@@ -1575,7 +1574,7 @@ npm install jade
 </pre>
 
 
-* After you've installed all of the dependencies for the stack, we can get to cloning the repo containing our practicals and running them. Start by running the below lines:
+* After you've installed all of the dependencies for the stack, we can clone the repo containing our practicals and run them:
    
 <pre>
 git clone git://github.com/addyosmani/backbone-boilerplates.git
@@ -1583,51 +1582,47 @@ cd option2
 node app.js
 </pre>
 
-For option1 (without Jade), simply cd into option1 and run `node app.js` from there.
+For option1 (without Jade), simply cd into the option1 director and run `node app.js` from there.
 
 Finally, either of the example apps can now be accessed by navigating to:
 
 * Option 1: `http://localhost:3000/static.html`
 * Option 2: `http://localhost:3000/todo`
 
-That's it! Whilst there's a lot more than can be done to expand on the concepts covered so far, the base we're reviewed should be enough to get you up and running with this stack if you wish to use them with Backbone. 
+That's it! There's a lot more we could do to expand on the concepts covered so far, but the base we've created here should be enough to get you up and running with this stack if you wish to use it with Backbone. 
 
 In the next addition to this section (coming soon), we'll take a look at a stack consisting of Ruby, Sinatra, Haml and more.
 
-
-
 ##<a name="modularjs">Modular JavaScript</a>
 
-When we say an application is modular, we generally mean it's composed of a set of highly decoupled, distinct pieces of functionality stored in modules. As you probably know, loose coupling facilitates easier maintainability of apps by removing dependencies where possible. When this is implemented efficiently, its quite easy to see how changes to one part of a system may affect another.
+When we say an application is modular, we generally mean it's composed of a set of highly decoupled, distinct pieces of functionality stored in seperate pieces. As you probably know, loose coupling can make software easier to maintain by removing dependencies where possible. When this is implemented efficiently, its quite easy to see how changes to one part of a system may affect another.
 
-Unlike some more traditional programming languages however, the current iteration of JavaScript (ECMA-262) doesn't provide developers with the means to import such modules of code in a clean, organized manner. It's one of the concerns with specifications that haven't required great thought until more recent years where the need for more organized JavaScript applications became apparent.
+Unlike some more traditional programming languages, the current iteration of JavaScript (ECMA-262) doesn't provide developers with the means to import such modules of code in a clean, organized manner. Language specifications can lag behind real-world usage, and in the last few years the need for ways to structure JavaScript applications more rigorously has became apparent.
 
-Instead, developers at present are left to fall back on variations of the module or object literal patterns. With many of these, module scripts are strung together in the DOM with namespaces being described by a single global object where it's still possible to incur naming collisions in your architecture. There's also no clean way to handle dependency management without some manual effort or third party tools.
+Without native support for importing modules, JavaScript developers have ofen fallen back on variations of the module or object literal patterns. With many of these, module scripts are strung together in the DOM with namespaces being described by a single global object where it's still possible to incur naming collisions in your architecture. There's also no clean way to handle dependency management without some manual effort or third party tools.
 
 Whilst native solutions to these problems will be arriving in ES Harmony, the good news is that writing modular JavaScript has never been easier and you can start doing it today.
 
-In this next part of the book, we're going to look at how to use AMD modules and RequireJS for cleanly wrapping units of code in your application into managable modules.
+In this next part of the book, we're going to look at how to use AMD modules and RequireJS to wrap units of code in your application into managable modules.
 
 
 ##Organizing modules with RequireJS and AMD
 
-In case you haven't used it before, [RequireJS](http://requirejs.org) is a popular script loader written by James Burke - a developer who has been quite instrumental in helping shape the AMD module format, which we'll discuss more shortly. Some of RequireJS's capabilities include helping to load multiple script files, helping define modules with or without dependencies and loading in non-script dependencies such as text files.
-
-So, why use RequireJS with Backbone? Although Backbone is excellent when it comes to providing a sanitary structure to your applications, there are a few key areas where some additional help could be used:
-
-1) Backbone doesn't endorse a particular approach to modular-development. Although this means it's quite open-ended for developers to opt for classical patterns like the module-pattern or Object Literals for structuring their apps (which both work fine), it also means developers aren't sure of what works best when other concerns come into play, such as dependency management.
-
-RequireJS is compatible with the AMD (Asynchronous Module Definition) format, a format which was born from a desire to write something better than the 'write lots of script tags with implicit dependencies and manage them manually' approach to development. In addition to allowing you to clearly declare dependencies, AMD works well in the browser, supports string IDs for dependencies, declaring multiple modules in the same file and gives you easy-to-use tools to avoid polluting the global namespace.
-
-2) Let's discuss dependency management a little more as it can actually be quite challenging to get right if you're doing it by hand. When we write modules in JavaScript, we ideally want to be able to handle the reuse of code units intelligently and sometimes this will mean pulling in other modules at run-time whilst at other times you may want to do this dynamically to avoid a large pay-load when the user first hits your application.
+Let's discuss dependency management a little more as it can actually be quite challenging to get right if you're doing it by hand. When we write modules in JavaScript, we ideally want to be able to handle the reuse of code units intelligently and sometimes this will mean pulling in other modules at run-time whilst at other times you may want to do this dynamically to avoid a large pay-load when the user first hits your application.
 
 Think about the GMail web-client for a moment. When users initially load up the page on their first visit, Google can simply hide widgets such as the chat module until a user has indicated (by clicking 'expand') that they wish to use it. Through dynamic dependency loading, Google could load up the chat module only then, rather than forcing all users to load it when the page first initializes. This can improve performance and load times and can definitely prove useful when building larger applications.
 
-I've previously written [a detailed article](http://addyosmani.com/writing-modular-js) covering both AMD and other module formats and script loaders in case you'd like to explore this topic further. The takeaway is that although it's perfectly fine to develop applications without a script loader or clean module format in place, it can be of significant benefit to consider using these tools in your application development.
+How does this impact your approach to Backbone developent? Although Backbone is excellent when it comes to providing a sanitary structure to your applications, the overall approach to modular development is left to the developer. Although this means it's quite open-ended for developers to opt for classical patterns like the module-pattern or Object Literals for structuring their apps (which both work fine), it also means developers aren't sure of what works best when other concerns come into play, such as dependency management.
+
+In case you haven't used it before, [RequireJS](http://requirejs.org) is a popular script loader written by James Burke - a developer who has been instrumental in helping shape the AMD (Asynchronous Module Definition) format, which we'll discuss shortly. Some of RequireJS's capabilities include helping to load multiple script files, helping define modules with or without dependencies, and loading in non-script dependencies such as text files.
+
+RequireJS is compatible with AMD, a format which was born from a desire to write something better than the 'write lots of script tags with implicit dependencies and manage them manually' approach to development. In addition to allowing you to declare dependencies, AMD works well in the browser, supports string IDs for dependencies, declaring multiple modules in the same file and gives you easy-to-use tools to avoid polluting the global namespace.
+
+If you want more information about dependancy management options, I've written [a detailed article](http://addyosmani.com/writing-modular-js) covering AMD (and other module formats) and script loaders.
 
 ###Writing AMD modules with RequireJS
 
-As discussed above, the overall goal for the AMD format is to provide a solution for modular JavaScript that developers can use today. The two key concepts you need to be aware of when using it with a script-loader are a `define()` method for facilitating module definition and a `require()` method for handling dependency loading. `define()` is used to define named or unnamed modules based on the proposal using the following signature:
+As discussed above, the overall goal for the AMD format is to provide a solution for modular JavaScript that developers can use today. The two key concepts you need to be aware of when using AMD with a script loader are the `define()` method for facilitating module definition and the `require()` method for handling dependency loading. `define()` is used to define named or unnamed modules based on the proposal using the following signature:
 
 ```javascript
 define(
@@ -1639,7 +1634,7 @@ define(
 
 As you can tell by the inline comments, the `module_id` is an optional argument which is typically only required when non-AMD concatenation tools are being used (there may be some other edge cases where it's useful too). When this argument is left out, we call the module 'anonymous'. When working with anonymous modules, the idea of a module's identity is DRY, making it trivial to avoid duplication of filenames and code.
 
-Back to the define signature, the dependencies argument represents an array of dependencies which are required by the module you are defining and the third argument ('definition function') is a function that's executed to instantiate your module. A barebone module (compatible with RequireJS) could be defined using `define()` as follows:
+The `dependencies` argument represents an array of dependencies which are required by the module you are defining. The third argument is a function that's executed to instantiate your module. A barebone module (compatible with RequireJS) could be defined using `define()` as follows:
 
 ```javascript
 // A module ID has been omitted here to make the module anonymous
@@ -1662,8 +1657,7 @@ define(['foo', 'bar'],
 });
 ```
 ####Alternate syntax
-There is also a [sugared version](http://requirejs.org/docs/whyamd.html#sugar) of `define()` available that allows you to declare your dependencies as local variables using `require()`. This will feel familiar to anyone who's used node, and can be easier to add or remove dependencies.
-Here is the previous snippet using the alternate syntax:
+There is also a [sugared version](http://requirejs.org/docs/whyamd.html#sugar) of `define()` that lets you to declare your dependencies as local variables using `require()`. This will feel familiar to anyone who's used Node, and can be easier to add or remove dependencies. Here is the previous snippet using the alternate syntax:
 
 ```javascript
 // A module ID has been omitted here to make the module anonymous
@@ -1705,7 +1699,7 @@ require(['foo', 'bar'], function ( foo, bar ) {
 
 **Wrapping modules, views and other components with AMD**
 
-Now that we've taken a look at how to define AMD modules, let's review how to go about wrapping components like views and collections so that they can also be easily loaded as dependencies for any parts of your application that require them. At it's simplest, a Backbone model may just require Backbone and Underscore.js. These are considered it's dependencies and so, to write an AMD model module, we would simply do this:
+Now that we've taken a look at how to define AMD modules, let's look at how to wrap Backbone components so that they can also be easily loaded as dependencies for any parts of your application that require them.  To define a simple Backbone model, we just require Backbone.js and Underscore.js. These are considered the Model's dependencies, and so to write an AMD model module we would write:
 
 ```javascript
 define(['underscore', 'backbone'], function(_, Backbone) {
@@ -1733,7 +1727,7 @@ define(['underscore', 'backbone'], function(_, Backbone) {
 });
 ```
 
-Note how we alias Underscore.js's instance to `_` and Backbone to just `Backbone`, making it very trivial to convert non-AMD code over to using this module format. For a view which might require other dependencies such as jQuery, this can similarly be done as follows:
+Note how we alias Underscore.js's instance to `_` and Backbone.js's instance to just `Backbone`, making it  easy to our existing Backbone code over to the AMD module style. For a Backbone View which might require other dependencies such as jQuery, we could write:
 
 ```javascript
 define([
@@ -1748,18 +1742,15 @@ define([
   ...
 ```
 
-Aliasing to the dollar-sign (`$`), once again makes it very easy to encapsulate any part of an application you wish using AMD.
-
+Aliasing to the dollar-sign (`$`), once again makes it easy to encapsulate any part of an application you wish using AMD.
 
 ##External [Underscore/Handlebars/Mustache] templates using RequireJS
 
-Moving your [Underscore/Mustache/Handlebars] templates to external files is actually quite straight-forward. As this application makes use of RequireJS, I'll discuss how to implement external templates using this specific script loader.
-
-RequireJS has a special plugin called text.js which is used to load in text file dependencies. To use the text plugin, simply follow these simple steps:
+Moving your Underscore, Mustache, or Handlebars templates to external files is actually quite straightforward. Let's look at how to implement external templates using Require.js. RequireJS has a special plugin called text.js which is used to load in text file dependencies like our templates. To use the text plugin, simply follow these simple steps:
 
 1. Download the plugin from http://requirejs.org/docs/download.html#text and place it in either the same directory as your application's main JS file or a suitable sub-directory.
 
-2. Next, include the text.js plugin in your initial RequireJS configuration options. In the code snippet below, we assume that RequireJS is being included in our page prior to this code snippet being executed. Any of the other scripts being loaded are just there for the sake of example.
+2. Include the text.js plugin in your initial RequireJS configuration options. In the code snippet below, we assume that RequireJS is being included in our page prior to this code snippet being executed. Notice that we're also loading a number of jQuery plugins:
  
 ```javascript
 require.config( {
@@ -1777,7 +1768,7 @@ require.config( {
 } );
 ```
 
-3. When the `text!` prefix is used for a dependency, RequireJS will automatically load the text plugin and treat the dependency as a text resource. A typical example of this in action may look like..
+3. When the `text!` prefix is used for a dependency, RequireJS will automatically load the text plugin and treat the dependency as a text resource. Here's an example:
 
 ```javascript
 require(['js/app', 'text!templates/mainView.html'],
@@ -1788,9 +1779,9 @@ require(['js/app', 'text!templates/mainView.html'],
 );
 ```
 
-4. Finally we can use the text resource that's been loaded for templating purposes. You're probably used to storing your HTML templates inline using a script with a specific identifier.
+4. Finally, we can use the text resource that's been loaded for templating purposes. You're probably used to storing your HTML templates inline using a script with a specific identifier.
 
-With Underscore.js's micro-templating (and jQuery) this would typically be:
+With Underscore.js's micro-templating (and jQuery) this would typically look like this:
 
 HTML:
 
@@ -1808,23 +1799,21 @@ JS:
 var compiled_template = _.template( $('#mainViewTemplate').html() );
 ```
 
-With RequireJS and the text plugin however, it's as simple as saving your template into an external text file (say, `mainView.html`) and doing the following:
+With RequireJS and the text plugin, it's as simple as saving your template into an external text file (say, `mainView.html`) and doing the following:
 
 ```javascript
 require(['js/app', 'text!templates/mainView.html'],
     function(app, mainView){
-        
         var compiled_template = _.template( mainView );
     }
 );
 ```
 
-That's it!. You can then go applying your template to a view in Backbone doing something like:
+That's it! You can then apply your template to a view in Backbone as usual:
 
 ```javascript
 collection.someview.el.html( compiled_template( { results: collection.models } ) );
 ```
-
 
 All templating solutions will have their own custom methods for handling template compilation, but if you understand the above, substituting Underscore's micro-templating for any other solution should be fairly trivial.
 
@@ -1833,17 +1822,17 @@ All templating solutions will have their own custom methods for handling templat
 
 ##Optimizing Backbone apps for production with the RequireJS Optimizer
 
-As experienced developers may know, an essential final step when writing both small and large JavaScript web applications is the build process.  The majority of non-trivial apps are likely to consist of more than one or two scripts and so optimizing, minimizing and concatenating your scripts prior to pushing them to production will require your users to download a reduced number (if not just one) script file.
+As experienced developers may know, an essential final step when writing both small and large JavaScript web applications is the build process. Anything other than the simplest of applications are likely to consist of a few scripts and so optimizing, minimizing and concatenating your scripts prior to pushing them to production will mean fewer downloads for your users.
 
-Note: If you haven't looked at build processes before and this is your first time hearing about them, you might find [my post and screencast on this topic](http://addyosmani.com/blog/client-side-build-process/) useful.
+Note: If you're not yet familiar with using build processes, you might find [my post and screencast on this topic](http://addyosmani.com/blog/client-side-build-process/) useful.
 
-With some other structural JavaScript frameworks, my recommendation would normally be to implicitly use YUI Compressor or Google's closure compiler tools, but we have a slightly more elegant method available, when it comes to Backbone if you're using RequireJS. RequireJS has a command line optimization tool called r.js which has a number of capabilities, including:
+With some other structural JavaScript frameworks, my recommendation would normally be to use YUI Compressor or Google's Closure compiler, but Require.js gives us a slightly more elegant tool: a command line optimization utility called r.js which has a number of capabilities:
 
 * Concatenating specific scripts and minifiying them using external tools such as UglifyJS (which is used by default) or Google's Closure Compiler for optimal browser delivery, whilst preserving the ability to dynamically load modules
 * Optimizing CSS and stylesheets by inlining CSS files imported using @import, stripping out comments etc.
 * The ability to run AMD projects in both Node and Rhino (more on this later)
 
-You'll notice that I mentioned the word 'specific' in the first bullet point. The RequireJS optimizer only concatenates module scripts that have been specified in arrays of string literals passed to top-level (i.e non-local) require and define calls. As clarified by the [optimizer docs](http://requirejs.org/docs/optimization.html) this means that Backbone modules defined like this:
+You'll notice that I said 'specific scripts' here. The RequireJS optimizer only concatenates module scripts that have been specified in arrays of string literals passed to top-level (i.e non-local) require and define calls. As clarified by the [optimizer docs](http://requirejs.org/docs/optimization.html) this means that Backbone modules defined like this:
 
 ```javascript
 define(['jquery','backbone','underscore', 'collections/sample','views/test'], 
@@ -1852,7 +1841,7 @@ define(['jquery','backbone','underscore', 'collections/sample','views/test'],
     });
 ```
 
-will combine fine, however inline dependencies such as:
+will be combined into a single file, however inline dependencies such as:
 
 ```javascript
 var models = someCondition ? ['models/ab','models/ac'] : ['models/ba','models/bc'];
@@ -1860,11 +1849,11 @@ var models = someCondition ? ['models/ab','models/ac'] : ['models/ba','models/bc
 
 will be ignored. This is by design as it ensures that dynamic dependency/module loading can still take place even after optimization. 
 
-Although the RequireJS optimizer works fine in both Node and Java environments, it's strongly recommended to run it under Node as it executes significantly faster there. In my experience, it's a piece of cake to get setup with either environment, so go for whichever you feel most comfortable with. 
+Although the RequireJS optimizer works fine in both Node and Java environments, it's strongly recommended to run it under Node as it executes significantly faster there. In my experience, it's a piece of cake to get set up with either environment, so use the one you feel most comfortable with. 
 
 To get started with r.js, grab it from the [RequireJS download page](http://requirejs.org/docs/download.html#rjs) or [through NPM](http://requirejs.org/docs/optimization.html#download). Now, the RequireJS optimizer works absolutely fine for single script and CSS files, but for most cases you'll want to actually optimize an entire Backbone project. You *could* do this completely from the command-line, but a cleaner option is using build profiles.
 
-Below is an example of a build file taken from the modular jQuery Mobile app referenced later in this book. A **build profile** (commonly named `app.build.js`) informs RequireJS to copy all of the content of `appDir` to a directory defined by `dir` (in this case `../release`). This will apply all of the necessary optimizations inside the release folder. The `baseUrl` is used to resolve the paths for your modules. It should ideally be relative to `appDir`.
+Below is an example of a build file taken from the modular jQuery Mobile app discussed later in this book. A **build profile** (commonly named `app.build.js`) informs RequireJS to copy all of the content of `appDir` to a directory defined by `dir` (in this case `../release`). This will apply all of the necessary optimizations inside the release folder. The `baseUrl` is used to resolve the paths for your modules. It should ideally be relative to `appDir`.
 
 Near the bottom of this sample file, you'll see an array called `modules`. This is where you specify the module names you wish to have optimized. In this case we're optimizing the main application called 'app', which maps to `appDir/app.js`. If we had set the `baseUrl` to 'scripts', it would be mapped to `appDir/scripts/app.js`.
 
@@ -1894,11 +1883,11 @@ Near the bottom of this sample file, you'll see an array called `modules`. This 
 })
 ```
 
-The way the build system in r.js works is that it traverses app.js (whatever modules you've passed) and resolved dependencies, concatenating them into the final `release`(dir) folder. CSS is treated the same way.
+r.js's build system traverses app.js (which lists whatever modules you've passed) and resolves dependencies, concatenating them into the final `release`(dir) folder. CSS is treated the same way.
 
 The build profile is usually placed inside the 'scripts' or 'js' directory of your project. As per the docs, this file can however exist anywhere you wish, but you'll need to edit the contents of your build profile accordingly. 
 
-Finally, to run the build, execute the following command once insice your `appDir` or `appDir/scripts` directory:
+To run the build, execute the following command once inside your `appDir` or `appDir/scripts` directory:
 
 ```javascript
 node ../../r.js -o app.build.js
@@ -1911,17 +1900,17 @@ That's it. As long as you have UglifyJS/Closure tools setup correctly, r.js shou
 
 In this chapter, we'll look at our first practical Backbone & RequireJS project - how to build a modular Todo application. The application will allow us to add new todos, edit new todos and clear todo items that have been marked as completed. For a more advanced practical, see the section on mobile Backbone development.
 
-The complete code for the application can can be found in the `practicals/modular-todo-app` folder of this repo (thanks to Thomas Davis and J&eacute;r&ocirc;me Gravel-Niquet). Alternatively grab a copy of my side-project [TodoMVC](https://github.com/addyosmani/todomvc) which contains the sources to both AMD and non-AMD versions.
+The complete code for the application can can be found in the `practicals/modular-todo-app` folder of this repo (thanks to Thomas Davis and J&eacute;r&ocirc;me Gravel-Niquet). Alternatively grab a copy of my side-project [TodoMVC](https://github.com/addyosmani/todomvc) which contains the source code for both the AMD and non-AMD versions.
 
 **Note:** Thomas may be covering a practical on this exercise in more detail on [backbonetutorials.com](http://backbonetutorials.com) at some point soon, but for this section I'll be covering what I consider the core concepts.
 
 ###Overview
 
-Writing a 'modular' Backbone application can be a straight-forward process. There are however, some key conceptual differences to be aware of if opting to use AMD as your module format of choice:
+Writing a 'modular' Backbone application can be a straight-forward process. There are however, some key details to be aware of if opting to use AMD as your module format of choice:
 
 * As AMD isn't a standard native to JavaScript or the browser, it's necessary to use a script loader (such as RequireJS or curl.js) in order to support defining components and modules using this module format. As we've already reviewed, there are a number of advantages to using the AMD as well as RequireJS to assist here.
 * Models, views, controllers and routers need to be encapsulated *using* the AMD-format. This allows each component of our Backbone application to cleanly manage dependencies (e.g collections required by a view) in the same way that AMD allows non-Backbone modules to.
-* Non-Backbone components/modules (such as utilities or application helpers) can also be encapsulated using AMD. I encourage you to try developing these modules in such a way that they can both be used and tested independent of your Backbone code as this will increase their ability to be re-used elsewhere.
+* Non-Backbone components/modules (such as utilities or application helpers) can also be encapsulated using AMD. I encourage you to try developing these modules in such a way that they can both be used and tested independently from your Backbone code, as this will increase their ability to be re-used elsewhere.
 
 Now that we've reviewed the basics, let's take a look at developing our application. For reference, the structure of our app is as follows:
 
@@ -1951,7 +1940,7 @@ index.html
 
 ###Markup
 
-The markup for the application is relatively simple and consists of three primary parts: an input section for entering new todo items (`create-todo`), a list section to display existing items (which can also be edited in-place) (`todo-list`) and finally a section summarizing how many items are left to be completed (`todo-stats`).
+The markup for the application is relatively simple and consists of three primary parts: an input section for entering new todo items (`create-todo`), a list section for displaying and in-place editing of existing items (`todo-list`), and finally a section summarizing how many items are left to be completed (`todo-stats`).
 
 <pre>
 &lt;div id=&quot;todoapp&quot;&gt;
@@ -1974,13 +1963,12 @@ The markup for the application is relatively simple and consists of three primar
 &lt;/div&gt;
 </pre>
 
-The the rest of the tutorial will now focus on the JavaScript side of the practical.
 
 ###Configuration options
 
-If you've read the earlier chapter on AMD, you may have noticed that explicitly needing to define each dependency a Backbone module (view, collection or other module) may require with it can get a little tedious. This can however be improved.
+If you've read the earlier chapter on AMD, you may have noticed that explicitly defining each dependency of a Backbone module (view, collection or other module) can get a little tedious. Require.js gives us a way to simplify that.
 
-In order to simplify referencing common paths the modules in our application may use, we use a RequireJS [configuration object](http://requirejs.org/docs/api.html#config), which is typically defined as a top-level script file. Configuration objects have a number of useful capabilities, the most useful being mode name-mapping. Name-maps are basically a key:value pair, where the key defines the alias you wish to use for a path and the value represents the true location of the path.
+In order to simplify referencing common paths the modules in our application may use, we use a RequireJS [configuration object](http://requirejs.org/docs/api.html#config), which is typically defined as a top-level script file. Configuration objects have a number of capabilities, the most useful being mode name-mapping. Name-maps are basically a key:value pair, where the key defines the alias you wish to use for a path and the value represents the true location of the path.
 
 In the code-sample below, you can see some typical examples of common name-maps which include: `backbone`, `underscore`, `jquery` and depending on your choice, the RequireJS `text` plugin, which assists with loading text assets like templates.
 
@@ -2002,7 +1990,7 @@ require(['views/app'], function(AppView){
 });
 ```
 
-The `require()` at the end of our main.js file is simply there so we can load and instantiation the primary view for our application (`views/app.js`). You'll commonly see both this and the configuration object included the most top-level script file for a project.
+The `require()` at the end of our main.js file is simply there so we can load and instantiate the primary view for our application (`views/app.js`). You'll commonly see both this and the configuration object included the top-level script file of a project.
 
 In addition to offering name-mapping, the configuration object can be used to define additional properties such as `waitSeconds` - the number of seconds to wait before script loading times out and `locale`, should you wish to load up i18n bundles for custom languages. The `baseUrl` is simply the path to use for module lookups.
 
@@ -2011,7 +1999,7 @@ For more information on configuration objects, please feel free to check out the
 
 ###Modularizing our models, views and collections
 
-Before we dive into AMD-wrapped versions of our Backbone components, let's review a sample of a non-AMD view. The following view listens for changes to it's model (a Todo item) and re-renders if a user edits the value of the item.   
+Before we dive into AMD-wrapped versions of our Backbone components, let's review a sample of a non-AMD view. The following view listens for changes to its model (a Todo item) and re-renders if a user edits the value of the item.   
 
 ```javascript
 var TodoView = Backbone.View.extend({
@@ -2041,7 +2029,7 @@ var TodoView = Backbone.View.extend({
     ...
 ```
 
-Note how for templating the common practice of referencing a script by an ID (or other selector) and obtaining it's value is used. This of course requires that the template being accessed is implicitly defined in our markup. The following is the 'embedded' version of our template being referenced above:
+Note that for templating we refer to a script by an ID (or other selector). This of course requires that the template being accessed is defined in our markup. The following is the 'embedded' version of our template the initialize function above refers to:
 
 <pre>
 &lt;script type=&quot;text/template&quot; id=&quot;item-template&quot;&gt;
@@ -2060,7 +2048,7 @@ Note how for templating the common practice of referencing a script by an ID (or
 
 Whilst there is nothing wrong with the template itself, once we begin to develop larger applications requiring multiple templates, including them all in our markup on page-load can quickly become both unmanageable and come with performance costs. We'll look at solving this problem in a minute.
 
-Let's now take a look at the AMD-version of our view. As discussed earlier, the 'module' is wrapped using AMD's `define()` which allows us to specify the dependencies our view requires. Using the mapped paths to 'jquery' etc. simplifies referencing common dependencies and instances of dependencies are themselves mapped to local variables that we can access (e.g 'jquery' is mapped to `$`).
+Let's now take a look at the AMD-version of our view. As discussed earlier, the 'module' is wrapped using AMD's `define()` which allows us to specify our view's dependencies. Using the mapped paths to 'jquery' and other files simplifies refering to these common dependencies. Instances of these dependencies are themselves mapped to local variables our Backbone view can access: 'jquery' is mapped to `$`, 'underscore' is mapped to `_`, and so on.
 
 **views/todos.js**
 
@@ -2114,9 +2102,9 @@ define([
     ...
 ```
 
- From a maintenance perspective, there's nothing logically different in this version of our view, except for how we approach templating. 
+From a maintenance perspective, there's nothing logically different in this version of our view, except for how we approach templating. 
 
-Using the RequireJS text plugin (the dependency marked `text`), we can actally store all of the contents for the template we looked at earlier in an external file (todos.html).
+Using the RequireJS text plugin (the dependency marked `text`), we can store all of the contents for the template we looked at earlier in an external file called `todos.html`:
 
 **templates/todos.html**
 
@@ -2133,9 +2121,9 @@ Using the RequireJS text plugin (the dependency marked `text`), we can actally s
 &lt;/div&gt;
 </pre>
 
-There's no longer a need to be concerned with IDs for the template as we can map it's contents to a local variable (in this case `todosTemplate`). We then simply pass this to the Underscore.js templating function `_.template()` the same way we normally would have the value of our template script.
+There's no longer a need to be concerned with IDs for the template as we can map its contents to a local variable (in this case `todosTemplate`). We then simply pass this variable to the Underscore.js templating function `_.template()` the same way we normally would have the value of our template script.
 
-Next, let's look at how to define models as dependencies which can be pulled into collections. Here's an AMD-compatible model module, which has two default values: a `content` attribute for the content of a Todo item and a boolean `done` state, allowing us to trigger whether the item has been completed or not.
+Next, let's look at how to define Backbone Models as dependencies which can be pulled into Collections. Here's an AMD-compatible Model module, which has two default values: a `content` attribute for the content of a Todo item and a boolean `done` state, allowing us to trigger whether the item has been completed or not.
 
 **models/todo.js**
 
@@ -2172,7 +2160,7 @@ define(['underscore', 'backbone'], function(_, Backbone) {
 });
 ```
 
-As per other types of dependencies, we can easily map our model module to a local variable (in this case `Todo`) so it can be referenced as the model to use for our `TodosCollection`. This collection also supports a simple `done()` filter for narrowing down Todo items that have been completed and a `remaining()` filter for those that are still outstanding.
+As in the previous examples, we can easily map our model module to a local variable (in this case `Todo`) so it can be referenced as the model to use for our `TodosCollection`. This collection also supports a simple `done()` filter for narrowing down Todo items that have been completed and a `remaining()` filter for those that are still outstanding.
 
 **collections/todos.js**
 
@@ -2204,7 +2192,7 @@ define([
     ...
 ```
 
-In addition to allowing users to add new Todo items from views (which we then insert as models in a collection), we ideally also want to be able to display how many items have been completed and how many are remaining. We've already defined filters that can provide us this information in the above collection, so let's use them in our main application view.
+In addition to allowing users to add new Todo items from views (which we then insert as models in a collection), we also want to be able to display how many items have been completed and how many are remaining. We've already defined filters that can provide us this information in the above collection, so let's use them in our main application view.
 
 **views/app.js**
 
@@ -2267,9 +2255,9 @@ The contents of our `statsTemplate` can be seen below. It's nothing too complica
 
 The rest of the source for the Todo app mainly consists of code for handling user and application events, but that rounds up most of the core concepts for this practical. 
 
-To see how everything ties together, feel free to grab the source by cloning this repo or browse it [online](https://github.com/addyosmani/backbone-fundamentals/tree/master/practicals/modular-todo-app) to learn more. I hope you find it helpful!.
+To see how everything ties together, feel free to grab the source by cloning this repo or browse it [online](https://github.com/addyosmani/backbone-fundamentals/tree/master/practicals/modular-todo-app) to learn more. I hope you find it helpful!
 
-**Note:** While this first practical doesn't use a build profile at outlined in the chapter on using the RequireJS optimizer, we will be using one in the section on building mobile Backbone applications.
+**Note:** While this first practical doesn't use a build profile as described above, we will be using one in the section on building mobile Backbone applications.
 
 
 ##Decoupling Backbone with the Mediator and Facade patterns
@@ -2278,42 +2266,42 @@ In this section we'll discuss applying some of the concepts I cover in my articl
 
 ### Summary
 
-At a high-level, one architecture that works for such applications is something which is:
+Let's list some of the characteristics we'd like our application architecture to have:
 
-* **Highly decoupled**: encouraging modules to only publish and subscribe to events of interest rather than directly communicating with each other. This helps us to build applications which who's units of code aren't highly tied (coupled) together and can thus be reused more easily.
+* **Highly decoupled**: encouraging modules to only publish and subscribe to events of interest rather than directly communicating with each other. This helps us to build applications where units of code aren't highly tied (coupled) together and can thus be reused more easily.
 * **Supports module-level security**: whereby modules are only able to execute behaviour they've been permitted to. Application security is an area which is often overlooked in JavaScript applications, but can be quite easily implemented in a flexible manner.
-* **Supports failover**: allowing an application continuing to function even if particular modules fail. The typical example I give of this is the GMail chat widget. Imagine being able to build applications in a way that if one widget on the page fails (e.g chat), the rest of your application (mail) can continue to function without being affected.
+* **Supports failover**: allowing an application continuing to function even if particular modules fail. The typical example I give of this is the GMail chat widget. Imagine being able to build applications in a way that if one feature of the page were to fail, the rest of your application could continue to function without being affected.
 
-This is an architecture which has been implemented by a number of different companies in the past, including Yahoo! (for their modularized homepage - which Nicholas Zakas has [spoken](http://www.youtube.com/watch?v=vXjVFPosQHw) about) and AOL for some of our upcoming projects. 
+This list describes an architecture which has been implemented by a number of different companies in the past, including Yahoo! (for their modularized homepage - which Nicholas Zakas has [spoken](http://www.youtube.com/watch?v=vXjVFPosQHw) about) and AOL for some of our upcoming projects. 
 
 The three design patterns that make this architecture possible are the:
 
-* **Module pattern**: used for encapsulating unique blocks of code, where functions and variables can be kept either public or private. ('private' in the simulation of privacy sense, as of course don't have true privacy in JavaScript)
+* **Module pattern**: used for encapsulating unique blocks of code, where functions and variables can be kept either public or private. ('private' in a limited sense, as of course JavaScript dosen't have true privacy)
 * **Mediator pattern**: used when the communication between modules may be complex, but is still well defined. If it appears a system may have too many relationships between modules in your code, it may be time to have a central point of control, which is where the pattern fits in.
 * **Facade pattern**: used for providing a convenient higher-level interface to a larger body of code, hiding its true underlying complexity
 
 Their specific roles in this architecture can be found below.
 
-* **Modules**: There are almost two concepts of what defines a module. As AMD is being used as a module wrapper, technically each model, view and collection can be considered a module. We then have the concept of modules being distinct blocks of code outside of just MVC/MV*. For the latter, these types of 'modules' are primarily concerned with broadcasting and subscribing to events of interest rather than directly communicating with each other.They are made possible through the Mediator pattern.
-* **Mediator**: The mediator has a varying role depending on just how you wish to implement it. In my article, I mention using it as a module manager with the ability to start and stop modules at will, however when it comes to Backbone, I feel that simplifying it down to the role of a central 'controller' that provides pub/sub capabilities should suffice. One can of course go all out in terms of building a module system that supports module starting, stopping, pausing etc, however the scope of this is outside of this chapter.
-* **Facade**: This acts as a secure middle-layer that both abstracts an application core (Mediator) and relays messages from the modules back to the Mediator so they don't touch it directly. The Facade also performs the duty of application security guard; it checks event notifications from modules against a configuration (permissions.js, which we will look at later) to ensure requests from modules are only processed if they are permitted to execute the behaviour passed.
+* **Modules**: There are almost two concepts of what defines a module. AMD is being used as a 'module wrapper', and technically each model, view and collection could be considered a 'module'. We then have the concept of modules being distinct blocks of code outside of just MVC/MV*. For the latter, these types of 'modules' are primarily concerned with broadcasting and subscribing to events of interest rather than directly communicating with each other. They are made possible through the Mediator pattern.
+* **Mediator**: The mediator has a varying role depending on how you wish to implement it. In my article, I mention using it as a module manager with the ability to start and stop modules at will. However when it comes to Backbone, I feel that reducing the mediator to the role of a central 'controller' that provides pub/sub capabilities should suffice. One can of course go all out in terms of building a module system that supports module starting, stopping, pausing etc, however the scope of this is outside of this chapter.
+* **Facade**: This acts as a secure middle-layer 'sandbox' that both abstracts an application core (Mediator) and relays messages from the modules back to the Mediator so they don't touch it directly. The Facade also performs the duty of application security guard; it checks event notifications from modules against a configuration (permissions.js, which we will look at later) to ensure requests from modules are only processed if they are permitted to execute the behaviour passed.
 
 For ease of reference, I sometimes refer to these three patterns grouped together as Aura (a word that means subtle, luminous light).
 
 ### Practical
 
-For the practical section of this chapter, we'll be extending the well-known Backbone Todo application using the three patterns mentioned above. The complete code for this section can be found here: https://github.com/addyosmani/backbone-aura and should ideally be run on at minimum, a local HTTP server.
+For the practical section of this chapter, we'll be extending our Backbone Todo application again, using the three patterns mentioned above. The complete code for this section can be [found here](https://github.com/addyosmani/backbone-aura), and should ideally be run on at minimum, a local HTTP server.
 
 The application is broken down into AMD modules that cover everything from Backbone models through to application-level modules. The views publish events of interest to the rest of the application and modules can then subscribe to these event notifications. 
 
-All subscriptions from modules go through a facade (or sandbox). What this does is check against the subscriber name and the 'channel/notification' it's attempting to subscribe to. If a channel *doesn't* have permissions to be subscribed to (something established through permissions.js), the subscription isn't permitted. 
+All subscriptions from modules go through a facade. This checks against the subscriber name and the 'channel/notification' its attempting to subscribe to. If a channel *doesn't* have permissions to be subscribed to (something established through permissions.js), the subscription isn't permitted. 
 
 
 **Mediator**
 
-Found in `aura/mediator.js`
+Below is a simple AMD-wrapped implementation of the mediator pattern, based on prior work by Ryan Florence. It accepts as it's input an object, to which it attaches `publish()` and `subscribe()` methods. In a larger application, the mediator can contain additional utilities, such as handlers for initialising, starting and stopping modules, but for demonstration purposes, these two methods should work fine for our needs.
 
-Below is a very simple AMD-wrapped implementation of the mediator pattern, based on prior work by Ryan Florence. It accepts as it's input an object, to which it attaches `publish()` and `subscribe()` methods. In a larger application, the mediator can contain additional utilities, such as handlers for initialising, starting and stopping modules, but for demonstration purposes, these two methods should work fine for our needs.
+From `aura/mediator.js`:
 
 ```javascript
 define([], function(obj){
@@ -2342,9 +2330,9 @@ define([], function(obj){
 
 **Facade**
 
-Found in `aura/facade.js`
+Next, we have an implementation of the facade pattern. The classical facade pattern applied to JavaScript would probably look a little like this:
 
-Next, we have an implementation of the facade pattern. Now the classical facade pattern applied to JavaScript would probably look a little like this: 
+From `aura/facade.js`: 
 
 ```javascript
 
@@ -2379,9 +2367,9 @@ module.facade({run: true, val:10});
 //outputs current value: 10, running
 ```
 
-It's effectively a variation of the module pattern, where instead of simply returning an interface of supported methods, your API can completely hide the true implementation powering it, returning something simpler. This allows the logic being performed in the background to be as complex as necessary, whilst all the end-user experiences is a simplified API they pass options to (note how in our case, a single method abstraction is exposed). This is a beautiful way of providing APIs that can be easily consumed.
+It's effectively a variation of the module pattern, where instead of simply returning an interface of supported methods, your API can completely hide the true implementation powering it, returning something simpler. This allows the logic being performed in the background to be as complex as necessary, whilst all the end-user experiences is a simplified API they pass options to (in our case, only a single method abstraction is exposed). This is a beautiful way of providing APIs that can be easily consumed.
 
-That said, to keep things simple, our implementation of an AMD-compatible facade will act a little more like a proxy. Modules will communicate directly through the facade to access the mediator's `publish()` and `subscribe()` methods, however, they won't as such touch the mediator directly.This enables the facade to provide application-level validation of any subscriptions and publications made.
+That said, to keep things simple, our implementation of an AMD-compatible facade will act a little more like a proxy. Modules will communicate directly through the facade to access the mediator's `publish()` and `subscribe()` methods, but they won't touch the mediator directly. This enables the facade to provide application-level validation of any subscriptions and publications.
 
 It also allows us to implement a simple, but flexible, permissions checker (as seen below) which will validate subscriptions made against a permissions configuration to see whether it's permitted or not. 
 
@@ -2412,13 +2400,13 @@ define([ "../aura/mediator" , "../aura/permissions" ], function (mediator, permi
 
 **Permissions**
 
-Found in `aura/permissions.js`
-
 In our simple permissions configuration, we support checking against subscription requests to establish whether they are allowed to clear. This enforces a flexible security layer for the application.
 
 To visually see how this works, consider changing say, permissions -> renderDone -> todoCounter to be false. This will completely disable the application from from rendering or displaying the counts component for Todo items left (because they aren't allowed to subscribe to that event notification). The rest of the Todo app can still however be used without issue. 
 
 It's a very dumbed down example of the potential for application security, but imagine how powerful this might be in a large app with a significant number of visual widgets.
+
+From `aura/permissions.js`:
 
 ```javascript
 define([], function () {
@@ -2480,17 +2468,17 @@ define([], function () {
 
 **Subscribers**
 
-Found in `subscribers.js`
-
 Subscriber 'modules' communicate through the facade back to the mediator and perform actions when a notification event of a particular name is published. 
 
 For example, when a user enters in a new piece of text for a Todo item and hits 'enter' the application publishes a notification saying two things: a) a new Todo item is available and b) the text content of the new item is X. It's then left up to the rest of the application to do with this information whatever it wishes. 
 
-In order to update your Backbone application to primarily use pub/sub, a lot of the work you may end up doing will be moving logic coupled inside of specific views to modules outside of it which are reactionary. 
+In order to update your Backbone application to primarily use pub/sub would involve moving logic coupled inside of specific views to modules outside of them. 
 
-Take the `todoSaver` for example - it's responsibility is saving new Todo items to models once the a `notificationName` called 'newContentAvailable' has fired. If you take a look at the permissions structure in the last code sample, you'll notice that 'newContentAvailable' is present there. If I wanted to prevent subscribers from being able to subscribe to this notification, I simply set it to a boolean value of `false`.
+Take the `todoSaver` for example - its responsibility is saving new Todo items to models once the a `notificationName` called 'newContentAvailable' has fired. If you take a look at the permissions structure in the last code sample, you'll notice that 'newContentAvailable' is present there. If you wanted to prevent subscribers from being able to subscribe to this notification, you'd simply set it to a boolean value of `false`.
 
 Again, this is a massive oversimplification of how advanced your permissions structures could get, but it's certainly one way of controlling what parts of your application can or can't be accessed by specific modules at any time.
+
+From `subscribers.js`:
 
 ```javascript
 define(["jquery", "underscore", "aura/facade"], 
