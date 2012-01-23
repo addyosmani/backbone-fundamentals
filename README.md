@@ -2587,17 +2587,15 @@ That's it for this section. If you've been intrigued by some of the concepts cov
 
 ##Backbone & jQuery Mobile
 
-###Resolving the routing conflicts
+###Resolving navigation conflicts
 
-The first major hurdle developers typically run into when building Backbone applications with jQuery Mobile is that both frameworks have their own opinions about how to handle application navigation. 
+The first major hurdle developers typically run into when building Backbone applications with jQuery Mobile is that the two frameworks have different opinions about how to handle application navigation. 
 
-Backbone's routers offer an explicit way to define custom navigation routes through `Backbone.Router`, whilst jQuery Mobile encourages the use of URL hash fragments to reference separate 'pages' or views in the same document. jQuery Mobile also supports automatically pulling in external content for links through XHR calls meaning that there can be quite a lot of inter-framework confusion about what a link pointing at '#/photo/id' should actually be doing.
+Backbone's routers offer an explicit way to define custom navigation routes through `Backbone.Router`, whilst jQuery Mobile encourages the use of URL hash fragments to reference separate 'pages' or views in the same document. jQuery Mobile also supports automatically pulling in external content for links through XHR calls, meaning that there can be quite a lot of inter-framework confusion about what a link pointing at '#/photo/id' should actually be doing.
 
-Some of the solutions that have been previously proposed to work-around this problem included manually patching Backbone or jQuery Mobile. I discourage opting for these techniques as it becomes necessary to manually patch your framework builds when new releases get made upstream. 
+Our goal is to find a way to prevent jQuery Mobile from listening to hash changes so that we can fully rely on Backbone's routers instead. Some of the solutions that have been previously proposed to work around this problem included manually patching Backbone or jQuery Mobile. I discourage this as it becomes necessary to manually patch your framework builds when new versions of these libraries are released. There's also [jQueryMobile router](https://github.com/azicchetti/jquerymobile-router), which tries to solve this problem differently. However there's a much simpler way which allows both frameworks to cohabit quite peacefully without the need to extend either. 
 
-There's also [jQueryMobile router](https://github.com/azicchetti/jquerymobile-router), which tries to solve this problem differently, however I think my proposed solution is both simpler and allows both frameworks to cohabit quite peacefully without the need to extend either. What we're after is a way to prevent one framework from listening to hash changes so that we can fully rely on the other (e.g. `Backbone.Router`) to handle this for us exclusively.
-
-Using jQuery Mobile this can be done by setting: 
+First, set this property in jQuery Mobile to false: 
 
 ```javascript
 $.mobile.hashListeningEnabled = false;
@@ -2605,9 +2603,9 @@ $.mobile.hashListeningEnabled = false;
 
 prior to initializing any of your other code. 
 
-I discovered this method looking through some jQuery Mobile commits that didn't make their way into the official docs, but am happy to see that they are now covered here http://jquerymobile.com/test/docs/api/globalconfig.html in more detail.
+I discovered this method looking through some jQuery Mobile commits that didn't make their way into the official docs, but am happy to see that they are [now covered here](http://jquerymobile.com/test/docs/api/globalconfig.html) in more detail.
 
-The next question that arises is, if we're preventing jQuery Mobile from listening to URL hash changes, how can we still get the benefit of being able to navigate to other sections in a document using the built-in transitions and effects supported? Good question. This can now be solve by simply calling `$.mobile.changePage()` as follows:
+But if we're preventing jQuery Mobile from listening to URL hash changes, how can we navigate to other sections in a document using its built-in transitions and effects? Good question. This can now be solved by simply calling `$.mobile.changePage()` as follows:
 
 ```javascript
 var url = '#about',
@@ -2618,9 +2616,9 @@ var url = '#about',
 $.mobile.changePage( url , { transition: effect}, reverse, changeHash );
 ```
 
-In the above sample, `url` can refer to a URL or a hash identifier to navigate to, `effect` is simply the transition effect to animate the page in with and the final two parameters decide the direction for the transition (`reverse`) and whether or not the hash in the address bar should be updated (`changeHash`). With respect to the latter, I typically set this to false to avoid managing two sources for hash updates, but feel free to set this to true if you're comfortable doing so.
+In the above sample, `url` can refer to a URL or a hash identifier to navigate to, `effect` is simply the transition effect to animate the page. The final two parameters decide the direction for the transition (`reverse`) and whether or not the hash in the address bar should be updated (`changeHash`). With respect to the latter, I typically set this to false to avoid managing two sources for hash updates, but feel free to set this to true if you're comfortable doing so.
 
-**Note:** For some parallel work being done to explore how well the jQuery Mobile Router plugin works with Backbone, you may be interested in checking out https://github.com/Filirom1/jquery-mobile-backbone-requirejs.
+**Note:** For some parallel work being done to explore how well the jQuery Mobile Router plugin works with Backbone, you may be interested in checking out [this project](https://github.com/Filirom1/jquery-mobile-backbone-requirejs).
 
 
 ###Practical: A Backbone, RequireJS/AMD app with jQuery Mobile
@@ -2629,7 +2627,7 @@ In the above sample, `url` can refer to a URL or a hash identifier to navigate t
 
 ###Getting started
 
-Once you feel comfortable with the [Backbone fundamentals](http://msdn.microsoft.com/en-us/scriptjunkie/hh377172.aspx) and you've put together a rough wireframe of the app you may wish to build, start to think about your application architecture. Ideally, you'll want to logically separate concerns so that it's as easy as possible to maintain the app in the future.
+In this practical, we'll be building Flickly, a mobile version of the PhotoGallery we've looked at earlier in the book. Thinking about the application's architecture, we'll naturally want to logically separate concerns so that it's as easy as possible to maintain the app in the future.
 
 **Namespacing**
 
@@ -2655,7 +2653,7 @@ window.mobileSearch = window.mobileSearch || {
 
 **Models**
 
-In the Flickly application, there are at least two unique types of data that need to be modelled - search results and individual photos, both of which contain additional meta-data like photo titles. If you simplify this down, search results are actually groups of photos in their own right, so the application only requires:
+In the our application, there are at least two unique types of data that need to be modelled - search results and individual photos, both of which contain additional meta-data like photo titles. If you simplify this down, search results are actually groups of photos in their own right, so the application only requires:
 
 * A single model (a photo or 'result' entry)
 * A result collection (containing a group of result entries) for search results
@@ -2686,7 +2684,7 @@ If you open up Flickly in a desktop browser, you'll get an image search UI that'
 
 The benefit of this is that I don't need to go pulling in jQuery UI separately to be able to take advantage of these features. Thanks to the recent ThemeRoller my components can look pretty much exactly how I would like them to and users of the app can get a jQM UI for lower-resolutions and a jQM-ish UI for everything else.
 
-The takeaway here is just to remember that if you're not (already) going through the hassle of conditional script/style loading based on screen-resolution (using matchMedia.js etc), there are simpler approaches that can be taken to cross-device component theming.
+The takeaway here is just to remember that if you're not already going through the hassle of conditional script/style loading based on screen-resolution (using matchMedia.js etc), there are simpler approaches that can be taken to cross-device component theming.
 
 
 ##<a name="testing">Testing</a>
@@ -2697,26 +2695,25 @@ The takeaway here is just to remember that if you're not (already) going through
 
 One definition of unit testing is the process of taking the smallest piece of testable code in an application, isolating it from the remainder of your codebase and determining if it behaves exactly as expected. In this section, we'll be taking a look at how to unit test Backbone applications using a popular JavaScript testing framework called [Jasmine](http://pivotal.github.com/jasmine/) from Pivotal Labs.
 
-For an application to be considered 'well'-tested, distinct functionality should ideally have its own separate unit tests where it's tested against the different conditions you expect it to work under. All tests must pass before functionality is considered 'complete'. This allows developers to both modify a unit of code and it's dependencies with a level of confidence about whether these changes have caused any breakage.
+For an application to be considered 'well-tested', distinct functionality should ideally have its own separate unit tests where it's tested against the different conditions you expect it handle when deployed in the real world. All tests must pass before the functionality is considered 'complete'. This allows developers to both modify a unit of code and its dependencies with a level of confidence about whether these changes have caused any breakage.
 
-As a basic example of unit testing is where a developer may wish to assert whether passing specific values through to a sum function results in the correct output being returned. For an example more relevant to this book, we may wish to assert whether a user adding a new Todo item to a list correctly adds a Model of a specific type to a Todos Collection.
+Here's a simple example of unit testing: a developer might write a test to assert whether passing specific values through to a sum function results in the correct result being returned. For an example more relevant to this book, we may wish to assert whether a user adding a new Todo item to a list correctly adds a Model of a specific type to a Todos Collection.
 
 When building modern web-applications, it's typically considered best-practice to include automated unit testing as a part of your development process. Whilst we'll be focusing on Jasmine as a solution for this, there are a number of other alternatives worth considering, including QUnit.
 
 ##Jasmine
 
-Jasmine describes itself as a behaviour-driven development (BDD) framework for testing JavaScript code. Before we jump into how the framework works, it's useful to understand exactly what [BDD](http://en.wikipedia.org/wiki/Behavior_Driven_Development) is.
+Jasmine is a behaviour-driven development (BDD) framework for testing JavaScript code. Before we jump into how the framework works, it's useful to understand exactly what [BDD](http://en.wikipedia.org/wiki/Behavior_Driven_Development) is.
 
 BDD is a second-generation testing approach first described by [Dan North](http://dannorth.net/introducing-bdd/) (the authority on BDD) which attempts to test the behaviour of software. It's considered second-generation as it came out of merging ideas from Domain driven design (DDD) and lean software development, helping teams to deliver high quality software by answering many of the more confusing questions early on in the agile process. Such questions commonly include those concerning documentation and testing.
 
-If you were to read a book on BDD, it's likely to also be described as being 'outside-in and pull-based'. The reason for this is that it borrows the idea of of pulling features from Lean manufacturing which effectively ensures that the right software solutions are being written by a) focusing on expected outputs of the system and b) ensuring these outputs are achieved.
+You may also hear BDD described as being 'outside-in and pull-based'. This means it borrows the idea of pulling features from Lean manufacturing, which effectively ensures that the right software solutions are being written by a) focusing on expected outputs of the system and b) ensuring these outputs are achieved.
 
-BDD recognizes that there are usually multiple stakeholders in a project and not a single amorphous user of the system. These different groups will be affected by the software being written in differing ways and will have a varying opinion of what quality in the system means to them. It's for this reason that it's important to understand who the software will be bringing value you and exactly what in it will be valuable to them.
+BDD recognizes that there are usually multiple stakeholders in a project and not a single amorphous user of the system. These different groups will be affected by the software being written in differing ways and will have a varying opinion of what quality in the system means to them. It's for this reason that it's important to understand who the software will be bringing value to and exactly what in it will be valuable to them.
 
-Finally, BDD relies on automation. Once you've defined the quality expected, your team will likely want to check on the functionality of the solution being built regularly and compare it to the results they expect. In order to facilitate this efficiently, the process has to be automated. BDD relies heavily on the automation of specification-testing and Jasmine is a tool which can assist with this. 
+Finally, BDD relies on automation. Once you've defined the quality expected, your team will likely want to check on the functionality of the solution being built regularly and compare it to the results they expect. To do this efficiently, the process has to be automated. BDD relies heavily on the automation of specification-testing and Jasmine is a tool which can assist with this. 
 
-BDD helps both developers and non-technical stakeholders:
-
+Jasmine helps both developers and non-technical stakeholders:
 
 * Better understand and represent the models of the problems being solved
 * Explain supported tests cases in a language that non-developers can read
@@ -2724,14 +2721,14 @@ BDD helps both developers and non-technical stakeholders:
 
 What this means is that developers should be able to show Jasmine unit tests to a project stakeholder and (at a high level, thanks to a common vocabulary being used) they'll ideally be able to understand what the code supports. 
 
-Developers often implement BDD in unison with another testing paradigm known as [TDD](http://en.wikipedia.org/wiki/Test-driven_development) (test-driven development). The main idea behind TDD is:
+Developers often implement BDD in unison with another testing paradigm known as [TDD](http://en.wikipedia.org/wiki/Test-driven_development) (test-driven development). The goals of TDD include:
 
 * Write unit tests which describe the functionality you would like your code to support
 * Watch these tests fail (as the code to support them hasn't yet been written)
 * Write code to make the tests pass
 * Rinse, repeat and refactor
 
-In this chapter we're going to use both BDD (with TDD) to write unit tests for a Backbone application.
+In this chapter we're going to use both BDD and TDD to write unit tests for a Backbone application.
 
 ***Note:*** I've seen a lot of developers also opt for writing tests to validate behaviour of their code after having written it. While this is fine, note that it can come with pitfalls such as only testing for behaviour your code currently supports, rather than behaviour the problem needs to be supported.
 
@@ -2740,7 +2737,7 @@ In this chapter we're going to use both BDD (with TDD) to write unit tests for a
 
 When using Jasmine, you'll be writing suites and specifications (specs). Suites basically describe scenarios whilst specs describe what can be done in these scenarios.
 
-Each spec is a JavaScript function, described with a call to ```it()`` using a description string and a function. The description should describe the behaviour the particular unit of code should exhibit and keeping in mind BDD, it should ideally be meaningful. Here's an example of a basic spec:
+Each spec is a JavaScript function, described with a call to ```it()`` using a description string and a function. The description should describe the behaviour the particular unit of code should exhibit and--keeping in mind the goals of BDD--should be written in a straightforward and meaningful way. Here's an example of a basic spec:
 
 ```javascript
 it('should be incrementing in value', function(){
@@ -2749,7 +2746,7 @@ it('should be incrementing in value', function(){
 });
 ```
 
-On it's own, a spec isn't particularly useful until expectations are set about the behaviour of the code. Expectations in specs are defined using the ```expect()``` function and an [expectation matcher](https://github.com/pivotal/jasmine/wiki/Matchers) (e.g toEqual(), toBeTruthy(), toContain()). A revised example using an expectation matcher would look like:
+On its own, a spec isn't particularly useful until expectations are set about the behaviour of the code. Expectations in specs are defined using the ```expect()``` function and an [expectation matcher](https://github.com/pivotal/jasmine/wiki/Matchers) (e.g toEqual(), toBeTruthy(), toContain()). A revised example using an expectation matcher would look like:
 
 ```javascript
 it('should be incrementing in value', function(){
@@ -2923,7 +2920,7 @@ Now that we've reviewed some fundamentals, let's go through downloading Jasmine 
 
 A standalone release of Jasmine can be [downloaded](http://pivotal.github.com/jasmine/download.html) from the official release page. 
 
-You'll need a file called SpecRunner.html in addition to the release. It can be downloaded from https://github.com/pivotal/jasmine/tree/master/lib/jasmine-core/example or as part of a download of the complete Jasmine [repo](https://github.com/pivotal/jasmine/zipball/master).Alternatively, you can ```git clone``` the main Jasmine repository from https://github.com/pivotal/jasmine.git. 
+You'll need a file called SpecRunner.html in addition to the release. It can be downloaded [here](https://github.com/pivotal/jasmine/tree/master/lib/jasmine-core/example) or as part of a download of the complete Jasmine [repo](https://github.com/pivotal/jasmine/zipball/master).Alternatively, you can ```git clone``` the main Jasmine repository from https://github.com/pivotal/jasmine.git. 
 
 Let's review [SpecRunner.html](https://github.com/pivotal/jasmine/blob/master/lib/jasmine-core/example/SpecRunner.html):
 
@@ -3574,7 +3571,7 @@ As an exercise, I recommend now downloading [Backbone Koans](http://github.com/a
 
 #<a name="resources">Resources</a>
 
-Whilst we get with Backbone out of the box can be terribly useful, there are some equally as beneficial add-ons that can help simplify our development process. These include:
+Whilst what we get with Backbone out of the box can be terribly useful, there are some great add-ons that can help simplify our development process. These include:
 
 * [Backbone Layout Manager](https://github.com/tbranyen/backbone.layoutmanager)
 * [Backbone Model Binding](https://github.com/derickbailey/backbone.modelbinding)
