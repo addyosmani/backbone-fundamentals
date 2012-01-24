@@ -1,7 +1,13 @@
-#Backbone.js Fundamentals: 
+#Developing Backbone.js Applications
 A book on Backbone.js targeted at beginners and advanced users alike
 
-This repo contains a work-in-progress by [Addy Osmani](http://twitter.com/addyosmani) released for free under a [CC](http://creativecommons.org/licenses/by-nc-sa/3.0/)-license. My extended thanks to [these](https://github.com/addyosmani/backbone-fundamentals/contributors) members of the community for their assistance tweaking the project.
+This is the home of 'Developing Backbone.js Applications', an (in-progress) book about the Backbone.js framework for structuring JavaScript applications. It is released under a [CC](http://creativecommons.org/licenses/by-nc-sa/3.0/)-license.
+
+I am are quite pleased that this book will be out in physical form in a few months time via [O'Reilly Media](http://oreilly.com). Readers will have the option of purchasing the latest version in either print or a number of digital formats then or can grab a copy for free from this repository.
+
+Corrections to existing material are always welcome and I hope that together we can provide the community with an up-to-date resource that is of help.
+
+My extended thanks to [these](https://github.com/addyosmani/backbone-fundamentals/contributors) members of the community for their assistance tweaking the project.
 
 ##Index
 
