@@ -3185,7 +3185,7 @@ A few specific specs that come to mind when working with collections are:
 
 * Making sure we can add new Todo models as both objects and arrays
 * Attribute testing to make sure attributes such as the base URL of the collection are values we expect
-* Purposefully adding items with a status of ```done:true``` and checking against how many the collection thinks have been completed vs. those that are remaining
+* Purposefully adding items with a status of ```done:true``` and checking against how many items the collection thinks have been completed vs. those that are remaining
 
 In this section we're going to cover the first two of these with the third left as an extended exercise I recommend trying out.
 
