@@ -3648,7 +3648,7 @@ As an exercise, I recommend now downloading [Backbone Koans](http://github.com/a
 
 #<a name="resources">Resources</a>
 
-Whilst we get with Backbone out of the box can be terribly useful, there are some equally as beneficial add-ons that can help simplify our development process. These include:
+Whilst we get with Backbone out of the box can be terribly useful, there are some equally beneficial add-ons that can help simplify our development process. These include:
 
 * [Backbone Layout Manager](https://github.com/tbranyen/backbone.layoutmanager)
 * [Backbone Model Binding](https://github.com/derickbailey/backbone.modelbinding)
