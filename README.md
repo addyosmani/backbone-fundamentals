@@ -231,7 +231,7 @@ Let's compare two examples of HTML templates. One is implemented using the popul
 
 **Handlebars.js:**
 
-```
+```html
 <li class="photo">
   <h2>{{caption}}</h2>
   <img class="source" src="{{src}}"/>
@@ -243,7 +243,7 @@ Let's compare two examples of HTML templates. One is implemented using the popul
 
 **Underscore.js Microtemplates:**
 
-```
+```html
 <li class="photo">
   <h2><%= caption %></h2>
   <img class="source" src="<%= src %>"/>
@@ -3003,7 +3003,7 @@ Let's review [SpecRunner.html](https://github.com/pivotal/jasmine/blob/master/li
 
 It first includes both Jasmine and the necessary CSS required for reporting:
 
-```
+```html
 <link rel="stylesheet" type="text/css" href="lib/jasmine-1.1.0.rc1/jasmine.css"/>
 <script type="text/javascript" src="lib/jasmine-1.1.0.rc1/jasmine.js"></script>
 <script type="text/javascript" src="lib/jasmine-1.1.0.rc1/jasmine-html.js"></script>
@@ -3011,14 +3011,14 @@ It first includes both Jasmine and the necessary CSS required for reporting:
 
 Next, some sample tests are included:
 
-```
+```html
 <script type="text/javascript" src="spec/SpecHelper.js"></script>
 <script type="text/javascript" src="spec/PlayerSpec.js"></script>
 ```
 
 And finally the sources being tested:
 
-```
+```html
 <script type="text/javascript" src="src/Player.js"></script>
 <script type="text/javascript" src="src/Song.js"></script>
 ```
@@ -3038,7 +3038,7 @@ The complexity of Backbone models can vary greatly depending on what your applic
 
 First, we begin our suite for model testing using ```describe()```:
 
-```
+```javascript
 describe('Tests for Todo', function() {
 ```
 
@@ -3423,7 +3423,7 @@ Once these specs are run, only the second one ('produces the correct HTML') fail
 **Note:** For the purposes of maintaining readability, all template examples in this section will use a minimal version of the following Todo view template. As it's relatively trivial to expand this, please feel free to refer to this sample if needed: 
 
 
-```
+```html
 <div class="todo <%= done ? 'done' : '' %>">
         <div class="display">
           <input class="check" type="checkbox" <%= done ? 'checked="checked"' : '' %> />
