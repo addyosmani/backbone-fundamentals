@@ -815,7 +815,7 @@ There are a few different ways to retrieve a model from a collection. The most s
 var skiingEpicness = PhotoCollection.get(2);
 ```
 
-Sometimes you may also want to get a model based its client id. The client id is a property that Backbone automatically assigns models that have not yet been saved. You can get a model's client id from its `.cid` property.
+Sometimes you may also want to get a model based on its client id. The client id is a property that Backbone automatically assigns models that have not yet been saved. You can get a model's client id from its `.cid` property.
 
 
 ```javascript
@@ -988,7 +988,7 @@ var myGalleryRouter = new GalleryRouter();
 ```
 
 
-As of Backbone 0.5+, it's possible to opt-in for HTML5 pushState support via `window.history.pushState`. This permits you to define routes such as http://www.scriptjunkie.com/just/an/example. This be supported with automatic degradation when a user's browser doesn't support pushState. For the purposes of this tutorial, we'll use the hashtag method.
+As of Backbone 0.5+, it's possible to opt-in for HTML5 pushState support via `window.history.pushState`. This permits you to define routes such as http://www.scriptjunkie.com/just/an/example. This will be supported with automatic degradation when a user's browser doesn't support pushState. For the purposes of this tutorial, we'll use the hashtag method.
  
 
 ####Backbone.history
@@ -2342,7 +2342,7 @@ In this section we'll discuss applying some of the concepts I cover in my articl
 
 At a high-level, one architecture that works for such applications is something which is:
 
-* **Highly decoupled**: encouraging modules to only publish and subscribe to events of interest rather than directly communicating with each other. This helps us to build applications which who's units of code aren't highly tied (coupled) together and can thus be reused more easily.
+* **Highly decoupled**: encouraging modules to only publish and subscribe to events of interest rather than directly communicating with each other. This helps us to build applications who's units of code aren't highly tied (coupled) together and can thus be reused more easily.
 * **Supports module-level security**: whereby modules are only able to execute behavior they've been permitted to. Application security is an area which is often overlooked in JavaScript applications, but can be quite easily implemented in a flexible manner.
 * **Supports failover**: allowing an application continuing to function even if particular modules fail. The typical example I give of this is the GMail chat widget. Imagine being able to build applications in a way that if one widget on the page fails (e.g chat), the rest of your application (mail) can continue to function without being affected.
 
@@ -2864,8 +2864,8 @@ describe('Stats', function(){
     
     it('can subtract a number', function(){
         // the counter was = 2
-        counter = counter + 3;
-        expect(counter).toEqual(5);
+        counter = counter - 1;
+        expect(counter).toEqual(1);
     });
 });
 ```
@@ -3185,7 +3185,7 @@ A few specific specs that come to mind when working with collections are:
 
 * Making sure we can add new Todo models as both objects and arrays
 * Attribute testing to make sure attributes such as the base URL of the collection are values we expect
-* Purposefully adding items with a status of ```done:true``` and checking against how many the collection thinks have been completed vs. those that are remaining
+* Purposefully adding items with a status of ```done:true``` and checking against how many items the collection thinks have been completed vs. those that are remaining
 
 In this section we're going to cover the first two of these with the third left as an extended exercise I recommend trying out.
 
@@ -3648,7 +3648,7 @@ As an exercise, I recommend now downloading [Backbone Koans](http://github.com/a
 
 #<a name="resources">Resources</a>
 
-Whilst we get with Backbone out of the box can be terribly useful, there are some equally as beneficial add-ons that can help simplify our development process. These include:
+Whilst we get with Backbone out of the box can be terribly useful, there are some equally beneficial add-ons that can help simplify our development process. These include:
 
 * [Backbone Layout Manager](https://github.com/tbranyen/backbone.layoutmanager)
 * [Backbone Model Binding](https://github.com/derickbailey/backbone.modelbinding)
