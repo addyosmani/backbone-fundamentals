@@ -157,6 +157,7 @@ var PhotoGallery = Backbone.Collection.extend({
 
 });
 ```
+
 If you read older texts on MVC, you may come across a description of models as also managing application 'state'. In JavaScript applications "state" has a specific meaning, typically referring to the current "state" of a view or sub-view on a users screen at a fixed time. State is a topic which is regularly discussed when looking at Single-page applications, where the concept of state needs to be simulated.
 
 
@@ -867,6 +868,7 @@ var PhotoCollection = new Backbone.Collection;
 PhotoCollection.url = '/photos';
 PhotoCollection.fetch();
 ```
+
 Under the covers, `Backbone.sync` is the function called every time Backbone tries to read or save models to the server. It uses jQuery or Zepto's ajax implementations to make these RESTful requests, however this can be overridden as per your needs.   
 
 In the above example if we wanted to log an event when `.sync()` was called, we could do this:
@@ -1725,6 +1727,7 @@ define(['foo', 'bar'],
         return myModule;
 });
 ```
+
 ####Alternate syntax
 There is also a [sugared version](http://requirejs.org/docs/whyamd.html#sugar) of `define()` available that allows you to declare your dependencies as local variables using `require()`. This will feel familiar to anyone who's used node, and can be easier to add or remove dependencies.
 Here is the previous snippet using the alternate syntax:
@@ -2832,6 +2835,7 @@ it('should be incrementing in value', function(){
     expect(counter).toEqual(1);
 });
 ``` 
+
 The above code passes our behavioral expectation as ```counter`` equals 1. Notice how easy this was to read the expectation on the last line (you probably grokked it without any explanation).
 
 Specs are grouped into suites which we describe using Jasmine's ```describe()``` function, again passing a string as a description and a function. The name/description for your suite is typically that of the component or module you're testing. 
