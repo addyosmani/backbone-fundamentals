@@ -278,7 +278,7 @@ So does Backbone.js have Controllers? Not really. Backbone's Views typically con
 In this respect, contrary to what might be mentioned in the official documentation or in blog posts, Backbone is neither a truly MVC/MVP nor MVVM framework. It's in fact better to see it a member of the MV* family which approaches architecture in its own way. There is of course nothing wrong with this, but it is important to distinguish between classical MVC and MV* should you be relying on discussions of MVCt to help with your Backbone projects.
 
 
-### Controllers in Spine.vs vs Backbone.js
+### Controllers in Spine.js vs Backbone.js
 
 
 **Spine.js**
