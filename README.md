@@ -916,7 +916,7 @@ Note: A router will usually have at least one URL route defined as well as a fun
 An application will usually have at least one route mapping a URL route to a function that determines what happens when a  user reaches that particular route. This relationship is defined as follows:    
 
 ```javascript
-"/route" : "mappedFunction"
+"route" : "mappedFunction"
 ```
 
 Let us now define our first controller by extending `Backbone.Router`. For the purposes of this guide, we're going to continue pretending we're creating a photo gallery application that requires a GalleryRouter.
@@ -927,25 +927,25 @@ Note the inline comments in the code example below as they continue the rest of 
 var GalleryRouter = Backbone.Router.extend({
     /* define the route and function maps for this router */
     routes:{
-        "/about" : "showAbout",
+        "about" : "showAbout",
         /*Sample usage: http://unicorns.com/#/about"*/
         
-        "/photos/:id" : "getPhoto",
+        "photos/:id" : "getPhoto",
         /*This is an example of using a ":param" variable which allows us to match 
         any of the components between two URL slashes*/
         /*Sample usage: http://unicorns.com/#/photos/5*/
         
-        "/search/:query" : "searchPhotos"
+        "search/:query" : "searchPhotos"
         /*We can also define multiple routes that are bound to the same map function,
         in this case searchPhotos(). Note below how we're optionally passing in a 
         reference to a page number if one is supplied*/
         /*Sample usage: http://unicorns.com/#/search/lolcats*/
          
-        "/search/:query/p:page" : "searchPhotos",
+        "search/:query/p:page" : "searchPhotos",
         /*As we can see, URLs may contain as many ":param"s as we wish*/
         /*Sample usage: http://unicorns.com/#/search/lolcats/p1*/
         
-        "/photos/:id/download/*imagePath" : "downloadPhoto",
+        "photos/:id/download/*imagePath" : "downloadPhoto",
         /*This is an example of using a *splat. splats are able to match any number of 
         URL components and can be combined with ":param"s*/
         /*Sample usage: http://unicorns.com/#/photos/5/download/files/lolcat-car.jpg*/
