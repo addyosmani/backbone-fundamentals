@@ -924,7 +924,7 @@ Note the inline comments in the code example below as they continue the rest of 
 ```javascript
 var GalleryRouter = Backbone.Router.extend({
     /* define the route and function maps for this router */
-    routes:{
+    routes: {
         "about" : "showAbout",
         /*Sample usage: http://unicorns.com/#about*/
         
