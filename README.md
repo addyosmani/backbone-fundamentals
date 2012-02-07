@@ -39,9 +39,9 @@ My extended thanks to [these](https://github.com/addyosmani/backbone-fundamental
 * ####[Testing](#testing)
     * Unit Testing Backbone Applications With Jasmine
     * An Introduction to Jasmine
-    * Testing Models
-    * Testing Collections
-    * Testing Views
+    * [Testing Models](#testing-models)
+    * [Testing Collections](#testing-collections)
+    * [Testing Views](#testing-views)
 
 
 * ####[Resources](#resources)
@@ -3034,7 +3034,7 @@ When developing applications with Backbone, it can be necessary to test both ind
 I would like to extend my thanks to Larry Myers for his [Koans](https://github.com/addyosmani/backbone-koans) project which both greatly helped here and will be used in the exercise portion of this chapter.
 
 
-##Models
+##<a name="testing-models">Models</a>
 
 The complexity of Backbone models can vary greatly depending on what your application is trying to achieve. In the following example, we're going to test default values, attributes, state changes and validation rules.  
 
@@ -3179,7 +3179,7 @@ window.Todo = Backbone.Model.extend({
 ```
 
 
-##Collections
+##<a name="testing-collections">Collections</a>
 
 We now need to define specs to tests a Backbone collection of Todo models (a TodoList). Collections are responsible for a number of list tasks including managing order and filtering.
 
@@ -3265,7 +3265,7 @@ The final implementation for our TodoList collection can be found below:
 ```
 
 
-##Views
+##<a name="testing-views">Views</a>
 
 Before we take a look at testing Backbone views, let's briefly review a jQuery plugin that can assist with writing Jasmine specs for them.
 
