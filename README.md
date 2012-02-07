@@ -17,12 +17,12 @@ My extended thanks to [these](https://github.com/addyosmani/backbone-fundamental
     * [Understanding MVC & MVP](#mvcmvp)
 
 * ####[The Basics](#thebasics)
-    * Models
-    * Views
-    * Collections
-    * Routers
-    * Namespacing
-    * Additional tips
+    * [Models](#models)
+    * [Views](#views)
+    * [Collections](#collections)
+    * [Routers](#routers)
+    * [Namespacing](#namespacing)
+    * [Additional tips](#additionaltips)
 
 * ####[Advanced](#advanced)
     * [Building RESTful applications with Backbone](#restful)
@@ -517,7 +517,7 @@ In this section, you'll learn the essentials of Backbone's models, views, collec
 * Views
 * Namespacing
 
-###Models
+###<a name="models">Models</a>
 
 Backbone models contain interactive data for an application as well as the logic around this data. For example, we can use a model to represent the concept of a photo object including its attributes like tags, titles and a location.
 
@@ -714,7 +714,7 @@ myPhoto.set({ title: "On the beach" });
 
 
 
-###Views
+###<a name="views">Views</a>
 
 Views in Backbone don't contain the markup for your application, but rather they are there to support models by defining the logic for how they should be represented to the user. This is usually achieved using JavaScript templating (e.g. Mustache, jQuery-tmpl, etc.). A view's `render()` function can be bound to a model's `change()` event, allowing the view to always be up to date without requiring a full page refresh.
    
@@ -792,7 +792,7 @@ The Backbone `events` attribute allows us to attach event listeners to either cu
 What isn't instantly obvious is that under the bonnet, Backbone uses jQuery's `.delegate()` to provide instant support for event delegation but goes a little further, extending it so that `this` always refers to the current view object. The only thing to really keep in mind is that any string callback supplied to the events attribute must have a corresponding function with the same name within the scope of your view.
  
 
-###Collections
+###<a name="collections">Collections</a>
 
 Collections are sets of Models and are created by extending `Backbone.Collection`.
 
@@ -902,7 +902,7 @@ var sortedByAlphabet = PhotoCollection.sortBy(function (photo) {
 
 The complete list of what Underscore can do is beyond the scope of this guide, but can be found in its official [docs](http://documentcloud.github.com/underscore/).
  
-###Routers
+###<a name="routers">Routers</a>
 
 In Backbone, routers are used to help manage application state and for connecting URLs to application events. This is achieved using hash-tags with URL fragments, or using the browser's pushState and History API. Some examples of routes may be seen below:
 
@@ -1022,7 +1022,7 @@ zoomPhoto: function(factor){
 }
 ```
 
-###Namespacing
+###<a name="namespacing">Namespacing</a>
 
 When learning how to use Backbone, an important and commonly overlooked area by tutorials is namespacing. If you already have experience with namespacing in JavaScript, the following section will provide some advice on how to specifically apply concepts you know to Backbone, however I will also be covering explanations for beginners to ensure everyone is on the same page.
 
@@ -1186,7 +1186,7 @@ Reviewing the namespace patterns above, the option that I prefer when writing Ba
 Single global variables may work fine for applications that are relatively trivial, however, larger codebases requiring both namespaces and deep sub-namespaces require a succinct solution that's both readable and scaleable. I feel this pattern achieves both of these objectives and is a good choice for most Backbone development.
 
 
-###Additional Tips
+###<a name="additionaltips">Additional Tips</a>
 
 ####Automated Backbone Scaffolding
 
