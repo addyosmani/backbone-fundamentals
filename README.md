@@ -911,9 +911,7 @@ http://unicorns.com/#whatsup
 http://unicorns.com/#search/seasonal-horns/page2
 ```
 
-Note: A router will usually have at least one URL route defined as well as a function that maps what happens when you reach that particular route. This type of key/value pair may resemble:
-
-An application will usually have at least one route mapping a URL route to a function that determines what happens when a  user reaches that particular route. This relationship is defined as follows:    
+Note: An application will usually have at least one route mapping a URL route to a function that determines what happens when a  user reaches that particular route. This relationship is defined as follows:    
 
 ```javascript
 "route" : "mappedFunction"
