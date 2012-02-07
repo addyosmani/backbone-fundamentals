@@ -124,7 +124,7 @@ var Photo = Backbone.Model.extend({
 
     // Ensure that each photo created has an `src`.
     initialize: function() {
-       this.set({"src": this.defaults.src});
+       this.set({src: this.defaults.src});
     }
 
 });
