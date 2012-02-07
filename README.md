@@ -295,8 +295,8 @@ In this example, we're going to have a controller called ```PhotosController``` 
 
 var PhotosController = Spine.Controller.sub({      
   init: function(){
-    this.item.on("update", this.proxy(this.render));
-    this.item.on("destroy", this.proxy(this.remove));
+    this.item.bind("update", this.proxy(this.render));
+    this.item.bind("destroy", this.proxy(this.remove));
   },
 
   render: function(){
@@ -2569,7 +2569,7 @@ function ($, _, facade) {
         var content = context.model.get('content');
         context.$('.todo-content').text(content);
         context.input = context.$('.todo-input');
-        context.input.on('blur', context.close);
+        context.input.bind('blur', context.close);
         context.input.val(content);
     });
 
