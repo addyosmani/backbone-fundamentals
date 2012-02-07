@@ -14,7 +14,7 @@ My extended thanks to [these](https://github.com/addyosmani/backbone-fundamental
 * [Introduction](#introduction)
 
 * ####[Fundamentals](#fundamentals)
-    * [Understanding MVC & MVP](#mvcmvp)
+    * [Understanding MVC & MVP](#mvc-mvp)
 
 * ####[The Basics](#thebasics)
     * [Models](#models)
@@ -22,7 +22,7 @@ My extended thanks to [these](https://github.com/addyosmani/backbone-fundamental
     * [Collections](#collections)
     * [Routers](#routers)
     * [Namespacing](#namespacing)
-    * [Additional tips](#additionaltips)
+    * [Additional tips](#additional-tips)
 
 * ####[Advanced](#advanced)
     * [Building RESTful applications with Backbone](#restful)
@@ -67,7 +67,7 @@ The goal of this book is to create an authoritative and centralized repository o
 In this section we are going to cover the context into which a framework like Backbone.js fits. Let's begin our journey into understanding Backbone better with a look at code architecture. 
 
 
-###Understanding MVC And MVP (For JavaScript Developers)
+###<a name="mvc-mvp">Understanding MVC And MVP (For JavaScript Developers)</a>
 
 Before exploring any JavaScript frameworks that assist in structuring applications, it can be useful to gain a basic understanding of architectural design patterns. Design patterns are proven solutions to common development problems and can suggest structural approaches to help guide developers in adding some organization to their applications. 
 
@@ -1186,7 +1186,7 @@ Reviewing the namespace patterns above, the option that I prefer when writing Ba
 Single global variables may work fine for applications that are relatively trivial, however, larger codebases requiring both namespaces and deep sub-namespaces require a succinct solution that's both readable and scaleable. I feel this pattern achieves both of these objectives and is a good choice for most Backbone development.
 
 
-###<a name="additionaltips">Additional Tips</a>
+###<a name="additional-tips">Additional Tips</a>
 
 ####Automated Backbone Scaffolding
 
