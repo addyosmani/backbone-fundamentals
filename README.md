@@ -771,9 +771,9 @@ id: 'header', // optional
 
 The above code creates the ```DOMElement``` below but doesn't append it to the DOM.
 
-<pre>  
-    &lt;p id=&quot;header&quot; class=&quot;container&quot;&gt;&lt;/p&gt;    
-</pre>
+````html  
+<p id="header" class="container"></p>
+```
 
 
 **Understanding `render()`**
