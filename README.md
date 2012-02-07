@@ -275,7 +275,7 @@ It's with controllers that most JavaScript MVC frameworks depart from this inter
 
 So does Backbone.js have Controllers? Not really. Backbone's Views typically contain "controller" logic, and Routers (discussed below) are used to help manage application state, but neither are true Controllers according to classical MVC. 
 
-In this respect, contrary to what might be mentioned in the official documentation or in blog posts, Backbone is neither a truly MVC/MVP nor MVVM framework. It's in fact better to see it a member of the MV* family which approaches architecture in its own way. There is of course nothing wrong with this, but it is important to distinguish between classical MVC and MV* should you be relying on discussions of MVCt to help with your Backbone projects.
+In this respect, contrary to what might be mentioned in the official documentation or in blog posts, Backbone is neither a truly MVC/MVP nor MVVM framework. It's in fact better to see it a member of the MV* family which approaches architecture in its own way. There is of course nothing wrong with this, but it is important to distinguish between classical MVC and MV* should you be relying on discussions of MVC to help with your Backbone projects.
 
 
 ### Controllers in Spine.js vs Backbone.js
@@ -285,7 +285,7 @@ In this respect, contrary to what might be mentioned in the official documentati
 
 We now know that controllers are traditionally responsible for updating the view when the model changes (and similarly the model when the user updates the view). Since Backbone doesn't have its **own** explicit controllers, it's useful to review the controller from another MVC framework to appreciate the difference in implementations. Let's take a look at [Spine.js](http://spinejs.com/):
   
-In this example, we're going to have a controller called ```PhotosController`` which will be in charge of individual photos in the application. It will ensure that when the view updates (e.g a user edited the photo meta-data) the corresponding model does too. 
+In this example, we're going to have a controller called ```PhotosController``` which will be in charge of individual photos in the application. It will ensure that when the view updates (e.g a user edited the photo meta-data) the corresponding model does too. 
 
 (Note: We won't be delving heavily into Spine.js beyond this example, but it's worth looking at it to learn more about Javascript frameworks in general.)
 
@@ -385,7 +385,7 @@ Solicited by a view, presenters perform any work to do with user requests and pa
 
 The benefit of this change from MVC is that it increases the testability of your application and provides a more clean separation between the view and the model. This isn't however without its costs as the lack of data binding support in the pattern can often mean having to take care of this task separately.
 
-+Although a common implementation of a [Passive View](http://martinfowler.com/eaaDev/PassiveScreen.html) is for the view to implement an interface, there are variations on it, including the use of events which can decouple the View from the Presenter a little more. As we don't have the interface construct in JavaScript, we're using it more as more a protocol than an explicit interface here. It's technically still an API and it's probably fair for us to refer to it as an interface from that perspective.
+Although a common implementation of a [Passive View](http://martinfowler.com/eaaDev/PassiveScreen.html) is for the view to implement an interface, there are variations on it, including the use of events which can decouple the View from the Presenter a little more. As we don't have the interface construct in JavaScript, we're using it more as more a protocol than an explicit interface here. It's technically still an API and it's probably fair for us to refer to it as an interface from that perspective.
 
 
 There is also a [Supervising Controller](http://martinfowler.com/eaaDev/SupervisingPresenter.html) variation of MVP, which is closer to the MVC and [MVVM](http://en.wikipedia.org/wiki/Model_View_ViewModel) patterns as it provides data-binding from the Model directly from the View. Key-value observing (KVO) plugins (such as Derick Bailey's Backbone.ModelBinding plugin) introduce this idea of a Supervising Controller to Backbone.
@@ -771,14 +771,14 @@ id: 'header', // optional
 
 The above code creates the ```DOMElement``` below but doesn't append it to the DOM.
 
-<pre>  
-    &lt;p id=&quot;header&quot; class=&quot;container&quot;&gt;&lt;/p&gt;    
-</pre>
+````html  
+<p id="header" class="container"></p>
+```
 
 
 **Understanding `render()`**
 
-+`render()` is an optional function that defines the logic for rendering a template. We'll use Underscore's micro-templating in these examples, but remember you can use other templating frameworks if you prefer.   
+`render()` is an optional function that defines the logic for rendering a template. We'll use Underscore's micro-templating in these examples, but remember you can use other templating frameworks if you prefer.   
 
 The `_.template` method in Underscore compiles JavaScript templates into functions which can be evaluated for rendering. In the above view, I'm passing the markup from a template with id `results-template` to `_.template()` to be compiled. Next, I set the html of the `el` DOM element to the output of processing a JSON version of the model associated with the view through the compiled template.
 
@@ -787,9 +787,9 @@ Presto! This populates the template, giving you a data-complete set of markup in
 
 **The `events` attribute**
 
-The Backbone `events` attribute allows us to attach event listeners to either custom selectors, or directly to `el` if no selector is provided. An event takes the form `{"eventName selector": "callbackFunction"}` and a number of event-types are supported, including 'click', 'submit', 'mouseover', 'dblclick' and more.
+The Backbone `events` attribute allows us to attach event listeners to either custom selectors, or directly to `el` if no selector is provided. An event takes the form `{"eventName selector": "callbackFunction"}` and a number of event-types are supported, including `click`, `submit`, `mouseover`, `dblclick` and more.
 
-+What isn't instantly obvious is that under the bonnet, Backbone uses jQuery's `.delegate()` to provide instant support for event delegation but goes a little further, extending it so that `this` always refers to the current view object. The only thing to really keep in mind is that any string callback supplied to the events attribute must have a corresponding function with the same name within the scope of your view.
+What isn't instantly obvious is that under the bonnet, Backbone uses jQuery's `.delegate()` to provide instant support for event delegation but goes a little further, extending it so that `this` always refers to the current view object. The only thing to really keep in mind is that any string callback supplied to the events attribute must have a corresponding function with the same name within the scope of your view.
  
 
 ###Collections
@@ -911,9 +911,7 @@ http://unicorns.com/#whatsup
 http://unicorns.com/#search/seasonal-horns/page2
 ```
 
-Note: A router will usually have at least one URL route defined as well as a function that maps what happens when you reach that particular route. This type of key/value pair may resemble:
-
-An application will usually have at least one route mapping a URL route to a function that determines what happens when a  user reaches that particular route. This relationship is defined as follows:    
+Note: An application will usually have at least one route mapping a URL route to a function that determines what happens when a  user reaches that particular route. This relationship is defined as follows:    
 
 ```javascript
 "route" : "mappedFunction"
@@ -926,9 +924,9 @@ Note the inline comments in the code example below as they continue the rest of 
 ```javascript
 var GalleryRouter = Backbone.Router.extend({
     /* define the route and function maps for this router */
-    routes:{
+    routes: {
         "about" : "showAbout",
-        /*Sample usage: http://unicorns.com/#about"*/
+        /*Sample usage: http://unicorns.com/#about*/
         
         "photos/:id" : "getPhoto",
         /*This is an example of using a ":param" variable which allows us to match 
@@ -955,9 +953,9 @@ var GalleryRouter = Backbone.Router.extend({
         expression parsing on your fragment*/
          
         "*other"    : "defaultRoute"
-        //This is a default route that also uses a *splat. Consider the
-        //default route a wildcard for URLs that are either not matched or where
-        //the user has incorrectly typed in a route path manually
+        /*This is a default route that also uses a *splat. Consider the
+        default route a wildcard for URLs that are either not matched or where
+        the user has incorrectly typed in a route path manually*/
         /*Sample usage: http://unicorns.com/#anything*/
  
     },
