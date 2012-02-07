@@ -119,7 +119,7 @@ var Photo = Backbone.Model.extend({
     defaults: {
       src: "placeholder.jpg",
       caption: "A default image",
-    viewed: false
+      viewed: false
     },
 
     // Ensure that each photo created has an `src`.
