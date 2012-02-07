@@ -14,34 +14,34 @@ My extended thanks to [these](https://github.com/addyosmani/backbone-fundamental
 * [Introduction](#introduction)
 
 * ####[Fundamentals](#fundamentals)
-* [Understanding MVC & MVP](#mvcmvp)
+    * [Understanding MVC & MVP](#mvc-mvp)
 
 * ####[The Basics](#thebasics)
-* Models
-* Views
-* Collections
-* Routers
-* Namespacing
-* Additional tips
+    * [Models](#models)
+    * [Views](#views)
+    * [Collections](#collections)
+    * [Routers](#routers)
+    * [Namespacing](#namespacing)
+    * [Additional tips](#additional-tips)
 
 * ####[Advanced](#advanced)
-* [Building RESTful applications with Backbone](#restful)
-* Stack 1: Using Node.js, Express, Mongoose and MongoDB
-* [Modular JavaScript](#modularjs)
-* Organizing modules with RequireJS and AMD
-* Keeping your templates external with the RequireJS text plugin
-* Optimizing Backbone apps for production with the RequireJS Optimizer
-* Practical: Building a modular Backbone app with AMD & RequireJS
-* Decoupling Backbone with the Mediator and Facade patterns 
-* Backbone & jQuery Mobile
-* Practical: Building a modular mobile app with Backbone & jQuery Mobile
+    * [Building RESTful applications with Backbone](#restful)
+    * Stack 1: Using Node.js, Express, Mongoose and MongoDB
+    * [Modular JavaScript](#modularjs)
+    * Organizing modules with RequireJS and AMD
+    * Keeping your templates external with the RequireJS text plugin
+    * Optimizing Backbone apps for production with the RequireJS Optimizer
+    * Practical: Building a modular Backbone app with AMD & RequireJS
+    * Decoupling Backbone with the Mediator and Facade patterns 
+    * Backbone & jQuery Mobile
+    * Practical: Building a modular mobile app with Backbone & jQuery Mobile
 
 * ####[Testing](#testing)
-* Unit Testing Backbone Applications With Jasmine
-* An Introduction to Jasmine
-* Testing Models
-* Testing Collections
-* Testing Views
+    * Unit Testing Backbone Applications With Jasmine
+    * An Introduction to Jasmine
+    * [Testing Models](#testing-models)
+    * [Testing Collections](#testing-collections)
+    * [Testing Views](#testing-views)
 
 
 * ####[Resources](#resources)
@@ -67,7 +67,7 @@ The goal of this book is to create an authoritative and centralized repository o
 In this section we are going to cover the context into which a framework like Backbone.js fits. Let's begin our journey into understanding Backbone better with a look at code architecture. 
 
 
-###Understanding MVC And MVP (For JavaScript Developers)
+###<a name="mvc-mvp">Understanding MVC And MVP (For JavaScript Developers)</a>
 
 Before exploring any JavaScript frameworks that assist in structuring applications, it can be useful to gain a basic understanding of architectural design patterns. Design patterns are proven solutions to common development problems and can suggest structural approaches to help guide developers in adding some organization to their applications. 
 
@@ -119,7 +119,7 @@ var Photo = Backbone.Model.extend({
     defaults: {
       src: "placeholder.jpg",
       caption: "A default image",
-    viewed: false
+      viewed: false
     },
 
     // Ensure that each photo created has an `src`.
@@ -517,7 +517,7 @@ In this section, you'll learn the essentials of Backbone's models, views, collec
 * Views
 * Namespacing
 
-###Models
+###<a name="models">Models</a>
 
 Backbone models contain interactive data for an application as well as the logic around this data. For example, we can use a model to represent the concept of a photo object including its attributes like tags, titles and a location.
 
@@ -714,7 +714,7 @@ myPhoto.set({ title: "On the beach" });
 
 
 
-###Views
+###<a name="views">Views</a>
 
 Views in Backbone don't contain the markup for your application, but rather they are there to support models by defining the logic for how they should be represented to the user. This is usually achieved using JavaScript templating (e.g. Mustache, jQuery-tmpl, etc.). A view's `render()` function can be bound to a model's `change()` event, allowing the view to always be up to date without requiring a full page refresh.
    
@@ -792,7 +792,7 @@ The Backbone `events` attribute allows us to attach event listeners to either cu
 What isn't instantly obvious is that under the bonnet, Backbone uses jQuery's `.delegate()` to provide instant support for event delegation but goes a little further, extending it so that `this` always refers to the current view object. The only thing to really keep in mind is that any string callback supplied to the events attribute must have a corresponding function with the same name within the scope of your view.
  
 
-###Collections
+###<a name="collections">Collections</a>
 
 Collections are sets of Models and are created by extending `Backbone.Collection`.
 
@@ -902,7 +902,7 @@ var sortedByAlphabet = PhotoCollection.sortBy(function (photo) {
 
 The complete list of what Underscore can do is beyond the scope of this guide, but can be found in its official [docs](http://documentcloud.github.com/underscore/).
  
-###Routers
+###<a name="routers">Routers</a>
 
 In Backbone, routers are used to help manage application state and for connecting URLs to application events. This is achieved using hash-tags with URL fragments, or using the browser's pushState and History API. Some examples of routes may be seen below:
 
@@ -1022,7 +1022,7 @@ zoomPhoto: function(factor){
 }
 ```
 
-###Namespacing
+###<a name="namespacing">Namespacing</a>
 
 When learning how to use Backbone, an important and commonly overlooked area by tutorials is namespacing. If you already have experience with namespacing in JavaScript, the following section will provide some advice on how to specifically apply concepts you know to Backbone, however I will also be covering explanations for beginners to ensure everyone is on the same page.
 
@@ -1186,7 +1186,7 @@ Reviewing the namespace patterns above, the option that I prefer when writing Ba
 Single global variables may work fine for applications that are relatively trivial, however, larger codebases requiring both namespaces and deep sub-namespaces require a succinct solution that's both readable and scaleable. I feel this pattern achieves both of these objectives and is a good choice for most Backbone development.
 
 
-###Additional Tips
+###<a name="additional-tips">Additional Tips</a>
 
 ####Automated Backbone Scaffolding
 
@@ -3034,7 +3034,7 @@ When developing applications with Backbone, it can be necessary to test both ind
 I would like to extend my thanks to Larry Myers for his [Koans](https://github.com/addyosmani/backbone-koans) project which both greatly helped here and will be used in the exercise portion of this chapter.
 
 
-##Models
+##<a name="testing-models">Models</a>
 
 The complexity of Backbone models can vary greatly depending on what your application is trying to achieve. In the following example, we're going to test default values, attributes, state changes and validation rules.  
 
@@ -3179,7 +3179,7 @@ window.Todo = Backbone.Model.extend({
 ```
 
 
-##Collections
+##<a name="testing-collections">Collections</a>
 
 We now need to define specs to tests a Backbone collection of Todo models (a TodoList). Collections are responsible for a number of list tasks including managing order and filtering.
 
@@ -3265,7 +3265,7 @@ The final implementation for our TodoList collection can be found below:
 ```
 
 
-##Views
+##<a name="testing-views">Views</a>
 
 Before we take a look at testing Backbone views, let's briefly review a jQuery plugin that can assist with writing Jasmine specs for them.
 
