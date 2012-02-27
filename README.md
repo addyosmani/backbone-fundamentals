@@ -752,7 +752,7 @@ var PhotoSearch = Backbone.View.extend({
 
 `el` is basically a reference to a DOM element and all views must have one. It allows for all of the contents of a view to be inserted into the DOM at once, which makes for faster rendering as browser performs the minimum required reflows and repaints.
 
-There a two ways to attach a DOM element to a view: the element already exists in the page or a new element is created for the view and added manually by the developer.
+There are two ways to attach a DOM element to a view: the element already exists in the page or a new element is created for the view and added manually by the developer.
 If the element already exists in the page, you can set `el` as either a CSS selector that matches the element or a simple reference to the DOM element.
 
 ````javascript
