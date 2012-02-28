@@ -977,7 +977,7 @@ var GalleryRouter = Backbone.Router.extend({
     downloadPhoto: function(id, path){
     },
     
-    defaultRoute(other){
+    defaultRoute: function(other){
         console.log("Invalid. You attempted to reach:" + other);
     }
 });
