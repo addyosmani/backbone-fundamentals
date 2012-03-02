@@ -687,7 +687,7 @@ myPhoto.setTitle('Fishing at sea');
 
 Backbone supports model validation through `Model.validate()`, which allows checking the attribute values for a model prior to them being set.
 
-Validation functions can as be simple or complex as necessary. If the attributes provided are valid, nothing should be returned from `.validate()`. If they are invalid, a custom error can be returned instead.
+Validation functions can be as simple or complex as necessary. If the attributes provided are valid, nothing should be returned from `.validate()`. If they are invalid, a custom error can be returned instead.
 
 A basic example for validation can be seen below:
 
