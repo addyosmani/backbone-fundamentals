@@ -458,7 +458,7 @@ var PhotoView = Backbone.View.extend({
     }
 
 });
-````
+```
 
 
 Another (quite different) opinion is that Backbone more closely resembles [Smalltalk-80 MVC](http://martinfowler.com/eaaDev/uiArchs.html#ModelViewController), which we went through earlier.
@@ -755,7 +755,7 @@ var PhotoSearch = Backbone.View.extend({
 There are two ways to attach a DOM element to a view: the element already exists in the page or a new element is created for the view and added manually by the developer.
 If the element already exists in the page, you can set `el` as either a CSS selector that matches the element or a simple reference to the DOM element.
 
-````javascript
+```javascript
 el: '#footer', 
 // OR
 el: document.getElementById( 'footer' )
@@ -763,7 +763,7 @@ el: document.getElementById( 'footer' )
 
 If you want to create a new element for you view, set any combination of the following view's properties: `tagName`, `id` and `className`. A new element will be created for you by the framework and a reference to it will be available at the `el` property.
 
-````javascript
+```javascript
 tagName: 'p', // required, but defaults to 'div' if not set
 className: 'container', // optional, you can assign multiple classes to this property like so 'container homepage'
 id: 'header', // optional
@@ -771,7 +771,7 @@ id: 'header', // optional
 
 The above code creates the ```DOMElement``` below but doesn't append it to the DOM.
 
-````html  
+```html
 <p id="header" class="container"></p>
 ```
 
@@ -3130,7 +3130,7 @@ it('Can contain custom validation rules, and will trigger an error event on fail
     expect(errorArgs[1]).toBe('Todo.done must be a boolean value.');
 });
 
-````
+```
 
 The code to make the above failing test support validation is relatively simple. In our model, we override the validate() method (as recommended in the Backbone docs), checking to make sure a model both has a 'done' property and is a valid boolean before allowing it to pass.
 
@@ -3360,7 +3360,7 @@ If instead of testing against the ```tagName``` you would prefer to use a classN
 it('Should have a class of "todos"'), function(){
    expect($(this.view.el)).toHaveClass('todos');
 });
-````
+```
 
 The ```toHaveClass()``` matcher operates on jQuery objects and if the plugin hadn't been used, an exception would have been incurred (it is of course also possible to test for the className by accessing el.className if not opting to use jasmine-jquery).
 
