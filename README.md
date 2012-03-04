@@ -3429,7 +3429,7 @@ Once these specs are run, only the second one ('produces the correct HTML') fail
 <div class="todo <%= done ? 'done' : '' %>">
         <div class="display">
           <input class="check" type="checkbox" <%= done ? 'checked="checked"' : '' %> />
-          <div class="todo-content"><%= content %></div>
+          <label class="todo-content"><%= text %></label>
           <span class="todo-destroy"></span>
         </div>
         <div class="edit">
