@@ -14,7 +14,7 @@ My extended thanks to [these](https://github.com/addyosmani/backbone-fundamental
 * ####[Introduction](#introduction)
 
 * ####[Fundamentals](#fundamentals)
-    * [Understanding MVC & MVP](#mvc-mvp)
+    * [MVC, MVP & Backbone.js - Understanding Where It Fits](#mvc-mvp)
 
 * ####[The Basics](#thebasics)
     * [Models](#models)
@@ -31,8 +31,8 @@ My extended thanks to [these](https://github.com/addyosmani/backbone-fundamental
     * [Organizing modules with RequireJS and AMD](#organizingmodules)
     * [Keeping your templates external with the RequireJS text plugin](#externaltemplates)
     * [Optimizing Backbone apps for production with the RequireJS Optimizer](#optimizingrequirejs)
-    * Practical: Building a modular Backbone app with AMD & RequireJS
-    * Decoupling Backbone with the Mediator and Facade patterns 
+    * [Practical: Building a modular Backbone app with AMD & RequireJS](#practicalrequirejs)
+    * [Decoupling Backbone with the Mediator and Facade patterns](#decouplingbackbone)
     * Backbone & jQuery Mobile
     * Practical: Building a modular mobile app with Backbone & jQuery Mobile
 
@@ -87,13 +87,13 @@ The goal of this book is to create an authoritative and centralized repository o
 In this section we are going to cover the context into which a framework like Backbone.js fits. Let's begin our journey into understanding Backbone better with a look at code architecture. 
 
 
-###<a name="mvc-mvp">Understanding MVC And MVP (For JavaScript Developers)</a>
+###<a name="mvc-mvp">MVC, MVP & Backbone.js - Understanding Where It Fits</a>
 
 Before exploring any JavaScript frameworks that assist in structuring applications, it can be useful to gain a basic understanding of architectural design patterns. Design patterns are proven solutions to common development problems and can suggest structural approaches to help guide developers in adding some organization to their applications. 
 
 Patterns are useful because they're a set of practices that build upon the collective experience of skilled developers who have repeatedly solved similar problems. Although developers 10 or 20 years ago may not have been using the same programming languages when implementing patterns in their projects, there are many lessons we can learn from their efforts.
 
-In this section, we're going to review two popular patterns - MVC and MVP. We'll be exploring in greater detail how Backbone.js implements these patterns later in this book.
+In this section, we're going to review two popular patterns - MVC and MVP. We'll be exploring in greater detail how Backbone.js implements these patterns shortly to better appreciate where it fits in.
 
 
 ##MVC
@@ -1988,7 +1988,7 @@ node ../../r.js -o app.build.js
 That's it. As long as you have UglifyJS/Closure tools setup correctly, r.js should be able to easily optimize your entire Backbone project in just a few key-strokes. If you would like to learn more about build profiles, James Burke has a [heavily commented sample file](https://github.com/jrburke/r.js/blob/master/build/example.build.js) with all the possible options available.
 
 
-##[Practical: Building a modular Backbone Todo app with AMD & RequireJS](#practical_modularapp)
+##<a name="practicalrequirejs">Practical: Building a modular Backbone app with AMD & RequireJS</a>
 
 In this chapter, we'll look at our first practical Backbone & RequireJS project - how to build a modular Todo application. The application will allow us to add new todos, edit new todos and clear todo items that have been marked as completed. For a more advanced practical, see the section on mobile Backbone development.
 
@@ -2351,7 +2351,7 @@ To see how everything ties together, feel free to grab the source by cloning thi
 **Note:** While this first practical doesn't use a build profile as outlined in the chapter on using the RequireJS optimizer, we will be using one in the section on building mobile Backbone applications.
 
 
-##Decoupling Backbone with the Mediator and Facade patterns
+##<a name="decouplingbackbone">Decoupling Backbone with the Mediator and Facade patterns</a>
 
 In this section we'll discuss applying some of the concepts I cover in my article on [Large-scale JavaScript Application development](http://addyosmani.com/largescalejavascript) to Backbone. 
 
