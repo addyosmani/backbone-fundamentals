@@ -14,7 +14,7 @@ My extended thanks to [these](https://github.com/addyosmani/backbone-fundamental
 * ####[Introduction](#introduction)
 
 * ####[Fundamentals](#fundamentals)
-    * [MVC, MVP & Backbone.js - Understanding Where It Fits](#mvc-mvp)
+    * [MVC, MVP & Backbone.js](#mvc-mvp)
 
 * ####[The Basics](#thebasics)
     * [Models](#models)
@@ -87,7 +87,7 @@ The goal of this book is to create an authoritative and centralized repository o
 In this section we are going to cover the context into which a framework like Backbone.js fits. Let's begin our journey into understanding Backbone better with a look at code architecture. 
 
 
-###<a name="mvc-mvp">MVC, MVP & Backbone.js - Understanding Where It Fits</a>
+###<a name="mvc-mvp">MVC, MVP & Backbone.js</a>
 
 Before exploring any JavaScript frameworks that assist in structuring applications, it can be useful to gain a basic understanding of architectural design patterns. Design patterns are proven solutions to common development problems and can suggest structural approaches to help guide developers in adding some organization to their applications. 
 
