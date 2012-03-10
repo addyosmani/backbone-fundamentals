@@ -26,9 +26,9 @@ My extended thanks to [these](https://github.com/addyosmani/backbone-fundamental
 
 * ####[Advanced](#advanced)
     * [Building RESTful applications with Backbone](#restful)
-    * Stack 1: Using Node.js, Express, Mongoose and MongoDB
+    * [Stack 1: Using Node.js, Express, Mongoose and MongoDB](#stack1)
     * [Modular JavaScript](#modularjs)
-    * Organizing modules with RequireJS and AMD
+    * [Organizing modules with RequireJS and AMD](#organizingmodules)
     * Keeping your templates external with the RequireJS text plugin
     * Optimizing Backbone apps for production with the RequireJS Optimizer
     * Practical: Building a modular Backbone app with AMD & RequireJS
@@ -39,9 +39,9 @@ My extended thanks to [these](https://github.com/addyosmani/backbone-fundamental
 * ####[Testing](#testing)
     * Unit Testing Backbone Applications With Jasmine
     * An Introduction to Jasmine
-    * [Testing Models](#testing-models)
-    * [Testing Collections](#testing-collections)
-    * [Testing Views](#testing-views)
+    * -[Testing Models](#testing-models)
+    * -[Testing Collections](#testing-collections)
+    * -[Testing Views](#testing-views)
 
 
 * ####[Resources](#resources)
@@ -1214,7 +1214,7 @@ At the end of the day, the key to building large applications is not to build la
 In this section of the book, we're going to take a look at developing RESTful applications using Backbone.js and modern technology stacks. When the data for your back-end is exposed through a purely RESTful API, tasks such as retrieving (GET), creating (POST), updating (PUT) and deleting (DELETE) models are made easy through Backbone's Model API. This API is so intuitive in fact that switching from storing records in a local data-store (e.g localStorage) to a database/noSQL data-store is a lot simpler than you may think.
 
 
-##Stack 1: Using Node.js, Express, Mongoose and MongoDB
+##<a name="stack1">Stack 1: Using Node.js, Express, Mongoose and MongoDB</a>
 
 The first stack we'll be looking at is:
 
@@ -1671,7 +1671,7 @@ Whilst native solutions to these problems will be arriving in ES Harmony, the go
 In this next part of the book, we're going to look at how to use AMD modules and RequireJS for cleanly wrapping units of code in your application into manageable modules.
 
 
-##Organizing modules with RequireJS and AMD
+##<a name="organizingmodules">Organizing modules with RequireJS and AMD</a>
 
 In case you haven't used it before, [RequireJS](http://requirejs.org) is a popular script loader written by James Burke - a developer who has been quite instrumental in helping shape the AMD module format, which we'll discuss more shortly. Some of RequireJS's capabilities include helping to load multiple script files, helping define modules with or without dependencies and loading in non-script dependencies such as text files.
 
