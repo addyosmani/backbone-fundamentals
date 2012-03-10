@@ -1172,9 +1172,7 @@ galleryApp.model.Comment = Backbone.Model.extend({});
 galleryApp.model.special.Admin = Backbone.Model.extend({});
 ```
 
-This is readable, clearly organized, and is a relatively safe way of namespacing your Backbone application. It may be familiar if you've used other languages. 
-
-The only real caveat however is that it requires your browser's JavaScript engine first locating the galleryApp object and then digging down until it gets to the function you actually wish to use. However, developers such as Juriy Zaytsev (kangax) have tested and found the performance differences between single object namespacing vs the 'nested' approach to be quite negligible.
+This is readable, clearly organized, and is a relatively safe way of namespacing your Backbone application. The only real caveat however is that it requires your browser's JavaScript engine first locating the galleryApp object and then digging down until it gets to the function you actually wish to use. However, developers such as Juriy Zaytsev (kangax) have tested and found the performance differences between single object namespacing vs the 'nested' approach to be quite negligible.
  
 
 **Recommendation**
