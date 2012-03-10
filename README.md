@@ -144,7 +144,7 @@ var Photo = Backbone.Model.extend({
 
     // Ensure that each photo created has an `src`.
     initialize: function() {
-       this.set({"src": this.defaults.src});
+       this.set({src: this.defaults.src});
     }
 
 });
@@ -438,7 +438,7 @@ A response to this could be that the view can also just be a View (as per MVC) b
 
 We've also seen that in Backbone the responsibility of a controller is shared with both the Backbone.View and Backbone.Router and in the following example we can actually see that aspects of that are certainly true. 
 
-Here, our Backbone ```PhotoView``` uses the Observer pattern to 'subscribe' to changes to a View's model in the line ```this.model.bind('change',...)```. It also handles templating in the ```render()``` method, but unlike some other implementations, user interaction is also handled in the View (see ```events```).
+Here, our Backbone ```PhotoView``` uses the Observer pattern to 'subscribe' to changes to a View's model in the line ```this.model.on('change',...)```. It also handles templating in the ```render()``` method, but unlike some other implementations, user interaction is also handled in the View (see ```events```).
 
 
 ```javascript
@@ -462,8 +462,8 @@ var PhotoView = Backbone.View.extend({
 
     initialize: function() {
       _.bindAll(this, 'render');
-      this.model.bind('change', this.render);
-      this.model.bind('destroy', this.remove);
+      this.model.on('change', this.render);
+      this.model.on('destroy', this.remove);
     },
 
     // Re-render the photo entry
@@ -551,7 +551,7 @@ var Photo = Backbone.Model.extend({
         coordinates: [0,0]
     },
     initialize: function(){
-        this.bind("change:src", function(){
+        this.on("change:src", function(){
             var src = this.get("src"); 
             console.log('Image source updated to ' + src);
         });
@@ -670,7 +670,7 @@ var myPhoto = new Photo({ location: "Boston",
 Any and all of the attributes in a Backbone model can have listeners bound to them which detect when their values change. Listeners can be added to the `initialize()` function:
  
 ```javascript
-this.bind('change', function(){
+this.on('change', function(){
     console.log('values for this model have changed');
 });
 ```
@@ -687,7 +687,7 @@ var Photo = Backbone.Model.extend({
     },
     initialize: function(){
         console.log('this model has been initialized');
-        this.bind("change:title", function(){
+        this.on("change:title", function(){
             var title = this.get("title");
             console.log("My title has been changed to.. " + title);
         });
@@ -721,7 +721,7 @@ var Photo = Backbone.Model.extend({
     
     initialize: function(){
         console.log('this model has been initialized');
-        this.bind("error", function(model, error){
+        this.on("error", function(model, error){
             console.log(error);
         });
     }
@@ -859,7 +859,7 @@ As collections represent a group of items, we're also able to listen for `add` a
 
 ```javascript
 var PhotoCollection = new Backbone.Collection();
-PhotoCollection.bind("add", function(photo) {
+PhotoCollection.on("add", function(photo) {
   console.log("I liked " + photo.get("title") + ' its this one, right? '  + photo.get("src"));
 });
  
@@ -873,7 +873,7 @@ PhotoCollection.add([
 In addition, we're able to bind a `change` event to listen for changes to models in the collection.
 
 ```javascript
-PhotoCollection.bind("change:title", function(){
+PhotoCollection.on("change:title", function(){
     console.log('there have been updates made to this collections titles');    
 });
 ```
@@ -2115,7 +2115,7 @@ var TodoView = Backbone.View.extend({
     // a one-to-one correspondence between a **Todo** and a **TodoView** in this
     // app, we set a direct reference on the model for convenience.
     initialize: function() {      
-      this.model.bind('change', this.render, this);
+      this.model.on('change', this.render, this);
       this.model.view = this;
     },
     ...
@@ -2171,7 +2171,7 @@ define([
     // a one-to-one correspondence between a **Todo** and a **TodoView** in this
     // app, we set a direct reference on the model for convenience.
     initialize: function() {      
-      this.model.bind('change', this.render, this);
+      this.model.on('change', this.render, this);
       this.model.view = this;
     },
 
@@ -2187,7 +2187,7 @@ define([
       var content = this.model.get('content');
       this.$('.todo-content').text(content);
       this.input = this.$('.todo-input');
-      this.input.bind('blur', this.close);
+      this.input.on('blur', this.close);
       this.input.val(content);
     },
     ...
@@ -3107,7 +3107,7 @@ it('Fires a custom event when the state changes.', function() {
     var todo = new Todo();
     
     // how do we monitor changes of state?
-    todo.bind('change', spy);
+    todo.on('change', spy);
     
     // what would you need to do to force a change of state?
     todo.set({ text: 'Get oil change for car.' });
@@ -3129,7 +3129,7 @@ it('Can contain custom validation rules, and will trigger an error event on fail
     
     var todo = new Todo();
     
-    todo.bind('error', errorCallback);
+    todo.on('error', errorCallback);
     
     // What would you need to set on the todo properties to 
     // cause validation to fail?
