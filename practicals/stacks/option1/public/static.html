@@ -1,0 +1,105 @@
+<!--[if lt IE 8]><html class="no-js ie6 oldie" lang="en"> 
+<![endif]--><!--[if IE 7]><html class="no-js ie7 oldie" lang="en">
+<![endif]--><!--[if IE 8]><html class="no-js ie8 oldie" lang="en">
+<![endif]--><!--[if gt IE 8]><!-->
+
+<html class="no-js" lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<!--
+<![endif]-->
+
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+  <title>MongoDB Backed TODO App</title>
+  <meta name="description" content="" />
+  <meta name="author" content="" />
+
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="stylesheet" href="css/style.css" type="text/css" /><!-- end CSS-->
+  <script src="js/libs/modernizr-2.0.6.min.js" type="text/javascript">
+</script>
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="main" role="main">
+
+      <!-- Todo App Interface-->
+
+      <div id="todoapp">
+        <div class="title">
+          <h1>Todos</h1>
+        </div>
+
+        <div class="content">
+          <div id="create-todo">
+            <input id="new-todo" placeholder="What needs to be done?" type=
+            "text" /><span style="display:none;" class="ui-tooltip-top">Press Enter to
+            save this task</span>
+          </div>
+
+          <div id="todos">
+            <ul id="todo-list"></ul>
+          </div>
+
+          <div id="todo-stats"></div>
+        </div>
+      </div>
+
+
+    <!-- Templates-->
+
+      <script id="item-template" type="text/template">
+      <div class="todo <%= done ? 'done' : '' %>">
+      <div class="display"><input class="check" type="checkbox" <%= done ? 'checked="checked"' : '' %> />
+      <div class="todo-text"></div><span id="todo-destroy"></span></div><div class="edit"><input type="text" value="" class="todo-input"/></div></div>
+      </script>
+
+      <script id="stats-template" type="text/template">
+      <% if (total) { %>
+      <span class="todo-count"><span class="number"><%= remaining %> </span><span class="word"><%= remaining == 1 ? 'item' : 'items' %></span> left.
+      </span><% } %>
+      <% if (done) { %>
+      <span class="todo-clear"><a href="#"> Clear
+      <span class="number-done"><%= done %></span> completed
+      <span class="word-done"><%= done == 1 ? 'item' : 'items' %></span></a></span><% } %>
+      </script>
+
+    </div>
+  </div>
+
+  <!--! end of #container-->
+
+ <script src=
+  "//ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js" type="text/javascript">
+</script>
+
+<script type="text/javascript">
+  window.jQuery || document.write('<script src="js/libs/jquery-1.6.2.min.js"><\/script>')
+  </script>
+
+
+  <script src=
+  "js/mylibs/underscore.js" type="text/javascript">
+</script><script src="js/mylibs/backbone.js" type="text/javascript">
+</script><script defer="defer" src="js/plugins.js" type="text/javascript">
+</script><script defer="defer" src="js/script.js" type="text/javascript">
+</script>
+
+<script type=
+"text/javascript">
+//<![CDATA[
+  window._gaq = [['_setAccount','UAXXXXXXXX1'],['_trackPageview'],['_trackPageLoadTime']];
+  Modernizr.load({load: ('https:' == location.protocol ? '//ssl' : '//www') + '.google-analytics.com/ga.js'});
+
+  //]]>
+  </script>
+
+  <!--[if lt IE 7]><script src="//ajax.googleapis.com/ajax/libs/chrome-frame/1.0.3/CFInstall.min.js"></script><script>window.attachEvent('onload',function(){CFInstall.check({mode:'overlay'})})
+</script><![endif]-->
+
+</body>
+</html>

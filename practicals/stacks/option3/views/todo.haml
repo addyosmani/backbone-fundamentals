@@ -1,0 +1,42 @@
+/ Todo App Interface
+
+%div#todoapp
+  %div.title
+    %h1
+      Todos
+      %div.content
+        %div#create-todo
+          %input#new-todo{"placeholder" => "What needs to be done?", "type" => "text"}/
+          %span.ui-tooltip-top{"style" => "display:none;"} Press Enter to save this task
+        %div#todos
+          %ul#todo-list
+        %div#todo-stats
+
+/ Templates
+
+/ Can't figure out how to tell HAML not to escape the raw HTML lines
+%script#item-template{"type" => "text/template"}
+  <div class="todo <%= done ? 'done' : '' %>">
+  %div.display
+    <input class="check" type="checkbox" <%= done ? 'checked="checked"' : '' %> />
+    %div.todo-text 
+    %span#todo-destroy
+  %div.edit
+    %input.todo-input{"type" => "text", "value" =>""}/
+  </div>
+
+%script#stats-template{"type" => "text/template"}
+  <% if (total) { %>
+  %span.todo-count
+    %span.number <%= remaining %>
+    %span.word <%= remaining == 1 ? 'item' : 'items' %>
+    left.
+  <% } %>
+  <% if (done) { %>
+  %span.todo-clear
+    %a{"href" => "#"}
+      Clear
+      %span.number-done <%= done %>
+      completed
+      %span.word-done <%= done == 1 ? 'item' : 'items' %>
+  <% } %>
