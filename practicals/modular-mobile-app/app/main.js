@@ -13,8 +13,8 @@ require.config( {
 } );
 
 require(
-        ['require', 'backbone', 'jquery', 'underscore' ],
-        function( require, Backbone, $, _ ) {
+        ['require', 'underscore', 'backbone', 'jquery'],
+        function( require, _, Backbone, $ ) {
             // framework loaded
             require(
                     ['require', 'jquerymobile', 'json2', 'datepicker', 'datepickermobile',
