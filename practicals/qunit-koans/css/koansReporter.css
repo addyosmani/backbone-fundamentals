@@ -1,0 +1,15 @@
+html {
+    margin: 20px;
+}
+
+h2 {
+    margin: 18px 0;
+}
+
+#summary {
+    font-size: 18px;
+}
+
+.alert-message {
+    margin-bottom: 6px;
+}

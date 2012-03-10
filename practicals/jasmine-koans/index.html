@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Backbone Demo: Todos</title>
+    <link href="css/todos.css" media="all" rel="stylesheet" type="text/css"/>
+
+    <style type="text/css">
+    #spec_link {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        font-size: 22px;
+        color: #333;
+        text-decoration: none;
+    }
+    
+    #spec_link:hover {
+        color: #666;
+        text-decoration: underline;
+    }
+    </style>
+
+    <script type="text/javascript" src="js/ext/jquery.js"></script>
+    <script type="text/javascript" src="js/ext/underscore.js"></script>
+    <script type="text/javascript" src="js/ext/template.js"></script>
+    <script type="text/javascript" src="js/ext/backbone.js"></script>
+    <script type="text/javascript" src="js/ext/backbone.localStorage.js"></script>
+    <script type="text/javascript" src="js/todos.js"></script>
+</head>
+<body>
+    <a id="spec_link" href="specrunner.html">To the Koans&nbsp;&#187;&nbsp;</a>
+    <script type="text/javascript">
+    $(document).ready(function(evt) {
+        Backbone.localStorageDB = new Store('todos');
+        App = new TodoApp({ appendTo: $('body') });
+    });
+    </script>
+</body>
+</html>
