@@ -11,7 +11,7 @@ My extended thanks to [these](https://github.com/addyosmani/backbone-fundamental
 
 ##Index
 
-* [Introduction](#introduction)
+* ####[Introduction](#introduction)
 
 * ####[Fundamentals](#fundamentals)
     * [Understanding MVC & MVP](#mvc-mvp)
@@ -26,11 +26,11 @@ My extended thanks to [these](https://github.com/addyosmani/backbone-fundamental
 
 * ####[Advanced](#advanced)
     * [Building RESTful applications with Backbone](#restful)
-    * [Stack 1: Using Node.js, Express, Mongoose and MongoDB](#stack1)
+    * [Building a Backbone app with Node.js, Express, Mongoose and MongoDB](#stack1)
     * [Modular JavaScript](#modularjs)
     * [Organizing modules with RequireJS and AMD](#organizingmodules)
-    * Keeping your templates external with the RequireJS text plugin
-    * Optimizing Backbone apps for production with the RequireJS Optimizer
+    * [Keeping your templates external with the RequireJS text plugin](#externaltemplates)
+    * [Optimizing Backbone apps for production with the RequireJS Optimizer](#optimizingrequirejs)
     * Practical: Building a modular Backbone app with AMD & RequireJS
     * Decoupling Backbone with the Mediator and Facade patterns 
     * Backbone & jQuery Mobile
@@ -38,11 +38,29 @@ My extended thanks to [these](https://github.com/addyosmani/backbone-fundamental
 
 * ####[Testing](#testing)
     * [Unit Testing Backbone Applications With Jasmine](#unittestingjasmine)
-      * An Introduction to Jasmine
-      * [Testing Models](#testing-jasmine-models)
-      * [Testing Collections](#testing-jasmine-collections)
-      * [Testing Views](#testing-jasmine-views)
+      * Introduction
+      * Jasmine
+        * Suites, Specs And Spies
+        * TDD With Backbone
+          * [Testing Models](#testing-jasmine-models)
+          * [Testing Collections](#testing-jasmine-collections)
+          * [Testing Views](#testing-jasmine-views)
     * [Unit Testing Backbone Applications With QUnit And SinonJS](#unittestingqunit)
+      * Introduction
+      * QUnit
+        * Assertions
+        * Adding structure to assertions
+        * Assertion examples
+        * Fixtures
+        * Asynchronous code
+      * SinonJS
+        * Stubs
+        * Mocks
+      * Practical
+        * Testing Models
+        * Testing Collections
+        * Testing Views
+        * Testing Events
 
 
 
@@ -1214,7 +1232,7 @@ At the end of the day, the key to building large applications is not to build la
 In this section of the book, we're going to take a look at developing RESTful applications using Backbone.js and modern technology stacks. When the data for your back-end is exposed through a purely RESTful API, tasks such as retrieving (GET), creating (POST), updating (PUT) and deleting (DELETE) models are made easy through Backbone's Model API. This API is so intuitive in fact that switching from storing records in a local data-store (e.g localStorage) to a database/noSQL data-store is a lot simpler than you may think.
 
 
-##<a name="stack1">Stack 1: Using Node.js, Express, Mongoose and MongoDB</a>
+##<a name="stack1">Stack 1: Building A Backbone App With Node.js, Express, Mongoose and MongoDB</a>
 
 The first stack we'll be looking at is:
 
@@ -1814,7 +1832,7 @@ define([
 Aliasing to the dollar-sign (`$`), once again makes it very easy to encapsulate any part of an application you wish using AMD.
 
 
-##External [Underscore/Handlebars/Mustache] templates using RequireJS
+##<a name="externaltemplates">Keeping Your Templates External Using RequireJS And The Text Plugin</a>
 
 Moving your [Underscore/Mustache/Handlebars] templates to external files is actually quite straight-forward. As this application makes use of RequireJS, I'll discuss how to implement external templates using this specific script loader.
 
@@ -1894,7 +1912,7 @@ All templating solutions will have their own custom methods for handling templat
 **Note:** You may also be interested in looking at [Require.js tpl](https://github.com/ZeeAgency/requirejs-tpl). It's an AMD-compatible version of the Underscore templating system that also includes support for optimization (pre-compiled templates) which can lead to better performance and no evals. I have yet to use it myself, but it comes as a recommended resource.
 
 
-##Optimizing Backbone apps for production with the RequireJS Optimizer
+##<a name="optimizingrequirejs">Optimizing Backbone apps for production with the RequireJS Optimizer</a>
 
 As experienced developers may know, an essential final step when writing both small and large JavaScript web applications is the build process.  The majority of non-trivial apps are likely to consist of more than one or two scripts and so optimizing, minimizing and concatenating your scripts prior to pushing them to production will require your users to download a reduced number (if not just one) script file.
 
