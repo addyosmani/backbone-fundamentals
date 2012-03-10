@@ -37,11 +37,13 @@ My extended thanks to [these](https://github.com/addyosmani/backbone-fundamental
     * Practical: Building a modular mobile app with Backbone & jQuery Mobile
 
 * ####[Testing](#testing)
-    * Unit Testing Backbone Applications With Jasmine
-    * An Introduction to Jasmine
-    * -[Testing Models](#testing-models)
-    * -[Testing Collections](#testing-collections)
-    * -[Testing Views](#testing-views)
+    * [Unit Testing Backbone Applications With Jasmine](#unittestingjasmine)
+      * An Introduction to Jasmine
+      * [Testing Models](#testing-jasmine-models)
+      * [Testing Collections](#testing-jasmine-collections)
+      * [Testing Views](#testing-jasmine-views)
+    * [Unit Testing Backbone Applications With QUnit And SinonJS](#unittestingqunit)
+
 
 
 * ####[Resources](#resources)
@@ -2762,7 +2764,7 @@ The takeaway here is just to remember that if you're not (already) going through
 
 ##<a name="testing">Testing</a>
 
-#Unit Testing Backbone Applications With Jasmine
+#<a name="unittestingjasmine">Unit Testing Backbone Applications With Jasmine</a>
 
 ##Introduction
 
@@ -3030,7 +3032,7 @@ When developing applications with Backbone, it can be necessary to test both ind
 I would like to extend my thanks to Larry Myers for his [Koans](https://github.com/addyosmani/backbone-koans) project which both greatly helped here and will be used in the exercise portion of this chapter.
 
 
-##<a name="testing-models">Models</a>
+##<a name="testing-jasmine-models">Models</a>
 
 The complexity of Backbone models can vary greatly depending on what your application is trying to achieve. In the following example, we're going to test default values, attributes, state changes and validation rules.  
 
@@ -3175,7 +3177,7 @@ window.Todo = Backbone.Model.extend({
 ```
 
 
-##<a name="testing-collections">Collections</a>
+##<a name="testing-jasmine-collections">Collections</a>
 
 We now need to define specs to tests a Backbone collection of Todo models (a TodoList). Collections are responsible for a number of list tasks including managing order and filtering.
 
@@ -3261,7 +3263,7 @@ The final implementation for our TodoList collection can be found below:
 ```
 
 
-##<a name="testing-views">Views</a>
+##<a name="testing-jasmine-views">Views</a>
 
 Before we take a look at testing Backbone views, let's briefly review a jQuery plugin that can assist with writing Jasmine specs for them.
 
@@ -3641,6 +3643,1077 @@ As an exercise, I recommend now downloading [Backbone Koans](http://github.com/a
 ##Further reading
 * [Jasmine + Backbone Revisited](http://japhr.blogspot.com/2011/11/jasmine-backbonejs-revisited.html)
 * [Backbone, PhantomJS and Jasmine](http://japhr.blogspot.com/2011/12/phantomjs-and-backbonejs-and-requirejs.html)
+
+
+#<a name="unittestingqunit">Unit Testing Backbone Applications With QUnit And SinonJS</a>
+
+##Introduction
+
+QUnit is a powerful JavaScript test suite written by jQuery team member [Jörn Zaefferer](http://bassistance.de/) and used by many large open-source projects (such as jQuery and Backbone.js) to test their code. It's both capable of testing standard JavaScript code in the browser as well as code on the server-side (where environments supported include Rhino, V8 and SpiderMonkey). This makes it a robust solution for a large number of use-cases. 
+
+Quite a few Backbone.js contributors feel that QUnit is a better introductory framework for testing if you don't wish to start off with Jasmine and BDD right away. As we'll see later on in this chapter, QUnit can also be combined with third-party solutions such as SinonJS to produce an even more powerful testing solution supporting spies and mocks, which some say is preferable over Jasmine. 
+
+My personal recommendation is that it's worth comparing both frameworks and opting for the solution that you feel the most comfortable with. 
+
+
+#QUnit
+
+##Getting Setup
+
+Luckily, getting QUnit setup is a fairly straight-forward process that will take less than 5 minutes.
+
+We first setup a testing environment composed of three files: 
+
+* A HTML **structure** for displaying test results,
+* The **qunit.js** file composing the testing framework and,
+* The **qunit.css** file for styling test results. 
+
+The latter two of these can be downloaded from the [QUnit website](http://qunitjs.com).
+
+If you would prefer, you can use a hosted version of the QUnit source files for testing purposes. The hosted URLs can be found at [http://github.com/jquery/qunit/raw/master/qunit/].
+
+####Sample HTML with QUnit-compatible markup:
+
+```
+<!DOCTYPE html>  
+<html>  
+<head>  
+    <title>QUnit Test Suite</title>  
+
+     <link rel="stylesheet" href="qunit.css">  
+     <script src="qunit.js"></script>  
+ 
+     <!-- Your application -->  
+     <script src="app.js"></script>  
+ 
+     <!-- Your tests -->  
+     <script src="tests.js"></script>   
+</head>  
+<body>  
+    <h1 id="qunit-header">QUnit Test Suite</h1>  
+    <h2 id="qunit-banner"></h2>  
+    <div id="qunit-testrunner-toolbar"></div>  
+    <h2 id="qunit-userAgent"></h2>  
+    <ol id="qunit-tests">test markup, hidden.</ol>  
+</body>  
+</html>  
+```
+
+Let's go through the elements above with qunit mentioned in their ID. When QUnit is running:
+
+* **qunit-header** shows the name of the test suite
+* **qunit-banner** shows up as red if a test fails and green if all tests pass
+* **qunit-testrunner-toolbar** contains additional options for configuring the display of tests
+* **qunit-userAgent** displays the navigator.userAgent property
+* **qunit-tests** is a container for our test results
+
+When running correctly, the above test runner looks as follows:
+
+![screenshot 1](http://addyosmani.com/gyazo/7d4de12.png)
+
+The numbers of the form (a, b, c) after each test name correspond to a) failed asserts, b) passed asserts and c) total asserts. Clicking on a test name expands it to display all of the assertions for that test case. Assertions in green have successfully passed. 
+
+![screenshot 2](http://addyosmani.com/gyazo/9df4.png)
+
+If however any tests fail, the test gets highlighted (and the qunit-banner at the top switches to red):
+
+![screenshot 3](http://addyosmani.com/gyazo/3e5545.png)
+
+
+##Assertions
+
+QUnit supports a number of basic **assertions**, which are used in testing to verify that the result being returned by our code is what we expect. If an assertion fails, we know that a bug exists.Similar to Jasmine, QUnit can be used to easily test for regressions. Specifically, when a bug is found one can write an assertion to test the existence of the bug, write a patch and then commit both. If subsequent changes to the code break the test you'll know what was responsible and be able to address it more easily.
+
+Some of the supported QUnit assertions we're going to look at first are:
+
+*   `ok ( state, message )` - passes if the first argument is truthy
+*   `equal ( actual, expected, message )` - a simple comparison assertion with type coercion
+*   `notEqual ( actual, expected, message )` - the opposite of the above
+*   `expect( amount )` - the number of assertions expected to run within each test
+*   `strictEqual( actual, expected, message)` - offers a much stricter comparison than `equal()` and is considered the preferred method of checking equality as it avoids stumbling on subtle coercion bugs
+*   `deepEqual( actual, expected, message )` - similar to `strictEqual`, comparing the contents (with `===`) of the given objects, arrays and primitives.
+
+Creating new test cases with QUnit is relatively straight-forward and can be done using ```test()```, which constructs a test where the first argument is the ```name``` of the test to be displayed in our results and the second is a ```callback``` function containing all of our assertions. This is called as soon as QUnit is running. 
+
+####Basic test case using test( name, callback ):
+
+```
+var myString = 'Hello Backbone.js';
+
+test( 'Our first QUnit test - asserting results', function(){
+
+    // ok( boolean, message )
+    ok( true, 'the test succeeds');
+    ok( false, 'the test fails');
+    
+    // equal( actualValue, expectedValue, message )
+    equal( myString, 'Hello Backbone.js', 'The value expected is Hello Backbone.js!');
+});
+```
+
+What we're doing in the above is defining a variable with a specific value and then testing to ensure the value was what we expected it to be. This was done using the comparison assertion, ```equal()```, which expects its first argument to be a value being tested and the second argument to be the expected value. We also used ```ok()```, which allows us to easily test against functions or variables that evaluate to booleans.
+
+Note: Optionally in our test case, we could have passed an 'expected' value to ```test()``` defining the number of assertions we expect to run. This takes the form: `test( name, [expected], test );` or by manually settings the expectation at the top of the test function, like so: `expect( 1 )`. I recommend you to make it a habit and always define how many assertions you expect. More on this later.
+
+As testing a simple static variable is fairly trivial, we can take this further to test actual functions. In the following example we test the output of a function that reverses a string to ensure that the output is correct using ```equal()``` and ```notEqual()```:
+
+####Comparing the actual output of a function against the expected output:
+
+```
+function reverseString( str ){
+    return str.split("").reverse().join("");
+}
+
+test( 'reverseString()', function() { 
+    expect( 5 );
+    equal( reverseString('hello'), 'olleh', 'The value expected was olleh' ); 
+    equal( reverseString('foobar'), 'raboof', 'The value expected was raboof' ); 
+    equal( reverseString('world'), 'dlrow', 'The value expected was dlrow' ); 
+    notEqual( reverseString('world'), 'dlroo', 'The value was expected to not be dlroo' ); 
+    equal( reverseString('bubble'), 'double', 'The value expected was elbbub' ); 
+})  
+```
+
+Running these tests in the QUnit test runner (which you would see when your HTML test page was loaded) we would find that four of the assertions pass whilst the last one does not. The reason the test against `'double'` fails is because it was purposefully written incorrectly. In your own projects if a test fails to pass and your assertions are correct, you've probably just found a bug!
+
+
+##Adding structure to assertions
+
+Housing all of our assertions in one test case can quickly become difficult to maintain, but luckily QUnit supports structuring blocks of assertions more cleanly. This can be done using ```module()``` - a method that allows us to easily group tests together. A typical approach to grouping might be keeping multiple tests testing a specific method as part of the same group (module). 
+
+####Basic QUnit Modules:
+```
+module( 'Module One' );  
+test( 'first test', function() {} );  
+test( 'another test', function() {} );  
+  
+module( 'Module Two' );  
+test( 'second test', function() {} );  
+test( 'another test', function() {} );  
+
+module( 'Module Three' );  
+test( 'third test', function() {} );  
+test( 'another test', function() {} );  
+```
+
+We can take this further by introducing ```setup()``` and ```teardown()``` callbacks to our modules, where ```setup()``` is run before each test whilst ```teardown()``` is run after each test. 
+
+####Using setup() and teardown() :
+```
+module( "Module One", {
+    setup: function() {
+        // run before
+    },
+    teardown: function() {
+        // run after
+    }
+});
+
+test("first test", function() {
+    // run the first test
+});
+```
+
+These callbacks can be used to define (or clear) any components we wish to instantiate for use in one or more of our tests. As we'll see shortly, this is ideal for defining new instances of views, collections, models or routers from a project that we can then reference across multiple tests. 
+
+####Using setup() and teardown() for instantiation and clean-up:
+```
+// Define a simple model and collection modeling a store and
+// list of stores
+
+var Store = Backbone.Model.extend({});
+
+var StoreList = Backbone.Collection.extend({
+    model: store,
+    comparator: function( store ) { return store.get('name') }
+});
+
+// Define a group for our tests
+module( "StoreList sanity check", {
+    setup: function() {
+        this.list = new StoreList;
+        this.list.add(new Store({ name: "Costcutter" }));
+        this.list.add(new Store({ name: "Target" }));
+        this.list.add(new Store({ name: "Walmart" }));
+        this.list.add(new Store({ name: "Barnes & Noble" });
+    },
+    teardown: function() {
+        window.errors = null;
+    }
+});
+
+// Test the order of items added
+test( "test ordering", function() {
+    expect( 1 );
+    var expected = ["Barnes & Noble", "Costcutter", "Target", "Walmart"];
+    var actual = this.list.pluck("name");
+    deepEqual( actual, expected, "is maintained by comparator" );
+});
+
+```
+
+Here, a list of stores is created and stored on ```setup()```. A ```teardown()``` callback is used to simply clear our a list of errors we might be storing within the window scope, but is otherwise not needed.
+
+
+##Assertion examples
+
+Before we continue any further, let's review some more examples of how QUnits various assertions can be correctly used when writing tests:
+
+###equal - a comparison assertion. It passes if actual == expected
+
+```
+test( "equal", 2, function() {
+  var actual = 6 - 5;
+  equal( actual, true,  "passes as 1 == true" );
+  equal( actual, 1,     "passes as 1 == 1" );
+});
+```
+
+
+###notEqual - a comparison assertion. It passes if actual != expected
+
+```
+test( "notEqual", 2, function() {
+  var actual = 6 - 5;
+  notEqual( actual, false, "passes as 1 != false" );
+  notEqual( actual, 0,     "passes as 1 != 0" );
+});
+```
+
+###strictEqual - a comparison assertion. It passes if actual === expected.
+
+```
+test( "strictEqual", 2, function() {
+  var actual = 6 - 5;
+  strictEqual( actual, true,  "fails as 1 !== true" );
+  strictEqual( actual, 1,     "passes as 1 === 1" );
+});
+```
+
+###notStrictEqual - a comparison assertion. It passes if actual !== expected.
+
+```
+test("notStrictEqual", 2, function() {
+  var actual = 6 - 5;
+  notStrictEqual( actual, true,  "passes as 1 !== true" );
+  notStrictEqual( actual, 1,     "fails as 1 === 1" );
+});
+```
+
+###deepEqual - a recursive comparison assertion. Unlike strictEqual(), it works on objects, arrays and primitives.
+
+```
+test("deepEqual", 4, function() {
+  var actual = {q: 'foo', t: 'bar'};
+  var el =  $('div');
+  var children = $('div').children();
+ 
+  equal( actual, {q: 'foo', t: 'bar'},   "fails - objects are not equal using equal()" );
+  deepEqual( actual, {q: 'foo', t: 'bar'},   "passes - objects are equal" );
+  equal( el, children, "fails - jQuery objects are not the same" );
+  deepEqual(el, children, "fails - objects not equivalent" );
+
+});
+```
+
+###notDeepEqual - a comparison assertion. This returns the opposite of deepEqual
+
+```
+test("notDeepEqual", 2, function() {
+  var actual = {q: 'foo', t: 'bar'};
+  notEqual( actual, {q: 'foo', t: 'bar'},   "passes - objects are not equal" );
+  notDeepEqual( actual, {q: 'foo', t: 'bar'},   "fails - objects are equivalent" );
+});
+```
+
+###raises - an assertion which tests if a callback throws any exceptions
+
+```
+test("raises", 1, function() {
+  raises(function() {
+    throw new Error( "Oh no! It's an error!" );
+  }, "passes - an error was thrown inside our callback");
+});
+```
+
+##Fixtures
+
+
+From time to time we may need to write tests that modify the DOM. Managing the clean-up of such operations between tests can be a genuine pain, but thankfully QUnit has a solution to this problem in the form of the `#qunit-fixture` element, seen below.
+
+####Fixture markup:
+```
+<!DOCTYPE html>
+<html>
+<head>
+    <title>QUnit Test</title>
+    <link rel="stylesheet" href="qunit.css">
+    <script src="qunit.js"></script>
+    <script src="app.js"></script>
+    <script src="tests.js"></script>
+</head>
+<body>
+    <h1 id="qunit-header">QUnit Test</h1>
+    <h2 id="qunit-banner"></h2>
+    <div id="qunit-testrunner-toolbar"></div>
+    <h2 id="qunit-userAgent"></h2>
+    <ol id="qunit-tests"></ol>
+    <div id="qunit-fixture"></div>
+</body>
+</html>
+```
+
+We can either opt to place static markup in the fixture or just insert/append any DOM elements we may need to it. QUnit will automatically reset the `innerHTML` of the fixture after each test to its original value. In case you're using jQuery, it's useful to know that QUnit checks for its availability and will opt to use ```$(el).html()``` instead, which will cleanup any jQuery event handlers too.
+
+
+###Fixtures example:
+
+Let us now go through a more complete example of using fixtures. One thing that most of us are used to doing in jQuery is working with lists - they're often used to define the markup for menus, grids and a number of other components. You may have used jQuery plugins before that manipulated a given list in a particular way and it can be useful to test that the final (manipulated) output of the plugin is what was expected. 
+
+For the purposes of our next example, we're going to use Ben Alman's `$.enumerate()` plugin, which can prepend each item in a list by its index, optionally allowing us to set what the first number in the list is. The code snippet for the plugin can be found below, followed by an example of the output is generates:
+
+```
+$.fn.enumerate = function( start ) {
+      if ( typeof start !== "undefined" ) {
+        // Since `start` value was provided, enumerate and return
+        // the initial jQuery object to allow chaining.
+        
+        return this.each(function(i){
+          $(this).prepend( "<b>" + ( i + start ) + "</b> " );
+        });
+        
+      } else {
+        // Since no `start` value was provided, function as a
+        // getter, returing the appropriate value from the first
+        // selected element.
+        
+        var val = this.eq( 0 ).children( "b" ).eq( 0 ).text();
+        return Number( val );
+      }
+    };
+
+/*
+    <ul>
+      <li>1. hello</li>
+      <li>2. world</li>
+      <li>3. i</li>
+      <li>4. am</li>
+      <li>5. foo</li>
+    </ul>
+*/
+```
+
+Let's now write some specs for the plugin. First, we define the markup for a list containing some sample items inside our ```qunit-fixture``` element:
+
+<pre>
+&lt;div id=&quot;qunit-fixture&quot;&gt;
+    &lt;ul&gt;
+      &lt;li&gt;hello&lt;/li&gt;
+      &lt;li&gt;world&lt;/li&gt;
+      &lt;li&gt;i&lt;/li&gt;
+      &lt;li&gt;am&lt;/li&gt;
+      &lt;li&gt;foo&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/div&gt;
+</pre>
+
+Next, we need to think about what should be tested. `$.enumerate()` supports a few different use cases, including:
+
+* **No arguments passed** - i.e ```$(el).enumerate()```
+* **0 passed as an argument** - i.e ```$(el).enumerate(0)```
+* **1 passed as an argument** - i.e ```$(el).enumerate(1)```
+
+As the text value for each list item is of the form "n. item-text" and we only require this to test against the expected output, we can simply access the content using ```$(el).eq(index).text()``` (for more information on .eq() see [here](http://api.jquery.com/eq/)).
+
+and finally, here are our test cases:
+
+```
+module("jQuery#enumerate");
+ 
+test( "No arguments passed", 5, function() {
+  var items = $("#qunit-fixture li").enumerate();
+  equal( items.eq(0).text(), "1. hello", "first item should have index 1" );
+  equal( items.eq(1).text(), "2. world", "second item should have index 2" );
+  equal( items.eq(2).text(), "3. i", "third item should have index 3" );
+  equal( items.eq(3).text(), "4. am", "fourth item should have index 4" );
+  equal( items.eq(4).text(), "5. foo", "fifth item should have index 5" );
+});
+ 
+test( "0 passed as an argument", 5, function() {
+  var items = $("#qunit-fixture li").enumerate( 0 );
+  equal( items.eq(0).text(), "0. hello", "first item should have index 0" );
+  equal( items.eq(1).text(), "1. world", "second item should have index 1" );
+  equal( items.eq(2).text(), "2. i", "third item should have index 2" );
+  equal( items.eq(3).text(), "3. am", "fourth item should have index 3" );
+  equal( items.eq(4).text(), "4. foo", "fifth item should have index 4" );
+});
+ 
+test( "1 passed as an argument", 3, function() {
+  var items = $("#qunit-fixture li").enumerate( 1 );
+  equal( items.eq(0).text(), "1. hello", "first item should have index 1" );
+  equal( items.eq(1).text(), "2. world", "second item should have index 2" );
+  equal( items.eq(2).text(), "3. i", "third item should have index 3" );
+  equal( items.eq(3).text(), "4. am", "fourth item should have index 4" );
+  equal( items.eq(4).text(), "5. foo", "fifth item should have index 5" );
+});
+
+```
+
+##Asynchronous code
+
+As with Jasmine, the effort required to run synchronous tests with QUnit is fairly straight-forward. That said, what about tests that require asynchronous callbacks (such as expensive processes, Ajax requests and so on)? When we're dealing with asynchronous code, rather than letting QUnit control when the next test runs, we can inform that we need it to stop running and wait until it's okay to continue once again. 
+
+Remember: running asynchronous code without any special considerations can cause incorrect assertions to appear in other tests, so we want to make sure we get it right.
+
+Writing QUnit tests for asynchronous code is made possible using the ```start()``` and ```stop()`` methods, which programmatically set the start and stop points during such tests. Here's a simple example:
+
+```
+test("An async test", function(){
+   stop();
+   expect( 1 );
+   $.ajax({
+        url: "/test",
+        dataType: 'json',
+        success: function( data ){
+            deepEqual(data, {
+               topic: "hello",
+               message: "hi there!"
+            });
+            start();
+        }
+    }); 
+});
+```
+
+A jQuery ```$.ajax()``` request is used to connect to a test resource and assert that the data returned is correct. ```deepEqual()``` is used here as it allows us to compare different data types (e.g objects, arrays) and ensures that what is returned is exactly what we're expecting. We know that our Ajax request is asynchronous and so we first call ```stop()```, run the code making the request and finally at the very end of our callback, inform QUnit that it is okay to continue running other tests. 
+
+Note: rather than including ```stop()```, we can simply exclude it and substitute ```test()``` with ```asyncTest()``` if we prefer. This improves readability when dealing with a mixture of asynchronous and synchronous tests in your suite. Whilst this setup should work fine for many use-cases, there is no guarantee that the callback in our ```$.ajax()``` request will actually get called. To factor this into our tests, we can use ```expect()``` once again to define how many assertions we expect to see within our test. This is a healthy safety blanket as it ensures that if a test completes with an insufficient number of assertions, we know something went wrong and fix it.
+
+
+
+#SinonJS
+
+Similar to the section on testing Backbone.js apps using the Jasmine BDD framework, we're nearly ready to take what we've learned and write a number of QUnit tests for our Todo application. 
+
+Before we start though, you may have noticed that QUnit doesn't support test spies. Test spies are functions which record arguments, exceptions and return values for any of their calls. They're typically used to test callbacks and how functions may be used in the application being tested. In testing frameworks, spies can usually be either anonymous functions or wrap functions which already exist.
+
+
+##What is SinonJS?
+
+In order for us to substitute support for spies in QUnit, we will be taking advantage of a mocking framework called [SinonJS](http://sinonjs.org/) by Christian Johansen. We will also be using the [SinonJS-QUnit adapter](http://sinonjs.org/qunit/) which provides seamless integration with QUnit (meaning setup is minimal). Sinon.JS is completely test-framework agnostic and should be easy to use with any testing framework, so it's ideal for our needs.
+
+The framework supports three features we'll be taking advantage of for unit testing our application:
+
+* **Anonymous spies**
+* **Spying on existing methods**
+* **A rich inspection interface**
+
+Using ```this.spy()``` without any arguments creates an anonymous spy. This is comparable to ```jasmine.createSpy()``` and we can observe basic usage of a SinonJS spy in the following example:
+
+####Basic Spies:
+```
+test("should call all subscribers for a message exactly once", function () {
+    var message = getUniqueString();
+    var spy = this.spy();
+
+    PubSub.subscribe( message, spy );
+    PubSub.publishSync( message, "Hello World" );
+
+    ok( spy1.calledOnce, "the subscriber was called once" );
+});
+```
+
+We can also use ```this.spy()``` to spy on existing functions (like jQuery's ```$.ajax```) in the example below. When spying on a function which already exists, the function behaves normally but we get access to data about its calls which can be very useful for testing purposes.
+
+####Spying On Existing Functions:
+```
+test( "should inspect jQuery.getJSON's usage of jQuery.ajax", function () {
+    this.spy( jQuery, "ajax" );
+
+    jQuery.getJSON( "/todos/completed" );
+
+    ok( jQuery.ajax.calledOnce );
+    equals( jQuery.ajax.getCall(0).args[0].url, "/todos/completed" );
+    equals( jQuery.ajax.getCall(0).args[0].dataType, "json" );
+});
+```
+
+SinonJS comes with a rich spy interface which callows us to test whether a spy was called with a specific argument, if it was called a specific number of times and test against the values of arguments. A complete list of features supported in the interface can be found here (http://sinonjs.org/docs/), but let's take a look at some examples demonstrating some of the most commonly used ones:
+
+
+####Matching arguments: test a spy was called with a specific set of arguments:
+
+```
+test( "Should call a subscriber with standard matching": function () {
+    var spy = sinon.spy();
+
+    PubSub.subscribe( "message", spy );
+    PubSub.publishSync( "message", { id: 45 } );
+
+    assertTrue( spy.calledWith( { id: 45 } ) );
+});
+```
+
+####Stricter argument matching: test a spy was called at least once with specific arguments and no others:
+
+```
+test( "Should call a subscriber with strict matching": function () {
+    var spy = sinon.spy();
+
+    PubSub.subscribe( "message", spy );
+    PubSub.publishSync( "message", "many", "arguments" );
+    PubSub.publishSync( "message", 12, 34 );
+
+    // This passes
+    assertTrue( spy.calledWith("many") );     
+    
+    // This however, fails   
+    assertTrue( spy.calledWithExactly( "many" ) ); 
+});
+```
+
+####Testing call order: testing if a spy was called before or after another spy:
+
+```
+test( "Should call a subscriber and maintain call order": function () {
+    var a = sinon.spy();
+    var b = sinon.spy();
+
+    PubSub.subscribe( "message", a );
+    PubSub.subscribe( "event", b );
+
+    PubSub.publishSync( "message", { id: 45 } );
+    PubSub.publishSync( "event", [1, 2, 3] );
+
+    assertTrue( a.calledBefore(b) );
+    assertTrue( b.calledAfter(a) );
+});
+```
+
+####Match execution counts: test a spy was called a specific number of times:
+
+```
+test( "Should call a subscriber and check call counts", function () {
+    var message = getUniqueString();
+    var spy = this.spy();
+
+    PubSub.subscribe( message, spy );
+    PubSub.publishSync( message, "some payload" );
+
+
+    // Passes if spy was called once and only once.
+    ok( spy.calledOnce ); // calledTwice and calledThrice are also supported
+
+    // The number of recorded calls.
+    equal( spy.callCount, 1 );
+
+    // Directly checking the arguments of the call
+    equals( spy.getCall(0).args[0], message );
+});
+```
+
+
+##Stubs and mocks
+
+SinonJS also supports two other powerful features which are useful to be aware of: stubs and mocks. Both stubs and mocks implement all of the features of the spy API, but have some added functionality.
+
+###Stubs
+
+A stub allows us to replace any existing behaviour for a specific method with something else. They can be very useful for simulating exceptions and are most often used to write test cases when certain dependencies of your code-base may not yet be written.
+
+Let us briefly re-explore our Backbone Todo application, which contained a Todo model and a TodoList collection. For the purpose of this walkthrough, we want to isolate our TodoList collection and fake the Todo model to test how adding new models might behave. 
+
+We can pretend that the models have yet to be written just to demonstrate how stubbing might be carried out. A shell collection just containing a reference to the model to be used might look like this:
+
+```
+var TodoList = Backbone.Collection.extend({
+    model: Todo
+});
+
+// Let's assume our instance of this collection is
+this.todoList;
+```
+
+Assuming our collection is instantiating new models itself, it's necessary for us to stub the models constructor function for the the test. This can be done by creating a simple stub as follows:
+
+```
+this.todoStub = sinon.stub( window, "Todo" );
+```
+
+The above creates a stub of the Todo method on the window object. When stubbing a persistent object, it's necessary to restore it to its original state. This can be done in a ```teardown()``` as follows:
+
+```
+this.todoStub.restore();
+```
+
+After this, we need to alter what the constructor returns, which can be efficiently done using a plain ```Backbone.Model``` constructor. Whilst this isn't a Todo model, it does still provide us an actual Backbone model.
+
+
+```
+teardown: function() {
+    this.todoStub = sinon.stub( window, "Todo" );
+    this.model = new Backbone.Model({
+      id: 2, 
+      title: "Hello world"
+    });
+    this.todoStub.returns( this.model );
+});
+```
+
+The expectation here might be that this snippet would ensure our TodoList collection always instantiates a stubbed Todo model, but because a reference to the model in the collection is already present, we need to reset the model property of our collection as follows:
+
+```
+this.todoList.model = Todo;
+```
+
+The result of this is that when our TodoList collection instantiates new Todo models, it will return our plain Backbone model instance as desired. This allows us to write a spec for testing the addition of new model literals as follows:
+
+```
+module( "Should function when instantiated with model literals", {
+
+  setup:function() {
+
+    this.todoStub = sinon.stub(window, "Todo");
+    this.model = new Backbone.Model({
+      id: 2, 
+      title: "Hello world"
+    });
+
+    this.todoStub.returns(this.model);
+    this.todos = new TodoList();
+
+    // Let's reset the relationship to use a stub
+    this.todos.model = Todo; 
+    this.todos.add({
+      id: 2, 
+      title: "Hello world"
+    });
+  },
+    
+  teardown: function() {
+    this.todoStub.restore();
+  }
+
+});
+
+test("should add a model", function() {
+    equal( this.todos.length, 1 );
+});
+    
+test("should find a model by id", function() {
+    equal( this.todos.get(5).get("id"), 5 );
+  });
+});
+```
+
+
+###Mocks
+
+Mocks are effectively the same as stubs, however they mock a complete API out and have some built-in expectations for how they should be used. The difference between a mock and a spy is that as the expectations for their use are pre-defined, it will fail if any of these are not met.
+
+Here's a snippet with sample usage of a mock based on PubSubJS. Here, we have a `clearTodo()` method as a callback and use mocks to verify its behavior.
+
+```
+test("should call all subscribers when exceptions", function () {
+    var myAPI = { clearTodo: function () {} };
+
+    var spy = this.spy();
+    var mock = this.mock( myAPI );
+    mock.expects( "clearTodo" ).once().throws();
+
+    PubSub.subscribe( "message", myAPI.clearTodo );
+    PubSub.subscribe( "message", spy );
+    PubSub.publishSync( "message", undefined );
+
+    mock.verify();
+    ok( spy.calledOnce );
+});
+```
+
+
+
+Practical
+====================
+
+We can now begin writing test specs for our Todo application, which are listed and separated by component (e.g Models, Collections etc.). It's useful to pay attention to the name of the test, the logic being tested and most importantly the assertions being made as this will give you some insight into how what we've learned can be applied to a complete application.
+
+To get the most out of this section, I recommend grabbing <https://github.com/addyosmani/backbone-koans-qunit> - this is a port of the Backbone.js Jasmine Koans over to QUnit that I converted for this post.
+
+*In case you haven't had a chance to try out one of the Koans kits as yet, they are a set of unit tests using a specific testing framework that both demonstrate how a set of specs for an application may be written, but also leave some tests unfilled so that you can complete them as an exercise.*
+
+###Models
+
+For our models we want to at minimum test that:
+
+* New instances can be created with the expected default values
+* Attributes can be set and retrieved correctly
+* Changes to state correctly fire off custom events where needed
+* Validation rules are correctly enforced
+
+```
+module( 'About Backbone.Model');
+
+test('Can be created with default values for its attributes.', function() {
+    expect( 1 );
+
+    var todo = new Todo();
+
+    equal( todo.get('text'), "" );
+});
+
+test('Will set attributes on the model instance when created.', function() {
+    expect( 3 );
+
+    var todo = new Todo( { text: 'Get oil change for car.' } );
+
+    equal( todo.get('text'), "Get oil change for car." );
+    equal( todo.get('done'), false );
+    equal( todo.get('order'), 0 );
+});
+
+test('Will call a custom initialize function on the model instance when created.', function() {
+    expect( 1 );
+
+    var toot = new Todo({ text: 'Stop monkeys from throwing their own crap!' });
+    equal( toot.get('text'), 'Stop monkeys from throwing their own rainbows!' );
+});
+
+test('Fires a custom event when the state changes.', function() {
+    expect( 1 );
+
+    var spy = this.spy();
+    var todo = new Todo();
+
+    todo.bind( 'change', spy );
+    // How would you update a property on the todo here?
+    // Hint: http://documentcloud.github.com/backbone/#Model-set
+    todo.set( { text: "new text" } );
+
+    ok( spy.calledOnce, "A change event callback was correctly triggered" );
+});
+
+
+test('Can contain custom validation rules, and will trigger an error event on failed validation.', function() {
+    expect( 3 );
+
+    var errorCallback = this.spy();
+    var todo = new Todo();
+
+    todo.bind('error', errorCallback);
+    // What would you need to set on the todo properties to cause validation to fail?
+    todo.set( { done: "not a boolean" } );
+ 
+    ok( errorCallback.called, 'A failed validation correctly triggered an error' );
+    notEqual( errorCallback.getCall(0), undefined );
+    equal( errorCallback.getCall(0).args[1], 'Todo.done must be a boolean value.' );
+
+});
+```
+
+
+###Collections
+
+For our collection we'll want to test that:
+
+* New model instances can be added as both objects and arrays
+* Changes to models result in any necessary custom events being fired
+* A `url` property for defining the URL structure for models is correctly defined
+
+
+```
+module( 'About Backbone.Collection');
+
+test( 'Can add Model instances as objects and arrays.', function() {
+    expect( 3 );
+
+    var todos = new TodoList();
+    equal( todos.length, 0 );
+
+    todos.add( { text: 'Clean the kitchen' } );
+    equal( todos.length, 1 );
+
+    todos.add([
+        { text: 'Do the laundry', done: true }, 
+        { text: 'Go to the gym' }
+    ]);
+
+    equal( todos.length, 3 );
+});
+
+test( 'Can have a url property to define the basic url structure for all contained models.', function() {
+    expect( 1 );
+    var todos = new TodoList();
+    equal( todos.url, '/todos/' );
+});
+
+test('Fires custom named events when the models change.', function() {
+    expect(2);
+
+    var todos = new TodoList();
+    var addModelCallback = this.spy();
+    var removeModelCallback = this.spy();
+
+    todos.bind( 'add', addModelCallback );
+    todos.bind( 'remove', removeModelCallback );
+
+    // How would you get the 'add' event to trigger?
+    todos.add( {text:"New todo"} );
+
+    ok( addModelCallback.called );
+
+    // How would you get the 'remove' callback to trigger?
+    todos.remove( todos.last() );
+
+    ok( removeModelCallback.called );
+});
+```
+
+
+
+###Views
+
+For our views we want to ensure:
+
+* They are being correctly tied to a DOM element when created
+* They can render, after which the DOM representation of the view should be visible
+* They support wiring up view methods to DOM elements
+
+One could also take this further and test that user interactions with the view correctly result in any models that need to be changed being updated correctly.
+
+
+```
+module( 'About Backbone.View', {
+    setup: function() {
+        $('body').append('<ul id="todoList"></ul>');
+        this.todoView = new TodoView({ model: new Todo() });
+    },
+    teardown: function() {
+        this.todoView.remove();
+        $('#todoList').remove();
+    }
+});
+
+test('Should be tied to a DOM element when created, based off the property provided.', function() {
+    expect( 1 );
+    equal( this.todoView.el.tagName.toLowerCase(), 'li' );
+});
+
+test('Is backed by a model instance, which provides the data.', function() {
+    expect( 2 );
+    notEqual( this.todoView.model, undefined );
+    equal( this.todoView.model.get('done'), false );
+});
+
+test('Can render, after which the DOM representation of the view will be visible.', function() {
+   this.todoView.render();
+
+    // Hint: render() just builds the DOM representation of the view, but doesn't insert it into the DOM.
+    //       How would you append it to the ul#todoList? 
+    //       How do you access the view's DOM representation?
+    //
+    // Hint: http://documentcloud.github.com/backbone/#View-el
+
+    $('ul#todoList').append(this.todoView.el);
+    equal($('#todoList').find('li').length, 1);
+});
+
+asyncTest('Can wire up view methods to DOM elements.', function() {
+    expect( 2 );
+    var viewElt;    
+    
+    $('#todoList').append( this.todoView.render().el );
+    
+    setTimeout(function() {
+        viewElt = $('#todoList li input.check').filter(':first');
+        
+        equal(viewElt.length > 0, true);
+
+        // Make sure that QUnit knows we can continue
+        start();
+    }, 1000, 'Expected DOM Elt to exist');
+    
+    
+    // Hint: How would you trigger the view, via a DOM Event, to toggle the 'done' status.
+    //       (See todos.js line 70, where the events hash is defined.)
+    //
+    // Hint: http://api.jquery.com/click
+    
+    $('#todoList li input.check').click();
+    expect( this.todoView.model.get('done'), true );
+});
+```
+
+###Events
+
+For events, we may want to test a few different use cases:
+
+* Extending plain objects to support custom events
+* Binding and triggering custom events on objects
+* Passing along arguments to callbacks when events are triggered
+* Binding a passed context to an event callback
+* Removing custom events
+
+and a few others that will be detailed in our module below:
+
+```
+module( 'About Backbone.Events', {
+    setup: function() {
+        this.obj = {};
+        _.extend( this.obj, Backbone.Events );
+        this.obj.unbind(); // remove all custom events before each spec is run.
+    }
+});
+
+test('Can extend JavaScript objects to support custom events.', function() {
+    expect(3);
+
+    var basicObject = {};
+
+    // How would you give basicObject these functions?
+    // Hint: http://documentcloud.github.com/backbone/#Events
+    _.extend( basicObject, Backbone.Events );
+
+    equal( typeof basicObject.bind, 'function' );
+    equal( typeof basicObject.unbind, 'function' );
+    equal( typeof basicObject.trigger, 'function' );
+});
+
+test('Allows us to bind and trigger custom named events on an object.', function() {
+    expect( 1 );
+
+    var callback = this.spy();
+
+    this.obj.bind( 'basic event', callback );
+    this.obj.trigger( 'basic event' );
+
+    // How would you cause the callback for this custom event to be called?
+    ok( callback.called );
+});
+
+test('Also passes along any arguments to the callback when an event is triggered.', function() {
+    expect( 1 );
+
+    var passedArgs = [];
+
+    this.obj.bind('some event', function() {
+        for (var i = 0; i < arguments.length; i++) {
+            passedArgs.push( arguments[i] );
+        }
+    });
+
+    this.obj.trigger( 'some event', 'arg1', 'arg2' );
+
+    deepEqual( passedArgs, ['arg1', 'arg2'] );
+});
+
+
+test('Can also bind the passed context to the event callback.', function() {
+    expect( 1 );
+
+    var foo = { color: 'blue' };
+    var changeColor = function() {
+        this.color = 'red';
+    };
+
+    // How would you get 'this.color' to refer to 'foo' in the changeColor function?
+    this.obj.bind( 'an event', changeColor, foo );
+    this.obj.trigger( 'an event' );
+
+    equal( foo.color, 'red' );
+});
+
+test( "Uses 'all' as a special event name to capture all events bound to the object." , function() {
+    expect( 2 );
+
+    var callback = this.spy();
+
+    this.obj.bind( 'all', callback );
+    this.obj.trigger( "custom event 1" );
+    this.obj.trigger( "custom event 2" );
+
+    equal( callback.callCount, 2 );
+    equal( callback.getCall(0).args[0], 'custom event 1' );
+});
+
+test('Also can remove custom events from objects.', function() {
+    expect( 5 );
+    
+    var spy1 = this.spy();
+    var spy2 = this.spy();
+    var spy3 = this.spy();
+
+    this.obj.bind( 'foo', spy1 );
+    this.obj.bind( 'bar', spy1 );
+    this.obj.bind( 'foo', spy2 );
+    this.obj.bind( 'foo', spy3 );
+
+    // How do you unbind just a single callback for the event?
+    this.obj.unbind( 'foo', spy1 );
+    this.obj.trigger( 'foo' );
+
+    ok( spy2.called );
+
+    // How do you unbind all callbacks tied to the event with a single method
+    this.obj.unbind( 'foo' );
+    this.obj.trigger( 'foo' );
+
+    ok( spy2.callCount, 1 );
+    ok( spy2.calledOnce, "Spy 2 called once" );
+    ok( spy3.calledOnce, "Spy 3 called once" );
+
+    // How do you unbind all callbacks and events tied to the object with a single method?
+    this.obj.unbind( 'bar' );
+    this.obj.trigger( 'bar' );
+
+    equal( spy1.callCount, 0 );
+});
+```
+
+###App
+
+It can also be useful to write specs for any application bootstrap you may have in place. For the following module, our setup initiates and appends a TodoApp view and we can test anything from local instances of views being correctly defined to application interactions correctly resulting in changes to instances of local collections.
+
+```
+module( 'About Backbone Applications' , {
+    setup: function() {
+        Backbone.localStorageDB = new Store('testTodos');
+        $('#qunit-fixture').append('<div id="app"></div>');   
+        this.App = new TodoApp({ appendTo: $('#app') });
+    },
+
+    teardown: function() {
+        this.App.todos.reset();
+        $('#app').remove();
+    }
+});
+
+test('Should bootstrap the application by initializing the Collection.', function() {
+    expect( 2 );
+
+    notEqual( this.App.todos, undefined );
+    equal( this.App.todos.length, 0 );
+});
+
+test( 'Should bind Collection events to View creation.' , function() {
+      $('#new-todo').val( 'Foo' );
+      $('#new-todo').trigger(new $.Event( 'keypress', { keyCode: 13 } ));
+
+      equal( this.App.todos.length, 1 );
+ });
+```
+
+##Further Reading & Resources
+
+That's it for this section on testing applications with QUnit and SinonJS. I encourage you to try out the [QUnit Backbone.js Koans](https://github.com/addyosmani/backbone-koans-qunit) and see if you can extend some of the examples. For further reading consider looking at some of the additional resources below:
+
+* **[Test-driven JavaScript Development (book)](http://tddjs.com/)**
+* **[SinonJS/QUnit Adapter](http://sinonjs.org/qunit/)** 
+* **[SinonJS and QUnit](http://cjohansen.no/en/javascript/using_sinon_js_with_qunit)** 
+* **[Automating JavaScript Testing With QUnit](http://msdn.microsoft.com/en-us/scriptjunkie/gg749824)** 
+* **[Ben Alman's Unit Testing With QUnit](http://benalman.com/talks/unit-testing-qunit.html)**
+* **[Another QUnit/Backbone.js demo project](https://github.com/jc00ke/qunit-backbone)**  
+* **[SinonJS helpers for Backbone](http://devblog.supportbee.com/2012/02/10/helpers-for-testing-backbone-js-apps-using-jasmine-and-sinon-js/)**
+
 
 
 
