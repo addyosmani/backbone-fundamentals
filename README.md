@@ -137,14 +137,13 @@ var Photo = Backbone.Model.extend({
 
     // Default attributes for the photo
     defaults: {
+      // Ensure that each photo created has an `src`.
       src: "placeholder.jpg",
       caption: "A default image",
       viewed: false
     },
 
-    // Ensure that each photo created has an `src`.
     initialize: function() {
-       this.set({"src": this.defaults.src});
     }
 
 });
@@ -1799,9 +1798,6 @@ define(['underscore', 'backbone'], function(_, Backbone) {
 
     // A dummy initialization method
     initialize: function() {
-      if (!this.get("content")) {
-        this.set({"content": this.defaults.content});
-      }
     },
 
     clear: function() {
@@ -2224,15 +2220,12 @@ define(['underscore', 'backbone'], function(_, Backbone) {
 
     // Default attributes for the todo.
     defaults: {
+      // Ensure that each todo created has `content`.
       content: "empty todo...",
       done: false
     },
 
-    // Ensure that each todo created has `content`.
     initialize: function() {
-      if (!this.get("content")) {
-        this.set({"content": this.defaults.content});
-      }
     },
 
     // Toggle the `done` state of this todo item.
