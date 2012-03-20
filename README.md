@@ -1490,7 +1490,7 @@ script#stats-template(type=&quot;text/template&quot;)
 
 <pre>
 !!! 5
-//if lt IE 8
+//if lt IE 6
   &lt;html class=&quot;no-js ie6 oldie&quot; lang=&quot;en&quot;&gt; 
 //if IE 7
   &lt;html class=&quot;no-js ie7 oldie&quot; lang=&quot;en&quot;&gt;
