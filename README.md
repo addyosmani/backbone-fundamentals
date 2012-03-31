@@ -1,3 +1,4 @@
-Please note that due to high traffic, to view the contents of this book, you will need to navigate to book.md or clone the repo locally. 
+This is the home of ‘Developing Backbone.js Applications’, an (in-progress) book about the Backbone.js framework for structuring JavaScript applications. It is released under a Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported license.
 
-I am in the process of getting a Markdown->HTML setup in place so that a static version of the content is always available. My apoliges for any disruption caused while this work is ongoing.
+I am quite pleased to announce that this book will be out in physical form in a few months time via O'Reilly Media. Readers will have the option of purchasing the latest version in either print or a number of digital formats then or can grab a copy for free from this repository.
+

@@ -3,7 +3,7 @@ a pandoc ebook, first generate an epub file using the metadata.xml file
 included:
 
 ```
-pandoc -f markdown -t epub --epub-metadata=metadata.xml -o backbone-fundamentals.epub README.md
+pandoc -f markdown -t epub --epub-metadata=metadata.xml -o backbone-fundamentals.epub index.md
 ```
 
 then use the kindlegen tool to make a mobi from that epub:

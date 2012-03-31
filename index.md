@@ -1,13 +1,31 @@
 #Developing Backbone.js Applications
-A book on Backbone.js targeted at beginners and advanced users alike
+####By Addy Osmani ([@addyosmani](http://twitter.com/addyosmani))
+----
 
-This is the home of 'Developing Backbone.js Applications', an (in-progress) book about the Backbone.js framework for structuring JavaScript applications. It is released under a [CC](http://creativecommons.org/licenses/by-nc-sa/3.0/)-license.
+<!-- sharing options for online version-->
+<div style="width:500px">
 
-I am quite pleased that this book will be out in physical form in a few months time via [O'Reilly Media](http://oreilly.com). Readers will have the option of purchasing the latest version in either print or a number of digital formats then or can grab a copy for free from this repository.
+<iframe src="http://markdotto.github.com/github-buttons/github-btn.html?user=addyosmani&repo=backbone-fundamentals&type=watch&count=true"
+  allowtransparency="true" frameborder="0" scrolling="0" width="110px" height="20px"></iframe>
+  
+ <a style="float:leftt" href="https://twitter.com/share" class="twitter-share-button" data-url="https://github.com/addyosmani/backbone-fundamentals" data-via="addy_osmani">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+
+  <p>&nbsp;</br></p>
+</div>
+<!-- end sharing-->
+ 
+
+##Prelude
+
+This is the home of 'Developing Backbone.js Applications', an (in-progress) book about the Backbone.js framework for structuring JavaScript applications. It is released under a Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported [license](http://creativecommons.org/licenses/by-nc-sa/3.0/).
+
+I am quite pleased to announce that this book will be out in physical form in a few months time via [O'Reilly Media](http://oreilly.com). Readers will have the option of purchasing the latest version in either print or a number of digital formats then or can grab a copy for free from this repository.
 
 Corrections to existing material are always welcome and I hope that together we can provide the community with an up-to-date resource that is of help.
+My extended thanks go out to [these](https://github.com/addyosmani/backbone-fundamentals/contributors) members of the community for their assistance tweaking the project.
 
-My extended thanks to [these](https://github.com/addyosmani/backbone-fundamentals/contributors) members of the community for their assistance tweaking the project.
+I hope you find this book helpful!
 
 ##Index
 
@@ -24,9 +42,12 @@ My extended thanks to [these](https://github.com/addyosmani/backbone-fundamental
     * [Namespacing](#namespacing)
     * [Additional tips](#additional-tips)
 
-* ####[Advanced](#advanced)
+* ####[RESTful Applications](#restfulapps)
     * [Building RESTful applications with Backbone](#restful)
-    * [Building a Backbone app with Node.js, Express, Mongoose and MongoDB](#stack1)
+    * [Building Backbone apps with Node.js, Express, Mongoose and MongoDB](#stack1)
+    * [Building Backbone apps with Ruby, Sinatra, Haml and MongoDB](#stack2)
+    * [Paginating Backbone.js Requests & Collections](#pagination)
+* ####[Advanced](#advanced)    
     * [Modular JavaScript](#modularjs)
     * [Organizing modules with RequireJS and AMD](#organizingmodules)
     * [Keeping your templates external with the RequireJS text plugin](#externaltemplates)
@@ -34,9 +55,9 @@ My extended thanks to [these](https://github.com/addyosmani/backbone-fundamental
     * [Practical: Building a modular Backbone app with AMD & RequireJS](#practicalrequirejs)
     * [Decoupling Backbone with the Mediator and Facade patterns](#decouplingbackbone)
     * Backbone & jQuery Mobile
-    * Practical: Building a modular mobile app with Backbone & jQuery Mobile
+    * Practical: Building A Modular Mobile App With Backbone & jQuery Mobile
 
-* ####[Testing](#testing)
+* ####[Unit Testing](#testing)
     * [Unit Testing Backbone Applications With Jasmine](#unittestingjasmine)
       * Introduction
       * Jasmine
@@ -68,6 +89,7 @@ My extended thanks to [these](https://github.com/addyosmani/backbone-fundamental
 
 
 ##<a name="introduction">Introduction</a>
+---
 
 As JavaScript developers, we are at an interesting point in time where not only do we have mature solutions to help organize the JavaScript powering our applications based on a separation of concerns, but developers looking to build non-trivial projects are almost spoiled for choice for frameworks that can help structure their applications. 
 
@@ -83,6 +105,7 @@ The goal of this book is to create an authoritative and centralized repository o
 
 
 ##<a name="fundamentals">Fundamentals</a>
+---
 
 In this section we are going to cover the context into which a framework like Backbone.js fits. Let's begin our journey into understanding Backbone better with a look at code architecture. 
 
@@ -132,7 +155,7 @@ To understand models better, let us imagine we have a JavaScript photo gallery a
 
 
 
-```javascript
+```
 var Photo = Backbone.Model.extend({
 
     // Default attributes for the photo
@@ -158,7 +181,7 @@ It is not uncommon for modern MVC/MV* frameworks to provide a means to group mod
 
 Here's how we might group Photo models into a simplified Backbone Collection:
 
-```javascript
+```
 var PhotoGallery = Backbone.Collection.extend({
 
     // Reference to this collection's model.
@@ -200,7 +223,7 @@ The benefit of this architecture is that each component plays its own separate r
   
 
 
-```javascript
+```
 var buildPhotoView = function( photoModel, photoController ){
     
     var base        = document.createElement('div'),
@@ -251,7 +274,7 @@ Let's compare two examples of HTML templates. One is implemented using the popul
 
 **Handlebars.js:**
 
-```html
+```
 <li class="photo">
   <h2>{{caption}}</h2>
   <img class="source" src="{{src}}"/>
@@ -263,7 +286,7 @@ Let's compare two examples of HTML templates. One is implemented using the popul
 
 **Underscore.js Microtemplates:**
 
-```html
+```
 <li class="photo">
   <h2><%= caption %></h2>
   <img class="source" src="<%= src %>"/>
@@ -275,7 +298,7 @@ Let's compare two examples of HTML templates. One is implemented using the popul
 
 You may also use double curly brackets (i.e ```{{}}```) (or any other tag you feel comfortable with) in Microtemplates. In the case of curly brackets, this can be done by setting the Underscore ```templateSettings``` attribute as follows:
 
-```javascript
+```
 _.templateSettings = { interpolate : /\{\{(.+?)\}\}/g };
 ```
 
@@ -309,7 +332,7 @@ In this example, we're going to have a controller called ```PhotosController``` 
 (Note: We won't be delving heavily into Spine.js beyond this example, but it's worth looking at it to learn more about Javascript frameworks in general.)
 
 
-```javascript
+```
 // Controllers in Spine are created by inheriting from Spine.Controller
 
 var PhotosController = Spine.Controller.sub({      
@@ -346,7 +369,7 @@ In Backbone, controller logic is shared between Backbone.View and Backbone.Route
 
 A Router's main purpose is to translate URL requests into application states. When a user browses to the URL www.example.com/photos/42, a Router could be used to show the photo with that ID, and to define what application behavior should be run in response to that request. Routers *can* contain traditional controller responsibilities, such as binding the events between models and views, or rendering parts of the page. However, Backbone contributor Tim Branyen has pointed out that it's possible to get away without needing Backbone.Router at all for this, so a way to think about it using the Router paradigm is probably:
 
-```javascript
+```
 var PhotoRouter = Backbone.Router.extend({
   routes: { "photos/:id": "route" },
 
@@ -440,7 +463,7 @@ We've also seen that in Backbone the responsibility of a controller is shared wi
 Here, our Backbone ```PhotoView``` uses the Observer pattern to 'subscribe' to changes to a View's model in the line ```this.model.bind('change',...)```. It also handles templating in the ```render()``` method, but unlike some other implementations, user interaction is also handled in the View (see ```events```).
 
 
-```javascript
+```
 var PhotoView = Backbone.View.extend({
 
     //... is a list tag.
@@ -508,6 +531,7 @@ It *is* however worth understanding where and why these concepts originated, so 
 
 
 ##<a name="thebasics">The Basics</a>
+---
 
 ###What is Backbone?
 
@@ -542,7 +566,7 @@ Backbone models contain interactive data for an application as well as the logic
 
 Models can be created by extending `Backbone.Model` as follows:
 
-```javascript
+```
 var Photo = Backbone.Model.extend({
     defaults: {
         src: 'placeholder.jpg',
@@ -569,7 +593,7 @@ somePhoto.changeSrc("magic.jpg"); // which triggers "change:src" and logs an upd
 
 The `initialize()` method is called when a new instance of a model is created. Its use is optional, however you'll see why it's good practice to use it below.
 
-```javascript
+```
 var Photo = Backbone.Model.extend({
     initialize: function(){
         console.log('this model has been initialized');
@@ -586,7 +610,7 @@ var myPhoto = new Photo();
 
 `Model.get()` provides easy access to a model's attributes. Attributes which are passed through to the model on instantiation are instantly available for retrieval.
 
-```javascript
+```
 var myPhoto = new Photo({ title: "My awesome photo", 
                           src:"boston.jpg", 
                           location: "Boston", 
@@ -600,7 +624,7 @@ var myPhoto = new Photo({ title: "My awesome photo",
 
 Alternatively, if you wish to directly access all of the attributes in a model's instance directly, you can achieve this as follows:
 
-```javascript
+```
 var myAttributes = myPhoto.attributes;
 console.log(myAttributes);
 ```
@@ -610,7 +634,7 @@ It is best practice to use `Model.set()` or direct instantiation to set the valu
 Accessing `Model.attributes` directly is generally discouraged. Instead, should you need to read or clone data, `Model.toJSON()` is recommended for this purpose. If you would like to access or copy a model's attributes for purposes such as JSON stringification (e.g. for serialization prior to being passed to a view), this can be achieved using `Model.toJSON()`:
 
 
-```javascript
+```
 var myAttributes = myPhoto.toJSON();
 console.log(myAttributes);
 /* this returns { title: "My awesome photo", 
@@ -624,7 +648,7 @@ console.log(myAttributes);
 `Model.set()` allows us to pass attributes into an instance of our model. Attributes can either be set during initialization or at any time afterwards. It's important to avoid trying to set a Model's attributes directly (for example Model.caption = 'A new caption'). Backbone uses Model.set() to know when to broadcast that a model's data has changed.
 
 
-```javascript
+```
 var Photo = Backbone.Model.extend({
     initialize: function(){
         console.log('this model has been initialized');
@@ -644,7 +668,7 @@ myPhoto2.set({ title:'Vacation in Florida', location: 'Florida' });
 
 There are times when you want your model to have a set of default values (e.g. in a scenario where a complete set of data isn't provided by the user). This can be set using a property called `defaults` in your model.
 
-```javascript
+```
 var Photo = Backbone.Model.extend({
     defaults:{
         title: 'Another photo!',
@@ -668,7 +692,7 @@ var myPhoto = new Photo({ location: "Boston",
 
 Any and all of the attributes in a Backbone model can have listeners bound to them which detect when their values change. Listeners can be added to the `initialize()` function:
  
-```javascript
+```
 this.bind('change', function(){
     console.log('values for this model have changed');
 });
@@ -676,7 +700,7 @@ this.bind('change', function(){
 
 In the following example, we log a message whenever a specific attribute (the title of our Photo model) is altered.
 
-```javascript
+```
 var Photo = Backbone.Model.extend({
     defaults:{
         title: 'Another photo!',
@@ -710,7 +734,7 @@ Validation functions can be as simple or complex as necessary. If the attributes
 
 A basic example for validation can be seen below:
 
-```javascript
+```
 var Photo = Backbone.Model.extend({
     validate: function(attribs){
         if(attribs.src === undefined){
@@ -742,7 +766,7 @@ Views in Backbone don't contain the markup for your application, but rather they
 
 Similar to the previous sections, creating a new view is relatively straight-forward. To create a new View, simply extend `Backbone.View`. I'll explain this code in detail below:
 
-```javascript
+```
 var PhotoSearch = Backbone.View.extend({
     el: $('#results'),
     render: function( event ){
@@ -774,7 +798,7 @@ var PhotoSearch = Backbone.View.extend({
 There are two ways to attach a DOM element to a view: the element already exists in the page or a new element is created for the view and added manually by the developer.
 If the element already exists in the page, you can set `el` as either a CSS selector that matches the element or a simple reference to the DOM element.
 
-```javascript
+```
 el: '#footer', 
 // OR
 el: document.getElementById( 'footer' )
@@ -782,7 +806,7 @@ el: document.getElementById( 'footer' )
 
 If you want to create a new element for you view, set any combination of the following view's properties: `tagName`, `id` and `className`. A new element will be created for you by the framework and a reference to it will be available at the `el` property.
 
-```javascript
+```
 tagName: 'p', // required, but defaults to 'div' if not set
 className: 'container', // optional, you can assign multiple classes to this property like so 'container homepage'
 id: 'header', // optional
@@ -790,9 +814,9 @@ id: 'header', // optional
 
 The above code creates the ```DOMElement``` below but doesn't append it to the DOM.
 
-```html
-<p id="header" class="container"></p>
-```
+
+	<p id="header" class="container"></p>
+
 
 
 **Understanding `render()`**
@@ -820,7 +844,7 @@ Normally, when creating a collection you'll also want to pass through a property
 
 In the following example, we create a PhotoCollection that will contain our Photo models:  
 
-```javascript
+```
 var PhotoCollection = Backbone.Collection.extend({
     model: Photo
 });
@@ -831,20 +855,20 @@ var PhotoCollection = Backbone.Collection.extend({
 There are a few different ways to retrieve a model from a collection. The most straight-forward is to use `Collection.get()` which accepts a single id as follows:
 
 
-```javascript
+```
 var skiingEpicness = PhotoCollection.get(2);
 ```
 
 Sometimes you may also want to get a model based on its client id. The client id is a property that Backbone automatically assigns models that have not yet been saved. You can get a model's client id from its `.cid` property.
 
 
-```javascript
+```
 var mySkiingCrash = PhotoCollection.getByCid(456);
 ```
 
 Backbone Collections don't have setters as such, but do support adding new models via `.add()` and removing models via `.remove()`.
 
-```javascript
+```
 var a = new Backbone.Model({ title: 'my vacation'}),
     b = new Backbone.Model({ title: 'my holiday'});
 
@@ -856,7 +880,7 @@ photoCollection.remove([a,b]);
 
 As collections represent a group of items, we're also able to listen for `add` and `remove` events for when new models are added or removed from the collection. Here's an example:
 
-```javascript
+```
 var PhotoCollection = new Backbone.Collection();
 PhotoCollection.bind("add", function(photo) {
   console.log("I liked " + photo.get("title") + ' its this one, right? '  + photo.get("src"));
@@ -871,7 +895,7 @@ PhotoCollection.add([
 
 In addition, we're able to bind a `change` event to listen for changes to models in the collection.
 
-```javascript
+```
 PhotoCollection.bind("change:title", function(){
     console.log('there have been updates made to this collections titles');    
 });
@@ -882,7 +906,7 @@ PhotoCollection.bind("change:title", function(){
 `Collections.fetch()` retrieves a default set of models from the server in the form of a JSON array. When this data returns, the current collection's contents will be replaced with the contents of the array.
  
 
-```javascript
+```
 var PhotoCollection = new Backbone.Collection;
 PhotoCollection.url = '/photos';
 PhotoCollection.fetch();
@@ -892,7 +916,7 @@ Under the covers, `Backbone.sync` is the function called every time Backbone tri
 
 In the above example if we wanted to log an event when `.sync()` was called, we could do this:
 
-```javascript
+```
 Backbone.sync = function(method, model) {
   console.log("I've been passed " + method + " with " + JSON.stringify(model));
 };
@@ -902,7 +926,7 @@ Backbone.sync = function(method, model) {
 
 Rather than adding or removing models individually, you might occasionally wish to update an entire collection at once. `Collection.reset()` allows us to replace an entire collection with new models as follows:   
 
-```javascript
+```
 PhotoCollection.reset([
   {title: "My trip to Scotland", src: "scotland-trip.jpg"},
   {title: "The flight from Scotland", src: "long-flight.jpg"},
@@ -913,7 +937,7 @@ PhotoCollection.reset([
 
 As Backbone requires Underscore as a hard dependency, we're able to use many of the utilities it has to offer to aid with our application development. Here's an example of how Underscore's `sortBy()` method can be used to sort a collection of photos based on a particular attribute.
 
-```javascript
+```
 var sortedByAlphabet = PhotoCollection.sortBy(function (photo) {
     return photo.get("title").toLowerCase();
 });
@@ -925,14 +949,14 @@ The complete list of what Underscore can do is beyond the scope of this guide, b
 
 In Backbone, routers are used to help manage application state and for connecting URLs to application events. This is achieved using hash-tags with URL fragments, or using the browser's pushState and History API. Some examples of routes may be seen below:
 
-```html
+```
 http://unicorns.com/#whatsup
 http://unicorns.com/#search/seasonal-horns/page2
 ```
 
 Note: An application will usually have at least one route mapping a URL route to a function that determines what happens when a  user reaches that particular route. This relationship is defined as follows:    
 
-```javascript
+```
 "route" : "mappedFunction"
 ```
 
@@ -940,7 +964,7 @@ Let us now define our first controller by extending `Backbone.Router`. For the p
 
 Note the inline comments in the code example below as they continue the rest of the lesson on routers.
 
-```javascript
+```
 var GalleryRouter = Backbone.Router.extend({
     /* define the route and function maps for this router */
     routes: {
@@ -1016,7 +1040,7 @@ Next, we need to initialize `Backbone.history` as it handles `hashchange` events
 
 The `Backbone.history.start()` method will simply tell Backbone that it's OK to begin monitoring all `hashchange` events as follows:
 
-```javascript
+```
 Backbone.history.start();
 Router.navigate();
 ```
@@ -1024,7 +1048,7 @@ Router.navigate();
 As an aside, if you would like to save application state to the URL at a particular point you can use the `.navigate()` method to achieve this. It simply updates your URL fragment without the need to trigger the `hashchange` event:
    
 
-```javascript
+```
 /*Lets imagine we would like a specific fragment for when a user zooms into a photo*/
 zoomPhoto: function(factor){
     this.zoom(factor); //imagine this zooms into the image
@@ -1034,7 +1058,7 @@ zoomPhoto: function(factor){
 
 It is also possible for `Router.navigate()` to trigger the route as well as updating the URL fragment.
 
-```javascript
+```
 zoomPhoto: function(factor){
     this.zoom(factor); //imagine this zooms into the image
     this.navigate("zoom/" + factor, true); //updates the fragment for us and triggers the route
@@ -1061,7 +1085,7 @@ In this section we'll be taking a look shortly at some examples of how you can n
 
 One popular pattern for namespacing in JavaScript is opting for a single global variable as your primary object of reference. A skeleton implementation of this where we return an object with functions and properties can be found below:
 
-```javascript
+```
 var myApplication = (function(){
     function(){
       // ...
@@ -1074,7 +1098,7 @@ var myApplication = (function(){
 
 You've probably seen this technique before. A Backbone-specific example might look like this:
 
-```javascript
+```
 var myViews = (function(){
     return {
         PhotoView: Backbone.View.extend({ .. }),
@@ -1089,7 +1113,7 @@ Here we can return a set of views, but the same technique could return an entire
 
 One solution to this problem, as mentioned by Peter Michaux, is to use prefix namespacing. It's a simple concept at heart, but the idea is you select a common prefix name (in this example, `myApplication_`) and then define any methods, variables or other objects after the prefix.
 
-```javascript
+```
 var myApplication_photoView = Backbone.View.extend({}),
 myApplication_galleryView = Backbone.View.extend({});
 ```
@@ -1106,7 +1130,7 @@ Object Literals have the advantage of not polluting the global namespace but ass
 
 This example demonstrates two ways you can check to see if a namespace already exists before defining it. I commonly use Option 2.
 
-```javascript
+```
 /*Doesn't check for existence of myApplication*/
 var myApplication = {};
  
@@ -1128,7 +1152,7 @@ var myApplication = {
 
 One can also opt for adding properties directly to the namespace (such as your views, in the following example):
 
-```javascript
+```
 var myGalleryViews = myGalleryViews || {};
 myGalleryViews.photoView = Backbone.View.extend({});
 myGalleryViews.galleryView = Backbone.View.extend({});
@@ -1139,7 +1163,7 @@ The benefit of this pattern is that you're able to easily encapsulate all of you
 This pattern has a number of benefits. It's often a good idea to decouple the default configuration for your application into a single area that can be easily modified without the need to search through your entire codebase just to alter it. Here's an example of a hypothetical object literal that stores application configuration settings:
  
 
-```javascript
+```
 var myConfig = {
     language: 'english',
     defaults: {
@@ -1165,13 +1189,13 @@ For more on the Object Literal pattern, I recommend reading Rebecca Murphey's [e
 
 An extension of the Object Literal pattern is nested namespacing. It's another common pattern used that offers a lower risk of collision due to the fact that even if a top-level namespace already exists, it's unlikely the same nested children do. For example, Yahoo's YUI uses the nested object namespacing pattern extensively: 
 
-```javascript
+```
 YAHOO.util.Dom.getElementsByClassName('test');
 ```
 
 Yahoo's YUI uses the nested object namespacing pattern regularly and even DocumentCloud (the creators of Backbone) use the nested namespacing pattern in their main applications. A sample implementation of nested namespacing with Backbone may look like this:
 
-```javascript
+```
 var galleryApp =  galleryApp || {};
  
 /*perform similar check for nested children*/
@@ -1224,7 +1248,8 @@ Backbone can be used for building both trivial and complex applications as demon
 At the end of the day, the key to building large applications is not to build large applications in the first place. If you however find Backbone doesn't cut it for your requirements I strongly recommend checking out JavaScriptMVC or SproutCore as these both offer a little more than Backbone out of the box. Dojo and Dojo Mobile may also be of interest as these have also been used to build significantly complex apps by other developers.
 
 
-##<a name="advanced">Advanced</a>
+##<a name="restfulapps">RESTful Applications</a>
+---
 
 ##<a name="restful">Building RESTful applications with Backbone</a>
 
@@ -1266,7 +1291,7 @@ For this practical, we're going to once again look at extending the popular Back
 
 We must first include the node dependencies required by our application. These are Express, Mongoose and Path (a module containing utilities for dealing with file paths.
 
-```javascript
+```
 var application_root = __dirname,
   express = require("express"),
   path = require("path"),
@@ -1275,19 +1300,19 @@ var application_root = __dirname,
 
 Next, create a new Express server. `express.createServer()` is a simple way of creating an instance of express.HTTPServer, which we'll be using to pass in our routes.
 
-```javascript
+```
 var app = express.createServer();
 ```
 
 After this, connect Mongoose up to a database (in our case, localhost should suffice). Should you require the ability to pass in authentication information, here's a sample containing all of the supported URL parameters: `mongodb://[username:password@]host1[:port1][,host2[:port2],...[,hostN[:portN]]][/[database][?options]]`
 
-```javascript
+```
 mongoose.connect('mongodb://localhost/my_database');
 ```
 
 A Mongoose model for any Todo item can now be easily defined by passing a schema instance to `mongoose.model`. In our case the schema covers a Todo item's `text` content, its `done` state and `order` position in the overall Todo list.
 
-```javascript
+```
 var Todo = mongoose.model('Todo', new mongoose.Schema({
   text: String,
   done: Boolean,
@@ -1297,7 +1322,7 @@ var Todo = mongoose.model('Todo', new mongoose.Schema({
 
 The `configure()` methods allows us to setup what we need for the current environment with our Express server. Note that lower down in the configuration are two view/view related lines. The last one explicitly sets the viewing/templating engine to be used as Jade `app.set('view engine', 'jade')`. We can avoid these if we wish to use plain HTML/JS for our templates instead.
 
-```javascript
+```
 app.configure(function(){
   // the bodyParser middleware parses JSON request bodies
   app.use(express.bodyParser());
@@ -1317,7 +1342,7 @@ https://github.com/joyent/node/wiki/modules. For example, to switch to EJS, you 
 
 Express makes use of common HTTP verbs (get, put, post etc.) to provide easy to use, expressive routing API based on CRUD (Create, Read, Update and Delete). Below for example, we can define what happens when the browser requests the root '/'. As a trivial route in this application, it doesn't do anything particularly exciting, however getters typically read or retrieve data.
 
-```javascript
+```
 app.get('/', function(req, res){
   res.send('Hello World');
 });
@@ -1325,7 +1350,7 @@ app.get('/', function(req, res){
 
 Onto something a little more useful and in our next route, navigating to '/todo' will actually render our Jade view 'todo.jade', as seen in the callback. Additional configuration values can be passed as the second parameter, such as the custom title specified below.
 
-```javascript
+```
 app.get('/todo', function(req, res){
   res.render('todo', {title: "Our sample application"});
 });
@@ -1333,7 +1358,7 @@ app.get('/todo', function(req, res){
 
 Next, we can see the first of our '/api/' routes. 
 
-```javascript
+```
 app.get('/api/todos', function(req, res){
   return Todo.find(function(err, todos) {
     return res.send(todos);
@@ -1343,7 +1368,7 @@ app.get('/api/todos', function(req, res){
 
 The callback to our next route supports querying for todos based on a specific ID. The route string itself (once compiled) will be converted from '/api/todos/:id' to a regular expression. As you might have guessed, this is a hint that routes can also be regular expression literals if we wished to do something more complex.
 
-```javascript
+```
 app.get('/api/todos/:id', function(req, res){
   return Todo.findById(req.params.id, function(err, todo) {
     if (!err) {
@@ -1355,7 +1380,7 @@ app.get('/api/todos/:id', function(req, res){
 
 Similarly, we want to support updating todos based on a specific ID as well. The following allows us to query a todo by ID and then update the values of it's three attributes (text, done, order) easily. 
 
-```javascript
+```
 app.put('/api/todos/:id', function(req, res){
   return Todo.findById(req.params.id, function(err, todo) {
     todo.text = req.body.text;
@@ -1373,7 +1398,7 @@ app.put('/api/todos/:id', function(req, res){
 
 We've so far covered requesting todos and updating them, but a core part of the application requires us to insert (or add) new todos to our data-store. Below we can create new <code>Todo</code> models and simply save them.
 
-```javascript
+```
 app.post('/api/todos', function(req, res){
   var todo;
   todo = new Todo({
@@ -1392,7 +1417,7 @@ app.post('/api/todos', function(req, res){
 
 We of course also want to support deleting todos (e.g if a todo has been 'cleared', it should be deleted). This also works based on a specific todo ID.
 
-```javascript
+```
 app.delete('/api/todos/:id', function(req, res){
   return Todo.findById(req.params.id, function(err, todo) {
     return todo.remove(function(err) {
@@ -1407,7 +1432,7 @@ app.delete('/api/todos/:id', function(req, res){
 
 Finally, this last line is to ensure we're only listening on the port app.js is running.
 
-```javascript
+```
 app.listen(3000);
 ```
 
@@ -1417,7 +1442,7 @@ In the `/public/js` folder of options 1 (HTML templates) and 2 (Jade) for the pr
 
 Reviewing `window.TodoList` (a Backbone Collection), you'll notice that it has a property called `localStorage`, which uses the Backbone [localStorage](https://github.com/jeromegn/Backbone.localStorage) adapter in order to facilitate storing data using the browser's localStorage features.
 
-```javascript
+```
 window.TodoList = Backbone.Collection.extend({
 
     // Reference to this collection's model.
@@ -1430,7 +1455,7 @@ window.TodoList = Backbone.Collection.extend({
 
 In order to switch it over to our RESTful backend, we're going to make use of the `url` property or function on a collection to reference its location on the server. Models inside of a collection then use `url` to construct URLs of their own. As all of the CRUD for our RESTful API works on the base route '/api/todos', this is the value we set `url` to.
 
-```javascript
+```
     // localStorage: new Store("todos"),
     url: '/api/todos',
 ```
@@ -1460,9 +1485,9 @@ The Jade templates for our application cover declarative markup for both the ind
 
 // Templates
 script#item-template(type=&quot;text/template&quot;)
-  &lt;div class=&quot;todo &lt;%= done ? &#39;done&#39; : &#39;&#39; %&gt;&quot;&gt;
+  &lt;div class=&quot;todo &lt;%= done ? 'done' : '' %&gt;&quot;&gt;
   .display
-    &lt;input class=&quot;check&quot; type=&quot;checkbox&quot; &lt;%= done ? &#39;checked=&quot;checked&quot;&#39; : &#39;&#39; %&gt; /&gt;
+    &lt;input class=&quot;check&quot; type=&quot;checkbox&quot; &lt;%= done ? 'checked=&quot;checked&quot;' : '' %&gt; /&gt;
     .todo-text 
     span#todo-destroy
   .edit
@@ -1473,7 +1498,7 @@ script#stats-template(type=&quot;text/template&quot;)
   &lt;% if (total) { %&gt;
   span.todo-count
     span.number &lt;%= remaining %&gt; 
-    span.word &lt;%= remaining == 1 ? &#39;item&#39; : &#39;items&#39; %&gt;
+    span.word &lt;%= remaining == 1 ? 'item' : 'items' %&gt;
     |  left.
   &lt;% } %&gt;
   &lt;% if (done) { %&gt;
@@ -1482,7 +1507,7 @@ script#stats-template(type=&quot;text/template&quot;)
       |  Clear
       span.number-done &lt;%= done %&gt;
       |  completed
-      span.word-done &lt;%= done == 1 ? &#39;item&#39; : &#39;items&#39; %&gt;
+      span.word-done &lt;%= done == 1 ? 'item' : 'items' %&gt;
   &lt;% } %&gt;
 </pre>
 
@@ -1522,7 +1547,7 @@ body
 
   script(src=&quot;//ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js&quot;)
   script
-    window.jQuery || document.write(&#39;&lt;script src=&quot;js/libs/jquery-1.6.2.min.js&quot;&gt;&lt;\\/script&gt;&#39;)
+    window.jQuery || document.write('&lt;script src=&quot;js/libs/jquery-1.6.2.min.js&quot;&gt;&lt;\\/script&gt;')
 
   // scripts concatenated and minified via ant build script
   script(src=&quot;js/mylibs/underscore.js&quot;)
@@ -1531,15 +1556,15 @@ body
   script(defer, src=&quot;js/script.js&quot;)
   // end scripts
 
-  // Change UA-XXXXX-X to be your site&#39;s ID
+  // Change UA-XXXXX-X to be your site's ID
   script
-    window._gaq = [[&#39;_setAccount&#39;,&#39;UAXXXXXXXX1&#39;],[&#39;_trackPageview&#39;],[&#39;_trackPageLoadTime&#39;]];
-    Modernizr.load({load: (&#39;https:&#39; == location.protocol ? &#39;//ssl&#39; : &#39;//www&#39;) + &#39;.google-analytics.com/ga.js&#39;});
+    window._gaq = [['_setAccount','UAXXXXXXXX1'],['_trackPageview'],['_trackPageLoadTime']];
+    Modernizr.load({load: ('https:' == location.protocol ? '//ssl' : '//www') + '.google-analytics.com/ga.js'});
 
   //if lt IE 7
     script(src=&quot;//ajax.googleapis.com/ajax/libs/chrome-frame/1.0.3/CFInstall.min.js&quot;)
     script
-      window.attachEvent(&#39;onload&#39;,function(){CFInstall.check({mode:&#39;overlay&#39;})})
+      window.attachEvent('onload',function(){CFInstall.check({mode:'overlay'})})
 &lt;/html&gt;
 
 </pre>
@@ -1579,19 +1604,19 @@ Alternatively, a static version of our index which doesn't rely on Jade can be p
     &lt;!-- Templates--&gt;
 
       &lt;script id=&quot;item-template&quot; type=&quot;text/template&quot;&gt;
-      &lt;div class=&quot;todo &lt;%= done ? &#39;done&#39; : &#39;&#39; %&gt;&quot;&gt;
-      &lt;div class=&quot;display&quot;&gt;&lt;input class=&quot;check&quot; type=&quot;checkbox&quot; &lt;%= done ? &#39;checked=&quot;checked&quot;&#39; : &#39;&#39; %&gt; /&gt;
+      &lt;div class=&quot;todo &lt;%= done ? 'done' : '' %&gt;&quot;&gt;
+      &lt;div class=&quot;display&quot;&gt;&lt;input class=&quot;check&quot; type=&quot;checkbox&quot; &lt;%= done ? 'checked=&quot;checked&quot;' : '' %&gt; /&gt;
       &lt;div class=&quot;todo-text&quot;&gt;&lt;/div&gt;&lt;span id=&quot;todo-destroy&quot;&gt;&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;edit&quot;&gt;&lt;input type=&quot;text&quot; value=&quot;&quot; class=&quot;todo-input&quot;/&gt;&lt;/div&gt;&lt;/div&gt;
       &lt;/script&gt;
 
       &lt;script id=&quot;stats-template&quot; type=&quot;text/template&quot;&gt;
       &lt;% if (total) { %&gt;
-      &lt;span class=&quot;todo-count&quot;&gt;&lt;span class=&quot;number&quot;&gt;&lt;%= remaining %&gt; &lt;/span&gt;&lt;span class=&quot;word&quot;&gt;&lt;%= remaining == 1 ? &#39;item&#39; : &#39;items&#39; %&gt;&lt;/span&gt; left.
+      &lt;span class=&quot;todo-count&quot;&gt;&lt;span class=&quot;number&quot;&gt;&lt;%= remaining %&gt; &lt;/span&gt;&lt;span class=&quot;word&quot;&gt;&lt;%= remaining == 1 ? 'item' : 'items' %&gt;&lt;/span&gt; left.
       &lt;/span&gt;&lt;% } %&gt;
       &lt;% if (done) { %&gt;
       &lt;span class=&quot;todo-clear&quot;&gt;&lt;a href=&quot;#&quot;&gt; Clear
       &lt;span class=&quot;number-done&quot;&gt;&lt;%= done %&gt;&lt;/span&gt; completed
-      &lt;span class=&quot;word-done&quot;&gt;&lt;%= done == 1 ? &#39;item&#39; : &#39;items&#39; %&gt;&lt;/span&gt;&lt;/a&gt;&lt;/span&gt;&lt;% } %&gt;
+      &lt;span class=&quot;word-done&quot;&gt;&lt;%= done == 1 ? 'item' : 'items' %&gt;&lt;/span&gt;&lt;/a&gt;&lt;/span&gt;&lt;% } %&gt;
       &lt;/script&gt;
 
     &lt;/div&gt;
@@ -1669,11 +1694,785 @@ Finally, either of the example apps can now be accessed by navigating to:
 * Option 1: `http://localhost:3000/static.html`
 * Option 2: `http://localhost:3000/todo`
 
-That's it! Whilst there's a lot more than can be done to expand on the concepts covered so far, the base we're reviewed should be enough to get you up and running with this stack if you wish to use them with Backbone. 
-
-In the next addition to this section (coming soon), we'll take a look at a stack consisting of Ruby, Sinatra, Haml and more.
+That's it! Whilst there's a lot more than can be done to expand on the concepts covered so far, the base we're reviewed should be enough to get you up and running with this stack if you wish to use it with Backbone. 
 
 
+#<a name="stack2">Building Backbone.js Apps With Ruby, Sinatra, MongoDB and Haml</a>
+
+##Introduction
+
+In this chapter we're going to explore writing Backbone.js applications with a Ruby back-end. To assist with this, we're going to use [Sinatra](http://www.sinatrarb.com/) - a DSL (domain specific language) for rapidly creating web applications in Ruby. Similar to the [section](https://github.com/addyosmani/backbone-fundamentals/#stack1) on writing an application with Node.js, our server-side language (Ruby) will be used to power an API whilst Backbone.js will be the client consuming it.
+
+
+## What Is Sinatra?
+
+
+In the past, you've likely come across or used [Ruby on Rails](http://rubyonrails.org) (RoR) - a popular web application framework for the Ruby programming language that helps organize applications using the MVC pattern. Sinatra is a much smaller, more light-weight alternative to it. 
+
+Whilst a very basic Rails application may require a more strict project structure (such as requiring the use of controllers, views and routing etc.), Sinatra doesn't require as many of these dependencies, sacrificing the helpers needed to connect to databases, tools to create forms or any of the other utilities Rails comes with out of the box. 
+
+What Sinatra does have is a **minimal** set of features most useful for tying specific URLs and RESTful HTTP actions to blocks of Ruby code and returning this code's output as a response. Sinatra is particularly useful for getting projects up and running quickly where we don't have a need for the extra pieces RoR provides.
+
+For those who are familiar with more Rails, you probably know that it requires a separate routes file to define how an application should be responding to requests. These are then piped into the relevant models and controllers as needed. 
+
+Sinatra takes a more straight-forward approach, providing us with the most simple path to handling routing. By declaring ```get```,```post```, ```put``` or ```delete``` actions, we can inform Sinatra to add a new route, which we can then have respond to requests.
+
+The framework is particularly useful for writing APIs, widgets and small-scale applications that can power the backend of a client-heavy application. As mentioned, we will be using it to power our API.
+
+
+
+## Getting Started With Sinatra
+
+Let's review how to write and run a very basic Sinatra application. As most programming languages and frameworks typically start with some variation of "Hello World", we'll start with a similar example. 
+
+Note: Before beginning this section, I recommend installing Sinatra on your system. A guide to doing this can be found in the [prerequisites](#preq) section lower down in the article.
+
+###Routes
+
+As mentioned, Sinatra allows us to define new routes using HTTP actions. Semantically, a route follows quite a simple structure:
+
+```
+&lt;a HTTP action&gt; &lt;the desired route&gt; do
+   # some behaviour
+end
+```
+
+A tiny route that outputs a "Hello World"-like message when we attempt to "get" the root could thus be written as follows:
+
+```
+require 'sinatra'
+
+get '/' do
+   "Hello World! Is it me you're looking for?"
+end
+```
+
+To run this snippet, we can can simply save it to a local '.rb' file and execute it as follows:
+
+```
+ruby -rubygems example.rb
+```
+
+If we now navigated to http://localhost:4567 in our browser we could now see the application running successfully.
+
+The HTTP verbs we commonly work with when writing RESTful web services are: `get`, `post`, `delete` and `put`. As we now know, all Sinatra routes are basically HTTP actions (```get`` etc.) that are paired with a URL-matching pattern. We associate a pair of an action and route with code we would like sent back to the browser (executed)if the route is reached. Sinatra doesn't enforce much in the way of architectural structure, instead relying on simplicity to supporting writing powerful APIs. 
+
+Here's an example of a skeleton service we could put together supporting four common HTTP actions:
+
+```
+get '/items' do
+  # list all items available
+end
+
+get '/item/:id' do
+  # get a single item
+end
+
+post '/item' do
+  # create a new item
+end
+
+put '/item/:id' do
+  # update an existing item
+end
+
+delete '/item/:id' do
+  # delete an item
+end
+```
+
+Sinatra's routing is both easy for beginners to get started with but is also flexible enough for those wishing to define more complex routes. As you probably noticed in the above example, routes can include named parameters (e.g ```/item/:id```). We can actually access the content of these routes using the ```params``` hash as follows:
+
+```
+get '/item/:id' do
+  # this matches "GET /item/10" and "GET /item/11"
+  # params[:id] is "10" or "11"
+  "You reached #{params[:id]}"
+end
+```
+
+Sinatra also supports route matching via splats, wildcards and regular expressions. For more information on this I recommend reading the official [docs](http://www.sinatrarb.com/documentation). Let's now take a look at handlers.
+
+Sinatra includes convenient handler methods for tasks such as redirection, halting and passing.
+
+####Redirection
+
+A simple route supporting redirection which returns a 302 response can be written as follows:
+
+```
+get '/items' do
+      redirect '/items/welcome'
+end
+```
+
+And if we wish to pass additional parameters such as arguments we can do so like this:
+redirect 'http://site.com/', 'Oops! I think we have a problem!'
+
+####Halting
+
+To immediately stop a request (halting) we can use 'halt'. Heres an example of halting a request where we specify the message body:
+
+```halt "who goes there!?"```
+
+####Passing
+
+'Passing' is the concept of deferring processing of a block to the next matching route. We do this using `pass`. In the following example if a parameter isnt the username we expect (rick-astley) we simply pass it on:
+
+```
+get '/members/:username' do
+ pass unless params[:username] == 'rick-astley'
+ 'Never gonna give you up, never gonna let you down'
+end
+
+get '/member/*' do
+ 'Welcome!'
+end
+```
+
+There are also handler methods that can assist with sessions (specifically, cookie-based session handling). To use Sinatra's session handling, first enable it in your application with:
+
+```
+enable :sessions
+```
+
+You can then use the session handling capabilities as follows:
+
+```
+get '/items' do
+  session['visitCounter'] ||= 0;
+  session['visitCounter'] += 1;
+  "This page has been accessed #{session['visitCounter']} times"
+end
+```
+
+Note: By default enable:sessions will store all data in cookies. If this is not desired, you can not call this and instead use some Rack middleware instead. For more on this see [here](http://www.sinatrarb.com/intro#Using%20Sessions).
+
+This only touches the surface of what can be done using routes and handlers, but is sufficient for us to write the Sinatra-powered API service we require in the practical section of this chapter.
+
+
+##Templating And HAML
+
+
+Let's now discuss templating.Out of the box, we can begin using templates in our Sinatra applications with ERB. ERB is included with Ruby and allows Ruby code to be added to any plain text document for the purpose of generating information or flow control. In the following example using an ERB template, note that views are by default located in the ```views``` directory of our application.
+
+```
+get '/items' do
+  erb :default
+  # renders views/default.erb
+end
+```
+
+A useful Sinatra convention worth noting is how layouts are handled. Layouts automatically search for a views/layout template which is rendered before any other views are loaded. With ERB, our views/layout.erb file could look as follows:
+
+```
+&lt;html&gt;
+  &lt;head&gt;&lt;/head&gt;
+  &lt;body&gt;
+    &lt;%= data %&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+```
+
+Haml is a popular alternative to ERB which offers an abstract syntax for writing application templates. It has been said to be:
+
+* Straight-forward to learn
+* Very easy to read and use for visually expressing a hierarchy of DOM elements
+* Popular with web designers as it builds on top of CSS syntax
+* Well documented with a large community backing it
+* Almost as fast as ERB
+
+For the purpose of comparison, below we can see an ERB template compared to it's Haml equivalent.
+
+####ERB
+
+<pre>
+&lt;div class=&quot;todo&quot; id=&quot;content&quot;&gt;
+  &lt;h2 class=&quot;entry_title&quot;&gt;&lt;%= h @todo.title %&gt;&lt;/h2&gt;
+  &lt;div class=&quot;entry_link&quot;&gt;&lt;%= link_to('link', @todo.link) %&gt;&lt;/div&gt;
+&lt;/div&gt;
+</pre>
+
+####Haml
+
+```
+.todo#content
+  %h2.entry_title= @todo.title
+  .entry_link= link_to('link', @todo.link)
+```
+
+
+One of the first things we notice is that the Haml snippet looks significantly more like CSS than it does traditional markup. It's much easier to read and we no longer need to be concerned with divs, spans, closing tags or other semantic rules that usually mean more keystrokes. The approach taken to making whitespace a part of the syntax also means it can be much easier to compare changes between multiple documents (especially if you're doing a diff). 
+
+In the list of Haml features, we briefly mentioned web designers. As developers, we regularly need to communicate and work with designers, but we always have to remember that at the end of the day, they are not programmers. They're usually more concerned with the look and the feel of an application, but if we want them to write mark-up as a part of the templates or skins they create, Haml is a simpler option that has worked well for teams at a number of companies. 
+
+
+```
+%h1 This is some h1 text
+%h2 This is some h2 text.
+
+%p Now we have a line containing a single instance variable: @content
+%p= @content
+
+%p Embedding Ruby code in the middle of a line can be done using ==.
+%p== Here is an example: #{@foobar}
+
+%p We can also add attributes using {}
+%p{:style => "color:green"} We just made this paragraph green!
+
+%p You'll want to apply classes and ids to your DOM, too.
+%p.foo This has the foo class
+%p.bar This has the bar class
+%p#foobar This has the foobar id
+%p.foo#foobar Or you can combine them!
+
+%p Nesting can be done like this
+%p
+  Or even like this
+
+```
+
+Note: Haml is whitespace sensitive and will not correctly work if it isn't indented by an even number of spaces. This is due to whitespace being used for nesting in place of the classic HTML markup approach of closing tags.
+
+
+#MongoDB Ruby Driver
+
+
+##Getting started 
+
+Once the MongoDB Ruby driver is installed, we can begin to use it to connect to a Mongo database. To create a  connection using localhost, we simply specify the driver as a dependency. Assuming we're using the default port we can then connect as follows:
+
+```
+require 'mongo'
+
+# where 'learning-mongo' is the name of our database:
+db = Connection.new.db('learning-mongo');
+```
+
+We probably also want to place some data into 'learning-mongo'. It could be as simple as a note, so why don't we go ahead and begin a notes collection?:
+
+```
+notes = db.collection('notes')
+```
+Something interesting worth noting is that at this point, we haven't actually created the database nor the collection we're referencing above. 
+
+Neither of these items exist in Mongo (just yet) but as we're working with a new database but they will once we insert some real data.
+
+A new note could be defined using key/value pairs as follows and then inserted into 'learning-mongo' using `collection.insert()`:
+
+```
+our_note = { :text => 'Remember the milk', :remindInterval => 'weekly'}
+note_id = notes.insert(our_note)
+```
+
+What is returned from inserting a note into the notes collection is an `ObjectId` reference for the note from Mongo. This is useful as we can re-use it to locate the same document in our database.
+
+```
+note = notes.find( :id => note_id ).first
+```
+
+This can also be used in conjunction with Mongo's `collection.update()` method and [query](http://www.mongodb.org/display/DOCS/Updating) operators (i.e `$set`) to replace fields in an existing document.
+
+We might update an entire document as follows:
+
+```
+note = notes.find( :id => note_id ).first
+note[:text] = 'Remember the bread'
+notes.update({ :_id => note_id }, note)
+```
+
+or using `$set`, update an existing document without overwriting the entire object as like this:
+
+```
+notes.update({ :_id => note_id }, '$set' => { :text = > 'Remember the bread' })
+```
+
+Useful to know: Almost each MongoDB document has an _id field as it's first attribute. This can normally
+be of any type, however a special BSON datatype is provided for object ids. It's a
+12-byte binary value that has a high probability of being unique when allocated.
+
+
+Note: Whilst we opted for the MongoDB Ruby Driver for this stack, you may also be interested in **DataMapper** - a solution which allows us to use the same API to talk to a number of different datastores. This works well for both relational and non-relational databases and more information is available on the official [project page](http://datamapper.org/why.html). [Sinatra: The Book](http://sinatra-book.gittr.com/#datamapper) also contains a brief tutorial on DataMapper for anyone interested in exploring it further.
+
+
+#Practical
+
+We're going to use Sinatra in a similar manner to how we used Express in the last chapter. It will power a RESTful API supporting CRUD operations. Together with a MongoDB data store, this will allow us to easily persist data (todo items) whilst ensuring they are stored in a database. If you've read the previous chapter or have gone through any of the Todo examples covered so far, you will find this surprisingly straight-forward.
+
+Remember that the default Todo example included with Backbone.js already persists data, although it does this via a localStorage adapter. Luckily there aren't a great deal of changes needed to switch over to using our Sinatra-based API.  Let's briefly review the code that will be powering the CRUD operations for this sections practical, as we go course won't be starting off with a near-complete base for most of our real world applications.
+
+
+###<a id="preq">Installing The Prerequisites</a>
+
+####Ruby
+
+If using OSX or Linux, Ruby may be one of a number of open-source packages that come pre-installed and you can skip over to the next paragraph. In case you would like to check if check if you have Ruby installed, open up the terminal prompt and type:
+
+```$ ruby -v```
+
+The output of this will either be the version of Ruby installed or an error complaining that Ruby wasn't found. 
+
+Should you need to install Ruby manually (e.g for an operating system such as Windows), you can do so by downloading the latest version from http://www.ruby-lang.org/en/downloads/. Alternatively, (RVM)[http://beginrescueend.com/rvm/install/] (Ruby Version Manager) is a command-line tool that allows you to easily install and manage multiple ruby environments with ease.
+
+
+####Ruby Gems
+
+Next, we will need to install Ruby Gems. Gems are a standard way to package programs or libraries written in Ruby and with Ruby Gems it's possible to install additional dependencies for Ruby applications very easily.
+
+On OSX, Linux or Windows go to [http://rubyforge.org/projects/rubygems](http://rubyforge.org/projects/rubygems) and download the latest version of Ruby Gems. Once downloaded, open up a terminal, navigate to the folder where this resides and enter:
+
+```
+$> tar xzvf rubygems.tgz
+$> cd rubygems
+$> sudo ruby setup.rb
+```
+
+There will likely be a version number included in your download and you should make sure to include this when tying the above. Finally, a symlink (symbolic link) to tie everything togther should be fun as follows:
+
+```$ sudo ln -s /usr/bin/gem1.8.17 /usr/bin/gem```
+
+To check that Ruby Gems has been correctly installed, type the following into your terminal:
+
+```
+$ gem -v
+```
+
+
+####Sinatra
+
+With Ruby Gems setup, we can now easily install Sinatra. For Linux or OSX type this in your terminal:
+
+```$ sudo gem install sinatra```
+
+and if you're on Windows, enter the following at a command prompt:
+
+```c:\\ > gem install sinatra```
+
+
+####Haml
+
+As with other DSLs and frameworks, Sinatra supports a wide range of different templating engines. [ERB](http://www.ruby-doc.org/stdlib/libdoc/erb/rdoc/classes/ERB.html) is the one most often recommended by the Sinatra camp, however 
+as a part of this chapter, we're going to explore the use of [Haml](http://haml.hamptoncatlin.com/) to define our application templates. 
+
+Haml stands for HTML Abstractional Markup Language and is a lightweight markup language abstraction that can be used to describe HTML without the need to use traditional markup language semantics (such as opening and closing tags).
+
+Installing Haml can be done in just a line using Ruby Gems as follows:
+
+```$ gem install haml```
+
+
+####MongoDB
+
+If you haven't already downloaded and installed MongoDB from an earlier chapter, please [do so](http://www.mongodb.org/downloads) now. With Ruby Gems, Mongo can be installed in just one line:
+
+```$ gem install mongodb```
+
+We now require two further steps to get everything up and running.
+
+#####1.Data directories
+
+MongoDB stores data in the bin/data/db folder but won't actually create this directory for you. Navigate to where you've downloaded and extracted Mongo and run the following from terminal:
+
+```
+sudo mkdir -p /data/db/
+sudo chown `id -u` /data/db
+```
+
+#####2.Running and connecting to your server
+
+Once this is done, open up two terminal windows. 
+
+In the first, cd to your MongoDB bin directory or type in the complete path to it. You'll need to start mongod.
+
+```
+$ ./bin/mongod
+```
+
+Finally, in the second terminal, start the mongo shell which will connect up to localhost by default.
+
+```
+$ ./bin/mongo
+```
+
+####MongoDB Ruby Driver
+
+As we'll be using the [MongoDB Ruby Driver](https://github.com/mongodb/mongo-ruby-driver), we'll also require the following gems:
+
+The gem for the driver itself:
+```
+$ gem install mongo
+```
+
+and the driver's other prerequisite, bson:
+```
+$ gem install bson_ext
+```
+
+This is basically a collection of extensions used to increase serialization speed.
+
+That's it for our prerequisites!.
+
+
+##Tutorial
+
+To get started, let's get a local copy of the practical application working on our system. 
+
+
+###Application Files
+Clone [this](http://github.com/addyosmani/backbone-fundamentals) repository and navigate to `/practicals/stacks/option3`. Now run the following lines at the terminal:
+
+```
+ruby app.rb
+```
+
+Finally, navigate to <code>http://localhost:4567/todo</code> to see the application running successfully.
+
+**Note:** The Haml layout files for Option 3 can be found in the /views folder.
+
+The directory structure for our practical application is as follows:
+
+```
+--public
+----css
+----img
+----js
+-----script.js
+----test
+--views
+app.rb
+
+```
+
+The `public` directory contains the scripts and stylesheets for our application and uses HTML5 Boilerplate as a base. You can find the Models, Views and Collections for this section within ```public/js/scripts.js``` (however, this can of course be expanded into sub-directories for each component if desired). 
+
+```scripts.js``` contains the following Backbone component definitions:
+
+```
+--Models
+----Todo
+
+--Collections
+----TodoList
+
+--Views
+---TodoView
+---AppView
+```
+
+`app.rb` is the small Sinatra application that powers our backend API.
+
+Lastly, the `views` directory hosts the Haml source files for our application's index and templates, both of which are compiled to standard HTML markup at runtime.
+
+These can be viewed along with other note-worthy snippets of code from the application below. 
+
+###Backbone
+
+####Views
+
+In our main application view (AppView), we want to load any previously stored Todo items in our Mongo database when the view initializes. This is done below with the line ```Todos.fetch()``` in the ``initialize()`` method where we also bind to the relevant events on the `Todos` collection for when items are added or changed.
+
+```
+// Our overall **AppView** is the top-level piece of UI.
+var AppView = Backbone.View.extend({
+
+    // Instead of generating a new element, bind to the existing skeleton of
+    // the App already present in the HTML.
+    el: $("#todoapp"),
+
+    // Our template for the line of statistics at the bottom of the app.
+    statsTemplate: _.template($('#stats-template').html()),
+
+    // Delegated events for creating new items, and clearing completed ones.
+    events: {
+      "keypress #new-todo":  "createOnEnter",
+      "keyup #new-todo":     "showTooltip",
+      "click .todo-clear a": "clearCompleted"
+    },
+
+    // At initialization
+    initialize: function() {
+      this.input    = this.$("#new-todo");
+
+      Todos.on('add',   this.addOne, this);
+      Todos.on('reset', this.addAll, this);
+      Todos.on('all',   this.render, this);
+
+      Todos.fetch();
+    },
+
+    // Re-rendering the App just means refreshing the statistics -- the rest
+    // of the app doesn't change.
+    render: function() {
+      this.$('#todo-stats').html(this.statsTemplate({
+        total:      Todos.length,
+        done:   
+ ….
+```
+
+###Collections
+
+In the TodoList collection below, we've set the `url` property to point to `/api/todos` to reference the collection's location on the server. When we attempt to access this from our Sinatra-backed API, it should return a list of all the Todo items that have been previously stored in Mongo. 
+
+For the sake of thoroughness, our API will also support returning the data for a specific Todo item via `/api/todos/itemID`. We'll take a look at this again when writing the Ruby code powering our backend.
+
+```
+ // Todo Collection
+
+  var TodoList = Backbone.Collection.extend({
+
+    // Reference to this collection's model.
+    model: Todo,
+
+    // Save all of the todo items under the `"todos"` namespace.
+    // localStorage: new Store("todos"),
+    url: '/api/todos',
+
+    // Filter down the list of all todo items that are finished.
+    done: function() {
+      return this.filter(function(todo){ return todo.get('done'); });
+    },
+
+    // Filter down the list to only todo items that are still not finished.
+    remaining: function() {
+      return this.without.apply(this, this.done());
+    },
+
+    // We keep the Todos in sequential order, despite being saved by unordered
+    // GUID in the database. This generates the next order number for new items.
+    nextOrder: function() {
+      if (!this.length) return 1;
+      return this.last().get('order') + 1;
+    },
+
+    // Todos are sorted by their original insertion order.
+    comparator: function(todo) {
+      return todo.get('order');
+    }
+
+  });
+```  
+ 
+
+###Model
+
+The model for our Todo application remains largely unchanged from the versions previously covered in this book. It is however worth noting that calling the function `model.url()` within the below would return the relative URL where a specific Todo item could be located on the server.
+
+```
+
+  // Our basic **Todo** model has `text`, `order`, and `done` attributes.
+  var Todo = Backbone.Model.extend({
+    idAttribute: "_id",
+
+    // Default attributes for a todo item.
+    defaults: function() {
+      return {
+        done:  false,
+        order: Todos.nextOrder()
+      };
+    },
+
+    // Toggle the `done` state of this todo item.
+    toggle: function() {
+      this.save({done: !this.get("done")});
+    }
+  });
+```
+
+###Ruby/Sinatra
+
+Now that we've defined our main models, views and collections let's get the CRUD operations required by our Backbone application supported in our Sinatra API.
+
+We want to make sure that for any operations changing underlying data (create, update, delete) that our Mongo data store correctly reflects these.
+
+
+###app.rb
+
+For `app.rb`, we first define the dependencies required by our application. These include Sinatra, Ruby Gems, the MongoDB Ruby driver and the JSON gem. 
+
+```
+require 'rubygems'
+require 'sinatra'
+require 'mongo'
+require 'json'
+```
+
+Next, we create a new connection to Mongo, specifying any custom configuration desired. If running a multi-threaded application, setting the 'pool_size' allows us to specify a maximum pool size and 'timeout' a maximum timeout for waiting for old connections to be released to the pool.
+
+```
+DB = Mongo::Connection.new.db("mydb", :pool_size => 5, :timeout => 5)
+```
+
+Finally we define the routes to be supported by our API. Note that in the first two blocks - one for our 
+application root (`/` and the other for our todo items route `/todo` - we're using Haml for template rendering.
+
+```
+class TodoApp < Sinatra::Base
+
+	get '/' do
+	  haml :index, :attr_wrapper => '"', :locals => {:title => 'hello'}
+	end
+
+	get '/todo' do
+	  haml :todo, :attr_wrapper => '"', :locals => {:title => 'Our Sinatra Todo app'}
+	end
+```
+
+`haml :index` instructs Sinatra to use the `views/index.haml` for the application index, whilst ```attr_wrapper`` is simply defining the values to be used for any local variables defined inside the template.
+This similarly applies Todo items with the template `views/todo.haml'.
+
+The rest of our routes make use of the `params` hash and a number of useful helper methods included with the MongoDB Ruby driver. For more details on these, please
+read the comments I've made inline below:
+
+
+```
+get '/api/:thing' do
+  # query a collection :thing, convert the output to an array, map the _id 
+  # to a string representation of the object's _id and finally output to JSON
+  DB.collection(params[:thing]).find.to_a.map{|t| from_bson_id(t)}.to_json
+end
+
+get '/api/:thing/:id' do
+  # get the first document with the id :id in the collection :thing as a single document (rather 
+  # than a Cursor, the standard output) using find_one(). Our bson utilities assist with
+  # ID conversion and the final output returned is also JSON
+  from_bson_id(DB.collection(params[:thing]).find_one(to_bson_id(params[:id]))).to_json
+end
+
+post '/api/:thing' do
+  # parse the post body of the content being posted, convert to a string, insert into
+  # the collection #thing and return the ObjectId as a string for reference
+  oid = DB.collection(params[:thing]).insert(JSON.parse(request.body.read.to_s))
+  "{\"_id\": \"#{oid.to_s}\"}"
+end
+
+delete '/api/:thing/:id' do
+  # remove the item with id :id from the collection :thing, based on the bson
+  # representation of the object id
+  DB.collection(params[:thing]).remove('_id' => to_bson_id(params[:id]))
+end
+
+put '/api/:thing/:id' do
+  # collection.update() when used with $set (as covered earlier) allows us to set single values
+  # in this case, the put request body is converted to a string, rejecting keys with the name '_id' for security purposes
+  DB.collection(params[:thing]).update({'_id' => to_bson_id(params[:id])}, {'$set' => JSON.parse(request.body.read.to_s).reject{|k,v| k == '_id'}})
+end
+
+# utilities for generating/converting MongoDB ObjectIds
+def to_bson_id(id) BSON::ObjectId.from_string(id) end
+def from_bson_id(obj) obj.merge({'_id' => obj['_id'].to_s}) end
+
+end
+```
+
+That's it. The above is extremely lean for an entire API, but does allow us to read and write data to support the functionality required by our client-side application.
+
+For more on what MongoDB and the MongoDB Ruby driver are capable of, please do feel free to read their documentation for more information.
+
+If you're a developer wishing to take this example further, why not try to add some additional capabilities to the service:
+
+* Validation: improved validation of data in the API. What more could be done to ensure data sanitization?
+* Search: search or filter down Todo items based on a set of keywords or within a certain date range
+* Pagination: only return the Nth number of Todo items or items from a start and end-point
+
+###Haml/Templates
+
+Finally, we move on to the Haml files that define our application index (layout.haml) and the template for a specific Todo item (todo.haml). Both of these are largely self-explanatory, but it's useful to see the differences between the Jade approach we reviewed in the last chapter vs. using Haml for this implementation.
+
+Note: In our Haml snippets below, the forward slash character is used to indicate a comment. When this character is placed at the beginning of a line, it wraps all of the text after it into a HTML comment. e.g 
+
+```/ These are templates```
+
+compiles to:
+
+```<!-- These are templates -->```
+
+
+###index.haml
+
+```
+%head
+  %meta{'charset' =&gt; 'utf-8'}/
+  %title=title
+  %meta{'name' =&gt; 'description', 'content' =&gt; ''}/
+  %meta{'name' =&gt; 'author', 'content' =&gt; ''}/
+  %meta{'name' =&gt; 'viewport', 'content' =&gt; 'width=device-width,initial-scale=1'}/
+
+  / CSS concatenated and minified via ant build script
+  %link{'rel' =&gt; 'stylesheet', 'href' =&gt; 'css/style.css'}/
+  / end CSS
+
+  %script{'src' =&gt; 'js/libs/modernizr.min.js'}
+%body
+  %div#container
+    %header
+    %div#main
+      = yield
+    %footer
+  /! end of #container
+
+  %script{'src' =&gt; 'http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js'}
+
+  / scripts concatenated and minified via ant build script
+  %script{'src' =&gt; 'js/mylibs/underscore.js'}
+  %script{'src' =&gt; 'js/mylibs/backbone.js'}
+  %script{'defer' =&gt; true, 'src' =&gt; 'js/plugins.js'}
+  %script{'defer' =&gt; true, 'src' =&gt; 'js/script.js'}
+  / end scripts
+```
+
+###todo.haml
+
+```
+%div#todoapp
+  %div.title
+    %h1
+      Todos
+      %div.content
+        %div#create-todo
+          %input#new-todo{&quot;placeholder&quot; =&gt; &quot;What needs to be done?&quot;, &quot;type&quot; =&gt; &quot;text&quot;}/
+          %span.ui-tooltip-top{&quot;style&quot; =&gt; &quot;display:none;&quot;} Press Enter to save this task
+        %div#todos
+          %ul#todo-list
+        %div#todo-stats
+
+/ Templates
+
+%script#item-template{&quot;type&quot; =&gt; &quot;text/template&quot;}
+  &lt;div class=&quot;todo &lt;%= done ? 'done' : '' %&gt;&quot;&gt;
+  %div.display
+    &lt;input class=&quot;check&quot; type=&quot;checkbox&quot; &lt;%= done ? 'checked=&quot;checked&quot;' : '' %&gt; /&gt;
+    %div.todo-text 
+    %span#todo-destroy
+  %div.edit
+    %input.todo-input{&quot;type&quot; =&gt; &quot;text&quot;, &quot;value&quot; =&gt;&quot;&quot;}/
+  &lt;/div&gt;
+
+%script#stats-template{&quot;type&quot; =&gt; &quot;text/template&quot;}
+  &lt;% if (total) { %&gt;
+  %span.todo-count
+    %span.number &lt;%= remaining %&gt;
+    %span.word &lt;%= remaining == 1 ? 'item' : 'items' %&gt;
+    left.
+  &lt;% } %&gt;
+  &lt;% if (done) { %&gt;
+  %span.todo-clear
+    %a{&quot;href&quot; =&gt; &quot;#&quot;}
+      Clear
+      %span.number-done &lt;%= done %&gt;
+      completed
+      %span.word-done &lt;%= done == 1 ? 'item' : 'items' %&gt;
+  &lt;% } %&gt;
+```
+
+##Conclusions
+
+In this chapter, we looked at creating a Backbone application backed by an API powered by Ruby, Sinatra, Haml, MongoDB and the MongoDB driver. I personally found developing APIs with Sinatra a relatively painless experience and one which I felt was 
+on-par with the effort required for the Node/Express implementation of the same application.
+
+This section is by no means the most comprehensive guide on building complex apps using all of the items in this particular stack. I do however hope it was an introduction sufficient enough to help you decide on what stack to try out for your next project.
+
+
+#<a name="advanced">Advanced</a>
+---
 
 ##<a name="modularjs">Modular JavaScript</a>
 
@@ -1708,7 +2507,7 @@ I've previously written [a detailed article](http://addyosmani.com/writing-modul
 
 As discussed above, the overall goal for the AMD format is to provide a solution for modular JavaScript that developers can use today. The two key concepts you need to be aware of when using it with a script-loader are a `define()` method for facilitating module definition and a `require()` method for handling dependency loading. `define()` is used to define named or unnamed modules based on the proposal using the following signature:
 
-```javascript
+```
 define(
     module_id /*optional*/, 
     [dependencies] /*optional*/, 
@@ -1720,7 +2519,7 @@ As you can tell by the inline comments, the `module_id` is an optional argument 
 
 Back to the define signature, the dependencies argument represents an array of dependencies which are required by the module you are defining and the third argument ('definition function') is a function that's executed to instantiate your module. A barebone module (compatible with RequireJS) could be defined using `define()` as follows:
 
-```javascript
+```
 // A module ID has been omitted here to make the module anonymous
 
 define(['foo', 'bar'], 
@@ -1745,7 +2544,7 @@ define(['foo', 'bar'],
 There is also a [sugared version](http://requirejs.org/docs/whyamd.html#sugar) of `define()` available that allows you to declare your dependencies as local variables using `require()`. This will feel familiar to anyone who's used node, and can be easier to add or remove dependencies.
 Here is the previous snippet using the alternate syntax:
 
-```javascript
+```
 // A module ID has been omitted here to make the module anonymous
 
 define(function(require){
@@ -1770,7 +2569,7 @@ define(function(require){
 
 The `require()` method is typically used to load code in a top-level JavaScript file or within a module should you wish to dynamically fetch dependencies. An example of its usage is:
 
-```javascript
+```
 // Consider 'foo' and 'bar' are two external modules
 // In this example, the 'exports' from the two modules loaded are passed as
 // function arguments to the callback (foo and bar)
@@ -1787,7 +2586,7 @@ require(['foo', 'bar'], function ( foo, bar ) {
 
 Now that we've taken a look at how to define AMD modules, let's review how to go about wrapping components like views and collections so that they can also be easily loaded as dependencies for any parts of your application that require them. At it's simplest, a Backbone model may just require Backbone and Underscore.js. These are considered it's dependencies and so, to write an AMD model module, we would simply do this:
 
-```javascript
+```
 define(['underscore', 'backbone'], function(_, Backbone) {
   var myModel = Backbone.Model.extend({
 
@@ -1812,7 +2611,7 @@ define(['underscore', 'backbone'], function(_, Backbone) {
 
 Note how we alias Underscore.js's instance to `_` and Backbone to just `Backbone`, making it very trivial to convert non-AMD code over to using this module format. For a view which might require other dependencies such as jQuery, this can similarly be done as follows:
 
-```javascript
+```
 define([
   'jquery',
   'underscore', 
@@ -1838,7 +2637,7 @@ RequireJS has a special plugin called text.js which is used to load in text file
 
 2. Next, include the text.js plugin in your initial RequireJS configuration options. In the code snippet below, we assume that RequireJS is being included in our page prior to this code snippet being executed. Any of the other scripts being loaded are just there for the sake of example.
  
-```javascript
+```
 require.config( {
     paths: {
         'backbone':         'libs/AMDbackbone-0.5.3',
@@ -1856,7 +2655,7 @@ require.config( {
 
 3. When the `text!` prefix is used for a dependency, RequireJS will automatically load the text plugin and treat the dependency as a text resource. A typical example of this in action may look like..
 
-```javascript
+```
 require(['js/app', 'text!templates/mainView.html'],
     function(app, mainView){
         // the contents of the mainView file will be
@@ -1871,23 +2670,23 @@ With Underscore.js's micro-templating (and jQuery) this would typically be:
 
 HTML:
 
-```html
-<script type="text/template" id="mainViewTemplate">
-    <% _.each( person, function( person_item ){ %>
-        <li><%= person_item.get("name") %></li>  
-    <% }); %>
-</script>
-```
+
+	<script type="text/template" id="mainViewTemplate">
+	    <% _.each( person, function( person_item ){ %>
+	        <li><%= person_item.get("name") %></li>  
+	    <% }); %>
+	</script>
+
 
 JS:
 
-```javascript
+```
 var compiled_template = _.template( $('#mainViewTemplate').html() );
 ```
 
 With RequireJS and the text plugin however, it's as simple as saving your template into an external text file (say, `mainView.html`) and doing the following:
 
-```javascript
+```
 require(['js/app', 'text!templates/mainView.html'],
     function(app, mainView){
         
@@ -1898,7 +2697,7 @@ require(['js/app', 'text!templates/mainView.html'],
 
 That's it!. You can then go applying your template to a view in Backbone doing something like:
 
-```javascript
+```
 collection.someview.el.html( compiled_template( { results: collection.models } ) );
 ```
 
@@ -1922,7 +2721,7 @@ With some other structural JavaScript frameworks, my recommendation would normal
 
 You'll notice that I mentioned the word 'specific' in the first bullet point. The RequireJS optimizer only concatenates module scripts that have been specified in arrays of string literals passed to top-level (i.e non-local) require and define calls. As clarified by the [optimizer docs](http://requirejs.org/docs/optimization.html) this means that Backbone modules defined like this:
 
-```javascript
+```
 define(['jquery','backbone','underscore', 'collections/sample','views/test'], 
     function($,Backbone, _, Sample, Test){
         //...
@@ -1931,7 +2730,7 @@ define(['jquery','backbone','underscore', 'collections/sample','views/test'],
 
 will combine fine, however inline dependencies such as:
 
-```javascript
+```
 var models = someCondition ? ['models/ab','models/ac'] : ['models/ba','models/bc'];
 ```
 
@@ -1945,7 +2744,7 @@ Below is an example of a build file taken from the modular jQuery Mobile app ref
 
 Near the bottom of this sample file, you'll see an array called `modules`. This is where you specify the module names you wish to have optimized. In this case we're optimizing the main application called 'app', which maps to `appDir/app.js`. If we had set the `baseUrl` to 'scripts', it would be mapped to `appDir/scripts/app.js`.
 
-```javascript
+```
 ({
     appDir: "./",
     baseUrl: "./",
@@ -1977,7 +2776,7 @@ The build profile is usually placed inside the 'scripts' or 'js' directory of yo
 
 Finally, to run the build, execute the following command once inside your `appDir` or `appDir/scripts` directory:
 
-```javascript
+```
 node ../../r.js -o app.build.js
 ```
 
@@ -2063,7 +2862,7 @@ In the code-sample below, you can see some typical examples of common name-maps 
 
 **main.js**
 
-```javascript
+```
 require.config({
   baseUrl:'../',
   paths: {
@@ -2090,7 +2889,7 @@ For more information on configuration objects, please feel free to check out the
 
 Before we dive into AMD-wrapped versions of our Backbone components, let's review a sample of a non-AMD view. The following view listens for changes to its model (a Todo item) and re-renders if a user edits the value of the item.   
 
-```javascript
+```
 var TodoView = Backbone.View.extend({
 
     //... is a list tag.
@@ -2121,9 +2920,9 @@ Note how for templating the common practice of referencing a script by an ID (or
 
 <pre>
 &lt;script type=&quot;text/template&quot; id=&quot;item-template&quot;&gt;
-      &lt;div class=&quot;todo &lt;%= done ? &#39;done&#39; : &#39;&#39; %&gt;&quot;&gt;
+      &lt;div class=&quot;todo &lt;%= done ? 'done' : '' %&gt;&quot;&gt;
         &lt;div class=&quot;display&quot;&gt;
-          &lt;input class=&quot;check&quot; type=&quot;checkbox&quot; &lt;%= done ? &#39;checked=&quot;checked&quot;&#39; : &#39;&#39; %&gt; /&gt;
+          &lt;input class=&quot;check&quot; type=&quot;checkbox&quot; &lt;%= done ? 'checked=&quot;checked&quot;' : '' %&gt; /&gt;
           &lt;div class=&quot;todo-content&quot;&gt;&lt;/div&gt;
           &lt;span class=&quot;todo-destroy&quot;&gt;&lt;/span&gt;
         &lt;/div&gt;
@@ -2140,7 +2939,7 @@ Let's now take a look at the AMD-version of our view. As discussed earlier, the 
 
 **views/todos.js**
 
-```javascript
+```
 define([
   'jquery', 
   'underscore', 
@@ -2196,9 +2995,9 @@ Using the RequireJS text plugin (the dependency marked `text`), we can actually 
 **templates/todos.html**
 
 <pre>
-&lt;div class=&quot;todo &lt;%= done ? &#39;done&#39; : &#39;&#39; %&gt;&quot;&gt;
+&lt;div class=&quot;todo &lt;%= done ? 'done' : '' %&gt;&quot;&gt;
     &lt;div class=&quot;display&quot;&gt;
-      &lt;input class=&quot;check&quot; type=&quot;checkbox&quot; &lt;%= done ? &#39;checked=&quot;checked&quot;&#39; : &#39;&#39; %&gt; /&gt;
+      &lt;input class=&quot;check&quot; type=&quot;checkbox&quot; &lt;%= done ? 'checked=&quot;checked&quot;' : '' %&gt; /&gt;
       &lt;div class=&quot;todo-content&quot;&gt;&lt;/div&gt;
       &lt;span class=&quot;todo-destroy&quot;&gt;&lt;/span&gt;
     &lt;/div&gt;
@@ -2214,7 +3013,7 @@ Next, let's look at how to define models as dependencies which can be pulled int
 
 **models/todo.js**
 
-```javascript
+```
 define(['underscore', 'backbone'], function(_, Backbone) {
   var TodoModel = Backbone.Model.extend({
 
@@ -2248,7 +3047,7 @@ As per other types of dependencies, we can easily map our model module to a loca
 
 **collections/todos.js**
 
-```javascript
+```
 define([
   'underscore', 
   'backbone', 
@@ -2280,7 +3079,7 @@ In addition to allowing users to add new Todo items from views (which we then in
 
 **views/app.js**
 
-```javascript
+```
 define([
   'jquery',
   'underscore', 
@@ -2322,14 +3121,14 @@ The contents of our `statsTemplate` can be seen below. It's nothing too complica
  &lt;% if (total) { %&gt;
         &lt;span class=&quot;todo-count&quot;&gt;
           &lt;span class=&quot;number&quot;&gt;&lt;%= remaining %&gt;&lt;/span&gt;
-          &lt;span class=&quot;word&quot;&gt;&lt;%= remaining == 1 ? &#39;item&#39; : &#39;items&#39; %&gt;&lt;/span&gt; left.
+          &lt;span class=&quot;word&quot;&gt;&lt;%= remaining == 1 ? 'item' : 'items' %&gt;&lt;/span&gt; left.
         &lt;/span&gt;
       &lt;% } %&gt;
       &lt;% if (done) { %&gt;
         &lt;span class=&quot;todo-clear&quot;&gt;
           &lt;a href=&quot;#&quot;&gt;
             Clear &lt;span class=&quot;number-done&quot;&gt;&lt;%= done %&gt;&lt;/span&gt;
-            completed &lt;span class=&quot;word-done&quot;&gt;&lt;%= done == 1 ? &#39;item&#39; : &#39;items&#39; %&gt;&lt;/span&gt;
+            completed &lt;span class=&quot;word-done&quot;&gt;&lt;%= done == 1 ? 'item' : 'items' %&gt;&lt;/span&gt;
           &lt;/a&gt;
         &lt;/span&gt;
       &lt;% } %&gt;
@@ -2387,7 +3186,7 @@ Found in `aura/mediator.js`
 
 Below is a very simple AMD-wrapped implementation of the mediator pattern, based on prior work by Ryan Florence. It accepts as it's input an object, to which it attaches `publish()` and `subscribe()` methods. In a larger application, the mediator can contain additional utilities, such as handlers for initializing, starting and stopping modules, but for demonstration purposes, these two methods should work fine for our needs.
 
-```javascript
+```
 define([], function(obj){
 
   var channels = {};
@@ -2418,7 +3217,7 @@ Found in `aura/facade.js`
 
 Next, we have an implementation of the facade pattern. Now the classical facade pattern applied to JavaScript would probably look a little like this: 
 
-```javascript
+```
 
 var module = (function() {
     var _private = {
@@ -2458,7 +3257,7 @@ That said, to keep things simple, our implementation of an AMD-compatible facade
 It also allows us to implement a simple, but flexible, permissions checker (as seen below) which will validate subscriptions made against a permissions configuration to see whether it's permitted or not. 
 
 
-```javascript
+```
 define([ "../aura/mediator" , "../aura/permissions" ], function (mediator, permissions) {
 
     var facade = facade || {};
@@ -2492,7 +3291,7 @@ To visually see how this works, consider changing say, permissions -> renderDone
 
 It's a very dumbed down example of the potential for application security, but imagine how powerful this might be in a large app with a significant number of visual widgets.
 
-```javascript
+```
 define([], function () {
 
     // Permissions
@@ -2564,7 +3363,7 @@ Take the `todoSaver` for example - it's responsibility is saving new Todo items 
 
 Again, this is a massive oversimplification of how advanced your permissions structures could get, but it's certainly one way of controlling what parts of your application can or can't be accessed by specific modules at any time.
 
-```javascript
+```
 define(["jquery", "underscore", "aura/facade"], 
 function ($, _, facade) {
 
@@ -2668,6 +3467,454 @@ function ($, _, facade) {
 That's it for this section. If you've been intrigued by some of the concepts covered, I encourage you to consider taking a look at my [slides](http://addyosmani.com/blog/large-scale-javascript-application-architecture/) on Large-scale JS from the jQuery Summit or my longer post on the topic [here](http://addyosmani.com/largescalejavascript) for more information. 
 
 
+##<a name="pagination">Paginating Backbone.js Requests & Collections</a>
+
+Pagination is a ubiquitous problem we often find ourselves needing to solve on the web. Perhaps most predominantly when working with back-end APIs and JavaScript-heavy clients which consume them.
+
+On this topic, we're going to go through a set of **pagination components ** I wrote for Backbone.js, which should hopefully come in useful if you're working on applications which need to tackle this problem. They're part of an extension called [Backbone.Paginator][1].
+
+When working with a structural framework like Backbone.js, the three types of pagination we are most likely to run into are:
+
+**Requests to a service layer (API) **- e.g query for results containing the term 'Brendan' - if 5,000 results are available only display 20 results per page (leaving us with 250 possible result pages that can be navigated to).
+
+This problem actually has quite a great deal more to it, such as maintaining persistence of other URL parameters (e.g sort, query, order) which can change based on a user's search configuration in a UI. One also had to think of a clean way of hooking views up to this pagination so you can easily navigate between pages (e.g First, Last, Next, Previous, 1,2,3), manage the number of results displayed per page and so on.
+
+**Further client-side pagination of data returned -** e.g we've been returned a JSON esponse containing 100 results. Rather than displaying all 100 to the user, we only display 20 of these results within a navigatable UI in the browser.
+
+Similar to the request problem, client-pagination has its own challenges like navigation once again (Next, Previous, 1,2,3), sorting, order, switching the number of results to display per page and so on.
+
+**Infinite results** - with services such as Facebook, the concept of numeric pagination is instead replaced with a 'Load More' or 'View More' button. Triggering this normally fetches the next 'page' of N results but rather than replacing the previous set of results loaded entirely, we simply append to them instead.
+
+A request pager which simply appends results in a view rather than replacing on each new fetch is effectively an 'infinite' pager.
+
+**Let's now take a look at exactly what we're getting out of the box:**
+
+*[Backbone.Paginator][2] is a set of opinionated components for paginating collections of data using Backbone.js. It aims to provide both solutions for assisting with pagination of requests to a server (e.g an API) as well as pagination of single-loads of data, where we may wish to further paginate a collection of N results into M pages within a view.*
+
+## Paginator's pieces
+
+Backbone.Paginator supports two main pagination components:
+
+*   **Backbone.Paginator.requestPager**: For pagination of requests between a client and a server-side API
+*   **Backbone.Paginator.clientPager**: For pagination of data returned from a server which you would like to further paginate within the UI (e.g 60 results are returned, paginate into 3 pages of 20)
+
+## Downloads And Source Code
+
+You can either download the raw source code for the project, fork the repository or use one of these links:
+
+*   Production: [production](https://raw.github.com/addyosmani/backbone.baginator/master/dist/backbone.paginator.min.js)
+
+*   Development: [development version](https://raw.github.com/addyosmani/backbone.baginator/master/dist/backbone.paginator.js)
+
+*   Examples + Source : [zipball](https://github.com/addyosmani/backbone.paginator/zipball/v0.153)
+
+*   [Repository]()http://github.com/addyosmani/backbone.paginator)
+
+## Live Examples
+
+Live previews of both pagination components using the Netflix API can be found below. Download the tarball or fork the repository to experiment with these examples further.
+
+Demo 1: [Backbone.Paginator.requestPager()][3]
+
+<img alt="" class="aligncenter size-large wp-image-4578" height="451" src="img/requestPager.png" style="margin-left:-17px;"  width="600" />
+
+Demo 2: [Backbone.Paginator.clientPager()][4]
+
+<img alt="" class="aligncenter size-full wp-image-4579" height="462" src="img/clientPager.png"  width="600" />
+
+Demo 3: [Infinite Pagination (Backbone.Paginator.requestPager())][5]
+
+<img alt="" class="aligncenter size-large wp-image-4580" height="451" src="img/infinitepager.png"  width="600" />
+
+## Paginator.requestPager
+
+In this section we're going to walkthrough actually using the requestPager.
+
+#### 1. Create a new Paginated collection
+
+First, we define a new Paginated collection using `Backbone.Paginator.requestPager()` as follows:
+
+<pre class="javascript" name="code">var PaginatedCollection = Backbone.Paginator.requestPager.extend({
+</pre>
+
+#### 2: Set the model and base URL for the collection as normal
+
+Within our collection, we then (as normal) specify the model to be used with this collection followed by the URL (or base URL) for the service providing our data (e.g the Netflix API).
+
+```
+model: model,
+        url: 'http://odata.netflix.com/v2/Catalog/Titles?&',
+```
+
+#### 3. Map the attributes supported by your API (URL)
+
+Next, we're going to map the request (URL) parameters supported by your API or backend data service back to attributes that are internally used by Backbone.Paginator.
+
+For example: the NetFlix API refers to it's parameter for stating how many results to skip ahead by as `$skip` and it's number of items to return per page as `$top` (amongst others). We determine these by looking at a sample URL pointing at the service:
+
+<pre class="html" name="code">http://odata.netflix.com/v2/Catalog/Titles?&callback=callback&$top=30&$skip=30&orderBy=ReleaseYear&$inlinecount=allpages&$format=json&$callback=callback&$filter=substringof%28%27the%27,%20Name%29%20eq%20true&_=1332702202090
+</pre>
+
+We then simply map these parameters to the relevant Paginator equivalents shown on the left hand side of the next snippets to get everything working:
+
+```
+// @param-name for the query field in the 
+        // request (e.g query/keywords/search)
+        queryAttribute: '$filter',
+
+        // @param-name for number of items to return per request/page
+        perPageAttribute: '$top',
+
+        // @param-name for how many results the request should skip ahead to
+        skipAttribute: '$skip',
+
+        // @param-name for the direction to sort in
+        sortAttribute: '$sort',
+
+        // @param-name for field to sort by
+        orderAttribute: '$orderBy',
+
+        // @param-name for the format of the request
+        formatAttribute: '$format',
+
+        // @param-name for a custom attribute 
+        customAttribute1: '$inlinecount',
+
+        // @param-name for another custom attribute
+        customAttribute2: '$callback',
+```
+
+**Note**: you can define support for new custom attributes in Backbone.Paginator if needed (e.g customAttribute1) for those that may be unique to your service.
+
+#### 4. Configure the default pagination, query and sort details for the paginator
+
+Now, let's configure the default values in our collection for these parameters so that as a user navigates through the paginated UI, requests are able to continue querying with the correct field to sort on, the right number of items to return per request etc.
+
+e.g: If we want to request the:
+
+*   1st page of results
+*   for the search query 'superman'
+*   in JSON format
+*   sorted by release year
+*   in ascending order
+*   where only 30 results are returned per request
+
+This would look as follows:
+
+```
+// current page to query from the service
+        page: 5,
+
+        // The lowest page index your API allows to be accessed
+        firstPage: 0, //some begin with 1
+
+        // how many results to query from the service (i.e how many to return
+        // per request)
+        perPage: 30,
+
+        // maximum number of pages that can be queried from 
+        // the server (only here as a default in case your 
+        // service doesn't return the total pages available)
+        totalPages: 10,
+
+        // what field should the results be sorted on?
+        sortField: 'ReleaseYear',
+
+        // what direction should the results be sorted in?
+        sortDirection: 'asc',
+
+        // what would you like to query (search) from the service?
+        // as Netflix reqires additional parameters around the query
+        // we simply fill these around our search term
+        query: "substringof('" + escape('the') + "',Name)",
+
+        // what format would you like to request results in?
+        format: 'json',
+
+        // what other custom parameters for the request do 
+        // you require
+        // for your application?
+        customParam1: 'allpages',
+
+        customParam2: 'callback',
+```
+
+As the particular API we're using requires `callback` and `allpages` parameters to also be passed, we simply define the values for these as custom parameters which can be mapped back to requestPager as needed.
+
+#### 5. Finally, configure Collection.parse() and we're done
+
+The last thing we need to do is configure our collection's `parse()` method. We want to ensure we're returning the correct part of our JSON response containing the data our collection will be populated with, which below is `response.d.results` (for the Netflix API).
+
+You might also notice that we're setting `this.totalPages` to the total page count returned by the API. This allows us to define the maximum number of (result) pages available for the current/last request so that we can clearly display this in the UI. It also allows us to infuence whether clicking say, a 'next' button should proceed with a request or not.
+
+```
+parse: function (response) {
+            // Be sure to change this based on how your results
+            // are structured (e.g d.results is Netflix specific)
+            var tags = response.d.results;
+            //Normally this.totalPages would equal response.d.__count
+            //but as this particular NetFlix request only returns a
+            //total count of items for the search, we divide.
+            this.totalPages = Math.floor(response.d.__count / this.perPage);
+            return tags;
+        }
+    });
+
+});
+```
+
+#### Convenience methods:
+
+For your convenience, the following methods are made available for use in your views to interact with the `requestPager`:
+
+*   **Collection.goTo(n)** - go to a specific page
+*   **Collection.requestNextPage()** - go to the next page
+*   **Collection.requestPreviousPage()** - go to the previous page
+*   **Collection.howManyPer(n)** - set the number of items to display per page
+
+## Paginator.clientPager
+
+The `clientPager` works similar to the `requestPager`, except that our configuration values influence the pagination of data already returned at a UI-level. Whilst not shown (yet) there is also a lot more UI logic that ties in with the `clientPager`. An example of this can be seen in â€˜views/clientPagination.js.
+
+#### 1. Create a new paginated collection with a model and URL
+
+As with `requestPager`, let's first create a new Paginated `Backbone.Paginator.clientPager` collection, with a model and base URL:
+
+```
+var PaginatedCollection = Backbone.Paginator.clientPager.extend({
+
+        model: model,
+
+        url: 'http://odata.netflix.com/v2/Catalog/Titles?&',
+```
+
+#### 2. Map the attributes supported by your API (URL)
+
+We're similarly going to map request parameter names for your API to those supported in the paginator:
+
+```
+perPageAttribute: '$top',
+
+        skipAttribute: '$skip',
+
+        orderAttribute: '$orderBy',
+
+        customAttribute1: '$inlinecount',
+
+        queryAttribute: '$filter',
+
+        formatAttribute: '$format',
+
+        customAttribute2: '$callback',
+```
+
+#### 3. Configure how to paginate data at a UI-level
+
+We then get to configuration for the paginated data in the UI. `perPage` specifies how many results to return from the server whilst `displayPerPage` configures how many of the items in returned results to display per 'page' in the UI. e.g If we request 100 results and only display 20 per page, we have 5 sub-pages of results that can be navigated through in the UI.
+
+```
+// M: how many results to query from the service
+        perPage: 40,
+
+        // N: how many results to display per 'page' within the UI
+        // Effectively M/N = the number of pages the data will be split into.
+        displayPerPage: 20,
+```
+
+#### 4. Configure the rest of the request parameter default values
+
+We can then configure default values for the rest of our request parameters:
+
+```// current page to query from the service
+        page: 1,
+
+        // a default. This should be overridden in the collection's parse()
+        // sort direction
+        sortDirection: 'asc',
+
+        // sort field
+        sortField: 'ReleaseYear',
+        //or year(Instant/AvailableFrom)
+
+        // query
+        query: "substringof('" + escape('the') + "',Name)",
+
+        // request format
+        format: 'json',
+
+        // custom parameters for the request that may be specific to your
+        // application
+        customParam1: 'allpages',
+
+        customParam2: 'callback',
+```
+
+#### 5. Finally, configure Collection.parse() and we're done
+
+And finally we have our `parse()` method, which in this case isn't concerned with the total number of result pages available on the server as we have our own total count of pages for the paginated data in the UI.
+
+```
+parse: function (response) {
+            var tags = response.d.results;
+            return tags;
+        }
+
+});
+```
+
+#### Convenience methods:
+
+As mentioned, your views can hook into a number of convenience methods to navigate around UI-paginated data. For `clientPager` these include:
+
+*   **Collection.goTo(n)** - go to a specific page
+*   **Collection.previousPage()** - go to the previous page
+*   **Collection.nextPage()** - go to the next page
+*   **Collection.howManyPer(n)** - set how many items to display per page
+*   **Collection.pager(sortBy, sortDirection)** - update sort on the current view
+
+## Views/Templates
+
+Although the collection layer is perhaps the most important part of Backbone.Paginator, it would be of little use without views interacting with it. The project zipball comes with three complete examples of using the components with the Netflix API, but here's a sample view and template from the `requestPager()` example for those interested in learning more:
+
+First, we have a view for a pagination bar in our UI that allows us to navigate around our paginated collection:
+
+```
+(function ( views ) {
+
+	views.PaginatedView = Backbone.View.extend({
+
+		events: {
+			'click a.servernext': 'nextResultPage',
+			'click a.serverprevious': 'previousResultPage',
+			'click a.orderUpdate': 'updateSortBy',
+			'click a.serverlast': 'gotoLast',
+			'click a.page': 'gotoPage',
+			'click a.serverfirst': 'gotoFirst',
+			'click a.serverpage': 'gotoPage',
+			'click .serverhowmany a': 'changeCount'
+
+		},
+
+		tagName: 'aside',
+
+		template: _.template($('#tmpServerPagination').html()),
+
+		initialize: function () {
+
+			this.collection.on('reset', this.render, this);
+			this.collection.on('change', this.render, this);
+			this.$el.appendTo('#pagination');
+
+		},
+
+		render: function () {
+			var html = this.template(this.collection.info());
+			this.$el.html(html);
+		},
+
+		updateSortBy: function (e) {
+			e.preventDefault();
+			var currentSort = $('#sortByField').val();
+			this.collection.updateOrder(currentSort);
+		},
+
+		nextResultPage: function (e) {
+			e.preventDefault();
+			this.collection.requestNextPage();
+		},
+
+		previousResultPage: function (e) {
+			e.preventDefault();
+			this.collection.requestPreviousPage();
+		},
+
+		gotoFirst: function (e) {
+			e.preventDefault();
+			this.collection.goTo(this.collection.information.firstPage);
+		},
+
+		gotoLast: function (e) {
+			e.preventDefault();
+			this.collection.goTo(this.collection.information.lastPage);
+		},
+
+		gotoPage: function (e) {
+			e.preventDefault();
+			var page = $(e.target).text();
+			this.collection.goTo(page);
+		},
+
+		changeCount: function (e) {
+			e.preventDefault();
+			var per = $(e.target).text();
+			this.collection.howManyPer(per);
+		}
+
+	});
+
+})( app.views );
+```
+
+which we use with a template like this to generate the necessary pagination links (more are shown in the full example):
+
+```
+<span class="divider">/</span>  
+        <% if (page > firstPage) { %>  
+            <a href="#" class="serverprevious">Previous</a>  
+        <% }else{ %>  
+            <span>Previous</span>  
+        <% }%>  
+        <% if (page < totalPages) { %>  
+            <a href="#" class="servernext">Next</a>  
+        <% } %>  
+        <% if (firstPage != page) { %>  
+            <a href="#" class="serverfirst">First</a>  
+        <% } %>  
+        <% if (lastPage != page) { %>  
+            <a href="#" class="serverlast">Last</a>  
+        <% } %>  
+        <span class="divider">/</span>  
+        <span class="cell serverhowmany">  
+            Show  
+            <a href="#" class="selected">3</a>  
+            |  
+            <a href="#" class="">9</a>  
+            |  
+            <a href="#" class="">12</a>  
+            per page  
+        </span>  
+        <span class="divider">/</span>  
+        <span class="cell first records">  
+            Page: <span class="current"><%= page %></span>  
+            of  
+            <span class="total"><%= totalPages %></span>  
+                        shown  
+        </span>  
+<span class="divider">/</span>  
+    <span class="cell sort">  
+        <a href="#" class="orderUpdate btn small">Sort by:</a>  
+    </span>  
+    <select id="sortByField">  
+        <option value="cid">Select a field to sort on</option>  
+        <option value="ReleaseYear">Release year</option>  
+        <option value="ShortName">Alphabetical</option>  
+    </select>  
+</span>  
+```
+
+
+## License
+
+Copyright Â© 2012 Addy Osmani.Â Licensed under the MIT license.
+
+ [1]: http://github.com/addyosmani/backbone.paginator
+ [2]: http://addyosmani.github.com/backbone.paginator/
+ [3]: http://addyosmani.github.com/backbone.paginator/examples/netflix-request-paging/index.html
+ [4]: http://addyosmani.github.com/backbone.paginator/examples/netflix-client-paging/index.html
+ [5]: http://addyosmani.github.com/backbone.paginator/examples/netflix-infinite-paging/index.html
+ [6]: http://github.com/addyosmani/backbone.paginator/issues
+ [7]: https://github.com/cowboy/grunt
+ 
 
 ##Backbone & jQuery Mobile
 
@@ -2683,7 +3930,7 @@ There's also [jQueryMobile router](https://github.com/azicchetti/jquerymobile-ro
 
 Using jQuery Mobile this can be done by setting: 
 
-```javascript
+```
 $.mobile.hashListeningEnabled = false;
 ```
 
@@ -2693,7 +3940,7 @@ I discovered this method looking through some jQuery Mobile commits that didn't 
 
 The next question that arises is, if we're preventing jQuery Mobile from listening to URL hash changes, how can we still get the benefit of being able to navigate to other sections in a document using the built-in transitions and effects supported? Good question. This can now be solve by simply calling `$.mobile.changePage()` as follows:
 
-```javascript
+```
 var url = '#about',
     effect = 'slideup',
     reverse = false,
@@ -2719,7 +3966,7 @@ Once you feel comfortable with the [Backbone fundamentals](http://msdn.microsoft
 
 For this application, I opted for the nested namespacing pattern. Implemented correctly, this enables you to clearly identify if items being referenced in your app are views, other modules and so on. This initial structure is a sane place to also include application defaults (unless you prefer maintaining those in a separate file).
 
-```javascript
+```
 window.mobileSearch = window.mobileSearch || {
     views: {
         appview: new AppView
@@ -2773,7 +4020,8 @@ The benefit of this is that I don't need to go pulling in jQuery UI separately t
 The takeaway here is just to remember that if you're not (already) going through the hassle of conditional script/style loading based on screen-resolution (using matchMedia.js etc), there are simpler approaches that can be taken to cross-device component theming.
 
 
-##<a name="testing">Testing</a>
+#<a name="testing">Unit Testing</a>
+---
 
 #<a name="unittestingjasmine">Unit Testing Backbone Applications With Jasmine</a>
 
@@ -2826,7 +4074,7 @@ When using Jasmine, you'll be writing suites and specifications (specs). Suites 
 
 Each spec is a JavaScript function, described with a call to ```it()`` using a description string and a function. The description should describe the behaviour the particular unit of code should exhibit and keeping in mind BDD, it should ideally be meaningful. Here's an example of a basic spec:
 
-```javascript
+```
 it('should be incrementing in value', function(){
     var counter = 0;
     counter++;  
@@ -2835,7 +4083,7 @@ it('should be incrementing in value', function(){
 
 On it's own, a spec isn't particularly useful until expectations are set about the behavior of the code. Expectations in specs are defined using the ```expect()``` function and an [expectation matcher](https://github.com/pivotal/jasmine/wiki/Matchers) (e.g toEqual(), toBeTruthy(), toContain()). A revised example using an expectation matcher would look like:
 
-```javascript
+```
 it('should be incrementing in value', function(){
     var counter = 0;
     counter++;  
@@ -2849,7 +4097,7 @@ Specs are grouped into suites which we describe using Jasmine's ```describe()```
 
 Jasmine will use it as the group name when it reports the results of the specs you've asked it to run. A simple suite containing our sample spec could look like:
 
-```javascript
+```
 describe('Stats', function(){
     it('can increment a number', function(){
         ...
@@ -2863,7 +4111,7 @@ describe('Stats', function(){
 
 Suites also share a functional scope and so it's possible to declare variables and functions inside a describe block which are accessible within specs:
 
-```javascript
+```
 describe('Stats', function(){
     var counter = 1;
     
@@ -2887,7 +4135,7 @@ Jasmine also supports **spies** - a way to mock, spy and fake behavior in our un
 
 In the below example, we're spying on the ```setComplete``` method of a dummy Todo function to test that arguments can be passed to it as expected. 
 
-```javascript
+```
 var Todo = function(){
 };
 
@@ -2919,7 +4167,7 @@ What you're more likely to use spies for is testing [asynchronous](http://en.wik
 
 For the first kind of test, it's possible to both fake an AJAX request and verify that the request was both calling the correct URL and executed a callback where one was provided.
 
-```javascript
+```
 it("the callback should be executed on success", function () {
     spyOn($, "ajax").andCallFake(function(options) {
         options.success();
@@ -2951,7 +4199,7 @@ For the second type of test (asynchronous tests), we can take the above further 
 * waitsFor(function, optional message, optional timeout) - a way to pause specs until some other work has completed. Jasmine waits until the supplied function returns true here before it moves on to the next block.
 
 
-```javascript
+```
 it("should make an actual AJAX request to a server", function () {
     
     var callback = jasmine.createSpy();
@@ -2982,7 +4230,7 @@ function getTodo(id, callback) {
 
 Jasmine also supports specifying code that can be run before each (```beforeEach()```) and after each (```afterEach```) test. This is useful for enforcing consistent conditions (such as resetting variables that may be required by specs). In the following example, ```beforeEach()``` is used to create a new sample Todo model specs can use for testing attributes.
 
-```javascript
+```
 beforeEach(function(){
    this.todo = new Backbone.Model({
       text: "Buy some more groceries",
@@ -3014,25 +4262,25 @@ Let's review [SpecRunner.html](https://github.com/pivotal/jasmine/blob/master/li
 
 It first includes both Jasmine and the necessary CSS required for reporting:
 
-```html
-<link rel="stylesheet" type="text/css" href="lib/jasmine-1.1.0.rc1/jasmine.css"/>
-<script type="text/javascript" src="lib/jasmine-1.1.0.rc1/jasmine.js"></script>
-<script type="text/javascript" src="lib/jasmine-1.1.0.rc1/jasmine-html.js"></script>
-```
+
+	<link rel="stylesheet" type="text/css" href="lib/jasmine-1.1.0.rc1/jasmine.css"/>
+	<script type="text/javascript" src="lib/jasmine-1.1.0.rc1/jasmine.js"></script>
+	<script type="text/javascript" src="lib/jasmine-1.1.0.rc1/jasmine-html.js"></script>
+
 
 Next, some sample tests are included:
 
-```html
-<script type="text/javascript" src="spec/SpecHelper.js"></script>
-<script type="text/javascript" src="spec/PlayerSpec.js"></script>
-```
+
+	<script type="text/javascript" src="spec/SpecHelper.js"></script>
+	<script type="text/javascript" src="spec/PlayerSpec.js"></script>
+
 
 And finally the sources being tested:
 
-```html
-<script type="text/javascript" src="src/Player.js"></script>
-<script type="text/javascript" src="src/Song.js"></script>
-```
+
+	<script type="text/javascript" src="src/Player.js"></script>
+	<script type="text/javascript" src="src/Song.js"></script>
+
 
 ***Note:*** Below this section of SpecRunner is code responsible for running the actual tests. Given that we won't be covering modifying this code, I'm going to skip reviewing it. I do however encourage you to take a look through [PlayerSpec.js](https://github.com/pivotal/jasmine/blob/master/lib/jasmine-core/example/spec/PlayerSpec.js) and [SpecHelper.js](https://github.com/pivotal/jasmine/blob/master/lib/jasmine-core/example/spec/SpecHelper.js). They're a useful basic example to go through how a minimal set of tests might work.
 
@@ -3046,7 +4294,7 @@ The complexity of Backbone models can vary greatly depending on what your applic
 
 First, we begin our suite for model testing using ```describe()```:
 
-```javascript
+```
 describe('Tests for Todo', function() {
 ```
 
@@ -3054,7 +4302,7 @@ Models should ideally have default values for attributes. This helps ensure that
 
 In the following spec, we create a new Todo without any attributes passed then check to find out what the value of the ```text``` attribute is. As no value has been set, we expect a default value of ```""`` to be returned.
 
-```javascript
+```
 it('Can be created with default values for its attributes.', function() {
     var todo = new Todo();
     expect(todo.get('text')).toBe("");
@@ -3063,7 +4311,7 @@ it('Can be created with default values for its attributes.', function() {
 
 If testing this spec before your models have been written, you'll incur a failing test, as expected. What's required for the spec to pass is a default value for the attribute ```text```. We can implement this default value with some other useful defaults (which we'll be using shortly) in our Todo model as follows:
 
-```javascript
+```
 window.Todo = Backbone.Model.extend({
 
     defaults: function() {
@@ -3077,7 +4325,7 @@ window.Todo = Backbone.Model.extend({
    
 Next, we want to test that our model will pass attributes that are set such that retrieving the value of these attributes after initialization will be what we expect. Notice that here, in addition to testing for an expected value for ```text```, we're also testing the other default values are what we expect them to be.
     
-```javascript
+```
 it('Will set passed attributes on the model instance when created.', function() {
     var todo = new Todo({ text: 'Get oil change for car.' });
     
@@ -3092,7 +4340,7 @@ it('Will set passed attributes on the model instance when created.', function() 
 
 Backbone models support a model.change() event which is triggered when the state of a model changes. In the following example, by 'state' I'm referring to the value of a Todo model's attributes. The reason changes of state are important to test are that there may be state-dependent events in your application e.g you may wish to display a confirmation view once a Todo model has been updated.
 
-```javascript
+```
 it('Fires a custom event when the state changes.', function() {
 
     var spy = jasmine.createSpy('-change event callback-');
@@ -3115,7 +4363,7 @@ In the following spec, we take advantage of the fact that validations which fail
 
 We create an errorCallback spy using Jasmine's built in ```createSpy()``` method which allows us to spy on the error event as follows:
 
-```javascript
+```
 it('Can contain custom validation rules, and will trigger an error event on failed validation.', function() {
 
     var errorCallback = jasmine.createSpy('-error event callback-');
@@ -3140,7 +4388,7 @@ it('Can contain custom validation rules, and will trigger an error event on fail
 
 The code to make the above failing test support validation is relatively simple. In our model, we override the validate() method (as recommended in the Backbone docs), checking to make sure a model both has a 'done' property and is a valid boolean before allowing it to pass.
 
-```javascript
+```
 validate: function(attrs) {
     if (attrs.hasOwnProperty('done') && !_.isBoolean(attrs.done)) {
         return 'Todo.done must be a boolean value.';
@@ -3150,7 +4398,7 @@ validate: function(attrs) {
 
 If you would like to review the final code for our Todo model, you can find it below:
 
-```javascript
+```
 var NAUGHTY_WORDS = /crap|poop|hell|frogs/gi;
 
 function sanitize(str) {
@@ -3199,7 +4447,7 @@ In this section we're going to cover the first two of these with the third left 
 
 Testing Todo models can be added to a collection as objects or arrays is relatively trivial. First, we initialize a new TodoList collection and check to make sure it's length (i.e the number of Todo models it contains) is 0. Next, we add new Todos, both as objects and arrays, checking the length property of the collection at each stage to ensure the overall count is what we expect:
 
-```javascript
+```
 describe('Tests for TodoList', function() {
 
     it('Can add Model instances as objects and arrays.', function() {
@@ -3225,7 +4473,7 @@ describe('Tests for TodoList', function() {
 
 Similar to model attributes, it's also quite straight-forward to test attributes in collections. Here we have a spec that ensures the collection.url (i.e the url reference to the collection's location on the server) is what we expect it to be:
 
-```javascript
+```
 it('Can have a url property to define the basic url structure for all contained models.', function() {
         var todos = new TodoList();
         
@@ -3240,7 +4488,7 @@ For the third spec, it's useful to remember that the implementation for our coll
 The final implementation for our TodoList collection can be found below:
 
 
-```javascript
+```
  window.TodoList = Backbone.Collection.extend({
 
         model: Todo,
@@ -3298,7 +4546,7 @@ some.fixture.html:
 
 Next, inside our actual test we would load it as follows:
 
-```javascript
+```
 loadFixtures('some.fixture.html')
 $('some-fixture').myTestedPlugin();
 expect($('#some-fixture')).to<the rest of your matcher would go here>
@@ -3308,7 +4556,7 @@ The jasmine-jquery plugin is by default setup to load fixtures from a specific d
 
 Finally, jasmine-jquery includes support for spying on jQuery events without the need for any extra plumbing work. This can be done using the ```spyOnEvent()``` and ```assert(eventName).toHaveBeenTriggered(selector)``` functions. An example of usage may look as follows:
 
-```javascript
+```
 spyOnEvent($('#el'), 'click');
 $('#el').click();
 expect('click').toHaveBeenTriggeredOn($('#el'));
@@ -3324,7 +4572,7 @@ At their most basic, specs for Backbone views should validate that they are bein
 
 To help ensure a consistent testing setup for our specs, we use ```beforeEach()``` to append both an empty ```UL``` (#todoList) to the DOM and initialize a new instance of a TodoView using an empty Todo model. ```afterEach()``` is used to remove the previous #todoList  ```UL``` as well as the previous instance of the view. 
 
-```javascript
+```
 describe('Tests for TodoView', function() {
     
     beforeEach(function() {
@@ -3345,7 +4593,7 @@ The first spec useful to write is a check that the TodoView we've created is usi
 
 Backbone views typically create empty DOM elements once initialized, however these elements are not attached to the visible DOM in order to allow them to be constructed without an impact on the performance of rendering. 
 
-```javascript
+```
 it('Should be tied to a DOM element when created, based off the property provided.', function() {
     //what html element tag name represents this view?
     expect(todoView.el.tagName.toLowerCase()).toBe('li');
@@ -3354,7 +4602,7 @@ it('Should be tied to a DOM element when created, based off the property provide
  
 Once again, if the TodoView has not already been written, we will experience failing specs. Thankfully, solving this is as simple as creating a new Backbone.View with a specific ```tagName```.
 
-```javascript
+```
 var todoView = Backbone.View.extend({
     tagName:  "li"
 });
@@ -3362,7 +4610,7 @@ var todoView = Backbone.View.extend({
 
 If instead of testing against the ```tagName``` you would prefer to use a className instead, we can take advantage of jasmine-jquery's ```toHaveClass()``` matcher to cater for this.
 
-```javascript
+```
 it('Should have a class of "todos"'), function(){
    expect($(this.view.el)).toHaveClass('todos');
 });
@@ -3372,7 +4620,7 @@ The ```toHaveClass()``` matcher operates on jQuery objects and if the plugin had
 
 You may have noticed that in ```beforeEach()```, we passed our view an initial (albeit unfilled) Todo model. Views should be backed by a model instance which provides data. As this is quite important to our view's ability to function, we can write a spec to ensure a model is both defined (using the ```toBeDefined()``` matcher) and then test attributes of the model to ensure defaults both exist and are the value we expect them to be.
 
-```javascript
+```
 it('Is backed by a model instance, which provides the data.', function() {
 
     expect(todoView.model).toBeDefined();
@@ -3393,7 +4641,7 @@ We're going to begin testing views by writing two specs. The first spec will che
 
 Unlike some of the previous specs we've covered, this section will make greater use of ```beforeEach()``` to both demonstrate how to use nested suites and also ensure a consistent set of conditions for our specs. In our first view spec for TodoView, we're simply going to create a sample model (based on Todo) and instantiate a TodoView which associates it with the model.
 
-```javascript
+```
 describe("TodoView", function() {
 
   beforeEach(function() {
@@ -3431,18 +4679,18 @@ Once these specs are run, only the second one ('produces the correct HTML') fail
 **Note:** For the purposes of maintaining readability, all template examples in this section will use a minimal version of the following Todo view template. As it's relatively trivial to expand this, please feel free to refer to this sample if needed: 
 
 
-```html
-<div class="todo <%= done ? 'done' : '' %>">
-        <div class="display">
-          <input class="check" type="checkbox" <%= done ? 'checked="checked"' : '' %> />
-          <label class="todo-content"><%= text %></label>
-          <span class="todo-destroy"></span>
-        </div>
-        <div class="edit">
-          <input class="todo-input" type="text" value="<%= content %>" />
-        </div>
-</div>
-```
+
+	<div class="todo <%= done ? 'done' : '' %>">
+	        <div class="display">
+	          <input class="check" type="checkbox" <%= done ? 'checked="checked"' : '' %> />
+	          <label class="todo-content"><%= text %></label>
+	          <span class="todo-destroy"></span>
+	        </div>
+	        <div class="edit">
+	          <input class="todo-input" type="text" value="<%= content %>" />
+	        </div>
+	</div>
+
 
 
 The second spec fails with the following message:
@@ -3451,7 +4699,7 @@ Expected '' to contain ```'<label class="todo-content">My Todo</label>'```.
 
 The reason for this is the default behavior for render() doesn't create any markup. Let's write a replacement for render() which fixes this:
 
-```javascript
+```
 render: function() {
   var template = '<label class="todo-content"><%= text %></label>';
   var output = template
@@ -3466,7 +4714,7 @@ The above specifies an inline string template and replaces fields found in the t
 With this in mind, let's re-write the specs, this time using some of the custom matchers offered by jasmine-jquery:
 
 
-```javascript
+```
 describe("Template", function() {
   
   beforeEach(function() {
@@ -3487,7 +4735,7 @@ It would be impossible to discuss unit testing without mentioning fixtures. Fixt
 Re-writing the last spec to use fixtures would look as follows:
 
 
-```javascript
+```
 describe("TodoView", function() {
   
   beforeEach(function() {
@@ -3524,7 +4772,7 @@ JavaScript templating systems (such as Handlebars, Mustache and even Underscore'
 In our case, when a user sets a Todo item to be complete (done), we may wish to provide them with visual feedback (such as a striked line through the text) to differentiate the item from those that are remaining. This can be done by attaching a new class to the item. Let's begin by writing a test we would ideally like to work:
 
 
-```javascript
+```
 describe("When a todo is done", function() {
   
   beforeEach(function() {
@@ -3548,7 +4796,7 @@ to have class 'done'.
 which can be fixed in the existing render() method as follows:
 
 
-```javascript
+```
 render: function() {
   var template = '<label class="todo-content">' +
     '<%= text %></label>';
@@ -3567,7 +4815,7 @@ This can however get unwieldily fairly quickly. As the logic in our templates in
 
 The TodoView object modified to use Underscore templating would look as follows:
 
-```javascript
+```
 var TodoView = Backbone.View.extend({
   
   tagName: "li",
@@ -3591,7 +4839,7 @@ Above, the initialize() method compiles a supplied Underscore template (using th
 
 For testing purposes, we're going to continue using the string injection approach to keep things simple. There is however a useful trick that can be applied to automatically create or extend templates in the Jasmine scope for each test. By creating a new directory (say, 'templates') in the 'spec' folder and adding a new script file with the following contents, to jasmine.yml or SpecRunner.html, we can add a todo property which contains the Underscore template we wish to use:
 
-```javascript
+```
 beforeEach(function() {
   this.templates = _.extend(this.templates || {}, {
     todo: '<label class="todo-content">' +
@@ -3604,7 +4852,7 @@ beforeEach(function() {
 To finish this off, we simply update our existing spec to reference the template when instantiating the TodoView object:
 
 
-```javascript
+```
 describe("TodoView", function() {
 
   beforeEach(function() {
@@ -3623,7 +4871,7 @@ describe("TodoView", function() {
 
 The existing specs we've looked at would continue to pass using this approach, leaving us free to adjust the template with some additional conditional logic for Todos with a status of 'done':
 
-```javascript
+```
 beforeEach(function() {
   this.templates = _.extend(this.templates || {}, {
     todo: '<label class="todo-content <%= done ? 'done' : '' %>"' +
@@ -3716,15 +4964,15 @@ Let's go through the elements above with qunit mentioned in their ID. When QUnit
 
 When running correctly, the above test runner looks as follows:
 
-![screenshot 1](http://addyosmani.com/gyazo/7d4de12.png)
+![screenshot 1](img/7d4de12.png)
 
 The numbers of the form (a, b, c) after each test name correspond to a) failed asserts, b) passed asserts and c) total asserts. Clicking on a test name expands it to display all of the assertions for that test case. Assertions in green have successfully passed. 
 
-![screenshot 2](http://addyosmani.com/gyazo/9df4.png)
+![screenshot 2](img/9df4.png)
 
 If however any tests fail, the test gets highlighted (and the qunit-banner at the top switches to red):
 
-![screenshot 3](http://addyosmani.com/gyazo/3e5545.png)
+![screenshot 3](img/3e5545.png)
 
 
 ##Assertions
@@ -4725,15 +5973,21 @@ That's it for this section on testing applications with QUnit and SinonJS. I enc
 
 
 #<a name="resources">Resources</a>
+---
 
 Whilst we get with Backbone out of the box can be terribly useful, there are some equally beneficial add-ons that can help simplify our development process. These include:
 
 * [Backbone Layout Manager](https://github.com/tbranyen/backbone.layoutmanager)
+* [Backbone Boilerplate](https://github.com/tbranyen/backbone-boilerplate)
 * [Backbone Model Binding](https://github.com/derickbailey/backbone.modelbinding)
 * [Backbone Relational - for model relationships](https://github.com/PaulUithol/Backbone-relational)
 * [View and model inheritance](https://gist.github.com/1271041)
+* [Backbone Marionette](https://github.com/derickbailey/backbone.marionette)
 * [Backbone CouchDB](https://github.com/janmonschke/backbone-couchdb)
 * [Backbone Validations - HTML5 inspired validations](https://github.com/n-time/backbone.validations)
 
 In time, there will be tutorials in the book covering some of these resources but until then, please feel free to check them out. 
+
+---
+Copyright Addy Osmani, 2012. 
 
