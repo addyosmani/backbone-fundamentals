@@ -1,8 +1,11 @@
+
+<p>&nbsp;</p>
+
 #Developing Backbone.js Applications
 ####By Addy Osmani ([@addyosmani](http://twitter.com/addyosmani))
 ----
 
-<!-- sharing options for online version-->
+<!-- sharing options for online version, remove if converting to other formats-->
 <div style="width:500px">
 
 <iframe src="http://markdotto.github.com/github-buttons/github-btn.html?user=addyosmani&repo=backbone-fundamentals&type=watch&count=true"
@@ -18,16 +21,16 @@
 
 ##Prelude
 
-This is the home of 'Developing Backbone.js Applications', an (in-progress) book about the Backbone.js framework for structuring JavaScript applications. It is released under a Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported [license](http://creativecommons.org/licenses/by-nc-sa/3.0/).
+Welcome to my (in-progress) book about the [Backbone.js](http://documentcloud.github.com/backbone/) framework for structuring JavaScript applications. It's released under a Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported [license](http://creativecommons.org/licenses/by-nc-sa/3.0/) meaning you can both grab a copy of the book for free or help to further [improve](https://github.com/addyosmani/backbone-fundamentals/) it.
 
-I am quite pleased to announce that this book will be out in physical form in a few months time via [O'Reilly Media](http://oreilly.com). Readers will have the option of purchasing the latest version in either print or a number of digital formats then or can grab a copy for free from this repository.
+I'm very pleased to announce that this book will be out in physical form in a few months time via [O'Reilly Media](http://oreilly.com). Readers will have the option of purchasing the latest version in either print or a number of digital formats then or can grab a recent version from this repository.
 
 Corrections to existing material are always welcome and I hope that together we can provide the community with an up-to-date resource that is of help.
-My extended thanks go out to [these](https://github.com/addyosmani/backbone-fundamentals/contributors) members of the community for their assistance tweaking the project.
+My extended thanks go out to [Jeremy Ashkenas](https://github.com/jashkenas) for creating Backbone.js and [these](https://github.com/addyosmani/backbone-fundamentals/contributors) members of the community for their assistance tweaking this project.
 
 I hope you find this book helpful!
 
-##Index
+##Table Of Contents
 
 * ####[Introduction](#introduction)
 
@@ -600,7 +603,7 @@ var Photo = Backbone.Model.extend({
     }
 });
  
-/*We can then create our own instance of a photo as follows:*/
+// We can then create our own instance of a photo as follows:
 var myPhoto = new Photo();
 ```
 
@@ -655,12 +658,12 @@ var Photo = Backbone.Model.extend({
     }
 });
  
-/*Setting the value of attributes via instantiation*/
+// Setting the value of attributes via instantiation
 var myPhoto = new Photo({ title: 'My awesome photo', location: 'Boston' });
  
 var myPhoto2 = new Photo();
 
-/*Setting the value of attributes through Model.set()*/
+// Setting the value of attributes through Model.set()
 myPhoto2.set({ title:'Vacation in Florida', location: 'Florida' });
 ```
 
@@ -723,7 +726,7 @@ var Photo = Backbone.Model.extend({
  
 var myPhoto = new Photo({ title:"Fishing at the lake", src:"fishing.jpg"});
 myPhoto.setTitle('Fishing at sea'); 
-//logs My title has been changed to.. Fishing at sea
+//logs 'My title has been changed to.. Fishing at sea'
 ```
 
 **Validation**
@@ -1198,20 +1201,20 @@ Yahoo's YUI uses the nested object namespacing pattern regularly and even Docume
 ```
 var galleryApp =  galleryApp || {};
  
-/*perform similar check for nested children*/
+// perform similar check for nested children
 galleryApp.routers = galleryApp.routers || {};
 galleryApp.model = galleryApp.model || {};
 galleryApp.model.special = galleryApp.model.special || {};
  
-/*routers*/
+// routers
 galleryApp.routers.Workspace   = Backbone.Router.extend({}); 
 galleryApp.routers.PhotoSearch = Backbone.Router.extend({}); 
  
-/*models*/
+// models
 galleryApp.model.Photo   = Backbone.Model.extend({});
 galleryApp.model.Comment = Backbone.Model.extend({}); 
  
-/*special models*/
+// special models
 galleryApp.model.special.Admin = Backbone.Model.extend({});
 ```
 
@@ -3558,7 +3561,7 @@ For example: the NetFlix API refers to it's parameter for stating how many resul
 We then simply map these parameters to the relevant Paginator equivalents shown on the left hand side of the next snippets to get everything working:
 
 ```
-// @param-name for the query field in the 
+        // @param-name for the query field in the 
         // request (e.g query/keywords/search)
         queryAttribute: '$filter',
 
@@ -3602,7 +3605,7 @@ e.g: If we want to request the:
 This would look as follows:
 
 ```
-// current page to query from the service
+        // current page to query from the service
         page: 5,
 
         // The lowest page index your API allows to be accessed
@@ -3713,7 +3716,7 @@ perPageAttribute: '$top',
 We then get to configuration for the paginated data in the UI. `perPage` specifies how many results to return from the server whilst `displayPerPage` configures how many of the items in returned results to display per 'page' in the UI. e.g If we request 100 results and only display 20 per page, we have 5 sub-pages of results that can be navigated through in the UI.
 
 ```
-// M: how many results to query from the service
+        // M: how many results to query from the service
         perPage: 40,
 
         // N: how many results to display per 'page' within the UI
@@ -3725,7 +3728,8 @@ We then get to configuration for the paginated data in the UI. `perPage` specifi
 
 We can then configure default values for the rest of our request parameters:
 
-```// current page to query from the service
+```
+        // current page to query from the service
         page: 1,
 
         // a default. This should be overridden in the collection's parse()

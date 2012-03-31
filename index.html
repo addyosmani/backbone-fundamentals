@@ -125,13 +125,18 @@ pre code {
 <title>Developing Backbone.js Applications</title>
 </head>
 <body>
+
+
+<p>&nbsp;</p>
+
+
 <h1>Developing Backbone.js Applications</h1>
 
 <h4>By Addy Osmani (<a href="http://twitter.com/addyosmani">@addyosmani</a>)</h4>
 
 <hr />
 
-<!-- sharing options for online version-->
+<!-- sharing options for online version, remove if converting to other formats-->
 
 
 <div style="width:500px">
@@ -151,16 +156,16 @@ pre code {
 
 <h2>Prelude</h2>
 
-<p>This is the home of &lsquo;Developing Backbone.js Applications&rsquo;, an (in-progress) book about the Backbone.js framework for structuring JavaScript applications. It is released under a Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported <a href="http://creativecommons.org/licenses/by-nc-sa/3.0/">license</a>.</p>
+<p>Welcome to my (in-progress) book about the <a href="http://documentcloud.github.com/backbone/">Backbone.js</a> framework for structuring JavaScript applications. It&rsquo;s released under a Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported <a href="http://creativecommons.org/licenses/by-nc-sa/3.0/">license</a> meaning you can both grab a copy of the book for free or help to further <a href="https://github.com/addyosmani/backbone-fundamentals/">improve</a> it.</p>
 
-<p>I am quite pleased to announce that this book will be out in physical form in a few months time via <a href="http://oreilly.com">O'Reilly Media</a>. Readers will have the option of purchasing the latest version in either print or a number of digital formats then or can grab a copy for free from this repository.</p>
+<p>I&rsquo;m very pleased to announce that this book will be out in physical form in a few months time via <a href="http://oreilly.com">O'Reilly Media</a>. Readers will have the option of purchasing the latest version in either print or a number of digital formats then or can grab a recent version from this repository.</p>
 
 <p>Corrections to existing material are always welcome and I hope that together we can provide the community with an up-to-date resource that is of help.
-My extended thanks go out to <a href="https://github.com/addyosmani/backbone-fundamentals/contributors">these</a> members of the community for their assistance tweaking the project.</p>
+My extended thanks go out to <a href="https://github.com/jashkenas">Jeremy Ashkenas</a> for creating Backbone.js and <a href="https://github.com/addyosmani/backbone-fundamentals/contributors">these</a> members of the community for their assistance tweaking this project.</p>
 
 <p>I hope you find this book helpful!</p>
 
-<h2>Index</h2>
+<h2>Table Of Contents</h2>
 
 <ul>
 <li><h4><a href="#introduction">Introduction</a></h4></li>
@@ -753,7 +758,7 @@ somePhoto.changeSrc("magic.jpg"); // which triggers "change:src" and logs an upd
     }
 });
 
-/*We can then create our own instance of a photo as follows:*/
+// We can then create our own instance of a photo as follows:
 var myPhoto = new Photo();
 </code></pre>
 
@@ -802,12 +807,12 @@ console.log(myAttributes);
     }
 });
 
-/*Setting the value of attributes via instantiation*/
+// Setting the value of attributes via instantiation
 var myPhoto = new Photo({ title: 'My awesome photo', location: 'Boston' });
 
 var myPhoto2 = new Photo();
 
-/*Setting the value of attributes through Model.set()*/
+// Setting the value of attributes through Model.set()
 myPhoto2.set({ title:'Vacation in Florida', location: 'Florida' });
 </code></pre>
 
@@ -867,7 +872,7 @@ var myPhoto = new Photo({ location: "Boston",
 
 var myPhoto = new Photo({ title:"Fishing at the lake", src:"fishing.jpg"});
 myPhoto.setTitle('Fishing at sea'); 
-//logs My title has been changed to.. Fishing at sea
+//logs 'My title has been changed to.. Fishing at sea'
 </code></pre>
 
 <p><strong>Validation</strong></p>
@@ -1302,20 +1307,20 @@ myGalleryViews.galleryView = Backbone.View.extend({});
 
 <pre><code>var galleryApp =  galleryApp || {};
 
-/*perform similar check for nested children*/
+// perform similar check for nested children
 galleryApp.routers = galleryApp.routers || {};
 galleryApp.model = galleryApp.model || {};
 galleryApp.model.special = galleryApp.model.special || {};
 
-/*routers*/
+// routers
 galleryApp.routers.Workspace   = Backbone.Router.extend({}); 
 galleryApp.routers.PhotoSearch = Backbone.Router.extend({}); 
 
-/*models*/
+// models
 galleryApp.model.Photo   = Backbone.Model.extend({});
 galleryApp.model.Comment = Backbone.Model.extend({}); 
 
-/*special models*/
+// special models
 galleryApp.model.special.Admin = Backbone.Model.extend({});
 </code></pre>
 
@@ -3591,7 +3596,7 @@ function ($, _, facade) {
 
 <p>We then simply map these parameters to the relevant Paginator equivalents shown on the left hand side of the next snippets to get everything working:</p>
 
-<pre><code>// @param-name for the query field in the 
+<pre><code>        // @param-name for the query field in the 
         // request (e.g query/keywords/search)
         queryAttribute: '$filter',
 
@@ -3637,7 +3642,7 @@ function ($, _, facade) {
 
 <p>This would look as follows:</p>
 
-<pre><code>// current page to query from the service
+<pre><code>        // current page to query from the service
         page: 5,
 
         // The lowest page index your API allows to be accessed
@@ -3747,7 +3752,7 @@ function ($, _, facade) {
 
 <p>We then get to configuration for the paginated data in the UI. <code>perPage</code> specifies how many results to return from the server whilst <code>displayPerPage</code> configures how many of the items in returned results to display per &lsquo;page&rsquo; in the UI. e.g If we request 100 results and only display 20 per page, we have 5 sub-pages of results that can be navigated through in the UI.</p>
 
-<pre><code>// M: how many results to query from the service
+<pre><code>        // M: how many results to query from the service
         perPage: 40,
 
         // N: how many results to display per 'page' within the UI
@@ -3759,43 +3764,41 @@ function ($, _, facade) {
 
 <p>We can then configure default values for the rest of our request parameters:</p>
 
-<p>```// current page to query from the service
-        page: 1,</p>
+<pre><code>        // current page to query from the service
+        page: 1,
 
-<pre><code>    // a default. This should be overridden in the collection's parse()
-    // sort direction
-    sortDirection: 'asc',
+        // a default. This should be overridden in the collection's parse()
+        // sort direction
+        sortDirection: 'asc',
 
-    // sort field
-    sortField: 'ReleaseYear',
-    //or year(Instant/AvailableFrom)
+        // sort field
+        sortField: 'ReleaseYear',
+        //or year(Instant/AvailableFrom)
 
-    // query
-    query: "substringof('" + escape('the') + "',Name)",
+        // query
+        query: "substringof('" + escape('the') + "',Name)",
 
-    // request format
-    format: 'json',
+        // request format
+        format: 'json',
 
-    // custom parameters for the request that may be specific to your
-    // application
-    customParam1: 'allpages',
+        // custom parameters for the request that may be specific to your
+        // application
+        customParam1: 'allpages',
 
-    customParam2: 'callback',
+        customParam2: 'callback',
 </code></pre>
 
-<pre><code>
-#### 5. Finally, configure Collection.parse() and we're done
+<h4>5. Finally, configure Collection.parse() and we&rsquo;re done</h4>
 
-And finally we have our `parse()` method, which in this case isn't concerned with the total number of result pages available on the server as we have our own total count of pages for the paginated data in the UI.
-</code></pre>
+<p>And finally we have our <code>parse()</code> method, which in this case isn&rsquo;t concerned with the total number of result pages available on the server as we have our own total count of pages for the paginated data in the UI.</p>
 
-<p>parse: function (response) {
+<pre><code>parse: function (response) {
             var tags = response.d.results;
             return tags;
-        }</p>
+        }
 
-<p>});
-```</p>
+});
+</code></pre>
 
 <h4>Convenience methods:</h4>
 
