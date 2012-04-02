@@ -1,4 +1,6 @@
 
+# A little build script for compiling the HTML, ePub and RTF versions of the book.
+
 #pandoc is the path to the pandoc executable. It can either simply be 'pandoc', 
 #or if you require a custom path just replace it with that path. 
 #e.g /Users/apple/Desktop/usr/local/bin/pandoc
@@ -11,4 +13,3 @@ pandoc -s ../index.md -t epub --epub-metadata=metadata.xml -o ../backbone-fundam
 
 #rtf
 pandoc -s title.txt -S ../index.md -o ../backbone-fundamentals.rtf
-
