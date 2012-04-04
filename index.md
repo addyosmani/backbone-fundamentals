@@ -1225,7 +1225,7 @@ Andrew de Andrade has pointed out that DocumentCloud themselves usually only use
 
 ####Is Backbone too small for my application's needs?
 
-If you find yourself unsure of whether or not your application is too large to use Backbone, I recommend reading my post on building large-scale jQuery & JavaScript applications or reviewing my slides on client-side MVC architecture options. In both, I cover alternative solutions and my thoughts on the suitability of current MVC solutions for scaled application development.
+If you find yourself unsure of whether or not your application is too large to use Backbone, I recommend reading [my post](http://addyosmani.com/blog/jqcon-largescalejs-2012/) on building large-scale jQuery & JavaScript applications or reviewing my slides on client-side MVC architecture options. In both, I cover alternative solutions and my thoughts on the suitability of current MVC solutions for scaled application development.
 
 Backbone can be used for building both trivial and complex applications as demonstrated by the many examples Ashkenas has been referencing in the Backbone documentation. As with any MVC framework however, it's important to dedicate time towards planning out what models and views your application really needs. Diving straight into development without doing this can result in either spaghetti code or a large refactor later on and it's best to avoid this where possible. 
 
