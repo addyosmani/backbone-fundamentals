@@ -2774,8 +2774,6 @@ require([<span class="ch">&#39;views/app&#39;</span>], <span class="kw">function
         <span class="kw">&lt;option</span><span class="ot"> value=</span><span class="st">&quot;ShortName&quot;</span><span class="kw">&gt;</span>Alphabetical<span class="kw">&lt;/option&gt;</span>  
     <span class="kw">&lt;/select&gt;</span>  
 <span class="kw">&lt;/span&gt;</span>  </code></pre>
-<h2 id="license">License</h2>
-<p>Copyright Â© 2012 Addy Osmani.Â Licensed under the MIT license.</p>
 <h2 id="backbone-jquery-mobile">Backbone &amp; jQuery Mobile</h2>
 <h3 id="resolving-the-routing-conflicts">Resolving the routing conflicts</h3>
 <p>The first major hurdle developers typically run into when building Backbone applications with jQuery Mobile is that both frameworks have their own opinions about how to handle application navigation.</p>
@@ -2839,7 +2837,7 @@ $.<span class="fu">mobile</span>.<span class="fu">changePage</span>( url , { <sp
 <p>If you open up Flickly in a desktop browser, you'll get an image search UI that's modeled on Google.com, however, review the components (buttons, text inputs, tabs) on the page for a moment. The desktop UI doesn't look anything like a mobile application yet I'm still using jQM for theming mobile components; the tabs, date-picker, sliders - everything in the desktop UI is re-using what jQM would be providing users on mobile devices. Thanks to some media queries, the desktop UI can make optimal use of whitespace, expanding component blocks out and providing alternative layouts whilst still making use of jQM as a component framework.</p>
 <p>The benefit of this is that I don't need to go pulling in jQuery UI separately to be able to take advantage of these features. Thanks to the recent ThemeRoller my components can look pretty much exactly how I would like them to and users of the app can get a jQM UI for lower-resolutions and a jQM-ish UI for everything else.</p>
 <p>The takeaway here is just to remember that if you're not (already) going through the hassle of conditional script/style loading based on screen-resolution (using matchMedia.js etc), there are simpler approaches that can be taken to cross-device component theming.</p>
-<h2 id="unit-testing"># <a name="testing">Unit Testing</a></h2>
+<h2 id="unit-testing"><a name="testing">Unit Testing</a></h2>
 <h1 id="unit-testing-backbone-applications-with-jasmine"><a name="unittestingjasmine">Unit Testing Backbone Applications With Jasmine</a></h1>
 <h2 id="introduction-2">Introduction</h2>
 <p>One definition of unit testing is the process of taking the smallest piece of testable code in an application, isolating it from the remainder of your codebase and determining if it behaves exactly as expected. In this section, we'll be taking a look at how to unit test Backbone applications using a popular JavaScript testing framework called <a href="http://pivotal.github.com/jasmine/">Jasmine</a> from Pivotal Labs.</p>

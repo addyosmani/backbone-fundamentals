@@ -3890,9 +3890,6 @@ which we use with a template like this to generate the necessary pagination link
 ```
 
 
-## License
-
-Copyright Â© 2012 Addy Osmani.Â Licensed under the MIT license.
 
  [1]: http://github.com/addyosmani/backbone.paginator
  [2]: http://addyosmani.github.com/backbone.paginator/
@@ -4007,7 +4004,7 @@ The benefit of this is that I don't need to go pulling in jQuery UI separately t
 The takeaway here is just to remember that if you're not (already) going through the hassle of conditional script/style loading based on screen-resolution (using matchMedia.js etc), there are simpler approaches that can be taken to cross-device component theming.
 
 
-# <a name="testing">Unit Testing</a>
+<a name="testing">Unit Testing</a>
 ---
 
 #<a name="unittestingjasmine">Unit Testing Backbone Applications With Jasmine</a>
