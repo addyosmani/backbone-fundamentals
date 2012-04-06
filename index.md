@@ -4712,7 +4712,7 @@ describe("Template", function() {
   });
 
   it("has the correct text content", function() {
-    expect(this.view.$('todo-content'))
+    expect(this.view.$('.todo-content'))
       .toHaveText('My Todo');
   });
   
