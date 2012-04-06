@@ -332,7 +332,7 @@ var PhotosController = Spine.Controller.sub({
   },
 
   remove: function(){
-    this.el.remove();
+    this.$el.remove();
     this.release();
   }
 });
@@ -474,7 +474,7 @@ var PhotoView = Backbone.View.extend({
 
     // Re-render the photo entry
     render: function() {
-      $(this.el).html(this.template(this.model.toJSON()));
+      this.$el.html(this.template(this.model.toJSON()));
       return this;
     },
 
@@ -755,7 +755,7 @@ var PhotoSearch = Backbone.View.extend({
     el: $('#results'),
     render: function( event ){
         var compiled_template = _.template( $("#results-template").html() );
-        this.el.html( compiled_template(this.model.toJSON()) );
+        this.$el.html( compiled_template(this.model.toJSON()) );
         return this; //recommended as this enables calls to be chained.
     },
     events: {
@@ -2685,7 +2685,7 @@ require(['js/app', 'text!templates/mainView.html'],
 That's it!. You can then go applying your template to a view in Backbone doing something like:
 
 ```javascript
-collection.someview.el.html( compiled_template( { results: collection.models } ) );
+collection.someview.$el.html( compiled_template( { results: collection.models } ) );
 ```
 
 
@@ -2959,7 +2959,7 @@ define([
 
     // Re-render the contents of the todo item.
     render: function() {
-      $(this.el).html(this.template(this.model.toJSON()));
+      this.$el.html(this.template(this.model.toJSON()));
       this.setContent();
       return this;
     },
@@ -3376,7 +3376,7 @@ function ($, _, facade) {
             context.model.save({
                 content: context.input.val()
             });
-            $(context.el).removeClass("editing");
+            context.$el.removeClass("editing");
         } catch (e) {
             //console.log(e);
         }
@@ -3412,7 +3412,7 @@ function ($, _, facade) {
     // Update editing UI on switching mode to editing content
     // Subscribes to: beginContentEditing
     facade.subscribe('editFocus','beginContentEditing', function (context) {
-        $(context.el).addClass("editing");
+        context.$el.addClass("editing");
         context.input.focus();
     });
 
@@ -4602,7 +4602,7 @@ If instead of testing against the ```tagName``` you would prefer to use a classN
 
 ```
 it('Should have a class of "todos"'), function(){
-   expect($(this.view.el)).toHaveClass('todos');
+   expect(this.view.$el).toHaveClass('todos');
 });
 ```
 
@@ -4694,7 +4694,7 @@ render: function() {
   var template = '<label class="todo-content"><%= text %></label>';
   var output = template
     .replace("<%= text %>", this.model.get('text'));
-  $(this.el).html(output);
+  this.$el.html(output);
   return this;
 }
 ```
@@ -4712,7 +4712,7 @@ describe("Template", function() {
   });
 
   it("has the correct text content", function() {
-    expect($(this.view.el).find('todo-content'))
+    expect(this.view.$('todo-content'))
       .toHaveText('My Todo');
   });
   
@@ -4792,7 +4792,7 @@ render: function() {
     '<%= text %></label>';
   var output = template
     .replace("<%= text %>", this.model.get('text'));
-  $(this.el).html(output);
+  this.$el.html(output);
   if (this.model.get('done')) {
     this.$(".todo-content").addClass("done");
   }
@@ -4815,7 +4815,7 @@ var TodoView = Backbone.View.extend({
   },
   
   render: function() {
-    $(this.el).html(this.template(this.model.toJSON()));
+    this.$el.html(this.template(this.model.toJSON()));
     return this;
   },
 
