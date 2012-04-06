@@ -999,7 +999,8 @@ var GalleryRouter = Backbone.Router.extend({
     },
     
     searchPhotos: function(query, page){
-        console.log("Page number: " + page + " of the results for " + query);
+        var page_number = page || 1;
+        console.log("Page number: " + page_number + " of the results for " + query);
     },
     
     downloadPhoto: function(id, path){
