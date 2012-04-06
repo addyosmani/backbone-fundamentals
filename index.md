@@ -283,7 +283,7 @@ Let's compare two examples of HTML templates. One is implemented using the popul
 You may also use double curly brackets (i.e ```{{}}```) (or any other tag you feel comfortable with) in Microtemplates. In the case of curly brackets, this can be done by setting the Underscore ```templateSettings``` attribute as follows:
 
 ```javascript
-_.templateSettings = { interpolate : /\{\{(.+?)\}\}/g };
+_.templateSettings = { interpolate: /\{\{(.+?)\}\}/g };
 ```
 
 **A note on navigation and state**
@@ -459,7 +459,7 @@ var PhotoView = Backbone.View.extend({
 
     // The DOM events specific to an item.
     events: {
-      "click img" : "toggleViewed"
+      "click img": "toggleViewed"
     },
 
     // The PhotoView listens for changes to its model, re-rendering. Since there's
@@ -942,7 +942,7 @@ http://unicorns.com/#search/seasonal-horns/page2
 Note: An application will usually have at least one route mapping a URL route to a function that determines what happens when a  user reaches that particular route. This relationship is defined as follows:    
 
 ```javascript
-"route" : "mappedFunction"
+"route": "mappedFunction"
 ```
 
 Let us now define our first controller by extending `Backbone.Router`. For the purposes of this guide, we're going to continue pretending we're creating a photo gallery application that requires a GalleryRouter.
@@ -953,25 +953,25 @@ Note the inline comments in the code example below as they continue the rest of 
 var GalleryRouter = Backbone.Router.extend({
     /* define the route and function maps for this router */
     routes: {
-        "about" : "showAbout",
+        "about": "showAbout",
         /*Sample usage: http://unicorns.com/#about*/
         
-        "photos/:id" : "getPhoto",
+        "photos/:id": "getPhoto",
         /*This is an example of using a ":param" variable which allows us to match 
         any of the components between two URL slashes*/
         /*Sample usage: http://unicorns.com/#photos/5*/
         
-        "search/:query" : "searchPhotos"
+        "search/:query": "searchPhotos"
         /*We can also define multiple routes that are bound to the same map function,
         in this case searchPhotos(). Note below how we're optionally passing in a 
         reference to a page number if one is supplied*/
         /*Sample usage: http://unicorns.com/#search/lolcats*/
          
-        "search/:query/p:page" : "searchPhotos",
+        "search/:query/p:page": "searchPhotos",
         /*As we can see, URLs may contain as many ":param"s as we wish*/
         /*Sample usage: http://unicorns.com/#search/lolcats/p1*/
         
-        "photos/:id/download/*imagePath" : "downloadPhoto",
+        "photos/:id/download/*imagePath": "downloadPhoto",
         /*This is an example of using a *splat. splats are able to match any number of 
         URL components and can be combined with ":param"s*/
         /*Sample usage: http://unicorns.com/#photos/5/download/files/lolcat-car.jpg*/
@@ -980,7 +980,7 @@ var GalleryRouter = Backbone.Router.extend({
         idea to leave them at the end of a URL otherwise you may need to apply regular
         expression parsing on your fragment*/
          
-        "*other"    : "defaultRoute"
+        "*other": "defaultRoute"
         /*This is a default route that also uses a *splat. Consider the
         default route a wildcard for URLs that are either not matched or where
         the user has incorrectly typed in a route path manually*/
@@ -1128,11 +1128,11 @@ We can then populate our object literal to support models, views and collections
 */
  
 var myApplication = {
-    models : {},
-    views : {
-        pages : {}
+    models: {},
+    views: {
+        pages: {}
     },
-    collections : {}
+    collections: {}
 };
 ```
 
@@ -2887,10 +2887,10 @@ var TodoView = Backbone.View.extend({
 
     // The DOM events specific to an item.
     events: {
-      "click .check"              : "toggleDone",
-      "dblclick div.todo-content" : "edit",
-      "click span.todo-destroy"   : "clear",
-      "keypress .todo-input"      : "updateOnEnter"
+      "click .check": "toggleDone",
+      "dblclick div.todo-content": "edit",
+      "click span.todo-destroy": "clear",
+      "keypress .todo-input": "updateOnEnter"
     },
 
     // The TodoView listens for changes to its model, re-rendering. Since there's
@@ -2943,10 +2943,10 @@ define([
 
     // The DOM events specific to an item.
     events: {
-      "click .check"              : "toggleDone",
-      "dblclick div.todo-content" : "edit",
-      "click span.todo-destroy"   : "clear",
-      "keypress .todo-input"      : "updateOnEnter"
+      "click .check": "toggleDone",
+      "dblclick div.todo-content": "edit",
+      "click span.todo-destroy": "clear",
+      "keypress .todo-input": "updateOnEnter"
     },
 
     // The TodoView listens for changes to its model, re-rendering. Since there's
@@ -3209,13 +3209,13 @@ Next, we have an implementation of the facade pattern. Now the classical facade 
 var module = (function() {
     var _private = {
         i:5,
-        get : function() {
+        get: function() {
             console.log('current value:' + this.i);
         },
-        set : function(val) {
+        set: function(val) {
             this.i = val;
         },
-        run : function() {
+        run: function() {
             console.log('running');
         },
         jump: function(){
@@ -3223,7 +3223,7 @@ var module = (function() {
         }
     };
     return {
-        facade : function(args) {
+        facade: function(args) {
             _private.set(args.val);
             _private.get();
             if (args.run) {
@@ -3493,7 +3493,7 @@ You can either download the raw source code for the project, fork the repository
 
 *   Development: [development version](https://raw.github.com/addyosmani/backbone.baginator/master/dist/backbone.paginator.js)
 
-*   Examples + Source : [zipball](https://github.com/addyosmani/backbone.paginator/zipball/v0.153)
+*   Examples + Source: [zipball](https://github.com/addyosmani/backbone.paginator/zipball/v0.153)
 
 *   [Repository]()http://github.com/addyosmani/backbone.paginator)
 
