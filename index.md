@@ -204,25 +204,25 @@ The ```photoModel``` then adds our ```render()``` callback as one of its subscri
 You may wonder where user interaction comes into play here. When users click on any elements within the view, it's not the view's responsibility to know what to do next. A Controller makes this decision. In our sample implementation, this is achieved by adding an event listener to ```photoEl``` which will delegate handling the click behavior back to the controller, passing the model information along with it in case it's needed.
 
 The benefit of this architecture is that each component plays its own separate role in making the application function as needed.
-  
+
 
 
 ```javascript
-var buildPhotoView = function( photoModel, photoController ){
-    
-    var base        = document.createElement('div'),
-        photoEl     = document.createElement('div');
-     
-     base.appendChild(photoEl);
+var buildPhotoView = function(photoModel, photoController){
 
-     var render= function(){
-        // We use a templating library such as Underscore
+  var base        = document.createElement('div'),
+      photoEl     = document.createElement('div');
+
+  base.appendChild(photoEl);
+
+  var render= function(){
+    // We use a templating library such as Underscore
         // templating which generates the HTML for our 
         // photo entry
         photoEl.innerHTML = _.template('photoTemplate', {src: photoModel.getSrc()});
      }
 
-     photoModel.addSubscriber( render );
+     photoModel.addSubscriber(render);
 
      photoEl.addEventListener('click', function(){
         photoController.handleEvent('click', photoModel );
@@ -283,7 +283,7 @@ Let's compare two examples of HTML templates. One is implemented using the popul
 You may also use double curly brackets (i.e ```{{}}```) (or any other tag you feel comfortable with) in Microtemplates. In the case of curly brackets, this can be done by setting the Underscore ```templateSettings``` attribute as follows:
 
 ```javascript
-_.templateSettings = { interpolate : /\{\{(.+?)\}\}/g };
+_.templateSettings = { interpolate: /\{\{(.+?)\}\}/g };
 ```
 
 **A note on navigation and state**
@@ -361,7 +361,7 @@ var PhotoRouter = Backbone.Router.extend({
     var item = photoCollection.get(id);
     var view = new PhotoView({ model: item });
 
-    something.html( view.render().el );
+    something.html(view.render().el);
   }
 }):
 ```
@@ -459,7 +459,7 @@ var PhotoView = Backbone.View.extend({
 
     // The DOM events specific to an item.
     events: {
-      "click img" : "toggleViewed"
+      "click img": "toggleViewed"
     },
 
     // The PhotoView listens for changes to its model, re-rendering. Since there's
@@ -563,7 +563,7 @@ var Photo = Backbone.Model.extend({
             console.log('Image source updated to ' + src);
         });
     },
-    changeSrc: function( source ){
+    changeSrc: function(source){
         this.set({ src: source });
     }
 });
@@ -753,9 +753,9 @@ Similar to the previous sections, creating a new view is relatively straight-for
 ```javascript
 var PhotoSearch = Backbone.View.extend({
     el: $('#results'),
-    render: function( event ){
-        var compiled_template = _.template( $("#results-template").html() );
-        this.$el.html( compiled_template(this.model.toJSON()) );
+    render: function(event){
+        var compiled_template = _.template($("#results-template").html());
+        this.$el.html(compiled_template(this.model.toJSON()));
         return this; //recommended as this enables calls to be chained.
     },
     events: {
@@ -763,13 +763,13 @@ var PhotoSearch = Backbone.View.extend({
         "click .reset": "reset",
         "click .advanced": "switchContext"
     },
-    search: function( event ){
+    search: function(event){
         //executed when a form '#searchForm' has been submitted
     },
-    reset: function( event ){
+    reset: function(event){
         //executed when an element with class "reset" has been clicked.
     },
-    switchContext: function( event ){
+    switchContext: function(event){
         //executed when an element with class "advanced" has been clicked.
     }
 });
@@ -785,7 +785,7 @@ If the element already exists in the page, you can set `el` as either a CSS sele
 ```javascript
 el: '#footer', 
 // OR
-el: document.getElementById( 'footer' )
+el: document.getElementById('footer')
 ```
 
 If you want to create a new element for you view, set any combination of the following view's properties: `tagName`, `id` and `className`. A new element will be created for you by the framework and a reference to it will be available at the `el` property.
@@ -942,7 +942,7 @@ http://unicorns.com/#search/seasonal-horns/page2
 Note: An application will usually have at least one route mapping a URL route to a function that determines what happens when a  user reaches that particular route. This relationship is defined as follows:    
 
 ```javascript
-"route" : "mappedFunction"
+"route": "mappedFunction"
 ```
 
 Let us now define our first controller by extending `Backbone.Router`. For the purposes of this guide, we're going to continue pretending we're creating a photo gallery application that requires a GalleryRouter.
@@ -953,25 +953,25 @@ Note the inline comments in the code example below as they continue the rest of 
 var GalleryRouter = Backbone.Router.extend({
     /* define the route and function maps for this router */
     routes: {
-        "about" : "showAbout",
+        "about": "showAbout",
         /*Sample usage: http://unicorns.com/#about*/
         
-        "photos/:id" : "getPhoto",
+        "photos/:id": "getPhoto",
         /*This is an example of using a ":param" variable which allows us to match 
         any of the components between two URL slashes*/
         /*Sample usage: http://unicorns.com/#photos/5*/
         
-        "search/:query" : "searchPhotos"
+        "search/:query": "searchPhotos"
         /*We can also define multiple routes that are bound to the same map function,
         in this case searchPhotos(). Note below how we're optionally passing in a 
         reference to a page number if one is supplied*/
         /*Sample usage: http://unicorns.com/#search/lolcats*/
          
-        "search/:query/p:page" : "searchPhotos",
+        "search/:query/p:page": "searchPhotos",
         /*As we can see, URLs may contain as many ":param"s as we wish*/
         /*Sample usage: http://unicorns.com/#search/lolcats/p1*/
         
-        "photos/:id/download/*imagePath" : "downloadPhoto",
+        "photos/:id/download/*imagePath": "downloadPhoto",
         /*This is an example of using a *splat. splats are able to match any number of 
         URL components and can be combined with ":param"s*/
         /*Sample usage: http://unicorns.com/#photos/5/download/files/lolcat-car.jpg*/
@@ -980,7 +980,7 @@ var GalleryRouter = Backbone.Router.extend({
         idea to leave them at the end of a URL otherwise you may need to apply regular
         expression parsing on your fragment*/
          
-        "*other"    : "defaultRoute"
+        "*other": "defaultRoute"
         /*This is a default route that also uses a *splat. Consider the
         default route a wildcard for URLs that are either not matched or where
         the user has incorrectly typed in a route path manually*/
@@ -1128,11 +1128,11 @@ We can then populate our object literal to support models, views and collections
 */
  
 var myApplication = {
-    models : {},
-    views : {
-        pages : {}
+    models: {},
+    views: {
+        pages: {}
     },
-    collections : {}
+    collections: {}
 };
 ```
 
@@ -1953,7 +1953,7 @@ note_id = notes.insert(our_note)
 What is returned from inserting a note into the notes collection is an `ObjectId` reference for the note from Mongo. This is useful as we can re-use it to locate the same document in our database.
 
 ```ruby
-note = notes.find( :id => note_id ).first
+note = notes.find(:id => note_id).first
 ```
 
 This can also be used in conjunction with Mongo's `collection.update()` method and [query](http://www.mongodb.org/display/DOCS/Updating) operators (i.e `$set`) to replace fields in an existing document.
@@ -1961,7 +1961,7 @@ This can also be used in conjunction with Mongo's `collection.update()` method a
 We might update an entire document as follows:
 
 ```ruby
-note = notes.find( :id => note_id ).first
+note = notes.find(:id => note_id).first
 note[:text] = 'Remember the bread'
 notes.update({ :_id => note_id }, note)
 ```
@@ -2513,7 +2513,7 @@ Back to the define signature, the dependencies argument represents an array of d
 define(['foo', 'bar'], 
     // module definition function
     // dependencies (foo and bar) are mapped to function parameters
-    function ( foo, bar ) {
+    function (foo, bar) {
         // return a value that defines the module export
         // (i.e the functionality we want to expose for consumption)
     
@@ -2563,7 +2563,7 @@ The `require()` method is typically used to load code in a top-level JavaScript 
 // function arguments to the callback (foo and bar)
 // so that they can similarly be accessed
 
-require(['foo', 'bar'], function ( foo, bar ) {
+require(['foo', 'bar'], function (foo, bar) {
         // rest of your code here
         foo.doSomething();
 });
@@ -2626,7 +2626,7 @@ RequireJS has a special plugin called text.js which is used to load in text file
 2. Next, include the text.js plugin in your initial RequireJS configuration options. In the code snippet below, we assume that RequireJS is being included in our page prior to this code snippet being executed. Any of the other scripts being loaded are just there for the sake of example.
  
 ```javascript
-require.config( {
+require.config({
     paths: {
         'backbone':         'libs/AMDbackbone-0.5.3',
         'underscore':       'libs/underscore-1.2.2',
@@ -2638,7 +2638,7 @@ require.config( {
         'jquerymobile':     'libs/jquery.mobile-1.0'
     },
     baseUrl: 'app'
-} );
+});
 ```
 
 3. When the `text!` prefix is used for a dependency, RequireJS will automatically load the text plugin and treat the dependency as a text resource. A typical example of this in action may look like..
@@ -2659,7 +2659,7 @@ With Underscore.js's micro-templating (and jQuery) this would typically be:
 HTML:
 
 	<script type="text/template" id="mainViewTemplate">
-	    <% _.each( person, function( person_item ){ %>
+	    <% _.each(person, function(person_item){ %>
 	        <li><%= person_item.get("name") %></li>  
 	    <% }); %>
 	</script>
@@ -2668,7 +2668,7 @@ HTML:
 JS:
 
 ```javascript
-var compiled_template = _.template( $('#mainViewTemplate').html() );
+var compiled_template = _.template($('#mainViewTemplate').html());
 ```
 
 With RequireJS and the text plugin however, it's as simple as saving your template into an external text file (say, `mainView.html`) and doing the following:
@@ -2677,7 +2677,7 @@ With RequireJS and the text plugin however, it's as simple as saving your templa
 require(['js/app', 'text!templates/mainView.html'],
     function(app, mainView){
         
-        var compiled_template = _.template( mainView );
+        var compiled_template = _.template(mainView);
     }
 );
 ```
@@ -2685,7 +2685,7 @@ require(['js/app', 'text!templates/mainView.html'],
 That's it!. You can then go applying your template to a view in Backbone doing something like:
 
 ```javascript
-collection.someview.$el.html( compiled_template( { results: collection.models } ) );
+collection.someview.$el.html(compiled_template({ results: collection.models }));
 ```
 
 
@@ -2887,10 +2887,10 @@ var TodoView = Backbone.View.extend({
 
     // The DOM events specific to an item.
     events: {
-      "click .check"              : "toggleDone",
-      "dblclick div.todo-content" : "edit",
-      "click span.todo-destroy"   : "clear",
-      "keypress .todo-input"      : "updateOnEnter"
+      "click .check": "toggleDone",
+      "dblclick div.todo-content": "edit",
+      "click span.todo-destroy": "clear",
+      "keypress .todo-input": "updateOnEnter"
     },
 
     // The TodoView listens for changes to its model, re-rendering. Since there's
@@ -2943,10 +2943,10 @@ define([
 
     // The DOM events specific to an item.
     events: {
-      "click .check"              : "toggleDone",
-      "dblclick div.todo-content" : "edit",
-      "click span.todo-destroy"   : "clear",
-      "keypress .todo-input"      : "updateOnEnter"
+      "click .check": "toggleDone",
+      "dblclick div.todo-content": "edit",
+      "click span.todo-destroy": "clear",
+      "keypress .todo-input": "updateOnEnter"
     },
 
     // The TodoView listens for changes to its model, re-rendering. Since there's
@@ -3209,13 +3209,13 @@ Next, we have an implementation of the facade pattern. Now the classical facade 
 var module = (function() {
     var _private = {
         i:5,
-        get : function() {
+        get: function() {
             console.log('current value:' + this.i);
         },
-        set : function( val ) {
+        set: function(val) {
             this.i = val;
         },
-        run : function() {
+        run: function() {
             console.log('running');
         },
         jump: function(){
@@ -3223,10 +3223,10 @@ var module = (function() {
         }
     };
     return {
-        facade : function( args ) {
+        facade: function(args) {
             _private.set(args.val);
             _private.get();
-            if ( args.run ) {
+            if (args.run) {
                 _private.run();
             }
         }
@@ -3256,12 +3256,12 @@ define([ "../aura/mediator" , "../aura/permissions" ], function (mediator, permi
         // to just use the mediator directly.
         
         if(permissions.validate(subscriber, channel)){
-            mediator.subscribe( channel, callback );
+            mediator.subscribe(channel, callback);
         }
     }
 
     facade.publish = function(channel){
-        mediator.publish( channel );
+        mediator.publish(channel);
     }
     return facade;
 
@@ -3355,7 +3355,7 @@ define(["jquery", "underscore", "aura/facade"],
 function ($, _, facade) {
 
     // Subscription 'modules' for our views. These take the 
-    // the form facade.subscribe( subscriberName, notificationName , callBack )
+    // the form facade.subscribe(subscriberName, notificationName , callBack)
 
     // Update view with latest todo content
     // Subscribes to: newContentAvailable
@@ -3493,7 +3493,7 @@ You can either download the raw source code for the project, fork the repository
 
 *   Development: [development version](https://raw.github.com/addyosmani/backbone.baginator/master/dist/backbone.paginator.js)
 
-*   Examples + Source : [zipball](https://github.com/addyosmani/backbone.paginator/zipball/v0.153)
+*   Examples + Source: [zipball](https://github.com/addyosmani/backbone.paginator/zipball/v0.153)
 
 *   [Repository]()http://github.com/addyosmani/backbone.paginator)
 
@@ -3768,7 +3768,7 @@ Although the collection layer is perhaps the most important part of Backbone.Pag
 First, we have a view for a pagination bar in our UI that allows us to navigate around our paginated collection:
 
 ```javascript
-(function ( views ) {
+(function (views) {
 
 	views.PaginatedView = Backbone.View.extend({
 
@@ -3841,7 +3841,7 @@ First, we have a view for a pagination bar in our UI that allows us to navigate 
 
 	});
 
-})( app.views );
+})(app.views);
 ```
 
 which we use with a template like this to generate the necessary pagination links (more are shown in the full example):
@@ -3932,7 +3932,7 @@ var url = '#about',
     reverse = false,
     changeHash = false;
 
-$.mobile.changePage( url , { transition: effect}, reverse, changeHash );
+$.mobile.changePage(url , { transition: effect}, reverse, changeHash);
 ```
 
 In the above sample, `url` can refer to a URL or a hash identifier to navigate to, `effect` is simply the transition effect to animate the page in with and the final two parameters decide the direction for the transition (`reverse`) and whether or not the hash in the address bar should be updated (`changeHash`). With respect to the latter, I typically set this to false to avoid managing two sources for hash updates, but feel free to set this to true if you're comfortable doing so.
@@ -4971,51 +4971,51 @@ QUnit supports a number of basic **assertions**, which are used in testing to ve
 
 Some of the supported QUnit assertions we're going to look at first are:
 
-*   `ok ( state, message )` - passes if the first argument is truthy
-*   `equal ( actual, expected, message )` - a simple comparison assertion with type coercion
-*   `notEqual ( actual, expected, message )` - the opposite of the above
-*   `expect( amount )` - the number of assertions expected to run within each test
-*   `strictEqual( actual, expected, message)` - offers a much stricter comparison than `equal()` and is considered the preferred method of checking equality as it avoids stumbling on subtle coercion bugs
-*   `deepEqual( actual, expected, message )` - similar to `strictEqual`, comparing the contents (with `===`) of the given objects, arrays and primitives.
+*   `ok (state, message)` - passes if the first argument is truthy
+*   `equal (actual, expected, message)` - a simple comparison assertion with type coercion
+*   `notEqual (actual, expected, message)` - the opposite of the above
+*   `expect(amount)` - the number of assertions expected to run within each test
+*   `strictEqual(actual, expected, message)` - offers a much stricter comparison than `equal()` and is considered the preferred method of checking equality as it avoids stumbling on subtle coercion bugs
+*   `deepEqual(actual, expected, message)` - similar to `strictEqual`, comparing the contents (with `===`) of the given objects, arrays and primitives.
 
 Creating new test cases with QUnit is relatively straight-forward and can be done using ```test()```, which constructs a test where the first argument is the ```name``` of the test to be displayed in our results and the second is a ```callback``` function containing all of our assertions. This is called as soon as QUnit is running. 
 
-####Basic test case using test( name, callback ):
+####Basic test case using test(name, callback):
 
 ```javascript
 var myString = 'Hello Backbone.js';
 
-test( 'Our first QUnit test - asserting results', function(){
+test('Our first QUnit test - asserting results', function(){
 
-    // ok( boolean, message )
-    ok( true, 'the test succeeds');
-    ok( false, 'the test fails');
+    // ok(boolean, message)
+    ok(true, 'the test succeeds');
+    ok(false, 'the test fails');
     
-    // equal( actualValue, expectedValue, message )
-    equal( myString, 'Hello Backbone.js', 'The value expected is Hello Backbone.js!');
+    // equal(actualValue, expectedValue, message)
+    equal(myString, 'Hello Backbone.js', 'The value expected is Hello Backbone.js!');
 });
 ```
 
 What we're doing in the above is defining a variable with a specific value and then testing to ensure the value was what we expected it to be. This was done using the comparison assertion, ```equal()```, which expects its first argument to be a value being tested and the second argument to be the expected value. We also used ```ok()```, which allows us to easily test against functions or variables that evaluate to booleans.
 
-Note: Optionally in our test case, we could have passed an 'expected' value to ```test()``` defining the number of assertions we expect to run. This takes the form: `test( name, [expected], test );` or by manually settings the expectation at the top of the test function, like so: `expect( 1 )`. I recommend you to make it a habit and always define how many assertions you expect. More on this later.
+Note: Optionally in our test case, we could have passed an 'expected' value to ```test()``` defining the number of assertions we expect to run. This takes the form: `test(name, [expected], test);` or by manually settings the expectation at the top of the test function, like so: `expect(1)`. I recommend you to make it a habit and always define how many assertions you expect. More on this later.
 
 As testing a simple static variable is fairly trivial, we can take this further to test actual functions. In the following example we test the output of a function that reverses a string to ensure that the output is correct using ```equal()``` and ```notEqual()```:
 
 ####Comparing the actual output of a function against the expected output:
 
 ```javascript
-function reverseString( str ){
+function reverseString(str){
     return str.split("").reverse().join("");
 }
 
-test( 'reverseString()', function() { 
-    expect( 5 );
-    equal( reverseString('hello'), 'olleh', 'The value expected was olleh' ); 
-    equal( reverseString('foobar'), 'raboof', 'The value expected was raboof' ); 
-    equal( reverseString('world'), 'dlrow', 'The value expected was dlrow' ); 
-    notEqual( reverseString('world'), 'dlroo', 'The value was expected to not be dlroo' ); 
-    equal( reverseString('bubble'), 'double', 'The value expected was elbbub' ); 
+test('reverseString()', function() { 
+    expect(5);
+    equal(reverseString('hello'), 'olleh', 'The value expected was olleh'); 
+    equal(reverseString('foobar'), 'raboof', 'The value expected was raboof'); 
+    equal(reverseString('world'), 'dlrow', 'The value expected was dlrow'); 
+    notEqual(reverseString('world'), 'dlroo', 'The value was expected to not be dlroo'); 
+    equal(reverseString('bubble'), 'double', 'The value expected was elbbub'); 
 })  
 ```
 
@@ -5028,24 +5028,24 @@ Housing all of our assertions in one test case can quickly become difficult to m
 
 ####Basic QUnit Modules:
 ```javascript
-module( 'Module One' );  
-test( 'first test', function() {} );  
-test( 'another test', function() {} );  
+module('Module One');  
+test('first test', function() {});  
+test('another test', function() {});  
   
-module( 'Module Two' );  
-test( 'second test', function() {} );  
-test( 'another test', function() {} );  
+module('Module Two');  
+test('second test', function() {});  
+test('another test', function() {});  
 
-module( 'Module Three' );  
-test( 'third test', function() {} );  
-test( 'another test', function() {} );  
+module('Module Three');  
+test('third test', function() {});  
+test('another test', function() {});  
 ```
 
 We can take this further by introducing ```setup()``` and ```teardown()``` callbacks to our modules, where ```setup()``` is run before each test whilst ```teardown()``` is run after each test. 
 
 ####Using setup() and teardown() :
 ```javascript
-module( "Module One", {
+module("Module One", {
     setup: function() {
         // run before
     },
@@ -5070,11 +5070,11 @@ var Store = Backbone.Model.extend({});
 
 var StoreList = Backbone.Collection.extend({
     model: store,
-    comparator: function( store ) { return store.get('name') }
+    comparator: function(store) { return store.get('name') }
 });
 
 // Define a group for our tests
-module( "StoreList sanity check", {
+module("StoreList sanity check", {
     setup: function() {
         this.list = new StoreList;
         this.list.add(new Store({ name: "Costcutter" }));
@@ -5088,11 +5088,11 @@ module( "StoreList sanity check", {
 });
 
 // Test the order of items added
-test( "test ordering", function() {
-    expect( 1 );
+test("test ordering", function() {
+    expect(1);
     var expected = ["Barnes & Noble", "Costcutter", "Target", "Walmart"];
     var actual = this.list.pluck("name");
-    deepEqual( actual, expected, "is maintained by comparator" );
+    deepEqual(actual, expected, "is maintained by comparator");
 });
 
 ```
@@ -5107,10 +5107,10 @@ Before we continue any further, let's review some more examples of how QUnits va
 ###equal - a comparison assertion. It passes if actual == expected
 
 ```javascript
-test( "equal", 2, function() {
+test("equal", 2, function() {
   var actual = 6 - 5;
-  equal( actual, true,  "passes as 1 == true" );
-  equal( actual, 1,     "passes as 1 == 1" );
+  equal(actual, true,  "passes as 1 == true");
+  equal(actual, 1,     "passes as 1 == 1");
 });
 ```
 
@@ -5118,20 +5118,20 @@ test( "equal", 2, function() {
 ###notEqual - a comparison assertion. It passes if actual != expected
 
 ```javascript
-test( "notEqual", 2, function() {
+test("notEqual", 2, function() {
   var actual = 6 - 5;
-  notEqual( actual, false, "passes as 1 != false" );
-  notEqual( actual, 0,     "passes as 1 != 0" );
+  notEqual(actual, false, "passes as 1 != false");
+  notEqual(actual, 0,     "passes as 1 != 0");
 });
 ```
 
 ###strictEqual - a comparison assertion. It passes if actual === expected.
 
 ```javascript
-test( "strictEqual", 2, function() {
+test("strictEqual", 2, function() {
   var actual = 6 - 5;
-  strictEqual( actual, true,  "fails as 1 !== true" );
-  strictEqual( actual, 1,     "passes as 1 === 1" );
+  strictEqual(actual, true,  "fails as 1 !== true");
+  strictEqual(actual, 1,     "passes as 1 === 1");
 });
 ```
 
@@ -5140,8 +5140,8 @@ test( "strictEqual", 2, function() {
 ```javascript
 test("notStrictEqual", 2, function() {
   var actual = 6 - 5;
-  notStrictEqual( actual, true,  "passes as 1 !== true" );
-  notStrictEqual( actual, 1,     "fails as 1 === 1" );
+  notStrictEqual(actual, true,  "passes as 1 !== true");
+  notStrictEqual(actual, 1,     "fails as 1 === 1");
 });
 ```
 
@@ -5153,9 +5153,9 @@ test("deepEqual", 4, function() {
   var el =  $('div');
   var children = $('div').children();
  
-  equal( actual, {q: 'foo', t: 'bar'},   "fails - objects are not equal using equal()" );
-  deepEqual( actual, {q: 'foo', t: 'bar'},   "passes - objects are equal" );
-  equal( el, children, "fails - jQuery objects are not the same" );
+  equal(actual, {q: 'foo', t: 'bar'},   "fails - objects are not equal using equal()");
+  deepEqual(actual, {q: 'foo', t: 'bar'},   "passes - objects are equal");
+  equal(el, children, "fails - jQuery objects are not the same");
   deepEqual(el, children, "fails - objects not equivalent" );
 
 });
@@ -5166,8 +5166,8 @@ test("deepEqual", 4, function() {
 ```javascript
 test("notDeepEqual", 2, function() {
   var actual = {q: 'foo', t: 'bar'};
-  notEqual( actual, {q: 'foo', t: 'bar'},   "passes - objects are not equal" );
-  notDeepEqual( actual, {q: 'foo', t: 'bar'},   "fails - objects are equivalent" );
+  notEqual(actual, {q: 'foo', t: 'bar'},   "passes - objects are not equal");
+  notDeepEqual(actual, {q: 'foo', t: 'bar'},   "fails - objects are equivalent");
 });
 ```
 
@@ -5176,7 +5176,7 @@ test("notDeepEqual", 2, function() {
 ```javascript
 test("raises", 1, function() {
   raises(function() {
-    throw new Error( "Oh no! It's an error!" );
+    throw new Error("Oh no! It's an error!");
   }, "passes - an error was thrown inside our callback");
 });
 ```
@@ -5218,13 +5218,13 @@ Let us now go through a more complete example of using fixtures. One thing that 
 For the purposes of our next example, we're going to use Ben Alman's `$.enumerate()` plugin, which can prepend each item in a list by its index, optionally allowing us to set what the first number in the list is. The code snippet for the plugin can be found below, followed by an example of the output is generates:
 
 ```javascript
-$.fn.enumerate = function( start ) {
-      if ( typeof start !== "undefined" ) {
+$.fn.enumerate = function(start) {
+      if (typeof start !== "undefined") {
         // Since `start` value was provided, enumerate and return
         // the initial jQuery object to allow chaining.
         
         return this.each(function(i){
-          $(this).prepend( "<b>" + ( i + start ) + "</b> " );
+          $(this).prepend("<b>" + (i + start) + "</b> ");
         });
         
       } else {
@@ -5232,8 +5232,8 @@ $.fn.enumerate = function( start ) {
         // getter, returing the appropriate value from the first
         // selected element.
         
-        var val = this.eq( 0 ).children( "b" ).eq( 0 ).text();
-        return Number( val );
+        var val = this.eq(0).children("b").eq(0).text();
+        return Number(val);
       }
     };
 
@@ -5275,31 +5275,31 @@ and finally, here are our test cases:
 ```javascript
 module("jQuery#enumerate");
  
-test( "No arguments passed", 5, function() {
+test("No arguments passed", 5, function() {
   var items = $("#qunit-fixture li").enumerate();
-  equal( items.eq(0).text(), "1. hello", "first item should have index 1" );
-  equal( items.eq(1).text(), "2. world", "second item should have index 2" );
-  equal( items.eq(2).text(), "3. i", "third item should have index 3" );
-  equal( items.eq(3).text(), "4. am", "fourth item should have index 4" );
-  equal( items.eq(4).text(), "5. foo", "fifth item should have index 5" );
+  equal(items.eq(0).text(), "1. hello", "first item should have index 1");
+  equal(items.eq(1).text(), "2. world", "second item should have index 2");
+  equal(items.eq(2).text(), "3. i", "third item should have index 3");
+  equal(items.eq(3).text(), "4. am", "fourth item should have index 4");
+  equal(items.eq(4).text(), "5. foo", "fifth item should have index 5");
 });
  
-test( "0 passed as an argument", 5, function() {
-  var items = $("#qunit-fixture li").enumerate( 0 );
-  equal( items.eq(0).text(), "0. hello", "first item should have index 0" );
-  equal( items.eq(1).text(), "1. world", "second item should have index 1" );
-  equal( items.eq(2).text(), "2. i", "third item should have index 2" );
-  equal( items.eq(3).text(), "3. am", "fourth item should have index 3" );
-  equal( items.eq(4).text(), "4. foo", "fifth item should have index 4" );
+test("0 passed as an argument", 5, function() {
+  var items = $("#qunit-fixture li").enumerate(0);
+  equal(items.eq(0).text(), "0. hello", "first item should have index 0");
+  equal(items.eq(1).text(), "1. world", "second item should have index 1");
+  equal(items.eq(2).text(), "2. i", "third item should have index 2");
+  equal(items.eq(3).text(), "3. am", "fourth item should have index 3");
+  equal(items.eq(4).text(), "4. foo", "fifth item should have index 4");
 });
  
-test( "1 passed as an argument", 3, function() {
-  var items = $("#qunit-fixture li").enumerate( 1 );
-  equal( items.eq(0).text(), "1. hello", "first item should have index 1" );
-  equal( items.eq(1).text(), "2. world", "second item should have index 2" );
-  equal( items.eq(2).text(), "3. i", "third item should have index 3" );
-  equal( items.eq(3).text(), "4. am", "fourth item should have index 4" );
-  equal( items.eq(4).text(), "5. foo", "fifth item should have index 5" );
+test("1 passed as an argument", 3, function() {
+  var items = $("#qunit-fixture li").enumerate(1);
+  equal(items.eq(0).text(), "1. hello", "first item should have index 1");
+  equal(items.eq(1).text(), "2. world", "second item should have index 2");
+  equal(items.eq(2).text(), "3. i", "third item should have index 3");
+  equal(items.eq(3).text(), "4. am", "fourth item should have index 4");
+  equal(items.eq(4).text(), "5. foo", "fifth item should have index 5");
 });
 
 ```
@@ -5315,11 +5315,11 @@ Writing QUnit tests for asynchronous code is made possible using the ```start()`
 ```javascript
 test("An async test", function(){
    stop();
-   expect( 1 );
+   expect(1);
    $.ajax({
         url: "/test",
         dataType: 'json',
-        success: function( data ){
+        success: function(data){
             deepEqual(data, {
                topic: "hello",
                message: "hi there!"
@@ -5361,10 +5361,10 @@ test("should call all subscribers for a message exactly once", function () {
     var message = getUniqueString();
     var spy = this.spy();
 
-    PubSub.subscribe( message, spy );
-    PubSub.publishSync( message, "Hello World" );
+    PubSub.subscribe(message, spy);
+    PubSub.publishSync(message, "Hello World");
 
-    ok( spy1.calledOnce, "the subscriber was called once" );
+    ok(spy1.calledOnce, "the subscriber was called once");
 });
 ```
 
@@ -5372,14 +5372,14 @@ We can also use ```this.spy()``` to spy on existing functions (like jQuery's ```
 
 ####Spying On Existing Functions:
 ```javascript
-test( "should inspect jQuery.getJSON's usage of jQuery.ajax", function () {
-    this.spy( jQuery, "ajax" );
+test("should inspect jQuery.getJSON's usage of jQuery.ajax", function () {
+    this.spy(jQuery, "ajax");
 
-    jQuery.getJSON( "/todos/completed" );
+    jQuery.getJSON("/todos/completed");
 
-    ok( jQuery.ajax.calledOnce );
-    equals( jQuery.ajax.getCall(0).args[0].url, "/todos/completed" );
-    equals( jQuery.ajax.getCall(0).args[0].dataType, "json" );
+    ok(jQuery.ajax.calledOnce);
+    equals(jQuery.ajax.getCall(0).args[0].url, "/todos/completed");
+    equals(jQuery.ajax.getCall(0).args[0].dataType, "json");
 });
 ```
 
@@ -5389,71 +5389,71 @@ SinonJS comes with a rich spy interface which allows us to test whether a spy wa
 ####Matching arguments: test a spy was called with a specific set of arguments:
 
 ```javascript
-test( "Should call a subscriber with standard matching": function () {
+test("Should call a subscriber with standard matching": function () {
     var spy = sinon.spy();
 
-    PubSub.subscribe( "message", spy );
-    PubSub.publishSync( "message", { id: 45 } );
+    PubSub.subscribe("message", spy);
+    PubSub.publishSync("message", { id: 45 });
 
-    assertTrue( spy.calledWith( { id: 45 } ) );
+    assertTrue(spy.calledWith({ id: 45 }));
 });
 ```
 
 ####Stricter argument matching: test a spy was called at least once with specific arguments and no others:
 
 ```javascript
-test( "Should call a subscriber with strict matching": function () {
+test("Should call a subscriber with strict matching": function () {
     var spy = sinon.spy();
 
-    PubSub.subscribe( "message", spy );
-    PubSub.publishSync( "message", "many", "arguments" );
-    PubSub.publishSync( "message", 12, 34 );
+    PubSub.subscribe("message", spy);
+    PubSub.publishSync("message", "many", "arguments");
+    PubSub.publishSync("message", 12, 34);
 
     // This passes
-    assertTrue( spy.calledWith("many") );     
+    assertTrue(spy.calledWith("many"));     
     
     // This however, fails   
-    assertTrue( spy.calledWithExactly( "many" ) ); 
+    assertTrue(spy.calledWithExactly("many")); 
 });
 ```
 
 ####Testing call order: testing if a spy was called before or after another spy:
 
 ```javascript
-test( "Should call a subscriber and maintain call order": function () {
+test("Should call a subscriber and maintain call order": function () {
     var a = sinon.spy();
     var b = sinon.spy();
 
-    PubSub.subscribe( "message", a );
-    PubSub.subscribe( "event", b );
+    PubSub.subscribe("message", a);
+    PubSub.subscribe("event", b);
 
-    PubSub.publishSync( "message", { id: 45 } );
-    PubSub.publishSync( "event", [1, 2, 3] );
+    PubSub.publishSync("message", { id: 45 });
+    PubSub.publishSync("event", [1, 2, 3]);
 
-    assertTrue( a.calledBefore(b) );
-    assertTrue( b.calledAfter(a) );
+    assertTrue(a.calledBefore(b));
+    assertTrue(b.calledAfter(a));
 });
 ```
 
 ####Match execution counts: test a spy was called a specific number of times:
 
 ```javascript
-test( "Should call a subscriber and check call counts", function () {
+test("Should call a subscriber and check call counts", function () {
     var message = getUniqueString();
     var spy = this.spy();
 
-    PubSub.subscribe( message, spy );
-    PubSub.publishSync( message, "some payload" );
+    PubSub.subscribe(message, spy);
+    PubSub.publishSync(message, "some payload");
 
 
     // Passes if spy was called once and only once.
-    ok( spy.calledOnce ); // calledTwice and calledThrice are also supported
+    ok(spy.calledOnce); // calledTwice and calledThrice are also supported
 
     // The number of recorded calls.
-    equal( spy.callCount, 1 );
+    equal(spy.callCount, 1);
 
     // Directly checking the arguments of the call
-    equals( spy.getCall(0).args[0], message );
+    equals(spy.getCall(0).args[0], message);
 });
 ```
 
@@ -5482,7 +5482,7 @@ this.todoList;
 Assuming our collection is instantiating new models itself, it's necessary for us to stub the models constructor function for the the test. This can be done by creating a simple stub as follows:
 
 ```javascript
-this.todoStub = sinon.stub( window, "Todo" );
+this.todoStub = sinon.stub(window, "Todo");
 ```
 
 The above creates a stub of the Todo method on the window object. When stubbing a persistent object, it's necessary to restore it to its original state. This can be done in a ```teardown()``` as follows:
@@ -5496,12 +5496,12 @@ After this, we need to alter what the constructor returns, which can be efficien
 
 ```javascript
 teardown: function() {
-    this.todoStub = sinon.stub( window, "Todo" );
+    this.todoStub = sinon.stub(window, "Todo");
     this.model = new Backbone.Model({
       id: 2, 
       title: "Hello world"
     });
-    this.todoStub.returns( this.model );
+    this.todoStub.returns(this.model);
 });
 ```
 
@@ -5514,7 +5514,7 @@ this.todoList.model = Todo;
 The result of this is that when our TodoList collection instantiates new Todo models, it will return our plain Backbone model instance as desired. This allows us to write a spec for testing the addition of new model literals as follows:
 
 ```javascript
-module( "Should function when instantiated with model literals", {
+module("Should function when instantiated with model literals", {
 
   setup:function() {
 
@@ -5542,11 +5542,11 @@ module( "Should function when instantiated with model literals", {
 });
 
 test("should add a model", function() {
-    equal( this.todos.length, 1 );
+    equal(this.todos.length, 1);
 });
     
 test("should find a model by id", function() {
-    equal( this.todos.get(5).get("id"), 5 );
+    equal(this.todos.get(5).get("id"), 5);
   });
 });
 ```
@@ -5563,15 +5563,15 @@ test("should call all subscribers when exceptions", function () {
     var myAPI = { clearTodo: function () {} };
 
     var spy = this.spy();
-    var mock = this.mock( myAPI );
-    mock.expects( "clearTodo" ).once().throws();
+    var mock = this.mock(myAPI);
+    mock.expects("clearTodo").once().throws();
 
-    PubSub.subscribe( "message", myAPI.clearTodo );
-    PubSub.subscribe( "message", spy );
-    PubSub.publishSync( "message", undefined );
+    PubSub.subscribe("message", myAPI.clearTodo);
+    PubSub.subscribe("message", spy);
+    PubSub.publishSync("message", undefined);
 
     mock.verify();
-    ok( spy.calledOnce );
+    ok(spy.calledOnce);
 });
 ```
 
@@ -5596,61 +5596,61 @@ For our models we want to at minimum test that:
 * Validation rules are correctly enforced
 
 ```javascript
-module( 'About Backbone.Model');
+module('About Backbone.Model');
 
 test('Can be created with default values for its attributes.', function() {
-    expect( 1 );
+    expect(1);
 
     var todo = new Todo();
 
-    equal( todo.get('text'), "" );
+    equal(todo.get('text'), "");
 });
 
 test('Will set attributes on the model instance when created.', function() {
-    expect( 3 );
+    expect(3);
 
-    var todo = new Todo( { text: 'Get oil change for car.' } );
+    var todo = new Todo({ text: 'Get oil change for car.' });
 
-    equal( todo.get('text'), "Get oil change for car." );
-    equal( todo.get('done'), false );
-    equal( todo.get('order'), 0 );
+    equal(todo.get('text'), "Get oil change for car.");
+    equal(todo.get('done'), false);
+    equal(todo.get('order'), 0);
 });
 
 test('Will call a custom initialize function on the model instance when created.', function() {
-    expect( 1 );
+    expect(1);
 
     var toot = new Todo({ text: 'Stop monkeys from throwing their own crap!' });
-    equal( toot.get('text'), 'Stop monkeys from throwing their own rainbows!' );
+    equal(toot.get('text'), 'Stop monkeys from throwing their own rainbows!');
 });
 
 test('Fires a custom event when the state changes.', function() {
-    expect( 1 );
+    expect(1);
 
     var spy = this.spy();
     var todo = new Todo();
 
-    todo.bind( 'change', spy );
+    todo.bind('change', spy);
     // How would you update a property on the todo here?
     // Hint: http://documentcloud.github.com/backbone/#Model-set
-    todo.set( { text: "new text" } );
+    todo.set({ text: "new text" });
 
-    ok( spy.calledOnce, "A change event callback was correctly triggered" );
+    ok(spy.calledOnce, "A change event callback was correctly triggered");
 });
 
 
 test('Can contain custom validation rules, and will trigger an error event on failed validation.', function() {
-    expect( 3 );
+    expect(3);
 
     var errorCallback = this.spy();
     var todo = new Todo();
 
     todo.bind('error', errorCallback);
     // What would you need to set on the todo properties to cause validation to fail?
-    todo.set( { done: "not a boolean" } );
+    todo.set({ done: "not a boolean" });
  
-    ok( errorCallback.called, 'A failed validation correctly triggered an error' );
-    notEqual( errorCallback.getCall(0), undefined );
-    equal( errorCallback.getCall(0).args[1], 'Todo.done must be a boolean value.' );
+    ok(errorCallback.called, 'A failed validation correctly triggered an error');
+    notEqual(errorCallback.getCall(0), undefined);
+    equal(errorCallback.getCall(0).args[1], 'Todo.done must be a boolean value.');
 
 });
 ```
@@ -5666,29 +5666,29 @@ For our collection we'll want to test that:
 
 
 ```javascript
-module( 'About Backbone.Collection');
+module('About Backbone.Collection');
 
-test( 'Can add Model instances as objects and arrays.', function() {
-    expect( 3 );
+test('Can add Model instances as objects and arrays.', function() {
+    expect(3);
 
     var todos = new TodoList();
-    equal( todos.length, 0 );
+    equal(todos.length, 0);
 
-    todos.add( { text: 'Clean the kitchen' } );
-    equal( todos.length, 1 );
+    todos.add({ text: 'Clean the kitchen' });
+    equal(todos.length, 1);
 
     todos.add([
         { text: 'Do the laundry', done: true }, 
         { text: 'Go to the gym' }
     ]);
 
-    equal( todos.length, 3 );
+    equal(todos.length, 3);
 });
 
-test( 'Can have a url property to define the basic url structure for all contained models.', function() {
-    expect( 1 );
+test('Can have a url property to define the basic url structure for all contained models.', function() {
+    expect(1);
     var todos = new TodoList();
-    equal( todos.url, '/todos/' );
+    equal(todos.url, '/todos/');
 });
 
 test('Fires custom named events when the models change.', function() {
@@ -5698,18 +5698,18 @@ test('Fires custom named events when the models change.', function() {
     var addModelCallback = this.spy();
     var removeModelCallback = this.spy();
 
-    todos.bind( 'add', addModelCallback );
-    todos.bind( 'remove', removeModelCallback );
+    todos.bind('add', addModelCallback);
+    todos.bind('remove', removeModelCallback);
 
     // How would you get the 'add' event to trigger?
-    todos.add( {text:"New todo"} );
+    todos.add({text:"New todo"});
 
-    ok( addModelCallback.called );
+    ok(addModelCallback.called);
 
     // How would you get the 'remove' callback to trigger?
-    todos.remove( todos.last() );
+    todos.remove(todos.last());
 
-    ok( removeModelCallback.called );
+    ok(removeModelCallback.called);
 });
 ```
 
@@ -5727,7 +5727,7 @@ One could also take this further and test that user interactions with the view c
 
 
 ```javascript
-module( 'About Backbone.View', {
+module('About Backbone.View', {
     setup: function() {
         $('body').append('<ul id="todoList"></ul>');
         this.todoView = new TodoView({ model: new Todo() });
@@ -5739,14 +5739,14 @@ module( 'About Backbone.View', {
 });
 
 test('Should be tied to a DOM element when created, based off the property provided.', function() {
-    expect( 1 );
-    equal( this.todoView.el.tagName.toLowerCase(), 'li' );
+    expect(1);
+    equal(this.todoView.el.tagName.toLowerCase(), 'li');
 });
 
 test('Is backed by a model instance, which provides the data.', function() {
-    expect( 2 );
-    notEqual( this.todoView.model, undefined );
-    equal( this.todoView.model.get('done'), false );
+    expect(2);
+    notEqual(this.todoView.model, undefined);
+    equal(this.todoView.model.get('done'), false);
 });
 
 test('Can render, after which the DOM representation of the view will be visible.', function() {
@@ -5763,10 +5763,10 @@ test('Can render, after which the DOM representation of the view will be visible
 });
 
 asyncTest('Can wire up view methods to DOM elements.', function() {
-    expect( 2 );
+    expect(2);
     var viewElt;    
     
-    $('#todoList').append( this.todoView.render().el );
+    $('#todoList').append(this.todoView.render().el);
     
     setTimeout(function() {
         viewElt = $('#todoList li input.check').filter(':first');
@@ -5784,7 +5784,7 @@ asyncTest('Can wire up view methods to DOM elements.', function() {
     // Hint: http://api.jquery.com/click
     
     $('#todoList li input.check').click();
-    expect( this.todoView.model.get('done'), true );
+    expect(this.todoView.model.get('done'), true);
 });
 ```
 
@@ -5801,10 +5801,10 @@ For events, we may want to test a few different use cases:
 and a few others that will be detailed in our module below:
 
 ```javascript
-module( 'About Backbone.Events', {
+module('About Backbone.Events', {
     setup: function() {
         this.obj = {};
-        _.extend( this.obj, Backbone.Events );
+        _.extend(this.obj, Backbone.Events);
         this.obj.unbind(); // remove all custom events before each spec is run.
     }
 });
@@ -5816,44 +5816,44 @@ test('Can extend JavaScript objects to support custom events.', function() {
 
     // How would you give basicObject these functions?
     // Hint: http://documentcloud.github.com/backbone/#Events
-    _.extend( basicObject, Backbone.Events );
+    _.extend(basicObject, Backbone.Events);
 
-    equal( typeof basicObject.bind, 'function' );
-    equal( typeof basicObject.unbind, 'function' );
-    equal( typeof basicObject.trigger, 'function' );
+    equal(typeof basicObject.bind, 'function');
+    equal(typeof basicObject.unbind, 'function');
+    equal(typeof basicObject.trigger, 'function');
 });
 
 test('Allows us to bind and trigger custom named events on an object.', function() {
-    expect( 1 );
+    expect(1);
 
     var callback = this.spy();
 
-    this.obj.bind( 'basic event', callback );
-    this.obj.trigger( 'basic event' );
+    this.obj.bind('basic event', callback);
+    this.obj.trigger('basic event');
 
     // How would you cause the callback for this custom event to be called?
-    ok( callback.called );
+    ok(callback.called);
 });
 
 test('Also passes along any arguments to the callback when an event is triggered.', function() {
-    expect( 1 );
+    expect(1);
 
     var passedArgs = [];
 
     this.obj.bind('some event', function() {
         for (var i = 0; i < arguments.length; i++) {
-            passedArgs.push( arguments[i] );
+            passedArgs.push(arguments[i]);
         }
     });
 
-    this.obj.trigger( 'some event', 'arg1', 'arg2' );
+    this.obj.trigger('some event', 'arg1', 'arg2');
 
-    deepEqual( passedArgs, ['arg1', 'arg2'] );
+    deepEqual(passedArgs, ['arg1', 'arg2']);
 });
 
 
 test('Can also bind the passed context to the event callback.', function() {
-    expect( 1 );
+    expect(1);
 
     var foo = { color: 'blue' };
     var changeColor = function() {
@@ -5861,56 +5861,56 @@ test('Can also bind the passed context to the event callback.', function() {
     };
 
     // How would you get 'this.color' to refer to 'foo' in the changeColor function?
-    this.obj.bind( 'an event', changeColor, foo );
-    this.obj.trigger( 'an event' );
+    this.obj.bind('an event', changeColor, foo);
+    this.obj.trigger('an event');
 
-    equal( foo.color, 'red' );
+    equal(foo.color, 'red');
 });
 
-test( "Uses 'all' as a special event name to capture all events bound to the object." , function() {
-    expect( 2 );
+test("Uses 'all' as a special event name to capture all events bound to the object." , function() {
+    expect(2);
 
     var callback = this.spy();
 
-    this.obj.bind( 'all', callback );
-    this.obj.trigger( "custom event 1" );
-    this.obj.trigger( "custom event 2" );
+    this.obj.bind('all', callback);
+    this.obj.trigger("custom event 1");
+    this.obj.trigger("custom event 2");
 
-    equal( callback.callCount, 2 );
-    equal( callback.getCall(0).args[0], 'custom event 1' );
+    equal(callback.callCount, 2);
+    equal(callback.getCall(0).args[0], 'custom event 1');
 });
 
 test('Also can remove custom events from objects.', function() {
-    expect( 5 );
+    expect(5);
     
     var spy1 = this.spy();
     var spy2 = this.spy();
     var spy3 = this.spy();
 
-    this.obj.bind( 'foo', spy1 );
-    this.obj.bind( 'bar', spy1 );
-    this.obj.bind( 'foo', spy2 );
-    this.obj.bind( 'foo', spy3 );
+    this.obj.bind('foo', spy1);
+    this.obj.bind('bar', spy1);
+    this.obj.bind('foo', spy2);
+    this.obj.bind('foo', spy3);
 
     // How do you unbind just a single callback for the event?
-    this.obj.unbind( 'foo', spy1 );
-    this.obj.trigger( 'foo' );
+    this.obj.unbind('foo', spy1);
+    this.obj.trigger('foo');
 
-    ok( spy2.called );
+    ok(spy2.called);
 
     // How do you unbind all callbacks tied to the event with a single method
-    this.obj.unbind( 'foo' );
-    this.obj.trigger( 'foo' );
+    this.obj.unbind('foo');
+    this.obj.trigger('foo');
 
-    ok( spy2.callCount, 1 );
-    ok( spy2.calledOnce, "Spy 2 called once" );
-    ok( spy3.calledOnce, "Spy 3 called once" );
+    ok(spy2.callCount, 1);
+    ok(spy2.calledOnce, "Spy 2 called once");
+    ok(spy3.calledOnce, "Spy 3 called once");
 
     // How do you unbind all callbacks and events tied to the object with a single method?
-    this.obj.unbind( 'bar' );
-    this.obj.trigger( 'bar' );
+    this.obj.unbind('bar');
+    this.obj.trigger('bar');
 
-    equal( spy1.callCount, 0 );
+    equal(spy1.callCount, 0);
 });
 ```
 
@@ -5919,7 +5919,7 @@ test('Also can remove custom events from objects.', function() {
 It can also be useful to write specs for any application bootstrap you may have in place. For the following module, our setup initiates and appends a TodoApp view and we can test anything from local instances of views being correctly defined to application interactions correctly resulting in changes to instances of local collections.
 
 ```javascript
-module( 'About Backbone Applications' , {
+module('About Backbone Applications' , {
     setup: function() {
         Backbone.localStorageDB = new Store('testTodos');
         $('#qunit-fixture').append('<div id="app"></div>');   
@@ -5933,17 +5933,17 @@ module( 'About Backbone Applications' , {
 });
 
 test('Should bootstrap the application by initializing the Collection.', function() {
-    expect( 2 );
+    expect(2);
 
-    notEqual( this.App.todos, undefined );
-    equal( this.App.todos.length, 0 );
+    notEqual(this.App.todos, undefined);
+    equal(this.App.todos.length, 0);
 });
 
-test( 'Should bind Collection events to View creation.' , function() {
-      $('#new-todo').val( 'Foo' );
-      $('#new-todo').trigger(new $.Event( 'keypress', { keyCode: 13 } ));
+test('Should bind Collection events to View creation.' , function() {
+      $('#new-todo').val('Foo');
+      $('#new-todo').trigger(new $.Event('keypress', { keyCode: 13 }));
 
-      equal( this.App.todos.length, 1 );
+      equal(this.App.todos.length, 1);
  });
 ```
 
