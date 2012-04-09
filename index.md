@@ -1,5 +1,4 @@
 
-
 ##Prelude
 
 Welcome to my (in-progress) book about the [Backbone.js](http://documentcloud.github.com/backbone/) framework for structuring JavaScript applications. It's released under a Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported [license](http://creativecommons.org/licenses/by-nc-sa/3.0/) meaning you can both grab a copy of the book for free or help to further [improve](https://github.com/addyosmani/backbone-fundamentals/) it.
@@ -444,7 +443,7 @@ A response to this could be that the view can also just be a View (as per MVC) b
 
 We've also seen that in Backbone the responsibility of a controller is shared with both the Backbone.View and Backbone.Router and in the following example we can actually see that aspects of that are certainly true. 
 
-Here, our Backbone ```PhotoView``` uses the Observer pattern to 'subscribe' to changes to a View's model in the line ```this.model.bind('change',...)```. It also handles templating in the ```render()``` method, but unlike some other implementations, user interaction is also handled in the View (see ```events```).
+Here, our Backbone ```PhotoView``` uses the Observer pattern to 'subscribe' to changes to a View's model in the line ```this.model.on('change',...)```. It also handles templating in the ```render()``` method, but unlike some other implementations, user interaction is also handled in the View (see ```events```).
 
 
 ```javascript
@@ -468,8 +467,8 @@ var PhotoView = Backbone.View.extend({
 
     initialize: function() {
       _.bindAll(this, 'render');
-      this.model.bind('change', this.render);
-      this.model.bind('destroy', this.remove);
+      this.model.on('change', this.render);
+      this.model.on('destroy', this.remove);
     },
 
     // Re-render the photo entry
@@ -558,7 +557,7 @@ var Photo = Backbone.Model.extend({
         coordinates: [0,0]
     },
     initialize: function(){
-        this.bind("change:src", function(){
+        this.on("change:src", function(){
             var src = this.get("src"); 
             console.log('Image source updated to ' + src);
         });
@@ -677,7 +676,7 @@ var myPhoto = new Photo({ location: "Boston",
 Any and all of the attributes in a Backbone model can have listeners bound to them which detect when their values change. Listeners can be added to the `initialize()` function:
  
 ```javascript
-this.bind('change', function(){
+this.on('change', function(){
     console.log('values for this model have changed');
 });
 ```
@@ -694,7 +693,7 @@ var Photo = Backbone.Model.extend({
     },
     initialize: function(){
         console.log('this model has been initialized');
-        this.bind("change:title", function(){
+        this.on("change:title", function(){
             var title = this.get("title");
             console.log("My title has been changed to.. " + title);
         });
@@ -728,7 +727,7 @@ var Photo = Backbone.Model.extend({
     
     initialize: function(){
         console.log('this model has been initialized');
-        this.bind("error", function(model, error){
+        this.on("error", function(model, error){
             console.log(error);
         });
     }
@@ -866,7 +865,7 @@ As collections represent a group of items, we're also able to listen for `add` a
 
 ```javascript
 var PhotoCollection = new Backbone.Collection();
-PhotoCollection.bind("add", function(photo) {
+PhotoCollection.on("add", function(photo) {
   console.log("I liked " + photo.get("title") + ' its this one, right? '  + photo.get("src"));
 });
  
@@ -880,7 +879,7 @@ PhotoCollection.add([
 In addition, we're able to bind a `change` event to listen for changes to models in the collection.
 
 ```javascript
-PhotoCollection.bind("change:title", function(){
+PhotoCollection.on("change:title", function(){
     console.log('there have been updates made to this collections titles');    
 });
 ```
@@ -2897,7 +2896,7 @@ var TodoView = Backbone.View.extend({
     // a one-to-one correspondence between a **Todo** and a **TodoView** in this
     // app, we set a direct reference on the model for convenience.
     initialize: function() {      
-      this.model.bind('change', this.render, this);
+      this.model.on('change', this.render, this);
       this.model.view = this;
     },
     ...
@@ -2953,7 +2952,7 @@ define([
     // a one-to-one correspondence between a **Todo** and a **TodoView** in this
     // app, we set a direct reference on the model for convenience.
     initialize: function() {      
-      this.model.bind('change', this.render, this);
+      this.model.on('change', this.render, this);
       this.model.view = this;
     },
 
@@ -2969,7 +2968,7 @@ define([
       var content = this.model.get('content');
       this.$('.todo-content').text(content);
       this.input = this.$('.todo-input');
-      this.input.bind('blur', this.close);
+      this.input.on('blur', this.close);
       this.input.val(content);
     },
     ...
@@ -4336,7 +4335,7 @@ it('Fires a custom event when the state changes.', function() {
     var todo = new Todo();
     
     // how do we monitor changes of state?
-    todo.bind('change', spy);
+    todo.on('change', spy);
     
     // what would you need to do to force a change of state?
     todo.set({ text: 'Get oil change for car.' });
@@ -4358,7 +4357,7 @@ it('Can contain custom validation rules, and will trigger an error event on fail
     
     var todo = new Todo();
     
-    todo.bind('error', errorCallback);
+    todo.on('error', errorCallback);
     
     // What would you need to set on the todo properties to 
     // cause validation to fail?
@@ -5629,7 +5628,7 @@ test('Fires a custom event when the state changes.', function() {
     var spy = this.spy();
     var todo = new Todo();
 
-    todo.bind( 'change', spy );
+    todo.on( 'change', spy );
     // How would you update a property on the todo here?
     // Hint: http://documentcloud.github.com/backbone/#Model-set
     todo.set( { text: "new text" } );
@@ -5644,7 +5643,7 @@ test('Can contain custom validation rules, and will trigger an error event on fa
     var errorCallback = this.spy();
     var todo = new Todo();
 
-    todo.bind('error', errorCallback);
+    todo.on('error', errorCallback);
     // What would you need to set on the todo properties to cause validation to fail?
     todo.set( { done: "not a boolean" } );
  
@@ -5698,8 +5697,8 @@ test('Fires custom named events when the models change.', function() {
     var addModelCallback = this.spy();
     var removeModelCallback = this.spy();
 
-    todos.bind( 'add', addModelCallback );
-    todos.bind( 'remove', removeModelCallback );
+    todos.on( 'add', addModelCallback );
+    todos.on( 'remove', removeModelCallback );
 
     // How would you get the 'add' event to trigger?
     todos.add( {text:"New todo"} );
@@ -5805,7 +5804,7 @@ module( 'About Backbone.Events', {
     setup: function() {
         this.obj = {};
         _.extend( this.obj, Backbone.Events );
-        this.obj.unbind(); // remove all custom events before each spec is run.
+        this.obj.off(); // remove all custom events before each spec is run.
     }
 });
 
@@ -5818,8 +5817,8 @@ test('Can extend JavaScript objects to support custom events.', function() {
     // Hint: http://documentcloud.github.com/backbone/#Events
     _.extend( basicObject, Backbone.Events );
 
-    equal( typeof basicObject.bind, 'function' );
-    equal( typeof basicObject.unbind, 'function' );
+    equal( typeof basicObject.on, 'function' );
+    equal( typeof basicObject.off, 'function' );
     equal( typeof basicObject.trigger, 'function' );
 });
 
@@ -5828,7 +5827,7 @@ test('Allows us to bind and trigger custom named events on an object.', function
 
     var callback = this.spy();
 
-    this.obj.bind( 'basic event', callback );
+    this.obj.on( 'basic event', callback );
     this.obj.trigger( 'basic event' );
 
     // How would you cause the callback for this custom event to be called?
@@ -5840,7 +5839,7 @@ test('Also passes along any arguments to the callback when an event is triggered
 
     var passedArgs = [];
 
-    this.obj.bind('some event', function() {
+    this.obj.on('some event', function() {
         for (var i = 0; i < arguments.length; i++) {
             passedArgs.push( arguments[i] );
         }
@@ -5861,7 +5860,7 @@ test('Can also bind the passed context to the event callback.', function() {
     };
 
     // How would you get 'this.color' to refer to 'foo' in the changeColor function?
-    this.obj.bind( 'an event', changeColor, foo );
+    this.obj.on( 'an event', changeColor, foo );
     this.obj.trigger( 'an event' );
 
     equal( foo.color, 'red' );
@@ -5872,7 +5871,7 @@ test( "Uses 'all' as a special event name to capture all events bound to the obj
 
     var callback = this.spy();
 
-    this.obj.bind( 'all', callback );
+    this.obj.on( 'all', callback );
     this.obj.trigger( "custom event 1" );
     this.obj.trigger( "custom event 2" );
 
@@ -5887,19 +5886,19 @@ test('Also can remove custom events from objects.', function() {
     var spy2 = this.spy();
     var spy3 = this.spy();
 
-    this.obj.bind( 'foo', spy1 );
-    this.obj.bind( 'bar', spy1 );
-    this.obj.bind( 'foo', spy2 );
-    this.obj.bind( 'foo', spy3 );
+    this.obj.on( 'foo', spy1 );
+    this.obj.on( 'bar', spy1 );
+    this.obj.on( 'foo', spy2 );
+    this.obj.on( 'foo', spy3 );
 
     // How do you unbind just a single callback for the event?
-    this.obj.unbind( 'foo', spy1 );
+    this.obj.off( 'foo', spy1 );
     this.obj.trigger( 'foo' );
 
     ok( spy2.called );
 
     // How do you unbind all callbacks tied to the event with a single method
-    this.obj.unbind( 'foo' );
+    this.obj.off( 'foo' );
     this.obj.trigger( 'foo' );
 
     ok( spy2.callCount, 1 );
@@ -5907,7 +5906,7 @@ test('Also can remove custom events from objects.', function() {
     ok( spy3.calledOnce, "Spy 3 called once" );
 
     // How do you unbind all callbacks and events tied to the object with a single method?
-    this.obj.unbind( 'bar' );
+    this.obj.off( 'bar' );
     this.obj.trigger( 'bar' );
 
     equal( spy1.callCount, 0 );
