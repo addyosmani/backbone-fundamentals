@@ -5967,7 +5967,7 @@ That's it for this section on testing applications with QUnit and SinonJS. I enc
 Whilst we get with Backbone out of the box can be terribly useful, there are some equally beneficial add-ons that can help simplify our development process. These include:
 
 * [Backbone Layout Manager](https://github.com/tbranyen/backbone.layoutmanager)
-* [Backbone Boilerplate](https://github.com/tbranyen/backbone-boilerplate)
+* [Backbone Boilerplate](https://github.com/backbone-boilerplate/backbone-boilerplate)
 * [Backbone Model Binding](https://github.com/derickbailey/backbone.modelbinding)
 * [Backbone Relational - for model relationships](https://github.com/PaulUithol/Backbone-relational)
 * [View and model inheritance](https://gist.github.com/1271041)
