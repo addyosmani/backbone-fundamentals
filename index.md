@@ -787,7 +787,7 @@ el: '#footer',
 el: document.getElementById( 'footer' )
 ```
 
-If you want to create a new element for you view, set any combination of the following view's properties: `tagName`, `id` and `className`. A new element will be created for you by the framework and a reference to it will be available at the `el` property.
+If you want to create a new element for your view, set any combination of the following view's properties: `tagName`, `id` and `className`. A new element will be created for you by the framework and a reference to it will be available at the `el` property.
 
 ```
 tagName: 'p', // required, but defaults to 'div' if not set
