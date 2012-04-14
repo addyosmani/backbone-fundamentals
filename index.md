@@ -960,7 +960,7 @@ var GalleryRouter = Backbone.Router.extend({
         any of the components between two URL slashes*/
         /*Sample usage: http://unicorns.com/#photos/5*/
         
-        "search/:query" : "searchPhotos"
+        "search/:query" : "searchPhotos",
         /*We can also define multiple routes that are bound to the same map function,
         in this case searchPhotos(). Note below how we're optionally passing in a 
         reference to a page number if one is supplied*/
