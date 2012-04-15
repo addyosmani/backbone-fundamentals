@@ -210,7 +210,7 @@ The benefit of this architecture is that each component plays its own separate r
 var buildPhotoView = function( photoModel, photoController ){
     
     var base        = document.createElement('div'),
-    var photoEl     = document.createElement('div');
+        photoEl     = document.createElement('div');
      
      base.appendChild(photoEl);
 
