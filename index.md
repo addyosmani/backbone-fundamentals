@@ -1273,7 +1273,7 @@ For this practical, we're going to once again look at extending the popular Back
 
 (See [here](https://github.com/addyosmani/backbone-boilerplates/blob/master/option2/app.js) for the source)
 
-We must first include the node dependencies required by our application. These are Express, Mongoose and Path (a module containing utilities for dealing with file paths.
+We must first include the node dependencies required by our application. These are Express, Mongoose and Path (a module containing utilities for dealing with file paths).
 
 ```javascript
 var application_root = __dirname,
