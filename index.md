@@ -1739,7 +1739,7 @@ ruby -rubygems example.rb
 
 If we now navigated to http://localhost:4567 in our browser we could now see the application running successfully.
 
-The HTTP verbs we commonly work with when writing RESTful web services are: `get`, `post`, `delete` and `put`. As we now know, all Sinatra routes are basically HTTP actions (```get`` etc.) that are paired with a URL-matching pattern. We associate a pair of an action and route with code we would like sent back to the browser (executed)if the route is reached. Sinatra doesn't enforce much in the way of architectural structure, instead relying on simplicity to supporting writing powerful APIs. 
+The HTTP verbs we commonly work with when writing RESTful web services are: `get`, `post`, `delete` and `put`. As we now know, all Sinatra routes are basically HTTP actions (```get``` etc.) that are paired with a URL-matching pattern. We associate a pair of an action and route with code we would like sent back to the browser (executed)if the route is reached. Sinatra doesn't enforce much in the way of architectural structure, instead relying on simplicity to supporting writing powerful APIs. 
 
 Here's an example of a skeleton service we could put together supporting four common HTTP actions:
 ruby
@@ -2154,7 +2154,7 @@ These can be viewed along with other note-worthy snippets of code from the appli
 
 ####Views
 
-In our main application view (AppView), we want to load any previously stored Todo items in our Mongo database when the view initializes. This is done below with the line ```Todos.fetch()``` in the ``initialize()`` method where we also bind to the relevant events on the `Todos` collection for when items are added or changed.
+In our main application view (AppView), we want to load any previously stored Todo items in our Mongo database when the view initializes. This is done below with the line ```Todos.fetch()``` in the ```initialize()``` method where we also bind to the relevant events on the `Todos` collection for when items are added or changed.
 
 ```javascript
 // Our overall **AppView** is the top-level piece of UI.
@@ -2302,7 +2302,7 @@ class TodoApp < Sinatra::Base
 	end
 ```
 
-`haml :index` instructs Sinatra to use the `views/index.haml` for the application index, whilst ```attr_wrapper`` is simply defining the values to be used for any local variables defined inside the template.
+`haml :index` instructs Sinatra to use the `views/index.haml` for the application index, whilst ```attr_wrapper``` is simply defining the values to be used for any local variables defined inside the template.
 This similarly applies Todo items with the template `views/todo.haml'.
 
 The rest of our routes make use of the `params` hash and a number of useful helper methods included with the MongoDB Ruby driver. For more details on these, please
@@ -4056,7 +4056,7 @@ In this chapter we're going to use both BDD (with TDD) to write unit tests for a
 
 When using Jasmine, you'll be writing suites and specifications (specs). Suites basically describe scenarios whilst specs describe what can be done in these scenarios.
 
-Each spec is a JavaScript function, described with a call to ```it()`` using a description string and a function. The description should describe the behaviour the particular unit of code should exhibit and keeping in mind BDD, it should ideally be meaningful. Here's an example of a basic spec:
+Each spec is a JavaScript function, described with a call to ```it()``` using a description string and a function. The description should describe the behaviour the particular unit of code should exhibit and keeping in mind BDD, it should ideally be meaningful. Here's an example of a basic spec:
 
 ```javascript
 it('should be incrementing in value', function(){
@@ -4065,7 +4065,7 @@ it('should be incrementing in value', function(){
 });
 ```
 
-On it's own, a spec isn't particularly useful until expectations are set about the behavior of the code. Expectations in specs are defined using the ```expect()``` function and an [expectation matcher](https://github.com/pivotal/jasmine/wiki/Matchers) (e.g toEqual(), toBeTruthy(), toContain()). A revised example using an expectation matcher would look like:
+On it's own, a spec isn't particularly useful until expectations are set about the behavior of the code. Expectations in specs are defined using the ```expect()``` function and an [expectation matcher](https://github.com/pivotal/jasmine/wiki/Matchers) (e.g ```toEqual()```, ```toBeTruthy()```, ```toContain()```). A revised example using an expectation matcher would look like:
 
 ```javascript
 it('should be incrementing in value', function(){
@@ -4075,7 +4075,7 @@ it('should be incrementing in value', function(){
 });
 ``` 
 
-The above code passes our behavioral expectation as ```counter`` equals 1. Notice how easy this was to read the expectation on the last line (you probably grokked it without any explanation).
+The above code passes our behavioral expectation as ```counter``` equals 1. Notice how easy this was to read the expectation on the last line (you probably grokked it without any explanation).
 
 Specs are grouped into suites which we describe using Jasmine's ```describe()``` function, again passing a string as a description and a function. The name/description for your suite is typically that of the component or module you're testing. 
 
@@ -4284,7 +4284,7 @@ describe('Tests for Todo', function() {
 
 Models should ideally have default values for attributes. This helps ensure that when creating instances without a value set for any specific attribute, a default one (e.g "") is used instead. The idea here is to allow your application to interact with models without any unexpected behavior. 
 
-In the following spec, we create a new Todo without any attributes passed then check to find out what the value of the ```text``` attribute is. As no value has been set, we expect a default value of ```""`` to be returned.
+In the following spec, we create a new Todo without any attributes passed then check to find out what the value of the ```text``` attribute is. As no value has been set, we expect a default value of ```""``` to be returned.
 
 ```javascript
 it('Can be created with default values for its attributes.', function() {
@@ -5308,7 +5308,7 @@ As with Jasmine, the effort required to run synchronous tests with QUnit is fair
 
 Remember: running asynchronous code without any special considerations can cause incorrect assertions to appear in other tests, so we want to make sure we get it right.
 
-Writing QUnit tests for asynchronous code is made possible using the ```start()``` and ```stop()`` methods, which programmatically set the start and stop points during such tests. Here's a simple example:
+Writing QUnit tests for asynchronous code is made possible using the ```start()``` and ```stop()``` methods, which programmatically set the start and stop points during such tests. Here's a simple example:
 
 ```javascript
 test("An async test", function(){
