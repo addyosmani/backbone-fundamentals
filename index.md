@@ -652,7 +652,7 @@ There are times when you want your model to have a set of default values (e.g. i
 
 ```javascript
 var Photo = Backbone.Model.extend({
-    defaults:{
+    defaults: {
         title: 'Another photo!',
         tags:  ['untagged'],
         location: 'home',
@@ -684,7 +684,7 @@ In the following example, we log a message whenever a specific attribute (the ti
 
 ```javascript
 var Photo = Backbone.Model.extend({
-    defaults:{
+    defaults: {
         title: 'Another photo!',
         tags:  ['untagged'],
         location: 'home',
@@ -3959,7 +3959,7 @@ window.mobileSearch = window.mobileSearch || {
         workspace:new Workspace()
     },
     utils: utils,
-    defaults:{
+    defaults: {
         resultsPerPage: 16,
         safeSearch: 2,
         maxDate:'',
@@ -4299,12 +4299,10 @@ If testing this spec before your models have been written, you'll incur a failin
 
 window.Todo = Backbone.Model.extend({
 
-    defaults: function() {
-        return {
-            text: "",
-            done:  false,
-            order: 0
-        };
+    defaults: {
+      text: "",
+      done:  false,
+      order: 0
     }
 
 ```
@@ -4393,12 +4391,10 @@ function sanitize(str) {
 
 window.Todo = Backbone.Model.extend({
 
-    defaults: function() {
-        return {
-            text: '',
-            done:  false,
-            order: 0
-        };
+    defaults: {
+      text: '',
+      done:  false,
+      order: 0
     },
     
     initialize: function() {
