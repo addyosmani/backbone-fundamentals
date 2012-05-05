@@ -613,16 +613,18 @@ console.log(myAttributes);
 
 It is best practice to use `Model.set()` or direct instantiation to set the values of a model's attributes.
 
-Accessing `Model.attributes` directly is generally discouraged. Instead, should you need to read or clone data, `Model.toJSON()` is recommended for this purpose. If you would like to access or copy a model's attributes for purposes such as JSON stringification (e.g. for serialization prior to being passed to a view), this can be achieved using `Model.toJSON()`:
+Accessing `Model.attributes` directly is generally discouraged. Instead, should you need to read or clone data, `Model.toJSON()` is recommended for this purpose. If you would like to access or copy a model's attributes for purposes such as JSON stringification (e.g. for serialization prior to being passed to a view), this can be achieved using Model.toJSON(). Remember that this will return an object and JSON.stringify() should be used to get a string representation of the data:
 
 
 ```javascript
 var myAttributes = myPhoto.toJSON();
-console.log(myAttributes);
-/* this returns { title: "My awesome photo", 
-             src:"boston.jpg", 
-             location: "Boston", 
-             tags:['the big game', 'vacation']}*/
+console.log(JSON.stringify(myattributes));
+/* this returns: 
+ { title: "My awesome photo", 
+   src:"boston.jpg", 
+   location: "Boston", 
+   tags:['the big game', 'vacation']}
+*/
 ```
 
 ####Model.set()
