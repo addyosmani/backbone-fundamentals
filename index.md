@@ -1744,8 +1744,8 @@ If we now navigated to http://localhost:4567 in our browser we could now see the
 The HTTP verbs we commonly work with when writing RESTful web services are: `get`, `post`, `delete` and `put`. As we now know, all Sinatra routes are basically HTTP actions (```get``` etc.) that are paired with a URL-matching pattern. We associate a pair of an action and route with code we would like sent back to the browser (executed)if the route is reached. Sinatra doesn't enforce much in the way of architectural structure, instead relying on simplicity to supporting writing powerful APIs. 
 
 Here's an example of a skeleton service we could put together supporting four common HTTP actions:
-ruby
-```
+
+```ruby
 get '/items' do
   # list all items available
 end
