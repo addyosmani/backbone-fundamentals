@@ -1822,7 +1822,7 @@ require([<span class="ch">&#39;foo&#39;</span>, <span class="ch">&#39;bar&#39;</
         <span class="kw">var</span> compiled_template = <span class="kw">_</span>.<span class="fu">template</span>( mainView );
     }
 );</code></pre>
-<p>That's it!. You can then go applying your template to a view in Backbone doing something like:</p>
+<p>That's it!. Now you can apply your template to a view in Backbone with something like:</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">collection.someview</span>.$<span class="fu">el</span>.<span class="fu">html</span>( compiled_template( { <span class="dt">results</span>: <span class="kw">collection</span>.<span class="fu">models</span> } ) );</code></pre>
 <p>All templating solutions will have their own custom methods for handling template compilation, but if you understand the above, substituting Underscore's micro-templating for any other solution should be fairly trivial.</p>
 <p><strong>Note:</strong> You may also be interested in looking at <a href="https://github.com/ZeeAgency/requirejs-tpl">Require.js tpl</a>. It's an AMD-compatible version of the Underscore templating system that also includes support for optimization (pre-compiled templates) which can lead to better performance and no evals. I have yet to use it myself, but it comes as a recommended resource.</p>
