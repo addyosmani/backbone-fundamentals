@@ -338,7 +338,7 @@ var PhotosController = Spine.Controller.sub({
 
 In Spine, controllers are considered the glue for an application, adding and responding to DOM events, rendering templates and ensuring that views and models are kept in sync (which makes sense in the context of what we know to be a controller).
 
-What we're doing in the above example is setting up listeners in the ```update``` and ```destroy``` events using ```render()``` and ```remove()```. When a photo entry gets updated, we re-render the view to reflect the changes to the meta-data. Similarly, if the photo gets deleted from the gallery, we remove it from the view. In case you were wondering about the ```tmpl()``` function in the code snippet: in the ```render()``` function, we're using this to render a JavaScript template called #photoTemplate which simply returns a HTML string used to replace the controller's current element. 
+What we're doing in the above example is setting up listeners in the ```update``` and ```destroy``` events using ```render()``` and ```remove()```. When a photo entry gets updated, we re-render the view to reflect the changes to the meta-data. Similarly, if the photo gets deleted from the gallery, we remove it from the view. In case you were wondering about the ```tmpl()``` function in the code snippet: in the ```render()``` function, we're using this to render a JavaScript template called #photoTemplate which simply returns an HTML string used to replace the controller's current element. 
 
 What this provides us with is a very lightweight, simple way to manage changes between the model and the view.
 
@@ -777,7 +777,7 @@ var PhotoSearch = Backbone.View.extend({
 
 ####What is `el`?
 
-`el` is basically a reference to a DOM element and all views must have one. It allows for all of the contents of a view to be inserted into the DOM at once, which makes for faster rendering as browser performs the minimum required reflows and repaints.
+`el` is basically a reference to a DOM element and all views must have one. It allows for all of the contents of a view to be inserted into the DOM at once, which makes for faster rendering because the browser performs the minimum required reflows and repaints.
 
 There are two ways to attach a DOM element to a view: the element already exists in the page or a new element is created for the view and added manually by the developer.
 If the element already exists in the page, you can set `el` as either a CSS selector that matches the element or a simple reference to the DOM element.
@@ -2682,7 +2682,7 @@ require(['js/app', 'text!templates/mainView.html'],
 );
 ```
 
-That's it!. You can then go applying your template to a view in Backbone doing something like:
+That's it! Now you can apply your template to a view in Backbone with something like:
 
 ```javascript
 collection.someview.$el.html( compiled_template( { results: collection.models } ) );
@@ -2865,7 +2865,7 @@ require(['views/app'], function(AppView){
 });
 ```
 
-The `require()` at the end of our main.js file is simply there so we can load and instantiation the primary view for our application (`views/app.js`). You'll commonly see both this and the configuration object included the most top-level script file for a project.
+The `require()` at the end of our main.js file is simply there so we can load and instantiate the primary view for our application (`views/app.js`). You'll commonly see both this and the configuration object included in most top-level script files for a project.
 
 In addition to offering name-mapping, the configuration object can be used to define additional properties such as `waitSeconds` - the number of seconds to wait before script loading times out and `locale`, should you wish to load up i18n bundles for custom languages. The `baseUrl` is simply the path to use for module lookups.
 
