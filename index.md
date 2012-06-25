@@ -1364,7 +1364,7 @@ app.get('/api/todos/:id', function(req, res){
 });
 ```
 
-Similarly, we want to support updating todos based on a specific ID as well. The following allows us to query a todo by ID and then update the values of it's three attributes (text, done, order) easily. 
+Similarly, we want to support updating todos based on a specific ID as well. The following allows us to query a todo by ID and then update the values of its three attributes (text, done, order) easily. 
 
 ```javascript
 app.put('/api/todos/:id', function(req, res){
@@ -1867,7 +1867,7 @@ Haml is a popular alternative to ERB which offers an abstract syntax for writing
 * Well documented with a large community backing it
 * Almost as fast as ERB
 
-For the purpose of comparison, below we can see an ERB template compared to it's Haml equivalent.
+For the purpose of comparison, below we can see an ERB template compared to its Haml equivalent.
 
 ####ERB
 
@@ -1972,7 +1972,7 @@ or using `$set`, update an existing document without overwriting the entire obje
 notes.update({ :_id => note_id }, '$set' => { :text = > 'Remember the bread' })
 ```
 
-Useful to know: Almost each MongoDB document has an _id field as it's first attribute. This can normally
+Useful to know: Almost each MongoDB document has an _id field as its first attribute. This can normally
 be of any type, however a special BSON datatype is provided for object ids. It's a
 12-byte binary value that has a high probability of being unique when allocated.
 
@@ -2572,7 +2572,7 @@ require(['foo', 'bar'], function ( foo, bar ) {
 
 **Wrapping modules, views and other components with AMD**
 
-Now that we've taken a look at how to define AMD modules, let's review how to go about wrapping components like views and collections so that they can also be easily loaded as dependencies for any parts of your application that require them. At it's simplest, a Backbone model may just require Backbone and Underscore.js. These are considered it's dependencies and so, to write an AMD model module, we would simply do this:
+Now that we've taken a look at how to define AMD modules, let's review how to go about wrapping components like views and collections so that they can also be easily loaded as dependencies for any parts of your application that require them. At it's simplest, a Backbone model may just require Backbone and Underscore.js. These are considered its dependencies and so, to write an AMD model module, we would simply do this:
 
 ```javascript
 define(['underscore', 'backbone'], function(_, Backbone) {
@@ -2994,7 +2994,7 @@ Using the RequireJS text plugin (the dependency marked `text`), we can actually 
 </div>
 ```
 
-There's no longer a need to be concerned with IDs for the template as we can map it's contents to a local variable (in this case `todosTemplate`). We then simply pass this to the Underscore.js templating function `_.template()` the same way we normally would have the value of our template script.
+There's no longer a need to be concerned with IDs for the template as we can map its contents to a local variable (in this case `todosTemplate`). We then simply pass this to the Underscore.js templating function `_.template()` the same way we normally would have the value of our template script.
 
 Next, let's look at how to define models as dependencies which can be pulled into collections. Here's an AMD-compatible model module, which has two default values: a `content` attribute for the content of a Todo item and a boolean `done` state, allowing us to trigger whether the item has been completed or not.
 
@@ -3171,7 +3171,7 @@ All subscriptions from modules go through a facade (or sandbox). What this does 
 
 Found in `aura/mediator.js`
 
-Below is a very simple AMD-wrapped implementation of the mediator pattern, based on prior work by Ryan Florence. It accepts as it's input an object, to which it attaches `publish()` and `subscribe()` methods. In a larger application, the mediator can contain additional utilities, such as handlers for initializing, starting and stopping modules, but for demonstration purposes, these two methods should work fine for our needs.
+Below is a very simple AMD-wrapped implementation of the mediator pattern, based on prior work by Ryan Florence. It accepts as its input an object, to which it attaches `publish()` and `subscribe()` methods. In a larger application, the mediator can contain additional utilities, such as handlers for initializing, starting and stopping modules, but for demonstration purposes, these two methods should work fine for our needs.
 
 ```javascript
 define([], function(obj){
@@ -3346,7 +3346,7 @@ For example, when a user enters in a new piece of text for a Todo item and hits 
 
 In order to update your Backbone application to primarily use pub/sub, a lot of the work you may end up doing will be moving logic coupled inside of specific views to modules outside of it which are reactionary. 
 
-Take the `todoSaver` for example - it's responsibility is saving new Todo items to models once the a `notificationName` called 'newContentAvailable' has fired. If you take a look at the permissions structure in the last code sample, you'll notice that 'newContentAvailable' is present there. If I wanted to prevent subscribers from being able to subscribe to this notification, I simply set it to a boolean value of `false`.
+Take the `todoSaver` for example - its responsibility is saving new Todo items to models once the a `notificationName` called 'newContentAvailable' has fired. If you take a look at the permissions structure in the last code sample, you'll notice that 'newContentAvailable' is present there. If I wanted to prevent subscribers from being able to subscribe to this notification, I simply set it to a boolean value of `false`.
 
 Again, this is a massive oversimplification of how advanced your permissions structures could get, but it's certainly one way of controlling what parts of your application can or can't be accessed by specific modules at any time.
 
@@ -3537,7 +3537,7 @@ model: model,
 
 Next, we're going to map the request (URL) parameters supported by your API or backend data service back to attributes that are internally used by Backbone.Paginator.
 
-For example: the NetFlix API refers to it's parameter for stating how many results to skip ahead by as `$skip` and it's number of items to return per page as `$top` (amongst others). We determine these by looking at a sample URL pointing at the service:
+For example: the NetFlix API refers to its parameter for stating how many results to skip ahead by as `$skip` and its number of items to return per page as `$top` (amongst others). We determine these by looking at a sample URL pointing at the service:
 
 ```javascript
 http://odata.netflix.com/v2/Catalog/Titles?&callback=callback&$top=30&$skip=30&orderBy=ReleaseYear&$inlinecount=allpages&$format=json&$callback=callback&$filter=substringof%28%27the%27,%20Name%29%20eq%20true&_=1332702202090
@@ -4015,7 +4015,7 @@ The takeaway here is just to remember that if you're not (already) going through
 
 One definition of unit testing is the process of taking the smallest piece of testable code in an application, isolating it from the remainder of your codebase and determining if it behaves exactly as expected. In this section, we'll be taking a look at how to unit test Backbone applications using a popular JavaScript testing framework called [Jasmine](http://pivotal.github.com/jasmine/) from Pivotal Labs.
 
-For an application to be considered 'well'-tested, distinct functionality should ideally have its own separate unit tests where it's tested against the different conditions you expect it to work under. All tests must pass before functionality is considered 'complete'. This allows developers to both modify a unit of code and it's dependencies with a level of confidence about whether these changes have caused any breakage.
+For an application to be considered 'well'-tested, distinct functionality should ideally have its own separate unit tests where it's tested against the different conditions you expect it to work under. All tests must pass before functionality is considered 'complete'. This allows developers to both modify a unit of code and its dependencies with a level of confidence about whether these changes have caused any breakage.
 
 As a basic example of unit testing is where a developer may wish to assert whether passing specific values through to a sum function results in the correct output being returned. For an example more relevant to this book, we may wish to assert whether a user adding a new Todo item to a list correctly adds a Model of a specific type to a Todos Collection.
 
@@ -4067,7 +4067,7 @@ it('should be incrementing in value', function(){
 });
 ```
 
-On it's own, a spec isn't particularly useful until expectations are set about the behavior of the code. Expectations in specs are defined using the ```expect()``` function and an [expectation matcher](https://github.com/pivotal/jasmine/wiki/Matchers) (e.g ```toEqual()```, ```toBeTruthy()```, ```toContain()```). A revised example using an expectation matcher would look like:
+On its own, a spec isn't particularly useful until expectations are set about the behavior of the code. Expectations in specs are defined using the ```expect()``` function and an [expectation matcher](https://github.com/pivotal/jasmine/wiki/Matchers) (e.g ```toEqual()```, ```toBeTruthy()```, ```toContain()```). A revised example using an expectation matcher would look like:
 
 ```javascript
 it('should be incrementing in value', function(){
@@ -4429,7 +4429,7 @@ A few specific specs that come to mind when working with collections are:
 
 In this section we're going to cover the first two of these with the third left as an extended exercise I recommend trying out.
 
-Testing Todo models can be added to a collection as objects or arrays is relatively trivial. First, we initialize a new TodoList collection and check to make sure it's length (i.e the number of Todo models it contains) is 0. Next, we add new Todos, both as objects and arrays, checking the length property of the collection at each stage to ensure the overall count is what we expect:
+Testing Todo models can be added to a collection as objects or arrays is relatively trivial. First, we initialize a new TodoList collection and check to make sure its length (i.e the number of Todo models it contains) is 0. Next, we add new Todos, both as objects and arrays, checking the length property of the collection at each stage to ensure the overall count is what we expect:
 
 ```javascript
 describe('Tests for TodoList', function() {
@@ -4867,7 +4867,7 @@ beforeEach(function() {
 });
 ```
 
-This will now also pass without any issues. Remember that jasmine-jquery also supports loading external fixtures into your specs easily using it's build in ```loadFixtures()``` and ```readFixtures()``` methods. For more information, consider reading the official jasmine-jquery [docs](https://github.com/velesin/jasmine-jquery).
+This will now also pass without any issues. Remember that jasmine-jquery also supports loading external fixtures into your specs easily using its build in ```loadFixtures()``` and ```readFixtures()``` methods. For more information, consider reading the official jasmine-jquery [docs](https://github.com/velesin/jasmine-jquery).
 
 
 ##Conclusions
