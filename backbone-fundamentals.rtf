@@ -45,27 +45,27 @@ MVC, MVP & Backbone.js
 The Basics
 }}}
 \par}
-{\pard \ql \f0 \sa0 \li720 \fi-360 \endash \tx360\tab {\field{\*\fldinst{HYPERLINK "#models"}}{\fldrslt{\ul
+{\pard \ql \f0 \sa0 \li720 \fi-360 \endash \tx360\tab {\field{\*\fldinst{HYPERLINK "#thebasics-models"}}{\fldrslt{\ul
 Models
 }}}
 \par}
-{\pard \ql \f0 \sa0 \li720 \fi-360 \endash \tx360\tab {\field{\*\fldinst{HYPERLINK "#views"}}{\fldrslt{\ul
+{\pard \ql \f0 \sa0 \li720 \fi-360 \endash \tx360\tab {\field{\*\fldinst{HYPERLINK "#thebasics-views"}}{\fldrslt{\ul
 Views
 }}}
 \par}
-{\pard \ql \f0 \sa0 \li720 \fi-360 \endash \tx360\tab {\field{\*\fldinst{HYPERLINK "#collections"}}{\fldrslt{\ul
+{\pard \ql \f0 \sa0 \li720 \fi-360 \endash \tx360\tab {\field{\*\fldinst{HYPERLINK "#thebasics-collections"}}{\fldrslt{\ul
 Collections
 }}}
 \par}
-{\pard \ql \f0 \sa0 \li720 \fi-360 \endash \tx360\tab {\field{\*\fldinst{HYPERLINK "#routers"}}{\fldrslt{\ul
+{\pard \ql \f0 \sa0 \li720 \fi-360 \endash \tx360\tab {\field{\*\fldinst{HYPERLINK "#thebasics-routers"}}{\fldrslt{\ul
 Routers
 }}}
 \par}
-{\pard \ql \f0 \sa0 \li720 \fi-360 \endash \tx360\tab {\field{\*\fldinst{HYPERLINK "#namespacing"}}{\fldrslt{\ul
+{\pard \ql \f0 \sa0 \li720 \fi-360 \endash \tx360\tab {\field{\*\fldinst{HYPERLINK "#thebasics-namespacing"}}{\fldrslt{\ul
 Namespacing
 }}}
 \par}
-{\pard \ql \f0 \sa0 \li720 \fi-360 \endash \tx360\tab {\field{\*\fldinst{HYPERLINK "#additional-tips"}}{\fldrslt{\ul
+{\pard \ql \f0 \sa0 \li720 \fi-360 \endash \tx360\tab {\field{\*\fldinst{HYPERLINK "#thebasics-additional-tips"}}{\fldrslt{\ul
 Additional tips
 }}}
 \sa180\par}
@@ -191,7 +191,7 @@ Trygve Reenskaug
 }}}
  (The \u8220"GoF\u8221" or \u8220"Gang of Four\u8221" book) in 1994, which played a role in popularizing its use.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \b \fs28 Smalltalk-80 MVC\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 It\u8217's important to understand what the original MVC pattern was aiming to solve as it has changed quite heavily since the days of its origin. Back in the 70\u8217's, graphical user-interfaces were far and few between. An approach known as {\field{\*\fldinst{HYPERLINK "http://martinfowler.com/eaaDev/uiArchs.html"}}{\fldrslt{\ul
+{\pard \ql \f0 \sa180 \li0 \fi0 It\u8217's important to understand what the original MVC pattern was aiming to solve as it has changed quite heavily since the days of its origin. Back in the 70\u8217's, graphical user-interfaces were few and far between. An approach known as {\field{\*\fldinst{HYPERLINK "http://martinfowler.com/eaaDev/uiArchs.html"}}{\fldrslt{\ul
 Separated Presentation
 }}}
  began to be used as a means to make a clear division between domain objects which modeled concepts in the real world (e.g a photo, a person) and the presentation objects which were rendered to the user\u8217's screen.\par}
@@ -251,7 +251,10 @@ origins
 {\pard \ql \f0 \sa180 \li0 \fi0 Users interact with views, which usually means reading and editing model data. For example, in our photo gallery application example, model viewing might happen in a user interface with a big image, a caption, and a list of tags. Model editing could be done through an \u8220"edit\u8221" view where a user who has selected a specific photo could edit its caption, tags, or other metadata in a form.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 In MVC, the actual task of updating the Model falls to Controllers, which we\u8217'll be covering shortly.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 Let\u8217's explore Views a little further using a simple JavaScript example. Below we can see a function that creates a single Photo view, consuming both a model instance and a controller instance.\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 We define a {\f1 render()} utility within our view which is responsible for rendering the contents of the {\f1 photoModel} using a JavaScript templating engine (Underscore templating) and updating the contents of our view, referenced by {\f1 photoEl}.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 We define a {\f1 render()} utility within our view which is responsible for rendering the contents of the {\f1 photoModel} using a JavaScript templating engine ({\field{\*\fldinst{HYPERLINK "http://underscorejs.org"}}{\fldrslt{\ul
+Underscore
+}}}
+ templating) and updating the contents of our view, referenced by {\f1 photoEl}.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 The {\f1 photoModel} then adds our {\f1 render()} callback as one of its subscribers, so that through the Observer pattern it can trigger the view to update when the model changes.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 You may wonder where user interaction comes into play here. When users click on any elements within the view, it\u8217's not the view\u8217's responsibility to know what to do next. A Controller makes this decision. In our sample implementation, this is achieved by adding an event listener to {\f1 photoEl} which will delegate handling the click behavior back to the controller, passing the model information along with it in case it\u8217's needed.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 The benefit of this architecture is that each component plays its own separate role in making the application function as needed.\par}
@@ -293,7 +296,7 @@ origins
 {\pard \ql \f0 \sa180 \li0 \fi0 {\b Templating}\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 In the context of JavaScript frameworks that support MVC/MV*, it is worth looking more closely at JavaScript templating and its relationship to Views.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 It has long been considered bad practice (and computationally expensive) to manually create large blocks of HTML markup in-memory through string concatenation. Developers using this technique often find themselves iterating through their data, wrapping it in nested divs and using outdated techniques such as {\f1 document.write} to inject the \u8216'template\u8217' into the DOM. This approach often means keeping scripted markup inline with standard markup, which can quickly become difficult to read and maintain, especially when building large applications.\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 JavaScript templating libraries (such as Handlebars.js or Mustache) are often used to define templates for views as HTML markup containing template variables. These template blocks can be either stored externally or within script tags with a custom type (e.g \u8216'text/template\u8217'). Variables are deliminated using a variable syntax (e.g \{\{name\}\}). Javascript template libraries typically accept data in JSON, and the grunt work of populating templates with data is taken care of by the framework itself. This has a several benefits, particularly when opting to store templates externally as this can let applications load templates dynamically on an as-needed basis.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 JavaScript templating libraries (such as Handlebars.js or Mustache) are often used to define templates for views as HTML markup containing template variables. These template blocks can be either stored externally or within script tags with a custom type (e.g \u8216'text/template\u8217'). Variables are delimited using a variable syntax (e.g \{\{name\}\}). Javascript template libraries typically accept data in JSON, and the grunt work of populating templates with data is taken care of by the framework itself. This has a several benefits, particularly when opting to store templates externally as this can let applications load templates dynamically on an as-needed basis.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 Let\u8217's compare two examples of HTML templates. One is implemented using the popular Handlebars.js library, and the other uses Underscore\u8217's \u8216'microtemplates\u8217'.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 {\b Handlebars.js:}\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \f1 <li class="photo">\line
@@ -344,12 +347,12 @@ var PhotosController = Spine.Controller.sub(\{      \line
   \},\line
 \line
   remove: function()\{\line
-    this.el.remove();\line
+    this.$el.remove();\line
     this.release();\line
   \}\line
 \});\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 In Spine, controllers are considered the glue for an application, adding and responding to DOM events, rendering templates and ensuring that views and models are kept in sync (which makes sense in the context of what we know to be a controller).\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 What we\u8217're doing in the above example is setting up listeners in the {\f1 update} and {\f1 destroy} events using {\f1 render()} and {\f1 remove()}. When a photo entry gets updated, we re-render the view to reflect the changes to the meta-data. Similarly, if the photo gets deleted from the gallery, we remove it from the view. In case you were wondering about the {\f1 tmpl()} function in the code snippet: in the {\f1 render()} function, we\u8217're using this to render a JavaScript template called #photoTemplate which simply returns a HTML string used to replace the controller\u8217's current element.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 What we\u8217're doing in the above example is setting up listeners in the {\f1 update} and {\f1 destroy} events using {\f1 render()} and {\f1 remove()}. When a photo entry gets updated, we re-render the view to reflect the changes to the meta-data. Similarly, if the photo gets deleted from the gallery, we remove it from the view. In case you were wondering about the {\f1 tmpl()} function in the code snippet: in the {\f1 render()} function, we\u8217're using this to render a JavaScript template called #photoTemplate which simply returns an HTML string used to replace the controller\u8217's current element.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 What this provides us with is a very lightweight, simple way to manage changes between the model and the view.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 {\b Backbone.js}\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 Later on in this section we\u8217're going to revisit the differences between Backbone and traditional MVC, but for now let\u8217's focus on controllers.\par}
@@ -377,7 +380,7 @@ var PhotosController = Spine.Controller.sub(\{      \line
 {\pard \ql \f0 \sa180 \li0 \fi0 As we\u8217've discussed, models represent application data, while views handle what the user is presented on screen. As such, MVC relies on Pub/Sub for some of its core communication (something that surprisingly isn\u8217't covered in many articles about the MVC pattern). When a model is changed it \u8220"publishes\u8221" to the rest of the application that it has been updated. The \u8220"subscriber\u8221"\u8211-generally a Controller\u8211-then updates the view accordingly. The observer-viewer nature of this relationship is what facilitates multiple views being attached to the same model.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 For developers interested in knowing more about the decoupled nature of MVC (once again, depending on the implementation), one of the goals of the pattern is to help define one-to-many relationships between a topic and its observers. When a topic changes, its observers are updated. Views and controllers have a slightly different relationship. Controllers facilitate views to respond to different user input and are an example of the Strategy pattern.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \b \fs28 Summary\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 Having reviewed the classical MVC pattern, your should now understand how it allows developers to cleanly separate concerns in an application. You should also now appreciate how JavaScript MVC frameworks may differ in their interpretation of MVC, and how they share some of the fundamental concepts of the original pattern.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Having reviewed the classical MVC pattern, you should now understand how it allows developers to cleanly separate concerns in an application. You should also now appreciate how JavaScript MVC frameworks may differ in their interpretation of MVC, and how they share some of the fundamental concepts of the original pattern.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 When reviewing a new JavaScript MVC/MV* framework, remember - it can be useful to step back and consider how it\u8217's opted to approach Models, Views, Controllers or other alternatives, as this can better help you grok how the framework expects to be used.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \b \fs32 MVP\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 Model-view-presenter (MVP) is a derivative of the MVC design pattern which focuses on improving presentation logic. It originated at a company named {\field{\*\fldinst{HYPERLINK "http://en.wikipedia.org/wiki/Taligent"}}{\fldrslt{\ul
@@ -404,10 +407,10 @@ MVVM
 {\pard \ql \f0 \sa180 \li0 \fi0 \b \fs32 MVP or MVC?\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 MVP is generally used most often in enterprise-level applications where it\u8217's necessary to reuse as much presentation logic as possible. Applications with very complex views and a great deal of user interaction may find that MVC doesn\u8217't quite fit the bill here as solving this problem may mean heavily relying on multiple controllers. In MVP, all of this complex logic can be encapsulated in a presenter, which can simplify maintenance greatly.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 As MVP views are defined through an interface and the interface is technically the only point of contact between the system and the view (other than a presenter), this pattern also allows developers to write presentation logic without needing to wait for designers to produce layouts and graphics for the application.\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 Depending on the implementation, MVP may be more easy to automatically unit test than MVC. The reason often cited for this is that the presenter can be used as a complete mock of the user-interface and so it can be unit tested independent of other components. In my experience this really depends on the languages you are implementing MVP in (there\u8217's quite a difference between opting for MVP for a JavaScript project over one for say, ASP.net).\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Depending on the implementation, MVP may be more easy to automatically unit test than MVC. The reason often cited for this is that the presenter can be used as a complete mock of the user-interface and so it can be unit tested independent of other components. In my experience this really depends on the languages you are implementing MVP in (there\u8217's quite a difference between opting for MVP for a JavaScript project over one for say, ASP.NET).\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 At the end of the day, the underlying concerns you may have with MVC will likely hold true for MVP given that the differences between them are mainly semantic. As long as you are cleanly separating concerns into models, views and controllers (or presenters) you should be achieving most of the same benefits regardless of the pattern you opt for.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \b \fs32 MVC, MVP and Backbone.js\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 There are very few, if any architectural JavaScript frameworks that claim to implement the MVC or MVP patterns in their classical form as many JavaScript developers don\u8217't view MVC and MVP as being mutually exclusive (we are actually more likely to see MVP strictly implemented when looking at web frameworks such as ASP.net or GWT). This is because it\u8217's possible to have additional presenter/view logic in your application and yet still consider it a flavor of MVC.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 There are very few, if any architectural JavaScript frameworks that claim to implement the MVC or MVP patterns in their classical form as many JavaScript developers don\u8217't view MVC and MVP as being mutually exclusive (we are actually more likely to see MVP strictly implemented when looking at web frameworks such as ASP.NET or GWT). This is because it\u8217's possible to have additional presenter/view logic in your application and yet still consider it a flavor of MVC.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 Backbone contributor {\field{\*\fldinst{HYPERLINK "http://ireneros.com/"}}{\fldrslt{\ul
 Irene Ros
 }}}
@@ -418,7 +421,7 @@ Irene Ros
 {\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab The views best represent templates (e.g Handlebars/Mustache markup templates)\sa180\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 A response to this could be that the view can also just be a View (as per MVC) because Backbone is flexible enough to let it be used for multiple purposes. The V in MVC and the P in MVP can both be accomplished by {\f1 Backbone.View} because they\u8217're able to achieve two purposes: both rendering atomic components and assembling those components rendered by other views.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 We\u8217've also seen that in Backbone the responsibility of a controller is shared with both the Backbone.View and Backbone.Router and in the following example we can actually see that aspects of that are certainly true.\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 Here, our Backbone {\f1 PhotoView} uses the Observer pattern to \u8216'subscribe\u8217' to changes to a View\u8217's model in the line {\f1 this.model.bind('change',...)}. It also handles templating in the {\f1 render()} method, but unlike some other implementations, user interaction is also handled in the View (see {\f1 events}).\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Here, our Backbone {\f1 PhotoView} uses the Observer pattern to \u8216'subscribe\u8217' to changes to a View\u8217's model in the line {\f1 this.model.on('change',...)}. It also handles templating in the {\f1 render()} method, but unlike some other implementations, user interaction is also handled in the View (see {\f1 events}).\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \f1 var PhotoView = Backbone.View.extend(\{\line
 \line
     //... is a list tag.\line
@@ -439,13 +442,13 @@ Irene Ros
 \line
     initialize: function() \{\line
       _.bindAll(this, 'render');\line
-      this.model.bind('change', this.render);\line
-      this.model.bind('destroy', this.remove);\line
+      this.model.on('change', this.render);\line
+      this.model.on('destroy', this.remove);\line
     \},\line
 \line
     // Re-render the photo entry\line
     render: function() \{\line
-      $(this.el).html(this.template(this.model.toJSON()));\line
+      this.$el.html(this.template(this.model.toJSON()));\line
       return this;\line
     \},\line
 \line
@@ -511,7 +514,7 @@ this
         coordinates: [0,0]\line
     \},\line
     initialize: function()\{\line
-        this.bind("change:src", function()\{\line
+        this.on("change:src", function()\{\line
             var src = this.get("src"); \line
             console.log('Image source updated to ' + src);\line
         \});\line
@@ -549,15 +552,17 @@ var myPhoto = new Photo();\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \f1 var myAttributes = myPhoto.attributes;\line
 console.log(myAttributes);\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 It is best practice to use {\f1 Model.set()} or direct instantiation to set the values of a model\u8217's attributes.\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 Accessing {\f1 Model.attributes} directly is generally discouraged. Instead, should you need to read or clone data, {\f1 Model.toJSON()} is recommended for this purpose. If you would like to access or copy a model\u8217's attributes for purposes such as JSON stringification (e.g.\u160?for serialization prior to being passed to a view), this can be achieved using {\f1 Model.toJSON()}:\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Accessing {\f1 Model.attributes} directly is generally discouraged. Instead, should you need to read or clone data, {\f1 Model.toJSON()} is recommended for this purpose. If you would like to access or copy a model\u8217's attributes for purposes such as JSON stringification (e.g.\u160?for serialization prior to being passed to a view), this can be achieved using Model.toJSON(). Remember that this will return an object and JSON.stringify() should be used to get a string representation of the data:\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \f1 var myAttributes = myPhoto.toJSON();\line
-console.log(myAttributes);\line
-/* this returns \{ title: "My awesome photo", \line
-             src:"boston.jpg", \line
-             location: "Boston", \line
-             tags:['the big game', 'vacation']\}*/\par}
+console.log(JSON.stringify(myattributes));\line
+/* this returns: \line
+ \{ title: "My awesome photo", \line
+   src:"boston.jpg", \line
+   location: "Boston", \line
+   tags:['the big game', 'vacation']\}\line
+*/\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \b \fs24 Model.set()\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 {\f1 Model.set()} allows us to pass attributes into an instance of our model. Attributes can either be set during initialization or at any time afterwards. It\u8217's important to avoid trying to set a Model\u8217's attributes directly (for example Model.caption = \u8216'A new caption\u8217'). Backbone uses Model.set() to know when to broadcast that a model\u8217's data has changed.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\f1 Model.set()} allows us to pass attributes into an instance of our model. Attributes can either be set during initialization or at any time afterwards. It\u8217's important to avoid trying to set a Model\u8217's attributes directly (for example, {\f1 Model.caption = 'A new caption'}). Backbone uses Model.set() to know when to broadcast that a model\u8217's data has changed.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \f1 var Photo = Backbone.Model.extend(\{\line
     initialize: function()\{\line
         console.log('this model has been initialized');\line
@@ -574,7 +579,7 @@ myPhoto2.set(\{ title:'Vacation in Florida', location: 'Florida' \});\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 {\b Default values}\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 There are times when you want your model to have a set of default values (e.g.\u160?in a scenario where a complete set of data isn\u8217't provided by the user). This can be set using a property called {\f1 defaults} in your model.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \f1 var Photo = Backbone.Model.extend(\{\line
-    defaults:\{\line
+    defaults: \{\line
         title: 'Another photo!',\line
         tags:  ['untagged'],\line
         location: 'home',\line
@@ -592,12 +597,12 @@ var myPhoto = new Photo(\{ location: "Boston", \line
     photoSrc = myPhoto.get("src"); //placeholder.jpg\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 {\b Listening for changes to your model}\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 Any and all of the attributes in a Backbone model can have listeners bound to them which detect when their values change. Listeners can be added to the {\f1 initialize()} function:\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 \f1 this.bind('change', function()\{\line
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 this.on('change', function()\{\line
     console.log('values for this model have changed');\line
 \});\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 In the following example, we log a message whenever a specific attribute (the title of our Photo model) is altered.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \f1 var Photo = Backbone.Model.extend(\{\line
-    defaults:\{\line
+    defaults: \{\line
         title: 'Another photo!',\line
         tags:  ['untagged'],\line
         location: 'home',\line
@@ -605,7 +610,7 @@ var myPhoto = new Photo(\{ location: "Boston", \line
     \},\line
     initialize: function()\{\line
         console.log('this model has been initialized');\line
-        this.bind("change:title", function()\{\line
+        this.on("change:title", function()\{\line
             var title = this.get("title");\line
             console.log("My title has been changed to.. " + title);\line
         \});\line
@@ -632,7 +637,7 @@ myPhoto.setTitle('Fishing at sea'); \line
 \line
     initialize: function()\{\line
         console.log('this model has been initialized');\line
-        this.bind("error", function(model, error)\{\line
+        this.on("error", function(model, error)\{\line
             console.log(error);\line
         \});\line
     \}\line
@@ -649,7 +654,7 @@ myPhoto.set(\{ title: "On the beach" \});\line
     el: $('#results'),\line
     render: function( event )\{\line
         var compiled_template = _.template( $("#results-template").html() );\line
-        this.el.html( compiled_template(this.model.toJSON()) );\line
+        this.$el.html( compiled_template(this.model.toJSON()) );\line
         return this; //recommended as this enables calls to be chained.\line
     \},\line
     events: \{\line
@@ -668,12 +673,12 @@ myPhoto.set(\{ title: "On the beach" \});\line
     \}\line
 \});\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \b \fs24 What is {\f1 el}?\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 {\f1 el} is basically a reference to a DOM element and all views must have one. It allows for all of the contents of a view to be inserted into the DOM at once, which makes for faster rendering as browser performs the minimum required reflows and repaints.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\f1 el} is basically a reference to a DOM element and all views must have one. It allows for all of the contents of a view to be inserted into the DOM at once, which makes for faster rendering because the browser performs the minimum required reflows and repaints.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 There are two ways to attach a DOM element to a view: the element already exists in the page or a new element is created for the view and added manually by the developer. If the element already exists in the page, you can set {\f1 el} as either a CSS selector that matches the element or a simple reference to the DOM element.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \f1 el: '#footer', \line
 // OR\line
 el: document.getElementById( 'footer' )\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 If you want to create a new element for you view, set any combination of the following view\u8217's properties: {\f1 tagName}, {\f1 id} and {\f1 className}. A new element will be created for you by the framework and a reference to it will be available at the {\f1 el} property.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 If you want to create a new element for your view, set any combination of the following view\u8217's properties: {\f1 tagName}, {\f1 id} and {\f1 className}. A new element will be created for you by the framework and a reference to it will be available at the {\f1 el} property.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \f1 tagName: 'p', // required, but defaults to 'div' if not set\line
 className: 'container', // optional, you can assign multiple classes to this property like so 'container homepage'\line
 id: 'header', // optional\par}
@@ -707,7 +712,7 @@ photoCollection.remove([a,b]);\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 {\b Listening for events}\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 As collections represent a group of items, we\u8217're also able to listen for {\f1 add} and {\f1 remove} events for when new models are added or removed from the collection. Here\u8217's an example:\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \f1 var PhotoCollection = new Backbone.Collection();\line
-PhotoCollection.bind("add", function(photo) \{\line
+PhotoCollection.on("add", function(photo) \{\line
   console.log("I liked " + photo.get("title") + ' its this one, right? '  + photo.get("src"));\line
 \});\line
 \line
@@ -717,8 +722,8 @@ PhotoCollection.add([\line
   \{title: "Uploading pix", src: "too-many-pics.jpg"\}\line
 ]);\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 In addition, we\u8217're able to bind a {\f1 change} event to listen for changes to models in the collection.\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 \f1 PhotoCollection.bind("change:title", function()\{\line
-    console.log('there have been updates made to this collections titles');    \line
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 PhotoCollection.on("change:title", function()\{\line
+    console.log("there have been updates made to this collection's titles");    \line
 \});\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 {\b Fetching models from the server}\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 {\f1 Collections.fetch()} retrieves a default set of models from the server in the form of a JSON array. When this data returns, the current collection\u8217's contents will be replaced with the contents of the array.\par}
@@ -732,10 +737,7 @@ PhotoCollection.fetch();\par}
 \};\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 {\b Resetting/Refreshing Collections}\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 Rather than adding or removing models individually, you might occasionally wish to update an entire collection at once. {\f1 Collection.reset()} allows us to replace an entire collection with new models as follows:\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 \f1 PhotoCollection.reset([\line
-  \{title: "My trip to Scotland", src: "scotland-trip.jpg"\},\line
-  \{title: "The flight from Scotland", src: "long-flight.jpg"\},\line
-  \{title: "Latest snap of lock-ness", src: "lockness.jpg"\}]);\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\f1 javascript PhotoCollection.reset([   \{title: "My trip to Scotland", src: "scotland-trip.jpg"\},   \{title: "The flight from Scotland", src: "long-flight.jpg"\},   \{title: "Latest snap of lock-ness", src: "lockness.jpg"\}]);} Note that using {\f1 Collection.reset()} doesn\u8217't fire any {\f1 add} or {\f1 remove} events. A {\f1 reset} event is fired instead.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \b \fs28 Underscore utility functions\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 As Backbone requires Underscore as a hard dependency, we\u8217're able to use many of the utilities it has to offer to aid with our application development. Here\u8217's an example of how Underscore\u8217's {\f1 sortBy()} method can be used to sort a collection of photos based on a particular attribute.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \f1 var sortedByAlphabet = PhotoCollection.sortBy(function (photo) \{\line
@@ -764,7 +766,7 @@ http://unicorns.com/#search/seasonal-horns/page2\par}
         any of the components between two URL slashes*/\line
         /*Sample usage: http://unicorns.com/#photos/5*/\line
 \line
-        "search/:query" : "searchPhotos"\line
+        "search/:query" : "searchPhotos",\line
         /*We can also define multiple routes that are bound to the same map function,\line
         in this case searchPhotos(). Note below how we're optionally passing in a \line
         reference to a page number if one is supplied*/\line
@@ -802,7 +804,8 @@ http://unicorns.com/#search/seasonal-horns/page2\par}
     \},\line
 \line
     searchPhotos: function(query, page)\{\line
-        console.log("Page number: " + page + " of the results for " + query);\line
+        var page_number = page || 1;\line
+        console.log("Page number: " + page_number + " of the results for " + query);\line
     \},\line
 \line
     downloadPhoto: function(id, path)\{\line
@@ -913,7 +916,7 @@ myGalleryViews.galleryView = Backbone.View.extend(\{\});\par}
     \}\line
 \}\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 Note that there are really only minor syntactical differences between the Object Literal pattern and a standard JSON data set. If for any reason you wish to use JSON for storing your configurations instead (e.g.\u160?for simpler storage when sending to the back-end), feel free to.\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 For more on the Object Literal pattern, I recommend reading Rebecca Murphey\u8217's {\field{\*\fldinst{HYPERLINK "http://blog.rebeccamurphey.com/2009/10/15/using-objects-to-organize-your-code"}}{\fldrslt{\ul
+{\pard \ql \f0 \sa180 \li0 \fi0 For more on the Object Literal pattern, I recommend reading Rebecca Murphey\u8217's {\field{\*\fldinst{HYPERLINK "http://rmurphey.com/blog/2009/10/15/using-objects-to-organize-your-code"}}{\fldrslt{\ul
 excellent article on the topic
 }}}
 .\par}
@@ -953,9 +956,12 @@ Brunch
 {\pard \ql \f0 \sa180 \li0 \fi0 \b \fs24 Is there a limit to the number of routers I should be using?\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 Andrew de Andrade has pointed out that DocumentCloud themselves usually only use a single router in most of their applications. You\u8217're very likely to not require more than one or two routers in your own projects as the majority of your application routing can be kept organized in a single controller without it getting unwieldy.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \b \fs24 Is Backbone too small for my application\u8217's needs?\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 If you find yourself unsure of whether or not your application is too large to use Backbone, I recommend reading my post on building large-scale jQuery & JavaScript applications or reviewing my slides on client-side MVC architecture options. In both, I cover alternative solutions and my thoughts on the suitability of current MVC solutions for scaled application development.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 If you find yourself unsure of whether or not your application is too large to use Backbone, I recommend reading {\field{\*\fldinst{HYPERLINK "http://addyosmani.com/blog/jqcon-largescalejs-2012/"}}{\fldrslt{\ul
+my post
+}}}
+ on building large-scale jQuery & JavaScript applications or reviewing my slides on client-side MVC architecture options. In both, I cover alternative solutions and my thoughts on the suitability of current MVC solutions for scaled application development.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 Backbone can be used for building both trivial and complex applications as demonstrated by the many examples Ashkenas has been referencing in the Backbone documentation. As with any MVC framework however, it\u8217's important to dedicate time towards planning out what models and views your application really needs. Diving straight into development without doing this can result in either spaghetti code or a large refactor later on and it\u8217's best to avoid this where possible.\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 At the end of the day, the key to building large applications is not to build large applications in the first place. If you however find Backbone doesn\u8217't cut it for your requirements I strongly recommend checking out JavaScriptMVC or SproutCore as these both offer a little more than Backbone out of the box. Dojo and Dojo Mobile may also be of interest as these have also been used to build significantly complex apps by other developers.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 At the end of the day, the key to building large applications is not to build large applications in the first place. If you find that Backbone doesn\u8217't cut it for your requirements, I strongly recommend checking out JavaScriptMVC, SproutCore, or Ember.js as they offer a little more than Backbone out of the box. Dojo and Dojo Mobile may also be of interest as these have also been used to build significantly complex apps by other developers.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \b \fs32 ## RESTful Applications\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \b \fs32 Building RESTful applications with Backbone\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 In this section of the book, we\u8217're going to take a look at developing RESTful applications using Backbone.js and modern technology stacks. When the data for your back-end is exposed through a purely RESTful API, tasks such as retrieving (GET), creating (POST), updating (PUT) and deleting (DELETE) models are made easy through Backbone\u8217's Model API. This API is so intuitive in fact that switching from storing records in a local data-store (e.g localStorage) to a database/noSQL data-store is a lot simpler than you may think.\par}
@@ -1006,7 +1012,7 @@ relational
 here
 }}}
  for the source)\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 We must first include the node dependencies required by our application. These are Express, Mongoose and Path (a module containing utilities for dealing with file paths.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 We must first include the node dependencies required by our application. These are Express, Mongoose and Path (a module containing utilities for dealing with file paths).\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \f1 var application_root = __dirname,\line
   express = require("express"),\line
   path = require("path"),\line
@@ -1055,7 +1061,7 @@ here
     \}\line
   \});\line
 \});\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 Similarly, we want to support updating todos based on a specific ID as well. The following allows us to query a todo by ID and then update the values of it\u8217's three attributes (text, done, order) easily.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Similarly, we want to support updating todos based on a specific ID as well. The following allows us to query a todo by ID and then update the values of its three attributes (text, done, order) easily.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \f1 app.put('/api/todos/:id', function(req, res)\{\line
   return Todo.findById(req.params.id, function(err, todo) \{\line
     todo.text = req.body.text;\line
@@ -1320,12 +1326,27 @@ end\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 To run this snippet, we can can simply save it to a local \u8217'.rb\u8217' file and execute it as follows:\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \f1 ruby -rubygems example.rb\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 If we now navigated to http://localhost:4567 in our browser we could now see the application running successfully.\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 The HTTP verbs we commonly work with when writing RESTful web services are: {\f1 get}, {\f1 post}, {\f1 delete} and {\f1 put}. As we now know, all Sinatra routes are basically HTTP actions (`{\f1 get} etc.) that are paired with a URL-matching pattern. We associate a pair of an action and route with code we would like sent back to the browser (executed)if the route is reached. Sinatra doesn\u8217't enforce much in the way of architectural structure, instead relying on simplicity to supporting writing powerful APIs.\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 Here\u8217's an example of a skeleton service we could put together supporting four common HTTP actions: ruby ``` get \u8216'/items\u8217' do # list all items available end\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 get \u8216'/item/:id\u8217' do # get a single item end\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 post \u8216'/item\u8217' do # create a new item end\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 put \u8216'/item/:id\u8217' do # update an existing item end\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 delete \u8216'/item/:id\u8217' do # delete an item end ```\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 The HTTP verbs we commonly work with when writing RESTful web services are: {\f1 get}, {\f1 post}, {\f1 delete} and {\f1 put}. As we now know, all Sinatra routes are basically HTTP actions ({\f1 get} etc.) that are paired with a URL-matching pattern. We associate a pair of an action and route with code we would like sent back to the browser (executed)if the route is reached. Sinatra doesn\u8217't enforce much in the way of architectural structure, instead relying on simplicity to supporting writing powerful APIs.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Here\u8217's an example of a skeleton service we could put together supporting four common HTTP actions:\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 get '/items' do\line
+  # list all items available\line
+end\line
+\line
+get '/item/:id' do\line
+  # get a single item\line
+end\line
+\line
+post '/item' do\line
+  # create a new item\line
+end\line
+\line
+put '/item/:id' do\line
+  # update an existing item\line
+end\line
+\line
+delete '/item/:id' do\line
+  # delete an item\line
+end\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 Sinatra\u8217's routing is both easy for beginners to get started with but is also flexible enough for those wishing to define more complex routes. As you probably noticed in the above example, routes can include named parameters (e.g {\f1 /item/:id}). We can actually access the content of these routes using the {\f1 params} hash as follows:\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \f1 get '/item/:id' do\line
   # this matches "GET /item/10" and "GET /item/11"\line
@@ -1353,7 +1374,7 @@ end\par}
  'Never gonna give you up, never gonna let you down'\line
 end\line
 \line
-get '/member/*' do\line
+get '/members/*' do\line
  'Welcome!'\line
 end\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 There are also handler methods that can assist with sessions (specifically, cookie-based session handling). To use Sinatra\u8217's session handling, first enable it in your application with:\par}
@@ -1388,7 +1409,7 @@ end\par}
 {\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Popular with web designers as it builds on top of CSS syntax\par}
 {\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Well documented with a large community backing it\par}
 {\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Almost as fast as ERB\sa180\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 For the purpose of comparison, below we can see an ERB template compared to it\u8217's Haml equivalent.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 For the purpose of comparison, below we can see an ERB template compared to its Haml equivalent.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \b \fs24 ERB\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \f1 <div class="todo" id="content">\line
   <h2 class="entry_title"><%= h @todo.title %></h2>\line
@@ -1447,7 +1468,7 @@ note[:text] = 'Remember the bread'\line
 notes.update(\{ :_id => note_id \}, note)\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 or using {\f1 $set}, update an existing document without overwriting the entire object as like this:\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \f1 notes.update(\{ :_id => note_id \}, '$set' => \{ :text = > 'Remember the bread' \})\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 Useful to know: Almost each MongoDB document has an _id field as it\u8217's first attribute. This can normally be of any type, however a special BSON datatype is provided for object ids. It\u8217's a 12-byte binary value that has a high probability of being unique when allocated.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Useful to know: Almost each MongoDB document has an _id field as its first attribute. This can normally be of any type, however a special BSON datatype is provided for object ids. It\u8217's a 12-byte binary value that has a high probability of being unique when allocated.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 Note: Whilst we opted for the MongoDB Ruby Driver for this stack, you may also be interested in {\b DataMapper} - a solution which allows us to use the same API to talk to a number of different datastores. This works well for both relational and non-relational databases and more information is available on the official {\field{\*\fldinst{HYPERLINK "http://datamapper.org/why.html"}}{\fldrslt{\ul
 project page
 }}}
@@ -1670,7 +1691,7 @@ require 'json'\par}
     get '/todo' do\line
       haml :todo, :attr_wrapper => '"', :locals => \{:title => 'Our Sinatra Todo app'\}\line
     end\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 {\f1 haml :index} instructs Sinatra to use the {\f1 views/index.haml} for the application index, whilst `{\f1 attr_wrapper} is simply defining the values to be used for any local variables defined inside the template. This similarly applies Todo items with the template `views/todo.haml\u8217'.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\f1 haml :index} instructs Sinatra to use the {\f1 views/index.haml} for the application index, whilst {\f1 attr_wrapper} is simply defining the values to be used for any local variables defined inside the template. This similarly applies Todo items with the template `views/todo.haml\u8217'.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 The rest of our routes make use of the {\f1 params} hash and a number of useful helper methods included with the MongoDB Ruby driver. For more details on these, please read the comments I\u8217've made inline below:\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \f1 get '/api/:thing' do\line
   # query a collection :thing, convert the output to an array, map the _id \line
@@ -1877,7 +1898,7 @@ require(['foo', 'bar'], function ( foo, bar ) \{\line
         foo.doSomething();\line
 \});\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 {\b Wrapping modules, views and other components with AMD}\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 Now that we\u8217've taken a look at how to define AMD modules, let\u8217's review how to go about wrapping components like views and collections so that they can also be easily loaded as dependencies for any parts of your application that require them. At it\u8217's simplest, a Backbone model may just require Backbone and Underscore.js. These are considered it\u8217's dependencies and so, to write an AMD model module, we would simply do this:\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Now that we\u8217've taken a look at how to define AMD modules, let\u8217's review how to go about wrapping components like views and collections so that they can also be easily loaded as dependencies for any parts of your application that require them. At it\u8217's simplest, a Backbone model may just require Backbone and Underscore.js. These are considered its dependencies and so, to write an AMD model module, we would simply do this:\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \f1 define(['underscore', 'backbone'], function(_, Backbone) \{\line
   var myModel = Backbone.Model.extend(\{\line
 \line
@@ -1952,8 +1973,8 @@ require(['foo', 'bar'], function ( foo, bar ) \{\line
         var compiled_template = _.template( mainView );\line
     \}\line
 );\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 That\u8217's it!. You can then go applying your template to a view in Backbone doing something like:\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 \f1 collection.someview.el.html( compiled_template( \{ results: collection.models \} ) );\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 That\u8217's it! Now you can apply your template to a view in Backbone with something like:\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 collection.someview.$el.html( compiled_template( \{ results: collection.models \} ) );\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 All templating solutions will have their own custom methods for handling template compilation, but if you understand the above, substituting Underscore\u8217's micro-templating for any other solution should be fairly trivial.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 {\b Note:} You may also be interested in looking at {\field{\*\fldinst{HYPERLINK "https://github.com/ZeeAgency/requirejs-tpl"}}{\fldrslt{\ul
 Require.js tpl
@@ -2100,7 +2121,7 @@ configuration object
 require(['views/app'], function(AppView)\{\line
   var app_view = new AppView;\line
 \});\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 The {\f1 require()} at the end of our main.js file is simply there so we can load and instantiation the primary view for our application ({\f1 views/app.js}). You\u8217'll commonly see both this and the configuration object included the most top-level script file for a project.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 The {\f1 require()} at the end of our main.js file is simply there so we can load and instantiate the primary view for our application ({\f1 views/app.js}). You\u8217'll commonly see both this and the configuration object included in most top-level script files for a project.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 In addition to offering name-mapping, the configuration object can be used to define additional properties such as {\f1 waitSeconds} - the number of seconds to wait before script loading times out and {\f1 locale}, should you wish to load up i18n bundles for custom languages. The {\f1 baseUrl} is simply the path to use for module lookups.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 For more information on configuration objects, please feel free to check out the excellent guide to them in the {\field{\*\fldinst{HYPERLINK "http://requirejs.org/docs/api.html#config"}}{\fldrslt{\ul
 RequireJS docs
@@ -2128,7 +2149,7 @@ RequireJS docs
     // a one-to-one correspondence between a **Todo** and a **TodoView** in this\line
     // app, we set a direct reference on the model for convenience.\line
     initialize: function() \{      \line
-      this.model.bind('change', this.render, this);\line
+      this.model.on('change', this.render, this);\line
       this.model.view = this;\line
     \},\line
     ...\par}
@@ -2174,13 +2195,13 @@ RequireJS docs
     // a one-to-one correspondence between a **Todo** and a **TodoView** in this\line
     // app, we set a direct reference on the model for convenience.\line
     initialize: function() \{      \line
-      this.model.bind('change', this.render, this);\line
+      this.model.on('change', this.render, this);\line
       this.model.view = this;\line
     \},\line
 \line
     // Re-render the contents of the todo item.\line
     render: function() \{\line
-      $(this.el).html(this.template(this.model.toJSON()));\line
+      this.$el.html(this.template(this.model.toJSON()));\line
       this.setContent();\line
       return this;\line
     \},\line
@@ -2190,7 +2211,7 @@ RequireJS docs
       var content = this.model.get('content');\line
       this.$('.todo-content').text(content);\line
       this.input = this.$('.todo-input');\line
-      this.input.bind('blur', this.close);\line
+      this.input.on('blur', this.close);\line
       this.input.val(content);\line
     \},\line
     ...\par}
@@ -2207,7 +2228,7 @@ RequireJS docs
       <input class="todo-input" type="text" value="" />\line
     </div>\line
 </div>\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 There\u8217's no longer a need to be concerned with IDs for the template as we can map it\u8217's contents to a local variable (in this case {\f1 todosTemplate}). We then simply pass this to the Underscore.js templating function {\f1 _.template()} the same way we normally would have the value of our template script.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 There\u8217's no longer a need to be concerned with IDs for the template as we can map its contents to a local variable (in this case {\f1 todosTemplate}). We then simply pass this to the Underscore.js templating function {\f1 _.template()} the same way we normally would have the value of our template script.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 Next, let\u8217's look at how to define models as dependencies which can be pulled into collections. Here\u8217's an AMD-compatible model module, which has two default values: a {\f1 content} attribute for the content of a Todo item and a boolean {\f1 done} state, allowing us to trigger whether the item has been completed or not.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 {\b models/todo.js}\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \f1 define(['underscore', 'backbone'], function(_, Backbone) \{\line
@@ -2348,7 +2369,7 @@ spoken
 {\pard \ql \f0 \sa180 \li0 \fi0 All subscriptions from modules go through a facade (or sandbox). What this does is check against the subscriber name and the \u8216'channel/notification\u8217' it\u8217's attempting to subscribe to. If a channel {\i doesn\u8217't} have permissions to be subscribed to (something established through permissions.js), the subscription isn\u8217't permitted.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 {\b Mediator}\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 Found in {\f1 aura/mediator.js}\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 Below is a very simple AMD-wrapped implementation of the mediator pattern, based on prior work by Ryan Florence. It accepts as it\u8217's input an object, to which it attaches {\f1 publish()} and {\f1 subscribe()} methods. In a larger application, the mediator can contain additional utilities, such as handlers for initializing, starting and stopping modules, but for demonstration purposes, these two methods should work fine for our needs.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Below is a very simple AMD-wrapped implementation of the mediator pattern, based on prior work by Ryan Florence. It accepts as its input an object, to which it attaches {\f1 publish()} and {\f1 subscribe()} methods. In a larger application, the mediator can contain additional utilities, such as handlers for initializing, starting and stopping modules, but for demonstration purposes, these two methods should work fine for our needs.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \f1 define([], function(obj)\{\line
 \line
   var channels = \{\};\line
@@ -2490,7 +2511,7 @@ module.facade(\{run: true, val:10\});\line
 {\pard \ql \f0 \sa180 \li0 \fi0 Subscriber \u8216'modules\u8217' communicate through the facade back to the mediator and perform actions when a notification event of a particular name is published.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 For example, when a user enters in a new piece of text for a Todo item and hits \u8216'enter\u8217' the application publishes a notification saying two things: a) a new Todo item is available and b) the text content of the new item is X. It\u8217's then left up to the rest of the application to do with this information whatever it wishes.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 In order to update your Backbone application to primarily use pub/sub, a lot of the work you may end up doing will be moving logic coupled inside of specific views to modules outside of it which are reactionary.\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 Take the {\f1 todoSaver} for example - it\u8217's responsibility is saving new Todo items to models once the a {\f1 notificationName} called \u8216'newContentAvailable\u8217' has fired. If you take a look at the permissions structure in the last code sample, you\u8217'll notice that \u8216'newContentAvailable\u8217' is present there. If I wanted to prevent subscribers from being able to subscribe to this notification, I simply set it to a boolean value of {\f1 false}.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Take the {\f1 todoSaver} for example - its responsibility is saving new Todo items to models once the a {\f1 notificationName} called \u8216'newContentAvailable\u8217' has fired. If you take a look at the permissions structure in the last code sample, you\u8217'll notice that \u8216'newContentAvailable\u8217' is present there. If I wanted to prevent subscribers from being able to subscribe to this notification, I simply set it to a boolean value of {\f1 false}.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 Again, this is a massive oversimplification of how advanced your permissions structures could get, but it\u8217's certainly one way of controlling what parts of your application can or can\u8217't be accessed by specific modules at any time.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \f1 define(["jquery", "underscore", "aura/facade"], \line
 function ($, _, facade) \{\line
@@ -2517,7 +2538,7 @@ function ($, _, facade) \{\line
             context.model.save(\{\line
                 content: context.input.val()\line
             \});\line
-            $(context.el).removeClass("editing");\line
+            context.$el.removeClass("editing");\line
         \} catch (e) \{\line
             //console.log(e);\line
         \}\line
@@ -2553,7 +2574,7 @@ function ($, _, facade) \{\line
     // Update editing UI on switching mode to editing content\line
     // Subscribes to: beginContentEditing\line
     facade.subscribe('editFocus','beginContentEditing', function (context) \{\line
-        $(context.el).addClass("editing");\line
+        context.$el.addClass("editing");\line
         context.input.focus();\line
     \});\line
 \line
@@ -2664,7 +2685,7 @@ Infinite Pagination (Backbone.Paginator.requestPager())
         url: 'http://odata.netflix.com/v2/Catalog/Titles?&',\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \b \fs24 3. Map the attributes supported by your API (URL)\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 Next, we\u8217're going to map the request (URL) parameters supported by your API or backend data service back to attributes that are internally used by Backbone.Paginator.\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 For example: the NetFlix API refers to it\u8217's parameter for stating how many results to skip ahead by as {\f1 $skip} and it\u8217's number of items to return per page as {\f1 $top} (amongst others). We determine these by looking at a sample URL pointing at the service:\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 For example: the NetFlix API refers to its parameter for stating how many results to skip ahead by as {\f1 $skip} and its number of items to return per page as {\f1 $top} (amongst others). We determine these by looking at a sample URL pointing at the service:\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \f1 http://odata.netflix.com/v2/Catalog/Titles?&callback=callback&$top=30&$skip=30&orderBy=ReleaseYear&$inlinecount=allpages&$format=json&$callback=callback&$filter=substringof%28%27the%27,%20Name%29%20eq%20true&_=1332702202090\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 We then simply map these parameters to the relevant Paginator equivalents shown on the left hand side of the next snippets to get everything working:\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \f1         // @param-name for the query field in the \line
@@ -2990,7 +3011,7 @@ Backbone fundamentals
         workspace:new Workspace()\line
     \},\line
     utils: utils,\line
-    defaults:\{\line
+    defaults: \{\line
         resultsPerPage: 16,\line
         safeSearch: 2,\line
         maxDate:'',\line
@@ -3023,7 +3044,7 @@ Backbone fundamentals
 Jasmine
 }}}
  from Pivotal Labs.\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 For an application to be considered \u8216'well\u8217'-tested, distinct functionality should ideally have its own separate unit tests where it\u8217's tested against the different conditions you expect it to work under. All tests must pass before functionality is considered \u8216'complete\u8217'. This allows developers to both modify a unit of code and it\u8217's dependencies with a level of confidence about whether these changes have caused any breakage.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 For an application to be considered \u8216'well\u8217'-tested, distinct functionality should ideally have its own separate unit tests where it\u8217's tested against the different conditions you expect it to work under. All tests must pass before functionality is considered \u8216'complete\u8217'. This allows developers to both modify a unit of code and its dependencies with a level of confidence about whether these changes have caused any breakage.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 As a basic example of unit testing is where a developer may wish to assert whether passing specific values through to a sum function results in the correct output being returned. For an example more relevant to this book, we may wish to assert whether a user adding a new Todo item to a list correctly adds a Model of a specific type to a Todos Collection.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 When building modern web-applications, it\u8217's typically considered best-practice to include automated unit testing as a part of your development process. Whilst we\u8217'll be focusing on Jasmine as a solution for this, there are a number of other alternatives worth considering, including QUnit.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \b \fs32 Jasmine\par}
@@ -3055,21 +3076,21 @@ TDD
 {\pard \ql \f0 \sa180 \li0 \fi0 {\b {\i Note:}} I\u8217've seen a lot of developers also opt for writing tests to validate behavior of their code after having written it. While this is fine, note that it can come with pitfalls such as only testing for behavior your code currently supports, rather than behavior the problem needs to be supported.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \b \fs32 Suites, Specs & Spies\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 When using Jasmine, you\u8217'll be writing suites and specifications (specs). Suites basically describe scenarios whilst specs describe what can be done in these scenarios.\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 Each spec is a JavaScript function, described with a call to `{\f1 it()} using a description string and a function. The description should describe the behaviour the particular unit of code should exhibit and keeping in mind BDD, it should ideally be meaningful. Here\u8217's an example of a basic spec:\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Each spec is a JavaScript function, described with a call to {\f1 it()} using a description string and a function. The description should describe the behaviour the particular unit of code should exhibit and keeping in mind BDD, it should ideally be meaningful. Here\u8217's an example of a basic spec:\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \f1 it('should be incrementing in value', function()\{\line
     var counter = 0;\line
     counter++;  \line
 \});\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 On it\u8217's own, a spec isn\u8217't particularly useful until expectations are set about the behavior of the code. Expectations in specs are defined using the {\f1 expect()} function and an {\field{\*\fldinst{HYPERLINK "https://github.com/pivotal/jasmine/wiki/Matchers"}}{\fldrslt{\ul
+{\pard \ql \f0 \sa180 \li0 \fi0 On its own, a spec isn\u8217't particularly useful until expectations are set about the behavior of the code. Expectations in specs are defined using the {\f1 expect()} function and an {\field{\*\fldinst{HYPERLINK "https://github.com/pivotal/jasmine/wiki/Matchers"}}{\fldrslt{\ul
 expectation matcher
 }}}
- (e.g toEqual(), toBeTruthy(), toContain()). A revised example using an expectation matcher would look like:\par}
+ (e.g {\f1 toEqual()}, {\f1 toBeTruthy()}, {\f1 toContain()}). A revised example using an expectation matcher would look like:\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \f1 it('should be incrementing in value', function()\{\line
     var counter = 0;\line
     counter++;  \line
     expect(counter).toEqual(1);\line
 \});\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 The above code passes our behavioral expectation as `{\f1 counter} equals 1. Notice how easy this was to read the expectation on the last line (you probably grokked it without any explanation).\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 The above code passes our behavioral expectation as {\f1 counter} equals 1. Notice how easy this was to read the expectation on the last line (you probably grokked it without any explanation).\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 Specs are grouped into suites which we describe using Jasmine\u8217's {\f1 describe()} function, again passing a string as a description and a function. The name/description for your suite is typically that of the component or module you\u8217're testing.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 Jasmine will use it as the group name when it reports the results of the specs you\u8217've asked it to run. A simple suite containing our sample spec could look like:\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \f1 describe('Stats', function()\{\line
@@ -3236,7 +3257,7 @@ Todo
 {\pard \ql \f0 \sa180 \li0 \fi0 First, we begin our suite for model testing using {\f1 describe()}:\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \f1 describe('Tests for Todo', function() \{\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 Models should ideally have default values for attributes. This helps ensure that when creating instances without a value set for any specific attribute, a default one (e.g \u8220"\u8221") is used instead. The idea here is to allow your application to interact with models without any unexpected behavior.\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 In the following spec, we create a new Todo without any attributes passed then check to find out what the value of the {\f1 text} attribute is. As no value has been set, we expect a default value of `{\f1 ""} to be returned.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 In the following spec, we create a new Todo without any attributes passed then check to find out what the value of the {\f1 text} attribute is. As no value has been set, we expect a default value of {\f1 ""} to be returned.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \f1 it('Can be created with default values for its attributes.', function() \{\line
     var todo = new Todo();\line
     expect(todo.get('text')).toBe("");\line
@@ -3245,12 +3266,10 @@ Todo
 {\pard \ql \f0 \sa180 \li0 \fi0 \f1 \line
 window.Todo = Backbone.Model.extend(\{\line
 \line
-    defaults: function() \{\line
-        return \{\line
-            text: "",\line
-            done:  false,\line
-            order: 0\line
-        \};\line
+    defaults: \{\line
+      text: "",\line
+      done:  false,\line
+      order: 0\line
     \}\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 Next, we want to test that our model will pass attributes that are set such that retrieving the value of these attributes after initialization will be what we expect. Notice that here, in addition to testing for an expected value for {\f1 text}, we\u8217're also testing the other default values are what we expect them to be.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \f1 it('Will set passed attributes on the model instance when created.', function() \{\line
@@ -3271,7 +3290,7 @@ window.Todo = Backbone.Model.extend(\{\line
     var todo = new Todo();\line
 \line
     // how do we monitor changes of state?\line
-    todo.bind('change', spy);\line
+    todo.on('change', spy);\line
 \line
     // what would you need to do to force a change of state?\line
     todo.set(\{ text: 'Get oil change for car.' \});\line
@@ -3287,7 +3306,7 @@ window.Todo = Backbone.Model.extend(\{\line
 \line
     var todo = new Todo();\line
 \line
-    todo.bind('error', errorCallback);\line
+    todo.on('error', errorCallback);\line
 \line
     // What would you need to set on the todo properties to \line
     // cause validation to fail?\line
@@ -3315,12 +3334,10 @@ function sanitize(str) \{\line
 \line
 window.Todo = Backbone.Model.extend(\{\line
 \line
-    defaults: function() \{\line
-        return \{\line
-            text: '',\line
-            done:  false,\line
-            order: 0\line
-        \};\line
+    defaults: \{\line
+      text: '',\line
+      done:  false,\line
+      order: 0\line
     \},\line
 \line
     initialize: function() \{\line
@@ -3345,7 +3362,7 @@ window.Todo = Backbone.Model.extend(\{\line
 {\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Attribute testing to make sure attributes such as the base URL of the collection are values we expect\par}
 {\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Purposefully adding items with a status of {\f1 done:true} and checking against how many items the collection thinks have been completed vs.\u160?those that are remaining\sa180\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 In this section we\u8217're going to cover the first two of these with the third left as an extended exercise I recommend trying out.\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 Testing Todo models can be added to a collection as objects or arrays is relatively trivial. First, we initialize a new TodoList collection and check to make sure it\u8217's length (i.e the number of Todo models it contains) is 0. Next, we add new Todos, both as objects and arrays, checking the length property of the collection at each stage to ensure the overall count is what we expect:\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Testing Todo models can be added to a collection as objects or arrays is relatively trivial. First, we initialize a new TodoList collection and check to make sure its length (i.e the number of Todo models it contains) is 0. Next, we add new Todos, both as objects and arrays, checking the length property of the collection at each stage to ensure the overall count is what we expect:\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \f1 describe('Tests for TodoList', function() \{\line
 \line
     it('Can add Model instances as objects and arrays.', function() \{\line
@@ -3465,7 +3482,7 @@ expect('click').toHaveBeenTriggeredOn($('#el'));\par}
 \});\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 If instead of testing against the {\f1 tagName} you would prefer to use a className instead, we can take advantage of jasmine-jquery\u8217's {\f1 toHaveClass()} matcher to cater for this.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \f1 it('Should have a class of "todos"'), function()\{\line
-   expect($(this.view.el)).toHaveClass('todos');\line
+   expect(this.view.$el).toHaveClass('todos');\line
 \});\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 The {\f1 toHaveClass()} matcher operates on jQuery objects and if the plugin hadn\u8217't been used, an exception would have been incurred (it is of course also possible to test for the className by accessing el.className if not opting to use jasmine-jquery).\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 You may have noticed that in {\f1 beforeEach()}, we passed our view an initial (albeit unfilled) Todo model. Views should be backed by a model instance which provides data. As this is quite important to our view\u8217's ability to function, we can write a spec to ensure a model is both defined (using the {\f1 toBeDefined()} matcher) and then test attributes of the model to ensure defaults both exist and are the value we expect them to be.\par}
@@ -3529,7 +3546,7 @@ expect('click').toHaveBeenTriggeredOn($('#el'));\par}
   var template = '<label class="todo-content"><%= text %></label>';\line
   var output = template\line
     .replace("<%= text %>", this.model.get('text'));\line
-  $(this.el).html(output);\line
+  this.$el.html(output);\line
   return this;\line
 \}\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 The above specifies an inline string template and replaces fields found in the template within the \u8220"<% %>\u8221" blocks with their corresponding values from the associated model. As we\u8217're now also returning the TodoView instance from the method, the first spec will also pass. It\u8217's worth noting that there are serious drawbacks to using HTML strings in your specs to test against like this. Even minor changes to your template (a simple tab or whitespace) would cause your spec to fail, despite the rendered output being the same. It\u8217's also more time consuming to maintain as most templates in real-world applications are significantly more complex. A better option for testing rendered output is using jQuery to both select and inspect values.\par}
@@ -3541,7 +3558,7 @@ expect('click').toHaveBeenTriggeredOn($('#el'));\par}
   \});\line
 \line
   it("has the correct text content", function() \{\line
-    expect($(this.view.el).find('todo-content'))\line
+    expect(this.view.$('.todo-content'))\line
       .toHaveText('My Todo');\line
   \});\line
 \line
@@ -3596,7 +3613,7 @@ expect('click').toHaveBeenTriggeredOn($('#el'));\par}
     '<%= text %></label>';\line
   var output = template\line
     .replace("<%= text %>", this.model.get('text'));\line
-  $(this.el).html(output);\line
+  this.$el.html(output);\line
   if (this.model.get('done')) \{\line
     this.$(".todo-content").addClass("done");\line
   \}\line
@@ -3613,7 +3630,7 @@ expect('click').toHaveBeenTriggeredOn($('#el'));\par}
   \},\line
 \line
   render: function() \{\line
-    $(this.el).html(this.template(this.model.toJSON()));\line
+    this.$el.html(this.template(this.model.toJSON()));\line
     return this;\line
   \},\line
 \line
@@ -3651,7 +3668,7 @@ expect('click').toHaveBeenTriggeredOn($('#el'));\par}
           '</label>'\line
   \});\line
 \});\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 This will now also pass without any issues. Remember that jasmine-jquery also supports loading external fixtures into your specs easily using it\u8217's build in {\f1 loadFixtures()} and {\f1 readFixtures()} methods. For more information, consider reading the official jasmine-jquery {\field{\*\fldinst{HYPERLINK "https://github.com/velesin/jasmine-jquery"}}{\fldrslt{\ul
+{\pard \ql \f0 \sa180 \li0 \fi0 This will now also pass without any issues. Remember that jasmine-jquery also supports loading external fixtures into your specs easily using its build in {\f1 loadFixtures()} and {\f1 readFixtures()} methods. For more information, consider reading the official jasmine-jquery {\field{\*\fldinst{HYPERLINK "https://github.com/velesin/jasmine-jquery"}}{\fldrslt{\ul
 docs
 }}}
 .\par}
@@ -3984,7 +4001,7 @@ test( "1 passed as an argument", 3, function() \{\line
 {\pard \ql \f0 \sa180 \li0 \fi0 \b \fs32 Asynchronous code\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 As with Jasmine, the effort required to run synchronous tests with QUnit is fairly straight-forward. That said, what about tests that require asynchronous callbacks (such as expensive processes, Ajax requests and so on)? When we\u8217're dealing with asynchronous code, rather than letting QUnit control when the next test runs, we can inform that we need it to stop running and wait until it\u8217's okay to continue once again.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 Remember: running asynchronous code without any special considerations can cause incorrect assertions to appear in other tests, so we want to make sure we get it right.\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 Writing QUnit tests for asynchronous code is made possible using the {\f1 start()} and `{\f1 stop()} methods, which programmatically set the start and stop points during such tests. Here\u8217's a simple example:\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Writing QUnit tests for asynchronous code is made possible using the {\f1 start()} and {\f1 stop()} methods, which programmatically set the start and stop points during such tests. Here\u8217's a simple example:\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \f1 test("An async test", function()\{\line
    stop();\line
    expect( 1 );\line
@@ -4039,7 +4056,7 @@ SinonJS-QUnit adapter
     equals( jQuery.ajax.getCall(0).args[0].url, "/todos/completed" );\line
     equals( jQuery.ajax.getCall(0).args[0].dataType, "json" );\line
 \});\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 SinonJS comes with a rich spy interface which callows us to test whether a spy was called with a specific argument, if it was called a specific number of times and test against the values of arguments. A complete list of features supported in the interface can be found here (http://sinonjs.org/docs/), but let\u8217's take a look at some examples demonstrating some of the most commonly used ones:\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 SinonJS comes with a rich spy interface which allows us to test whether a spy was called with a specific argument, if it was called a specific number of times and test against the values of arguments. A complete list of features supported in the interface can be found here (http://sinonjs.org/docs/), but let\u8217's take a look at some examples demonstrating some of the most commonly used ones:\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \b \fs24 Matching arguments: test a spy was called with a specific set of arguments:\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \f1 test( "Should call a subscriber with standard matching": function () \{\line
     var spy = sinon.spy();\line
@@ -4218,7 +4235,7 @@ test('Fires a custom event when the state changes.', function() \{\line
     var spy = this.spy();\line
     var todo = new Todo();\line
 \line
-    todo.bind( 'change', spy );\line
+    todo.on( 'change', spy );\line
     // How would you update a property on the todo here?\line
     // Hint: http://documentcloud.github.com/backbone/#Model-set\line
     todo.set( \{ text: "new text" \} );\line
@@ -4233,7 +4250,7 @@ test('Can contain custom validation rules, and will trigger an error event on fa
     var errorCallback = this.spy();\line
     var todo = new Todo();\line
 \line
-    todo.bind('error', errorCallback);\line
+    todo.on('error', errorCallback);\line
     // What would you need to set on the todo properties to cause validation to fail?\line
     todo.set( \{ done: "not a boolean" \} );\line
 \line
@@ -4279,8 +4296,8 @@ test('Fires custom named events when the models change.', function() \{\line
     var addModelCallback = this.spy();\line
     var removeModelCallback = this.spy();\line
 \line
-    todos.bind( 'add', addModelCallback );\line
-    todos.bind( 'remove', removeModelCallback );\line
+    todos.on( 'add', addModelCallback );\line
+    todos.on( 'remove', removeModelCallback );\line
 \line
     // How would you get the 'add' event to trigger?\line
     todos.add( \{text:"New todo"\} );\line
@@ -4369,7 +4386,7 @@ asyncTest('Can wire up view methods to DOM elements.', function() \{\line
     setup: function() \{\line
         this.obj = \{\};\line
         _.extend( this.obj, Backbone.Events );\line
-        this.obj.unbind(); // remove all custom events before each spec is run.\line
+        this.obj.off(); // remove all custom events before each spec is run.\line
     \}\line
 \});\line
 \line
@@ -4382,8 +4399,8 @@ test('Can extend JavaScript objects to support custom events.', function() \{\li
     // Hint: http://documentcloud.github.com/backbone/#Events\line
     _.extend( basicObject, Backbone.Events );\line
 \line
-    equal( typeof basicObject.bind, 'function' );\line
-    equal( typeof basicObject.unbind, 'function' );\line
+    equal( typeof basicObject.on, 'function' );\line
+    equal( typeof basicObject.off, 'function' );\line
     equal( typeof basicObject.trigger, 'function' );\line
 \});\line
 \line
@@ -4392,7 +4409,7 @@ test('Allows us to bind and trigger custom named events on an object.', function
 \line
     var callback = this.spy();\line
 \line
-    this.obj.bind( 'basic event', callback );\line
+    this.obj.on( 'basic event', callback );\line
     this.obj.trigger( 'basic event' );\line
 \line
     // How would you cause the callback for this custom event to be called?\line
@@ -4404,7 +4421,7 @@ test('Also passes along any arguments to the callback when an event is triggered
 \line
     var passedArgs = [];\line
 \line
-    this.obj.bind('some event', function() \{\line
+    this.obj.on('some event', function() \{\line
         for (var i = 0; i < arguments.length; i++) \{\line
             passedArgs.push( arguments[i] );\line
         \}\line
@@ -4425,7 +4442,7 @@ test('Can also bind the passed context to the event callback.', function() \{\li
     \};\line
 \line
     // How would you get 'this.color' to refer to 'foo' in the changeColor function?\line
-    this.obj.bind( 'an event', changeColor, foo );\line
+    this.obj.on( 'an event', changeColor, foo );\line
     this.obj.trigger( 'an event' );\line
 \line
     equal( foo.color, 'red' );\line
@@ -4436,7 +4453,7 @@ test( "Uses 'all' as a special event name to capture all events bound to the obj
 \line
     var callback = this.spy();\line
 \line
-    this.obj.bind( 'all', callback );\line
+    this.obj.on( 'all', callback );\line
     this.obj.trigger( "custom event 1" );\line
     this.obj.trigger( "custom event 2" );\line
 \line
@@ -4451,19 +4468,19 @@ test('Also can remove custom events from objects.', function() \{\line
     var spy2 = this.spy();\line
     var spy3 = this.spy();\line
 \line
-    this.obj.bind( 'foo', spy1 );\line
-    this.obj.bind( 'bar', spy1 );\line
-    this.obj.bind( 'foo', spy2 );\line
-    this.obj.bind( 'foo', spy3 );\line
+    this.obj.on( 'foo', spy1 );\line
+    this.obj.on( 'bar', spy1 );\line
+    this.obj.on( 'foo', spy2 );\line
+    this.obj.on( 'foo', spy3 );\line
 \line
     // How do you unbind just a single callback for the event?\line
-    this.obj.unbind( 'foo', spy1 );\line
+    this.obj.off( 'foo', spy1 );\line
     this.obj.trigger( 'foo' );\line
 \line
     ok( spy2.called );\line
 \line
     // How do you unbind all callbacks tied to the event with a single method\line
-    this.obj.unbind( 'foo' );\line
+    this.obj.off( 'foo' );\line
     this.obj.trigger( 'foo' );\line
 \line
     ok( spy2.callCount, 1 );\line
@@ -4471,7 +4488,7 @@ test('Also can remove custom events from objects.', function() \{\line
     ok( spy3.calledOnce, "Spy 3 called once" );\line
 \line
     // How do you unbind all callbacks and events tied to the object with a single method?\line
-    this.obj.unbind( 'bar' );\line
+    this.obj.off( 'bar' );\line
     this.obj.trigger( 'bar' );\line
 \line
     equal( spy1.callCount, 0 );\line
@@ -4538,12 +4555,12 @@ SinonJS helpers for Backbone
 }}}
 }\sa180\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \b \fs32 Resources\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 Whilst we get with Backbone out of the box can be terribly useful, there are some equally beneficial add-ons that can help simplify our development process. These include:\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Whilst what we get with Backbone out of the box can be terribly useful, there are some equally beneficial add-ons that can help simplify our development process. These include:\par}
 {\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\field{\*\fldinst{HYPERLINK "https://github.com/tbranyen/backbone.layoutmanager"}}{\fldrslt{\ul
 Backbone Layout Manager
 }}}
 \par}
-{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\field{\*\fldinst{HYPERLINK "https://github.com/tbranyen/backbone-boilerplate"}}{\fldrslt{\ul
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\field{\*\fldinst{HYPERLINK "https://github.com/backbone-boilerplate/backbone-boilerplate"}}{\fldrslt{\ul
 Backbone Boilerplate
 }}}
 \par}
@@ -4574,7 +4591,7 @@ Backbone Validations - HTML5 inspired validations
 {\pard \ql \f0 \sa180 \li0 \fi0 In time, there will be tutorials in the book covering some of these resources but until then, please feel free to check them out.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \b \fs32 Conclusions\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 That\u8217's it for \u8216'Developing Backbone.js Applications\u8217'. I hope you found this book both useful, enlightening and a good start for your journey into exploring Backbone.js.\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 Remember, If there are other topics or areas of this book you feel could be expanded further, please feel free to let me know, or better yet, send a pull request upstream. I\u8217'm always interested in making this title as comprehensive as possible.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 If there are other topics or areas of this book you feel could be expanded further, please feel free to let me know, or better yet, send a pull request upstream. I\u8217'm always interested in making this title as comprehensive as possible.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 Until next time, the very best of luck with the rest of your journey!\par}
 {\pard \qc \f0 \sa180 \li0 \fi0 \emdash\emdash\emdash\emdash\emdash\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 Copyright Addy Osmani, 2012.\par}

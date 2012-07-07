@@ -629,7 +629,7 @@ console.log(JSON.stringify(myattributes));
 
 ####Model.set()
 
-`Model.set()` allows us to pass attributes into an instance of our model. Attributes can either be set during initialization or at any time afterwards. It's important to avoid trying to set a Model's attributes directly (for example Model.caption = 'A new caption'). Backbone uses Model.set() to know when to broadcast that a model's data has changed.
+`Model.set()` allows us to pass attributes into an instance of our model. Attributes can either be set during initialization or at any time afterwards. It's important to avoid trying to set a Model's attributes directly (for example, `Model.caption = 'A new caption'`). Backbone uses Model.set() to know when to broadcast that a model's data has changed.
 
 
 ```javascript
@@ -881,7 +881,7 @@ In addition, we're able to bind a `change` event to listen for changes to models
 
 ```javascript
 PhotoCollection.on("change:title", function(){
-    console.log('there have been updates made to this collections titles');    
+    console.log("there have been updates made to this collection's titles");    
 });
 ```
 
@@ -1810,7 +1810,7 @@ get '/members/:username' do
  'Never gonna give you up, never gonna let you down'
 end
 
-get '/member/*' do
+get '/members/*' do
  'Welcome!'
 end
 ```
@@ -5961,7 +5961,7 @@ That's it for this section on testing applications with QUnit and SinonJS. I enc
 <a name="resources">Resources</a>
 ---
 
-Whilst we get with Backbone out of the box can be terribly useful, there are some equally beneficial add-ons that can help simplify our development process. These include:
+Whilst what we get with Backbone out of the box can be terribly useful, there are some equally beneficial add-ons that can help simplify our development process. These include:
 
 * [Backbone Layout Manager](https://github.com/tbranyen/backbone.layoutmanager)
 * [Backbone Boilerplate](https://github.com/backbone-boilerplate/backbone-boilerplate)
@@ -5980,7 +5980,7 @@ In time, there will be tutorials in the book covering some of these resources bu
 
 That's it for 'Developing Backbone.js Applications'. I hope you found this book both useful, enlightening and a good start for your journey into exploring Backbone.js. 
 
-Remember, If there are other topics or areas of this book you feel could be expanded further, please feel free to let me know, or better yet, send a pull request upstream. I'm always interested in making this title as comprehensive as possible. 
+If there are other topics or areas of this book you feel could be expanded further, please feel free to let me know, or better yet, send a pull request upstream. I'm always interested in making this title as comprehensive as possible. 
 
 Until next time, the very best of luck with the rest of your journey!
 
