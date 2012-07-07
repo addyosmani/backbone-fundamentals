@@ -4130,7 +4130,6 @@ this.todoList;\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \f1 this.todoStub.restore();\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 After this, we need to alter what the constructor returns, which can be efficiently done using a plain {\f1 Backbone.Model} constructor. Whilst this isn\u8217't a Todo model, it does still provide us an actual Backbone model.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \f1 teardown: function() \{\line
-    this.todoStub = sinon.stub( window, "Todo" );\line
     this.model = new Backbone.Model(\{\line
       id: 2, \line
       title: "Hello world"\line

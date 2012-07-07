@@ -5492,7 +5492,6 @@ After this, we need to alter what the constructor returns, which can be efficien
 
 ```javascript
 teardown: function() {
-    this.todoStub = sinon.stub( window, "Todo" );
     this.model = new Backbone.Model({
       id: 2, 
       title: "Hello world"

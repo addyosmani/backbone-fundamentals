@@ -3897,7 +3897,6 @@ test( <span class="st">&quot;1 passed as an argument&quot;</span>, <span class="
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">this</span>.<span class="fu">todoStub</span>.<span class="fu">restore</span>();</code></pre>
 <p>After this, we need to alter what the constructor returns, which can be efficiently done using a plain <code>Backbone.Model</code> constructor. Whilst this isn't a Todo model, it does still provide us an actual Backbone model.</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="dt">teardown</span>: <span class="kw">function</span>() {
-    <span class="kw">this</span>.<span class="fu">todoStub</span> = <span class="kw">sinon</span>.<span class="fu">stub</span>( <span class="kw">window</span>, <span class="st">&quot;Todo&quot;</span> );
     <span class="kw">this</span>.<span class="fu">model</span> = <span class="kw">new</span> <span class="kw">Backbone</span>.<span class="fu">Model</span>({
       <span class="dt">id</span>: <span class="dv">2</span>, 
       <span class="dt">title</span>: <span class="st">&quot;Hello world&quot;</span>
