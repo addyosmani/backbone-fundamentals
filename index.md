@@ -739,6 +739,9 @@ myPhoto.set({ title: "On the beach" });
 //logs Remember to set a source for your image!
 ```
 
+**Note**: Backbone passes the `attributes` object by shallow copy to the `validate` function using the Underscore `_.extend` method. This means that it is not possible to change any `Number`, `String` or `Boolean` attribute by reference in the way that one might expect a JavaScript object to behave. As shallow copy doesn't copy objects by implicitly copying them, but rather, by reference, one ca change the attributes on those objects.
+
+An example of this (by @fivetanley) is available [here](http://jsfiddle.net/2NdDY/7/).
 
 
 ###<a name="thebasics-views" id="thebasics-views">Views</a>
