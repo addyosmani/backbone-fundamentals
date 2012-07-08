@@ -4684,7 +4684,7 @@ Once these specs are run, only the second one ('produces the correct HTML') fail
 
 The second spec fails with the following message:
 
-Expected '' to contain ```'<label class="todo-content">My Todo</label>'```.
+```Expected '' to contain '<label class="todo-content">My Todo</label>'.```
 
 The reason for this is the default behavior for render() doesn't create any markup. Let's write a replacement for render() which fixes this:
 
@@ -4779,8 +4779,9 @@ describe("When a todo is done", function() {
 
 This will fail with the following message:
 
-Expected '<label class="todo-content">My Todo</label>' 
+```Expected '<label class="todo-content">My Todo</label>' 
 to have class 'done'.
+```
 
 which can be fixed in the existing render() method as follows:
 
@@ -4881,7 +4882,7 @@ James Newbery was kind enough to help me with writing the Views section above an
 
 ##Exercise
 
-As an exercise, I recommend now trying the Jasmine Koans in `practicals\jasmine-joans` and trying to fix some of the purposefully failing tests it has to offer. This is an excellent way of not just learning how Jasmine specs and suites work, but working through the examples (without peaking back) will also put your Backbone skills to test too.
+As an exercise, I recommend now trying the Jasmine Koans in `practicals\jasmine-joans` and trying to fix some of the purposefully failing tests it has to offer. This is an excellent way of not just learning how Jasmine specs and suites work, but working through the examples (without peeking back) will also put your Backbone skills to test too.
 
 
 ##Further reading
