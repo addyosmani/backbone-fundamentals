@@ -1633,13 +1633,13 @@ sudo chown `id -u` /data/db
 
 Once this is done, open up two terminal windows. 
 
-In the first, `cd` to your MongoDB bin directory or type in the complete path to it. You'll need to start <cpde>mongod`.
+In the first, `cd` to your MongoDB bin directory or type in the complete path to it. You'll need to start `mongod`.
 
 ```html
 $ ./bin/mongod
 ```
 
-Next, in the second terminal, start the `mongo</code shell which will connect up to localhost by default.
+Next, in the second terminal, start the `mongo` shell which will connect up to localhost by default.
 
 ```html
 $ ./bin/mongo
@@ -1984,7 +1984,7 @@ Note: Whilst we opted for the MongoDB Ruby Driver for this stack, you may also b
 
 We're going to use Sinatra in a similar manner to how we used Express in the last chapter. It will power a RESTful API supporting CRUD operations. Together with a MongoDB data store, this will allow us to easily persist data (todo items) whilst ensuring they are stored in a database. If you've read the previous chapter or have gone through any of the Todo examples covered so far, you will find this surprisingly straight-forward.
 
-Remember that the default Todo example included with Backbone.js already persists data, although it does this via a localStorage adapter. Luckily there aren't a great deal of changes needed to switch over to using our Sinatra-based API.  Let's briefly review the code that will be powering the CRUD operations for this sections practical, as we go course won't be starting off with a near-complete base for most of our real world applications.
+Remember that the default Todo example included with Backbone.js already persists data, although it does this via a localStorage adapter. Luckily there aren't a great deal of changes needed to switch over to using our Sinatra-based API.  Let's briefly review the code that will be powering the CRUD operations for this sections practical, as we won't be starting off with a near-complete base for most of our real world applications.
 
 
 ###<a id="preq">Installing The Prerequisites</a>
@@ -1997,7 +1997,7 @@ If using OSX or Linux, Ruby may be one of a number of open-source packages that 
 
 The output of this will either be the version of Ruby installed or an error complaining that Ruby wasn't found. 
 
-Should you need to install Ruby manually (e.g for an operating system such as Windows), you can do so by downloading the latest version from http://www.ruby-lang.org/en/downloads/. Alternatively, (RVM)[http://beginrescueend.com/rvm/install/] (Ruby Version Manager) is a command-line tool that allows you to easily install and manage multiple ruby environments with ease.
+Should you need to install Ruby manually (e.g for an operating system such as Windows), you can do so by downloading the latest version from http://www.ruby-lang.org/en/downloads/. Alternatively, [RVM](http://beginrescueend.com/rvm/install/) (Ruby Version Manager) is a command-line tool that allows you to easily install and manage multiple ruby environments with ease.
 
 
 ####Ruby Gems
@@ -2012,7 +2012,7 @@ $> cd rubygems
 $> sudo ruby setup.rb
 ```
 
-There will likely be a version number included in your download and you should make sure to include this when tying the above. Finally, a symlink (symbolic link) to tie everything togther should be fun as follows:
+There will likely be a version number included in your download and you should make sure to include this when tying the above. Finally, a symlink (symbolic link) to tie everything togther should be run as follows:
 
 ```$ sudo ln -s /usr/bin/gem1.8.17 /usr/bin/gem```
 
@@ -2031,7 +2031,7 @@ With Ruby Gems setup, we can now easily install Sinatra. For Linux or OSX type t
 
 and if you're on Windows, enter the following at a command prompt:
 
-```c:\\ > gem install sinatra```
+```c:\> gem install sinatra```
 
 
 ####Haml
@@ -3495,7 +3495,7 @@ You can either download the raw source code for the project, fork the repository
 
 *   Examples + Source : [zipball](https://github.com/addyosmani/backbone.paginator/zipball/v0.153)
 
-*   [Repository]()http://github.com/addyosmani/backbone.paginator)
+*   [Repository](http://github.com/addyosmani/backbone.paginator)
 
 ## Live Examples
 
@@ -3662,7 +3662,7 @@ For your convenience, the following methods are made available for use in your v
 
 ## Paginator.clientPager
 
-The `clientPager` works similar to the `requestPager`, except that our configuration values influence the pagination of data already returned at a UI-level. Whilst not shown (yet) there is also a lot more UI logic that ties in with the `clientPager`. An example of this can be seen in â€˜views/clientPagination.js.
+The `clientPager` works similar to the `requestPager`, except that our configuration values influence the pagination of data already returned at a UI-level. Whilst not shown (yet) there is also a lot more UI logic that ties in with the `clientPager`. An example of this can be seen in views/clientPagination.js.
 
 #### 1. Create a new paginated collection with a model and URL
 
@@ -3955,7 +3955,7 @@ For this application, I opted for the nested namespacing pattern. Implemented co
 ```javascript
 window.mobileSearch = window.mobileSearch || {
     views: {
-        appview: new AppView
+        appview: new AppView()
     },
     routers:{
         workspace:new Workspace()
