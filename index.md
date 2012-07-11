@@ -1686,14 +1686,14 @@ Finally, either of the example apps can now be accessed by navigating to:
 That's it! Whilst there's a lot more than can be done to expand on the concepts covered so far, the base we're reviewed should be enough to get you up and running with this stack if you wish to use it with Backbone. 
 
 
-#<a name="stack2">Building Backbone.js Apps With Ruby, Sinatra, MongoDB and Haml</a>
+##<a name="stack2">Building Backbone.js Apps With Ruby, Sinatra, MongoDB and Haml</a>
 
-##Introduction
+### Introduction
 
 In this chapter we're going to explore writing Backbone.js applications with a Ruby back-end. To assist with this, we're going to use [Sinatra](http://www.sinatrarb.com/) - a DSL (domain specific language) for rapidly creating web applications in Ruby. Similar to the [section](https://github.com/addyosmani/backbone-fundamentals/#stack1) on writing an application with Node.js, our server-side language (Ruby) will be used to power an API whilst Backbone.js will be the client consuming it.
 
 
-## What Is Sinatra?
+### What Is Sinatra?
 
 
 In the past, you've likely come across or used [Ruby on Rails](http://rubyonrails.org) (RoR) - a popular web application framework for the Ruby programming language that helps organize applications using the MVC pattern. Sinatra is a much smaller, more light-weight alternative to it. 
@@ -1710,13 +1710,13 @@ The framework is particularly useful for writing APIs, widgets and small-scale a
 
 
 
-## Getting Started With Sinatra
+### Getting Started With Sinatra
 
 Let's review how to write and run a very basic Sinatra application. As most programming languages and frameworks typically start with some variation of "Hello World", we'll start with a similar example. 
 
 Note: Before beginning this section, I recommend installing Sinatra on your system. A guide to doing this can be found in the [prerequisites](#preq) section lower down in the article.
 
-###Routes
+#### Routes
 
 As mentioned, Sinatra allows us to define new routes using HTTP actions. Semantically, a route follows quite a simple structure:
 
@@ -1839,7 +1839,7 @@ Note: By default enable:sessions will store all data in cookies. If this is not 
 This only touches the surface of what can be done using routes and handlers, but is sufficient for us to write the Sinatra-powered API service we require in the practical section of this chapter.
 
 
-##Templating And HAML
+###Templating And HAML
 
 
 Let's now discuss templating.Out of the box, we can begin using templates in our Sinatra applications with ERB. ERB is included with Ruby and allows Ruby code to be added to any plain text document for the purpose of generating information or flow control. In the following example using an ERB template, note that views are by default located in the ```views``` directory of our application.
@@ -1923,10 +1923,10 @@ In the list of Haml features, we briefly mentioned web designers. As developers,
 Note: Haml is whitespace sensitive and will not correctly work if it isn't indented by an even number of spaces. This is due to whitespace being used for nesting in place of the classic HTML markup approach of closing tags.
 
 
-#MongoDB Ruby Driver
+###MongoDB Ruby Driver
 
 
-##Getting started 
+####Getting started
 
 Once the MongoDB Ruby driver is installed, we can begin to use it to connect to a Mongo database. To create a  connection using localhost, we simply specify the driver as a dependency. Assuming we're using the default port we can then connect as follows:
 
@@ -1983,7 +1983,7 @@ be of any type, however a special BSON datatype is provided for object ids. It's
 Note: Whilst we opted for the MongoDB Ruby Driver for this stack, you may also be interested in **DataMapper** - a solution which allows us to use the same API to talk to a number of different datastores. This works well for both relational and non-relational databases and more information is available on the official [project page](http://datamapper.org/why.html). [Sinatra: The Book](http://sinatra-book.gittr.com/#datamapper) also contains a brief tutorial on DataMapper for anyone interested in exploring it further.
 
 
-#Practical
+###Practical
 
 We're going to use Sinatra in a similar manner to how we used Express in the last chapter. It will power a RESTful API supporting CRUD operations. Together with a MongoDB data store, this will allow us to easily persist data (todo items) whilst ensuring they are stored in a database. If you've read the previous chapter or have gone through any of the Todo examples covered so far, you will find this surprisingly straight-forward.
 
@@ -2199,7 +2199,7 @@ var AppView = Backbone.View.extend({
  ….
 ```
 
-###Collections
+####Collections
 
 In the TodoList collection below, we've set the `url` property to point to `/api/todos` to reference the collection's location on the server. When we attempt to access this from our Sinatra-backed API, it should return a list of all the Todo items that have been previously stored in Mongo. 
 
@@ -2243,7 +2243,7 @@ For the sake of thoroughness, our API will also support returning the data for a
 ```  
  
 
-###Model
+####Model
 
 The model for our Todo application remains largely unchanged from the versions previously covered in this book. It is however worth noting that calling the function `model.url()` within the below would return the relative URL where a specific Todo item could be located on the server.
 
@@ -2275,7 +2275,7 @@ Now that we've defined our main models, views and collections let's get the CRUD
 We want to make sure that for any operations changing underlying data (create, update, delete) that our Mongo data store correctly reflects these.
 
 
-###app.rb
+####app.rb
 
 For `app.rb`, we first define the dependencies required by our application. These include Sinatra, Ruby Gems, the MongoDB Ruby driver and the JSON gem. 
 
@@ -2377,7 +2377,7 @@ compiles to:
 ```<!-- These are templates -->```
 
 
-###index.haml
+####index.haml
 
 ```html
 %head
@@ -2410,7 +2410,7 @@ compiles to:
   / end scripts
 ```
 
-###todo.haml
+####todo.haml
 
 ```html
 %div#todoapp
@@ -2454,7 +2454,7 @@ compiles to:
   <% } %>
 ```
 
-##Conclusions
+###Conclusions
 
 In this chapter, we looked at creating a Backbone application backed by an API powered by Ruby, Sinatra, Haml, MongoDB and the MongoDB driver. I personally found developing APIs with Sinatra a relatively painless experience and one which I felt was 
 on-par with the effort required for the Node/Express implementation of the same application.
