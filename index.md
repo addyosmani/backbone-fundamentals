@@ -917,7 +917,7 @@ Rather than adding or removing models individually, you might occasionally wish 
 PhotoCollection.reset([
   {title: "My trip to Scotland", src: "scotland-trip.jpg"},
   {title: "The flight from Scotland", src: "long-flight.jpg"},
-  {title: "Latest snap of lock-ness", src: "lockness.jpg"}]);
+  {title: "Latest snap of Loch Ness", src: "lochness.jpg"}]);
 ```
 Note that using `Collection.reset()` doesn't fire any `add` or `remove` events. A `reset` event is fired instead.
 
