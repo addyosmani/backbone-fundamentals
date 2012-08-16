@@ -9,7 +9,7 @@
 pandoc -s ../index.md -o ../index.html -c style.css --include-before-body=author.html --include-before-body=share.html --title-prefix='Developing Backbone.js Applications'
 
 #epub
-pandoc -s ../index.md -t epub --epub-metadata=metadata.xml -o ../backbone-fundamentals.epub -c style.css --title-prefix='Developing Backbone.js Applications' --epub-cover-image=../img/cover.jpg
+pandoc -s -S ../index.md -t epub --epub-metadata=metadata.xml -o ../backbone-fundamentals.epub --epub-stylesheet=../epub.css --title-prefix='Developing Backbone.js Applications' --epub-cover-image=../img/cover.jpg
 
 #rtf
 pandoc -s title.txt -S ../index.md -o ../backbone-fundamentals.rtf
