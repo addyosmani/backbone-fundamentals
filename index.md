@@ -510,8 +510,6 @@ It *is* however worth understanding where and why these concepts originated, so 
 
 
 
-
-
 ## <a name="thebasics">The Basics</a>
 ---
 
@@ -531,6 +529,15 @@ Backbone's main benefits, regardless of your target platform or device, include 
 * Model data, views and routers in a succinct manner
 * Provide DOM, model and collection synchronization
 
+## Is Backbone right for you?
+
+Does the following describe you?:
+
+"I want something flexible which offers a minimalist solution to separating concerns in my application. It should support a persistence layer and RESTful sync, models, views (with controllers), event-driven communication, templating and routing. It should be imperative, allowing one to update the View when a model changes. I’d like some decisions about the architecture left up to me. Ideally, many large companies have used the solution to build non-trivial applications. 
+
+As I may be building something complex, I’d like there to be an active extension community around the framework that have already tried addressing larger problems (Marionette, Chaplin, Aura, Thorax). Ideally, there are also scaffolding tools (grunt-bbb, brunch) available for the solution."
+
+If so, continue reading.
 
 ##The Basics
 
@@ -541,6 +548,7 @@ In this section, you'll learn the essentials of Backbone's models, views, collec
 * Routers
 * Views
 * Namespacing
+
 
 ###<a name="thebasics-models" id="thebasics-models">Models</a>
 
@@ -709,6 +717,7 @@ var myPhoto = new Photo({ title:"Fishing at the lake", src:"fishing.jpg"});
 myPhoto.setTitle('Fishing at sea'); 
 //logs 'My title has been changed to.. Fishing at sea'
 ```
+
 
 **Validation**
 
@@ -899,7 +908,36 @@ PhotoCollection.url = '/photos';
 PhotoCollection.fetch();
 ```
 
-Under the covers, `Backbone.sync` is the function called every time Backbone tries to read or save models to the server. It uses jQuery or Zepto's ajax implementations to make these RESTful requests, however this can be overridden as per your needs.   
+During configuration, Backbone sets a variable to denote if extended HTTP methods are supported by the server. Another setting controls if the server understands the correct MIME type for JSON:
+
+```javascript
+Backbone.emulateHTTP = false;
+Backbone.emulateJSON = false;
+```
+
+The Backbone.sync method that uses these values is actually an integral part of Backbone.js. A jQuery-like ajax method is assumed, so HTTP parameters are organised based on jQuery’s API. Searching through the code for calls to the sync method show it’s used whenever a model is saved, fetched, or deleted (destroyed).
+
+Under the covers, `Backbone.sync` is the function called every time Backbone tries to read or save models to the server. It uses jQuery or Zepto's ajax implementations to make these RESTful requests, however this can be overridden as per your needs. :
+
+The sync function may be overriden globally as Backbone.sync, or at a finer-grained level, by adding a sync function to a Backbone collection or to an individual model.
+
+There’s no fancy plugin API for adding a persistence layer – simply override Backbone.sync with the same function signature:
+
+```javascript
+Backbone.sync = function(method, model, options) {
+};
+```
+
+The default methodMap is useful for working out what the method argument does:
+
+```javascript
+var methodMap = {
+  'create': 'POST',
+  'update': 'PUT',
+  'delete': 'DELETE',
+  'read':   'GET'
+};
+```
 
 In the above example if we wanted to log an event when `.sync()` was called, we could do this:
 
@@ -908,6 +946,7 @@ Backbone.sync = function(method, model) {
   console.log("I've been passed " + method + " with " + JSON.stringify(model));
 };
 ```
+
 
 **Resetting/Refreshing Collections**
 
@@ -1053,6 +1092,225 @@ zoomPhoto: function(factor){
     this.navigate("zoom/" + factor, true); //updates the fragment for us and triggers the route
 }
 ```
+
+
+
+### Chainable API
+
+Another bit of sugar is the support for Underscore’s chain method. This works by calling the original method with the current array of models and returning the result. In case you haven’t seen it before, the chainable API looks like this:
+
+```javascript
+var collection = new Backbone.Collection([
+  { name: 'Tim', age: 5 },
+  { name: 'Ida', age: 26 },
+  { name: 'Rob', age: 55 }
+]);
+
+collection.chain()
+  .filter(function(item) { return item.get('age') > 10; })
+  .map(function(item) { return item.get('name'); })
+  .value();
+
+// Will return ['Ida', 'Rob']
+Some of the Backbone-specific method will return this, which means they can be chained as well:
+
+var collection = new Backbone.Collection();
+
+collection
+    .add({ name: 'John', age: 23 })
+    .add({ name: 'Harry', age: 33 })
+    .add({ name: 'Steve', age: 41 });
+
+collection.pluck('name');
+// ['John', 'Harry', 'Steve']
+```
+
+
+### Backbone’s inheritance Implementation
+
+The comments indicate that the inherits function is inspired by goog.inherits. Google’s implementation is from the Closure Library, but Backbone’s API accepts two objects (incorrectly referred to as a hash) containing “instance” and “static” methods. Each of Backbone’s objects has an extend method:
+
+Model.extend = Collection.extend = Router.extend = View.extend = extend;
+Most development with Backbone is based around inheriting from these objects, and they’re designed to mimic a classical object-oriented implementation.
+
+Backbone uses Underscore’s extend method:
+
+```javascript
+each(slice.call(arguments, 1), function(source) {
+  for (var prop in source) {
+    obj[prop] = source[prop];
+  }
+});
+
+return obj;
+```
+
+This isn’t the same as ES5’s Object.create, it’s actually copying properties (methods and values) from one object to another. Since this isn’t enough to support Backbone’s inheritance and class model, the following steps are performed:
+
+* The instance methods are checked to see if there’s a constructor property. If so, the class’s constructor is used, otherwise the parent’s constructor is used (i.e., Backbone.Model)
+
+* Underscore’s extend method is called to add the parent class’s methods to the new child class
+The prototype property of a blank constructor function is assigned with the parent’s prototype, and a new instance of this is set to the child’s prototype property
+
+* Underscore’s extend method is called twice to add the static and instance methods to the child class
+
+* The child’s prototype’s constructor and a __super__ property are assigned
+
+This pattern is also used for classes in CoffeeScript, so Backbone classes are compatible with CoffeeScript classes.
+
+
+
+### Backbone’s Sync API
+
+The Backbone.sync method is intended to be overridden to support other backends. The built-in method is tailed to a certain breed of RESTful JSON APIs – Backbone was originally extracted from a Ruby on Rails application, which uses HTTP methods like PUT the same way.
+
+The way this works is the model and collection classes have a sync method that calls Backbone.sync. Both will call this.sync internally when fetching, saving, or deleting items.
+
+The sync method is called with three parameters:
+
+* method: One of create, update, delete, read
+* model: The Backbone model object
+* options: May include success and error methods
+
+Implementing a new sync method can use the following pattern:
+
+```javascript
+Backbone.sync = function(method, model, options) {
+  var requestContent = {}, success, error;
+
+  function success(result) {
+    // Handle results from MyAPI
+    if (options.success) {
+      options.success(result);
+    }
+  }
+
+  function error(result) {
+    // Handle results from MyAPI
+    if (options.error) {
+      options.error(result);
+    }
+  }
+
+  options || (options = {});
+
+  switch (method) {
+    case 'create':
+      requestContent['resource'] = model.toJSON();
+      return MyAPI.create(model, success, error);
+
+    case 'update':
+      requestContent['resource'] = model.toJSON();
+      return MyAPI.update(model, success, error);
+
+    case 'delete':
+      return MyAPI.destroy(model, success, error);
+
+    case 'read':
+      if (model.attributes[model.idAttribute]) {
+        return MyAPI.find(model, success, error);
+      } else {
+        return MyAPI.findAll(model, success, error);
+      }
+  }
+};
+```
+
+This pattern delegates API calls to a new object, which could be a Backbone-style class that supports events. This can be safely tested separately, and potentially used with libraries other than Backbone.
+
+There are quite a few sync implementations out there:
+
+* Backbone localStorage
+* Backbone offline
+* Backbone Redis
+* backbone-parse
+* backbone-websql
+* Backbone Caching Sync
+
+### Conflict Management
+
+Like most client-side projects, Backbone.js wraps everything in an immediately-invoked function expression:
+
+```javascript
+(function(){
+  // Backbone.js
+}).call(this);
+```
+
+Several things happen during this configuration stage. A Backbone “namespace” is created, and multiple versions of Backbone on the same page are supported through the noConflict mode:
+
+```javascript
+var root = this;
+var previousBackbone = root.Backbone;
+
+Backbone.noConflict = function() {
+  root.Backbone = previousBackbone;
+  return this;
+};
+```
+
+Multiple versions of Backbone can be used on the same page by calling noConflict like this:
+
+```javascript
+var Backbone19 = Backbone.noConflict();
+// Backbone19 refers to the most recently loaded version,
+// and `window.Backbone` will be restored to the previously
+// loaded version
+```
+
+This initial configuration code also supports CommonJS modules so Backbone can be used in Node projects:
+
+```javascript
+var Backbone;
+if (typeof exports !== 'undefined') {
+  Backbone = exports;
+} else {
+  Backbone = root.Backbone = {};
+}
+```
+
+The existence of Underscore.js (also by DocumentCloud) and a jQuery-like library is checked as well.
+
+
+### Leverage Events
+
+Backbone’s classes are designed to be inherited from. Every single one of these classes inherits from Backbone.Events:
+
+* Backbone.Model
+* Backbone.Collection
+* Backbone.Router
+* Backbone.History
+* Backbone.View
+
+That means when designing applications built with Backbone, events are a key architectural component. Events are the standard way to deal with user interface actions, through the declarative event bindings on views, and also model and collection changes. However, you can easily add your own custom events.
+
+When learning Backbone it’s important to get a feel for the built-in event names. Incorrectly binding a collection reset event, for example, could cause your application to render more often than it should. Mastering events is one of the quickest ways to become more productive with Backbone.
+
+#### Underscore.js
+
+Since Backbone depends on Underscore, it’s worth keeping this in mind when dealing with any kind of arrays or collections of data. Also, familiarity with Underscore’s methods will help work with Backbone.Collection effectively.
+
+#### Views
+
+It’s easy to slip into using $, but avoid this where possible. Backbone caches a view’s element, so use this.$el instead. Design views based on the single responsibility principle.
+
+It might be tempting to let “container” view render HTML directly by using $().html, but resisting the temptation and creating a hierarchy of views will make it much easier to debug your code and write automated tests.
+
+Interestingly, Backbone doesn’t have a lot of code dedicated to templates, but it can work with the template method. I use this with RequireJS text file dependencies to load remote templates during development, then I use the RequireJS build script to generate something suitable for deployment. This makes code easy to test and fast to load.
+
+#### API Style
+
+Backbone’s API is thankfully very consistent. Even the history API accepts a silent option, which is used throughout the library to stop events from firing when they’re not required.
+
+Backbone’s collections have Underscore’s chainable API, which can be handy, but care must be taken to use this correctly.
+
+#### Testing Backbone
+
+So far we’ve been reviewing Backbone’s code to demystify the framework as a whole. However, it’s worth noting that other technologies work very well with Backbone and Underscore. RequireJS and AMD modules can be a great way to break up projects.
+
+However, one area that Backbone doesn’t address is testing. This is unfortunate, because testing Backbone projects definitely isn’t obvious. Later in the book we'll look at testing in more detail.
+
+
 
 ###<a name="thebasics-namespacing" id="thebasics-namespacing">Namespacing</a>
 

@@ -396,7 +396,7 @@ Taligent
 {\pard \ql \f0 \sa180 \li0 \fi0 Although a common implementation of a {\field{\*\fldinst{HYPERLINK "http://martinfowler.com/eaaDev/PassiveScreen.html"}}{\fldrslt{\ul
 Passive View
 }}}
- is for the view to implement an interface, there are variations on it, including the use of events which can decouple the View from the Presenter a little more. As we don\u8217't have the interface construct in JavaScript, we\u8217're using it more as more a protocol than an explicit interface here. It\u8217's technically still an API and it\u8217's probably fair for us to refer to it as an interface from that perspective.\par}
+ is for the view to implement an interface, there are variations on it, including the use of events which can decouple the View from the Presenter a little more. As we don\u8217't have the interface construct in JavaScript, we\u8217're using it more and more a protocol than an explicit interface here. It\u8217's technically still an API and it\u8217's probably fair for us to refer to it as an interface from that perspective.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 There is also a {\field{\*\fldinst{HYPERLINK "http://martinfowler.com/eaaDev/SupervisingPresenter.html"}}{\fldrslt{\ul
 Supervising Controller
 }}}
@@ -497,6 +497,11 @@ this
 {\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Decouple the DOM from your page\u8217's data\par}
 {\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Model data, views and routers in a succinct manner\par}
 {\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Provide DOM, model and collection synchronization\sa180\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs32 Is Backbone right for you?\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Does the following describe you?:\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 "I want something flexible which offers a minimalist solution to separating concerns in my application. It should support a persistence layer and RESTful sync, models, views (with controllers), event-driven communication, templating and routing. It should be imperative, allowing one to update the View when a model changes. I\u8217'd like some decisions about the architecture left up to me. Ideally, many large companies have used the solution to build non-trivial applications.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 As I may be building something complex, I\u8217'd like there to be an active extension community around the framework that have already tried addressing larger problems (Marionette, Chaplin, Aura, Thorax). Ideally, there are also scaffolding tools (grunt-bbb, brunch) available for the solution."\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 If so, continue reading.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \b \fs32 The Basics\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 In this section, you\u8217'll learn the essentials of Backbone\u8217's models, views, collections and routers, as well as about using namespacing to organize your code. This isn\u8217't meant as a replacement for the official documentation, but it will help you understand many of the core concepts behind Backbone before you start building applications with it.\par}
 {\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Models\par}
@@ -735,14 +740,29 @@ PhotoCollection.add([\line
 {\pard \ql \f0 \sa180 \li0 \fi0 \f1 var PhotoCollection = new Backbone.Collection;\line
 PhotoCollection.url = '/photos';\line
 PhotoCollection.fetch();\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 Under the covers, {\f1 Backbone.sync} is the function called every time Backbone tries to read or save models to the server. It uses jQuery or Zepto\u8217's ajax implementations to make these RESTful requests, however this can be overridden as per your needs.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 During configuration, Backbone sets a variable to denote if extended HTTP methods are supported by the server. Another setting controls if the server understands the correct MIME type for JSON:\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 Backbone.emulateHTTP = false;\line
+Backbone.emulateJSON = false;\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 The Backbone.sync method that uses these values is actually an integral part of Backbone.js. A jQuery-like ajax method is assumed, so HTTP parameters are organised based on jQuery\u8217's API. Searching through the code for calls to the sync method show it\u8217's used whenever a model is saved, fetched, or deleted (destroyed).\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Under the covers, {\f1 Backbone.sync} is the function called every time Backbone tries to read or save models to the server. It uses jQuery or Zepto\u8217's ajax implementations to make these RESTful requests, however this can be overridden as per your needs. :\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 The sync function may be overriden globally as Backbone.sync, or at a finer-grained level, by adding a sync function to a Backbone collection or to an individual model.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 There\u8217's no fancy plugin API for adding a persistence layer \u8211- simply override Backbone.sync with the same function signature:\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 Backbone.sync = function(method, model, options) \{\line
+\};\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 The default methodMap is useful for working out what the method argument does:\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 var methodMap = \{\line
+  'create': 'POST',\line
+  'update': 'PUT',\line
+  'delete': 'DELETE',\line
+  'read':   'GET'\line
+\};\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 In the above example if we wanted to log an event when {\f1 .sync()} was called, we could do this:\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \f1 Backbone.sync = function(method, model) \{\line
   console.log("I've been passed " + method + " with " + JSON.stringify(model));\line
 \};\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 {\b Resetting/Refreshing Collections}\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 Rather than adding or removing models individually, you might occasionally wish to update an entire collection at once. {\f1 Collection.reset()} allows us to replace an entire collection with new models as follows:\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 {\f1 javascript PhotoCollection.reset([   \{title: "My trip to Scotland", src: "scotland-trip.jpg"\},   \{title: "The flight from Scotland", src: "long-flight.jpg"\},   \{title: "Latest snap of lock-ness", src: "lockness.jpg"\}]);} Note that using {\f1 Collection.reset()} doesn\u8217't fire any {\f1 add} or {\f1 remove} events. A {\f1 reset} event is fired instead.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\f1 javascript PhotoCollection.reset([   \{title: "My trip to Scotland", src: "scotland-trip.jpg"\},   \{title: "The flight from Scotland", src: "long-flight.jpg"\},   \{title: "Latest snap of Loch Ness", src: "lochness.jpg"\}]);} Note that using {\f1 Collection.reset()} doesn\u8217't fire any {\f1 add} or {\f1 remove} events. A {\f1 reset} event is fired instead.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \b \fs28 Underscore utility functions\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 As Backbone requires Underscore as a hard dependency, we\u8217're able to use many of the utilities it has to offer to aid with our application development. Here\u8217's an example of how Underscore\u8217's {\f1 sortBy()} method can be used to sort a collection of photos based on a particular attribute.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \f1 var sortedByAlphabet = PhotoCollection.sortBy(function (photo) \{\line
@@ -841,6 +861,150 @@ zoomPhoto: function(factor)\{\line
     this.zoom(factor); //imagine this zooms into the image\line
     this.navigate("zoom/" + factor, true); //updates the fragment for us and triggers the route\line
 \}\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs28 Chainable API\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Another bit of sugar is the support for Underscore\u8217's chain method. This works by calling the original method with the current array of models and returning the result. In case you haven\u8217't seen it before, the chainable API looks like this:\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 var collection = new Backbone.Collection([\line
+  \{ name: 'Tim', age: 5 \},\line
+  \{ name: 'Ida', age: 26 \},\line
+  \{ name: 'Rob', age: 55 \}\line
+]);\line
+\line
+collection.chain()\line
+  .filter(function(item) \{ return item.get('age') > 10; \})\line
+  .map(function(item) \{ return item.get('name'); \})\line
+  .value();\line
+\line
+// Will return ['Ida', 'Rob']\line
+Some of the Backbone-specific method will return this, which means they can be chained as well:\line
+\line
+var collection = new Backbone.Collection();\line
+\line
+collection\line
+    .add(\{ name: 'John', age: 23 \})\line
+    .add(\{ name: 'Harry', age: 33 \})\line
+    .add(\{ name: 'Steve', age: 41 \});\line
+\line
+collection.pluck('name');\line
+// ['John', 'Harry', 'Steve']\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs28 Backbone\u8217's inheritance Implementation\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 The comments indicate that the inherits function is inspired by goog.inherits. Google\u8217's implementation is from the Closure Library, but Backbone\u8217's API accepts two objects (incorrectly referred to as a hash) containing \u8220"instance\u8221" and \u8220"static\u8221" methods. Each of Backbone\u8217's objects has an extend method:\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Model.extend = Collection.extend = Router.extend = View.extend = extend; Most development with Backbone is based around inheriting from these objects, and they\u8217're designed to mimic a classical object-oriented implementation.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Backbone uses Underscore\u8217's extend method:\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 each(slice.call(arguments, 1), function(source) \{\line
+  for (var prop in source) \{\line
+    obj[prop] = source[prop];\line
+  \}\line
+\});\line
+\line
+return obj;\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 This isn\u8217't the same as ES5\u8217's Object.create, it\u8217's actually copying properties (methods and values) from one object to another. Since this isn\u8217't enough to support Backbone\u8217's inheritance and class model, the following steps are performed:\par}
+{\pard \ql \f0 \sa180 \li360 \fi-360 \bullet \tx360\tab The instance methods are checked to see if there\u8217's a constructor property. If so, the class\u8217's constructor is used, otherwise the parent\u8217's constructor is used (i.e., Backbone.Model)\par}
+{\pard \ql \f0 \sa180 \li360 \fi-360 \bullet \tx360\tab Underscore\u8217's extend method is called to add the parent class\u8217's methods to the new child class The prototype property of a blank constructor function is assigned with the parent\u8217's prototype, and a new instance of this is set to the child\u8217's prototype property\par}
+{\pard \ql \f0 \sa180 \li360 \fi-360 \bullet \tx360\tab Underscore\u8217's extend method is called twice to add the static and instance methods to the child class\par}
+{\pard \ql \f0 \sa180 \li360 \fi-360 \bullet \tx360\tab The child\u8217's prototype\u8217's constructor and a {\b super} property are assigned\sa180\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 This pattern is also used for classes in CoffeeScript, so Backbone classes are compatible with CoffeeScript classes.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs28 Backbone\u8217's Sync API\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 The Backbone.sync method is intended to be overridden to support other backends. The built-in method is tailed to a certain breed of RESTful JSON APIs \u8211- Backbone was originally extracted from a Ruby on Rails application, which uses HTTP methods like PUT the same way.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 The way this works is the model and collection classes have a sync method that calls Backbone.sync. Both will call this.sync internally when fetching, saving, or deleting items.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 The sync method is called with three parameters:\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab method: One of create, update, delete, read\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab model: The Backbone model object\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab options: May include success and error methods\sa180\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Implementing a new sync method can use the following pattern:\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 Backbone.sync = function(method, model, options) \{\line
+  var requestContent = \{\}, success, error;\line
+\line
+  function success(result) \{\line
+    // Handle results from MyAPI\line
+    if (options.success) \{\line
+      options.success(result);\line
+    \}\line
+  \}\line
+\line
+  function error(result) \{\line
+    // Handle results from MyAPI\line
+    if (options.error) \{\line
+      options.error(result);\line
+    \}\line
+  \}\line
+\line
+  options || (options = \{\});\line
+\line
+  switch (method) \{\line
+    case 'create':\line
+      requestContent['resource'] = model.toJSON();\line
+      return MyAPI.create(model, success, error);\line
+\line
+    case 'update':\line
+      requestContent['resource'] = model.toJSON();\line
+      return MyAPI.update(model, success, error);\line
+\line
+    case 'delete':\line
+      return MyAPI.destroy(model, success, error);\line
+\line
+    case 'read':\line
+      if (model.attributes[model.idAttribute]) \{\line
+        return MyAPI.find(model, success, error);\line
+      \} else \{\line
+        return MyAPI.findAll(model, success, error);\line
+      \}\line
+  \}\line
+\};\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 This pattern delegates API calls to a new object, which could be a Backbone-style class that supports events. This can be safely tested separately, and potentially used with libraries other than Backbone.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 There are quite a few sync implementations out there:\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Backbone localStorage\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Backbone offline\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Backbone Redis\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab backbone-parse\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab backbone-websql\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Backbone Caching Sync\sa180\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs28 Conflict Management\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Like most client-side projects, Backbone.js wraps everything in an immediately-invoked function expression:\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 (function()\{\line
+  // Backbone.js\line
+\}).call(this);\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Several things happen during this configuration stage. A Backbone \u8220"namespace\u8221" is created, and multiple versions of Backbone on the same page are supported through the noConflict mode:\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 var root = this;\line
+var previousBackbone = root.Backbone;\line
+\line
+Backbone.noConflict = function() \{\line
+  root.Backbone = previousBackbone;\line
+  return this;\line
+\};\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Multiple versions of Backbone can be used on the same page by calling noConflict like this:\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 var Backbone19 = Backbone.noConflict();\line
+// Backbone19 refers to the most recently loaded version,\line
+// and `window.Backbone` will be restored to the previously\line
+// loaded version\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 This initial configuration code also supports CommonJS modules so Backbone can be used in Node projects:\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 var Backbone;\line
+if (typeof exports !== 'undefined') \{\line
+  Backbone = exports;\line
+\} else \{\line
+  Backbone = root.Backbone = \{\};\line
+\}\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 The existence of Underscore.js (also by DocumentCloud) and a jQuery-like library is checked as well.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs28 Leverage Events\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Backbone\u8217's classes are designed to be inherited from. Every single one of these classes inherits from Backbone.Events:\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Backbone.Model\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Backbone.Collection\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Backbone.Router\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Backbone.History\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Backbone.View\sa180\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 That means when designing applications built with Backbone, events are a key architectural component. Events are the standard way to deal with user interface actions, through the declarative event bindings on views, and also model and collection changes. However, you can easily add your own custom events.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 When learning Backbone it\u8217's important to get a feel for the built-in event names. Incorrectly binding a collection reset event, for example, could cause your application to render more often than it should. Mastering events is one of the quickest ways to become more productive with Backbone.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs24 Underscore.js\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Since Backbone depends on Underscore, it\u8217's worth keeping this in mind when dealing with any kind of arrays or collections of data. Also, familiarity with Underscore\u8217's methods will help work with Backbone.Collection effectively.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs24 Views\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 It\u8217's easy to slip into using ,\u8198?{\i b}{\i u}{\i t}{\i a}{\i v}{\i o}{\i i}{\i d}{\i t}{\i h}{\i i}{\i s}{\i w}{\i h}{\i e}{\i r}{\i e}{\i p}{\i o}{\i s}{\i s}{\i i}{\i b}{\i l}{\i e}.\u8198?{\i B}{\i a}{\i c}{\i k}{\i b}{\i o}{\i n}{\i e}{\i c}{\i a}{\i c}{\i h}{\i e}{\i s}{\i a}{\i v}{\i i}{\i e}{\i w}\u8217'{\i s}{\i e}{\i l}{\i e}{\i m}{\i e}{\i n}{\i t},\u8198?{\i s}{\i o}{\i u}{\i s}{\i e}{\i t}{\i h}{\i i}{\i s}.\u8198?el instead. Design views based on the single responsibility principle.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 It might be tempting to let \u8220"container\u8221" view render HTML directly by using $().html, but resisting the temptation and creating a hierarchy of views will make it much easier to debug your code and write automated tests.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Interestingly, Backbone doesn\u8217't have a lot of code dedicated to templates, but it can work with the template method. I use this with RequireJS text file dependencies to load remote templates during development, then I use the RequireJS build script to generate something suitable for deployment. This makes code easy to test and fast to load.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs24 API Style\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Backbone\u8217's API is thankfully very consistent. Even the history API accepts a silent option, which is used throughout the library to stop events from firing when they\u8217're not required.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Backbone\u8217's collections have Underscore\u8217's chainable API, which can be handy, but care must be taken to use this correctly.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs24 Testing Backbone\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 So far we\u8217've been reviewing Backbone\u8217's code to demystify the framework as a whole. However, it\u8217's worth noting that other technologies work very well with Backbone and Underscore. RequireJS and AMD modules can be a great way to break up projects.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 However, one area that Backbone doesn\u8217't address is testing. This is unfortunate, because testing Backbone projects definitely isn\u8217't obvious. Later in the book we\u8217'll look at testing in more detail.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \b \fs28 Namespacing\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 When learning how to use Backbone, an important and commonly overlooked area by tutorials is namespacing. If you already have experience with namespacing in JavaScript, the following section will provide some advice on how to specifically apply concepts you know to Backbone, however I will also be covering explanations for beginners to ensure everyone is on the same page.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \b \fs24 What is namespacing?\par}
@@ -1290,9 +1454,34 @@ MongoDB
 sudo chown `id -u` /data/db\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 {\b Running and connecting to your server}\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 Once this is done, open up two terminal windows.\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 In the first, {\f1 cd} to your MongoDB bin directory or type in the complete path to it. You\u8217'll need to start mongod`.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 In the first, {\f1 cd} to your MongoDB bin directory or type in the complete path to it. You\u8217'll need to start {\f1 mongod}.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \f1 $ ./bin/mongod\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 Next, in the second terminal, start the `mongoBuilding Backbone.js Apps With Ruby, Sinatra, MongoDB and Haml\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Next, in the second terminal, start the {\f1 mongo} shell which will connect up to localhost by default.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 $ ./bin/mongo\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 That\u8217's it!.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs24 Express and Mongoose\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Option 1 (HTML) and Option 2 (Jade) of the practical download both come with an install.sh bash script. This allows you to easily install Express, Mongoose, Jade (and optionally MongoDB if you prefer to) through npm (the node package manager).\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Make sure you have Node.js installed. If not, you can grab it {\field{\*\fldinst{HYPERLINK "http://nodejs.org/#download"}}{\fldrslt{\ul
+here
+}}}
+\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Next run {\f1 $ ./install.sh} at the terminal to install the rest of our dependencies. To see the exact contents of the install.sh file, see below:\sa180\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b install.sh}\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 #!/bin/bash\line
+npm install express\line
+npm install mongodb --mongodb:native\line
+npm install mongoose\line
+npm install jade\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab After you\u8217've installed all of the dependencies for the stack, we can get to cloning the repo containing our practicals and running them. Start by running the below lines:\sa180\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 git clone git://github.com/addyosmani/backbone-boilerplates.git\line
+cd option2\line
+node app.js\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 For option1 (without Jade), simply cd into option1 and run {\f1 node app.js} from there.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Finally, either of the example apps can now be accessed by navigating to:\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Option 1: {\f1 http://localhost:3000/static.html}\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Option 2: {\f1 http://localhost:3000/todo}\sa180\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 That\u8217's it! Whilst there\u8217's a lot more than can be done to expand on the concepts covered so far, the base we\u8217're reviewed should be enough to get you up and running with this stack if you wish to use it with Backbone.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs36 Building Backbone.js Apps With Ruby, Sinatra, MongoDB and Haml\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \b \fs32 Introduction\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 In this chapter we\u8217're going to explore writing Backbone.js applications with a Ruby back-end. To assist with this, we\u8217're going to use {\field{\*\fldinst{HYPERLINK "http://www.sinatrarb.com/"}}{\fldrslt{\ul
 Sinatra
@@ -1483,13 +1672,16 @@ Sinatra: The Book
  also contains a brief tutorial on DataMapper for anyone interested in exploring it further.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \b \fs36 Practical\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 We\u8217're going to use Sinatra in a similar manner to how we used Express in the last chapter. It will power a RESTful API supporting CRUD operations. Together with a MongoDB data store, this will allow us to easily persist data (todo items) whilst ensuring they are stored in a database. If you\u8217've read the previous chapter or have gone through any of the Todo examples covered so far, you will find this surprisingly straight-forward.\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 Remember that the default Todo example included with Backbone.js already persists data, although it does this via a localStorage adapter. Luckily there aren\u8217't a great deal of changes needed to switch over to using our Sinatra-based API. Let\u8217's briefly review the code that will be powering the CRUD operations for this sections practical, as we go course won\u8217't be starting off with a near-complete base for most of our real world applications.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Remember that the default Todo example included with Backbone.js already persists data, although it does this via a localStorage adapter. Luckily there aren\u8217't a great deal of changes needed to switch over to using our Sinatra-based API. Let\u8217's briefly review the code that will be powering the CRUD operations for this sections practical, as we won\u8217't be starting off with a near-complete base for most of our real world applications.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \b \fs28 Installing The Prerequisites\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \b \fs24 Ruby\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 If using OSX or Linux, Ruby may be one of a number of open-source packages that come pre-installed and you can skip over to the next paragraph. In case you would like to check if check if you have Ruby installed, open up the terminal prompt and type:\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 {\f1 $ ruby -v}\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 The output of this will either be the version of Ruby installed or an error complaining that Ruby wasn\u8217't found.\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 Should you need to install Ruby manually (e.g for an operating system such as Windows), you can do so by downloading the latest version from http://www.ruby-lang.org/en/downloads/. Alternatively, (RVM)[http://beginrescueend.com/rvm/install/] (Ruby Version Manager) is a command-line tool that allows you to easily install and manage multiple ruby environments with ease.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Should you need to install Ruby manually (e.g for an operating system such as Windows), you can do so by downloading the latest version from http://www.ruby-lang.org/en/downloads/. Alternatively, {\field{\*\fldinst{HYPERLINK "http://beginrescueend.com/rvm/install/"}}{\fldrslt{\ul
+RVM
+}}}
+ (Ruby Version Manager) is a command-line tool that allows you to easily install and manage multiple ruby environments with ease.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \b \fs24 Ruby Gems\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 Next, we will need to install Ruby Gems. Gems are a standard way to package programs or libraries written in Ruby and with Ruby Gems it\u8217's possible to install additional dependencies for Ruby applications very easily.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 On OSX, Linux or Windows go to {\field{\*\fldinst{HYPERLINK "http://rubyforge.org/projects/rubygems"}}{\fldrslt{\ul
@@ -1499,7 +1691,7 @@ http://rubyforge.org/projects/rubygems
 {\pard \ql \f0 \sa180 \li0 \fi0 \f1 $> tar xzvf rubygems.tgz\line
 $> cd rubygems\line
 $> sudo ruby setup.rb\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 There will likely be a version number included in your download and you should make sure to include this when tying the above. Finally, a symlink (symbolic link) to tie everything togther should be fun as follows:\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 There will likely be a version number included in your download and you should make sure to include this when tying the above. Finally, a symlink (symbolic link) to tie everything togther should be run as follows:\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 {\f1 $ sudo ln -s /usr/bin/gem1.8.17 /usr/bin/gem}\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 To check that Ruby Gems has been correctly installed, type the following into your terminal:\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \f1 $ gem -v\par}
@@ -1507,7 +1699,7 @@ $> sudo ruby setup.rb\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 With Ruby Gems setup, we can now easily install Sinatra. For Linux or OSX type this in your terminal:\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 {\f1 $ sudo gem install sinatra}\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 and if you\u8217're on Windows, enter the following at a command prompt:\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 {\f1 c:\\\\ > gem install sinatra}\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\f1 c:\\> gem install sinatra}\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \b \fs24 Haml\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 As with other DSLs and frameworks, Sinatra supports a wide range of different templating engines. {\field{\*\fldinst{HYPERLINK "http://www.ruby-doc.org/stdlib/libdoc/erb/rdoc/classes/ERB.html"}}{\fldrslt{\ul
 ERB
@@ -2659,10 +2851,10 @@ development version
 zipball
 }}}
 \par}
-{\pard \ql \f0 \sa180 \li360 \fi-360 \bullet \tx360\tab {\field{\*\fldinst{HYPERLINK ""}}{\fldrslt{\ul
+{\pard \ql \f0 \sa180 \li360 \fi-360 \bullet \tx360\tab {\field{\*\fldinst{HYPERLINK "http://github.com/addyosmani/backbone.paginator"}}{\fldrslt{\ul
 Repository
 }}}
-http://github.com/addyosmani/backbone.paginator)\sa180\par}
+\sa180\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \b \fs32 Live Examples\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 Live previews of both pagination components using the Netflix API can be found below. Download the tarball or fork the repository to experiment with these examples further.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 Demo 1: {\field{\*\fldinst{HYPERLINK "http://addyosmani.github.com/backbone.paginator/examples/netflix-request-paging/index.html"}}{\fldrslt{\ul
@@ -2787,7 +2979,7 @@ Infinite Pagination (Backbone.Paginator.requestPager())
 {\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\b Collection.requestPreviousPage()} - go to the previous page\par}
 {\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\b Collection.howManyPer(n)} - set the number of items to display per page\sa180\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \b \fs32 Paginator.clientPager\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 The {\f1 clientPager} works similar to the {\f1 requestPager}, except that our configuration values influence the pagination of data already returned at a UI-level. Whilst not shown (yet) there is also a lot more UI logic that ties in with the {\f1 clientPager}. An example of this can be seen in \u226?\u8364?\u732?views/clientPagination.js.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 The {\f1 clientPager} works similar to the {\f1 requestPager}, except that our configuration values influence the pagination of data already returned at a UI-level. Whilst not shown (yet) there is also a lot more UI logic that ties in with the {\f1 clientPager}. An example of this can be seen in views/clientPagination.js.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \b \fs24 1. Create a new paginated collection with a model and URL\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 As with {\f1 requestPager}, let\u8217's first create a new Paginated {\f1 Backbone.Paginator.clientPager} collection, with a model and base URL:\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \f1 var PaginatedCollection = Backbone.Paginator.clientPager.extend(\{\line
@@ -3010,7 +3202,7 @@ Backbone fundamentals
 {\pard \ql \f0 \sa180 \li0 \fi0 For this application, I opted for the nested namespacing pattern. Implemented correctly, this enables you to clearly identify if items being referenced in your app are views, other modules and so on. This initial structure is a sane place to also include application defaults (unless you prefer maintaining those in a separate file).\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \f1 window.mobileSearch = window.mobileSearch || \{\line
     views: \{\line
-        appview: new AppView\line
+        appview: new AppView()\line
     \},\line
     routers:\{\line
         workspace:new Workspace()\line
@@ -3061,7 +3253,7 @@ BDD
 Dan North
 }}}
  (the authority on BDD) which attempts to test the behavior of software. It\u8217's considered second-generation as it came out of merging ideas from Domain driven design (DDD) and lean software development, helping teams to deliver high quality software by answering many of the more confusing questions early on in the agile process. Such questions commonly include those concerning documentation and testing.\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 If you were to read a book on BDD, it\u8217's likely to also be described as being \u8216'outside-in and pull-based\u8217'. The reason for this is that it borrows the idea of of pulling features from Lean manufacturing which effectively ensures that the right software solutions are being written by a) focusing on expected outputs of the system and b) ensuring these outputs are achieved.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 If you were to read a book on BDD, it\u8217's likely to also be described as being \u8216'outside-in and pull-based\u8217'. The reason for this is that it borrows the idea of pulling features from Lean manufacturing which effectively ensures that the right software solutions are being written by a) focusing on expected outputs of the system and b) ensuring these outputs are achieved.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 BDD recognizes that there are usually multiple stakeholders in a project and not a single amorphous user of the system. These different groups will be affected by the software being written in differing ways and will have a varying opinion of what quality in the system means to them. It\u8217's for this reason that it\u8217's important to understand who the software will be bringing value you and exactly what in it will be valuable to them.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 Finally, BDD relies on automation. Once you\u8217've defined the quality expected, your team will likely want to check on the functionality of the solution being built regularly and compare it to the results they expect. In order to facilitate this efficiently, the process has to be automated. BDD relies heavily on the automation of specification-testing and Jasmine is a tool which can assist with this.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 BDD helps both developers and non-technical stakeholders:\par}
@@ -3545,7 +3737,7 @@ expect('click').toHaveBeenTriggeredOn($('#el'));\par}
         </div>\line
 </div>\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 The second spec fails with the following message:\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 Expected \u8217'\u8217' to contain {\f1 '<label class="todo-content">My Todo</label>'}.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\f1 Expected '' to contain '<label class="todo-content">My Todo</label>'.}\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 The reason for this is the default behavior for render() doesn\u8217't create any markup. Let\u8217's write a replacement for render() which fixes this:\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \f1 render: function() \{\line
   var template = '<label class="todo-content"><%= text %></label>';\line
@@ -3611,7 +3803,7 @@ expect('click').toHaveBeenTriggeredOn($('#el'));\par}
 \line
 \});\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 This will fail with the following message:\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 Expected \u8216'My Todo\u8217' to have class \u8216'done\u8217'.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\f1 Expected '<label class="todo-content">My Todo</label>'  to have class 'done'.}\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 which can be fixed in the existing render() method as follows:\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \f1 render: function() \{\line
   var template = '<label class="todo-content">' +\line
@@ -3687,7 +3879,7 @@ SinonJS
 }}}
  as well as how to test Backbone routers, do consider reading his series.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \b \fs32 Exercise\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 As an exercise, I recommend now trying the Jasmine Koans in {\f1 practicals\\jasmine-joans} and trying to fix some of the purposefully failing tests it has to offer. This is an excellent way of not just learning how Jasmine specs and suites work, but working through the examples (without peaking back) will also put your Backbone skills to test too.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 As an exercise, I recommend now trying the Jasmine Koans in {\f1 practicals\\jasmine-joans} and trying to fix some of the purposefully failing tests it has to offer. This is an excellent way of not just learning how Jasmine specs and suites work, but working through the examples (without peeking back) will also put your Backbone skills to test too.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \b \fs32 Further reading\par}
 {\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\field{\*\fldinst{HYPERLINK "http://japhr.blogspot.com/2011/11/jasmine-backbonejs-revisited.html"}}{\fldrslt{\ul
 Jasmine + Backbone Revisited

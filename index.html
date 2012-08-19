@@ -33,7 +33,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 </p>
 <div style="width:500px">
 
-<iframe src="http://ghbtns.com/github-btn.html?user=addyosmani&amp;repo=backbone-fundamentals&amp;type=watch&amp;count=true" allowtransparency="true" frameborder="0" scrolling="0" width="110px" height="20px"></iframe>
+<iframe src="http://markdotto.github.com/github-buttons/github-btn.html?user=addyosmani&amp;repo=backbone-fundamentals&amp;type=watch&amp;count=true" allowtransparency="true" frameborder="0" scrolling="0" width="110px" height="20px"></iframe>
   
  <iframe allowtransparency="true" frameborder="0" scrolling="no" src="http://platform.twitter.com/widgets/tweet_button.1333103182.html#_=1333404284780&amp;count=horizontal&amp;id=twitter-widget-0&amp;lang=en&amp;original_referer=http%3A%2F%2Faddyosmani.github.com%2Fbackbone-fundamentals%2F&amp;size=m&amp;text=Developing%20Backbone.js%20Applications&amp;url=https%3A%2F%2Fgithub.com%2Faddyosmani%2Fbackbone-fundamentals&amp;via=addy_osmani" class="twitter-share-button twitter-count-horizontal" style="width: 107px; height: 20px; " title="Twitter Tweet Button"></iframe>
 <script id="twitter-wjs" src="//platform.twitter.com/widgets.js"></script><script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
@@ -323,7 +323,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <p>The most common implementation of MVP is one which uses a Passive View (a view which is for all intents and purposes &quot;dumb&quot;), containing little to no logic. MVP models are almost identical to MVC models and handle application data. The presenter acts as a mediator which talks to both the view and model, however both of these are isolated from each other. They effectively bind models to views, a responsibility held by Controllers in MVC. Presenters are at the heart of the MVP pattern and as you can guess, incorporate the presentation logic behind views.</p>
 <p>Solicited by a view, presenters perform any work to do with user requests and pass data back to them. In this respect, they retrieve data, manipulate it and determine how the data should be displayed in the view. In some implementations, the presenter also interacts with a service layer to persist data (models). Models may trigger events but it's the presenter's role to subscribe to them so that it can update the view. In this passive architecture, we have no concept of direct data binding. Views expose setters which presenters can use to set data.</p>
 <p>The benefit of this change from MVC is that it increases the testability of your application and provides a more clean separation between the view and the model. This isn't however without its costs as the lack of data binding support in the pattern can often mean having to take care of this task separately.</p>
-<p>Although a common implementation of a <a href="http://martinfowler.com/eaaDev/PassiveScreen.html">Passive View</a> is for the view to implement an interface, there are variations on it, including the use of events which can decouple the View from the Presenter a little more. As we don't have the interface construct in JavaScript, we're using it more as more a protocol than an explicit interface here. It's technically still an API and it's probably fair for us to refer to it as an interface from that perspective.</p>
+<p>Although a common implementation of a <a href="http://martinfowler.com/eaaDev/PassiveScreen.html">Passive View</a> is for the view to implement an interface, there are variations on it, including the use of events which can decouple the View from the Presenter a little more. As we don't have the interface construct in JavaScript, we're using it more and more a protocol than an explicit interface here. It's technically still an API and it's probably fair for us to refer to it as an interface from that perspective.</p>
 <p>There is also a <a href="http://martinfowler.com/eaaDev/SupervisingPresenter.html">Supervising Controller</a> variation of MVP, which is closer to the MVC and <a href="http://en.wikipedia.org/wiki/Model_View_ViewModel">MVVM</a> patterns as it provides data-binding from the Model directly from the View. Key-value observing (KVO) plugins (such as Derick Bailey's Backbone.ModelBinding plugin) introduce this idea of a Supervising Controller to Backbone.</p>
 <h2 id="mvp-or-mvc">MVP or MVC?</h2>
 <p>MVP is generally used most often in enterprise-level applications where it's necessary to reuse as much presentation logic as possible. Applications with very complex views and a great deal of user interaction may find that MVC doesn't quite fit the bill here as solving this problem may mean heavily relying on multiple controllers. In MVP, all of this complex logic can be encapsulated in a presenter, which can simplify maintenance greatly.</p>
@@ -409,6 +409,11 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <li>Model data, views and routers in a succinct manner</li>
 <li>Provide DOM, model and collection synchronization</li>
 </ul>
+<h2 id="is-backbone-right-for-you">Is Backbone right for you?</h2>
+<p>Does the following describe you?:</p>
+<p>&quot;I want something flexible which offers a minimalist solution to separating concerns in my application. It should support a persistence layer and RESTful sync, models, views (with controllers), event-driven communication, templating and routing. It should be imperative, allowing one to update the View when a model changes. I’d like some decisions about the architecture left up to me. Ideally, many large companies have used the solution to build non-trivial applications.</p>
+<p>As I may be building something complex, I’d like there to be an active extension community around the framework that have already tried addressing larger problems (Marionette, Chaplin, Aura, Thorax). Ideally, there are also scaffolding tools (grunt-bbb, brunch) available for the solution.&quot;</p>
+<p>If so, continue reading.</p>
 <h2 id="the-basics-1">The Basics</h2>
 <p>In this section, you'll learn the essentials of Backbone's models, views, collections and routers, as well as about using namespacing to organize your code. This isn't meant as a replacement for the official documentation, but it will help you understand many of the core concepts behind Backbone before you start building applications with it.</p>
 <ul>
@@ -560,7 +565,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <span class="kw">var</span> myPhoto = <span class="kw">new</span> Photo();
 <span class="kw">myPhoto</span>.<span class="fu">set</span>({ <span class="dt">title</span>: <span class="st">&quot;On the beach&quot;</span> });
 <span class="co">//logs Remember to set a source for your image!</span></code></pre>
-<p><strong>Note</strong>: Backbone passes the <code>attributes</code> object by shallow copy to the <code>validate</code> function using the Underscore <code>_.extend</code> method. This means that it is not possible to change any <code>Number</code>, <code>String</code> or <code>Boolean</code> attribute by reference in the way that one might expect a JavaScript object to behave. As shallow copy doesn't copy objects by implicitly copying them, but rather, by reference, one can change the attributes on those objects.</p>
+<p><strong>Note</strong>: Backbone passes the <code>attributes</code> object by shallow copy to the <code>validate</code> function using the Underscore <code>_.extend</code> method. This means that it is not possible to change any <code>Number</code>, <code>String</code> or <code>Boolean</code> attribute by reference in the way that one might expect a JavaScript object to behave. As shallow copy doesn't copy objects by implicitly copying them, but rather, by reference, one ca change the attributes on those objects.</p>
 <p>An example of this (by @fivetanley) is available <a href="http://jsfiddle.net/2NdDY/7/">here</a>.</p>
 <h3 id="views-1"><a name="thebasics-views" id="thebasics-views">Views</a></h3>
 <p>Views in Backbone don't contain the markup for your application, but rather they are there to support models by defining the logic for how they should be represented to the user. This is usually achieved using JavaScript templating (e.g. Mustache, jQuery-tmpl, etc.). A view's <code>render()</code> function can be bound to a model's <code>change()</code> event, allowing the view to always be up to date without requiring a full page refresh.</p>
@@ -646,14 +651,29 @@ id: &#39;header&#39;, // optional</code></pre>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> PhotoCollection = <span class="kw">new</span> <span class="kw">Backbone</span>.<span class="fu">Collection</span>;
 <span class="kw">PhotoCollection</span>.<span class="fu">url</span> = <span class="ch">&#39;/photos&#39;</span>;
 <span class="kw">PhotoCollection</span>.<span class="fu">fetch</span>();</code></pre>
-<p>Under the covers, <code>Backbone.sync</code> is the function called every time Backbone tries to read or save models to the server. It uses jQuery or Zepto's ajax implementations to make these RESTful requests, however this can be overridden as per your needs.</p>
+<p>During configuration, Backbone sets a variable to denote if extended HTTP methods are supported by the server. Another setting controls if the server understands the correct MIME type for JSON:</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">Backbone</span>.<span class="fu">emulateHTTP</span> = <span class="kw">false</span>;
+<span class="kw">Backbone</span>.<span class="fu">emulateJSON</span> = <span class="kw">false</span>;</code></pre>
+<p>The Backbone.sync method that uses these values is actually an integral part of Backbone.js. A jQuery-like ajax method is assumed, so HTTP parameters are organised based on jQuery’s API. Searching through the code for calls to the sync method show it’s used whenever a model is saved, fetched, or deleted (destroyed).</p>
+<p>Under the covers, <code>Backbone.sync</code> is the function called every time Backbone tries to read or save models to the server. It uses jQuery or Zepto's ajax implementations to make these RESTful requests, however this can be overridden as per your needs. :</p>
+<p>The sync function may be overriden globally as Backbone.sync, or at a finer-grained level, by adding a sync function to a Backbone collection or to an individual model.</p>
+<p>There’s no fancy plugin API for adding a persistence layer – simply override Backbone.sync with the same function signature:</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">Backbone</span>.<span class="fu">sync</span> = <span class="kw">function</span>(method, model, options) {
+};</code></pre>
+<p>The default methodMap is useful for working out what the method argument does:</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> methodMap = {
+  <span class="ch">&#39;create&#39;</span>: <span class="ch">&#39;POST&#39;</span>,
+  <span class="ch">&#39;update&#39;</span>: <span class="ch">&#39;PUT&#39;</span>,
+  <span class="ch">&#39;delete&#39;</span>: <span class="ch">&#39;DELETE&#39;</span>,
+  <span class="ch">&#39;read&#39;</span>:   <span class="ch">&#39;GET&#39;</span>
+};</code></pre>
 <p>In the above example if we wanted to log an event when <code>.sync()</code> was called, we could do this:</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">Backbone</span>.<span class="fu">sync</span> = <span class="kw">function</span>(method, model) {
   <span class="kw">console</span>.<span class="fu">log</span>(<span class="st">&quot;I&#39;ve been passed &quot;</span> + method + <span class="st">&quot; with &quot;</span> + <span class="kw">JSON</span>.<span class="fu">stringify</span>(model));
 };</code></pre>
 <p><strong>Resetting/Refreshing Collections</strong></p>
 <p>Rather than adding or removing models individually, you might occasionally wish to update an entire collection at once. <code>Collection.reset()</code> allows us to replace an entire collection with new models as follows:</p>
-<p><code>javascript PhotoCollection.reset([   {title: &quot;My trip to Scotland&quot;, src: &quot;scotland-trip.jpg&quot;},   {title: &quot;The flight from Scotland&quot;, src: &quot;long-flight.jpg&quot;},   {title: &quot;Latest snap of lock-ness&quot;, src: &quot;lockness.jpg&quot;}]);</code> Note that using <code>Collection.reset()</code> doesn't fire any <code>add</code> or <code>remove</code> events. A <code>reset</code> event is fired instead.</p>
+<p><code>javascript PhotoCollection.reset([   {title: &quot;My trip to Scotland&quot;, src: &quot;scotland-trip.jpg&quot;},   {title: &quot;The flight from Scotland&quot;, src: &quot;long-flight.jpg&quot;},   {title: &quot;Latest snap of Loch Ness&quot;, src: &quot;lochness.jpg&quot;}]);</code> Note that using <code>Collection.reset()</code> doesn't fire any <code>add</code> or <code>remove</code> events. A <code>reset</code> event is fired instead.</p>
 <h3 id="underscore-utility-functions">Underscore utility functions</h3>
 <p>As Backbone requires Underscore as a hard dependency, we're able to use many of the utilities it has to offer to aid with our application development. Here's an example of how Underscore's <code>sortBy()</code> method can be used to sort a collection of photos based on a particular attribute.</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> sortedByAlphabet = <span class="kw">PhotoCollection</span>.<span class="fu">sortBy</span>(<span class="kw">function</span> (photo) {
@@ -749,6 +769,158 @@ id: &#39;header&#39;, // optional</code></pre>
     <span class="kw">this</span>.<span class="fu">zoom</span>(factor); <span class="co">//imagine this zooms into the image</span>
     <span class="kw">this</span>.<span class="fu">navigate</span>(<span class="st">&quot;zoom/&quot;</span> + factor, <span class="kw">true</span>); <span class="co">//updates the fragment for us and triggers the route</span>
 }</code></pre>
+<h3 id="chainable-api">Chainable API</h3>
+<p>Another bit of sugar is the support for Underscore’s chain method. This works by calling the original method with the current array of models and returning the result. In case you haven’t seen it before, the chainable API looks like this:</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> collection = <span class="kw">new</span> <span class="kw">Backbone</span>.<span class="fu">Collection</span>([
+  { <span class="dt">name</span>: <span class="ch">&#39;Tim&#39;</span>, <span class="dt">age</span>: <span class="dv">5</span> },
+  { <span class="dt">name</span>: <span class="ch">&#39;Ida&#39;</span>, <span class="dt">age</span>: <span class="dv">26</span> },
+  { <span class="dt">name</span>: <span class="ch">&#39;Rob&#39;</span>, <span class="dt">age</span>: <span class="dv">55</span> }
+]);
+
+<span class="kw">collection</span>.<span class="fu">chain</span>()
+  .<span class="fu">filter</span>(<span class="kw">function</span>(item) { <span class="kw">return</span> <span class="kw">item</span>.<span class="fu">get</span>(<span class="ch">&#39;age&#39;</span>) &gt; <span class="dv">10</span>; })
+  .<span class="fu">map</span>(<span class="kw">function</span>(item) { <span class="kw">return</span> <span class="kw">item</span>.<span class="fu">get</span>(<span class="ch">&#39;name&#39;</span>); })
+  .<span class="fu">value</span>();
+
+<span class="co">// Will return [&#39;Ida&#39;, &#39;Rob&#39;]</span>
+Some of the Backbone-specific method will <span class="kw">return</span> <span class="kw">this</span>, which means they can be chained as <span class="dt">well</span>:
+
+<span class="kw">var</span> collection = <span class="kw">new</span> <span class="kw">Backbone</span>.<span class="fu">Collection</span>();
+
+collection
+    .<span class="fu">add</span>({ <span class="dt">name</span>: <span class="ch">&#39;John&#39;</span>, <span class="dt">age</span>: <span class="dv">23</span> })
+    .<span class="fu">add</span>({ <span class="dt">name</span>: <span class="ch">&#39;Harry&#39;</span>, <span class="dt">age</span>: <span class="dv">33</span> })
+    .<span class="fu">add</span>({ <span class="dt">name</span>: <span class="ch">&#39;Steve&#39;</span>, <span class="dt">age</span>: <span class="dv">41</span> });
+
+<span class="kw">collection</span>.<span class="fu">pluck</span>(<span class="ch">&#39;name&#39;</span>);
+<span class="co">// [&#39;John&#39;, &#39;Harry&#39;, &#39;Steve&#39;]</span></code></pre>
+<h3 id="backbones-inheritance-implementation">Backbone’s inheritance Implementation</h3>
+<p>The comments indicate that the inherits function is inspired by goog.inherits. Google’s implementation is from the Closure Library, but Backbone’s API accepts two objects (incorrectly referred to as a hash) containing “instance” and “static” methods. Each of Backbone’s objects has an extend method:</p>
+<p>Model.extend = Collection.extend = Router.extend = View.extend = extend; Most development with Backbone is based around inheriting from these objects, and they’re designed to mimic a classical object-oriented implementation.</p>
+<p>Backbone uses Underscore’s extend method:</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript">each(<span class="kw">slice</span>.<span class="fu">call</span>(arguments, <span class="dv">1</span>), <span class="kw">function</span>(source) {
+  <span class="kw">for</span> (<span class="kw">var</span> prop <span class="kw">in</span> source) {
+    obj[prop] = source[prop];
+  }
+});
+
+<span class="kw">return</span> obj;</code></pre>
+<p>This isn’t the same as ES5’s Object.create, it’s actually copying properties (methods and values) from one object to another. Since this isn’t enough to support Backbone’s inheritance and class model, the following steps are performed:</p>
+<ul>
+<li><p>The instance methods are checked to see if there’s a constructor property. If so, the class’s constructor is used, otherwise the parent’s constructor is used (i.e., Backbone.Model)</p></li>
+<li><p>Underscore’s extend method is called to add the parent class’s methods to the new child class The prototype property of a blank constructor function is assigned with the parent’s prototype, and a new instance of this is set to the child’s prototype property</p></li>
+<li><p>Underscore’s extend method is called twice to add the static and instance methods to the child class</p></li>
+<li><p>The child’s prototype’s constructor and a <strong>super</strong> property are assigned</p></li>
+</ul>
+<p>This pattern is also used for classes in CoffeeScript, so Backbone classes are compatible with CoffeeScript classes.</p>
+<h3 id="backbones-sync-api">Backbone’s Sync API</h3>
+<p>The Backbone.sync method is intended to be overridden to support other backends. The built-in method is tailed to a certain breed of RESTful JSON APIs – Backbone was originally extracted from a Ruby on Rails application, which uses HTTP methods like PUT the same way.</p>
+<p>The way this works is the model and collection classes have a sync method that calls Backbone.sync. Both will call this.sync internally when fetching, saving, or deleting items.</p>
+<p>The sync method is called with three parameters:</p>
+<ul>
+<li>method: One of create, update, delete, read</li>
+<li>model: The Backbone model object</li>
+<li>options: May include success and error methods</li>
+</ul>
+<p>Implementing a new sync method can use the following pattern:</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">Backbone</span>.<span class="fu">sync</span> = <span class="kw">function</span>(method, model, options) {
+  <span class="kw">var</span> requestContent = {}, success, error;
+
+  <span class="kw">function</span> success(result) {
+    <span class="co">// Handle results from MyAPI</span>
+    <span class="kw">if</span> (<span class="kw">options</span>.<span class="fu">success</span>) {
+      <span class="kw">options</span>.<span class="fu">success</span>(result);
+    }
+  }
+
+  <span class="kw">function</span> error(result) {
+    <span class="co">// Handle results from MyAPI</span>
+    <span class="kw">if</span> (<span class="kw">options</span>.<span class="fu">error</span>) {
+      <span class="kw">options</span>.<span class="fu">error</span>(result);
+    }
+  }
+
+  options || (options = {});
+
+  <span class="kw">switch</span> (method) {
+    <span class="kw">case</span> <span class="ch">&#39;create&#39;</span>:
+      requestContent[<span class="ch">&#39;resource&#39;</span>] = <span class="kw">model</span>.<span class="fu">toJSON</span>();
+      <span class="kw">return</span> <span class="kw">MyAPI</span>.<span class="fu">create</span>(model, success, error);
+
+    <span class="kw">case</span> <span class="ch">&#39;update&#39;</span>:
+      requestContent[<span class="ch">&#39;resource&#39;</span>] = <span class="kw">model</span>.<span class="fu">toJSON</span>();
+      <span class="kw">return</span> <span class="kw">MyAPI</span>.<span class="fu">update</span>(model, success, error);
+
+    <span class="kw">case</span> <span class="ch">&#39;delete&#39;</span>:
+      <span class="kw">return</span> <span class="kw">MyAPI</span>.<span class="fu">destroy</span>(model, success, error);
+
+    <span class="kw">case</span> <span class="ch">&#39;read&#39;</span>:
+      <span class="kw">if</span> (<span class="kw">model</span>.<span class="fu">attributes</span>[<span class="kw">model</span>.<span class="fu">idAttribute</span>]) {
+        <span class="kw">return</span> <span class="kw">MyAPI</span>.<span class="fu">find</span>(model, success, error);
+      } <span class="kw">else</span> {
+        <span class="kw">return</span> <span class="kw">MyAPI</span>.<span class="fu">findAll</span>(model, success, error);
+      }
+  }
+};</code></pre>
+<p>This pattern delegates API calls to a new object, which could be a Backbone-style class that supports events. This can be safely tested separately, and potentially used with libraries other than Backbone.</p>
+<p>There are quite a few sync implementations out there:</p>
+<ul>
+<li>Backbone localStorage</li>
+<li>Backbone offline</li>
+<li>Backbone Redis</li>
+<li>backbone-parse</li>
+<li>backbone-websql</li>
+<li>Backbone Caching Sync</li>
+</ul>
+<h3 id="conflict-management">Conflict Management</h3>
+<p>Like most client-side projects, Backbone.js wraps everything in an immediately-invoked function expression:</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript">(<span class="kw">function</span>(){
+  <span class="co">// Backbone.js</span>
+}).<span class="fu">call</span>(<span class="kw">this</span>);</code></pre>
+<p>Several things happen during this configuration stage. A Backbone “namespace” is created, and multiple versions of Backbone on the same page are supported through the noConflict mode:</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> root = <span class="kw">this</span>;
+<span class="kw">var</span> previousBackbone = <span class="kw">root</span>.<span class="fu">Backbone</span>;
+
+<span class="kw">Backbone</span>.<span class="fu">noConflict</span> = <span class="kw">function</span>() {
+  <span class="kw">root</span>.<span class="fu">Backbone</span> = previousBackbone;
+  <span class="kw">return</span> <span class="kw">this</span>;
+};</code></pre>
+<p>Multiple versions of Backbone can be used on the same page by calling noConflict like this:</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> Backbone19 = <span class="kw">Backbone</span>.<span class="fu">noConflict</span>();
+<span class="co">// Backbone19 refers to the most recently loaded version,</span>
+<span class="co">// and `window.Backbone` will be restored to the previously</span>
+<span class="co">// loaded version</span></code></pre>
+<p>This initial configuration code also supports CommonJS modules so Backbone can be used in Node projects:</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> Backbone;
+<span class="kw">if</span> (<span class="kw">typeof</span> exports !== <span class="ch">&#39;undefined&#39;</span>) {
+  Backbone = exports;
+} <span class="kw">else</span> {
+  Backbone = <span class="kw">root</span>.<span class="fu">Backbone</span> = {};
+}</code></pre>
+<p>The existence of Underscore.js (also by DocumentCloud) and a jQuery-like library is checked as well.</p>
+<h3 id="leverage-events">Leverage Events</h3>
+<p>Backbone’s classes are designed to be inherited from. Every single one of these classes inherits from Backbone.Events:</p>
+<ul>
+<li>Backbone.Model</li>
+<li>Backbone.Collection</li>
+<li>Backbone.Router</li>
+<li>Backbone.History</li>
+<li>Backbone.View</li>
+</ul>
+<p>That means when designing applications built with Backbone, events are a key architectural component. Events are the standard way to deal with user interface actions, through the declarative event bindings on views, and also model and collection changes. However, you can easily add your own custom events.</p>
+<p>When learning Backbone it’s important to get a feel for the built-in event names. Incorrectly binding a collection reset event, for example, could cause your application to render more often than it should. Mastering events is one of the quickest ways to become more productive with Backbone.</p>
+<h4 id="underscore.js">Underscore.js</h4>
+<p>Since Backbone depends on Underscore, it’s worth keeping this in mind when dealing with any kind of arrays or collections of data. Also, familiarity with Underscore’s methods will help work with Backbone.Collection effectively.</p>
+<h4 id="views-2">Views</h4>
+<p>It’s easy to slip into using <span class="math">, <em>b</em><em>u</em><em>t</em><em>a</em><em>v</em><em>o</em><em>i</em><em>d</em><em>t</em><em>h</em><em>i</em><em>s</em><em>w</em><em>h</em><em>e</em><em>r</em><em>e</em><em>p</em><em>o</em><em>s</em><em>s</em><em>i</em><em>b</em><em>l</em><em>e</em>. <em>B</em><em>a</em><em>c</em><em>k</em><em>b</em><em>o</em><em>n</em><em>e</em><em>c</em><em>a</em><em>c</em><em>h</em><em>e</em><em>s</em><em>a</em><em>v</em><em>i</em><em>e</em><em>w</em>’<em>s</em><em>e</em><em>l</em><em>e</em><em>m</em><em>e</em><em>n</em><em>t</em>, <em>s</em><em>o</em><em>u</em><em>s</em><em>e</em><em>t</em><em>h</em><em>i</em><em>s</em>. </span>el instead. Design views based on the single responsibility principle.</p>
+<p>It might be tempting to let “container” view render HTML directly by using $().html, but resisting the temptation and creating a hierarchy of views will make it much easier to debug your code and write automated tests.</p>
+<p>Interestingly, Backbone doesn’t have a lot of code dedicated to templates, but it can work with the template method. I use this with RequireJS text file dependencies to load remote templates during development, then I use the RequireJS build script to generate something suitable for deployment. This makes code easy to test and fast to load.</p>
+<h4 id="api-style">API Style</h4>
+<p>Backbone’s API is thankfully very consistent. Even the history API accepts a silent option, which is used throughout the library to stop events from firing when they’re not required.</p>
+<p>Backbone’s collections have Underscore’s chainable API, which can be handy, but care must be taken to use this correctly.</p>
+<h4 id="testing-backbone">Testing Backbone</h4>
+<p>So far we’ve been reviewing Backbone’s code to demystify the framework as a whole. However, it’s worth noting that other technologies work very well with Backbone and Underscore. RequireJS and AMD modules can be a great way to break up projects.</p>
+<p>However, one area that Backbone doesn’t address is testing. This is unfortunate, because testing Backbone projects definitely isn’t obvious. Later in the book we'll look at testing in more detail.</p>
 <h3 id="namespacing"><a name="thebasics-namespacing" id="thebasics-namespacing">Namespacing</a></h3>
 <p>When learning how to use Backbone, an important and commonly overlooked area by tutorials is namespacing. If you already have experience with namespacing in JavaScript, the following section will provide some advice on how to specifically apply concepts you know to Backbone, however I will also be covering explanations for beginners to ensure everyone is on the same page.</p>
 <h4 id="what-is-namespacing">What is namespacing?</h4>
@@ -1148,53 +1320,37 @@ body
 sudo chown `id -u` /data/db</code></pre>
 <p><strong>Running and connecting to your server</strong></p>
 <p>Once this is done, open up two terminal windows.</p>
-<p>In the first, <code>cd</code> to your MongoDB bin directory or type in the complete path to it. You'll need to start <cpde>mongod`.</p>
+<p>In the first, <code>cd</code> to your MongoDB bin directory or type in the complete path to it. You'll need to start <code>mongod</code>.</p>
 <pre class="sourceCode html"><code class="sourceCode html">$ ./bin/mongod</code></pre>
-<p>Next, in the second terminal, start the `mongo</code shell which will connect up to localhost by default.
-
-```html
-$ ./bin/mongo
-```
-
-That's it!.
-
-####Express and Mongoose
-
-Option 1 (HTML) and Option 2 (Jade) of the practical download both come with an install.sh bash script. This allows you to easily install Express, Mongoose, Jade (and optionally MongoDB if you prefer to) through npm (the node package manager). 
-
-* Make sure you have Node.js installed. If not, you can grab it [here](http://nodejs.org/#download)
-* Next run `$ ./install.sh` at the terminal to install the rest of our dependencies. To see the exact contents of the install.sh file, see below:
-
-**install.sh**
-
-```html
-#!/bin/bash
+<p>Next, in the second terminal, start the <code>mongo</code> shell which will connect up to localhost by default.</p>
+<pre class="sourceCode html"><code class="sourceCode html">$ ./bin/mongo</code></pre>
+<p>That's it!.</p>
+<h4 id="express-and-mongoose">Express and Mongoose</h4>
+<p>Option 1 (HTML) and Option 2 (Jade) of the practical download both come with an install.sh bash script. This allows you to easily install Express, Mongoose, Jade (and optionally MongoDB if you prefer to) through npm (the node package manager).</p>
+<ul>
+<li>Make sure you have Node.js installed. If not, you can grab it <a href="http://nodejs.org/#download">here</a></li>
+<li>Next run <code>$ ./install.sh</code> at the terminal to install the rest of our dependencies. To see the exact contents of the install.sh file, see below:</li>
+</ul>
+<p><strong>install.sh</strong></p>
+<pre class="sourceCode html"><code class="sourceCode html">#!/bin/bash
 npm install express
 npm install mongodb --mongodb:native
 npm install mongoose
-npm install jade
-```
-
-
-* After you've installed all of the dependencies for the stack, we can get to cloning the repo containing our practicals and running them. Start by running the below lines:
-
-```html
-git clone git://github.com/addyosmani/backbone-boilerplates.git
+npm install jade</code></pre>
+<ul>
+<li>After you've installed all of the dependencies for the stack, we can get to cloning the repo containing our practicals and running them. Start by running the below lines:</li>
+</ul>
+<pre class="sourceCode html"><code class="sourceCode html">git clone git://github.com/addyosmani/backbone-boilerplates.git
 cd option2
-node app.js
-```
-
-For option1 (without Jade), simply cd into option1 and run `node app.js` from there.
-
-Finally, either of the example apps can now be accessed by navigating to:
-
-* Option 1: `http://localhost:3000/static.html`
-* Option 2: `http://localhost:3000/todo`
-
-That's it! Whilst there's a lot more than can be done to expand on the concepts covered so far, the base we're reviewed should be enough to get you up and running with this stack if you wish to use it with Backbone. 
-
-
-#<a name="stack2">Building Backbone.js Apps With Ruby, Sinatra, MongoDB and Haml</a></p>
+node app.js</code></pre>
+<p>For option1 (without Jade), simply cd into option1 and run <code>node app.js</code> from there.</p>
+<p>Finally, either of the example apps can now be accessed by navigating to:</p>
+<ul>
+<li>Option 1: <code>http://localhost:3000/static.html</code></li>
+<li>Option 2: <code>http://localhost:3000/todo</code></li>
+</ul>
+<p>That's it! Whilst there's a lot more than can be done to expand on the concepts covered so far, the base we're reviewed should be enough to get you up and running with this stack if you wish to use it with Backbone.</p>
+<h1 id="building-backbone.js-apps-with-ruby-sinatra-mongodb-and-haml"><a name="stack2">Building Backbone.js Apps With Ruby, Sinatra, MongoDB and Haml</a></h1>
 <h2 id="introduction-1">Introduction</h2>
 <p>In this chapter we're going to explore writing Backbone.js applications with a Ruby back-end. To assist with this, we're going to use <a href="http://www.sinatrarb.com/">Sinatra</a> - a DSL (domain specific language) for rapidly creating web applications in Ruby. Similar to the <a href="https://github.com/addyosmani/backbone-fundamentals/#stack1">section</a> on writing an application with Node.js, our server-side language (Ruby) will be used to power an API whilst Backbone.js will be the client consuming it.</p>
 <h2 id="what-is-sinatra">What Is Sinatra?</h2>
@@ -1360,20 +1516,20 @@ notes.update({ <span class="st">:_id</span> =&gt; note_id }, note)</code></pre>
 <p>Note: Whilst we opted for the MongoDB Ruby Driver for this stack, you may also be interested in <strong>DataMapper</strong> - a solution which allows us to use the same API to talk to a number of different datastores. This works well for both relational and non-relational databases and more information is available on the official <a href="http://datamapper.org/why.html">project page</a>. <a href="http://sinatra-book.gittr.com/#datamapper">Sinatra: The Book</a> also contains a brief tutorial on DataMapper for anyone interested in exploring it further.</p>
 <h1 id="practical-1">Practical</h1>
 <p>We're going to use Sinatra in a similar manner to how we used Express in the last chapter. It will power a RESTful API supporting CRUD operations. Together with a MongoDB data store, this will allow us to easily persist data (todo items) whilst ensuring they are stored in a database. If you've read the previous chapter or have gone through any of the Todo examples covered so far, you will find this surprisingly straight-forward.</p>
-<p>Remember that the default Todo example included with Backbone.js already persists data, although it does this via a localStorage adapter. Luckily there aren't a great deal of changes needed to switch over to using our Sinatra-based API. Let's briefly review the code that will be powering the CRUD operations for this sections practical, as we go course won't be starting off with a near-complete base for most of our real world applications.</p>
+<p>Remember that the default Todo example included with Backbone.js already persists data, although it does this via a localStorage adapter. Luckily there aren't a great deal of changes needed to switch over to using our Sinatra-based API. Let's briefly review the code that will be powering the CRUD operations for this sections practical, as we won't be starting off with a near-complete base for most of our real world applications.</p>
 <h3 id="installing-the-prerequisites"><a id="preq">Installing The Prerequisites</a></h3>
 <h4 id="ruby">Ruby</h4>
 <p>If using OSX or Linux, Ruby may be one of a number of open-source packages that come pre-installed and you can skip over to the next paragraph. In case you would like to check if check if you have Ruby installed, open up the terminal prompt and type:</p>
 <p><code>$ ruby -v</code></p>
 <p>The output of this will either be the version of Ruby installed or an error complaining that Ruby wasn't found.</p>
-<p>Should you need to install Ruby manually (e.g for an operating system such as Windows), you can do so by downloading the latest version from http://www.ruby-lang.org/en/downloads/. Alternatively, (RVM)[http://beginrescueend.com/rvm/install/] (Ruby Version Manager) is a command-line tool that allows you to easily install and manage multiple ruby environments with ease.</p>
+<p>Should you need to install Ruby manually (e.g for an operating system such as Windows), you can do so by downloading the latest version from http://www.ruby-lang.org/en/downloads/. Alternatively, <a href="http://beginrescueend.com/rvm/install/">RVM</a> (Ruby Version Manager) is a command-line tool that allows you to easily install and manage multiple ruby environments with ease.</p>
 <h4 id="ruby-gems">Ruby Gems</h4>
 <p>Next, we will need to install Ruby Gems. Gems are a standard way to package programs or libraries written in Ruby and with Ruby Gems it's possible to install additional dependencies for Ruby applications very easily.</p>
 <p>On OSX, Linux or Windows go to <a href="http://rubyforge.org/projects/rubygems">http://rubyforge.org/projects/rubygems</a> and download the latest version of Ruby Gems. Once downloaded, open up a terminal, navigate to the folder where this resides and enter:</p>
 <pre><code>$&gt; tar xzvf rubygems.tgz
 $&gt; cd rubygems
 $&gt; sudo ruby setup.rb</code></pre>
-<p>There will likely be a version number included in your download and you should make sure to include this when tying the above. Finally, a symlink (symbolic link) to tie everything togther should be fun as follows:</p>
+<p>There will likely be a version number included in your download and you should make sure to include this when tying the above. Finally, a symlink (symbolic link) to tie everything togther should be run as follows:</p>
 <p><code>$ sudo ln -s /usr/bin/gem1.8.17 /usr/bin/gem</code></p>
 <p>To check that Ruby Gems has been correctly installed, type the following into your terminal:</p>
 <pre><code>$ gem -v</code></pre>
@@ -1381,7 +1537,7 @@ $&gt; sudo ruby setup.rb</code></pre>
 <p>With Ruby Gems setup, we can now easily install Sinatra. For Linux or OSX type this in your terminal:</p>
 <p><code>$ sudo gem install sinatra</code></p>
 <p>and if you're on Windows, enter the following at a command prompt:</p>
-<p><code>c:\\ &gt; gem install sinatra</code></p>
+<p><code>c:\&gt; gem install sinatra</code></p>
 <h4 id="haml-1">Haml</h4>
 <p>As with other DSLs and frameworks, Sinatra supports a wide range of different templating engines. <a href="http://www.ruby-doc.org/stdlib/libdoc/erb/rdoc/classes/ERB.html">ERB</a> is the one most often recommended by the Sinatra camp, however as a part of this chapter, we're going to explore the use of <a href="http://haml.hamptoncatlin.com/">Haml</a> to define our application templates.</p>
 <p>Haml stands for HTML Abstractional Markup Language and is a lightweight markup language abstraction that can be used to describe HTML without the need to use traditional markup language semantics (such as opening and closing tags).</p>
@@ -1441,7 +1597,7 @@ app.rb
 <p>Lastly, the <code>views</code> directory hosts the Haml source files for our application's index and templates, both of which are compiled to standard HTML markup at runtime.</p>
 <p>These can be viewed along with other note-worthy snippets of code from the application below.</p>
 <h3 id="backbone">Backbone</h3>
-<h4 id="views-2">Views</h4>
+<h4 id="views-3">Views</h4>
 <p>In our main application view (AppView), we want to load any previously stored Todo items in our Mongo database when the view initializes. This is done below with the line <code>Todos.fetch()</code> in the <code>initialize()</code> method where we also bind to the relevant events on the <code>Todos</code> collection for when items are added or changed.</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="co">// Our overall **AppView** is the top-level piece of UI.</span>
 <span class="kw">var</span> AppView = <span class="kw">Backbone.View</span>.<span class="fu">extend</span>({
@@ -2475,7 +2631,7 @@ require([<span class="ch">&#39;views/app&#39;</span>], <span class="kw">function
 <li><p>Production: <a href="https://raw.github.com/addyosmani/backbone.baginator/master/dist/backbone.paginator.min.js">production</a></p></li>
 <li><p>Development: <a href="https://raw.github.com/addyosmani/backbone.baginator/master/dist/backbone.paginator.js">development version</a></p></li>
 <li><p>Examples + Source : <a href="https://github.com/addyosmani/backbone.paginator/zipball/v0.153">zipball</a></p></li>
-<li><p><a href="">Repository</a>http://github.com/addyosmani/backbone.paginator)</p></li>
+<li><p><a href="http://github.com/addyosmani/backbone.paginator">Repository</a></p></li>
 </ul>
 <h2 id="live-examples">Live Examples</h2>
 <p>Live previews of both pagination components using the Netflix API can be found below. Download the tarball or fork the repository to experiment with these examples further.</p>
@@ -2599,7 +2755,7 @@ require([<span class="ch">&#39;views/app&#39;</span>], <span class="kw">function
 <li><strong>Collection.howManyPer(n)</strong> - set the number of items to display per page</li>
 </ul>
 <h2 id="paginator.clientpager">Paginator.clientPager</h2>
-<p>The <code>clientPager</code> works similar to the <code>requestPager</code>, except that our configuration values influence the pagination of data already returned at a UI-level. Whilst not shown (yet) there is also a lot more UI logic that ties in with the <code>clientPager</code>. An example of this can be seen in â€˜views/clientPagination.js.</p>
+<p>The <code>clientPager</code> works similar to the <code>requestPager</code>, except that our configuration values influence the pagination of data already returned at a UI-level. Whilst not shown (yet) there is also a lot more UI logic that ties in with the <code>clientPager</code>. An example of this can be seen in views/clientPagination.js.</p>
 <h4 id="create-a-new-paginated-collection-with-a-model-and-url">1. Create a new paginated collection with a model and URL</h4>
 <p>As with <code>requestPager</code>, let's first create a new Paginated <code>Backbone.Paginator.clientPager</code> collection, with a model and base URL:</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> PaginatedCollection = <span class="kw">Backbone.Paginator.clientPager</span>.<span class="fu">extend</span>({
@@ -2818,7 +2974,7 @@ $.<span class="fu">mobile</span>.<span class="fu">changePage</span>( url , { <sp
 <p>For this application, I opted for the nested namespacing pattern. Implemented correctly, this enables you to clearly identify if items being referenced in your app are views, other modules and so on. This initial structure is a sane place to also include application defaults (unless you prefer maintaining those in a separate file).</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">window</span>.<span class="fu">mobileSearch</span> = <span class="kw">window</span>.<span class="fu">mobileSearch</span> || {
     <span class="dt">views</span>: {
-        <span class="dt">appview</span>: <span class="kw">new</span> AppView
+        <span class="dt">appview</span>: <span class="kw">new</span> AppView()
     },
     <span class="dt">routers</span>:{
         <span class="dt">workspace</span>:<span class="kw">new</span> Workspace()
@@ -2864,7 +3020,7 @@ $.<span class="fu">mobile</span>.<span class="fu">changePage</span>( url , { <sp
 <h2 id="jasmine">Jasmine</h2>
 <p>Jasmine describes itself as a behavior-driven development (BDD) framework for testing JavaScript code. Before we jump into how the framework works, it's useful to understand exactly what <a href="http://en.wikipedia.org/wiki/Behavior_Driven_Development">BDD</a> is.</p>
 <p>BDD is a second-generation testing approach first described by <a href="http://dannorth.net/introducing-bdd/">Dan North</a> (the authority on BDD) which attempts to test the behavior of software. It's considered second-generation as it came out of merging ideas from Domain driven design (DDD) and lean software development, helping teams to deliver high quality software by answering many of the more confusing questions early on in the agile process. Such questions commonly include those concerning documentation and testing.</p>
-<p>If you were to read a book on BDD, it's likely to also be described as being 'outside-in and pull-based'. The reason for this is that it borrows the idea of of pulling features from Lean manufacturing which effectively ensures that the right software solutions are being written by a) focusing on expected outputs of the system and b) ensuring these outputs are achieved.</p>
+<p>If you were to read a book on BDD, it's likely to also be described as being 'outside-in and pull-based'. The reason for this is that it borrows the idea of pulling features from Lean manufacturing which effectively ensures that the right software solutions are being written by a) focusing on expected outputs of the system and b) ensuring these outputs are achieved.</p>
 <p>BDD recognizes that there are usually multiple stakeholders in a project and not a single amorphous user of the system. These different groups will be affected by the software being written in differing ways and will have a varying opinion of what quality in the system means to them. It's for this reason that it's important to understand who the software will be bringing value you and exactly what in it will be valuable to them.</p>
 <p>Finally, BDD relies on automation. Once you've defined the quality expected, your team will likely want to check on the functionality of the solution being built regularly and compare it to the results they expect. In order to facilitate this efficiently, the process has to be automated. BDD relies heavily on the automation of specification-testing and Jasmine is a tool which can assist with this.</p>
 <p>BDD helps both developers and non-technical stakeholders:</p>
@@ -3208,7 +3364,7 @@ it(<span class="st">&quot;should contain a text value if not the default value&q
         }
 
     });</code></pre>
-<h2 id="views-3"><a name="testing-jasmine-views">Views</a></h2>
+<h2 id="views-4"><a name="testing-jasmine-views">Views</a></h2>
 <p>Before we take a look at testing Backbone views, let's briefly review a jQuery plugin that can assist with writing Jasmine specs for them.</p>
 <p><strong>The Jasmine jQuery Plugin</strong></p>
 <p>As we know our Todo application will be using jQuery for DOM manipulation, there's a useful jQuery plugin called <a href="https://github.com/velesin/jasmine-jquery">jasmine-jquery</a> we can use to help simplify BDD testing rendered elements that our views may produce.</p>
@@ -3321,7 +3477,7 @@ expect(<span class="ch">&#39;click&#39;</span>).<span class="fu">toHaveBeenTrigg
         &lt;/div&gt;
 &lt;/div&gt;</code></pre>
 <p>The second spec fails with the following message:</p>
-<p>Expected '' to contain <code>'&lt;label class=&quot;todo-content&quot;&gt;My Todo&lt;/label&gt;'</code>.</p>
+<p><code>Expected '' to contain '&lt;label class=&quot;todo-content&quot;&gt;My Todo&lt;/label&gt;'.</code></p>
 <p>The reason for this is the default behavior for render() doesn't create any markup. Let's write a replacement for render() which fixes this:</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="dt">render</span>: <span class="kw">function</span>() {
   <span class="kw">var</span> template = <span class="ch">&#39;&lt;label class=&quot;todo-content&quot;&gt;&lt;%= text %&gt;&lt;/label&gt;&#39;</span>;
@@ -3387,7 +3543,7 @@ expect(<span class="ch">&#39;click&#39;</span>).<span class="fu">toHaveBeenTrigg
 
 });</code></pre>
 <p>This will fail with the following message:</p>
-<p>Expected '<label class="todo-content">My Todo</label>' to have class 'done'.</p>
+<p><code>Expected '&lt;label class=&quot;todo-content&quot;&gt;My Todo&lt;/label&gt;'  to have class 'done'.</code></p>
 <p>which can be fixed in the existing render() method as follows:</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="dt">render</span>: <span class="kw">function</span>() {
   <span class="kw">var</span> template = <span class="ch">&#39;&lt;label class=&quot;todo-content&quot;&gt;&#39;</span> +
@@ -3454,7 +3610,7 @@ expect(<span class="ch">&#39;click&#39;</span>).<span class="fu">toHaveBeenTrigg
 <p>We have now covered how to write Jasmine tests for models, views and collections with Backbone.js. Whilst testing routing can at times be desirable, some developers feel it can be more optimal to leave this to third-party tools such as Selenium, so do keep this in mind.</p>
 <p>James Newbery was kind enough to help me with writing the Views section above and his articles on <a href="http://tinnedfruit.com/2011/04/26/testing-backbone-apps-with-jasmine-sinon-3.html">Testing Backbone Apps With SinonJS</a> were of great inspiration (you'll actually find some Handlebars examples of the view specs in part 3 of his article). If you would like to learn more about writing spies and mocks for Backbone using <a href="http://sinonjs.org">SinonJS</a> as well as how to test Backbone routers, do consider reading his series.</p>
 <h2 id="exercise">Exercise</h2>
-<p>As an exercise, I recommend now trying the Jasmine Koans in <code>practicals\jasmine-joans</code> and trying to fix some of the purposefully failing tests it has to offer. This is an excellent way of not just learning how Jasmine specs and suites work, but working through the examples (without peaking back) will also put your Backbone skills to test too.</p>
+<p>As an exercise, I recommend now trying the Jasmine Koans in <code>practicals\jasmine-joans</code> and trying to fix some of the purposefully failing tests it has to offer. This is an excellent way of not just learning how Jasmine specs and suites work, but working through the examples (without peeking back) will also put your Backbone skills to test too.</p>
 <h2 id="further-reading">Further reading</h2>
 <ul>
 <li><a href="http://japhr.blogspot.com/2011/11/jasmine-backbonejs-revisited.html">Jasmine + Backbone Revisited</a></li>
@@ -4081,7 +4237,7 @@ test(<span class="ch">&#39;Fires custom named events when the models change.&#39
 
     ok( <span class="kw">removeModelCallback</span>.<span class="fu">called</span> );
 });</code></pre>
-<h3 id="views-4">Views</h3>
+<h3 id="views-5">Views</h3>
 <p>For our views we want to ensure:</p>
 <ul>
 <li>They are being correctly tied to a DOM element when created</li>
