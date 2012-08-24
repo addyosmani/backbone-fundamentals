@@ -9,6 +9,11 @@ My extended thanks go out to [Jeremy Ashkenas](https://github.com/jashkenas) for
 
 I hope you find this book helpful!
 
+**Notes:** 
+
+* Items added or updated in the last month are marked with a * in the outline.
+* Once you're familiar with Backbone.js, you might be interested in checking out [Aura](https://github.com/addyosmani/aura).
+
 ##Table Of Contents
 
 * ####[Introduction](#introduction)
@@ -23,29 +28,32 @@ I hope you find this book helpful!
     * [Routers](#thebasics-routers)
     * [Namespacing](#thebasics-namespacing)
 
-* ####[Common Questions & Answers](#thebasics-additional-tips)
-    * Rendering Sub-Views
-    * Managing Nested Views
+* ####[Backbone Boilerplate & Grunt BBB](#backboneboilerplate) *
+
+* ####[Common Problems & Solutions](#commonproblems) *
+    * Sub-Views And Nesting
+    * Managing Models In Nested Views
     * View Inheritance
     * Views Triggering Other Views
     * Child Views Rendering Parent Views
-    * Parent And Child View Disposal
+    * Cleanly Disposing Views
+    * Disposing Parent And Child Views
     * Appending Views
 
-* ####[Backbone Boilerplate & Grunt BBB](#backboneboilerplate)
-
 * ####[RESTful Applications](#restfulapps)
-    * [Building RESTful applications with Backbone](#restful)
-    * [Building Backbone apps with Node.js, Express, Mongoose and MongoDB](#stack1)
-    * [Building Backbone apps with Ruby, Sinatra, Haml and MongoDB](#stack2)
-    * [Paginating Backbone.js Requests & Collections](#pagination)
+    * [Building RESTful applications with Backbone.js](#restful)
+    * [Building Backbone.js apps with Node.js, Express, Mongoose and MongoDB](#stack1)
+    * [Building Backbone.js apps with Ruby, Sinatra, Haml and MongoDB](#stack2)
+    * [Paginating Backbone.js Requests & Collections](#pagination) *
+
 * ####[Advanced](#advanced)    
     * [Modular JavaScript](#modularjs)
-    * [Organizing modules with RequireJS and AMD](#organizingmodules)
-    * [Keeping your templates external with the RequireJS text plugin](#externaltemplates)
-    * [Optimizing Backbone apps for production with the RequireJS Optimizer](#optimizingrequirejs)
-    * [Practical: Building a modular Backbone app with AMD & RequireJS](#practicalrequirejs)
-    * [Decoupling Backbone with the Mediator and Facade patterns](#decouplingbackbone)
+    * [Organizing modules with Require.js and AMD](#organizingmodules)
+    * [Keeping your templates external with the Require.js text plugin](#externaltemplates)
+    * [Optimizing Backbone apps for production with the Require.js Optimizer](#optimizingrequirejs)
+    * [Optimize and Build a Backbone.js Application With Require.js Using Packages](#optimizebuild) *
+    * [Practical: A Modular Backbone.js Application Using AMD & Require.js](#practicalrequirejs)
+    * [Decoupling Backbone With The Mediator and Facade patterns](#decouplingbackbone)
     * Backbone & jQuery Mobile
     * Practical: Building A Modular Mobile App With Backbone & jQuery Mobile
 
@@ -89,7 +97,7 @@ Maturity in software (framework) development isn't simply about how long a frame
 
 In this book, I will be covering the popular Backbone.js, which I consider the best of the current family of JavaScript architectural frameworks.
 
-Topics will include MVC theory and how to build applications using Backbone's models, views, collections and routers. I'll also be taking you through advanced topics like modular development with Backbone.js and AMD (via RequireJS), how to build applications using modern software stacks (like Node and Express), how to solve the routing problems with Backbone and jQuery Mobile, tips about scaffolding tools, and a lot more.
+Topics will include MVC theory and how to build applications using Backbone's models, views, collections and routers. I'll also be taking you through advanced topics like modular development with Backbone.js and AMD (via Require.js), how to build applications using modern software stacks (like Node and Express), how to solve the routing problems with Backbone and jQuery Mobile, tips about scaffolding tools, and a lot more.
 
 If this is your first time looking at Backbone.js and you're still unsure whether or not to give it a try, why not take a look at how [a Todo application](http://github.com/addyosmani/todomvc) can be implemented in Backbone and several other popular Javascript frameworks before reading further?
 
@@ -1313,7 +1321,7 @@ It’s easy to slip into using $, but avoid this where possible. Backbone caches
 
 It might be tempting to let “container” view render HTML directly by using $().html, but resisting the temptation and creating a hierarchy of views will make it much easier to debug your code and write automated tests.
 
-Interestingly, Backbone doesn’t have a lot of code dedicated to templates, but it can work with the template method. I use this with RequireJS text file dependencies to load remote templates during development, then I use the RequireJS build script to generate something suitable for deployment. This makes code easy to test and fast to load.
+Interestingly, Backbone doesn’t have a lot of code dedicated to templates, but it can work with the template method. I use this with Require.js text file dependencies to load remote templates during development, then I use the Require.js build script to generate something suitable for deployment. This makes code easy to test and fast to load.
 
 #### API Style
 
@@ -1323,7 +1331,7 @@ Backbone’s collections have Underscore’s chainable API, which can be handy, 
 
 #### Testing Backbone
 
-So far we’ve been reviewing Backbone’s code to demystify the framework as a whole. However, it’s worth noting that other technologies work very well with Backbone and Underscore. RequireJS and AMD modules can be a great way to break up projects.
+So far we’ve been reviewing Backbone’s code to demystify the framework as a whole. However, it’s worth noting that other technologies work very well with Backbone and Underscore. Require.js and AMD modules can be a great way to break up projects.
 
 However, one area that Backbone doesn’t address is testing. This is unfortunate, because testing Backbone projects definitely isn’t obvious. Later in the book we'll look at testing in more detail.
 
@@ -1488,396 +1496,6 @@ Reviewing the namespace patterns above, the option that I prefer when writing Ba
 
 Single global variables may work fine for applications that are relatively trivial. However, larger codebases requiring both namespaces and deep sub-namespaces require a succinct solution that's both readable and scalable. I feel this pattern achieves both of these objectives and is a good choice for most Backbone development.
 
-
-## <a name="thebasics-additional-tips" id="thebasics-additional-tips">Common Questions & Answers</a>
-
-#### What is the best approach for rendering and appending Sub-Views in Backbone.js?
-
-If you have a nested View setup in your application, there are a few approaches possible for initializing, rendering and appending your sub-views. 
-
-One possible solution is the following:
-
-```javascript
-
-var OuterView = Backbone.View.extend({
-    initialize: function() {
-        this.inner = new InnerView();
-    },
-
-    render: function() {
-        this.$el.html(template); // or this.$el.empty() if you have no template
-        this.$el.append(this.inner.$el);
-        this.inner.render();
-    }
-});
-
-var InnerView = Backbone.View.extend({
-    render: function() {
-        this.$el.html(template);
-        this.delegateEvents();
-    }
-});
-
-```
-
-Which tackles a few specific design decisions:
-
-* The order in which you append the sub-elements matters
-* The OuterView doesn't contain the HTML elements to be set in the InnerView(s), meaning that we can still specify tagName in the InnerView
-* render() is called after the InnerView element has been placed into the DOM. This is useful if your InnerViews render() method is sizing itself on the page based on the dimensions of another element. This is a common use case.
-
-A second potential solution is this, which may appear cleaner but in reality has a tendency to affect performance:
-
-```javascript
-
-var OuterView = Backbone.View.extend({
-    initialize: function() {
-        this.render();
-    },
-
-    render: function() {
-        this.$el.html(template); // or this.$el.empty() if you have no template
-        this.inner = new InnerView();
-        this.$el.append(this.inner.$el);
-    }
-});
-
-var InnerView = Backbone.View.extend({
-    initialize: function() {
-        this.render();
-    },
-
-    render: function() {
-        this.$el.html(template);
-    }
-});
-```
-
-Generally speaking, more developers opt for the first solution as:
-
-* The majority of their views may already rely on being in the DOM in their render() method
-* When the OuterView is re-rendered, views don't have to be re-initialized where re-initialization has the potential to cause memory leaks and issues with existing bindings
-
-(Thanks to [Lukas](http://stackoverflow.com/questions/9271507/how-to-render-and-append-sub-views-in-backbone-js) for this tip).
-
-#### What is a straight-forward way to manage Nested Views?
-
-In order to reach attributes on related models, the models involved need to have some prior knowledge about which models this refers to. Backbone.js doesn't implicitly handle relations or nesting, meaning it's up to us to ensure models have a knowledge of each other.
-
-One approach is to make sure each child model has a 'parent' attribute. This way you can traverse the nesting first up to the parent and then down to any siblings that you know of. So, assuming we have models modelA, modelB and modelC:
-
-```javascript
-
-// When initializing modelA, I would suggest setting a link to the parent 
-// model when doing this, like this:
-
-ModelA = Backbone.Model.extend({
-
-    initialize: function(){
-        this.modelB = new modelB();
-        this.modelB.parent = this;
-        this.modelC = new modelC();
-        this.modelC.parent = this;
-    }
-}
-```
-
-This allows you to reach the parent model in any child model function by calling this.parent.
-
-When you have a need to nest Backbone.js views, you might find it easier to let each view represent a single HTML tag using the tagName option of the View. This may be written as:
-
-```javascript
-ViewA = Backbone.View.extend({
-
-    tagName: "div",
-    id: "new",
-
-    initialize: function(){
-       this.viewB = new ViewB();
-       this.viewB.parentView = this;
-       $(this.el).append(this.viewB.el);
-    }
-});
-
-ViewB = Backbone.View.extend({
-
-    tagName: "h1",
-
-    render: function(){
-        $(this.el).html("Header text"); // or use this.options.headerText or equivalent
-    },
-
-    funcB1: function(){
-        this.model.parent.doSomethingOnParent();
-        this.model.parent.modelC.doSomethingOnSibling();
-        $(this.parentView.el).shakeViolently();
-    }
-
-});
-```
-
-Then in your application initialization code , you would initiate ViewA and place its element inside the body element.
-
-An alternative approach is to use an extension called [Backbone-Forms](https://github.com/powmedia/backbone-forms). Using a similar schema to what we wrote earlier, nesting could be achieved as follows:
-
-```javascript
-var ModelB = Backbone.Model.extend({
-    schema: {
-        attributeB1: 'Text',
-        attributeB2: 'Text'
-    }
-});
-
-var ModelC = Backbone.Model.extend({
-    schema: {
-        attributeC: 'Text',
-    }
-});
-
-var ModelA = Backbone.Model.extend({
-    schema: {
-        attributeA1: 'Text',
-        attributeA2: 'Text',
-        refToModelB: { type: 'NestedModel', model: ModelB, template: 'templateB' },
-        refToModelC: { type: 'NestedModel', model: ModelC, template: 'templateC' }
-    }
-});
-```
-
-There is more information about this technique available on [GitHub](https://github.com/powmedia/backbone-forms#customising-templates).
-
-(Thanks to [Jens Alm](http://stackoverflow.com/users/100952/jens-alm) and [Artem Oboturov](http://stackoverflow.com/users/801466/artem-oboturov) for these tips)
-
-#### How would one go about writing Views which inherit from other Views?
-
-Underscore.js provides an `_.extend()` method that gives us the ability to both write mixins for Views and inherit from Views quite easily. 
-
-For mixins, you can define functionality on any object, and then quite literally copy & paste all of the methods and attributes from that object to another.
-
-Backbone's extend methods on Views, Models, and Routers are a wrapper around underscore's _.extend().
-
-For example:
-
-```javascript
- var MyMixin = {
-  foo: "bar",
-  sayFoo: function(){alert(this.foo);}
-}
-
-var MyView = Backbone.View.extend({
- // ...
-});
-
-_.extend(MyView.prototype, MyMixin);
-
-myView = new MyView();
-myView.sayFoo(); //=> "bar"
-```
-
-The .extend() method can also be used for View inheritance, which is an even more interesting use case.The following is an example of how to extend one View using another:
-
-```javascript
-var Panel = Backbone.View.extend({
-});
-
-var PanelAdvanced = Panel.extend({
-});
-```
-
-However, if you have an initialize() method in Panel, then it won't be called if you also have an initialize() method in PanelAdvanced, so you would have to call Panel's initialize method explicitly:
-
-```javascript
-var Panel = Backbone.View.extend({
-   initialize: function(options){
-      console.log('Panel initialized');
-      this.foo = 'bar';
-   }
-});
-
-var PanelAdvanced = Panel.extend({
-   initialize: function(options){
-      this.constructor.__super__.initialize.apply(this, [options])
-      console.log('PanelAdvanced initialized');
-      console.log(this.foo); // Log: bar
-   }
-});
-```
-
-This isn't the most elegant of solutions because if you have a lot of Views that inherit from Panel, then you'll have to remember to call Panel's initialize from all of them. Even worse, if Panel doesn't have an initialize method now but you choose to add it in the future, then you'll need to go to all of the inherited classes in the future and make sure they call Panel's initialize. So here's an alternative way to define Panel so that your inherited views don't need to call Panel's initialize method:
-
-```javascript
-var Panel = function (options) {
-
-    // put all of Panel's initialization code here
-    console.log('Panel initialized');
-    this.foo = 'bar';
-
-    Backbone.View.apply(this, [options]);
-};
-
-_.extend(Panel.prototype, Backbone.View.prototype, {
-
-    // put all of Panel's methods here. For example:
-    sayHi: function () {
-        console.log('hello from Panel');
-    }
-});
-
-Panel.extend = Backbone.View.extend;
-
-
-// other classes inherit from Panel like this:
-var PanelAdvanced = Panel.extend({
-
-    initialize: function (options) {
-        console.log('PanelAdvanced initialized');
-        console.log(this.foo);
-    }
-});
-
-var PanelAdvanced = new PanelAdvanced(); //Log: Panel initialized, PanelAdvanced initialized, bar
-PanelAdvanced.sayHi(); // Log: hello from Panel
-```
-
-(Thanks to [Derick Bailey](http://stackoverflow.com/users/93448/derick-bailey) and [JohnnyO](http://stackoverflow.com/users/188740/johnnyo) for these tips)
-
-#### Is it possible to have one Backbone.js View trigger updates in other Views?
-
-
-The Mediator pattern is an excellent option for implementing a solution to this problem. 
-
-Without going into too much detail about the pattern, it can effectively be used an event manager that lets you to subscribe to and publish events. So an ApplicationViewA could subscribe to an event, i.e. 'selected' and then the ApplicationViewB would publish the 'selected' event.
-
-The reason I like this is it allows you to send events between views, without the views being directly bound together.
-
-For Example:
-
-```javascript
-
-// See http://addyosmani.com/largescalejavascript/#mediatorpattern
-// for an implementation or alternatively for a more thorough one
-// http://thejacklawson.com/Mediator.js/
-
-var mediator = new Mediator(); 
-
-var ApplicationViewB = Backbone.View.extend({
-    toggle_select: function() {
-        ...
-        mediator.publish('selected', any, data, you, want);
-        return this;
-    }
-});
-
-var ApplicationViewA = Backbone.View.extend({
-    initialize: function() {
-        mediator.subscribe('selected', this.delete_selected)
-    },
-
-    delete_selected: function(any, data, you, want) {
-        ... do something ...
-    },
-});
-```
-
-This way your ApplicationViewA doesn't care if it is an ApplicationViewB or FooView that publishes the 'selected' event, only that the event occurred. As a result, you may find it a maintainable way to manage events between parts of your application, not just views.
-
-(Thanks to [John McKim](http://stackoverflow.com/users/937577/john-mckim) for this tip and for referencing my Large Scale JavaScript Patterns article).
-
-#### How would one render a Parent View from one of its Children?
-
-http://stackoverflow.com/questions/11531028/render-parent-view-from-child-view-backbone-js
-
-If you say, have a view which contains another view (e.g a main view containing a modal view) and  would like to render or re-render the parent view from the child, this is extremely straight-forward.  
-
-In such a scenario, you would most likely want to execute the rendering when a particular event has occurred. For the sake of example, let us call this event 'somethingHappened'. The parent view can bind notifications on the child view to know when the event has occurred. It can then render itself.
-
-On the parent view:
-
-```javascript
-// Parent initialize
-this.childView.on('somethingHappened', this.render, this);
-
-// Parent removal
-this.childView.off('somethingHappened', this.render, this);
-```
-
-On the child view:
-
-```javascript
-// After the event has occurred
-this.trigger('somethingHappened');
-```
-The child will trigger a "somethingHappened" event and the parent's render function will be called.
-
-(Thanks to Tal [Bereznitskey](http://stackoverflow.com/users/269666/tal-bereznitskey) for this tip)
-
-
-#### How does one handle View disposal on a Parent or Child View?
-
-You may be interested in removing any DOM elements associated with a view as well as unbinding any event handlers tied to child elements when you no longer require them. This can lead to decreases in memory (analogous to a type of garbage collection).
-
-Below, we can see how to achieve this:
-
-```javascript
-Backbone.View.prototype.close = function() {
-    if (this.onClose) {
-        this.onClose();
-    }
-    this.remove();
-    this.unbind();
-};
-
-NewView = Backbone.View.extend({
-    initialize: function() {
-       this.childViews = [];
-    },
-    renderChildren: function(item) {
-        var itemView = new NewChildView({ model: item });
-        $(this.el).prepend(itemView.render());
-        this.childViews.push(itemView);
-    },
-    onClose: function() {
-      _(this.childViews).each(function(view) {
-        view.close();
-      });
-    }
-});
-
-NewChildView = Backbone.View.extend({
-    tagName: 'li',
-    render: function() {
-    }
-});
-```
-
-For the sake of explanation, a close() method for views is implemented which disposes of a view when it is no longer needed or needs to be reset. In most cases the view removal should be done at a view layer so that it won't affect any of our models.
-
-For example, if you are working on a blogging application and you remove a view with comments, perhaps another view in your app shows a selection of comments and resetting the collection would affect those views too.
-
-(Thanks to [dira](http://stackoverflow.com/users/906136/dira) for this tip)
-
-#### What's the best way to combine or append Views to each other?
-
-Let us say you have a Collection, where each item in the Collection could itself be a Collection. You can render each item in the Collection, and indeed can render any items which themselves are Collections. The problem you might have is how to render this structure where the HTML reflects the hierarchical nature of the data structure.
-
-The most straight-forward way to approach this problem is to use a framework like Derick Baileys [Backbone.Marionette](https://github.com/derickbailey/backbone.marionette). In this framework is a type of view called a CompositeView.
-
-The basic idea of a CompositeView is that it can render a model and a collection within the same view.
-
-It can render a single model with a template. It can also take a collection from that model and for each model in that collection, render a view. By default it uses the same composite view type that you've defined, to render each of the models in the collection. All you have to do is tell the view instance where the collection is, via the initialize method, and you'll get a recursive hierarchy rendered.
-
-There is a working demo of this in action available [online](http://jsfiddle.net/derickbailey/AdWjU/).
-
-And you can get the source code and documentation for [Marionette](https://github.com/derickbailey/backbone.marionette) too.
-
-
-####Is Backbone too simple for my needs?
-
-If you find yourself unsure of whether or not your application is too large to use Backbone, I recommend reading [my post](http://addyosmani.com/blog/jqcon-largescalejs-2012/) on building large-scale jQuery & JavaScript applications or reviewing my slides on client-side MVC architecture options. In both, I cover alternative solutions and my thoughts on the suitability of current MVC solutions for scaled application development.
-
-Backbone can be used for building both trivial and complex applications as demonstrated by the many examples Ashkenas has been referencing in the Backbone documentation. As with any MVC framework however, it's important to dedicate time towards planning out what models and views your application really needs. Diving straight into development without doing this can result in either spaghetti code or a large refactor later on and it's best to avoid this where possible. 
-
-At the end of the day, the key to building large applications is not to build large applications in the first place. If you find that Backbone doesn't cut it for your requirements, I strongly recommend checking out JavaScriptMVC, SproutCore, or Ember.js as they offer a little more than Backbone out of the box. Dojo and Dojo Mobile may also be of interest as these have also been used to build significantly complex apps by other developers.
 
 
 # <a name="backboneboilerplate">Backbone Boilerplate And Grunt-BBB</a> 
@@ -2471,6 +2089,537 @@ Brunch works very well with Backbone, Underscore, jQuery and CoffeeScript and is
 Brunch can be installed via the nodejs package manager and is easy to get started with. If you happen to use Vim or Textmate as your editor of choice, you'll be happy to know that there are Brunch bundles available for both.
 
 
+## <a name="commonproblems" id="commonproblems">Common Problems & Solutions</a>
+
+In this section, we will review a number of common problems developers often experience once they've started to work on relatively non-trivial projects using Backbone.js, as well as present potential solutions. 
+
+Perhaps the most frequent of these questions surround how to do more with Views. If you are interested in discovering how to work with nested Views, learn about view disposal and inheritance, this section will hopefully have you covered.
+
+
+#### Nesting: What is the best approach for rendering and appending Sub-Views in Backbone.js?
+
+Nesting is generally considered a good way to maintain hierarchal views for writing maintainable code. As a beginner, one might try writing a very simple setup with sub-views (e.g inner views) as follows:
+
+```javascript
+
+// Where we have previously defined a View, SubView
+// in a parent View we could do:
+
+...
+initialize : function () {
+
+    this.innerView1 = new Subview({options});
+    this.innerView2 = new Subview({options});
+},
+
+render : function () {
+
+    this.$el.html(this.template());
+
+    this.innerView1.setElement('.some-element').render();
+    this.innerView2.setElement('.some-element').render();
+}
+```
+
+This works in that one doesn't need to worry about maintaining the order of your DOM elements when appending. Views are initialized early and the render() method doesn't need to take on too many responsibilities at once. Unfortunately, a downside is that you don't have the ability to set the `tagName` of elements and events need to be re-delegated.
+
+An alternative approach which doesn't suffer from the re-delegation problem could be written as follows:
+
+```javascript
+initialize : function () {
+
+},
+
+render : function () {
+
+    this.$el.empty();
+
+    this.innerView1 = new Subview({options});
+    this.innerView2 = new Subview({options});
+
+    this.$el.append(this.innerView1.render().el, this.innerView2.render().el);
+}
+```
+In this version, we also don't require a template containing empty placeholders and the issue with `tagName`s is solved as they are defined by the view once again. 
+
+Yet another variation which moves logic into an `onRender` event, could be written with only a few subtle changes:
+
+```javascript
+initialize : function () {
+    this.on('render', this.onRender);
+},
+
+render : function () {
+
+    this.$el.html(this.template);
+
+    // more logic
+
+    return this.trigger('render');
+},
+
+onRender : function () {
+    this.innerView1 = new Subview();
+    this.innerView2 = new Subview();
+    this.innerView1.setElement('.some-element').render();
+    this.innerView2.setElement('.some-element').render();
+}
+```
+
+If you find yourself nesting views in your application, there are more optimal approaches possible for initializing, rendering and appending your sub-views. One such solution could be written:
+
+```javascript
+
+var OuterView = Backbone.View.extend({
+    initialize: function() {
+        this.inner = new InnerView();
+    },
+
+    render: function() {
+        this.$el.html(template); // or this.$el.empty() if you have no template
+        this.$el.append(this.inner.$el);
+        this.inner.render();
+    }
+});
+
+var InnerView = Backbone.View.extend({
+    render: function() {
+        this.$el.html(template);
+        this.delegateEvents();
+    }
+});
+
+```
+
+This tackles a few specific design decisions:
+
+* The order in which you append the sub-elements matters
+* The OuterView doesn't contain the HTML elements to be set in the InnerView(s), meaning that we can still specify tagName in the InnerView
+* render() is called after the InnerView element has been placed into the DOM. This is useful if your InnerViews render() method is sizing itself on the page based on the dimensions of another element. This is a common use case.
+
+A second potential solution is this, which may appear cleaner but in reality has a tendency to affect performance:
+
+```javascript
+
+var OuterView = Backbone.View.extend({
+    initialize: function() {
+        this.render();
+    },
+
+    render: function() {
+        this.$el.html(template); // or this.$el.empty() if you have no template
+        this.inner = new InnerView();
+        this.$el.append(this.inner.$el);
+    }
+});
+
+var InnerView = Backbone.View.extend({
+    initialize: function() {
+        this.render();
+    },
+
+    render: function() {
+        this.$el.html(template);
+    }
+});
+```
+
+Generally speaking, more developers opt for the first solution as:
+
+* The majority of their views may already rely on being in the DOM in their render() method
+* When the OuterView is re-rendered, views don't have to be re-initialized where re-initialization has the potential to cause memory leaks and issues with existing bindings
+
+(Thanks to [Lukas](http://stackoverflow.com/users/299189/lukas)  and [Ian Taylor](http://stackoverflow.com/users/154765/ian-storm-taylor) for these tips).
+
+
+
+#### What is the best way to manage models in nested Views?
+
+In order to reach attributes on related models in a nested setup, the models involved need to have some prior knowledge about which models this refers to. Backbone.js doesn't implicitly handle relations or nesting, meaning it's up to us to ensure models have a knowledge of each other.
+
+One approach is to make sure each child model has a 'parent' attribute. This way you can traverse the nesting first up to the parent and then down to any siblings that you know of. So, assuming we have models modelA, modelB and modelC:
+
+```javascript
+
+// When initializing modelA, I would suggest setting a link to the parent 
+// model when doing this, like this:
+
+ModelA = Backbone.Model.extend({
+
+    initialize: function(){
+        this.modelB = new modelB();
+        this.modelB.parent = this;
+        this.modelC = new modelC();
+        this.modelC.parent = this;
+    }
+}
+```
+
+This allows you to reach the parent model in any child model function by calling this.parent.
+
+When you have a need to nest Backbone.js views, you might find it easier to let each view represent a single HTML tag using the tagName option of the View. This may be written as:
+
+```javascript
+ViewA = Backbone.View.extend({
+
+    tagName: "div",
+    id: "new",
+
+    initialize: function(){
+       this.viewB = new ViewB();
+       this.viewB.parentView = this;
+       $(this.el).append(this.viewB.el);
+    }
+});
+
+ViewB = Backbone.View.extend({
+
+    tagName: "h1",
+
+    render: function(){
+        $(this.el).html("Header text"); // or use this.options.headerText or equivalent
+    },
+
+    funcB1: function(){
+        this.model.parent.doSomethingOnParent();
+        this.model.parent.modelC.doSomethingOnSibling();
+        $(this.parentView.el).shakeViolently();
+    }
+
+});
+```
+
+Then in your application initialization code , you would initiate ViewA and place its element inside the body element.
+
+An alternative approach is to use an extension called [Backbone-Forms](https://github.com/powmedia/backbone-forms). Using a similar schema to what we wrote earlier, nesting could be achieved as follows:
+
+```javascript
+var ModelB = Backbone.Model.extend({
+    schema: {
+        attributeB1: 'Text',
+        attributeB2: 'Text'
+    }
+});
+
+var ModelC = Backbone.Model.extend({
+    schema: {
+        attributeC: 'Text',
+    }
+});
+
+var ModelA = Backbone.Model.extend({
+    schema: {
+        attributeA1: 'Text',
+        attributeA2: 'Text',
+        refToModelB: { type: 'NestedModel', model: ModelB, template: 'templateB' },
+        refToModelC: { type: 'NestedModel', model: ModelC, template: 'templateC' }
+    }
+});
+```
+
+There is more information about this technique available on [GitHub](https://github.com/powmedia/backbone-forms#customising-templates).
+
+(Thanks to [Jens Alm](http://stackoverflow.com/users/100952/jens-alm) and [Artem Oboturov](http://stackoverflow.com/users/801466/artem-oboturov) for these tips)
+
+
+#### How would one go about writing Views which inherit from other Views?
+
+Underscore.js provides an `_.extend()` method that gives us the ability to both write mixins for Views and inherit from Views quite easily. 
+
+For mixins, you can define functionality on any object, and then quite literally copy & paste all of the methods and attributes from that object to another.
+
+Backbone's extend methods on Views, Models, and Routers are a wrapper around underscore's _.extend().
+
+For example:
+
+```javascript
+ var MyMixin = {
+  foo: "bar",
+  sayFoo: function(){alert(this.foo);}
+}
+
+var MyView = Backbone.View.extend({
+ // ...
+});
+
+_.extend(MyView.prototype, MyMixin);
+
+myView = new MyView();
+myView.sayFoo(); //=> "bar"
+```
+
+The .extend() method can also be used for View inheritance, which is an even more interesting use case.The following is an example of how to extend one View using another:
+
+```javascript
+var Panel = Backbone.View.extend({
+});
+
+var PanelAdvanced = Panel.extend({
+});
+```
+
+However, if you have an initialize() method in Panel, then it won't be called if you also have an initialize() method in PanelAdvanced, so you would have to call Panel's initialize method explicitly:
+
+```javascript
+var Panel = Backbone.View.extend({
+   initialize: function(options){
+      console.log('Panel initialized');
+      this.foo = 'bar';
+   }
+});
+
+var PanelAdvanced = Panel.extend({
+   initialize: function(options){
+      this.constructor.__super__.initialize.apply(this, [options])
+      console.log('PanelAdvanced initialized');
+      console.log(this.foo); // Log: bar
+   }
+});
+```
+
+This isn't the most elegant of solutions because if you have a lot of Views that inherit from Panel, then you'll have to remember to call Panel's initialize from all of them. Even worse, if Panel doesn't have an initialize method now but you choose to add it in the future, then you'll need to go to all of the inherited classes in the future and make sure they call Panel's initialize. So here's an alternative way to define Panel so that your inherited views don't need to call Panel's initialize method:
+
+```javascript
+var Panel = function (options) {
+
+    // put all of Panel's initialization code here
+    console.log('Panel initialized');
+    this.foo = 'bar';
+
+    Backbone.View.apply(this, [options]);
+};
+
+_.extend(Panel.prototype, Backbone.View.prototype, {
+
+    // put all of Panel's methods here. For example:
+    sayHi: function () {
+        console.log('hello from Panel');
+    }
+});
+
+Panel.extend = Backbone.View.extend;
+
+
+// other classes inherit from Panel like this:
+var PanelAdvanced = Panel.extend({
+
+    initialize: function (options) {
+        console.log('PanelAdvanced initialized');
+        console.log(this.foo);
+    }
+});
+
+var PanelAdvanced = new PanelAdvanced(); //Log: Panel initialized, PanelAdvanced initialized, bar
+PanelAdvanced.sayHi(); // Log: hello from Panel
+```
+
+(Thanks to [Derick Bailey](http://stackoverflow.com/users/93448/derick-bailey) and [JohnnyO](http://stackoverflow.com/users/188740/johnnyo) for these tips)
+
+#### Is it possible to have one Backbone.js View trigger updates in other Views?
+
+
+The Mediator pattern is an excellent option for implementing a solution to this problem. 
+
+Without going into too much detail about the pattern, it can effectively be used an event manager that lets you to subscribe to and publish events. So an ApplicationViewA could subscribe to an event, i.e. 'selected' and then the ApplicationViewB would publish the 'selected' event.
+
+The reason I like this is it allows you to send events between views, without the views being directly bound together.
+
+For Example:
+
+```javascript
+
+// See http://addyosmani.com/largescalejavascript/#mediatorpattern
+// for an implementation or alternatively for a more thorough one
+// http://thejacklawson.com/Mediator.js/
+
+var mediator = new Mediator(); 
+
+var ApplicationViewB = Backbone.View.extend({
+    toggle_select: function() {
+        ...
+        mediator.publish('selected', any, data, you, want);
+        return this;
+    }
+});
+
+var ApplicationViewA = Backbone.View.extend({
+    initialize: function() {
+        mediator.subscribe('selected', this.delete_selected)
+    },
+
+    delete_selected: function(any, data, you, want) {
+        ... do something ...
+    },
+});
+```
+
+This way your ApplicationViewA doesn't care if it is an ApplicationViewB or FooView that publishes the 'selected' event, only that the event occurred. As a result, you may find it a maintainable way to manage events between parts of your application, not just views.
+
+(Thanks to [John McKim](http://stackoverflow.com/users/937577/john-mckim) for this tip and for referencing my Large Scale JavaScript Patterns article).
+
+#### How would one render a Parent View from one of its Children?
+
+If you say, have a view which contains another view (e.g a main view containing a modal view) and  would like to render or re-render the parent view from the child, this is extremely straight-forward.  
+
+In such a scenario, you would most likely want to execute the rendering when a particular event has occurred. For the sake of example, let us call this event 'somethingHappened'. The parent view can bind notifications on the child view to know when the event has occurred. It can then render itself.
+
+On the parent view:
+
+```javascript
+// Parent initialize
+this.childView.on('somethingHappened', this.render, this);
+
+// Parent removal
+this.childView.off('somethingHappened', this.render, this);
+```
+
+On the child view:
+
+```javascript
+
+// After the event has occurred
+this.trigger('somethingHappened');
+
+```
+
+The child will trigger a "somethingHappened" event and the parent's render function will be called.
+
+(Thanks to Tal [Bereznitskey](http://stackoverflow.com/users/269666/tal-bereznitskey) for this tip)
+
+
+
+#### How do you cleanly dispose Views to avoid memory leaks?
+
+As your application grows, keeping live views around which aren't being used can quickly become difficult to maintain. Instead, you may find it more optimal to destroy views that are no longer required and simply create new ones as the necessity arises.
+
+A solution to help with this is to create a BaseView from which the rest of your views inherit from. The idea here is that your view will maintain a reference to all of the events to which its subscribed to so that when it is time to dispose of a view, all of those bindings will be automatically unbound.
+
+Here is a sample implementation of this:
+
+```javascript
+var BaseView = function (options) {
+
+    this.bindings = [];
+    Backbone.View.apply(this, [options]);
+};
+
+_.extend(BaseView.prototype, Backbone.View.prototype, {
+
+    bindTo: function (model, ev, callback) {
+
+        model.bind(ev, callback, this);
+        this.bindings.push({ model: model, ev: ev, callback: callback });
+    },
+
+    unbindFromAll: function () {
+        _.each(this.bindings, function (binding) {
+            binding.model.unbind(binding.ev, binding.callback);
+        });
+        this.bindings = [];
+    },
+
+    dispose: function () {
+        this.unbindFromAll(); // this will unbind all events that this view has bound to 
+        this.unbind(); // this will unbind all listeners to events from this view. This is probably not necessary because this view will be garbage collected.
+        this.remove(); // uses the default Backbone.View.remove() method which removes this.el from the DOM and removes DOM events.
+    }
+
+});
+```
+
+```javascript
+BaseView.extend = Backbone.View.extend;
+```
+
+Then, whenever a view has the need to bind to an event on a model or a collection, you would use the bindTo method. e.g:
+
+```
+var SampleView = BaseView.extend({
+
+    initialize: function(){
+        this.bindTo(this.model, 'change', this.render);
+        this.bindTo(this.collection, 'reset', this.doSomething);
+    }
+});
+```
+
+When you remove a view, simply call the dispose() method which will clean everything up for you automatically:
+
+```javascript
+var sampleView = new SampleView({model: some_model, collection: some_collection});
+sampleView.dispose();
+```
+
+(Thanks to [JohnnyO](http://stackoverflow.com/users/188740/johnnyo) for this tip).
+
+#### How does one handle View disposal on a Parent or Child View?
+
+In the last question, we looked at how to effectively dispose views to decreases memory usage (analogous to a type of garbage collection).
+
+Where your application is setup with multiple Parent and Child Views, it is also common to desire removing any DOM elements associated with such views as well as unbinding any event handlers tied to child elements when you no longer require them. 
+
+The solution in the last question should be enough to handle this use-case, but if you require a more-explicit example that handles children, we can see one below:
+
+```javascript
+Backbone.View.prototype.close = function() {
+    if (this.onClose) {
+        this.onClose();
+    }
+    this.remove();
+    this.unbind();
+};
+
+NewView = Backbone.View.extend({
+    initialize: function() {
+       this.childViews = [];
+    },
+    renderChildren: function(item) {
+        var itemView = new NewChildView({ model: item });
+        $(this.el).prepend(itemView.render());
+        this.childViews.push(itemView);
+    },
+    onClose: function() {
+      _(this.childViews).each(function(view) {
+        view.close();
+      });
+    }
+});
+
+NewChildView = Backbone.View.extend({
+    tagName: 'li',
+    render: function() {
+    }
+});
+```
+
+Here, a close() method for views is implemented which disposes of a view when it is no longer needed or needs to be reset. In most cases the view removal should be done at a view layer so that it won't affect any of our models.
+
+For example, if you are working on a blogging application and you remove a view with comments, perhaps another view in your app shows a selection of comments and resetting the collection would affect those views too.
+
+(Thanks to [dira](http://stackoverflow.com/users/906136/dira) for this tip)
+
+#### What's the best way to combine or append Views to each other?
+
+Let us say you have a Collection, where each item in the Collection could itself be a Collection. You can render each item in the Collection, and indeed can render any items which themselves are Collections. The problem you might have is how to render this structure where the HTML reflects the hierarchical nature of the data structure.
+
+The most straight-forward way to approach this problem is to use a framework like Derick Baileys [Backbone.Marionette](https://github.com/derickbailey/backbone.marionette). In this framework is a type of view called a CompositeView.
+
+The basic idea of a CompositeView is that it can render a model and a collection within the same view.
+
+It can render a single model with a template. It can also take a collection from that model and for each model in that collection, render a view. By default it uses the same composite view type that you've defined, to render each of the models in the collection. All you have to do is tell the view instance where the collection is, via the initialize method, and you'll get a recursive hierarchy rendered.
+
+There is a working demo of this in action available [online](http://jsfiddle.net/derickbailey/AdWjU/).
+
+And you can get the source code and documentation for [Marionette](https://github.com/derickbailey/backbone.marionette) too.
+
+
+####Is Backbone too simple for my needs?
+
+Backbone can be used for building both trivial and complex applications as demonstrated by the many examples Ashkenas has been referencing in the Backbone documentation. As with any MVC framework however, it's important to dedicate time towards planning out what models and views your application really needs. Diving straight into development without doing this can result in either spaghetti code or a large refactor later on and it's best to avoid this where possible. 
+
+At the end of the day, the key to building large applications is not to build large applications in the first place. If you find that Backbone doesn't cut it for your requirements (which is unlikely for many many use-cases), I strongly recommend checking out AngularJS, Ember.js, Spine.js or CanJS as they offer a little more than Backbone out of the box. Dojo and Dojo Mobile may also be of interest as these have also been used to build significantly complex apps by other developers.
+
+
 # <a name="restfulapps">RESTful Applications</a>
 ---
 
@@ -2699,84 +2848,75 @@ The Jade templates for our application cover declarative markup for both the ind
     h1 Todos
   .content
     #create-todo
-      input#new-todo(placeholder=&quot;What needs to be done?&quot;, type=&quot;text&quot;)
-      span.ui-tooltip-top(style=&quot;display:none;&quot;) Press Enter to save this task
+      input#new-todo(placeholder="What needs to be done?", type="text")
+      span.ui-tooltip-top(style="display:none;") Press Enter to save this task
     #todos
       ul#todo-list
     #todo-stats
 
 
 // Templates
-script#item-template(type=&quot;text/template&quot;)
-  &lt;div class=&quot;todo &lt;%= done ? 'done' : '' %&gt;&quot;&gt;
+script#item-template(type="text/template")
+  <div class="todo <%= done ? 'done' : '' %>">
   .display
-    &lt;input class=&quot;check&quot; type=&quot;checkbox&quot; &lt;%= done ? 'checked=&quot;checked&quot;' : '' %&gt; /&gt;
+    <input class="check" type="checkbox" <%= done ? 'checked="checked"' : '' %> />
     .todo-text 
     span#todo-destroy
   .edit
-    input.todo-input(type=&quot;text&quot;, &quot;value&quot;=&quot;&quot;)
-  &lt;/div&gt;
+    input.todo-input(type="text", "value"="")
+  </div>
 
-script#stats-template(type=&quot;text/template&quot;)
-  &lt;% if (total) { %&gt;
+script#stats-template(type="text/template")
+  <% if (total) { %>
   span.todo-count
-    span.number &lt;%= remaining %&gt; 
-    span.word &lt;%= remaining == 1 ? 'item' : 'items' %&gt;
+    span.number <%= remaining %> 
+    span.word <%= remaining == 1 ? 'item' : 'items' %>
     |  left.
-  &lt;% } %&gt;
-  &lt;% if (done) { %&gt;
+  <% } %>
+  <% if (done) { %>
   span.todo-clear
-    a(href=&quot;#&quot;)
+    a(href="#")
       |  Clear
-      span.number-done &lt;%= done %&gt;
+      span.number-done <%= done %>
       |  completed
-      span.word-done &lt;%= done == 1 ? 'item' : 'items' %&gt;
-  &lt;% } %&gt;
+      span.word-done <%= done == 1 ? 'item' : 'items' %>
+  <% } %>
 ```
 
 **layout.jade**
 
 ```html
-!!! 5
-//if lt IE 6
-  &lt;html class=&quot;no-js ie6 oldie&quot; lang=&quot;en&quot;&gt; 
-//if IE 7
-  &lt;html class=&quot;no-js ie7 oldie&quot; lang=&quot;en&quot;&gt;
-//if IE 8
-  &lt;html class=&quot;no-js ie8 oldie&quot; lang=&quot;en&quot;&gt;
-//if gt IE 8
-  &lt;!--&gt; &lt;html class=&quot;no-js&quot; lang=&quot;en&quot;&gt; &lt;!--
 head
-  meta(charset=&quot;utf-8&quot;)
-  meta(http-equiv=&quot;X-UA-Compatible&quot;, content=&quot;IE=edge,chrome=1&quot;)
+  meta(charset="utf-8")
+  meta(http-equiv="X-UA-Compatible", content="IE=edge,chrome=1")
 
   title=title
-  meta(name=&quot;description&quot;, content=&quot;&quot;)
-  meta(name=&quot;author&quot;, content=&quot;&quot;)
-  meta(name=&quot;viewport&quot;, content=&quot;width=device-width,initial-scale=1&quot;)
+  meta(name="description", content="")
+  meta(name="author", content="")
+  meta(name="viewport", content="width=device-width,initial-scale=1")
   
   // CSS concatenated and minified via ant build script
-  link(rel=&quot;stylesheet&quot;, href=&quot;css/style.css&quot;)
+  link(rel="stylesheet", href="css/style.css")
   // end CSS
 
-  script(src=&quot;js/libs/modernizr-2.0.6.min.js&quot;)
+  script(src="js/libs/modernizr-2.0.6.min.js")
 body
 
   #container
     header
-    #main(role=&quot;main&quot;)!=body
+    #main(role="main")!=body
     footer
   //! end of #container
 
-  script(src=&quot;//ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js&quot;)
+  script(src="//ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js")
   script
-    window.jQuery || document.write('&lt;script src=&quot;js/libs/jquery-1.6.2.min.js&quot;&gt;&lt;\\/script&gt;')
+    window.jQuery || document.write('<script src="js/libs/jquery-1.6.2.min.js"><\\/script>')
 
   // scripts concatenated and minified via ant build script
-  script(src=&quot;js/mylibs/underscore.js&quot;)
-  script(src=&quot;js/mylibs/backbone.js&quot;)
-  script(defer, src=&quot;js/plugins.js&quot;)
-  script(defer, src=&quot;js/script.js&quot;)
+  script(src="js/mylibs/underscore.js")
+  script(src="js/mylibs/backbone.js")
+  script(defer, src="js/plugins.js")
+  script(defer, src="js/script.js")
   // end scripts
 
   // Change UA-XXXXX-X to be your site's ID
@@ -2785,10 +2925,10 @@ body
     Modernizr.load({load: ('https:' == location.protocol ? '//ssl' : '//www') + '.google-analytics.com/ga.js'});
 
   //if lt IE 7
-    script(src=&quot;//ajax.googleapis.com/ajax/libs/chrome-frame/1.0.3/CFInstall.min.js&quot;)
+    script(src="//ajax.googleapis.com/ajax/libs/chrome-frame/1.0.3/CFInstall.min.js")
     script
       window.attachEvent('onload',function(){CFInstall.check({mode:'overlay'})})
-&lt;/html&gt;
+</html>
 
 ```
 
@@ -2798,54 +2938,54 @@ body
 Alternatively, a static version of our index which doesn't rely on Jade can be put together as follows. See [here](https://github.com/addyosmani/backbone-boilerplates/blob/master/option1/public/static.html) for the complete file or below for a sample.
 
 ```html
- &lt;div id=&quot;container&quot;&gt;
-    &lt;div id=&quot;main&quot; role=&quot;main&quot;&gt;
+<div id="container">
+    <div id="main" role="main">
 
-      &lt;!-- Todo App Interface--&gt;
+      <!-- Todo App Interface-->
 
-      &lt;div id=&quot;todoapp&quot;&gt;
-        &lt;div class=&quot;title&quot;&gt;
-          &lt;h1&gt;Todos&lt;/h1&gt;
-        &lt;/div&gt;
+      <div id="todoapp">
+        <div class="title">
+          <h1>Todos</h1>
+        </div>
 
-        &lt;div class=&quot;content&quot;&gt;
-          &lt;div id=&quot;create-todo&quot;&gt;
-            &lt;input id=&quot;new-todo&quot; placeholder=&quot;What needs to be done?&quot; type=
-            &quot;text&quot; /&gt;&lt;span style=&quot;display:none;&quot; class=&quot;ui-tooltip-top&quot;&gt;Press Enter to
-            save this task&lt;/span&gt;
-          &lt;/div&gt;
+        <div class="content">
+          <div id="create-todo">
+            <input id="new-todo" placeholder="What needs to be done?" type=
+            "text" /><span style="display:none;" class="ui-tooltip-top">Press Enter to
+            save this task</span>
+          </div>
 
-          &lt;div id=&quot;todos&quot;&gt;
-            &lt;ul id=&quot;todo-list&quot;&gt;&lt;/ul&gt;
-          &lt;/div&gt;
+          <div id="todos">
+            <ul id="todo-list"></ul>
+          </div>
 
-          &lt;div id=&quot;todo-stats&quot;&gt;&lt;/div&gt;
-        &lt;/div&gt;
-      &lt;/div&gt;
+          <div id="todo-stats"></div>
+        </div>
+      </div>
 
 
-    &lt;!-- Templates--&gt;
+    <!-- Templates-->
 
-      &lt;script id=&quot;item-template&quot; type=&quot;text/template&quot;&gt;
-      &lt;div class=&quot;todo &lt;%= done ? 'done' : '' %&gt;&quot;&gt;
-      &lt;div class=&quot;display&quot;&gt;&lt;input class=&quot;check&quot; type=&quot;checkbox&quot; &lt;%= done ? 'checked=&quot;checked&quot;' : '' %&gt; /&gt;
-      &lt;div class=&quot;todo-text&quot;&gt;&lt;/div&gt;&lt;span id=&quot;todo-destroy&quot;&gt;&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;edit&quot;&gt;&lt;input type=&quot;text&quot; value=&quot;&quot; class=&quot;todo-input&quot;/&gt;&lt;/div&gt;&lt;/div&gt;
-      &lt;/script&gt;
+      <script id="item-template" type="text/template">
+      <div class="todo <%= done ? 'done' : '' %>">
+      <div class="display"><input class="check" type="checkbox" <%= done ? 'checked="checked"' : '' %> />
+      <div class="todo-text"></div><span id="todo-destroy"></span></div><div class="edit"><input type="text" value="" class="todo-input"/></div></div>
+      </script>
 
-      &lt;script id=&quot;stats-template&quot; type=&quot;text/template&quot;&gt;
-      &lt;% if (total) { %&gt;
-      &lt;span class=&quot;todo-count&quot;&gt;&lt;span class=&quot;number&quot;&gt;&lt;%= remaining %&gt; &lt;/span&gt;&lt;span class=&quot;word&quot;&gt;&lt;%= remaining == 1 ? 'item' : 'items' %&gt;&lt;/span&gt; left.
-      &lt;/span&gt;&lt;% } %&gt;
-      &lt;% if (done) { %&gt;
-      &lt;span class=&quot;todo-clear&quot;&gt;&lt;a href=&quot;#&quot;&gt; Clear
-      &lt;span class=&quot;number-done&quot;&gt;&lt;%= done %&gt;&lt;/span&gt; completed
-      &lt;span class=&quot;word-done&quot;&gt;&lt;%= done == 1 ? 'item' : 'items' %&gt;&lt;/span&gt;&lt;/a&gt;&lt;/span&gt;&lt;% } %&gt;
-      &lt;/script&gt;
+      <script id="stats-template" type="text/template">
+      <% if (total) { %>
+      <span class="todo-count"><span class="number"><%= remaining %> </span><span class="word"><%= remaining == 1 ? 'item' : 'items' %></span> left.
+      </span><% } %>
+      <% if (done) { %>
+      <span class="todo-clear"><a href="#"> Clear
+      <span class="number-done"><%= done %></span> completed
+      <span class="word-done"><%= done == 1 ? 'item' : 'items' %></span></a></span><% } %>
+      </script>
 
-    &lt;/div&gt;
-  &lt;/div&gt;
+    </div>
+  </div>
 
-  &lt;!--! end of #container--&gt;
+  <!--! end of #container-->
 ```
 
 
@@ -3709,18 +3849,18 @@ Instead, developers at present are left to fall back on variations of the module
 
 Whilst native solutions to these problems will be arriving in ES Harmony, the good news is that writing modular JavaScript has never been easier and you can start doing it today.
 
-In this next part of the book, we're going to look at how to use AMD modules and RequireJS for cleanly wrapping units of code in your application into manageable modules.
+In this next part of the book, we're going to look at how to use AMD modules and Require.js for cleanly wrapping units of code in your application into manageable modules.
 
 
-##<a name="organizingmodules">Organizing modules with RequireJS and AMD</a>
+##<a name="organizingmodules">Organizing modules with Require.js and AMD</a>
 
-In case you haven't used it before, [RequireJS](http://requirejs.org) is a popular script loader written by James Burke - a developer who has been quite instrumental in helping shape the AMD module format, which we'll discuss more shortly. Some of RequireJS's capabilities include helping to load multiple script files, helping define modules with or without dependencies and loading in non-script dependencies such as text files.
+In case you haven't used it before, [Require.js](http://requirejs.org) is a popular script loader written by James Burke - a developer who has been quite instrumental in helping shape the AMD module format, which we'll discuss more shortly. Some of Require.js's capabilities include helping to load multiple script files, helping define modules with or without dependencies and loading in non-script dependencies such as text files.
 
-So, why use RequireJS with Backbone? Although Backbone is excellent when it comes to providing a sanitary structure to your applications, there are a few key areas where some additional help could be used:
+So, why use Require.js with Backbone? Although Backbone is excellent when it comes to providing a sanitary structure to your applications, there are a few key areas where some additional help could be used:
 
 1) Backbone doesn't endorse a particular approach to modular-development. Although this means it's quite open-ended for developers to opt for classical patterns like the module-pattern or Object Literals for structuring their apps (which both work fine), it also means developers aren't sure of what works best when other concerns come into play, such as dependency management.
 
-RequireJS is compatible with the AMD (Asynchronous Module Definition) format, a format which was born from a desire to write something better than the 'write lots of script tags with implicit dependencies and manage them manually' approach to development. In addition to allowing you to clearly declare dependencies, AMD works well in the browser, supports string IDs for dependencies, declaring multiple modules in the same file and gives you easy-to-use tools to avoid polluting the global namespace.
+Require.js is compatible with the AMD (Asynchronous Module Definition) format, a format which was born from a desire to write something better than the 'write lots of script tags with implicit dependencies and manage them manually' approach to development. In addition to allowing you to clearly declare dependencies, AMD works well in the browser, supports string IDs for dependencies, declaring multiple modules in the same file and gives you easy-to-use tools to avoid polluting the global namespace.
 
 2) Let's discuss dependency management a little more as it can actually be quite challenging to get right if you're doing it by hand. When we write modules in JavaScript, we ideally want to be able to handle the reuse of code units intelligently and sometimes this will mean pulling in other modules at run-time whilst at other times you may want to do this dynamically to avoid a large pay-load when the user first hits your application.
 
@@ -3728,7 +3868,7 @@ Think about the GMail web-client for a moment. When users initially load up the 
 
 I've previously written [a detailed article](http://addyosmani.com/writing-modular-js) covering both AMD and other module formats and script loaders in case you'd like to explore this topic further. The takeaway is that although it's perfectly fine to develop applications without a script loader or clean module format in place, it can be of significant benefit to consider using these tools in your application development.
 
-###Writing AMD modules with RequireJS
+###Writing AMD modules with Require.js
 
 As discussed above, the overall goal for the AMD format is to provide a solution for modular JavaScript that developers can use today. The two key concepts you need to be aware of when using it with a script-loader are a `define()` method for facilitating module definition and a `require()` method for handling dependency loading. `define()` is used to define named or unnamed modules based on the proposal using the following signature:
 
@@ -3742,7 +3882,7 @@ define(
 
 As you can tell by the inline comments, the `module_id` is an optional argument which is typically only required when non-AMD concatenation tools are being used (there may be some other edge cases where it's useful too). When this argument is left out, we call the module 'anonymous'. When working with anonymous modules, the idea of a module's identity is DRY, making it trivial to avoid duplication of filenames and code.
 
-Back to the define signature, the dependencies argument represents an array of dependencies which are required by the module you are defining and the third argument ('definition function') is a function that's executed to instantiate your module. A barebone module (compatible with RequireJS) could be defined using `define()` as follows:
+Back to the define signature, the dependencies argument represents an array of dependencies which are required by the module you are defining and the third argument ('definition function') is a function that's executed to instantiate your module. A barebone module (compatible with Require.js) could be defined using `define()` as follows:
 
 ```javascript
 // A module ID has been omitted here to make the module anonymous
@@ -3852,15 +3992,15 @@ define([
 Aliasing to the dollar-sign (`$`), once again makes it very easy to encapsulate any part of an application you wish using AMD.
 
 
-##<a name="externaltemplates">Keeping Your Templates External Using RequireJS And The Text Plugin</a>
+##<a name="externaltemplates">Keeping Your Templates External Using Require.js And The Text Plugin</a>
 
-Moving your [Underscore/Mustache/Handlebars] templates to external files is actually quite straight-forward. As this application makes use of RequireJS, I'll discuss how to implement external templates using this specific script loader.
+Moving your [Underscore/Mustache/Handlebars] templates to external files is actually quite straight-forward. As this application makes use of Require.js, I'll discuss how to implement external templates using this specific script loader.
 
-RequireJS has a special plugin called text.js which is used to load in text file dependencies. To use the text plugin, simply follow these simple steps:
+Require.js has a special plugin called text.js which is used to load in text file dependencies. To use the text plugin, simply follow these simple steps:
 
 1. Download the plugin from http://requirejs.org/docs/download.html#text and place it in either the same directory as your application's main JS file or a suitable sub-directory.
 
-2. Next, include the text.js plugin in your initial RequireJS configuration options. In the code snippet below, we assume that RequireJS is being included in our page prior to this code snippet being executed. Any of the other scripts being loaded are just there for the sake of example.
+2. Next, include the text.js plugin in your initial Require.js configuration options. In the code snippet below, we assume that Require.js is being included in our page prior to this code snippet being executed. Any of the other scripts being loaded are just there for the sake of example.
  
 ```javascript
 require.config( {
@@ -3878,7 +4018,7 @@ require.config( {
 } );
 ```
 
-3. When the `text!` prefix is used for a dependency, RequireJS will automatically load the text plugin and treat the dependency as a text resource. A typical example of this in action may look like..
+3. When the `text!` prefix is used for a dependency, Require.js will automatically load the text plugin and treat the dependency as a text resource. A typical example of this in action may look like..
 
 ```javascript
 require(['js/app', 'text!templates/mainView.html'],
@@ -3908,7 +4048,7 @@ JS:
 var compiled_template = _.template( $('#mainViewTemplate').html() );
 ```
 
-With RequireJS and the text plugin however, it's as simple as saving your template into an external text file (say, `mainView.html`) and doing the following:
+With Require.js and the text plugin however, it's as simple as saving your template into an external text file (say, `mainView.html`) and doing the following:
 
 ```javascript
 require(['js/app', 'text!templates/mainView.html'],
@@ -3931,19 +4071,19 @@ All templating solutions will have their own custom methods for handling templat
 **Note:** You may also be interested in looking at [Require.js tpl](https://github.com/ZeeAgency/requirejs-tpl). It's an AMD-compatible version of the Underscore templating system that also includes support for optimization (pre-compiled templates) which can lead to better performance and no evals. I have yet to use it myself, but it comes as a recommended resource.
 
 
-##<a name="optimizingrequirejs">Optimizing Backbone apps for production with the RequireJS Optimizer</a>
+##<a name="optimizingrequirejs">Optimizing Backbone apps for production with the Require.js Optimizer</a>
 
 As experienced developers may know, an essential final step when writing both small and large JavaScript web applications is the build process.  The majority of non-trivial apps are likely to consist of more than one or two scripts and so optimizing, minimizing and concatenating your scripts prior to pushing them to production will require your users to download a reduced number (if not just one) script file.
 
 Note: If you haven't looked at build processes before and this is your first time hearing about them, you might find [my post and screencast on this topic](http://addyosmani.com/blog/client-side-build-process/) useful.
 
-With some other structural JavaScript frameworks, my recommendation would normally be to implicitly use YUI Compressor or Google's closure compiler tools, but we have a slightly more elegant method available, when it comes to Backbone if you're using RequireJS. RequireJS has a command line optimization tool called r.js which has a number of capabilities, including:
+With some other structural JavaScript frameworks, my recommendation would normally be to implicitly use YUI Compressor or Google's closure compiler tools, but we have a slightly more elegant method available, when it comes to Backbone if you're using Require.js. Require.js has a command line optimization tool called r.js which has a number of capabilities, including:
 
 * Concatenating specific scripts and minifying them using external tools such as UglifyJS (which is used by default) or Google's Closure Compiler for optimal browser delivery, whilst preserving the ability to dynamically load modules
 * Optimizing CSS and stylesheets by inlining CSS files imported using @import, stripping out comments etc.
 * The ability to run AMD projects in both Node and Rhino (more on this later)
 
-You'll notice that I mentioned the word 'specific' in the first bullet point. The RequireJS optimizer only concatenates module scripts that have been specified in arrays of string literals passed to top-level (i.e non-local) require and define calls. As clarified by the [optimizer docs](http://requirejs.org/docs/optimization.html) this means that Backbone modules defined like this:
+You'll notice that I mentioned the word 'specific' in the first bullet point. The Require.js optimizer only concatenates module scripts that have been specified in arrays of string literals passed to top-level (i.e non-local) require and define calls. As clarified by the [optimizer docs](http://requirejs.org/docs/optimization.html) this means that Backbone modules defined like this:
 
 ```javascript
 define(['jquery','backbone','underscore', 'collections/sample','views/test'], 
@@ -3960,11 +4100,11 @@ var models = someCondition ? ['models/ab','models/ac'] : ['models/ba','models/bc
 
 will be ignored. This is by design as it ensures that dynamic dependency/module loading can still take place even after optimization. 
 
-Although the RequireJS optimizer works fine in both Node and Java environments, it's strongly recommended to run it under Node as it executes significantly faster there. In my experience, it's a piece of cake to get setup with either environment, so go for whichever you feel most comfortable with. 
+Although the Require.js optimizer works fine in both Node and Java environments, it's strongly recommended to run it under Node as it executes significantly faster there. In my experience, it's a piece of cake to get setup with either environment, so go for whichever you feel most comfortable with. 
 
-To get started with r.js, grab it from the [RequireJS download page](http://requirejs.org/docs/download.html#rjs) or [through NPM](http://requirejs.org/docs/optimization.html#download). Now, the RequireJS optimizer works absolutely fine for single script and CSS files, but for most cases you'll want to actually optimize an entire Backbone project. You *could* do this completely from the command-line, but a cleaner option is using build profiles.
+To get started with r.js, grab it from the [Require.js download page](http://requirejs.org/docs/download.html#rjs) or [through NPM](http://requirejs.org/docs/optimization.html#download). Now, the Require.js optimizer works absolutely fine for single script and CSS files, but for most cases you'll want to actually optimize an entire Backbone project. You *could* do this completely from the command-line, but a cleaner option is using build profiles.
 
-Below is an example of a build file taken from the modular jQuery Mobile app referenced later in this book. A **build profile** (commonly named `app.build.js`) informs RequireJS to copy all of the content of `appDir` to a directory defined by `dir` (in this case `../release`). This will apply all of the necessary optimizations inside the release folder. The `baseUrl` is used to resolve the paths for your modules. It should ideally be relative to `appDir`.
+Below is an example of a build file taken from the modular jQuery Mobile app referenced later in this book. A **build profile** (commonly named `app.build.js`) informs Require.js to copy all of the content of `appDir` to a directory defined by `dir` (in this case `../release`). This will apply all of the necessary optimizations inside the release folder. The `baseUrl` is used to resolve the paths for your modules. It should ideally be relative to `appDir`.
 
 Near the bottom of this sample file, you'll see an array called `modules`. This is where you specify the module names you wish to have optimized. In this case we're optimizing the main application called 'app', which maps to `appDir/app.js`. If we had set the `baseUrl` to 'scripts', it would be mapped to `appDir/scripts/app.js`.
 
@@ -4007,9 +4147,271 @@ node ../../r.js -o app.build.js
 That's it. As long as you have UglifyJS/Closure tools setup correctly, r.js should be able to easily optimize your entire Backbone project in just a few key-strokes. If you would like to learn more about build profiles, James Burke has a [heavily commented sample file](https://github.com/jrburke/r.js/blob/master/build/example.build.js) with all the possible options available.
 
 
-##<a name="practicalrequirejs">Practical: Building a modular Backbone app with AMD & RequireJS</a>
+## <a name="optimizebuild">Optimize and Build a Backbone.js JavaScript application with Require.JS using Packages</a>
 
-In this chapter, we'll look at our first practical Backbone & RequireJS project - how to build a modular Todo application. The application will allow us to add new todos, edit new todos and clear todo items that have been marked as completed. For a more advanced practical, see the section on mobile Backbone development.
+*Contributed by [Bill Heaton](https://github.com/pixelhandler)*
+
+When a JavaScript application is too complex or large to build in a single file, grouping the application’s components into packages allows for script dependencies to download in parallel, and facilitates only loading **packaged** and other modular code as the site experience requires the specific set of dependencies.
+
+Require.JS, the (JavaScript) module loading library, has an [optimizer](http://requirejs.org/docs/optimization.html "Require.JS optimizer") to build a JavaScript-based application and provides various options. A build profile is the recipe for your build, much like a build.xml file is used to build a project with ANT. The benefit of building with **r.js** not only results in speedy script loading with minified code, but also provides a way to package components of your application.
+
+* [Optimizing one JavaScript file](http://requirejs.org/docs/optimization.html#onejs "Optimizing one JavaScript file")
+* [Optimizing a whole project](http://requirejs.org/docs/optimization.html#wholeproject "Optimizing a whole project")
+* [Optimizing a project in layers or packages](http://requirejs.org/docs/faq-optimization.html#priority "Optimizing a project in layers or packages")
+
+In a complex application, organizing code into *packages* is an attractive build strategy. The build profile in this article is based on an test application currently under development (files list below). The application framework is built with open source libraries. The main objective in this build profile is to optimize an application developed with [Backbone.js](http://documentcloud.github.com/backbone/ "Backbone.js") using modular code, following the [Asynchronous Module Definition (AMD)](https://github.com/amdjs/amdjs-api/wiki/AMD "Asynchronous Module Definition (AMD) wiki page") format. AMD and Require.JS provide the structure for writing modular code with dependencies. Backbone.js provides the code organization for developing models, views and collections and also interactions with a RESTful API.
+
+Below is an outline of the applications file organization, followed by the build profile to build modular (or packaged) layers a JavaScript driven application.
+
+#### File organization
+
+Assume the following directories and file organization, with app.build.js as the build profile (a sibling to both source and release directories). Note that the files in the list below named *section* can be any component of the application, e.g. *header*, *login*)
+
+```text  
+.-- app.build.js
+|-- app-release
+`-- app-src
+    |-- collections
+    |   |-- base.js
+    |   |-- sections-segments.js
+    |   `-- sections.js
+    |-- docs
+    |   `--docco.css
+    |-- models
+    |   |-- base.js
+    |   |-- branding.js
+    |   `-- section.js
+    |-- packages
+    |   |-- header
+    |   |   |-- models
+    |   |   |   |-- nav.js
+    |   |   |   `-- link.js
+    |   |   |-- templates
+    |   |   |   |-- branding.js
+    |   |   |   |-- nav.js
+    |   |   |   `-- links.js
+    |   |   `-- views
+    |   |       |-- nav.js
+    |   |       |-- branding.js
+    |   |       `-- link.js
+    |   |-- header.js
+    |   `-- ... more packages here e.g. cart, checkout ...
+    |-- syncs
+    |   |-- rest
+    |   |   `-- sections.js
+    |   |-- factory.js
+    |   `-- localstorage.js
+    |-- test
+    |   |-- fixtures
+    |   |   `-- sections.json
+    |   |-- header
+    |   |   |-- index.html
+    |   |   `-- spec.js
+    |   |-- lib
+    |   |   `-- Jasmine
+    |   |-- models
+    |   |-- utils
+    |   |-- global-spec.js
+    |-- utils
+    |   |-- ajax.js
+    |   |-- baselib.js
+    |   |-- debug.js
+    |   |-- localstorage.js
+    |   `-- shims.js
+    |-- vendor
+    |-- |-- backbone-min.js
+    |   |-- jquery.min.js
+    |   |-- jquery.mobile-1.0.min.js
+    |   |-- json2.js
+    |   |-- modernizr.min.js
+    |   |-- mustache.js
+    |   |-- require.js
+    |   |-- text.js
+    |   `-- underscore.js
+    |-- views
+    |   |-- base.js
+    |   `-- collection.js
+    |-- application.js
+    |-- collections.js
+    |-- index.html
+    |-- main.js
+    |-- models.js
+    |-- syncs.js
+    |-- utils.js
+    |-- vendor.js
+    `-- views.js
+```
+
+#### Build profile to optimize modular dependencies with code organized in packages
+
+The build profile can be organized to [divide parallel downloads for various sections of the application](http://requirejs.org/docs/faq-optimization.html#priority "optimize modular dependencies in packages"). 
+
+This strategy demonstrated builds common or site-wide groups of (core) *models*, *views*, collections which are extended from a base.js constructor which extends the appropriate backbone method, e.g. Backbone.Model. The *packages* directory organizes code by section / responsibility, e.g. cart, checkout, etc. Notice that within the example *header* package the directory structure is similar to the app root directory file structure. A *package* (of modularized code) has dependencies from the common libraries in your application and also has specific code for the packages execution alone; other packages should not require another packages dependencies. A *utils* directory has shims, helpers, and common library code to support the application. A *syncs* directory to define persistence with your RESTful api and/or localStorage. The *vendor* libraries folder will not be built, there is no need to do so, you may decide to use a CDN (then set these paths to : *[empty:](http://requirejs.org/docs/optimization.html#empty "empty:")*). And finally a *test* directory for [Jasmine](http://pivotal.github.com/jasmine/ "Jasmine is a behavior-driven development framework for testing your JavaScript code") unit test specs, which may be ignored in the build as well if you choose.
+
+Also notice the there are .js files named the same as the directories, these are the files listed in the paths. these are strategic to group sets of files to build, examples follow the build profile below.  
+
+```javascript
+({
+    appDir: './app-src',
+    baseUrl: './',
+    dir: './app-build',
+    optimize: 'uglify',
+    paths: {
+        // will not build 3rd party code, it's already built
+        'text'         : 'vendor/text',
+        'json2'        : 'vendor/json2.min',
+        'modernizr'    : 'vendor/modernizr.min',
+        'jquery'       : 'vendor/jquery-1.7.1',
+        'jquerymobile' : 'vendor/jquery.mobile.min.js',
+        'underscore'   : 'vendor/underscore',
+        'mustache'     : 'vendor/mustache',
+        'backbone'     : 'vendor/backbone',
+        // files that define dependencies...
+        // ignore vendor libraries, but need a group to do so
+        'vendor'       : 'vendor',
+        // application modules/packages these files define dependencies
+        // and may also group modules into objects if needed to require
+        // by groups rather than individual files
+        'utils'        : 'utils',
+        'models'       : 'models',
+        'views'        : 'views',
+        'collections'  : 'collections',
+        // packages to build
+        'header'       : 'packages/header'
+        //... more packages
+    },
+    modules: [
+        // Common libraries, Utilities, Syncs, Models, Views, Collections
+        {
+            name: 'utils',
+            exclude: ['vendor']
+        },
+        {
+            name: 'syncs',
+            exclude: ['vendor', 'utils']
+        },
+        {
+            name: 'models',
+            exclude: ['vendor', 'utils', 'syncs']
+        },
+        {
+            name: 'views',
+            exclude: ['vendor', 'utils', 'syncs', 'models']
+        },
+        {
+            name: 'collections',
+            exclude: ['vendor', 'utils', 'syncs', 'models', 'views']
+        },
+        // Packages
+        {
+            name: 'header',
+            exclude: ['vendor', 'utils', 'syncs', 'models', 'views', 'collections']
+        }
+        // ... and so much more ...
+    ]
+})
+```
+
+The above build profile is designed for balancing scalability and performance.  
+
+**Examples of the grouped sets of code dependencies**  
+
+The contents of the vendor.js which is not built into a package may use some *no conflict* calls as well.  
+
+```javascript
+// List of vendor libraries, e.g. jQuery, Underscore, Backbone, etc.  
+// this module is used with the r.js optimizer tool during build  
+// @see <http://requirejs.org/docs/faq-optimization.html>
+define([ "jquery", "underscore", "backbone", "modernizr", "mustache" ], 
+function ($,        _,            Backbone,   Modernizr,   Mustache) {
+    // call no conflicts so if needed you can use multiple versions of $
+    $.noConflict();
+    _.noConflict();
+    Backbone.noConflict();
+});
+```
+
+For your application common library code.  
+
+```javascript
+// List of utility libraries,
+define([ "utils/ajax", "utils/baselib", "utils/localstorage", "utils/debug", "utils/shims" ], 
+function (ajax,         baselib,         localstorage,         debug) {
+    return {
+        "ajax" : ajax,
+        "baselib" : baselib,
+        "localstorage" : localstorage,
+        "debug" : debug
+    };
+    // the shim only extend JavaScript when needed, e.g. Object.create
+});
+```
+
+An example where you intend to use require the common models in another package file.  
+
+```javascript
+// List of models  
+// models in this directory are intended for site-wide usage  
+// grouping site-wide models in this module (object)
+// optimizes the performance and keeps dependencies organized
+// when the (build) optimizer is run.
+define([ "models/branding", "models/section" ], 
+function (Branding,          Section) {
+    return {
+        "Branding" : Branding,
+        "Section"  : Section
+    };
+});
+```
+
+#### A quick note on code standards
+
+Notice that in the above examples the parameters may begin with lower or upper case characters. The variable names uses in the parameters that begin with *Uppercase* are *Constructors* and the *lowercase* variable names are not, they may be instances created by a constructor, or perhaps an object or function that is not meant to used with *new*.
+
+The convention recommended is to use Upper CamelCase for constructors and lower camelCase for others. 
+
+#### Common Pitfall when organizing code in modules
+
+Be careful not define circular dependencies. For example, in a common *models* package (models.js) dependencies are listed for the files in your models directory
+
+    define([ "models/branding", "models/section" ], function (branding, section)  
+    // ...  
+    return { "branding" : branding, "section", section }  
+
+Then when another packages requires a common model you can access the models objects returned from your common models.js file like so...
+
+    define([ "models", "utils" ], function (models, utils) {  
+    var branding = models.branding, debug = utils.debug;  
+
+Perhaps after using the model a few times you get into the habit of requiring "model". Later you need add another common model with extends a model you already defined. So the pitfall begins, you add a new model inside your models directory and add a reference this same model in the model.js:
+
+    define([ "models/branding", "models/section", "models/section-b" ], function (branding, section)  
+    // ...  
+    return { "branding" : branding, "section", section, "section-b" : section-b }
+
+However in your *models/section-b.js* file you define a dependency using the model.js which returns the models in an object like so...
+
+    define([ "models" ], function (models, utils) {  
+    var section = models.section;
+
+Above is the mistake in models.js a dependency was added for models/section-b and in section-b a dependency is defined for model. The new models/section-b.js requires *model* and model.js requires *models/section-b.js* - a circular dependency. This should result in a load timeout error from require.js, but not tell you about the circular dependency. 
+
+For other common mistakes see the [COMMON ERRORS](http://requirejs.org/docs/errors.html "RequireJS common errors page") page on the Require.js site.
+
+#### Executing the Build with r.js
+
+If you intalled r.js with Node's npm (package manager) like so...
+
+    > npm install requirejs
+
+...you can execute the build on the command line:
+
+    > r.js -o app.build.js
+
+
+##<a name="practicalrequirejs">Practical: Building a modular Backbone app with AMD & Require.js</a>
+
+In this chapter, we'll look at our first practical Backbone & Require.js project - how to build a modular Todo application. The application will allow us to add new todos, edit new todos and clear todo items that have been marked as completed. For a more advanced practical, see the section on mobile Backbone development.
 
 The complete code for the application can can be found in the `practicals/modular-todo-app` folder of this repo (thanks to Thomas Davis and J&eacute;r&ocirc;me Gravel-Niquet). Alternatively grab a copy of my side-project [TodoMVC](https://github.com/addyosmani/todomvc) which contains the sources to both AMD and non-AMD versions.
 
@@ -4019,7 +4421,7 @@ The complete code for the application can can be found in the `practicals/modula
 
 Writing a 'modular' Backbone application can be a straight-forward process. There are however, some key conceptual differences to be aware of if opting to use AMD as your module format of choice:
 
-* As AMD isn't a standard native to JavaScript or the browser, it's necessary to use a script loader (such as RequireJS or curl.js) in order to support defining components and modules using this module format. As we've already reviewed, there are a number of advantages to using the AMD as well as RequireJS to assist here.
+* As AMD isn't a standard native to JavaScript or the browser, it's necessary to use a script loader (such as Require.js or curl.js) in order to support defining components and modules using this module format. As we've already reviewed, there are a number of advantages to using the AMD as well as Require.js to assist here.
 * Models, views, controllers and routers need to be encapsulated *using* the AMD-format. This allows each component of our Backbone application to cleanly manage dependencies (e.g collections required by a view) in the same way that AMD allows non-Backbone modules to.
 * Non-Backbone components/modules (such as utilities or application helpers) can also be encapsulated using AMD. I encourage you to try developing these modules in such a way that they can both be used and tested independent of your Backbone code as this will increase their ability to be re-used elsewhere.
 
@@ -4080,7 +4482,7 @@ The rest of the tutorial will now focus on the JavaScript side of the practical.
 
 If you've read the earlier chapter on AMD, you may have noticed that explicitly needing to define each dependency a Backbone module (view, collection or other module) may require with it can get a little tedious. This can however be improved.
 
-In order to simplify referencing common paths the modules in our application may use, we use a RequireJS [configuration object](http://requirejs.org/docs/api.html#config), which is typically defined as a top-level script file. Configuration objects have a number of useful capabilities, the most useful being mode name-mapping. Name-maps are basically a key:value pair, where the key defines the alias you wish to use for a path and the value represents the true location of the path.
+In order to simplify referencing common paths the modules in our application may use, we use a Require.js [configuration object](http://requirejs.org/docs/api.html#config), which is typically defined as a top-level script file. Configuration objects have a number of useful capabilities, the most useful being mode name-mapping. Name-maps are basically a key:value pair, where the key defines the alias you wish to use for a path and the value represents the true location of the path.
 
 In the code-sample below, you can see some typical examples of common name-maps which include: `backbone`, `underscore`, `jquery` and depending on your choice, the RequireJS `text` plugin, which assists with loading text assets like templates.
 
@@ -4214,7 +4616,7 @@ define([
 
  From a maintenance perspective, there's nothing logically different in this version of our view, except for how we approach templating. 
 
-Using the RequireJS text plugin (the dependency marked `text`), we can actually store all of the contents for the template we looked at earlier in an external file (todos.html).
+Using the Require.js text plugin (the dependency marked `text`), we can actually store all of the contents for the template we looked at earlier in an external file (todos.html).
 
 **templates/todos.html**
 
@@ -4364,7 +4766,7 @@ The rest of the source for the Todo app mainly consists of code for handling use
 
 To see how everything ties together, feel free to grab the source by cloning this repo or browse it [online](https://github.com/addyosmani/backbone-fundamentals/tree/master/practicals/modular-todo-app) to learn more. I hope you find it helpful!.
 
-**Note:** While this first practical doesn't use a build profile as outlined in the chapter on using the RequireJS optimizer, we will be using one in the section on building mobile Backbone applications.
+**Note:** While this first practical doesn't use a build profile as outlined in the chapter on using the Require.js optimizer, we will be using one in the section on building mobile Backbone applications.
 
 
 ##<a name="decouplingbackbone">Decoupling Backbone with the Mediator and Facade patterns</a>
@@ -4697,11 +5099,11 @@ That's it for this section. If you've been intrigued by some of the concepts cov
 
 Pagination is a ubiquitous problem we often find ourselves needing to solve on the web. Perhaps most predominantly when working with back-end APIs and JavaScript-heavy clients which consume them.
 
-On this topic, we're going to go through a set of **pagination components ** I wrote for Backbone.js, which should hopefully come in useful if you're working on applications which need to tackle this problem. They're part of an extension called [Backbone.Paginator][http://github.com/addyosmani/backbone-paginator].
+On this topic, we're going to go through a set of **pagination components** I wrote for Backbone.js, which should hopefully come in useful if you're working on applications which need to tackle this problem. They're part of an extension called [Backbone.Paginator](http://github.com/addyosmani/backbone-paginator).
 
 When working with a structural framework like Backbone.js, the three types of pagination we are most likely to run into are:
 
-**Requests to a service layer (API) **- e.g query for results containing the term 'Brendan' - if 5,000 results are available only display 20 results per page (leaving us with 250 possible result pages that can be navigated to).
+**Requests to a service layer (API)**- e.g query for results containing the term 'Brendan' - if 5,000 results are available only display 20 results per page (leaving us with 250 possible result pages that can be navigated to).
 
 This problem actually has quite a great deal more to it, such as maintaining persistence of other URL parameters (e.g sort, query, order) which can change based on a user's search configuration in a UI. One also had to think of a clean way of hooking views up to this pagination so you can easily navigate between pages (e.g First, Last, Next, Previous, 1,2,3), manage the number of results displayed per page and so on.
 
@@ -5020,7 +5422,10 @@ Use levenshtein only for short texts (titles, names, etc).
 * **Collection.doFakeFilter(filterFields, filterWords)** - returns the models count after fake-applying a call to ```Collection.setFilter```.
 
 * **Collection.setFieldFilter(rules)** - filter each value of each model according to `rules` that you pass as argument. Example: You have a collection of books with 'release year' and 'author'. You can filter only the books that were released between 1999 and 2003. And then you can add another `rule` that will filter those books only to authors who's name start with 'A'. Possible rules: function, required, min, max, range, minLength, maxLength, rangeLength, oneOf, equalTo, pattern.
+
+
 ```javascript
+
   my_collection.setFieldFilter([
     {field: 'release_year', type: 'range', value: {min: '1999', max: '2003'}},
     {field: 'author', type: 'pattern', value: new RegExp('A*', 'igm')}
@@ -5041,6 +5446,7 @@ Use levenshtein only for short texts (titles, names, etc).
   //{field: 'color_name', type: 'rangeLength', value: {min: '4', max: '6'}}
   //{field: 'color_name', type: 'oneOf', value: ['green', 'yellow']}
   //{field: 'color_name', type: 'pattern', value: new RegExp('gre*', 'ig')}
+
 ```
 
 * **Collection.doFakeFieldFilter(rules)** - returns the models count after fake-applying a call to ```Collection.setFieldFilter```.
@@ -5126,10 +5532,10 @@ $.mobile.changePage( url , { transition: effect}, reverse, changeHash );
 
 In the above sample, `url` can refer to a URL or a hash identifier to navigate to, `effect` is simply the transition effect to animate the page in with and the final two parameters decide the direction for the transition (`reverse`) and whether or not the hash in the address bar should be updated (`changeHash`). With respect to the latter, I typically set this to false to avoid managing two sources for hash updates, but feel free to set this to true if you're comfortable doing so.
 
-**Note:** For some parallel work being done to explore how well the jQuery Mobile Router plugin works with Backbone, you may be interested in checking out https://github.com/Filirom1/jquery-mobile-backbone-requirejs.
+**Note:** For some parallel work being done to explore how well the jQuery Mobile Router plugin works with Backbone, you may be interested in checking out [https://github.com/Filirom1/jquery-mobile-backbone-requirejs](https://github.com/Filirom1/jquery-mobile-backbone-requirejs).
 
 
-###Practical: A Backbone, RequireJS/AMD app with jQuery Mobile
+###Practical: A Backbone, Require.js/AMD app with jQuery Mobile
 
 **Note:** The code for this practical can be found in `practicals/modular-mobile-app`.
 
@@ -7152,12 +7558,11 @@ That's it for this section on testing applications with QUnit and SinonJS. I enc
 
 Whilst what we get with Backbone out of the box can be terribly useful, there are some equally beneficial add-ons that can help simplify our development process. These include:
 
+* [Backbone Marionette](https://github.com/derickbailey/backbone.marionette)
 * [Backbone Layout Manager](https://github.com/tbranyen/backbone.layoutmanager)
 * [Backbone Boilerplate](https://github.com/backbone-boilerplate/backbone-boilerplate)
 * [Backbone Model Binding](https://github.com/derickbailey/backbone.modelbinding)
 * [Backbone Relational - for model relationships](https://github.com/PaulUithol/Backbone-relational)
-* [View and model inheritance](https://gist.github.com/1271041)
-* [Backbone Marionette](https://github.com/derickbailey/backbone.marionette)
 * [Backbone CouchDB](https://github.com/janmonschke/backbone-couchdb)
 * [Backbone Validations - HTML5 inspired validations](https://github.com/n-time/backbone.validations)
 
@@ -7173,7 +7578,11 @@ If there are other topics or areas of this book you feel could be expanded furth
 
 Until next time, the very best of luck with the rest of your journey!
 
+## Notes
+
+I would like to thank the Backbone.js, Stack Overflow, DailyJS (Alex Young) and JavaScript communities for their help, references and contributions to this book. This project would not be possible without you so thank you! :)
+
 
 ---
-Copyright Addy Osmani, 2012. 
+Where relevant, copyright Addy Osmani, 2012. 
 
