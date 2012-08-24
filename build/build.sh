@@ -7,7 +7,7 @@
 #e.g /Users/apple/Desktop/usr/local/bin/pandoc
 
 #html
-pandoc -s ../index.md -o ../index.html -c style.css --include-before-body=author.html --include-before-body=share.html --title-prefix='Developing Backbone.js Applications'
+pandoc -s ../index.md -o ../index.html -c style.css --include-before-body=author.html --include-before-body=share.html --include-after-body=stats.html  --title-prefix='Developing Backbone.js Applications'
 
 #epub
 pandoc -s ../index.md -t epub --epub-metadata=metadata.xml -o ../backbone-fundamentals.epub -c style.css --title-prefix='Developing Backbone.js Applications' --epub-cover-image=../img/cover.jpg
