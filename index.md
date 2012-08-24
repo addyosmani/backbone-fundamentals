@@ -21,7 +21,7 @@ I hope you find this book helpful!
 * ####[Fundamentals](#fundamentals)
     * [MVC, MVP & Backbone.js](#mvc-mvp)
 
-* ####[The Basics](#thebasics)
+* ####[The Internals](#theinternals)
     * [Models](#thebasics-models)
     * [Views](#thebasics-views)
     * [Collections](#thebasics-collections)
@@ -46,7 +46,7 @@ I hope you find this book helpful!
     * [Building Backbone.js apps with Ruby, Sinatra, Haml and MongoDB](#stack2)
     * [Paginating Backbone.js Requests & Collections](#pagination) *
 
-* ####[Advanced](#advanced)    
+* ####[Going Modular](#advanced)    
     * [Modular JavaScript](#modularjs)
     * [Organizing modules with Require.js and AMD](#organizingmodules)
     * [Keeping your templates external with the Require.js text plugin](#externaltemplates)
@@ -63,21 +63,21 @@ I hope you find this book helpful!
       * Jasmine
         * Suites, Specs And Spies
         * TDD With Backbone
-          * [Testing Models](#testing-jasmine-models)
-          * [Testing Collections](#testing-jasmine-collections)
-          * [Testing Views](#testing-jasmine-views)
+          * Testing Models
+          * Testing Collections
+          * Testing Views
     * [Unit Testing Backbone Applications With QUnit And SinonJS](#unittestingqunit)
-        * Introduction
-        * QUnit
+      * Introduction
+      * QUnit
           * Assertions
           * Adding structure to assertions
           * Assertion examples
           * Fixtures
           * Asynchronous code
-        * SinonJS
+      * SinonJS
           * Stubs
           * Mocks
-        * Practical
+      * Practical
           * Testing Models
           * Testing Collections
           * Testing Views
@@ -528,7 +528,7 @@ It *is* however worth understanding where and why these concepts originated, so 
 
 
 
-##<a name="thebasics">The Basics</a>
+##<a name="theinternals">The Internals</a>
 ---
 
 ###What is Backbone?

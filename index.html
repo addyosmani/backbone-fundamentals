@@ -58,7 +58,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <ul>
 <li><a href="#mvc-mvp">MVC, MVP &amp; Backbone.js</a></li>
 </ul></li>
-<li><h4><a href="#thebasics">The Basics</a></h4>
+<li><h4><a href="#theinternals">The Internals</a></h4>
 <ul>
 <li><a href="#thebasics-models">Models</a></li>
 <li><a href="#thebasics-views">Views</a></li>
@@ -85,7 +85,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <li><a href="#stack2">Building Backbone.js apps with Ruby, Sinatra, Haml and MongoDB</a></li>
 <li><a href="#pagination">Paginating Backbone.js Requests &amp; Collections</a> *</li>
 </ul></li>
-<li><h4><a href="#advanced">Advanced</a></h4>
+<li><h4><a href="#advanced">Going Modular</a></h4>
 <ul>
 <li><a href="#modularjs">Modular JavaScript</a></li>
 <li><a href="#organizingmodules">Organizing modules with Require.js and AMD</a></li>
@@ -105,23 +105,27 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <ul>
 <li>Suites, Specs And Spies</li>
 <li>TDD With Backbone</li>
-<li><a href="#testing-jasmine-models">Testing Models</a></li>
-<li><a href="#testing-jasmine-collections">Testing Collections</a></li>
-<li><a href="#testing-jasmine-views">Testing Views</a></li>
+<li>Testing Models</li>
+<li>Testing Collections</li>
+<li>Testing Views</li>
 </ul></li>
-<li><a href="#unittestingqunit">Unit Testing Backbone Applications With QUnit And SinonJS</a>
-<ul>
+<li><a href="#unittestingqunit">Unit Testing Backbone Applications With QUnit And SinonJS</a></li>
 <li>Introduction</li>
-<li>QUnit</li>
+<li>QUnit
+<ul>
 <li>Assertions</li>
 <li>Adding structure to assertions</li>
 <li>Assertion examples</li>
 <li>Fixtures</li>
 <li>Asynchronous code</li>
-<li>SinonJS</li>
+</ul></li>
+<li>SinonJS
+<ul>
 <li>Stubs</li>
 <li>Mocks</li>
-<li>Practical</li>
+</ul></li>
+<li>Practical
+<ul>
 <li>Testing Models</li>
 <li>Testing Collections</li>
 <li>Testing Views</li>
@@ -410,7 +414,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <li>Doesn't support deeply nested models, though there are Backbone plugins such as <a href="https://github.com/PaulUithol/Backbone-relational">this</a> which can help<br /></li>
 <li>Clear and flexible conventions for structuring applications. Backbone doesn't force usage of all of its components and can work with only those needed.</li>
 </ul>
-<h2 id="the-basics">##<a name="thebasics">The Basics</a></h2>
+<h2 id="the-internals">##<a name="theinternals">The Internals</a></h2>
 <h3 id="what-is-backbone">What is Backbone?</h3>
 <p>Backbone.js is one of a number of JavaScript frameworks for creating MVC-like web applications. On the front-end, it's my architectural framework of choice as it's both mature, relatively lightweight and can be easily tested using third-party toolkits such as Jasmine or QUnit. Other MVC frameworks you may be familiar with include Ember.js (SproutCore 2.0), Spine, YUILibrary and JavaScriptMVC.</p>
 <p>Backbone is maintained by a number of contributors, most notably: Jeremy Ashkenas, creator of CoffeeScript, Docco and Underscore.js. As Jeremy is a believer in detailed documentation, there's a level of comfort in knowing you're unlikely to run into issues which are either not explained in the official docs or which can't be nailed down with some assistance from the #documentcloud IRC channel. I strongly recommend using the latter if you find yourself getting stuck.</p>
@@ -428,7 +432,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <p>&quot;I want something flexible which offers a minimalist solution to separating concerns in my application. It should support a persistence layer and RESTful sync, models, views (with controllers), event-driven communication, templating and routing. It should be imperative, allowing one to update the View when a model changes. I’d like some decisions about the architecture left up to me. Ideally, many large companies have used the solution to build non-trivial applications.</p>
 <p>As I may be building something complex, I’d like there to be an active extension community around the framework that have already tried addressing larger problems (Marionette, Chaplin, Aura, Thorax). Ideally, there are also scaffolding tools (grunt-bbb, brunch) available for the solution.&quot;</p>
 <p>If so, continue reading.</p>
-<h2 id="the-basics-1">The Basics</h2>
+<h2 id="the-basics">The Basics</h2>
 <p>In this section, you'll learn the essentials of Backbone's models, views, collections and routers, as well as about using namespacing to organize your code. This isn't meant as a replacement for the official documentation, but it will help you understand many of the core concepts behind Backbone before you start building applications with it.</p>
 <ul>
 <li>Models</li>
