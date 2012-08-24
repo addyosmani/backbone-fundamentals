@@ -2,7 +2,7 @@
 
 Welcome to my (in-progress) book about the [Backbone.js](http://documentcloud.github.com/backbone/) framework for structuring JavaScript applications. It's released under a Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported [license](http://creativecommons.org/licenses/by-nc-sa/3.0/) meaning you can both grab a copy of the book for free or help to further [improve](https://github.com/addyosmani/backbone-fundamentals/) it.
 
-I'm very pleased to announce that this book will be out in physical form in a few months time via [O'Reilly Media](http://oreilly.com). Readers will have the option of purchasing the latest version in either print or a number of digital formats then or can grab a recent version from this repository.
+I'm very pleased to announce that this book will be out in physical form later in the year via [O'Reilly Media](http://oreilly.com). Readers will have the option of purchasing the latest version in either print or a number of digital formats then or can grab a recent version from this repository.
 
 Corrections to existing material are always welcome and I hope that together we can provide the community with an up-to-date resource that is of help.
 My extended thanks go out to [Jeremy Ashkenas](https://github.com/jashkenas) for creating Backbone.js and [these](https://github.com/addyosmani/backbone-fundamentals/contributors) members of the community for their assistance tweaking this project.
@@ -520,7 +520,7 @@ It *is* however worth understanding where and why these concepts originated, so 
 
 
 
-## <a name="thebasics">The Basics</a>
+##<a name="thebasics">The Basics</a>
 ---
 
 ###What is Backbone?
@@ -1489,7 +1489,7 @@ Reviewing the namespace patterns above, the option that I prefer when writing Ba
 Single global variables may work fine for applications that are relatively trivial. However, larger codebases requiring both namespaces and deep sub-namespaces require a succinct solution that's both readable and scalable. I feel this pattern achieves both of these objectives and is a good choice for most Backbone development.
 
 
-###<a name="thebasics-additional-tips" id="thebasics-additional-tips">Common Questions & Answers</a>
+## <a name="thebasics-additional-tips" id="thebasics-additional-tips">Common Questions & Answers</a>
 
 #### What is the best approach for rendering and appending Sub-Views in Backbone.js?
 

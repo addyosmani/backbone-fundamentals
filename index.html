@@ -32,7 +32,10 @@ code > span.er { color: #ff0000; font-weight: bold; }
 	<h3>By Addy Osmani <a href="http://twitter.com/addyosmani">@addyosmani</a></h3>
 </p>
 <div style="width:500px">
-  
+
+<iframe src="http://ghbtns.com/github-btn.html?user=addyosmani&repo=backbone-fundamentals&type=watch&count=true"
+  allowtransparency="true" frameborder="0" scrolling="0" width="110px" height="20px"></iframe>
+
  <iframe allowtransparency="true" frameborder="0" scrolling="no" src="http://platform.twitter.com/widgets/tweet_button.1333103182.html#_=1333404284780&amp;count=horizontal&amp;id=twitter-widget-0&amp;lang=en&amp;original_referer=http%3A%2F%2Faddyosmani.github.com%2Fbackbone-fundamentals%2F&amp;size=m&amp;text=Developing%20Backbone.js%20Applications&amp;url=https%3A%2F%2Fgithub.com%2Faddyosmani%2Fbackbone-fundamentals&amp;via=addy_osmani" class="twitter-share-button twitter-count-horizontal" style="width: 107px; height: 20px; " title="Twitter Tweet Button"></iframe>
 <script id="twitter-wjs" src="//platform.twitter.com/widgets.js"></script><script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
 
@@ -40,7 +43,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 </div>
 <h2 id="prelude">Prelude</h2>
 <p>Welcome to my (in-progress) book about the <a href="http://documentcloud.github.com/backbone/">Backbone.js</a> framework for structuring JavaScript applications. It's released under a Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported <a href="http://creativecommons.org/licenses/by-nc-sa/3.0/">license</a> meaning you can both grab a copy of the book for free or help to further <a href="https://github.com/addyosmani/backbone-fundamentals/">improve</a> it.</p>
-<p>I'm very pleased to announce that this book will be out in physical form in a few months time via <a href="http://oreilly.com">O'Reilly Media</a>. Readers will have the option of purchasing the latest version in either print or a number of digital formats then or can grab a recent version from this repository.</p>
+<p>I'm very pleased to announce that this book will be out in physical form later in the year via <a href="http://oreilly.com">O'Reilly Media</a>. Readers will have the option of purchasing the latest version in either print or a number of digital formats then or can grab a recent version from this repository.</p>
 <p>Corrections to existing material are always welcome and I hope that together we can provide the community with an up-to-date resource that is of help. My extended thanks go out to <a href="https://github.com/jashkenas">Jeremy Ashkenas</a> for creating Backbone.js and <a href="https://github.com/addyosmani/backbone-fundamentals/contributors">these</a> members of the community for their assistance tweaking this project.</p>
 <p>I hope you find this book helpful!</p>
 <h2 id="table-of-contents">Table Of Contents</h2>
@@ -400,7 +403,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <li>Doesn't support deeply nested models, though there are Backbone plugins such as <a href="https://github.com/PaulUithol/Backbone-relational">this</a> which can help<br /></li>
 <li>Clear and flexible conventions for structuring applications. Backbone doesn't force usage of all of its components and can work with only those needed.</li>
 </ul>
-<h2 id="the-basics">## <a name="thebasics">The Basics</a></h2>
+<h2 id="the-basics">##<a name="thebasics">The Basics</a></h2>
 <h3 id="what-is-backbone">What is Backbone?</h3>
 <p>Backbone.js is one of a number of JavaScript frameworks for creating MVC-like web applications. On the front-end, it's my architectural framework of choice as it's both mature, relatively lightweight and can be easily tested using third-party toolkits such as Jasmine or QUnit. Other MVC frameworks you may be familiar with include Ember.js (SproutCore 2.0), Spine, YUILibrary and JavaScriptMVC.</p>
 <p>Backbone is maintained by a number of contributors, most notably: Jeremy Ashkenas, creator of CoffeeScript, Docco and Underscore.js. As Jeremy is a believer in detailed documentation, there's a level of comfort in knowing you're unlikely to run into issues which are either not explained in the official docs or which can't be nailed down with some assistance from the #documentcloud IRC channel. I strongly recommend using the latter if you find yourself getting stuck.</p>
@@ -1034,7 +1037,7 @@ myApplication_galleryView = <span class="kw">Backbone.View</span>.<span class="f
 <p><strong>Recommendation</strong></p>
 <p>Reviewing the namespace patterns above, the option that I prefer when writing Backbone applications is nested object namespacing with the object literal pattern.</p>
 <p>Single global variables may work fine for applications that are relatively trivial. However, larger codebases requiring both namespaces and deep sub-namespaces require a succinct solution that's both readable and scalable. I feel this pattern achieves both of these objectives and is a good choice for most Backbone development.</p>
-<h3 id="common-questions-answers"><a name="thebasics-additional-tips" id="thebasics-additional-tips">Common Questions &amp; Answers</a></h3>
+<h2 id="common-questions-answers"><a name="thebasics-additional-tips" id="thebasics-additional-tips">Common Questions &amp; Answers</a></h2>
 <h4 id="what-is-the-best-approach-for-rendering-and-appending-sub-views-in-backbone.js">What is the best approach for rendering and appending Sub-Views in Backbone.js?</h4>
 <p>If you have a nested View setup in your application, there are a few approaches possible for initializing, rendering and appending your sub-views.</p>
 <p>One possible solution is the following:</p>
