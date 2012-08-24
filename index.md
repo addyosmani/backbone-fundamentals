@@ -22,14 +22,15 @@ I hope you find this book helpful!
     * [Collections](#thebasics-collections)
     * [Routers](#thebasics-routers)
     * [Namespacing](#thebasics-namespacing)
-    * [Common Questions & Answers](#thebasics-additional-tips)
-       * Rendering Sub-Views
-       * Managing Nested Views
-       * View Inheritance
-       * Views Triggering Other Views
-       * Child Views Rendering Parent Views
-       * Parent And Child View Disposal
-       * Appending Views
+
+* ####[Common Questions & Answers](#thebasics-additional-tips)
+    * Rendering Sub-Views
+    * Managing Nested Views
+    * View Inheritance
+    * Views Triggering Other Views
+    * Child Views Rendering Parent Views
+    * Parent And Child View Disposal
+    * Appending Views
 
 * ####[Backbone Boilerplate & Grunt BBB](#backboneboilerplate)
 
@@ -58,21 +59,21 @@ I hope you find this book helpful!
           * [Testing Collections](#testing-jasmine-collections)
           * [Testing Views](#testing-jasmine-views)
     * [Unit Testing Backbone Applications With QUnit And SinonJS](#unittestingqunit)
-      * Introduction
-      * QUnit
-        * Assertions
-        * Adding structure to assertions
-        * Assertion examples
-        * Fixtures
-        * Asynchronous code
-      * SinonJS
-        * Stubs
-        * Mocks
-      * Practical
-        * Testing Models
-        * Testing Collections
-        * Testing Views
-        * Testing Events
+        * Introduction
+        * QUnit
+          * Assertions
+          * Adding structure to assertions
+          * Assertion examples
+          * Fixtures
+          * Asynchronous code
+        * SinonJS
+          * Stubs
+          * Mocks
+        * Practical
+          * Testing Models
+          * Testing Collections
+          * Testing Views
+          * Testing Events
 
 
 
@@ -1559,7 +1560,7 @@ Generally speaking, more developers opt for the first solution as:
 
 (Thanks to [Lukas](http://stackoverflow.com/questions/9271507/how-to-render-and-append-sub-views-in-backbone-js) for this tip).
 
-## What is a straight-forward way to manage Nested Views?
+#### What is a straight-forward way to manage Nested Views?
 
 In order to reach attributes on related models, the models involved need to have some prior knowledge about which models this refers to. Backbone.js doesn't implicitly handle relations or nesting, meaning it's up to us to ensure models have a knowledge of each other.
 
@@ -1647,7 +1648,7 @@ There is more information about this technique available on [GitHub](https://git
 
 (Thanks to [Jens Alm](http://stackoverflow.com/users/100952/jens-alm) and [Artem Oboturov](http://stackoverflow.com/users/801466/artem-oboturov) for these tips)
 
-### How would one go about writing Views which inherit from other Views?
+#### How would one go about writing Views which inherit from other Views?
 
 Underscore.js provides an `_.extend()` method that gives us the ability to both write mixins for Views and inherit from Views quite easily. 
 
@@ -1879,9 +1880,7 @@ Backbone can be used for building both trivial and complex applications as demon
 At the end of the day, the key to building large applications is not to build large applications in the first place. If you find that Backbone doesn't cut it for your requirements, I strongly recommend checking out JavaScriptMVC, SproutCore, or Ember.js as they offer a little more than Backbone out of the box. Dojo and Dojo Mobile may also be of interest as these have also been used to build significantly complex apps by other developers.
 
 
-## <a name="backboneboilerplate">Backbone Boilerplate</a>
-
-# Backbone Boilerplate And Grunt-BBB
+# <a name="backboneboilerplate">Backbone Boilerplate And Grunt-BBB</a> 
 
 [Backbone Boilerplate](https://github.com/tbranyen/backbone-boilerplate/) is an excellent set of best practices and utilities for building Backbone.js applications, created by Backbone contributor [Tim Branyen](https://github.com/tbranyen). He organized this boilerplate out of the gotchas, pitfalls and common tasks he ran into over a year of heavily using Backbone to build apps at Bocoup. This includes apps such [StartupDataTrends.com](http://startupdatatrends).
 
@@ -2217,7 +2216,7 @@ function($, _, Backbone) {
 });
 ```
 
-### Creating Backbone Boilerplate modules
+### Creating Backbone Boilerplate Modules
 
 Not to be confused with simply being just an AMD module, a Backbone Boilerplate `module` is a script composed of a:
 

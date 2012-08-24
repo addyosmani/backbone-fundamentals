@@ -57,8 +57,18 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <li><a href="#thebasics-collections">Collections</a></li>
 <li><a href="#thebasics-routers">Routers</a></li>
 <li><a href="#thebasics-namespacing">Namespacing</a></li>
-<li><a href="#thebasics-additional-tips">Additional tips</a></li>
 </ul></li>
+<li><h4><a href="#thebasics-additional-tips">Common Questions &amp; Answers</a></h4>
+<ul>
+<li>Rendering Sub-Views</li>
+<li>Managing Nested Views</li>
+<li>View Inheritance</li>
+<li>Views Triggering Other Views</li>
+<li>Child Views Rendering Parent Views</li>
+<li>Parent And Child View Disposal</li>
+<li>Appending Views</li>
+</ul></li>
+<li><h4><a href="#backboneboilerplate">Backbone Boilerplate &amp; Grunt BBB</a></h4></li>
 <li><h4><a href="#restfulapps">RESTful Applications</a></h4>
 <ul>
 <li><a href="#restful">Building RESTful applications with Backbone</a></li>
@@ -89,23 +99,19 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <li><a href="#testing-jasmine-collections">Testing Collections</a></li>
 <li><a href="#testing-jasmine-views">Testing Views</a></li>
 </ul></li>
-<li><a href="#unittestingqunit">Unit Testing Backbone Applications With QUnit And SinonJS</a></li>
-<li>Introduction</li>
-<li>QUnit
+<li><a href="#unittestingqunit">Unit Testing Backbone Applications With QUnit And SinonJS</a>
 <ul>
+<li>Introduction</li>
+<li>QUnit</li>
 <li>Assertions</li>
 <li>Adding structure to assertions</li>
 <li>Assertion examples</li>
 <li>Fixtures</li>
 <li>Asynchronous code</li>
-</ul></li>
-<li>SinonJS
-<ul>
+<li>SinonJS</li>
 <li>Stubs</li>
 <li>Mocks</li>
-</ul></li>
-<li>Practical
-<ul>
+<li>Practical</li>
 <li>Testing Models</li>
 <li>Testing Collections</li>
 <li>Testing Views</li>
@@ -666,8 +672,10 @@ id: &#39;header&#39;, // optional</code></pre>
   <span class="ch">&#39;read&#39;</span>:   <span class="ch">&#39;GET&#39;</span>
 };</code></pre>
 <p>In the above example if we wanted to log an event when <code>.sync()</code> was called, we could do this:</p>
-<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">Backbone</span>.<span class="fu">sync</span> = <span class="kw">function</span>(method, model) {
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> id_counter = <span class="dv">1</span>;
+<span class="kw">Backbone</span>.<span class="fu">sync</span> = <span class="kw">function</span>(method, model) {
   <span class="kw">console</span>.<span class="fu">log</span>(<span class="st">&quot;I&#39;ve been passed &quot;</span> + method + <span class="st">&quot; with &quot;</span> + <span class="kw">JSON</span>.<span class="fu">stringify</span>(model));
+  <span class="kw">if</span>(method === <span class="ch">&#39;create&#39;</span>){ <span class="kw">model</span>.<span class="fu">set</span>(<span class="ch">&#39;id&#39;</span>, id_counter++); }
 };</code></pre>
 <p><strong>Resetting/Refreshing Collections</strong></p>
 <p>Rather than adding or removing models individually, you might occasionally wish to update an entire collection at once. <code>Collection.reset()</code> allows us to replace an entire collection with new models as follows:</p>
@@ -751,6 +759,8 @@ id: &#39;header&#39;, // optional</code></pre>
 
 <span class="kw">var</span> myGalleryRouter = <span class="kw">new</span> GalleryRouter();</code></pre>
 <p>As of Backbone 0.5+, it's possible to opt-in for HTML5 pushState support via <code>window.history.pushState</code>. This permits you to define routes such as http://www.scriptjunkie.com/just/an/example. This will be supported with automatic degradation when a user's browser doesn't support pushState. For the purposes of this tutorial, we'll use the hashtag method.</p>
+<h4 id="is-there-a-limit-to-the-number-of-routers-i-should-be-using">Is there a limit to the number of routers I should be using?</h4>
+<p>Andrew de Andrade has pointed out that DocumentCloud themselves usually only use a single router in most of their applications. You're very likely to not require more than one or two routers in your own projects as the majority of your application routing can be kept organized in a single controller without it getting unwieldy.</p>
 <h4 id="backbone.history">Backbone.history</h4>
 <p>Next, we need to initialize <code>Backbone.history</code> as it handles <code>hashchange</code> events in our application. This will automatically handle routes that have been defined and trigger callbacks when they've been accessed.</p>
 <p>The <code>Backbone.history.start()</code> method will simply tell Backbone that it's OK to begin monitoring all <code>hashchange</code> events as follows:</p>
@@ -1024,18 +1034,771 @@ myApplication_galleryView = <span class="kw">Backbone.View</span>.<span class="f
 <p><strong>Recommendation</strong></p>
 <p>Reviewing the namespace patterns above, the option that I prefer when writing Backbone applications is nested object namespacing with the object literal pattern.</p>
 <p>Single global variables may work fine for applications that are relatively trivial. However, larger codebases requiring both namespaces and deep sub-namespaces require a succinct solution that's both readable and scalable. I feel this pattern achieves both of these objectives and is a good choice for most Backbone development.</p>
-<h3 id="additional-tips"><a name="thebasics-additional-tips" id="thebasics-additional-tips">Additional Tips</a></h3>
-<h4 id="automated-backbone-scaffolding">Automated Backbone Scaffolding</h4>
-<p>Scaffolding can assist in expediting how quickly you can begin a new application by creating the basic files required for a project automatically. If you enjoy the idea of automated MVC scaffolding using Backbone, I'm happy to recommend checking out a tool called <a href="https://github.com/brunch/brunch">Brunch</a>.</p>
-<p>It works very well with Backbone, Underscore, jQuery and CoffeeScript and is even used by companies such as Red Bull and Jim Beam. You may have to update any third party dependencies (e.g. latest jQuery or Zepto) when using it, but other than that it should be fairly stable to use right out of the box.</p>
-<p>Brunch can be installed via the nodejs package manager and is easy to get started with. If you happen to use Vim or Textmate as your editor of choice, you'll be happy to know that there are Brunch bundles available for both.</p>
-<h4 id="is-there-a-limit-to-the-number-of-routers-i-should-be-using">Is there a limit to the number of routers I should be using?</h4>
-<p>Andrew de Andrade has pointed out that DocumentCloud themselves usually only use a single router in most of their applications. You're very likely to not require more than one or two routers in your own projects as the majority of your application routing can be kept organized in a single controller without it getting unwieldy.</p>
-<h4 id="is-backbone-too-small-for-my-applications-needs">Is Backbone too small for my application's needs?</h4>
+<h3 id="common-questions-answers"><a name="thebasics-additional-tips" id="thebasics-additional-tips">Common Questions &amp; Answers</a></h3>
+<h4 id="what-is-the-best-approach-for-rendering-and-appending-sub-views-in-backbone.js">What is the best approach for rendering and appending Sub-Views in Backbone.js?</h4>
+<p>If you have a nested View setup in your application, there are a few approaches possible for initializing, rendering and appending your sub-views.</p>
+<p>One possible solution is the following:</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript">
+<span class="kw">var</span> OuterView = <span class="kw">Backbone.View</span>.<span class="fu">extend</span>({
+    <span class="dt">initialize</span>: <span class="kw">function</span>() {
+        <span class="kw">this</span>.<span class="fu">inner</span> = <span class="kw">new</span> InnerView();
+    },
+
+    <span class="dt">render</span>: <span class="kw">function</span>() {
+        <span class="kw">this</span>.$<span class="fu">el</span>.<span class="fu">html</span>(template); <span class="co">// or this.$el.empty() if you have no template</span>
+        <span class="kw">this</span>.$<span class="fu">el</span>.<span class="fu">append</span>(<span class="kw">this</span>.<span class="fu">inner</span>.$<span class="fu">el</span>);
+        <span class="kw">this</span>.<span class="fu">inner</span>.<span class="fu">render</span>();
+    }
+});
+
+<span class="kw">var</span> InnerView = <span class="kw">Backbone.View</span>.<span class="fu">extend</span>({
+    <span class="dt">render</span>: <span class="kw">function</span>() {
+        <span class="kw">this</span>.$<span class="fu">el</span>.<span class="fu">html</span>(template);
+        <span class="kw">this</span>.<span class="fu">delegateEvents</span>();
+    }
+});</code></pre>
+<p>Which tackles a few specific design decisions:</p>
+<ul>
+<li>The order in which you append the sub-elements matters</li>
+<li>The OuterView doesn't contain the HTML elements to be set in the InnerView(s), meaning that we can still specify tagName in the InnerView</li>
+<li>render() is called after the InnerView element has been placed into the DOM. This is useful if your InnerViews render() method is sizing itself on the page based on the dimensions of another element. This is a common use case.</li>
+</ul>
+<p>A second potential solution is this, which may appear cleaner but in reality has a tendency to affect performance:</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript">
+<span class="kw">var</span> OuterView = <span class="kw">Backbone.View</span>.<span class="fu">extend</span>({
+    <span class="dt">initialize</span>: <span class="kw">function</span>() {
+        <span class="kw">this</span>.<span class="fu">render</span>();
+    },
+
+    <span class="dt">render</span>: <span class="kw">function</span>() {
+        <span class="kw">this</span>.$<span class="fu">el</span>.<span class="fu">html</span>(template); <span class="co">// or this.$el.empty() if you have no template</span>
+        <span class="kw">this</span>.<span class="fu">inner</span> = <span class="kw">new</span> InnerView();
+        <span class="kw">this</span>.$<span class="fu">el</span>.<span class="fu">append</span>(<span class="kw">this</span>.<span class="fu">inner</span>.$<span class="fu">el</span>);
+    }
+});
+
+<span class="kw">var</span> InnerView = <span class="kw">Backbone.View</span>.<span class="fu">extend</span>({
+    <span class="dt">initialize</span>: <span class="kw">function</span>() {
+        <span class="kw">this</span>.<span class="fu">render</span>();
+    },
+
+    <span class="dt">render</span>: <span class="kw">function</span>() {
+        <span class="kw">this</span>.$<span class="fu">el</span>.<span class="fu">html</span>(template);
+    }
+});</code></pre>
+<p>Generally speaking, more developers opt for the first solution as:</p>
+<ul>
+<li>The majority of their views may already rely on being in the DOM in their render() method</li>
+<li>When the OuterView is re-rendered, views don't have to be re-initialized where re-initialization has the potential to cause memory leaks and issues with existing bindings</li>
+</ul>
+<p>(Thanks to <a href="http://stackoverflow.com/questions/9271507/how-to-render-and-append-sub-views-in-backbone-js">Lukas</a> for this tip).</p>
+<h4 id="what-is-a-straight-forward-way-to-manage-nested-views">What is a straight-forward way to manage Nested Views?</h4>
+<p>In order to reach attributes on related models, the models involved need to have some prior knowledge about which models this refers to. Backbone.js doesn't implicitly handle relations or nesting, meaning it's up to us to ensure models have a knowledge of each other.</p>
+<p>One approach is to make sure each child model has a 'parent' attribute. This way you can traverse the nesting first up to the parent and then down to any siblings that you know of. So, assuming we have models modelA, modelB and modelC:</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript">
+<span class="co">// When initializing modelA, I would suggest setting a link to the parent </span>
+<span class="co">// model when doing this, like this:</span>
+
+ModelA = <span class="kw">Backbone.Model</span>.<span class="fu">extend</span>({
+
+    <span class="dt">initialize</span>: <span class="kw">function</span>(){
+        <span class="kw">this</span>.<span class="fu">modelB</span> = <span class="kw">new</span> modelB();
+        <span class="kw">this</span>.<span class="fu">modelB</span>.<span class="fu">parent</span> = <span class="kw">this</span>;
+        <span class="kw">this</span>.<span class="fu">modelC</span> = <span class="kw">new</span> modelC();
+        <span class="kw">this</span>.<span class="fu">modelC</span>.<span class="fu">parent</span> = <span class="kw">this</span>;
+    }
+}</code></pre>
+<p>This allows you to reach the parent model in any child model function by calling this.parent.</p>
+<p>When you have a need to nest Backbone.js views, you might find it easier to let each view represent a single HTML tag using the tagName option of the View. This may be written as:</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript">ViewA = <span class="kw">Backbone.View</span>.<span class="fu">extend</span>({
+
+    <span class="dt">tagName</span>: <span class="st">&quot;div&quot;</span>,
+    <span class="dt">id</span>: <span class="st">&quot;new&quot;</span>,
+
+    <span class="dt">initialize</span>: <span class="kw">function</span>(){
+       <span class="kw">this</span>.<span class="fu">viewB</span> = <span class="kw">new</span> ViewB();
+       <span class="kw">this</span>.<span class="fu">viewB</span>.<span class="fu">parentView</span> = <span class="kw">this</span>;
+       $(<span class="kw">this</span>.<span class="fu">el</span>).<span class="fu">append</span>(<span class="kw">this</span>.<span class="fu">viewB</span>.<span class="fu">el</span>);
+    }
+});
+
+ViewB = <span class="kw">Backbone.View</span>.<span class="fu">extend</span>({
+
+    <span class="dt">tagName</span>: <span class="st">&quot;h1&quot;</span>,
+
+    <span class="dt">render</span>: <span class="kw">function</span>(){
+        $(<span class="kw">this</span>.<span class="fu">el</span>).<span class="fu">html</span>(<span class="st">&quot;Header text&quot;</span>); <span class="co">// or use this.options.headerText or equivalent</span>
+    },
+
+    <span class="dt">funcB1</span>: <span class="kw">function</span>(){
+        <span class="kw">this</span>.<span class="fu">model</span>.<span class="fu">parent</span>.<span class="fu">doSomethingOnParent</span>();
+        <span class="kw">this</span>.<span class="fu">model</span>.<span class="fu">parent</span>.<span class="fu">modelC</span>.<span class="fu">doSomethingOnSibling</span>();
+        $(<span class="kw">this</span>.<span class="fu">parentView</span>.<span class="fu">el</span>).<span class="fu">shakeViolently</span>();
+    }
+
+});</code></pre>
+<p>Then in your application initialization code , you would initiate ViewA and place its element inside the body element.</p>
+<p>An alternative approach is to use an extension called <a href="https://github.com/powmedia/backbone-forms">Backbone-Forms</a>. Using a similar schema to what we wrote earlier, nesting could be achieved as follows:</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> ModelB = <span class="kw">Backbone.Model</span>.<span class="fu">extend</span>({
+    <span class="dt">schema</span>: {
+        <span class="dt">attributeB1</span>: <span class="ch">&#39;Text&#39;</span>,
+        <span class="dt">attributeB2</span>: <span class="ch">&#39;Text&#39;</span>
+    }
+});
+
+<span class="kw">var</span> ModelC = <span class="kw">Backbone.Model</span>.<span class="fu">extend</span>({
+    <span class="dt">schema</span>: {
+        <span class="dt">attributeC</span>: <span class="ch">&#39;Text&#39;</span>,
+    }
+});
+
+<span class="kw">var</span> ModelA = <span class="kw">Backbone.Model</span>.<span class="fu">extend</span>({
+    <span class="dt">schema</span>: {
+        <span class="dt">attributeA1</span>: <span class="ch">&#39;Text&#39;</span>,
+        <span class="dt">attributeA2</span>: <span class="ch">&#39;Text&#39;</span>,
+        <span class="dt">refToModelB</span>: { <span class="dt">type</span>: <span class="ch">&#39;NestedModel&#39;</span>, <span class="dt">model</span>: ModelB, <span class="dt">template</span>: <span class="ch">&#39;templateB&#39;</span> },
+        <span class="dt">refToModelC</span>: { <span class="dt">type</span>: <span class="ch">&#39;NestedModel&#39;</span>, <span class="dt">model</span>: ModelC, <span class="dt">template</span>: <span class="ch">&#39;templateC&#39;</span> }
+    }
+});</code></pre>
+<p>There is more information about this technique available on <a href="https://github.com/powmedia/backbone-forms#customising-templates">GitHub</a>.</p>
+<p>(Thanks to <a href="http://stackoverflow.com/users/100952/jens-alm">Jens Alm</a> and <a href="http://stackoverflow.com/users/801466/artem-oboturov">Artem Oboturov</a> for these tips)</p>
+<h4 id="how-would-one-go-about-writing-views-which-inherit-from-other-views">How would one go about writing Views which inherit from other Views?</h4>
+<p>Underscore.js provides an <code>_.extend()</code> method that gives us the ability to both write mixins for Views and inherit from Views quite easily.</p>
+<p>For mixins, you can define functionality on any object, and then quite literally copy &amp; paste all of the methods and attributes from that object to another.</p>
+<p>Backbone's extend methods on Views, Models, and Routers are a wrapper around underscore's _.extend().</p>
+<p>For example:</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"> <span class="kw">var</span> MyMixin = {
+  <span class="dt">foo</span>: <span class="st">&quot;bar&quot;</span>,
+  <span class="dt">sayFoo</span>: <span class="kw">function</span>(){alert(<span class="kw">this</span>.<span class="fu">foo</span>);}
+}
+
+<span class="kw">var</span> MyView = <span class="kw">Backbone.View</span>.<span class="fu">extend</span>({
+ <span class="co">// ...</span>
+});
+
+<span class="kw">_</span>.<span class="fu">extend</span>(<span class="kw">MyView</span>.<span class="fu">prototype</span>, MyMixin);
+
+myView = <span class="kw">new</span> MyView();
+<span class="kw">myView</span>.<span class="fu">sayFoo</span>(); <span class="co">//=&gt; &quot;bar&quot;</span></code></pre>
+<p>The .extend() method can also be used for View inheritance, which is an even more interesting use case.The following is an example of how to extend one View using another:</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> Panel = <span class="kw">Backbone.View</span>.<span class="fu">extend</span>({
+});
+
+<span class="kw">var</span> PanelAdvanced = <span class="kw">Panel</span>.<span class="fu">extend</span>({
+});</code></pre>
+<p>However, if you have an initialize() method in Panel, then it won't be called if you also have an initialize() method in PanelAdvanced, so you would have to call Panel's initialize method explicitly:</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> Panel = <span class="kw">Backbone.View</span>.<span class="fu">extend</span>({
+   <span class="dt">initialize</span>: <span class="kw">function</span>(options){
+      <span class="kw">console</span>.<span class="fu">log</span>(<span class="ch">&#39;Panel initialized&#39;</span>);
+      <span class="kw">this</span>.<span class="fu">foo</span> = <span class="ch">&#39;bar&#39;</span>;
+   }
+});
+
+<span class="kw">var</span> PanelAdvanced = <span class="kw">Panel</span>.<span class="fu">extend</span>({
+   <span class="dt">initialize</span>: <span class="kw">function</span>(options){
+      <span class="kw">this</span>.<span class="fu">constructor</span>.__<span class="fu">super</span>__.<span class="fu">initialize</span>.<span class="fu">apply</span>(<span class="kw">this</span>, [options])
+      <span class="kw">console</span>.<span class="fu">log</span>(<span class="ch">&#39;PanelAdvanced initialized&#39;</span>);
+      <span class="kw">console</span>.<span class="fu">log</span>(<span class="kw">this</span>.<span class="fu">foo</span>); <span class="co">// Log: bar</span>
+   }
+});</code></pre>
+<p>This isn't the most elegant of solutions because if you have a lot of Views that inherit from Panel, then you'll have to remember to call Panel's initialize from all of them. Even worse, if Panel doesn't have an initialize method now but you choose to add it in the future, then you'll need to go to all of the inherited classes in the future and make sure they call Panel's initialize. So here's an alternative way to define Panel so that your inherited views don't need to call Panel's initialize method:</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> Panel = <span class="kw">function</span> (options) {
+
+    <span class="co">// put all of Panel&#39;s initialization code here</span>
+    <span class="kw">console</span>.<span class="fu">log</span>(<span class="ch">&#39;Panel initialized&#39;</span>);
+    <span class="kw">this</span>.<span class="fu">foo</span> = <span class="ch">&#39;bar&#39;</span>;
+
+    <span class="kw">Backbone.View</span>.<span class="fu">apply</span>(<span class="kw">this</span>, [options]);
+};
+
+<span class="kw">_</span>.<span class="fu">extend</span>(<span class="kw">Panel</span>.<span class="fu">prototype</span>, <span class="kw">Backbone.View</span>.<span class="fu">prototype</span>, {
+
+    <span class="co">// put all of Panel&#39;s methods here. For example:</span>
+    <span class="dt">sayHi</span>: <span class="kw">function</span> () {
+        <span class="kw">console</span>.<span class="fu">log</span>(<span class="ch">&#39;hello from Panel&#39;</span>);
+    }
+});
+
+<span class="kw">Panel</span>.<span class="fu">extend</span> = <span class="kw">Backbone.View</span>.<span class="fu">extend</span>;
+
+
+<span class="co">// other classes inherit from Panel like this:</span>
+<span class="kw">var</span> PanelAdvanced = <span class="kw">Panel</span>.<span class="fu">extend</span>({
+
+    <span class="dt">initialize</span>: <span class="kw">function</span> (options) {
+        <span class="kw">console</span>.<span class="fu">log</span>(<span class="ch">&#39;PanelAdvanced initialized&#39;</span>);
+        <span class="kw">console</span>.<span class="fu">log</span>(<span class="kw">this</span>.<span class="fu">foo</span>);
+    }
+});
+
+<span class="kw">var</span> PanelAdvanced = <span class="kw">new</span> PanelAdvanced(); <span class="co">//Log: Panel initialized, PanelAdvanced initialized, bar</span>
+<span class="kw">PanelAdvanced</span>.<span class="fu">sayHi</span>(); <span class="co">// Log: hello from Panel</span></code></pre>
+<p>(Thanks to <a href="http://stackoverflow.com/users/93448/derick-bailey">Derick Bailey</a> and <a href="http://stackoverflow.com/users/188740/johnnyo">JohnnyO</a> for these tips)</p>
+<h4 id="is-it-possible-to-have-one-backbone.js-view-trigger-updates-in-other-views">Is it possible to have one Backbone.js View trigger updates in other Views?</h4>
+<p>The Mediator pattern is an excellent option for implementing a solution to this problem.</p>
+<p>Without going into too much detail about the pattern, it can effectively be used an event manager that lets you to subscribe to and publish events. So an ApplicationViewA could subscribe to an event, i.e. 'selected' and then the ApplicationViewB would publish the 'selected' event.</p>
+<p>The reason I like this is it allows you to send events between views, without the views being directly bound together.</p>
+<p>For Example:</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript">
+<span class="co">// See http://addyosmani.com/largescalejavascript/#mediatorpattern</span>
+<span class="co">// for an implementation or alternatively for a more thorough one</span>
+<span class="co">// http://thejacklawson.com/Mediator.js/</span>
+
+<span class="kw">var</span> mediator = <span class="kw">new</span> Mediator(); 
+
+<span class="kw">var</span> ApplicationViewB = <span class="kw">Backbone.View</span>.<span class="fu">extend</span>({
+    <span class="dt">toggle_select</span>: <span class="kw">function</span>() {
+        ...
+        <span class="kw">mediator</span>.<span class="fu">publish</span>(<span class="ch">&#39;selected&#39;</span>, any, data, you, want);
+        <span class="kw">return</span> <span class="kw">this</span>;
+    }
+});
+
+<span class="kw">var</span> ApplicationViewA = <span class="kw">Backbone.View</span>.<span class="fu">extend</span>({
+    <span class="dt">initialize</span>: <span class="kw">function</span>() {
+        <span class="kw">mediator</span>.<span class="fu">subscribe</span>(<span class="ch">&#39;selected&#39;</span>, <span class="kw">this</span>.<span class="fu">delete</span>_<span class="fu">selected</span>)
+    },
+
+    <span class="dt">delete_selected</span>: <span class="kw">function</span>(any, data, you, want) {
+        ... <span class="kw">do</span> something ...
+    },
+});</code></pre>
+<p>This way your ApplicationViewA doesn't care if it is an ApplicationViewB or FooView that publishes the 'selected' event, only that the event occurred. As a result, you may find it a maintainable way to manage events between parts of your application, not just views.</p>
+<p>(Thanks to <a href="http://stackoverflow.com/users/937577/john-mckim">John McKim</a> for this tip and for referencing my Large Scale JavaScript Patterns article).</p>
+<h4 id="how-would-one-render-a-parent-view-from-one-of-its-children">How would one render a Parent View from one of its Children?</h4>
+<p>http://stackoverflow.com/questions/11531028/render-parent-view-from-child-view-backbone-js</p>
+<p>If you say, have a view which contains another view (e.g a main view containing a modal view) and would like to render or re-render the parent view from the child, this is extremely straight-forward.</p>
+<p>In such a scenario, you would most likely want to execute the rendering when a particular event has occurred. For the sake of example, let us call this event 'somethingHappened'. The parent view can bind notifications on the child view to know when the event has occurred. It can then render itself.</p>
+<p>On the parent view:</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="co">// Parent initialize</span>
+<span class="kw">this</span>.<span class="fu">childView</span>.<span class="fu">on</span>(<span class="ch">&#39;somethingHappened&#39;</span>, <span class="kw">this</span>.<span class="fu">render</span>, <span class="kw">this</span>);
+
+<span class="co">// Parent removal</span>
+<span class="kw">this</span>.<span class="fu">childView</span>.<span class="fu">off</span>(<span class="ch">&#39;somethingHappened&#39;</span>, <span class="kw">this</span>.<span class="fu">render</span>, <span class="kw">this</span>);</code></pre>
+<p>On the child view:</p>
+<p><code>javascript // After the event has occurred this.trigger('somethingHappened');</code> The child will trigger a &quot;somethingHappened&quot; event and the parent's render function will be called.</p>
+<p>(Thanks to Tal <a href="http://stackoverflow.com/users/269666/tal-bereznitskey">Bereznitskey</a> for this tip)</p>
+<h4 id="how-does-one-handle-view-disposal-on-a-parent-or-child-view">How does one handle View disposal on a Parent or Child View?</h4>
+<p>You may be interested in removing any DOM elements associated with a view as well as unbinding any event handlers tied to child elements when you no longer require them. This can lead to decreases in memory (analogous to a type of garbage collection).</p>
+<p>Below, we can see how to achieve this:</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">Backbone.View.prototype</span>.<span class="fu">close</span> = <span class="kw">function</span>() {
+    <span class="kw">if</span> (<span class="kw">this</span>.<span class="fu">onClose</span>) {
+        <span class="kw">this</span>.<span class="fu">onClose</span>();
+    }
+    <span class="kw">this</span>.<span class="fu">remove</span>();
+    <span class="kw">this</span>.<span class="fu">unbind</span>();
+};
+
+NewView = <span class="kw">Backbone.View</span>.<span class="fu">extend</span>({
+    <span class="dt">initialize</span>: <span class="kw">function</span>() {
+       <span class="kw">this</span>.<span class="fu">childViews</span> = [];
+    },
+    <span class="dt">renderChildren</span>: <span class="kw">function</span>(item) {
+        <span class="kw">var</span> itemView = <span class="kw">new</span> NewChildView({ <span class="dt">model</span>: item });
+        $(<span class="kw">this</span>.<span class="fu">el</span>).<span class="fu">prepend</span>(<span class="kw">itemView</span>.<span class="fu">render</span>());
+        <span class="kw">this</span>.<span class="fu">childViews</span>.<span class="fu">push</span>(itemView);
+    },
+    <span class="dt">onClose</span>: <span class="kw">function</span>() {
+      _(<span class="kw">this</span>.<span class="fu">childViews</span>).<span class="fu">each</span>(<span class="kw">function</span>(view) {
+        <span class="kw">view</span>.<span class="fu">close</span>();
+      });
+    }
+});
+
+NewChildView = <span class="kw">Backbone.View</span>.<span class="fu">extend</span>({
+    <span class="dt">tagName</span>: <span class="ch">&#39;li&#39;</span>,
+    <span class="dt">render</span>: <span class="kw">function</span>() {
+    }
+});</code></pre>
+<p>For the sake of explanation, a close() method for views is implemented which disposes of a view when it is no longer needed or needs to be reset. In most cases the view removal should be done at a view layer so that it won't affect any of our models.</p>
+<p>For example, if you are working on a blogging application and you remove a view with comments, perhaps another view in your app shows a selection of comments and resetting the collection would affect those views too.</p>
+<p>(Thanks to <a href="http://stackoverflow.com/users/906136/dira">dira</a> for this tip)</p>
+<h4 id="whats-the-best-way-to-combine-or-append-views-to-each-other">What's the best way to combine or append Views to each other?</h4>
+<p>Let us say you have a Collection, where each item in the Collection could itself be a Collection. You can render each item in the Collection, and indeed can render any items which themselves are Collections. The problem you might have is how to render this structure where the HTML reflects the hierarchical nature of the data structure.</p>
+<p>The most straight-forward way to approach this problem is to use a framework like Derick Baileys <a href="https://github.com/derickbailey/backbone.marionette">Backbone.Marionette</a>. In this framework is a type of view called a CompositeView.</p>
+<p>The basic idea of a CompositeView is that it can render a model and a collection within the same view.</p>
+<p>It can render a single model with a template. It can also take a collection from that model and for each model in that collection, render a view. By default it uses the same composite view type that you've defined, to render each of the models in the collection. All you have to do is tell the view instance where the collection is, via the initialize method, and you'll get a recursive hierarchy rendered.</p>
+<p>There is a working demo of this in action available <a href="http://jsfiddle.net/derickbailey/AdWjU/">online</a>.</p>
+<p>And you can get the source code and documentation for <a href="https://github.com/derickbailey/backbone.marionette">Marionette</a> too.</p>
+<h4 id="is-backbone-too-simple-for-my-needs">Is Backbone too simple for my needs?</h4>
 <p>If you find yourself unsure of whether or not your application is too large to use Backbone, I recommend reading <a href="http://addyosmani.com/blog/jqcon-largescalejs-2012/">my post</a> on building large-scale jQuery &amp; JavaScript applications or reviewing my slides on client-side MVC architecture options. In both, I cover alternative solutions and my thoughts on the suitability of current MVC solutions for scaled application development.</p>
 <p>Backbone can be used for building both trivial and complex applications as demonstrated by the many examples Ashkenas has been referencing in the Backbone documentation. As with any MVC framework however, it's important to dedicate time towards planning out what models and views your application really needs. Diving straight into development without doing this can result in either spaghetti code or a large refactor later on and it's best to avoid this where possible.</p>
 <p>At the end of the day, the key to building large applications is not to build large applications in the first place. If you find that Backbone doesn't cut it for your requirements, I strongly recommend checking out JavaScriptMVC, SproutCore, or Ember.js as they offer a little more than Backbone out of the box. Dojo and Dojo Mobile may also be of interest as these have also been used to build significantly complex apps by other developers.</p>
-<h2 id="restful-applications">## <a name="restfulapps">RESTful Applications</a></h2>
+<h1 id="backbone-boilerplate-and-grunt-bbb"><a name="backboneboilerplate">Backbone Boilerplate And Grunt-BBB</a></h1>
+<p><a href="https://github.com/tbranyen/backbone-boilerplate/">Backbone Boilerplate</a> is an excellent set of best practices and utilities for building Backbone.js applications, created by Backbone contributor <a href="https://github.com/tbranyen">Tim Branyen</a>. He organized this boilerplate out of the gotchas, pitfalls and common tasks he ran into over a year of heavily using Backbone to build apps at Bocoup. This includes apps such <a href="http://startupdatatrends">StartupDataTrends.com</a>.</p>
+<p>With scaffolding and built in build tasks that take care of minification, concatentation, server, template compilation and more, Backbone Boilerplate (and sister project <a href="https://github.com/backbone-boilerplate/grunt-bbb">Grunt-BBB</a>) are an excellent choice for developers of all levels. I heavily recommend using them as they will give you an enormous start when it comes to getting setup for development. They also have some great inline documentation which is also another excellent time-saver.</p>
+<p>By default, Backbone Boilerplate provides you with:</p>
+<ul>
+<li>Backbone, <a href="https://github.com/bestiejs/lodash">Lodash</a> (an <a href="http://underscorejs.org/">Underscore.js</a> alternative) and <a href="http://jquery.com">jQuery</a> with an <a href="http://html5boilerplate.com">HTML5 Boilerplate</a> foundation</li>
+<li>Boilerplate module code</li>
+<li>A Windows/Mac/Linux build tool for template precompilation and, concatenation &amp; minification of all your libraries, application code and CSS</li>
+<li>Scaffolding support (via grunt-bbb - [B]ackbone [B]oilerplate [B]uild) so you have to spend minimal time writing boilerplate for modules, collections and so on.</li>
+<li>A Lightweight node.js webserver</li>
+<li>Numerous other Backbone.js snippets for making your life easier</li>
+</ul>
+<h2 id="getting-started">Getting Started</h2>
+<h3 id="backbone-boilerplate">Backbone Boilerplate</h3>
+<p>We can use Boilerplate to easily begin creating an application, but first, we'll need to install it. This can be done by grabbing the latest version of it by cloning the Boilerplate repo directly:</p>
+<pre class="shell"><code>$ git clone git://github.com/tbranyen/backbone-boilerplate.git</code></pre>
+<p>or alternatively, just fetching the latest tarball as follows:</p>
+<pre class="shell"><code>curl -C - -O https://github.com/tbranyen/backbone-boilerplate/zipball/master</code></pre>
+<h3 id="grunt-bbb">Grunt-BBB</h3>
+<p>As Tim covers in the Boilerplate docs, we have to install <a href="http://gruntjs.org">Grunt</a> if we want to use the build tools and grunt-bbb helpers he recommends.</p>
+<p>Grunt is an excellent Node-based JavaScript build tool by another <a href="http://bocoup.com">Bocoup</a> developer (<a href="http://benalman.com">Ben Alman</a>). Think of it as similar to <a href="http://ant.apache.org/">Ant</a> or <a href="https://github.com/jimweirich/rake">Rake</a>. The grunt-bbb helper is also useful to have as it provides several Backbone-specific utilities for scaffolding out your project, without the need to write boilerplate yourself.</p>
+<p>To install grunt and grunt-bbb via NPM:</p>
+<pre class="shell"><code># first run
+$ npm install -g grunt
+
+# followed by
+$ npm install -g bbb
+
+# Create a new project
+bbb init</code></pre>
+<p>That's it. We should now be good to go.</p>
+<p>A typical workflow for using grunt-bbb, which we can use later on is:</p>
+<ul>
+<li>Initialize a new project (<code>bbb init</code>)</li>
+<li>Add new modules and templates (<code>bbb init:module</code>)</li>
+<li>Develop using the built in server (<code>bbb server</code>)</li>
+<li>Run the build tool (<code>bbb build</code>)</li>
+<li>Deploy and map to production assets (using <code>bbb release</code>)</li>
+</ul>
+<h2 id="creating-a-new-project">Creating a new project</h2>
+<p>Let's create a new folder for our project and run <code>bbb init</code> to kick things off. If everything has been correctly installed, this will sub out some project directories and files for us. Let's review what is generated.</p>
+<h3 id="index.html">index.html</h3>
+<p>This is a fairly standard stripped-down HTML5 Boilerplate foundation with the notable exception of including <a href="http://requirejs.org">Require.js</a> at the bottom of the page.</p>
+<pre class="sourceCode html"><code class="sourceCode html"><span class="er">&lt;</span>!doctype html&gt;
+<span class="kw">&lt;html</span><span class="ot"> lang=</span><span class="st">&quot;en&quot;</span><span class="kw">&gt;</span>
+<span class="kw">&lt;head&gt;</span>
+  <span class="kw">&lt;meta</span><span class="ot"> charset=</span><span class="st">&quot;utf-8&quot;</span><span class="kw">&gt;</span>
+  <span class="kw">&lt;meta</span><span class="ot"> http-equiv=</span><span class="st">&quot;X-UA-Compatible&quot;</span><span class="ot"> content=</span><span class="st">&quot;IE=edge,chrome=1&quot;</span><span class="kw">&gt;</span>
+  <span class="kw">&lt;meta</span><span class="ot"> name=</span><span class="st">&quot;viewport&quot;</span><span class="ot"> content=</span><span class="st">&quot;width=device-width,initial-scale=1&quot;</span><span class="kw">&gt;</span>
+
+  <span class="kw">&lt;title&gt;</span>Backbone Boilerplate<span class="kw">&lt;/title&gt;</span>
+
+  <span class="co">&lt;!-- Application styles. --&gt;</span>
+  <span class="kw">&lt;link</span><span class="ot"> rel=</span><span class="st">&quot;stylesheet&quot;</span><span class="ot"> href=</span><span class="st">&quot;/assets/css/index.css&quot;</span><span class="kw">&gt;</span>
+<span class="kw">&lt;/head&gt;</span>
+
+<span class="kw">&lt;body&gt;</span>
+  <span class="co">&lt;!-- Main container. --&gt;</span>
+  <span class="kw">&lt;div</span><span class="ot"> role=</span><span class="st">&quot;main&quot;</span><span class="ot"> id=</span><span class="st">&quot;main&quot;</span><span class="kw">&gt;&lt;/div&gt;</span>
+
+  <span class="co">&lt;!-- Application source. --&gt;</span>
+  <span class="kw">&lt;script</span><span class="ot"> data-main=</span><span class="st">&quot;/app/config&quot;</span><span class="ot"> src=</span><span class="st">&quot;/assets/js/libs/require.js&quot;</span><span class="kw">&gt;&lt;/script&gt;</span>
+<span class="kw">&lt;/body&gt;</span>
+<span class="kw">&lt;/html&gt;</span></code></pre>
+<p>Require.js is an <a href="https://github.com/amdjs/amdjs-api/wiki/AMD">AMD</a> (Asynchronous Module Definition) module and script loader, which will assist us with managing the modules in our application. We'll be covering it in a lot more detail later on in the book, but for now, let's cover at a high-level what this particular block does:</p>
+<pre><code>&lt;script data-main=&quot;app/config&quot; src=&quot;/assets/js/libs/require.js&quot;&gt;&lt;/script&gt;</code></pre>
+<p>The <code>data-main</code> attribute is used to inform Require.js to load <code>app/config.js</code> (a configuration object) after it has finished loading itself. You'll notice that we've omitted the <code>.js</code> extension here as require.js can automatically add this for us, however it will respect your paths if we do choose to include it regardless. Let's now look at the config file being referenced.</p>
+<h3 id="config.js">config.js</h3>
+<p>A Require.js configuration object allows us to specify aliases and paths for dependencies we're likely to reference often (e.g jQuery), bootstrap properties like our base application URL and <code>shim</code> libraries that don't support AMD natively.</p>
+<p>This is what the config file in Backbone Boilerplate looks like:</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="co">// Set the require.js configuration for your application.</span>
+<span class="kw">require</span>.<span class="fu">config</span>({
+
+  <span class="co">// Initialize the application with the main application file.</span>
+  <span class="dt">deps</span>: [<span class="st">&quot;main&quot;</span>],
+
+  <span class="dt">paths</span>: {
+    <span class="co">// JavaScript folders.</span>
+    <span class="dt">libs</span>: <span class="st">&quot;../assets/js/libs&quot;</span>,
+    <span class="dt">plugins</span>: <span class="st">&quot;../assets/js/plugins&quot;</span>,
+
+    <span class="co">// Libraries.</span>
+    <span class="dt">jquery</span>: <span class="st">&quot;../assets/js/libs/jquery&quot;</span>,
+    <span class="dt">lodash</span>: <span class="st">&quot;../assets/js/libs/lodash&quot;</span>,
+    <span class="dt">backbone</span>: <span class="st">&quot;../assets/js/libs/backbone&quot;</span>
+  },
+
+  <span class="dt">shim</span>: {
+    <span class="co">// Backbone library depends on lodash and jQuery.</span>
+    <span class="dt">backbone</span>: {
+      <span class="dt">deps</span>: [<span class="st">&quot;lodash&quot;</span>, <span class="st">&quot;jquery&quot;</span>],
+      <span class="dt">exports</span>: <span class="st">&quot;Backbone&quot;</span>
+    },
+
+    <span class="co">// Backbone.LayoutManager depends on Backbone.</span>
+    <span class="st">&quot;plugins/backbone.layoutmanager&quot;</span>: [<span class="st">&quot;backbone&quot;</span>]
+  }
+
+});</code></pre>
+<p>The first option defined in the above config is <code>deps: [&quot;main&quot;]</code>. This informs Require.js to load up our main.js file, which is considered the entry point for our application. You may notice that we haven't specified any other path information for <code>main</code>.</p>
+<p>This is because as we haven't overridden the path to our scripts using the <code>baseUrl</code> option, Require will infer this using the path from our <code>data-main</code> attribute in index.html. In other words, our <code>baseUrl</code> is <code>app/</code> and any scripts we require will be loaded relative to this location.</p>
+<p>The next block is <code>paths</code>, which we can use to specify paths relative to the <code>baseUrl</code> as well as the paths/aliases to dependencies we're likely to regularly reference.</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript">  <span class="dt">paths</span>: {
+    <span class="co">// JavaScript folders.</span>
+    <span class="dt">libs</span>: <span class="st">&quot;../assets/js/libs&quot;</span>,
+    <span class="dt">plugins</span>: <span class="st">&quot;../assets/js/plugins&quot;</span>,
+
+    <span class="co">// Libraries.</span>
+    <span class="dt">jquery</span>: <span class="st">&quot;../assets/js/libs/jquery&quot;</span>,
+    <span class="dt">lodash</span>: <span class="st">&quot;../assets/js/libs/lodash&quot;</span>,
+    <span class="dt">backbone</span>: <span class="st">&quot;../assets/js/libs/backbone&quot;</span>
+  },</code></pre>
+<p>Next we have the <code>shim</code> config:</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript">  <span class="dt">shim</span>: {
+    <span class="co">// Backbone library depends on lodash and jQuery.</span>
+    <span class="dt">backbone</span>: {
+      <span class="dt">deps</span>: [<span class="st">&quot;lodash&quot;</span>, <span class="st">&quot;jquery&quot;</span>],
+      <span class="dt">exports</span>: <span class="st">&quot;Backbone&quot;</span>
+    },
+
+    <span class="co">// Backbone.LayoutManager depends on Backbone.</span>
+    <span class="st">&quot;plugins/backbone.layoutmanager&quot;</span>: [<span class="st">&quot;backbone&quot;</span>]
+  }</code></pre>
+<p><code>shim</code> is an important part of our Require.js configuration which allows us to load libraries which are not AMD compliant. The basic idea here is that rather than requiring all libraries to implement support for AMD, the <code>shim</code> takes care of the hard work for us.</p>
+<p>For example, in the block below, we state that Backbone.js is dependent on Lodash (a fork of Underscore.js) and jQuery being loaded before it. Once they've been loaded, we then use the global export <code>Backbone</code> as the module value.</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript">    <span class="dt">backbone</span>: {
+      <span class="dt">deps</span>: [<span class="st">&quot;lodash&quot;</span>, <span class="st">&quot;jquery&quot;</span>],
+      <span class="dt">exports</span>: <span class="st">&quot;Backbone&quot;</span>
+    }</code></pre>
+<p>Finally, we inform Require.js that the Backbone <a href="https://github.com/tbranyen/backbone.layoutmanager">LayoutManager</a> plugin (a template and layout manager, also included) requires that Backbone be loaded before it should be.</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript">    <span class="co">// Backbone.LayoutManager depends on Backbone.</span>
+    <span class="st">&quot;plugins/backbone.layoutmanager&quot;</span>: [<span class="st">&quot;backbone&quot;</span>]</code></pre>
+<p>This entire setup ensures that our scripts correctly get loaded in the order in which we expect.</p>
+<h3 id="main.js">main.js</h3>
+<p>Next, we have <code>main.js</code>, which defines the entry point for our application. We use a global <code>require()</code> method to load an array any other scripts needed, such as our application <code>app.js</code> and our main router <code>router.js</code>. Note that most of the time, we will only use <code>require()</code> for bootstrapping an application and a similar method called <code>define()</code> for all other purposes.</p>
+<p>The function defined after our array of dependencies is a callback which doesn't fire until these scripts have loaded. Notice howe we're able to locally alias references to &quot;app&quot; and &quot;router&quot; as <code>app</code> and <code>Router</code> for convenience.</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript">require([
+  <span class="co">// Application.</span>
+  <span class="st">&quot;app&quot;</span>,
+
+  <span class="co">// Main Router.</span>
+  <span class="st">&quot;router&quot;</span>
+],
+
+<span class="kw">function</span>(app, Router) {
+
+  <span class="co">// Define your master router on the application namespace and trigger all</span>
+  <span class="co">// navigation from this instance.</span>
+  <span class="kw">app</span>.<span class="fu">router</span> = <span class="kw">new</span> Router();
+
+  <span class="co">// Trigger the initial route and enable HTML5 History API support, set the</span>
+  <span class="co">// root folder to &#39;/&#39; by default.  Change in app.js.</span>
+  <span class="kw">Backbone.history</span>.<span class="fu">start</span>({ <span class="dt">pushState</span>: <span class="kw">true</span>, <span class="dt">root</span>: <span class="kw">app</span>.<span class="fu">root</span> });
+
+  <span class="co">// All navigation that is relative should be passed through the navigate</span>
+  <span class="co">// method, to be processed by the router. If the link has a `data-bypass`</span>
+  <span class="co">// attribute, bypass the delegation completely.</span>
+  $(<span class="kw">document</span>).<span class="fu">on</span>(<span class="st">&quot;click&quot;</span>, <span class="st">&quot;a:not([data-bypass])&quot;</span>, <span class="kw">function</span>(evt) {
+    <span class="co">// Get the absolute anchor href.</span>
+    <span class="kw">var</span> href = $(<span class="kw">this</span>).<span class="fu">attr</span>(<span class="st">&quot;href&quot;</span>);
+
+    <span class="co">// If the href exists and is a hash route, run it through Backbone.</span>
+    <span class="kw">if</span> (href &amp;&amp; <span class="kw">href</span>.<span class="fu">indexOf</span>(<span class="st">&quot;#&quot;</span>) === <span class="dv">0</span>) {
+      <span class="co">// Stop the default event to ensure the link will not cause a page</span>
+      <span class="co">// refresh.</span>
+      <span class="kw">evt</span>.<span class="fu">preventDefault</span>();
+
+      <span class="co">// `Backbone.history.navigate` is sufficient for all Routers and will</span>
+      <span class="co">// trigger the correct events. The Router&#39;s internal `navigate` method</span>
+      <span class="co">// calls this anyways.  The fragment is sliced from the root.</span>
+      <span class="kw">Backbone.history</span>.<span class="fu">navigate</span>(href, <span class="kw">true</span>);
+    }
+  });
+
+});</code></pre>
+<p>Inline, Backbone Boilerplate includes boilerplate code for initializing our router with HTML5 History API support and handling other navigation scenarios, so we don't have to.</p>
+<h3 id="app.js">app.js</h3>
+<p>Let us now look at our <code>app.js</code> module. Typically, in non-Backbone Boilerplate applications, an <code>app.js</code> file may contain the core logic or module references needed to kick start an app.</p>
+<p>In this case however, this file is used to define templating and layout configuration options as well as utilities for consuming layouts. To a beginner, this might look like a lot of code to comprehend, but the good news is that for basic apps, you're unlikely to need to heavily modify this. Instead, you'll be more concerned with modules for your app, which we'll look at next.</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript">define([
+
+  <span class="co">// Libraries.</span>
+  <span class="st">&quot;jquery&quot;</span>,
+  <span class="st">&quot;lodash&quot;</span>,
+  <span class="st">&quot;backbone&quot;</span>,
+
+  <span class="co">// Plugins.</span>
+  <span class="st">&quot;plugins/backbone.layoutmanager&quot;</span>
+
+],
+
+<span class="kw">function</span>($, _, Backbone) {
+
+  <span class="co">// Provide a global location to place configuration settings and module</span>
+  <span class="co">// creation.</span>
+  <span class="kw">var</span> app = {
+    <span class="co">// The root path to run the application.</span>
+    <span class="dt">root</span>: <span class="st">&quot;/&quot;</span>
+  };
+
+  <span class="co">// Localize or create a new JavaScript Template object.</span>
+  <span class="kw">var</span> JST = <span class="kw">window</span>.<span class="fu">JST</span> = <span class="kw">window</span>.<span class="fu">JST</span> || {};
+
+  <span class="co">// Configure LayoutManager with Backbone Boilerplate defaults.</span>
+  <span class="kw">Backbone.LayoutManager</span>.<span class="fu">configure</span>({
+    <span class="dt">paths</span>: {
+      <span class="dt">layout</span>: <span class="st">&quot;app/templates/layouts/&quot;</span>,
+      <span class="dt">template</span>: <span class="st">&quot;app/templates/&quot;</span>
+    },
+
+    <span class="dt">fetch</span>: <span class="kw">function</span>(path) {
+      path = path + <span class="st">&quot;.html&quot;</span>;
+
+      <span class="kw">if</span> (!JST[path]) {
+        $.<span class="fu">ajax</span>({ <span class="dt">url</span>: <span class="kw">app</span>.<span class="fu">root</span> + path, <span class="dt">async</span>: <span class="kw">false</span> }).<span class="fu">then</span>(<span class="kw">function</span>(contents) {
+          JST[path] = <span class="kw">_</span>.<span class="fu">template</span>(contents);
+        });
+      }
+
+      <span class="kw">return</span> JST[path];
+    }
+  });
+
+  <span class="co">// Mix Backbone.Events, modules, and layout management into the app object.</span>
+  <span class="kw">return</span> <span class="kw">_</span>.<span class="fu">extend</span>(app, {
+    <span class="co">// Create a custom object with a nested Views object.</span>
+    <span class="dt">module</span>: <span class="kw">function</span>(additionalProps) {
+      <span class="kw">return</span> <span class="kw">_</span>.<span class="fu">extend</span>({ <span class="dt">Views</span>: {} }, additionalProps);
+    },
+
+    <span class="co">// Helper for using layouts.</span>
+    <span class="dt">useLayout</span>: <span class="kw">function</span>(name) {
+      <span class="co">// If already using this Layout, then don&#39;t re-inject into the DOM.</span>
+      <span class="kw">if</span> (<span class="kw">this</span>.<span class="fu">layout</span> &amp;&amp; <span class="kw">this</span>.<span class="fu">layout</span>.<span class="fu">options</span>.<span class="fu">template</span> === name) {
+        <span class="kw">return</span> <span class="kw">this</span>.<span class="fu">layout</span>;
+      }
+
+      <span class="co">// If a layout already exists, remove it from the DOM.</span>
+      <span class="kw">if</span> (<span class="kw">this</span>.<span class="fu">layout</span>) {
+        <span class="kw">this</span>.<span class="fu">layout</span>.<span class="fu">remove</span>();
+      }
+
+      <span class="co">// Create a new Layout.</span>
+      <span class="kw">var</span> layout = <span class="kw">new</span> <span class="kw">Backbone</span>.<span class="fu">Layout</span>({
+        <span class="dt">template</span>: name,
+        <span class="dt">className</span>: <span class="st">&quot;layout &quot;</span> + name,
+        <span class="dt">id</span>: <span class="st">&quot;layout&quot;</span>
+      });
+
+      <span class="co">// Insert into the DOM.</span>
+      $(<span class="st">&quot;#main&quot;</span>).<span class="fu">empty</span>().<span class="fu">append</span>(<span class="kw">layout</span>.<span class="fu">el</span>);
+
+      <span class="co">// Render the layout.</span>
+      <span class="kw">layout</span>.<span class="fu">render</span>();
+
+      <span class="co">// Cache the reference.</span>
+      <span class="kw">this</span>.<span class="fu">layout</span> = layout;
+
+      <span class="co">// Return the reference, for chainability.</span>
+      <span class="kw">return</span> layout;
+    }
+  }, <span class="kw">Backbone</span>.<span class="fu">Events</span>);
+
+});</code></pre>
+<h3 id="creating-backbone-boilerplate-modules">Creating Backbone Boilerplate Modules</h3>
+<p>Not to be confused with simply being just an AMD module, a Backbone Boilerplate <code>module</code> is a script composed of a:</p>
+<ul>
+<li>Model</li>
+<li>Collection</li>
+<li>Views (optional)</li>
+</ul>
+<p>We can easily create a new Boilerplate module using <code>grunt-bbb</code> once again using <code>init</code>:</p>
+<pre class="shell"><code># Create a new module
+bbb init:module
+
+# Grunt prompt
+Please answer the following:
+[?] Module Name foo
+[?] Do you need to make any changes to the above before continuing? (y/N) n
+
+Writing app/modules/foo.js...OK
+
+Initialized from template &quot;module&quot;.</code></pre>
+<p>This will generate a module <code>foo.js</code> as follows:</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript">define([
+  <span class="co">// Application.</span>
+  <span class="st">&quot;app&quot;</span>
+],
+
+<span class="co">// Map dependencies from above array.</span>
+<span class="kw">function</span>(app) {
+
+  <span class="co">// Create a new module.</span>
+  <span class="kw">var</span> Foo = <span class="kw">app</span>.<span class="fu">module</span>();
+
+  <span class="co">// Default model.</span>
+  <span class="kw">Foo</span>.<span class="fu">Model</span> = <span class="kw">Backbone.Model</span>.<span class="fu">extend</span>({
+
+  });
+
+  <span class="co">// Default collection.</span>
+  <span class="kw">Foo</span>.<span class="fu">Collection</span> = <span class="kw">Backbone.Collection</span>.<span class="fu">extend</span>({
+    <span class="dt">model</span>: <span class="kw">Foo</span>.<span class="fu">Model</span>
+  });
+
+  <span class="co">// Return the module for AMD compliance.</span>
+  <span class="kw">return</span> Foo;
+
+});</code></pre>
+<p>Notice how boilerplate code for our model and collection has already been written for us, as well as code for consuming the layout utilities defined in <code>app.js</code>.</p>
+<p>Now, you may be wondering where or how Views fit into this setup. Although Backbone Boilerplate doesn't include Views in its generated modules by default, we can easily add them ourselves as needed.</p>
+<p>e.g:</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript">define([
+  <span class="co">// Application.</span>
+  <span class="st">&quot;app&quot;</span>,
+
+  <span class="co">// Views</span>
+  <span class="st">&quot;modules/foo/views&quot;</span>
+],
+
+<span class="co">// Map dependencies from above array.</span>
+<span class="kw">function</span>(app, Views) {
+
+  <span class="co">// Create a new module.</span>
+  <span class="kw">var</span> Foo = <span class="kw">app</span>.<span class="fu">module</span>();
+
+  <span class="co">// Default model.</span>
+  <span class="kw">Foo</span>.<span class="fu">Model</span> = <span class="kw">Backbone.Model</span>.<span class="fu">extend</span>({
+
+  });
+
+  <span class="co">// Default collection.</span>
+  <span class="kw">Foo</span>.<span class="fu">Collection</span> = <span class="kw">Backbone.Collection</span>.<span class="fu">extend</span>({
+    <span class="dt">model</span>: <span class="kw">Foo</span>.<span class="fu">Model</span>
+  });
+
+  <span class="co">// Default views</span>
+  <span class="kw">Foo</span>.<span class="fu">Views</span> = Views;
+
+  <span class="co">// Return the module for AMD compliance.</span>
+  <span class="kw">return</span> Foo;
+
+});</code></pre>
+<p>Optionally, we may also wish to include references to plugins such as the Backbone LocalStorage or Offline adapters. One clean way of including a plugin in the above boilerplate could be:</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript">define([
+  <span class="st">&quot;app&quot;</span>,
+
+  <span class="co">// Libs</span>
+  <span class="st">&quot;backbone&quot;</span>,
+
+  <span class="co">// Plugins</span>
+  <span class="st">&quot;plugins/backbone-localstorage&quot;</span>
+],
+
+<span class="kw">function</span>(app, Backbone, Views) {
+  <span class="co">// Create a new module.</span>
+  <span class="kw">var</span> Foo = <span class="kw">app</span>.<span class="fu">module</span>();
+
+  <span class="co">// Default model.</span>
+  <span class="kw">Foo</span>.<span class="fu">Model</span> = <span class="kw">Backbone.Model</span>.<span class="fu">extend</span>({
+
+  });
+
+  <span class="co">// Default collection.</span>
+  <span class="kw">Foo</span>.<span class="fu">Collection</span> = <span class="kw">Backbone.Collection</span>.<span class="fu">extend</span>({
+    <span class="dt">model</span>: <span class="kw">Foo</span>.<span class="fu">Model</span>,
+
+    <span class="co">// Save all of the items under the `&quot;foo&quot;` namespace.</span>
+    <span class="dt">localStorage</span>: <span class="kw">new</span> Store(<span class="st">&quot;foo-backbone&quot;</span>),
+  });
+
+  <span class="co">// Default views</span>
+  <span class="kw">Foo</span>.<span class="fu">Views</span> = Views;
+
+  <span class="co">// Return the module for AMD compliance.</span>
+  <span class="kw">return</span> Foo;
+});</code></pre>
+<p>You may have spotted that in our module sample we're using the plural, &quot;Views&quot;, rather than just View. This is because a View module can contain references to as many Views as needed. In the above, our <code>/modules/foo/views.js</code> file may look as follows:</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript">define([
+  <span class="st">&quot;app&quot;</span>,
+
+  <span class="co">// Libs</span>
+  <span class="st">&quot;backbone&quot;</span>
+],
+
+<span class="kw">function</span>(app, Backbone) {
+
+  <span class="kw">var</span> Views = {};
+
+  <span class="kw">Views</span>.<span class="fu">Foo</span> = <span class="kw">Backbone.View</span>.<span class="fu">extend</span>({
+    <span class="dt">template</span>: <span class="st">&quot;foo/bar&quot;</span>,
+    <span class="dt">tagName</span>: <span class="st">&quot;li&quot;</span>,
+    ...
+   });
+
+  <span class="kw">Views</span>.<span class="fu">Baz</span> = <span class="kw">Backbone.View</span>.<span class="fu">extend</span>({
+    <span class="dt">template</span>: <span class="st">&quot;foo/baz&quot;</span>,
+    <span class="dt">tagName</span>: <span class="st">&quot;li&quot;</span>,
+    ...
+   });
+
+   <span class="kw">return</span> Views;
+
+});</code></pre>
+<p>Where the <code>template</code> references in our Views, correspond to files in the <code>app/templates</code> directory. e.g <code>foo/bar</code> is located at <code>app/templates/foo/bar.html</code> and is a HTML template that can contain Lodash/Underscore.js Micro-templating logic.</p>
+<h3 id="router.js">router.js</h3>
+<p>Finally, let's look at our application router, used for handling navigation. The default router Backbone Boilerplate generates for us inclues sane defaults for no routes being specified.</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript">define([
+  <span class="co">// Application.</span>
+  <span class="st">&quot;app&quot;</span>
+],
+
+<span class="kw">function</span>(app) {
+
+  <span class="co">// Defining the application router, you can attach sub routers here.</span>
+  <span class="kw">var</span> Router = <span class="kw">Backbone.Router</span>.<span class="fu">extend</span>({
+    <span class="dt">routes</span>: {
+      <span class="st">&quot;&quot;</span>: <span class="st">&quot;index&quot;</span>
+    },
+
+    <span class="dt">index</span>: <span class="kw">function</span>() {
+
+    }
+  });
+
+  <span class="kw">return</span> Router;
+
+});</code></pre>
+<p>If however we would like to execute some module-specific logic, when the page loads (i.e when a user hits the default route), we can pull in a module as a dependency and optionally use the Backbone LayoutManager to attach Views to our layout as follows:</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript">define([
+  <span class="co">// Application.</span>
+  <span class="st">&quot;app&quot;</span>,
+
+  <span class="co">// Modules</span>
+  <span class="st">&quot;modules/foo&quot;</span>
+],
+
+<span class="kw">function</span>(app, Foo) {
+
+  <span class="co">// Defining the application router, you can attach sub routers here.</span>
+  <span class="kw">var</span> Router = <span class="kw">Backbone.Router</span>.<span class="fu">extend</span>({
+    <span class="dt">routes</span>: {
+      <span class="st">&quot;&quot;</span>: <span class="st">&quot;index&quot;</span>
+    },
+
+    <span class="dt">index</span>: <span class="kw">function</span>() {
+            <span class="co">// Create a new Collection</span>
+            <span class="kw">var</span> collection = <span class="kw">new</span> <span class="kw">Foo</span>.<span class="fu">Collection</span>();
+
+            <span class="co">// Use and configure a &quot;main&quot; layout</span>
+            <span class="kw">app</span>.<span class="fu">useLayout</span>(<span class="st">&quot;main&quot;</span>).<span class="fu">setViews</span>({
+                    <span class="co">// Attach the bar View into the content View</span>
+                    <span class="st">&quot;.bar&quot;</span>: <span class="kw">new</span> <span class="kw">Foo.Views</span>.<span class="fu">Bar</span>({
+                            <span class="dt">collection</span>: collection
+                    })
+             }).<span class="fu">render</span>();
+    }
+  });
+
+  <span class="co">// Fetch data (e.g from localStorage)</span>
+  <span class="kw">collection</span>.<span class="fu">fetch</span>();
+
+  <span class="kw">return</span> Router;
+
+});</code></pre>
+<h2 id="conclusions">Conclusions</h2>
+<p>In this section we reviewed Backbone Boilerplate and learned how to use the BBB tool to help us scaffold out our application.</p>
+<p>If you would like to learn more about how this project helps structure your app, BBB includes some built-in boilerplate sample apps that can be easily generated for review.</p>
+<p>These include a boilerplate tutorial project (<code>bbb init:tutorial</code>) and an implementation of my <a href="http://todomvc">TodoMVC</a> project (<code>bbb init:todomvc</code>). I recommend checking these out as they'll provide you with a more complete picture of how Backbone Boilerplate, its templates and so on fit into the overall setup for a web app.</p>
+<p>For more about Grunt-BBB, remember to take a look at the official project <a href="https://github.com/backbone-boilerplate/grunt-bbb">repositoryy</a>. There is also a related <a href="https://dl.dropbox.com/u/79007/talks/Modern_Web_Applications/slides/index.html">slide-deck</a> available for those interested in reading more.</p>
+<h2 id="related-tools-projects">Related Tools &amp; Projects</h2>
+<p>As we've seen, scaffolding tools can assist in expediting how quickly you can begin a new application by creating the basic files required for a project automatically. If you appreciate such tools, I'm happy to also recommend checking out <a href="http://yeoman.io">Yeoman</a> (one of my upcoming projects) and <a href="https://github.com/brunch/brunch">Brunch</a>.</p>
+<p>Brunch works very well with Backbone, Underscore, jQuery and CoffeeScript and is even used by companies such as Red Bull and Jim Beam. You may have to update any third party dependencies (e.g. latest jQuery or Zepto) when using it, but other than that it should be fairly stable to use right out of the box.</p>
+<p>Brunch can be installed via the nodejs package manager and is easy to get started with. If you happen to use Vim or Textmate as your editor of choice, you'll be happy to know that there are Brunch bundles available for both.</p>
+<h2 id="restful-applications"># <a name="restfulapps">RESTful Applications</a></h2>
 <h2 id="building-restful-applications-with-backbone"><a name="restful">Building RESTful applications with Backbone</a></h2>
 <p>In this section of the book, we're going to take a look at developing RESTful applications using Backbone.js and modern technology stacks. When the data for your back-end is exposed through a purely RESTful API, tasks such as retrieving (GET), creating (POST), updating (PUT) and deleting (DELETE) models are made easy through Backbone's Model API. This API is so intuitive in fact that switching from storing records in a local data-store (e.g localStorage) to a database/noSQL data-store is a lot simpler than you may think.</p>
 <h2 id="stack-1-building-a-backbone-app-with-node.js-express-mongoose-and-mongodb"><a name="stack1">Stack 1: Building A Backbone App With Node.js, Express, Mongoose and MongoDB</a></h2>
@@ -1489,7 +2252,7 @@ get <span class="st">&#39;/members/*&#39;</span> <span class="kw">do</span>
 <span class="st">  Or even like this</span></code></pre>
 <p>Note: Haml is whitespace sensitive and will not correctly work if it isn't indented by an even number of spaces. This is due to whitespace being used for nesting in place of the classic HTML markup approach of closing tags.</p>
 <h1 id="mongodb-ruby-driver">MongoDB Ruby Driver</h1>
-<h2 id="getting-started">Getting started</h2>
+<h2 id="getting-started-1">Getting started</h2>
 <p>Once the MongoDB Ruby driver is installed, we can begin to use it to connect to a Mongo database. To create a connection using localhost, we simply specify the driver as a dependency. Assuming we're using the default port we can then connect as follows:</p>
 <pre class="sourceCode ruby"><code class="sourceCode ruby">require <span class="st">&#39;mongo&#39;</span>
 
@@ -1832,7 +2595,7 @@ put <span class="st">&#39;/api/:thing/:id&#39;</span> <span class="kw">do</span>
       completed
       %span.word-done <span class="er">&lt;</span>%= done == 1 ? &#39;item&#39; : &#39;items&#39; %&gt;
   <span class="er">&lt;</span>% } %&gt;</code></pre>
-<h2 id="conclusions">Conclusions</h2>
+<h2 id="conclusions-1">Conclusions</h2>
 <p>In this chapter, we looked at creating a Backbone application backed by an API powered by Ruby, Sinatra, Haml, MongoDB and the MongoDB driver. I personally found developing APIs with Sinatra a relatively painless experience and one which I felt was on-par with the effort required for the Node/Express implementation of the same application.</p>
 <p>This section is by no means the most comprehensive guide on building complex apps using all of the items in this particular stack. I do however hope it was an introduction sufficient enough to help you decide on what stack to try out for your next project.</p>
 <h2 id="advanced"># <a name="advanced">Advanced</a></h2>
@@ -2335,6 +3098,7 @@ require([<span class="ch">&#39;views/app&#39;</span>], <span class="kw">function
 <p><strong>Note:</strong> While this first practical doesn't use a build profile as outlined in the chapter on using the RequireJS optimizer, we will be using one in the section on building mobile Backbone applications.</p>
 <h2 id="decoupling-backbone-with-the-mediator-and-facade-patterns"><a name="decouplingbackbone">Decoupling Backbone with the Mediator and Facade patterns</a></h2>
 <p>In this section we'll discuss applying some of the concepts I cover in my article on <a href="http://addyosmani.com/largescalejavascript">Large-scale JavaScript Application development</a> to Backbone.</p>
+<p><em>After, you may be interested in taking a look At <a href="http://github.com/addyosmani/aura">Aura</a> - my popular widget-based Backbone.js extension framework based on many of the concepts we will be covering in this section.</em></p>
 <h3 id="summary-1">Summary</h3>
 <p>At a high-level, one architecture that works for such applications is something which is:</p>
 <ul>
@@ -2355,9 +3119,9 @@ require([<span class="ch">&#39;views/app&#39;</span>], <span class="kw">function
 <li><strong>Mediator</strong>: The mediator has a varying role depending on just how you wish to implement it. In my article, I mention using it as a module manager with the ability to start and stop modules at will, however when it comes to Backbone, I feel that simplifying it down to the role of a central 'controller' that provides pub/sub capabilities should suffice. One can of course go all out in terms of building a module system that supports module starting, stopping, pausing etc, however the scope of this is outside of this chapter.</li>
 <li><strong>Facade</strong>: This acts as a secure middle-layer that both abstracts an application core (Mediator) and relays messages from the modules back to the Mediator so they don't touch it directly. The Facade also performs the duty of application security guard; it checks event notifications from modules against a configuration (permissions.js, which we will look at later) to ensure requests from modules are only processed if they are permitted to execute the behavior passed.</li>
 </ul>
-<p>For ease of reference, I sometimes refer to these three patterns grouped together as Aura (a word that means subtle, luminous light).</p>
+<p>F</p>
 <h3 id="practical-2">Practical</h3>
-<p>For the practical section of this chapter, we'll be extending the well-known Backbone Todo application using the three patterns mentioned above. The complete code for this section can be found here: https://github.com/addyosmani/backbone-aura and should ideally be run on at minimum, a local HTTP server.</p>
+<p>For the practical section of this chapter, we'll be extending the well-known Backbone Todo application using the three patterns mentioned above.</p>
 <p>The application is broken down into AMD modules that cover everything from Backbone models through to application-level modules. The views publish events of interest to the rest of the application and modules can then subscribe to these event notifications.</p>
 <p>All subscriptions from modules go through a facade (or sandbox). What this does is check against the subscriber name and the 'channel/notification' it's attempting to subscribe to. If a channel <em>doesn't</em> have permissions to be subscribed to (something established through permissions.js), the subscription isn't permitted.</p>
 <p><strong>Mediator</strong></p>
@@ -2607,131 +3371,95 @@ require([<span class="ch">&#39;views/app&#39;</span>], <span class="kw">function
 <p>That's it for this section. If you've been intrigued by some of the concepts covered, I encourage you to consider taking a look at my <a href="http://addyosmani.com/blog/large-scale-javascript-application-architecture/">slides</a> on Large-scale JS from the jQuery Summit or my longer post on the topic <a href="http://addyosmani.com/largescalejavascript">here</a> for more information.</p>
 <h2 id="paginating-backbone.js-requests-collections"><a name="pagination">Paginating Backbone.js Requests &amp; Collections</a></h2>
 <p>Pagination is a ubiquitous problem we often find ourselves needing to solve on the web. Perhaps most predominantly when working with back-end APIs and JavaScript-heavy clients which consume them.</p>
-<p>On this topic, we're going to go through a set of **pagination components ** I wrote for Backbone.js, which should hopefully come in useful if you're working on applications which need to tackle this problem. They're part of an extension called <a href="http://github.com/addyosmani/backbone.paginator">Backbone.Paginator</a>.</p>
+<p>On this topic, we're going to go through a set of **pagination components ** I wrote for Backbone.js, which should hopefully come in useful if you're working on applications which need to tackle this problem. They're part of an extension called [Backbone.Paginator][http://github.com/addyosmani/backbone-paginator].</p>
 <p>When working with a structural framework like Backbone.js, the three types of pagination we are most likely to run into are:</p>
 <p>**Requests to a service layer (API) **- e.g query for results containing the term 'Brendan' - if 5,000 results are available only display 20 results per page (leaving us with 250 possible result pages that can be navigated to).</p>
 <p>This problem actually has quite a great deal more to it, such as maintaining persistence of other URL parameters (e.g sort, query, order) which can change based on a user's search configuration in a UI. One also had to think of a clean way of hooking views up to this pagination so you can easily navigate between pages (e.g First, Last, Next, Previous, 1,2,3), manage the number of results displayed per page and so on.</p>
-<p><strong>Further client-side pagination of data returned -</strong> e.g we've been returned a JSON esponse containing 100 results. Rather than displaying all 100 to the user, we only display 20 of these results within a navigatable UI in the browser.</p>
+<p><strong>Further client-side pagination of data returned -</strong> e.g we've been returned a JSON response containing 100 results. Rather than displaying all 100 to the user, we only display 20 of these results within a navigatable UI in the browser.</p>
 <p>Similar to the request problem, client-pagination has its own challenges like navigation once again (Next, Previous, 1,2,3), sorting, order, switching the number of results to display per page and so on.</p>
 <p><strong>Infinite results</strong> - with services such as Facebook, the concept of numeric pagination is instead replaced with a 'Load More' or 'View More' button. Triggering this normally fetches the next 'page' of N results but rather than replacing the previous set of results loaded entirely, we simply append to them instead.</p>
 <p>A request pager which simply appends results in a view rather than replacing on each new fetch is effectively an 'infinite' pager.</p>
 <p><strong>Let's now take a look at exactly what we're getting out of the box:</strong></p>
-<p><em><a href="http://addyosmani.github.com/backbone.paginator/">Backbone.Paginator</a> is a set of opinionated components for paginating collections of data using Backbone.js. It aims to provide both solutions for assisting with pagination of requests to a server (e.g an API) as well as pagination of single-loads of data, where we may wish to further paginate a collection of N results into M pages within a view.</em></p>
+<p><em>Paginator is a set of opinionated components for paginating collections of data using Backbone.js. It aims to provide both solutions for assisting with pagination of requests to a server (e.g an API) as well as pagination of single-loads of data, where we may wish to further paginate a collection of N results into M pages within a view.</em></p>
 <h2 id="paginators-pieces">Paginator's pieces</h2>
 <p>Backbone.Paginator supports two main pagination components:</p>
 <ul>
 <li><strong>Backbone.Paginator.requestPager</strong>: For pagination of requests between a client and a server-side API</li>
 <li><strong>Backbone.Paginator.clientPager</strong>: For pagination of data returned from a server which you would like to further paginate within the UI (e.g 60 results are returned, paginate into 3 pages of 20)</li>
 </ul>
-<h2 id="downloads-and-source-code">Downloads And Source Code</h2>
-<p>You can either download the raw source code for the project, fork the repository or use one of these links:</p>
-<ul>
-<li><p>Production: <a href="https://raw.github.com/addyosmani/backbone.baginator/master/dist/backbone.paginator.min.js">production</a></p></li>
-<li><p>Development: <a href="https://raw.github.com/addyosmani/backbone.baginator/master/dist/backbone.paginator.js">development version</a></p></li>
-<li><p>Examples + Source : <a href="https://github.com/addyosmani/backbone.paginator/zipball/v0.153">zipball</a></p></li>
-<li><p><a href="http://github.com/addyosmani/backbone.paginator">Repository</a></p></li>
-</ul>
 <h2 id="live-examples">Live Examples</h2>
-<p>Live previews of both pagination components using the Netflix API can be found below. Download the tarball or fork the repository to experiment with these examples further.</p>
-<p>Demo 1: <a href="http://addyosmani.github.com/backbone.paginator/examples/netflix-request-paging/index.html">Backbone.Paginator.requestPager()</a></p>
-<img alt="" class="aligncenter size-large wp-image-4578" height="451" src="img/requestPager.png" style="margin-left:-17px;"  width="600" />
-<p>Demo 2: <a href="http://addyosmani.github.com/backbone.paginator/examples/netflix-client-paging/index.html">Backbone.Paginator.clientPager()</a></p>
-<img alt="" class="aligncenter size-full wp-image-4579" height="462" src="img/clientPager.png"  width="600" />
-<p>Demo 3: <a href="http://addyosmani.github.com/backbone.paginator/examples/netflix-infinite-paging/index.html">Infinite Pagination (Backbone.Paginator.requestPager())</a></p>
-<img alt="" class="aligncenter size-large wp-image-4580" height="451" src="img/infinitepager.png"  width="600" />
+<p>Live previews of both pagination components using the Netflix API can be found below. Fork the repository to experiment with these examples further.</p>
+<ul>
+<li><a href="http://addyosmani.github.com/backbone.paginator/examples/netflix-request-paging/index.html">Backbone.Paginator.requestPager()</a></li>
+<li><a href="http://addyosmani.github.com/backbone.paginator/examples/netflix-client-paging/index.html">Backbone.Paginator.clientPager()</a></li>
+<li><a href="http://addyosmani.github.com/backbone.paginator/examples/netflix-infinite-paging/index.html">Infinite Pagination (Backbone.Paginator.requestPager())</a></li>
+<li><a href="http://addyosmani.github.com/backbone.paginator/examples/google-diacritic/index.html">Diacritic Plugin</a></li>
+</ul>
 <h2 id="paginator.requestpager">Paginator.requestPager</h2>
 <p>In this section we're going to walkthrough actually using the requestPager.</p>
 <h4 id="create-a-new-paginated-collection">1. Create a new Paginated collection</h4>
 <p>First, we define a new Paginated collection using <code>Backbone.Paginator.requestPager()</code> as follows:</p>
-<pre class="javascript" name="code">var PaginatedCollection = Backbone.Paginator.requestPager.extend({
-</pre>
-
-<h4 id="set-the-model-and-base-url-for-the-collection-as-normal">2: Set the model and base URL for the collection as normal</h4>
+<p><code>javascript var PaginatedCollection = Backbone.Paginator.requestPager.extend({</code> ####2: Set the model for the collection as normal</p>
 <p>Within our collection, we then (as normal) specify the model to be used with this collection followed by the URL (or base URL) for the service providing our data (e.g the Netflix API).</p>
-<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="dt">model</span>: model,
-        <span class="dt">url</span>: <span class="ch">&#39;http://odata.netflix.com/v2/Catalog/Titles?&amp;&#39;</span>,</code></pre>
-<h4 id="map-the-attributes-supported-by-your-api-url">3. Map the attributes supported by your API (URL)</h4>
-<p>Next, we're going to map the request (URL) parameters supported by your API or backend data service back to attributes that are internally used by Backbone.Paginator.</p>
-<p>For example: the NetFlix API refers to its parameter for stating how many results to skip ahead by as <code>$skip</code> and its number of items to return per page as <code>$top</code> (amongst others). We determine these by looking at a sample URL pointing at the service:</p>
-<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="dt">http</span>:<span class="co">//odata.netflix.com/v2/Catalog/Titles?&amp;callback=callback&amp;$top=30&amp;$skip=30&amp;orderBy=ReleaseYear&amp;$inlinecount=allpages&amp;$format=json&amp;$callback=callback&amp;$filter=substringof%28%27the%27,%20Name%29%20eq%20true&amp;_=1332702202090</span></code></pre>
-<p>We then simply map these parameters to the relevant Paginator equivalents shown on the left hand side of the next snippets to get everything working:</p>
-<pre class="sourceCode javascript"><code class="sourceCode javascript">        <span class="co">// @param-name for the query field in the </span>
-        <span class="co">// request (e.g query/keywords/search)</span>
-        <span class="dt">queryAttribute</span>: <span class="ch">&#39;$filter&#39;</span>,
+<p><code>javascript         model: model,</code> ####3. Configure the base URL and the type of the request</p>
+<p>We need to set a base URL. The <code>type</code> of the request is <code>GET</code> by default, and the <code>dataType</code> is <code>jsonp</code> in order to enable cross-domain requests.</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript">    <span class="dt">paginator_core</span>: {
+      <span class="co">// the type of the request (GET by default)</span>
+      <span class="dt">type</span>: <span class="ch">&#39;GET&#39;</span>,
 
-        <span class="co">// @param-name for number of items to return per request/page</span>
-        <span class="dt">perPageAttribute</span>: <span class="ch">&#39;$top&#39;</span>,
+      <span class="co">// the type of reply (jsonp by default)</span>
+      <span class="dt">dataType</span>: <span class="ch">&#39;jsonp&#39;</span>,
 
-        <span class="co">// @param-name for how many results the request should skip ahead to</span>
-        <span class="dt">skipAttribute</span>: <span class="ch">&#39;$skip&#39;</span>,
+      <span class="co">// the URL (or base URL) for the service</span>
+      <span class="dt">url</span>: <span class="ch">&#39;http://odata.netflix.com/Catalog/People(49446)/TitlesActedIn?&#39;</span>
+    },</code></pre>
+<h4 id="configure-how-the-library-will-show-the-results">4. Configure how the library will show the results</h4>
+<p>We need to tell the library how many items per page would we like to see, etc...</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript">    <span class="dt">paginator_ui</span>: {
+      <span class="co">// the lowest page index your API allows to be accessed</span>
+      <span class="dt">firstPage</span>: <span class="dv">0</span>,
 
-        <span class="co">// @param-name for the direction to sort in</span>
-        <span class="dt">sortAttribute</span>: <span class="ch">&#39;$sort&#39;</span>,
+      <span class="co">// which page should the paginator start from </span>
+      <span class="co">// (also, the actual page the paginator is on)</span>
+      <span class="dt">currentPage</span>: <span class="dv">0</span>,
 
-        <span class="co">// @param-name for field to sort by</span>
-        <span class="dt">orderAttribute</span>: <span class="ch">&#39;$orderBy&#39;</span>,
+      <span class="co">// how many items per page should be shown</span>
+      <span class="dt">perPage</span>: <span class="dv">3</span>,
 
-        <span class="co">// @param-name for the format of the request</span>
-        <span class="dt">formatAttribute</span>: <span class="ch">&#39;$format&#39;</span>,
+      <span class="co">// a default number of total pages to query in case the API or </span>
+      <span class="co">// service you are using does not support providing the total </span>
+      <span class="co">// number of pages for us.</span>
+      <span class="co">// 10 as a default in case your service doesn&#39;t return the total</span>
+      <span class="dt">totalPages</span>: <span class="dv">10</span>
+    },</code></pre>
+<h4 id="configure-the-parameters-we-want-to-send-to-the-server">5. Configure the parameters we want to send to the server</h4>
+<p>Only the base URL won't be enough for most cases, so you can pass more parameters to the server. Note how you can use functions insead of hardcoded values, and you can also reffer to the values you specified in <code>paginator_ui</code>.</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript">    <span class="dt">server_api</span>: {
+      <span class="co">// the query field in the request</span>
+      <span class="ch">&#39;$filter&#39;</span>: <span class="ch">&#39;&#39;</span>,
 
-        <span class="co">// @param-name for a custom attribute </span>
-        <span class="dt">customAttribute1</span>: <span class="ch">&#39;$inlinecount&#39;</span>,
+      <span class="co">// number of items to return per request/page</span>
+      <span class="ch">&#39;$top&#39;</span>: <span class="kw">function</span>() { <span class="kw">return</span> <span class="kw">this</span>.<span class="fu">perPage</span> },
 
-        <span class="co">// @param-name for another custom attribute</span>
-        <span class="dt">customAttribute2</span>: <span class="ch">&#39;$callback&#39;</span>,</code></pre>
-<p><strong>Note</strong>: you can define support for new custom attributes in Backbone.Paginator if needed (e.g customAttribute1) for those that may be unique to your service.</p>
-<h4 id="configure-the-default-pagination-query-and-sort-details-for-the-paginator">4. Configure the default pagination, query and sort details for the paginator</h4>
-<p>Now, let's configure the default values in our collection for these parameters so that as a user navigates through the paginated UI, requests are able to continue querying with the correct field to sort on, the right number of items to return per request etc.</p>
-<p>e.g: If we want to request the:</p>
-<ul>
-<li>1st page of results</li>
-<li>for the search query 'superman'</li>
-<li>in JSON format</li>
-<li>sorted by release year</li>
-<li>in ascending order</li>
-<li>where only 30 results are returned per request</li>
-</ul>
-<p>This would look as follows:</p>
-<pre class="sourceCode javascript"><code class="sourceCode javascript">        <span class="co">// current page to query from the service</span>
-        <span class="dt">page</span>: <span class="dv">5</span>,
+      <span class="co">// how many results the request should skip ahead to</span>
+      <span class="co">// customize as needed. For the Netflix API, skipping ahead based on</span>
+      <span class="co">// page * number of results per page was necessary.</span>
+      <span class="ch">&#39;$skip&#39;</span>: <span class="kw">function</span>() { <span class="kw">return</span> <span class="kw">this</span>.<span class="fu">currentPage</span> * <span class="kw">this</span>.<span class="fu">perPage</span> },
 
-        <span class="co">// The lowest page index your API allows to be accessed</span>
-        <span class="dt">firstPage</span>: <span class="dv">0</span>, <span class="co">//some begin with 1</span>
+      <span class="co">// field to sort by</span>
+      <span class="ch">&#39;$orderby&#39;</span>: <span class="ch">&#39;ReleaseYear&#39;</span>,
 
-        <span class="co">// how many results to query from the service (i.e how many to return</span>
-        <span class="co">// per request)</span>
-        <span class="dt">perPage</span>: <span class="dv">30</span>,
+      <span class="co">// what format would you like to request results in?</span>
+      <span class="ch">&#39;$format&#39;</span>: <span class="ch">&#39;json&#39;</span>,
 
-        <span class="co">// maximum number of pages that can be queried from </span>
-        <span class="co">// the server (only here as a default in case your </span>
-        <span class="co">// service doesn&#39;t return the total pages available)</span>
-        <span class="dt">totalPages</span>: <span class="dv">10</span>,
-
-        <span class="co">// what field should the results be sorted on?</span>
-        <span class="dt">sortField</span>: <span class="ch">&#39;ReleaseYear&#39;</span>,
-
-        <span class="co">// what direction should the results be sorted in?</span>
-        <span class="dt">sortDirection</span>: <span class="ch">&#39;asc&#39;</span>,
-
-        <span class="co">// what would you like to query (search) from the service?</span>
-        <span class="co">// as Netflix reqires additional parameters around the query</span>
-        <span class="co">// we simply fill these around our search term</span>
-        <span class="dt">query</span>: <span class="st">&quot;substringof(&#39;&quot;</span> + <span class="fu">escape</span>(<span class="ch">&#39;the&#39;</span>) + <span class="st">&quot;&#39;,Name)&quot;</span>,
-
-        <span class="co">// what format would you like to request results in?</span>
-        <span class="dt">format</span>: <span class="ch">&#39;json&#39;</span>,
-
-        <span class="co">// what other custom parameters for the request do </span>
-        <span class="co">// you require</span>
-        <span class="co">// for your application?</span>
-        <span class="dt">customParam1</span>: <span class="ch">&#39;allpages&#39;</span>,
-
-        <span class="dt">customParam2</span>: <span class="ch">&#39;callback&#39;</span>,</code></pre>
-<p>As the particular API we're using requires <code>callback</code> and <code>allpages</code> parameters to also be passed, we simply define the values for these as custom parameters which can be mapped back to requestPager as needed.</p>
-<h4 id="finally-configure-collection.parse-and-were-done">5. Finally, configure Collection.parse() and we're done</h4>
+      <span class="co">// custom parameters</span>
+      <span class="ch">&#39;$inlinecount&#39;</span>: <span class="ch">&#39;allpages&#39;</span>,
+      <span class="ch">&#39;$callback&#39;</span>: <span class="ch">&#39;callback&#39;</span>                                     
+    },</code></pre>
+<h4 id="finally-configure-collection.parse-and-were-done">6. Finally, configure Collection.parse() and we're done</h4>
 <p>The last thing we need to do is configure our collection's <code>parse()</code> method. We want to ensure we're returning the correct part of our JSON response containing the data our collection will be populated with, which below is <code>response.d.results</code> (for the Netflix API).</p>
 <p>You might also notice that we're setting <code>this.totalPages</code> to the total page count returned by the API. This allows us to define the maximum number of (result) pages available for the current/last request so that we can clearly display this in the UI. It also allows us to infuence whether clicking say, a 'next' button should proceed with a request or not.</p>
-<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="dt">parse</span>: <span class="kw">function</span> (response) {
+<pre class="sourceCode javascript"><code class="sourceCode javascript">        <span class="dt">parse</span>: <span class="kw">function</span> (response) {
             <span class="co">// Be sure to change this based on how your results</span>
             <span class="co">// are structured (e.g d.results is Netflix specific)</span>
             <span class="kw">var</span> tags = <span class="kw">response.d</span>.<span class="fu">results</span>;
@@ -2747,75 +3475,106 @@ require([<span class="ch">&#39;views/app&#39;</span>], <span class="kw">function
 <h4 id="convenience-methods">Convenience methods:</h4>
 <p>For your convenience, the following methods are made available for use in your views to interact with the <code>requestPager</code>:</p>
 <ul>
-<li><strong>Collection.goTo(n)</strong> - go to a specific page</li>
-<li><strong>Collection.requestNextPage()</strong> - go to the next page</li>
-<li><strong>Collection.requestPreviousPage()</strong> - go to the previous page</li>
-<li><strong>Collection.howManyPer(n)</strong> - set the number of items to display per page</li>
+<li><strong>Collection.goTo( n, options )</strong> - go to a specific page</li>
+<li><strong>Collection.requestNextPage( options )</strong> - go to the next page</li>
+<li><strong>Collection.requestPreviousPage( options )</strong> - go to the previous page</li>
+<li><strong>Collection.howManyPer( n )</strong> - set the number of items to display per page</li>
 </ul>
+<p><strong>requestPager</strong> collection's methods <code>.goTo()</code>, <code>.requestNextPage()</code> and <code>.requestPreviousPage()</code> are all extension of the original <a href="http://documentcloud.github.com/backbone/#Collection-fetch">Backbone Collection.fetch() method</a>. As so, they all can take the same option object as parameter.</p>
+<p>This option object can use <code>success</code> and <code>error</code> parameters to pass a function to be executed after server answer.</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">Collection</span>.<span class="fu">goTo</span>(n, {
+  <span class="dt">success</span>: <span class="kw">function</span>( collection, response ) {
+    <span class="co">// called is server request success</span>
+  },
+  <span class="dt">error</span>: <span class="kw">function</span>( collection, response ) {
+    <span class="co">// called if server request fail</span>
+  }
+});</code></pre>
+<p>To manage callback, you could also use the <a href="http://api.jquery.com/jQuery.ajax/#jqXHR">jqXHR</a> returned by these methods to manage callback.</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript">Collection
+  .<span class="fu">requestNextPage</span>()
+  .<span class="fu">done</span>(<span class="kw">function</span>( data, textStatus, jqXHR ) {
+    <span class="co">// called is server request success</span>
+  })
+  .<span class="fu">fail</span>(<span class="kw">function</span>( data, textStatus, jqXHR ) {
+    <span class="co">// called if server request fail</span>
+  })
+  .<span class="fu">always</span>(<span class="kw">function</span>( data, textStatus, jqXHR ) {
+    <span class="co">// do something after server request is complete</span>
+  });
+});</code></pre>
+<p>If you'd like to add the incoming models to the current collection, instead of replacing the collection's contents, pass <code>{add: true}</code> as an option to these methods.</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">Collection</span>.<span class="fu">requestPreviousPage</span>({ <span class="dt">add</span>: <span class="kw">true</span> });</code></pre>
 <h2 id="paginator.clientpager">Paginator.clientPager</h2>
-<p>The <code>clientPager</code> works similar to the <code>requestPager</code>, except that our configuration values influence the pagination of data already returned at a UI-level. Whilst not shown (yet) there is also a lot more UI logic that ties in with the <code>clientPager</code>. An example of this can be seen in views/clientPagination.js.</p>
+<p>The <code>clientPager</code> works similar to the <code>requestPager</code>, except that our configuration values influence the pagination of data already returned at a UI-level. Whilst not shown (yet) there is also a lot more UI logic that ties in with the <code>clientPager</code>. An example of this can be seen in 'views/clientPagination.js'.</p>
 <h4 id="create-a-new-paginated-collection-with-a-model-and-url">1. Create a new paginated collection with a model and URL</h4>
-<p>As with <code>requestPager</code>, let's first create a new Paginated <code>Backbone.Paginator.clientPager</code> collection, with a model and base URL:</p>
-<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> PaginatedCollection = <span class="kw">Backbone.Paginator.clientPager</span>.<span class="fu">extend</span>({
+<p>As with <code>requestPager</code>, let's first create a new Paginated <code>Backbone.Paginator.clientPager</code> collection, with a model:</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript">    <span class="kw">var</span> PaginatedCollection = <span class="kw">Backbone.Paginator.clientPager</span>.<span class="fu">extend</span>({
 
-        <span class="dt">model</span>: model,
+        <span class="dt">model</span>: model,</code></pre>
+<h4 id="configure-the-base-url-and-the-type-of-the-request">2. Configure the base URL and the type of the request</h4>
+<p>We need to set a base URL. The <code>type</code> of the request is <code>GET</code> by default, and the <code>dataType</code> is <code>jsonp</code> in order to enable cross-domain requests.</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript">    <span class="dt">paginator_core</span>: {
+      <span class="co">// the type of the request (GET by default)</span>
+      <span class="dt">type</span>: <span class="ch">&#39;GET&#39;</span>,
 
-        <span class="dt">url</span>: <span class="ch">&#39;http://odata.netflix.com/v2/Catalog/Titles?&amp;&#39;</span>,</code></pre>
-<h4 id="map-the-attributes-supported-by-your-api-url-1">2. Map the attributes supported by your API (URL)</h4>
-<p>We're similarly going to map request parameter names for your API to those supported in the paginator:</p>
-<pre class="sourceCode javascript"><code class="sourceCode javascript">        <span class="dt">perPageAttribute</span>: <span class="ch">&#39;$top&#39;</span>,
+      <span class="co">// the type of reply (jsonp by default)</span>
+      <span class="dt">dataType</span>: <span class="ch">&#39;jsonp&#39;</span>,
 
-        <span class="dt">skipAttribute</span>: <span class="ch">&#39;$skip&#39;</span>,
+      <span class="co">// the URL (or base URL) for the service</span>
+      <span class="dt">url</span>: <span class="ch">&#39;http://odata.netflix.com/v2/Catalog/Titles?&amp;&#39;</span>
+    },</code></pre>
+<h4 id="configure-how-the-library-will-show-the-results-1">3. Configure how the library will show the results</h4>
+<p>We need to tell the library how many items per page would we like to see, etc...</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript">    <span class="dt">paginator_ui</span>: {
+      <span class="co">// the lowest page index your API allows to be accessed</span>
+      <span class="dt">firstPage</span>: <span class="dv">1</span>,
 
-        <span class="dt">orderAttribute</span>: <span class="ch">&#39;$orderBy&#39;</span>,
+      <span class="co">// which page should the paginator start from </span>
+      <span class="co">// (also, the actual page the paginator is on)</span>
+      <span class="dt">currentPage</span>: <span class="dv">1</span>,
 
-        <span class="dt">customAttribute1</span>: <span class="ch">&#39;$inlinecount&#39;</span>,
+      <span class="co">// how many items per page should be shown</span>
+      <span class="dt">perPage</span>: <span class="dv">3</span>,
 
-        <span class="dt">queryAttribute</span>: <span class="ch">&#39;$filter&#39;</span>,
+      <span class="co">// a default number of total pages to query in case the API or </span>
+      <span class="co">// service you are using does not support providing the total </span>
+      <span class="co">// number of pages for us.</span>
+      <span class="co">// 10 as a default in case your service doesn&#39;t return the total</span>
+      <span class="dt">totalPages</span>: <span class="dv">10</span>
+    },</code></pre>
+<h4 id="configure-the-parameters-we-want-to-send-to-the-server-1">4. Configure the parameters we want to send to the server</h4>
+<p>Only the base URL won't be enough for most cases, so you can pass more parameters to the server. Note how you can use functions insead of hardcoded values, and you can also reffer to the values you specified in <code>paginator_ui</code>.</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript">    <span class="dt">server_api</span>: {
+      <span class="co">// the query field in the request</span>
+      <span class="ch">&#39;$filter&#39;</span>: <span class="ch">&#39;substringof(\&#39;america\&#39;,Name)&#39;</span>,
 
-        <span class="dt">formatAttribute</span>: <span class="ch">&#39;$format&#39;</span>,
+      <span class="co">// number of items to return per request/page</span>
+      <span class="ch">&#39;$top&#39;</span>: <span class="kw">function</span>() { <span class="kw">return</span> <span class="kw">this</span>.<span class="fu">perPage</span> },
 
-        <span class="dt">customAttribute2</span>: <span class="ch">&#39;$callback&#39;</span>,</code></pre>
-<h4 id="configure-how-to-paginate-data-at-a-ui-level">3. Configure how to paginate data at a UI-level</h4>
-<p>We then get to configuration for the paginated data in the UI. <code>perPage</code> specifies how many results to return from the server whilst <code>displayPerPage</code> configures how many of the items in returned results to display per 'page' in the UI. e.g If we request 100 results and only display 20 per page, we have 5 sub-pages of results that can be navigated through in the UI.</p>
-<pre class="sourceCode javascript"><code class="sourceCode javascript">        <span class="co">// M: how many results to query from the service</span>
-        <span class="dt">perPage</span>: <span class="dv">40</span>,
+      <span class="co">// how many results the request should skip ahead to</span>
+      <span class="co">// customize as needed. For the Netflix API, skipping ahead based on</span>
+      <span class="co">// page * number of results per page was necessary.</span>
+      <span class="ch">&#39;$skip&#39;</span>: <span class="kw">function</span>() { <span class="kw">return</span> <span class="kw">this</span>.<span class="fu">currentPage</span> * <span class="kw">this</span>.<span class="fu">perPage</span> },
 
-        <span class="co">// N: how many results to display per &#39;page&#39; within the UI</span>
-        <span class="co">// Effectively M/N = the number of pages the data will be split into.</span>
-        <span class="dt">displayPerPage</span>: <span class="dv">20</span>,</code></pre>
-<h4 id="configure-the-rest-of-the-request-parameter-default-values">4. Configure the rest of the request parameter default values</h4>
-<p>We can then configure default values for the rest of our request parameters:</p>
-<pre class="sourceCode javascript"><code class="sourceCode javascript">        <span class="co">// current page to query from the service</span>
-        <span class="dt">page</span>: <span class="dv">1</span>,
+      <span class="co">// field to sort by</span>
+      <span class="ch">&#39;$orderby&#39;</span>: <span class="ch">&#39;ReleaseYear&#39;</span>,
 
-        <span class="co">// a default. This should be overridden in the collection&#39;s parse()</span>
-        <span class="co">// sort direction</span>
-        <span class="dt">sortDirection</span>: <span class="ch">&#39;asc&#39;</span>,
+      <span class="co">// what format would you like to request results in?</span>
+      <span class="ch">&#39;$format&#39;</span>: <span class="ch">&#39;json&#39;</span>,
 
-        <span class="co">// sort field</span>
-        <span class="dt">sortField</span>: <span class="ch">&#39;ReleaseYear&#39;</span>,
-        <span class="co">//or year(Instant/AvailableFrom)</span>
-
-        <span class="co">// query</span>
-        <span class="dt">query</span>: <span class="st">&quot;substringof(&#39;&quot;</span> + <span class="fu">escape</span>(<span class="ch">&#39;the&#39;</span>) + <span class="st">&quot;&#39;,Name)&quot;</span>,
-
-        <span class="co">// request format</span>
-        <span class="dt">format</span>: <span class="ch">&#39;json&#39;</span>,
-
-        <span class="co">// custom parameters for the request that may be specific to your</span>
-        <span class="co">// application</span>
-        <span class="dt">customParam1</span>: <span class="ch">&#39;allpages&#39;</span>,
-
-        <span class="dt">customParam2</span>: <span class="ch">&#39;callback&#39;</span>,</code></pre>
+      <span class="co">// custom parameters</span>
+      <span class="ch">&#39;$inlinecount&#39;</span>: <span class="ch">&#39;allpages&#39;</span>,
+      <span class="ch">&#39;$callback&#39;</span>: <span class="ch">&#39;callback&#39;</span>                                     
+    },</code></pre>
 <h4 id="finally-configure-collection.parse-and-were-done-1">5. Finally, configure Collection.parse() and we're done</h4>
 <p>And finally we have our <code>parse()</code> method, which in this case isn't concerned with the total number of result pages available on the server as we have our own total count of pages for the paginated data in the UI.</p>
-<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="dt">parse</span>: <span class="kw">function</span> (response) {
+<pre class="sourceCode javascript"><code class="sourceCode javascript">    <span class="dt">parse</span>: <span class="kw">function</span> (response) {
             <span class="kw">var</span> tags = <span class="kw">response.d</span>.<span class="fu">results</span>;
             <span class="kw">return</span> tags;
         }
 
-});</code></pre>
+    });</code></pre>
 <h4 id="convenience-methods-1">Convenience methods:</h4>
 <p>As mentioned, your views can hook into a number of convenience methods to navigate around UI-paginated data. For <code>clientPager</code> these include:</p>
 <ul>
@@ -2823,128 +3582,45 @@ require([<span class="ch">&#39;views/app&#39;</span>], <span class="kw">function
 <li><strong>Collection.previousPage()</strong> - go to the previous page</li>
 <li><strong>Collection.nextPage()</strong> - go to the next page</li>
 <li><strong>Collection.howManyPer(n)</strong> - set how many items to display per page</li>
-<li><strong>Collection.pager(sortBy, sortDirection)</strong> - update sort on the current view</li>
+<li><strong>Collection.setSort(sortBy, sortDirection)</strong> - update sort on the current view. Sorting will automatically detect if you're trying to sort numbers (even if they're strored as strings) and will do the right thing.</li>
+<li><strong>Collection.setFilter(filterFields, filterWords)</strong> - filter the current view. Filtering supports multiple words without any specific order, so you'll basically get a full-text search ability. Also, you can pass it only one field from the model, or you can pass an array with fields and all of them will get filtered. Last option is to pass it an object containing a comparison method and rules. Currently, only <code>levenshtein</code> method is available.</li>
 </ul>
-<h2 id="viewstemplates">Views/Templates</h2>
-<p>Although the collection layer is perhaps the most important part of Backbone.Paginator, it would be of little use without views interacting with it. The project zipball comes with three complete examples of using the components with the Netflix API, but here's a sample view and template from the <code>requestPager()</code> example for those interested in learning more:</p>
-<p>First, we have a view for a pagination bar in our UI that allows us to navigate around our paginated collection:</p>
-<pre class="sourceCode javascript"><code class="sourceCode javascript">(<span class="kw">function</span> ( views ) {
+<pre class="sourceCode javascript"><code class="sourceCode javascript">  <span class="kw">this</span>.<span class="fu">collection</span>.<span class="fu">setFilter</span>(
+    {<span class="ch">&#39;Name&#39;</span>: {<span class="dt">cmp_method</span>: <span class="ch">&#39;levenshtein&#39;</span>, <span class="dt">max_distance</span>: <span class="dv">7</span>}}
+    , <span class="st">&quot;Amreican P&quot;</span> <span class="co">// Note the switched &#39;r&#39; and &#39;e&#39;, and the &#39;P&#39; from &#39;Pie&#39;</span>
+  );</code></pre>
+<p>Also note that the levenshtein plugin should be loaded and enabled using the <code>useLevenshteinPlugin</code> variable.</p>
+<p>Last but not less important: Performing Levenshtein comparison returns the <code>distance</code> between to strings. It won't let you <em>search</em> lenghty text.</p>
+<p>The distance between two strings means the number of characters that should be added, removed or moved to the left or to the right so the strings get equal.</p>
+<p>That means that comparing &quot;Something&quot; in &quot;This is a test that could show something&quot; will return 32, which is bigger than comparing &quot;Something&quot; and &quot;ABCDEFG&quot; (9).</p>
+<p>Use levenshtein only for short texts (titles, names, etc).</p>
+<ul>
+<li><p><strong>Collection.doFakeFilter(filterFields, filterWords)</strong> - returns the models count after fake-applying a call to <code>Collection.setFilter</code>.</p></li>
+<li><p><strong>Collection.setFieldFilter(rules)</strong> - filter each value of each model according to <code>rules</code> that you pass as argument. Example: You have a collection of books with 'release year' and 'author'. You can filter only the books that were released between 1999 and 2003. And then you can add another <code>rule</code> that will filter those books only to authors who's name start with 'A'. Possible rules: function, required, min, max, range, minLength, maxLength, rangeLength, oneOf, equalTo, pattern. ```javascript my_collection.setFieldFilter([ {field: 'release_year', type: 'range', value: {min: '1999', max: '2003'}}, {field: 'author', type: 'pattern', value: new RegExp('A*', 'igm')} ]);</p></li>
+</ul>
+<p>//Rules: // //var my_var = 'green'; // //{field: 'color', type: 'equalTo', value: my_var} //{field: 'color', type: 'function', value: function(field_value){ return field_value == my_var; } } //{field: 'color', type: 'required'} //{field: 'number_of_colors', type: 'min', value: '2'} //{field: 'number_of_colors', type: 'max', value: '4'} //{field: 'number_of_colors', type: 'range', value: {min: '2', max: '4'} } //{field: 'color_name', type: 'minLength', value: '4'} //{field: 'color_name', type: 'maxLength', value: '6'} //{field: 'color_name', type: 'rangeLength', value: {min: '4', max: '6'}} //{field: 'color_name', type: 'oneOf', value: ['green', 'yellow']} //{field: 'color_name', type: 'pattern', value: new RegExp('gre*', 'ig')} ```</p>
+<ul>
+<li><strong>Collection.doFakeFieldFilter(rules)</strong> - returns the models count after fake-applying a call to <code>Collection.setFieldFilter</code>.</li>
+</ul>
+<h4 id="implementation-notes">Implementation notes:</h4>
+<p>You can use some variables in your <code>View</code> to represent the actual state of the paginator.</p>
+<p><code>totalUnfilteredRecords</code> - Contains the number of records, including all records filtered in any way. (Only available in <code>clientPager</code>)</p>
+<p><code>totalRecords</code> - Contains the number of records</p>
+<p><code>currentPage</code> - The actual page were the paginator is at.</p>
+<p><code>perPage</code> - The number of records the paginator will show per page.</p>
+<p><code>totalPages</code> - The number of total pages.</p>
+<p><code>startRecord</code> - The posicion of the first record shown in the current page (eg 41 to 50 from 2000 records) (Only available in <code>clientPager</code>)</p>
+<p><code>endRecord</code> - The posicion of the last record shown in the current page (eg 41 to 50 from 2000 records) (Only available in <code>clientPager</code>)</p>
+<h2 id="plugins">Plugins</h2>
+<p><strong>Diacritic.js</strong></p>
+<p>A plugin for Backbone.Paginator that replaces diacritic characters (<code>´</code>, <code>˝</code>, <code>̏</code>, <code>˚</code>,<code>~</code> etc.) with characters that match them most closely. This is particularly useful for filtering.</p>
+<p>To enable the plugin, set <code>this.useDiacriticsPlugin</code> to true, as can be seen in the example below:</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">Paginator</span>.<span class="fu">clientPager</span> = <span class="kw">Backbone.Collection</span>.<span class="fu">extend</span>({
 
-    <span class="kw">views</span>.<span class="fu">PaginatedView</span> = <span class="kw">Backbone.View</span>.<span class="fu">extend</span>({
-
-        <span class="dt">events</span>: {
-            <span class="ch">&#39;click a.servernext&#39;</span>: <span class="ch">&#39;nextResultPage&#39;</span>,
-            <span class="ch">&#39;click a.serverprevious&#39;</span>: <span class="ch">&#39;previousResultPage&#39;</span>,
-            <span class="ch">&#39;click a.orderUpdate&#39;</span>: <span class="ch">&#39;updateSortBy&#39;</span>,
-            <span class="ch">&#39;click a.serverlast&#39;</span>: <span class="ch">&#39;gotoLast&#39;</span>,
-            <span class="ch">&#39;click a.page&#39;</span>: <span class="ch">&#39;gotoPage&#39;</span>,
-            <span class="ch">&#39;click a.serverfirst&#39;</span>: <span class="ch">&#39;gotoFirst&#39;</span>,
-            <span class="ch">&#39;click a.serverpage&#39;</span>: <span class="ch">&#39;gotoPage&#39;</span>,
-            <span class="ch">&#39;click .serverhowmany a&#39;</span>: <span class="ch">&#39;changeCount&#39;</span>
-
-        },
-
-        <span class="dt">tagName</span>: <span class="ch">&#39;aside&#39;</span>,
-
-        <span class="dt">template</span>: <span class="kw">_</span>.<span class="fu">template</span>($(<span class="ch">&#39;#tmpServerPagination&#39;</span>).<span class="fu">html</span>()),
-
-        <span class="dt">initialize</span>: <span class="kw">function</span> () {
-
-            <span class="kw">this</span>.<span class="fu">collection</span>.<span class="fu">on</span>(<span class="ch">&#39;reset&#39;</span>, <span class="kw">this</span>.<span class="fu">render</span>, <span class="kw">this</span>);
-            <span class="kw">this</span>.<span class="fu">collection</span>.<span class="fu">on</span>(<span class="ch">&#39;change&#39;</span>, <span class="kw">this</span>.<span class="fu">render</span>, <span class="kw">this</span>);
-            <span class="kw">this</span>.$<span class="fu">el</span>.<span class="fu">appendTo</span>(<span class="ch">&#39;#pagination&#39;</span>);
-
-        },
-
-        <span class="dt">render</span>: <span class="kw">function</span> () {
-            <span class="kw">var</span> html = <span class="kw">this</span>.<span class="fu">template</span>(<span class="kw">this</span>.<span class="fu">collection</span>.<span class="fu">info</span>());
-            <span class="kw">this</span>.$<span class="fu">el</span>.<span class="fu">html</span>(html);
-        },
-
-        <span class="dt">updateSortBy</span>: <span class="kw">function</span> (e) {
-            <span class="kw">e</span>.<span class="fu">preventDefault</span>();
-            <span class="kw">var</span> currentSort = $(<span class="ch">&#39;#sortByField&#39;</span>).<span class="fu">val</span>();
-            <span class="kw">this</span>.<span class="fu">collection</span>.<span class="fu">updateOrder</span>(currentSort);
-        },
-
-        <span class="dt">nextResultPage</span>: <span class="kw">function</span> (e) {
-            <span class="kw">e</span>.<span class="fu">preventDefault</span>();
-            <span class="kw">this</span>.<span class="fu">collection</span>.<span class="fu">requestNextPage</span>();
-        },
-
-        <span class="dt">previousResultPage</span>: <span class="kw">function</span> (e) {
-            <span class="kw">e</span>.<span class="fu">preventDefault</span>();
-            <span class="kw">this</span>.<span class="fu">collection</span>.<span class="fu">requestPreviousPage</span>();
-        },
-
-        <span class="dt">gotoFirst</span>: <span class="kw">function</span> (e) {
-            <span class="kw">e</span>.<span class="fu">preventDefault</span>();
-            <span class="kw">this</span>.<span class="fu">collection</span>.<span class="fu">goTo</span>(<span class="kw">this</span>.<span class="fu">collection</span>.<span class="fu">information</span>.<span class="fu">firstPage</span>);
-        },
-
-        <span class="dt">gotoLast</span>: <span class="kw">function</span> (e) {
-            <span class="kw">e</span>.<span class="fu">preventDefault</span>();
-            <span class="kw">this</span>.<span class="fu">collection</span>.<span class="fu">goTo</span>(<span class="kw">this</span>.<span class="fu">collection</span>.<span class="fu">information</span>.<span class="fu">lastPage</span>);
-        },
-
-        <span class="dt">gotoPage</span>: <span class="kw">function</span> (e) {
-            <span class="kw">e</span>.<span class="fu">preventDefault</span>();
-            <span class="kw">var</span> page = $(<span class="kw">e</span>.<span class="fu">target</span>).<span class="fu">text</span>();
-            <span class="kw">this</span>.<span class="fu">collection</span>.<span class="fu">goTo</span>(page);
-        },
-
-        <span class="dt">changeCount</span>: <span class="kw">function</span> (e) {
-            <span class="kw">e</span>.<span class="fu">preventDefault</span>();
-            <span class="kw">var</span> per = $(<span class="kw">e</span>.<span class="fu">target</span>).<span class="fu">text</span>();
-            <span class="kw">this</span>.<span class="fu">collection</span>.<span class="fu">howManyPer</span>(per);
-        }
-
-    });
-
-})( <span class="kw">app</span>.<span class="fu">views</span> );</code></pre>
-<p>which we use with a template like this to generate the necessary pagination links (more are shown in the full example):</p>
-<pre class="sourceCode html"><code class="sourceCode html"><span class="kw">&lt;span</span><span class="ot"> class=</span><span class="st">&quot;divider&quot;</span><span class="kw">&gt;</span>/<span class="kw">&lt;/span&gt;</span>  
-        <span class="er">&lt;</span>% if (page &gt; firstPage) { %&gt;  
-            <span class="kw">&lt;a</span><span class="ot"> href=</span><span class="st">&quot;#&quot;</span><span class="ot"> class=</span><span class="st">&quot;serverprevious&quot;</span><span class="kw">&gt;</span>Previous<span class="kw">&lt;/a&gt;</span>  
-        <span class="er">&lt;</span>% }else{ %&gt;  
-            <span class="kw">&lt;span&gt;</span>Previous<span class="kw">&lt;/span&gt;</span>  
-        <span class="er">&lt;</span>% }%&gt;  
-        <span class="er">&lt;</span>% if (page <span class="er">&lt;</span> totalPages) { %&gt;  
-            <span class="kw">&lt;a</span><span class="ot"> href=</span><span class="st">&quot;#&quot;</span><span class="ot"> class=</span><span class="st">&quot;servernext&quot;</span><span class="kw">&gt;</span>Next<span class="kw">&lt;/a&gt;</span>  
-        <span class="er">&lt;</span>% } %&gt;  
-        <span class="er">&lt;</span>% if (firstPage != page) { %&gt;  
-            <span class="kw">&lt;a</span><span class="ot"> href=</span><span class="st">&quot;#&quot;</span><span class="ot"> class=</span><span class="st">&quot;serverfirst&quot;</span><span class="kw">&gt;</span>First<span class="kw">&lt;/a&gt;</span>  
-        <span class="er">&lt;</span>% } %&gt;  
-        <span class="er">&lt;</span>% if (lastPage != page) { %&gt;  
-            <span class="kw">&lt;a</span><span class="ot"> href=</span><span class="st">&quot;#&quot;</span><span class="ot"> class=</span><span class="st">&quot;serverlast&quot;</span><span class="kw">&gt;</span>Last<span class="kw">&lt;/a&gt;</span>  
-        <span class="er">&lt;</span>% } %&gt;  
-        <span class="kw">&lt;span</span><span class="ot"> class=</span><span class="st">&quot;divider&quot;</span><span class="kw">&gt;</span>/<span class="kw">&lt;/span&gt;</span>  
-        <span class="kw">&lt;span</span><span class="ot"> class=</span><span class="st">&quot;cell serverhowmany&quot;</span><span class="kw">&gt;</span>  
-            Show  
-            <span class="kw">&lt;a</span><span class="ot"> href=</span><span class="st">&quot;#&quot;</span><span class="ot"> class=</span><span class="st">&quot;selected&quot;</span><span class="kw">&gt;</span>3<span class="kw">&lt;/a&gt;</span>  
-            |  
-            <span class="kw">&lt;a</span><span class="ot"> href=</span><span class="st">&quot;#&quot;</span><span class="ot"> class=</span><span class="st">&quot;&quot;</span><span class="kw">&gt;</span>9<span class="kw">&lt;/a&gt;</span>  
-            |  
-            <span class="kw">&lt;a</span><span class="ot"> href=</span><span class="st">&quot;#&quot;</span><span class="ot"> class=</span><span class="st">&quot;&quot;</span><span class="kw">&gt;</span>12<span class="kw">&lt;/a&gt;</span>  
-            per page  
-        <span class="kw">&lt;/span&gt;</span>  
-        <span class="kw">&lt;span</span><span class="ot"> class=</span><span class="st">&quot;divider&quot;</span><span class="kw">&gt;</span>/<span class="kw">&lt;/span&gt;</span>  
-        <span class="kw">&lt;span</span><span class="ot"> class=</span><span class="st">&quot;cell first records&quot;</span><span class="kw">&gt;</span>  
-            Page: <span class="kw">&lt;span</span><span class="ot"> class=</span><span class="st">&quot;current&quot;</span><span class="kw">&gt;</span><span class="er">&lt;</span>%= page %&gt;<span class="kw">&lt;/span&gt;</span>  
-            of  
-            <span class="kw">&lt;span</span><span class="ot"> class=</span><span class="st">&quot;total&quot;</span><span class="kw">&gt;</span><span class="er">&lt;</span>%= totalPages %&gt;<span class="kw">&lt;/span&gt;</span>  
-                        shown  
-        <span class="kw">&lt;/span&gt;</span>  
-<span class="kw">&lt;span</span><span class="ot"> class=</span><span class="st">&quot;divider&quot;</span><span class="kw">&gt;</span>/<span class="kw">&lt;/span&gt;</span>  
-    <span class="kw">&lt;span</span><span class="ot"> class=</span><span class="st">&quot;cell sort&quot;</span><span class="kw">&gt;</span>  
-        <span class="kw">&lt;a</span><span class="ot"> href=</span><span class="st">&quot;#&quot;</span><span class="ot"> class=</span><span class="st">&quot;orderUpdate btn small&quot;</span><span class="kw">&gt;</span>Sort by:<span class="kw">&lt;/a&gt;</span>  
-    <span class="kw">&lt;/span&gt;</span>  
-    <span class="kw">&lt;select</span><span class="ot"> id=</span><span class="st">&quot;sortByField&quot;</span><span class="kw">&gt;</span>  
-        <span class="kw">&lt;option</span><span class="ot"> value=</span><span class="st">&quot;cid&quot;</span><span class="kw">&gt;</span>Select a field to sort on<span class="kw">&lt;/option&gt;</span>  
-        <span class="kw">&lt;option</span><span class="ot"> value=</span><span class="st">&quot;ReleaseYear&quot;</span><span class="kw">&gt;</span>Release year<span class="kw">&lt;/option&gt;</span>  
-        <span class="kw">&lt;option</span><span class="ot"> value=</span><span class="st">&quot;ShortName&quot;</span><span class="kw">&gt;</span>Alphabetical<span class="kw">&lt;/option&gt;</span>  
-    <span class="kw">&lt;/select&gt;</span>  
-<span class="kw">&lt;/span&gt;</span>  </code></pre>
+    <span class="co">// Default values used when sorting and/or filtering.</span>
+    <span class="dt">initialize</span>: <span class="kw">function</span>(){
+      <span class="kw">this</span>.<span class="fu">useDiacriticsPlugin</span> = <span class="kw">true</span>; <span class="co">// use diacritics plugin if available</span>
+    ... </code></pre>
 <h2 id="backbone-jquery-mobile">Backbone &amp; jQuery Mobile</h2>
 <h3 id="resolving-the-routing-conflicts">Resolving the routing conflicts</h3>
 <p>The first major hurdle developers typically run into when building Backbone applications with jQuery Mobile is that both frameworks have their own opinions about how to handle application navigation.</p>
@@ -2966,7 +3642,7 @@ $.<span class="fu">mobile</span>.<span class="fu">changePage</span>( url , { <sp
 <p><strong>Note:</strong> For some parallel work being done to explore how well the jQuery Mobile Router plugin works with Backbone, you may be interested in checking out https://github.com/Filirom1/jquery-mobile-backbone-requirejs.</p>
 <h3 id="practical-a-backbone-requirejsamd-app-with-jquery-mobile">Practical: A Backbone, RequireJS/AMD app with jQuery Mobile</h3>
 <p><strong>Note:</strong> The code for this practical can be found in <code>practicals/modular-mobile-app</code>.</p>
-<h3 id="getting-started-1">Getting started</h3>
+<h3 id="getting-started-2">Getting started</h3>
 <p>Once you feel comfortable with the <a href="http://msdn.microsoft.com/en-us/scriptjunkie/hh377172.aspx">Backbone fundamentals</a> and you've put together a rough wireframe of the app you may wish to build, start to think about your application architecture. Ideally, you'll want to logically separate concerns so that it's as easy as possible to maintain the app in the future.</p>
 <p><strong>Namespacing</strong></p>
 <p>For this application, I opted for the nested namespacing pattern. Implemented correctly, this enables you to clearly identify if items being referenced in your app are views, other modules and so on. This initial structure is a sane place to also include application defaults (unless you prefer maintaining those in a separate file).</p>
@@ -3604,7 +4280,7 @@ expect(<span class="ch">&#39;click&#39;</span>).<span class="fu">toHaveBeenTrigg
   });
 });</code></pre>
 <p>This will now also pass without any issues. Remember that jasmine-jquery also supports loading external fixtures into your specs easily using its build in <code>loadFixtures()</code> and <code>readFixtures()</code> methods. For more information, consider reading the official jasmine-jquery <a href="https://github.com/velesin/jasmine-jquery">docs</a>.</p>
-<h2 id="conclusions-1">Conclusions</h2>
+<h2 id="conclusions-2">Conclusions</h2>
 <p>We have now covered how to write Jasmine tests for models, views and collections with Backbone.js. Whilst testing routing can at times be desirable, some developers feel it can be more optimal to leave this to third-party tools such as Selenium, so do keep this in mind.</p>
 <p>James Newbery was kind enough to help me with writing the Views section above and his articles on <a href="http://tinnedfruit.com/2011/04/26/testing-backbone-apps-with-jasmine-sinon-3.html">Testing Backbone Apps With SinonJS</a> were of great inspiration (you'll actually find some Handlebars examples of the view specs in part 3 of his article). If you would like to learn more about writing spies and mocks for Backbone using <a href="http://sinonjs.org">SinonJS</a> as well as how to test Backbone routers, do consider reading his series.</p>
 <h2 id="exercise">Exercise</h2>
@@ -4475,7 +5151,7 @@ test( <span class="ch">&#39;Should bind Collection events to View creation.&#39;
 <li><a href="https://github.com/n-time/backbone.validations">Backbone Validations - HTML5 inspired validations</a></li>
 </ul>
 <p>In time, there will be tutorials in the book covering some of these resources but until then, please feel free to check them out.</p>
-<h2 id="conclusions-2"><a name="conclusions">Conclusions</a></h2>
+<h2 id="conclusions-3"><a name="conclusions">Conclusions</a></h2>
 <p>That's it for 'Developing Backbone.js Applications'. I hope you found this book both useful, enlightening and a good start for your journey into exploring Backbone.js.</p>
 <p>If there are other topics or areas of this book you feel could be expanded further, please feel free to let me know, or better yet, send a pull request upstream. I'm always interested in making this title as comprehensive as possible.</p>
 <p>Until next time, the very best of luck with the rest of your journey!</p>

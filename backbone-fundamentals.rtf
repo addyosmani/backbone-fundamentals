@@ -64,11 +64,22 @@ Routers
 {\pard \ql \f0 \sa0 \li720 \fi-360 \endash \tx360\tab {\field{\*\fldinst{HYPERLINK "#thebasics-namespacing"}}{\fldrslt{\ul
 Namespacing
 }}}
-\par}
-{\pard \ql \f0 \sa0 \li720 \fi-360 \endash \tx360\tab {\field{\*\fldinst{HYPERLINK "#thebasics-additional-tips"}}{\fldrslt{\ul
-Additional tips
-}}}
 \sa180\par}
+{\pard \ql \f0 \sa180 \li360 \fi-360 \bullet \tx360\tab \b \fs24 {\field{\*\fldinst{HYPERLINK "#thebasics-additional-tips"}}{\fldrslt{\ul
+Common Questions & Answers
+}}}
+\par}
+{\pard \ql \f0 \sa0 \li720 \fi-360 \endash \tx360\tab Rendering Sub-Views\par}
+{\pard \ql \f0 \sa0 \li720 \fi-360 \endash \tx360\tab Managing Nested Views\par}
+{\pard \ql \f0 \sa0 \li720 \fi-360 \endash \tx360\tab View Inheritance\par}
+{\pard \ql \f0 \sa0 \li720 \fi-360 \endash \tx360\tab Views Triggering Other Views\par}
+{\pard \ql \f0 \sa0 \li720 \fi-360 \endash \tx360\tab Child Views Rendering Parent Views\par}
+{\pard \ql \f0 \sa0 \li720 \fi-360 \endash \tx360\tab Parent And Child View Disposal\par}
+{\pard \ql \f0 \sa0 \li720 \fi-360 \endash \tx360\tab Appending Views\sa180\par}
+{\pard \ql \f0 \sa180 \li360 \fi-360 \bullet \tx360\tab \b \fs24 {\field{\*\fldinst{HYPERLINK "#backboneboilerplate"}}{\fldrslt{\ul
+Backbone Boilerplate & Grunt BBB
+}}}
+\par}
 {\pard \ql \f0 \sa180 \li360 \fi-360 \bullet \tx360\tab \b \fs24 {\field{\*\fldinst{HYPERLINK "#restfulapps"}}{\fldrslt{\ul
 RESTful Applications
 }}}
@@ -147,17 +158,17 @@ Testing Views
 Unit Testing Backbone Applications With QUnit And SinonJS
 }}}
 \par}
-{\pard \ql \f0 \sa0 \li720 \fi-360 \endash \tx360\tab Introduction\par}
-{\pard \ql \f0 \sa0 \li720 \fi-360 \endash \tx360\tab QUnit\par}
+{\pard \ql \f0 \sa0 \li1080 \fi-360 \bullet \tx360\tab Introduction\par}
+{\pard \ql \f0 \sa0 \li1080 \fi-360 \bullet \tx360\tab QUnit\par}
 {\pard \ql \f0 \sa0 \li1080 \fi-360 \bullet \tx360\tab Assertions\par}
 {\pard \ql \f0 \sa0 \li1080 \fi-360 \bullet \tx360\tab Adding structure to assertions\par}
 {\pard \ql \f0 \sa0 \li1080 \fi-360 \bullet \tx360\tab Assertion examples\par}
 {\pard \ql \f0 \sa0 \li1080 \fi-360 \bullet \tx360\tab Fixtures\par}
-{\pard \ql \f0 \sa0 \li1080 \fi-360 \bullet \tx360\tab Asynchronous code\sa180\par}
-{\pard \ql \f0 \sa0 \li720 \fi-360 \endash \tx360\tab SinonJS\par}
+{\pard \ql \f0 \sa0 \li1080 \fi-360 \bullet \tx360\tab Asynchronous code\par}
+{\pard \ql \f0 \sa0 \li1080 \fi-360 \bullet \tx360\tab SinonJS\par}
 {\pard \ql \f0 \sa0 \li1080 \fi-360 \bullet \tx360\tab Stubs\par}
-{\pard \ql \f0 \sa0 \li1080 \fi-360 \bullet \tx360\tab Mocks\sa180\par}
-{\pard \ql \f0 \sa0 \li720 \fi-360 \endash \tx360\tab Practical\par}
+{\pard \ql \f0 \sa0 \li1080 \fi-360 \bullet \tx360\tab Mocks\par}
+{\pard \ql \f0 \sa0 \li1080 \fi-360 \bullet \tx360\tab Practical\par}
 {\pard \ql \f0 \sa0 \li1080 \fi-360 \bullet \tx360\tab Testing Models\par}
 {\pard \ql \f0 \sa0 \li1080 \fi-360 \bullet \tx360\tab Testing Collections\par}
 {\pard \ql \f0 \sa0 \li1080 \fi-360 \bullet \tx360\tab Testing Views\par}
@@ -757,8 +768,10 @@ Backbone.emulateJSON = false;\par}
   'read':   'GET'\line
 \};\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 In the above example if we wanted to log an event when {\f1 .sync()} was called, we could do this:\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 \f1 Backbone.sync = function(method, model) \{\line
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 var id_counter = 1;\line
+Backbone.sync = function(method, model) \{\line
   console.log("I've been passed " + method + " with " + JSON.stringify(model));\line
+  if(method === 'create')\{ model.set('id', id_counter++); \}\line
 \};\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 {\b Resetting/Refreshing Collections}\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 Rather than adding or removing models individually, you might occasionally wish to update an entire collection at once. {\f1 Collection.reset()} allows us to replace an entire collection with new models as follows:\par}
@@ -845,6 +858,8 @@ http://unicorns.com/#search/seasonal-horns/page2\par}
 \line
 var myGalleryRouter = new GalleryRouter();\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 As of Backbone 0.5+, it\u8217's possible to opt-in for HTML5 pushState support via {\f1 window.history.pushState}. This permits you to define routes such as http://www.scriptjunkie.com/just/an/example. This will be supported with automatic degradation when a user\u8217's browser doesn\u8217't support pushState. For the purposes of this tutorial, we\u8217'll use the hashtag method.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs24 Is there a limit to the number of routers I should be using?\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Andrew de Andrade has pointed out that DocumentCloud themselves usually only use a single router in most of their applications. You\u8217're very likely to not require more than one or two routers in your own projects as the majority of your application routing can be kept organized in a single controller without it getting unwieldy.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \b \fs24 Backbone.history\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 Next, we need to initialize {\f1 Backbone.history} as it handles {\f1 hashchange} events in our application. This will automatically handle routes that have been defined and trigger callbacks when they\u8217've been accessed.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 The {\f1 Backbone.history.start()} method will simply tell Backbone that it\u8217's OK to begin monitoring all {\f1 hashchange} events as follows:\par}
@@ -1114,24 +1129,866 @@ galleryApp.model.special.Admin = Backbone.Model.extend(\{\});\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 {\b Recommendation}\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 Reviewing the namespace patterns above, the option that I prefer when writing Backbone applications is nested object namespacing with the object literal pattern.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 Single global variables may work fine for applications that are relatively trivial. However, larger codebases requiring both namespaces and deep sub-namespaces require a succinct solution that\u8217's both readable and scalable. I feel this pattern achieves both of these objectives and is a good choice for most Backbone development.\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs28 Additional Tips\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs24 Automated Backbone Scaffolding\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 Scaffolding can assist in expediting how quickly you can begin a new application by creating the basic files required for a project automatically. If you enjoy the idea of automated MVC scaffolding using Backbone, I\u8217'm happy to recommend checking out a tool called {\field{\*\fldinst{HYPERLINK "https://github.com/brunch/brunch"}}{\fldrslt{\ul
-Brunch
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs28 Common Questions & Answers\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs24 What is the best approach for rendering and appending Sub-Views in Backbone.js?\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 If you have a nested View setup in your application, there are a few approaches possible for initializing, rendering and appending your sub-views.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 One possible solution is the following:\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 \line
+var OuterView = Backbone.View.extend(\{\line
+    initialize: function() \{\line
+        this.inner = new InnerView();\line
+    \},\line
+\line
+    render: function() \{\line
+        this.$el.html(template); // or this.$el.empty() if you have no template\line
+        this.$el.append(this.inner.$el);\line
+        this.inner.render();\line
+    \}\line
+\});\line
+\line
+var InnerView = Backbone.View.extend(\{\line
+    render: function() \{\line
+        this.$el.html(template);\line
+        this.delegateEvents();\line
+    \}\line
+\});\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Which tackles a few specific design decisions:\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab The order in which you append the sub-elements matters\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab The OuterView doesn\u8217't contain the HTML elements to be set in the InnerView(s), meaning that we can still specify tagName in the InnerView\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab render() is called after the InnerView element has been placed into the DOM. This is useful if your InnerViews render() method is sizing itself on the page based on the dimensions of another element. This is a common use case.\sa180\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 A second potential solution is this, which may appear cleaner but in reality has a tendency to affect performance:\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 \line
+var OuterView = Backbone.View.extend(\{\line
+    initialize: function() \{\line
+        this.render();\line
+    \},\line
+\line
+    render: function() \{\line
+        this.$el.html(template); // or this.$el.empty() if you have no template\line
+        this.inner = new InnerView();\line
+        this.$el.append(this.inner.$el);\line
+    \}\line
+\});\line
+\line
+var InnerView = Backbone.View.extend(\{\line
+    initialize: function() \{\line
+        this.render();\line
+    \},\line
+\line
+    render: function() \{\line
+        this.$el.html(template);\line
+    \}\line
+\});\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Generally speaking, more developers opt for the first solution as:\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab The majority of their views may already rely on being in the DOM in their render() method\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab When the OuterView is re-rendered, views don\u8217't have to be re-initialized where re-initialization has the potential to cause memory leaks and issues with existing bindings\sa180\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 (Thanks to {\field{\*\fldinst{HYPERLINK "http://stackoverflow.com/questions/9271507/how-to-render-and-append-sub-views-in-backbone-js"}}{\fldrslt{\ul
+Lukas
+}}}
+ for this tip).\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs24 What is a straight-forward way to manage Nested Views?\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 In order to reach attributes on related models, the models involved need to have some prior knowledge about which models this refers to. Backbone.js doesn\u8217't implicitly handle relations or nesting, meaning it\u8217's up to us to ensure models have a knowledge of each other.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 One approach is to make sure each child model has a \u8216'parent\u8217' attribute. This way you can traverse the nesting first up to the parent and then down to any siblings that you know of. So, assuming we have models modelA, modelB and modelC:\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 \line
+// When initializing modelA, I would suggest setting a link to the parent \line
+// model when doing this, like this:\line
+\line
+ModelA = Backbone.Model.extend(\{\line
+\line
+    initialize: function()\{\line
+        this.modelB = new modelB();\line
+        this.modelB.parent = this;\line
+        this.modelC = new modelC();\line
+        this.modelC.parent = this;\line
+    \}\line
+\}\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 This allows you to reach the parent model in any child model function by calling this.parent.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 When you have a need to nest Backbone.js views, you might find it easier to let each view represent a single HTML tag using the tagName option of the View. This may be written as:\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 ViewA = Backbone.View.extend(\{\line
+\line
+    tagName: "div",\line
+    id: "new",\line
+\line
+    initialize: function()\{\line
+       this.viewB = new ViewB();\line
+       this.viewB.parentView = this;\line
+       $(this.el).append(this.viewB.el);\line
+    \}\line
+\});\line
+\line
+ViewB = Backbone.View.extend(\{\line
+\line
+    tagName: "h1",\line
+\line
+    render: function()\{\line
+        $(this.el).html("Header text"); // or use this.options.headerText or equivalent\line
+    \},\line
+\line
+    funcB1: function()\{\line
+        this.model.parent.doSomethingOnParent();\line
+        this.model.parent.modelC.doSomethingOnSibling();\line
+        $(this.parentView.el).shakeViolently();\line
+    \}\line
+\line
+\});\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Then in your application initialization code , you would initiate ViewA and place its element inside the body element.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 An alternative approach is to use an extension called {\field{\*\fldinst{HYPERLINK "https://github.com/powmedia/backbone-forms"}}{\fldrslt{\ul
+Backbone-Forms
+}}}
+. Using a similar schema to what we wrote earlier, nesting could be achieved as follows:\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 var ModelB = Backbone.Model.extend(\{\line
+    schema: \{\line
+        attributeB1: 'Text',\line
+        attributeB2: 'Text'\line
+    \}\line
+\});\line
+\line
+var ModelC = Backbone.Model.extend(\{\line
+    schema: \{\line
+        attributeC: 'Text',\line
+    \}\line
+\});\line
+\line
+var ModelA = Backbone.Model.extend(\{\line
+    schema: \{\line
+        attributeA1: 'Text',\line
+        attributeA2: 'Text',\line
+        refToModelB: \{ type: 'NestedModel', model: ModelB, template: 'templateB' \},\line
+        refToModelC: \{ type: 'NestedModel', model: ModelC, template: 'templateC' \}\line
+    \}\line
+\});\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 There is more information about this technique available on {\field{\*\fldinst{HYPERLINK "https://github.com/powmedia/backbone-forms#customising-templates"}}{\fldrslt{\ul
+GitHub
 }}}
 .\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 It works very well with Backbone, Underscore, jQuery and CoffeeScript and is even used by companies such as Red Bull and Jim Beam. You may have to update any third party dependencies (e.g.\u160?latest jQuery or Zepto) when using it, but other than that it should be fairly stable to use right out of the box.\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 Brunch can be installed via the nodejs package manager and is easy to get started with. If you happen to use Vim or Textmate as your editor of choice, you\u8217'll be happy to know that there are Brunch bundles available for both.\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs24 Is there a limit to the number of routers I should be using?\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 Andrew de Andrade has pointed out that DocumentCloud themselves usually only use a single router in most of their applications. You\u8217're very likely to not require more than one or two routers in your own projects as the majority of your application routing can be kept organized in a single controller without it getting unwieldy.\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs24 Is Backbone too small for my application\u8217's needs?\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 (Thanks to {\field{\*\fldinst{HYPERLINK "http://stackoverflow.com/users/100952/jens-alm"}}{\fldrslt{\ul
+Jens Alm
+}}}
+ and {\field{\*\fldinst{HYPERLINK "http://stackoverflow.com/users/801466/artem-oboturov"}}{\fldrslt{\ul
+Artem Oboturov
+}}}
+ for these tips)\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs24 How would one go about writing Views which inherit from other Views?\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Underscore.js provides an {\f1 _.extend()} method that gives us the ability to both write mixins for Views and inherit from Views quite easily.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 For mixins, you can define functionality on any object, and then quite literally copy & paste all of the methods and attributes from that object to another.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Backbone\u8217's extend methods on Views, Models, and Routers are a wrapper around underscore\u8217's _.extend().\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 For example:\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1  var MyMixin = \{\line
+  foo: "bar",\line
+  sayFoo: function()\{alert(this.foo);\}\line
+\}\line
+\line
+var MyView = Backbone.View.extend(\{\line
+ // ...\line
+\});\line
+\line
+_.extend(MyView.prototype, MyMixin);\line
+\line
+myView = new MyView();\line
+myView.sayFoo(); //=> "bar"\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 The .extend() method can also be used for View inheritance, which is an even more interesting use case.The following is an example of how to extend one View using another:\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 var Panel = Backbone.View.extend(\{\line
+\});\line
+\line
+var PanelAdvanced = Panel.extend(\{\line
+\});\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 However, if you have an initialize() method in Panel, then it won\u8217't be called if you also have an initialize() method in PanelAdvanced, so you would have to call Panel\u8217's initialize method explicitly:\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 var Panel = Backbone.View.extend(\{\line
+   initialize: function(options)\{\line
+      console.log('Panel initialized');\line
+      this.foo = 'bar';\line
+   \}\line
+\});\line
+\line
+var PanelAdvanced = Panel.extend(\{\line
+   initialize: function(options)\{\line
+      this.constructor.__super__.initialize.apply(this, [options])\line
+      console.log('PanelAdvanced initialized');\line
+      console.log(this.foo); // Log: bar\line
+   \}\line
+\});\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 This isn\u8217't the most elegant of solutions because if you have a lot of Views that inherit from Panel, then you\u8217'll have to remember to call Panel\u8217's initialize from all of them. Even worse, if Panel doesn\u8217't have an initialize method now but you choose to add it in the future, then you\u8217'll need to go to all of the inherited classes in the future and make sure they call Panel\u8217's initialize. So here\u8217's an alternative way to define Panel so that your inherited views don\u8217't need to call Panel\u8217's initialize method:\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 var Panel = function (options) \{\line
+\line
+    // put all of Panel's initialization code here\line
+    console.log('Panel initialized');\line
+    this.foo = 'bar';\line
+\line
+    Backbone.View.apply(this, [options]);\line
+\};\line
+\line
+_.extend(Panel.prototype, Backbone.View.prototype, \{\line
+\line
+    // put all of Panel's methods here. For example:\line
+    sayHi: function () \{\line
+        console.log('hello from Panel');\line
+    \}\line
+\});\line
+\line
+Panel.extend = Backbone.View.extend;\line
+\line
+\line
+// other classes inherit from Panel like this:\line
+var PanelAdvanced = Panel.extend(\{\line
+\line
+    initialize: function (options) \{\line
+        console.log('PanelAdvanced initialized');\line
+        console.log(this.foo);\line
+    \}\line
+\});\line
+\line
+var PanelAdvanced = new PanelAdvanced(); //Log: Panel initialized, PanelAdvanced initialized, bar\line
+PanelAdvanced.sayHi(); // Log: hello from Panel\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 (Thanks to {\field{\*\fldinst{HYPERLINK "http://stackoverflow.com/users/93448/derick-bailey"}}{\fldrslt{\ul
+Derick Bailey
+}}}
+ and {\field{\*\fldinst{HYPERLINK "http://stackoverflow.com/users/188740/johnnyo"}}{\fldrslt{\ul
+JohnnyO
+}}}
+ for these tips)\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs24 Is it possible to have one Backbone.js View trigger updates in other Views?\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 The Mediator pattern is an excellent option for implementing a solution to this problem.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Without going into too much detail about the pattern, it can effectively be used an event manager that lets you to subscribe to and publish events. So an ApplicationViewA could subscribe to an event, i.e. \u8216'selected\u8217' and then the ApplicationViewB would publish the \u8216'selected\u8217' event.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 The reason I like this is it allows you to send events between views, without the views being directly bound together.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 For Example:\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 \line
+// See http://addyosmani.com/largescalejavascript/#mediatorpattern\line
+// for an implementation or alternatively for a more thorough one\line
+// http://thejacklawson.com/Mediator.js/\line
+\line
+var mediator = new Mediator(); \line
+\line
+var ApplicationViewB = Backbone.View.extend(\{\line
+    toggle_select: function() \{\line
+        ...\line
+        mediator.publish('selected', any, data, you, want);\line
+        return this;\line
+    \}\line
+\});\line
+\line
+var ApplicationViewA = Backbone.View.extend(\{\line
+    initialize: function() \{\line
+        mediator.subscribe('selected', this.delete_selected)\line
+    \},\line
+\line
+    delete_selected: function(any, data, you, want) \{\line
+        ... do something ...\line
+    \},\line
+\});\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 This way your ApplicationViewA doesn\u8217't care if it is an ApplicationViewB or FooView that publishes the \u8216'selected\u8217' event, only that the event occurred. As a result, you may find it a maintainable way to manage events between parts of your application, not just views.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 (Thanks to {\field{\*\fldinst{HYPERLINK "http://stackoverflow.com/users/937577/john-mckim"}}{\fldrslt{\ul
+John McKim
+}}}
+ for this tip and for referencing my Large Scale JavaScript Patterns article).\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs24 How would one render a Parent View from one of its Children?\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 http://stackoverflow.com/questions/11531028/render-parent-view-from-child-view-backbone-js\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 If you say, have a view which contains another view (e.g a main view containing a modal view) and would like to render or re-render the parent view from the child, this is extremely straight-forward.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 In such a scenario, you would most likely want to execute the rendering when a particular event has occurred. For the sake of example, let us call this event \u8216'somethingHappened\u8217'. The parent view can bind notifications on the child view to know when the event has occurred. It can then render itself.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 On the parent view:\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 // Parent initialize\line
+this.childView.on('somethingHappened', this.render, this);\line
+\line
+// Parent removal\line
+this.childView.off('somethingHappened', this.render, this);\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 On the child view:\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\f1 javascript // After the event has occurred this.trigger('somethingHappened');} The child will trigger a \u8220"somethingHappened\u8221" event and the parent\u8217's render function will be called.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 (Thanks to Tal {\field{\*\fldinst{HYPERLINK "http://stackoverflow.com/users/269666/tal-bereznitskey"}}{\fldrslt{\ul
+Bereznitskey
+}}}
+ for this tip)\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs24 How does one handle View disposal on a Parent or Child View?\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 You may be interested in removing any DOM elements associated with a view as well as unbinding any event handlers tied to child elements when you no longer require them. This can lead to decreases in memory (analogous to a type of garbage collection).\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Below, we can see how to achieve this:\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 Backbone.View.prototype.close = function() \{\line
+    if (this.onClose) \{\line
+        this.onClose();\line
+    \}\line
+    this.remove();\line
+    this.unbind();\line
+\};\line
+\line
+NewView = Backbone.View.extend(\{\line
+    initialize: function() \{\line
+       this.childViews = [];\line
+    \},\line
+    renderChildren: function(item) \{\line
+        var itemView = new NewChildView(\{ model: item \});\line
+        $(this.el).prepend(itemView.render());\line
+        this.childViews.push(itemView);\line
+    \},\line
+    onClose: function() \{\line
+      _(this.childViews).each(function(view) \{\line
+        view.close();\line
+      \});\line
+    \}\line
+\});\line
+\line
+NewChildView = Backbone.View.extend(\{\line
+    tagName: 'li',\line
+    render: function() \{\line
+    \}\line
+\});\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 For the sake of explanation, a close() method for views is implemented which disposes of a view when it is no longer needed or needs to be reset. In most cases the view removal should be done at a view layer so that it won\u8217't affect any of our models.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 For example, if you are working on a blogging application and you remove a view with comments, perhaps another view in your app shows a selection of comments and resetting the collection would affect those views too.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 (Thanks to {\field{\*\fldinst{HYPERLINK "http://stackoverflow.com/users/906136/dira"}}{\fldrslt{\ul
+dira
+}}}
+ for this tip)\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs24 What\u8217's the best way to combine or append Views to each other?\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Let us say you have a Collection, where each item in the Collection could itself be a Collection. You can render each item in the Collection, and indeed can render any items which themselves are Collections. The problem you might have is how to render this structure where the HTML reflects the hierarchical nature of the data structure.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 The most straight-forward way to approach this problem is to use a framework like Derick Baileys {\field{\*\fldinst{HYPERLINK "https://github.com/derickbailey/backbone.marionette"}}{\fldrslt{\ul
+Backbone.Marionette
+}}}
+. In this framework is a type of view called a CompositeView.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 The basic idea of a CompositeView is that it can render a model and a collection within the same view.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 It can render a single model with a template. It can also take a collection from that model and for each model in that collection, render a view. By default it uses the same composite view type that you\u8217've defined, to render each of the models in the collection. All you have to do is tell the view instance where the collection is, via the initialize method, and you\u8217'll get a recursive hierarchy rendered.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 There is a working demo of this in action available {\field{\*\fldinst{HYPERLINK "http://jsfiddle.net/derickbailey/AdWjU/"}}{\fldrslt{\ul
+online
+}}}
+.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 And you can get the source code and documentation for {\field{\*\fldinst{HYPERLINK "https://github.com/derickbailey/backbone.marionette"}}{\fldrslt{\ul
+Marionette
+}}}
+ too.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs24 Is Backbone too simple for my needs?\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 If you find yourself unsure of whether or not your application is too large to use Backbone, I recommend reading {\field{\*\fldinst{HYPERLINK "http://addyosmani.com/blog/jqcon-largescalejs-2012/"}}{\fldrslt{\ul
 my post
 }}}
  on building large-scale jQuery & JavaScript applications or reviewing my slides on client-side MVC architecture options. In both, I cover alternative solutions and my thoughts on the suitability of current MVC solutions for scaled application development.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 Backbone can be used for building both trivial and complex applications as demonstrated by the many examples Ashkenas has been referencing in the Backbone documentation. As with any MVC framework however, it\u8217's important to dedicate time towards planning out what models and views your application really needs. Diving straight into development without doing this can result in either spaghetti code or a large refactor later on and it\u8217's best to avoid this where possible.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 At the end of the day, the key to building large applications is not to build large applications in the first place. If you find that Backbone doesn\u8217't cut it for your requirements, I strongly recommend checking out JavaScriptMVC, SproutCore, or Ember.js as they offer a little more than Backbone out of the box. Dojo and Dojo Mobile may also be of interest as these have also been used to build significantly complex apps by other developers.\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs32 ## RESTful Applications\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs36 Backbone Boilerplate And Grunt-BBB\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\field{\*\fldinst{HYPERLINK "https://github.com/tbranyen/backbone-boilerplate/"}}{\fldrslt{\ul
+Backbone Boilerplate
+}}}
+ is an excellent set of best practices and utilities for building Backbone.js applications, created by Backbone contributor {\field{\*\fldinst{HYPERLINK "https://github.com/tbranyen"}}{\fldrslt{\ul
+Tim Branyen
+}}}
+. He organized this boilerplate out of the gotchas, pitfalls and common tasks he ran into over a year of heavily using Backbone to build apps at Bocoup. This includes apps such {\field{\*\fldinst{HYPERLINK "http://startupdatatrends"}}{\fldrslt{\ul
+StartupDataTrends.com
+}}}
+.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 With scaffolding and built in build tasks that take care of minification, concatentation, server, template compilation and more, Backbone Boilerplate (and sister project {\field{\*\fldinst{HYPERLINK "https://github.com/backbone-boilerplate/grunt-bbb"}}{\fldrslt{\ul
+Grunt-BBB
+}}}
+) are an excellent choice for developers of all levels. I heavily recommend using them as they will give you an enormous start when it comes to getting setup for development. They also have some great inline documentation which is also another excellent time-saver.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 By default, Backbone Boilerplate provides you with:\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Backbone, {\field{\*\fldinst{HYPERLINK "https://github.com/bestiejs/lodash"}}{\fldrslt{\ul
+Lodash
+}}}
+ (an {\field{\*\fldinst{HYPERLINK "http://underscorejs.org/"}}{\fldrslt{\ul
+Underscore.js
+}}}
+ alternative) and {\field{\*\fldinst{HYPERLINK "http://jquery.com"}}{\fldrslt{\ul
+jQuery
+}}}
+ with an {\field{\*\fldinst{HYPERLINK "http://html5boilerplate.com"}}{\fldrslt{\ul
+HTML5 Boilerplate
+}}}
+ foundation\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Boilerplate module code\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab A Windows/Mac/Linux build tool for template precompilation and, concatenation & minification of all your libraries, application code and CSS\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Scaffolding support (via grunt-bbb - [B]ackbone [B]oilerplate [B]uild) so you have to spend minimal time writing boilerplate for modules, collections and so on.\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab A Lightweight node.js webserver\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Numerous other Backbone.js snippets for making your life easier\sa180\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs32 Getting Started\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs28 Backbone Boilerplate\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 We can use Boilerplate to easily begin creating an application, but first, we\u8217'll need to install it. This can be done by grabbing the latest version of it by cloning the Boilerplate repo directly:\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 $ git clone git://github.com/tbranyen/backbone-boilerplate.git\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 or alternatively, just fetching the latest tarball as follows:\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 curl -C - -O https://github.com/tbranyen/backbone-boilerplate/zipball/master\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs28 Grunt-BBB\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 As Tim covers in the Boilerplate docs, we have to install {\field{\*\fldinst{HYPERLINK "http://gruntjs.org"}}{\fldrslt{\ul
+Grunt
+}}}
+ if we want to use the build tools and grunt-bbb helpers he recommends.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Grunt is an excellent Node-based JavaScript build tool by another {\field{\*\fldinst{HYPERLINK "http://bocoup.com"}}{\fldrslt{\ul
+Bocoup
+}}}
+ developer ({\field{\*\fldinst{HYPERLINK "http://benalman.com"}}{\fldrslt{\ul
+Ben Alman
+}}}
+). Think of it as similar to {\field{\*\fldinst{HYPERLINK "http://ant.apache.org/"}}{\fldrslt{\ul
+Ant
+}}}
+ or {\field{\*\fldinst{HYPERLINK "https://github.com/jimweirich/rake"}}{\fldrslt{\ul
+Rake
+}}}
+. The grunt-bbb helper is also useful to have as it provides several Backbone-specific utilities for scaffolding out your project, without the need to write boilerplate yourself.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 To install grunt and grunt-bbb via NPM:\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 # first run\line
+$ npm install -g grunt\line
+\line
+# followed by\line
+$ npm install -g bbb\line
+\line
+# Create a new project\line
+bbb init\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 That\u8217's it. We should now be good to go.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 A typical workflow for using grunt-bbb, which we can use later on is:\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Initialize a new project ({\f1 bbb init})\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Add new modules and templates ({\f1 bbb init:module})\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Develop using the built in server ({\f1 bbb server})\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Run the build tool ({\f1 bbb build})\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Deploy and map to production assets (using {\f1 bbb release})\sa180\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs32 Creating a new project\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Let\u8217's create a new folder for our project and run {\f1 bbb init} to kick things off. If everything has been correctly installed, this will sub out some project directories and files for us. Let\u8217's review what is generated.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs28 index.html\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 This is a fairly standard stripped-down HTML5 Boilerplate foundation with the notable exception of including {\field{\*\fldinst{HYPERLINK "http://requirejs.org"}}{\fldrslt{\ul
+Require.js
+}}}
+ at the bottom of the page.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 <!doctype html>\line
+<html lang="en">\line
+<head>\line
+  <meta charset="utf-8">\line
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">\line
+  <meta name="viewport" content="width=device-width,initial-scale=1">\line
+\line
+  <title>Backbone Boilerplate</title>\line
+\line
+  <!-- Application styles. -->\line
+  <link rel="stylesheet" href="/assets/css/index.css">\line
+</head>\line
+\line
+<body>\line
+  <!-- Main container. -->\line
+  <div role="main" id="main"></div>\line
+\line
+  <!-- Application source. -->\line
+  <script data-main="/app/config" src="/assets/js/libs/require.js"></script>\line
+</body>\line
+</html>\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Require.js is an {\field{\*\fldinst{HYPERLINK "https://github.com/amdjs/amdjs-api/wiki/AMD"}}{\fldrslt{\ul
+AMD
+}}}
+ (Asynchronous Module Definition) module and script loader, which will assist us with managing the modules in our application. We\u8217'll be covering it in a lot more detail later on in the book, but for now, let\u8217's cover at a high-level what this particular block does:\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 <script data-main="app/config" src="/assets/js/libs/require.js"></script>\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 The {\f1 data-main} attribute is used to inform Require.js to load {\f1 app/config.js} (a configuration object) after it has finished loading itself. You\u8217'll notice that we\u8217've omitted the {\f1 .js} extension here as require.js can automatically add this for us, however it will respect your paths if we do choose to include it regardless. Let\u8217's now look at the config file being referenced.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs28 config.js\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 A Require.js configuration object allows us to specify aliases and paths for dependencies we\u8217're likely to reference often (e.g jQuery), bootstrap properties like our base application URL and {\f1 shim} libraries that don\u8217't support AMD natively.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 This is what the config file in Backbone Boilerplate looks like:\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 // Set the require.js configuration for your application.\line
+require.config(\{\line
+\line
+  // Initialize the application with the main application file.\line
+  deps: ["main"],\line
+\line
+  paths: \{\line
+    // JavaScript folders.\line
+    libs: "../assets/js/libs",\line
+    plugins: "../assets/js/plugins",\line
+\line
+    // Libraries.\line
+    jquery: "../assets/js/libs/jquery",\line
+    lodash: "../assets/js/libs/lodash",\line
+    backbone: "../assets/js/libs/backbone"\line
+  \},\line
+\line
+  shim: \{\line
+    // Backbone library depends on lodash and jQuery.\line
+    backbone: \{\line
+      deps: ["lodash", "jquery"],\line
+      exports: "Backbone"\line
+    \},\line
+\line
+    // Backbone.LayoutManager depends on Backbone.\line
+    "plugins/backbone.layoutmanager": ["backbone"]\line
+  \}\line
+\line
+\});\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 The first option defined in the above config is {\f1 deps: ["main"]}. This informs Require.js to load up our main.js file, which is considered the entry point for our application. You may notice that we haven\u8217't specified any other path information for {\f1 main}.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 This is because as we haven\u8217't overridden the path to our scripts using the {\f1 baseUrl} option, Require will infer this using the path from our {\f1 data-main} attribute in index.html. In other words, our {\f1 baseUrl} is {\f1 app/} and any scripts we require will be loaded relative to this location.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 The next block is {\f1 paths}, which we can use to specify paths relative to the {\f1 baseUrl} as well as the paths/aliases to dependencies we\u8217're likely to regularly reference.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1   paths: \{\line
+    // JavaScript folders.\line
+    libs: "../assets/js/libs",\line
+    plugins: "../assets/js/plugins",\line
+\line
+    // Libraries.\line
+    jquery: "../assets/js/libs/jquery",\line
+    lodash: "../assets/js/libs/lodash",\line
+    backbone: "../assets/js/libs/backbone"\line
+  \},\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Next we have the {\f1 shim} config:\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1   shim: \{\line
+    // Backbone library depends on lodash and jQuery.\line
+    backbone: \{\line
+      deps: ["lodash", "jquery"],\line
+      exports: "Backbone"\line
+    \},\line
+\line
+    // Backbone.LayoutManager depends on Backbone.\line
+    "plugins/backbone.layoutmanager": ["backbone"]\line
+  \}\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\f1 shim} is an important part of our Require.js configuration which allows us to load libraries which are not AMD compliant. The basic idea here is that rather than requiring all libraries to implement support for AMD, the {\f1 shim} takes care of the hard work for us.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 For example, in the block below, we state that Backbone.js is dependent on Lodash (a fork of Underscore.js) and jQuery being loaded before it. Once they\u8217've been loaded, we then use the global export {\f1 Backbone} as the module value.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1     backbone: \{\line
+      deps: ["lodash", "jquery"],\line
+      exports: "Backbone"\line
+    \}\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Finally, we inform Require.js that the Backbone {\field{\*\fldinst{HYPERLINK "https://github.com/tbranyen/backbone.layoutmanager"}}{\fldrslt{\ul
+LayoutManager
+}}}
+ plugin (a template and layout manager, also included) requires that Backbone be loaded before it should be.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1     // Backbone.LayoutManager depends on Backbone.\line
+    "plugins/backbone.layoutmanager": ["backbone"]\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 This entire setup ensures that our scripts correctly get loaded in the order in which we expect.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs28 main.js\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Next, we have {\f1 main.js}, which defines the entry point for our application. We use a global {\f1 require()} method to load an array any other scripts needed, such as our application {\f1 app.js} and our main router {\f1 router.js}. Note that most of the time, we will only use {\f1 require()} for bootstrapping an application and a similar method called {\f1 define()} for all other purposes.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 The function defined after our array of dependencies is a callback which doesn\u8217't fire until these scripts have loaded. Notice howe we\u8217're able to locally alias references to \u8220"app\u8221" and \u8220"router\u8221" as {\f1 app} and {\f1 Router} for convenience.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 require([\line
+  // Application.\line
+  "app",\line
+\line
+  // Main Router.\line
+  "router"\line
+],\line
+\line
+function(app, Router) \{\line
+\line
+  // Define your master router on the application namespace and trigger all\line
+  // navigation from this instance.\line
+  app.router = new Router();\line
+\line
+  // Trigger the initial route and enable HTML5 History API support, set the\line
+  // root folder to '/' by default.  Change in app.js.\line
+  Backbone.history.start(\{ pushState: true, root: app.root \});\line
+\line
+  // All navigation that is relative should be passed through the navigate\line
+  // method, to be processed by the router. If the link has a `data-bypass`\line
+  // attribute, bypass the delegation completely.\line
+  $(document).on("click", "a:not([data-bypass])", function(evt) \{\line
+    // Get the absolute anchor href.\line
+    var href = $(this).attr("href");\line
+\line
+    // If the href exists and is a hash route, run it through Backbone.\line
+    if (href && href.indexOf("#") === 0) \{\line
+      // Stop the default event to ensure the link will not cause a page\line
+      // refresh.\line
+      evt.preventDefault();\line
+\line
+      // `Backbone.history.navigate` is sufficient for all Routers and will\line
+      // trigger the correct events. The Router's internal `navigate` method\line
+      // calls this anyways.  The fragment is sliced from the root.\line
+      Backbone.history.navigate(href, true);\line
+    \}\line
+  \});\line
+\line
+\});\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Inline, Backbone Boilerplate includes boilerplate code for initializing our router with HTML5 History API support and handling other navigation scenarios, so we don\u8217't have to.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs28 app.js\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Let us now look at our {\f1 app.js} module. Typically, in non-Backbone Boilerplate applications, an {\f1 app.js} file may contain the core logic or module references needed to kick start an app.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 In this case however, this file is used to define templating and layout configuration options as well as utilities for consuming layouts. To a beginner, this might look like a lot of code to comprehend, but the good news is that for basic apps, you\u8217're unlikely to need to heavily modify this. Instead, you\u8217'll be more concerned with modules for your app, which we\u8217'll look at next.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 define([\line
+\line
+  // Libraries.\line
+  "jquery",\line
+  "lodash",\line
+  "backbone",\line
+\line
+  // Plugins.\line
+  "plugins/backbone.layoutmanager"\line
+\line
+],\line
+\line
+function($, _, Backbone) \{\line
+\line
+  // Provide a global location to place configuration settings and module\line
+  // creation.\line
+  var app = \{\line
+    // The root path to run the application.\line
+    root: "/"\line
+  \};\line
+\line
+  // Localize or create a new JavaScript Template object.\line
+  var JST = window.JST = window.JST || \{\};\line
+\line
+  // Configure LayoutManager with Backbone Boilerplate defaults.\line
+  Backbone.LayoutManager.configure(\{\line
+    paths: \{\line
+      layout: "app/templates/layouts/",\line
+      template: "app/templates/"\line
+    \},\line
+\line
+    fetch: function(path) \{\line
+      path = path + ".html";\line
+\line
+      if (!JST[path]) \{\line
+        $.ajax(\{ url: app.root + path, async: false \}).then(function(contents) \{\line
+          JST[path] = _.template(contents);\line
+        \});\line
+      \}\line
+\line
+      return JST[path];\line
+    \}\line
+  \});\line
+\line
+  // Mix Backbone.Events, modules, and layout management into the app object.\line
+  return _.extend(app, \{\line
+    // Create a custom object with a nested Views object.\line
+    module: function(additionalProps) \{\line
+      return _.extend(\{ Views: \{\} \}, additionalProps);\line
+    \},\line
+\line
+    // Helper for using layouts.\line
+    useLayout: function(name) \{\line
+      // If already using this Layout, then don't re-inject into the DOM.\line
+      if (this.layout && this.layout.options.template === name) \{\line
+        return this.layout;\line
+      \}\line
+\line
+      // If a layout already exists, remove it from the DOM.\line
+      if (this.layout) \{\line
+        this.layout.remove();\line
+      \}\line
+\line
+      // Create a new Layout.\line
+      var layout = new Backbone.Layout(\{\line
+        template: name,\line
+        className: "layout " + name,\line
+        id: "layout"\line
+      \});\line
+\line
+      // Insert into the DOM.\line
+      $("#main").empty().append(layout.el);\line
+\line
+      // Render the layout.\line
+      layout.render();\line
+\line
+      // Cache the reference.\line
+      this.layout = layout;\line
+\line
+      // Return the reference, for chainability.\line
+      return layout;\line
+    \}\line
+  \}, Backbone.Events);\line
+\line
+\});\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs28 Creating Backbone Boilerplate Modules\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Not to be confused with simply being just an AMD module, a Backbone Boilerplate {\f1 module} is a script composed of a:\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Model\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Collection\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Views (optional)\sa180\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 We can easily create a new Boilerplate module using {\f1 grunt-bbb} once again using {\f1 init}:\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 # Create a new module\line
+bbb init:module\line
+\line
+# Grunt prompt\line
+Please answer the following:\line
+[?] Module Name foo\line
+[?] Do you need to make any changes to the above before continuing? (y/N) n\line
+\line
+Writing app/modules/foo.js...OK\line
+\line
+Initialized from template "module".\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 This will generate a module {\f1 foo.js} as follows:\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 define([\line
+  // Application.\line
+  "app"\line
+],\line
+\line
+// Map dependencies from above array.\line
+function(app) \{\line
+\line
+  // Create a new module.\line
+  var Foo = app.module();\line
+\line
+  // Default model.\line
+  Foo.Model = Backbone.Model.extend(\{\line
+\line
+  \});\line
+\line
+  // Default collection.\line
+  Foo.Collection = Backbone.Collection.extend(\{\line
+    model: Foo.Model\line
+  \});\line
+\line
+  // Return the module for AMD compliance.\line
+  return Foo;\line
+\line
+\});\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Notice how boilerplate code for our model and collection has already been written for us, as well as code for consuming the layout utilities defined in {\f1 app.js}.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Now, you may be wondering where or how Views fit into this setup. Although Backbone Boilerplate doesn\u8217't include Views in its generated modules by default, we can easily add them ourselves as needed.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 e.g:\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 define([\line
+  // Application.\line
+  "app",\line
+\line
+  // Views\line
+  "modules/foo/views"\line
+],\line
+\line
+// Map dependencies from above array.\line
+function(app, Views) \{\line
+\line
+  // Create a new module.\line
+  var Foo = app.module();\line
+\line
+  // Default model.\line
+  Foo.Model = Backbone.Model.extend(\{\line
+\line
+  \});\line
+\line
+  // Default collection.\line
+  Foo.Collection = Backbone.Collection.extend(\{\line
+    model: Foo.Model\line
+  \});\line
+\line
+  // Default views\line
+  Foo.Views = Views;\line
+\line
+  // Return the module for AMD compliance.\line
+  return Foo;\line
+\line
+\});\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Optionally, we may also wish to include references to plugins such as the Backbone LocalStorage or Offline adapters. One clean way of including a plugin in the above boilerplate could be:\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 define([\line
+  "app",\line
+\line
+  // Libs\line
+  "backbone",\line
+\line
+  // Plugins\line
+  "plugins/backbone-localstorage"\line
+],\line
+\line
+function(app, Backbone, Views) \{\line
+  // Create a new module.\line
+  var Foo = app.module();\line
+\line
+  // Default model.\line
+  Foo.Model = Backbone.Model.extend(\{\line
+\line
+  \});\line
+\line
+  // Default collection.\line
+  Foo.Collection = Backbone.Collection.extend(\{\line
+    model: Foo.Model,\line
+\line
+    // Save all of the items under the `"foo"` namespace.\line
+    localStorage: new Store("foo-backbone"),\line
+  \});\line
+\line
+  // Default views\line
+  Foo.Views = Views;\line
+\line
+  // Return the module for AMD compliance.\line
+  return Foo;\line
+\});\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 You may have spotted that in our module sample we\u8217're using the plural, \u8220"Views\u8221", rather than just View. This is because a View module can contain references to as many Views as needed. In the above, our {\f1 /modules/foo/views.js} file may look as follows:\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 define([\line
+  "app",\line
+\line
+  // Libs\line
+  "backbone"\line
+],\line
+\line
+function(app, Backbone) \{\line
+\line
+  var Views = \{\};\line
+\line
+  Views.Foo = Backbone.View.extend(\{\line
+    template: "foo/bar",\line
+    tagName: "li",\line
+    ...\line
+   \});\line
+\line
+  Views.Baz = Backbone.View.extend(\{\line
+    template: "foo/baz",\line
+    tagName: "li",\line
+    ...\line
+   \});\line
+\line
+   return Views;\line
+\line
+\});\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Where the {\f1 template} references in our Views, correspond to files in the {\f1 app/templates} directory. e.g {\f1 foo/bar} is located at {\f1 app/templates/foo/bar.html} and is a HTML template that can contain Lodash/Underscore.js Micro-templating logic.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs28 router.js\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Finally, let\u8217's look at our application router, used for handling navigation. The default router Backbone Boilerplate generates for us inclues sane defaults for no routes being specified.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 define([\line
+  // Application.\line
+  "app"\line
+],\line
+\line
+function(app) \{\line
+\line
+  // Defining the application router, you can attach sub routers here.\line
+  var Router = Backbone.Router.extend(\{\line
+    routes: \{\line
+      "": "index"\line
+    \},\line
+\line
+    index: function() \{\line
+\line
+    \}\line
+  \});\line
+\line
+  return Router;\line
+\line
+\});\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 If however we would like to execute some module-specific logic, when the page loads (i.e when a user hits the default route), we can pull in a module as a dependency and optionally use the Backbone LayoutManager to attach Views to our layout as follows:\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 define([\line
+  // Application.\line
+  "app",\line
+\line
+  // Modules\line
+  "modules/foo"\line
+],\line
+\line
+function(app, Foo) \{\line
+\line
+  // Defining the application router, you can attach sub routers here.\line
+  var Router = Backbone.Router.extend(\{\line
+    routes: \{\line
+      "": "index"\line
+    \},\line
+\line
+    index: function() \{\line
+            // Create a new Collection\line
+            var collection = new Foo.Collection();\line
+\line
+            // Use and configure a "main" layout\line
+            app.useLayout("main").setViews(\{\line
+                    // Attach the bar View into the content View\line
+                    ".bar": new Foo.Views.Bar(\{\line
+                            collection: collection\line
+                    \})\line
+             \}).render();\line
+    \}\line
+  \});\line
+\line
+  // Fetch data (e.g from localStorage)\line
+  collection.fetch();\line
+\line
+  return Router;\line
+\line
+\});\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs32 Conclusions\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 In this section we reviewed Backbone Boilerplate and learned how to use the BBB tool to help us scaffold out our application.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 If you would like to learn more about how this project helps structure your app, BBB includes some built-in boilerplate sample apps that can be easily generated for review.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 These include a boilerplate tutorial project ({\f1 bbb init:tutorial}) and an implementation of my {\field{\*\fldinst{HYPERLINK "http://todomvc"}}{\fldrslt{\ul
+TodoMVC
+}}}
+ project ({\f1 bbb init:todomvc}). I recommend checking these out as they\u8217'll provide you with a more complete picture of how Backbone Boilerplate, its templates and so on fit into the overall setup for a web app.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 For more about Grunt-BBB, remember to take a look at the official project {\field{\*\fldinst{HYPERLINK "https://github.com/backbone-boilerplate/grunt-bbb"}}{\fldrslt{\ul
+repositoryy
+}}}
+. There is also a related {\field{\*\fldinst{HYPERLINK "https://dl.dropbox.com/u/79007/talks/Modern_Web_Applications/slides/index.html"}}{\fldrslt{\ul
+slide-deck
+}}}
+ available for those interested in reading more.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs32 Related Tools & Projects\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 As we\u8217've seen, scaffolding tools can assist in expediting how quickly you can begin a new application by creating the basic files required for a project automatically. If you appreciate such tools, I\u8217'm happy to also recommend checking out {\field{\*\fldinst{HYPERLINK "http://yeoman.io"}}{\fldrslt{\ul
+Yeoman
+}}}
+ (one of my upcoming projects) and {\field{\*\fldinst{HYPERLINK "https://github.com/brunch/brunch"}}{\fldrslt{\ul
+Brunch
+}}}
+.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Brunch works very well with Backbone, Underscore, jQuery and CoffeeScript and is even used by companies such as Red Bull and Jim Beam. You may have to update any third party dependencies (e.g.\u160?latest jQuery or Zepto) when using it, but other than that it should be fairly stable to use right out of the box.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Brunch can be installed via the nodejs package manager and is easy to get started with. If you happen to use Vim or Textmate as your editor of choice, you\u8217'll be happy to know that there are Brunch bundles available for both.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs32 # RESTful Applications\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \b \fs32 Building RESTful applications with Backbone\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 In this section of the book, we\u8217're going to take a look at developing RESTful applications using Backbone.js and modern technology stacks. When the data for your back-end is exposed through a purely RESTful API, tasks such as retrieving (GET), creating (POST), updating (PUT) and deleting (DELETE) models are made easy through Backbone\u8217's Model API. This API is so intuitive in fact that switching from storing records in a local data-store (e.g localStorage) to a database/noSQL data-store is a lot simpler than you may think.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \b \fs32 Stack 1: Building A Backbone App With Node.js, Express, Mongoose and MongoDB\par}
@@ -2542,6 +3399,10 @@ online
 Large-scale JavaScript Application development
 }}}
  to Backbone.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\i After, you may be interested in taking a look At {\field{\*\fldinst{HYPERLINK "http://github.com/addyosmani/aura"}}{\fldrslt{\ul
+Aura
+}}}
+ - my popular widget-based Backbone.js extension framework based on many of the concepts we will be covering in this section.}\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \b \fs28 Summary\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 At a high-level, one architecture that works for such applications is something which is:\par}
 {\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\b Highly decoupled}: encouraging modules to only publish and subscribe to events of interest rather than directly communicating with each other. This helps us to build applications who\u8217's units of code aren\u8217't highly tied (coupled) together and can thus be reused more easily.\par}
@@ -2559,9 +3420,9 @@ spoken
 {\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\b Modules}: There are almost two concepts of what defines a module. As AMD is being used as a module wrapper, technically each model, view and collection can be considered a module. We then have the concept of modules being distinct blocks of code outside of just MVC/MV*. For the latter, these types of \u8216'modules\u8217' are primarily concerned with broadcasting and subscribing to events of interest rather than directly communicating with each other.They are made possible through the Mediator pattern.\par}
 {\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\b Mediator}: The mediator has a varying role depending on just how you wish to implement it. In my article, I mention using it as a module manager with the ability to start and stop modules at will, however when it comes to Backbone, I feel that simplifying it down to the role of a central \u8216'controller\u8217' that provides pub/sub capabilities should suffice. One can of course go all out in terms of building a module system that supports module starting, stopping, pausing etc, however the scope of this is outside of this chapter.\par}
 {\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\b Facade}: This acts as a secure middle-layer that both abstracts an application core (Mediator) and relays messages from the modules back to the Mediator so they don\u8217't touch it directly. The Facade also performs the duty of application security guard; it checks event notifications from modules against a configuration (permissions.js, which we will look at later) to ensure requests from modules are only processed if they are permitted to execute the behavior passed.\sa180\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 For ease of reference, I sometimes refer to these three patterns grouped together as Aura (a word that means subtle, luminous light).\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 F\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \b \fs28 Practical\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 For the practical section of this chapter, we\u8217'll be extending the well-known Backbone Todo application using the three patterns mentioned above. The complete code for this section can be found here: https://github.com/addyosmani/backbone-aura and should ideally be run on at minimum, a local HTTP server.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 For the practical section of this chapter, we\u8217'll be extending the well-known Backbone Todo application using the three patterns mentioned above.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 The application is broken down into AMD modules that cover everything from Backbone models through to application-level modules. The views publish events of interest to the rest of the application and modules can then subscribe to these event notifications.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 All subscriptions from modules go through a facade (or sandbox). What this does is check against the subscriber name and the \u8216'channel/notification\u8217' it\u8217's attempting to subscribe to. If a channel {\i doesn\u8217't} have permissions to be subscribed to (something established through permissions.js), the subscription isn\u8217't permitted.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 {\b Mediator}\par}
@@ -2817,149 +3678,103 @@ here
  for more information.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \b \fs32 Paginating Backbone.js Requests & Collections\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 Pagination is a ubiquitous problem we often find ourselves needing to solve on the web. Perhaps most predominantly when working with back-end APIs and JavaScript-heavy clients which consume them.\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 On this topic, we\u8217're going to go through a set of **pagination components ** I wrote for Backbone.js, which should hopefully come in useful if you\u8217're working on applications which need to tackle this problem. They\u8217're part of an extension called {\field{\*\fldinst{HYPERLINK "http://github.com/addyosmani/backbone.paginator"}}{\fldrslt{\ul
-Backbone.Paginator
-}}}
-.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 On this topic, we\u8217're going to go through a set of **pagination components ** I wrote for Backbone.js, which should hopefully come in useful if you\u8217're working on applications which need to tackle this problem. They\u8217're part of an extension called [Backbone.Paginator][http://github.com/addyosmani/backbone-paginator].\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 When working with a structural framework like Backbone.js, the three types of pagination we are most likely to run into are:\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 **Requests to a service layer (API) **- e.g query for results containing the term \u8216'Brendan\u8217' - if 5,000 results are available only display 20 results per page (leaving us with 250 possible result pages that can be navigated to).\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 This problem actually has quite a great deal more to it, such as maintaining persistence of other URL parameters (e.g sort, query, order) which can change based on a user\u8217's search configuration in a UI. One also had to think of a clean way of hooking views up to this pagination so you can easily navigate between pages (e.g First, Last, Next, Previous, 1,2,3), manage the number of results displayed per page and so on.\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 {\b Further client-side pagination of data returned -} e.g we\u8217've been returned a JSON esponse containing 100 results. Rather than displaying all 100 to the user, we only display 20 of these results within a navigatable UI in the browser.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b Further client-side pagination of data returned -} e.g we\u8217've been returned a JSON response containing 100 results. Rather than displaying all 100 to the user, we only display 20 of these results within a navigatable UI in the browser.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 Similar to the request problem, client-pagination has its own challenges like navigation once again (Next, Previous, 1,2,3), sorting, order, switching the number of results to display per page and so on.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 {\b Infinite results} - with services such as Facebook, the concept of numeric pagination is instead replaced with a \u8216'Load More\u8217' or \u8216'View More\u8217' button. Triggering this normally fetches the next \u8216'page\u8217' of N results but rather than replacing the previous set of results loaded entirely, we simply append to them instead.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 A request pager which simply appends results in a view rather than replacing on each new fetch is effectively an \u8216'infinite\u8217' pager.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 {\b Let\u8217's now take a look at exactly what we\u8217're getting out of the box:}\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 {\i {\field{\*\fldinst{HYPERLINK "http://addyosmani.github.com/backbone.paginator/"}}{\fldrslt{\ul
-Backbone.Paginator
-}}}
- is a set of opinionated components for paginating collections of data using Backbone.js. It aims to provide both solutions for assisting with pagination of requests to a server (e.g an API) as well as pagination of single-loads of data, where we may wish to further paginate a collection of N results into M pages within a view.}\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\i Paginator is a set of opinionated components for paginating collections of data using Backbone.js. It aims to provide both solutions for assisting with pagination of requests to a server (e.g an API) as well as pagination of single-loads of data, where we may wish to further paginate a collection of N results into M pages within a view.}\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \b \fs32 Paginator\u8217's pieces\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 Backbone.Paginator supports two main pagination components:\par}
 {\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\b Backbone.Paginator.requestPager}: For pagination of requests between a client and a server-side API\par}
 {\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\b Backbone.Paginator.clientPager}: For pagination of data returned from a server which you would like to further paginate within the UI (e.g 60 results are returned, paginate into 3 pages of 20)\sa180\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs32 Downloads And Source Code\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 You can either download the raw source code for the project, fork the repository or use one of these links:\par}
-{\pard \ql \f0 \sa180 \li360 \fi-360 \bullet \tx360\tab Production: {\field{\*\fldinst{HYPERLINK "https://raw.github.com/addyosmani/backbone.baginator/master/dist/backbone.paginator.min.js"}}{\fldrslt{\ul
-production
-}}}
-\par}
-{\pard \ql \f0 \sa180 \li360 \fi-360 \bullet \tx360\tab Development: {\field{\*\fldinst{HYPERLINK "https://raw.github.com/addyosmani/backbone.baginator/master/dist/backbone.paginator.js"}}{\fldrslt{\ul
-development version
-}}}
-\par}
-{\pard \ql \f0 \sa180 \li360 \fi-360 \bullet \tx360\tab Examples + Source : {\field{\*\fldinst{HYPERLINK "https://github.com/addyosmani/backbone.paginator/zipball/v0.153"}}{\fldrslt{\ul
-zipball
-}}}
-\par}
-{\pard \ql \f0 \sa180 \li360 \fi-360 \bullet \tx360\tab {\field{\*\fldinst{HYPERLINK "http://github.com/addyosmani/backbone.paginator"}}{\fldrslt{\ul
-Repository
-}}}
-\sa180\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \b \fs32 Live Examples\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 Live previews of both pagination components using the Netflix API can be found below. Download the tarball or fork the repository to experiment with these examples further.\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 Demo 1: {\field{\*\fldinst{HYPERLINK "http://addyosmani.github.com/backbone.paginator/examples/netflix-request-paging/index.html"}}{\fldrslt{\ul
+{\pard \ql \f0 \sa180 \li0 \fi0 Live previews of both pagination components using the Netflix API can be found below. Fork the repository to experiment with these examples further.\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\field{\*\fldinst{HYPERLINK "http://addyosmani.github.com/backbone.paginator/examples/netflix-request-paging/index.html"}}{\fldrslt{\ul
 Backbone.Paginator.requestPager()
 }}}
 \par}
-{\pard \ql \f0 \sa0 \li0 \fi0 \par}
-{\pard \ql \f0 \sa180 \li0 \fi0 Demo 2: {\field{\*\fldinst{HYPERLINK "http://addyosmani.github.com/backbone.paginator/examples/netflix-client-paging/index.html"}}{\fldrslt{\ul
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\field{\*\fldinst{HYPERLINK "http://addyosmani.github.com/backbone.paginator/examples/netflix-client-paging/index.html"}}{\fldrslt{\ul
 Backbone.Paginator.clientPager()
 }}}
 \par}
-{\pard \ql \f0 \sa0 \li0 \fi0 \par}
-{\pard \ql \f0 \sa180 \li0 \fi0 Demo 3: {\field{\*\fldinst{HYPERLINK "http://addyosmani.github.com/backbone.paginator/examples/netflix-infinite-paging/index.html"}}{\fldrslt{\ul
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\field{\*\fldinst{HYPERLINK "http://addyosmani.github.com/backbone.paginator/examples/netflix-infinite-paging/index.html"}}{\fldrslt{\ul
 Infinite Pagination (Backbone.Paginator.requestPager())
 }}}
 \par}
-{\pard \ql \f0 \sa0 \li0 \fi0 \par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\field{\*\fldinst{HYPERLINK "http://addyosmani.github.com/backbone.paginator/examples/google-diacritic/index.html"}}{\fldrslt{\ul
+Diacritic Plugin
+}}}
+\sa180\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \b \fs32 Paginator.requestPager\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 In this section we\u8217're going to walkthrough actually using the requestPager.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \b \fs24 1. Create a new Paginated collection\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 First, we define a new Paginated collection using {\f1 Backbone.Paginator.requestPager()} as follows:\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs24 2: Set the model and base URL for the collection as normal\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\f1 javascript var PaginatedCollection = Backbone.Paginator.requestPager.extend(\{} ####2: Set the model for the collection as normal\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 Within our collection, we then (as normal) specify the model to be used with this collection followed by the URL (or base URL) for the service providing our data (e.g the Netflix API).\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 \f1 model: model,\line
-        url: 'http://odata.netflix.com/v2/Catalog/Titles?&',\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs24 3. Map the attributes supported by your API (URL)\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 Next, we\u8217're going to map the request (URL) parameters supported by your API or backend data service back to attributes that are internally used by Backbone.Paginator.\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 For example: the NetFlix API refers to its parameter for stating how many results to skip ahead by as {\f1 $skip} and its number of items to return per page as {\f1 $top} (amongst others). We determine these by looking at a sample URL pointing at the service:\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 \f1 http://odata.netflix.com/v2/Catalog/Titles?&callback=callback&$top=30&$skip=30&orderBy=ReleaseYear&$inlinecount=allpages&$format=json&$callback=callback&$filter=substringof%28%27the%27,%20Name%29%20eq%20true&_=1332702202090\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 We then simply map these parameters to the relevant Paginator equivalents shown on the left hand side of the next snippets to get everything working:\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 \f1         // @param-name for the query field in the \line
-        // request (e.g query/keywords/search)\line
-        queryAttribute: '$filter',\line
+{\pard \ql \f0 \sa180 \li0 \fi0 {\f1 javascript         model: model,} ####3. Configure the base URL and the type of the request\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 We need to set a base URL. The {\f1 type} of the request is {\f1 GET} by default, and the {\f1 dataType} is {\f1 jsonp} in order to enable cross-domain requests.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1     paginator_core: \{\line
+      // the type of the request (GET by default)\line
+      type: 'GET',\line
 \line
-        // @param-name for number of items to return per request/page\line
-        perPageAttribute: '$top',\line
+      // the type of reply (jsonp by default)\line
+      dataType: 'jsonp',\line
 \line
-        // @param-name for how many results the request should skip ahead to\line
-        skipAttribute: '$skip',\line
+      // the URL (or base URL) for the service\line
+      url: 'http://odata.netflix.com/Catalog/People(49446)/TitlesActedIn?'\line
+    \},\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs24 4. Configure how the library will show the results\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 We need to tell the library how many items per page would we like to see, etc\u8230?\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1     paginator_ui: \{\line
+      // the lowest page index your API allows to be accessed\line
+      firstPage: 0,\line
 \line
-        // @param-name for the direction to sort in\line
-        sortAttribute: '$sort',\line
+      // which page should the paginator start from \line
+      // (also, the actual page the paginator is on)\line
+      currentPage: 0,\line
 \line
-        // @param-name for field to sort by\line
-        orderAttribute: '$orderBy',\line
+      // how many items per page should be shown\line
+      perPage: 3,\line
 \line
-        // @param-name for the format of the request\line
-        formatAttribute: '$format',\line
+      // a default number of total pages to query in case the API or \line
+      // service you are using does not support providing the total \line
+      // number of pages for us.\line
+      // 10 as a default in case your service doesn't return the total\line
+      totalPages: 10\line
+    \},\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs24 5. Configure the parameters we want to send to the server\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Only the base URL won\u8217't be enough for most cases, so you can pass more parameters to the server. Note how you can use functions insead of hardcoded values, and you can also reffer to the values you specified in {\f1 paginator_ui}.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1     server_api: \{\line
+      // the query field in the request\line
+      '$filter': '',\line
 \line
-        // @param-name for a custom attribute \line
-        customAttribute1: '$inlinecount',\line
+      // number of items to return per request/page\line
+      '$top': function() \{ return this.perPage \},\line
 \line
-        // @param-name for another custom attribute\line
-        customAttribute2: '$callback',\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 {\b Note}: you can define support for new custom attributes in Backbone.Paginator if needed (e.g customAttribute1) for those that may be unique to your service.\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs24 4. Configure the default pagination, query and sort details for the paginator\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 Now, let\u8217's configure the default values in our collection for these parameters so that as a user navigates through the paginated UI, requests are able to continue querying with the correct field to sort on, the right number of items to return per request etc.\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 e.g: If we want to request the:\par}
-{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab 1st page of results\par}
-{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab for the search query \u8216'superman\u8217'\par}
-{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab in JSON format\par}
-{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab sorted by release year\par}
-{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab in ascending order\par}
-{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab where only 30 results are returned per request\sa180\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 This would look as follows:\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 \f1         // current page to query from the service\line
-        page: 5,\line
+      // how many results the request should skip ahead to\line
+      // customize as needed. For the Netflix API, skipping ahead based on\line
+      // page * number of results per page was necessary.\line
+      '$skip': function() \{ return this.currentPage * this.perPage \},\line
 \line
-        // The lowest page index your API allows to be accessed\line
-        firstPage: 0, //some begin with 1\line
+      // field to sort by\line
+      '$orderby': 'ReleaseYear',\line
 \line
-        // how many results to query from the service (i.e how many to return\line
-        // per request)\line
-        perPage: 30,\line
+      // what format would you like to request results in?\line
+      '$format': 'json',\line
 \line
-        // maximum number of pages that can be queried from \line
-        // the server (only here as a default in case your \line
-        // service doesn't return the total pages available)\line
-        totalPages: 10,\line
-\line
-        // what field should the results be sorted on?\line
-        sortField: 'ReleaseYear',\line
-\line
-        // what direction should the results be sorted in?\line
-        sortDirection: 'asc',\line
-\line
-        // what would you like to query (search) from the service?\line
-        // as Netflix reqires additional parameters around the query\line
-        // we simply fill these around our search term\line
-        query: "substringof('" + escape('the') + "',Name)",\line
-\line
-        // what format would you like to request results in?\line
-        format: 'json',\line
-\line
-        // what other custom parameters for the request do \line
-        // you require\line
-        // for your application?\line
-        customParam1: 'allpages',\line
-\line
-        customParam2: 'callback',\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 As the particular API we\u8217're using requires {\f1 callback} and {\f1 allpages} parameters to also be passed, we simply define the values for these as custom parameters which can be mapped back to requestPager as needed.\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs24 5. Finally, configure Collection.parse() and we\u8217're done\par}
+      // custom parameters\line
+      '$inlinecount': 'allpages',\line
+      '$callback': 'callback'                                     \line
+    \},\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs24 6. Finally, configure Collection.parse() and we\u8217're done\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 The last thing we need to do is configure our collection\u8217's {\f1 parse()} method. We want to ensure we\u8217're returning the correct part of our JSON response containing the data our collection will be populated with, which below is {\f1 response.d.results} (for the Netflix API).\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 You might also notice that we\u8217're setting {\f1 this.totalPages} to the total page count returned by the API. This allows us to define the maximum number of (result) pages available for the current/last request so that we can clearly display this in the UI. It also allows us to infuence whether clicking say, a \u8216'next\u8217' button should proceed with a request or not.\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 \f1 parse: function (response) \{\line
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1         parse: function (response) \{\line
             // Be sure to change this based on how your results\line
             // are structured (e.g d.results is Netflix specific)\line
             var tags = response.d.results;\line
@@ -2974,201 +3789,151 @@ Infinite Pagination (Backbone.Paginator.requestPager())
 \});\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \b \fs24 Convenience methods:\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 For your convenience, the following methods are made available for use in your views to interact with the {\f1 requestPager}:\par}
-{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\b Collection.goTo(n)} - go to a specific page\par}
-{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\b Collection.requestNextPage()} - go to the next page\par}
-{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\b Collection.requestPreviousPage()} - go to the previous page\par}
-{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\b Collection.howManyPer(n)} - set the number of items to display per page\sa180\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\b Collection.goTo( n, options )} - go to a specific page\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\b Collection.requestNextPage( options )} - go to the next page\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\b Collection.requestPreviousPage( options )} - go to the previous page\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\b Collection.howManyPer( n )} - set the number of items to display per page\sa180\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b requestPager} collection\u8217's methods {\f1 .goTo()}, {\f1 .requestNextPage()} and {\f1 .requestPreviousPage()} are all extension of the original {\field{\*\fldinst{HYPERLINK "http://documentcloud.github.com/backbone/#Collection-fetch"}}{\fldrslt{\ul
+Backbone Collection.fetch() method
+}}}
+. As so, they all can take the same option object as parameter.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 This option object can use {\f1 success} and {\f1 error} parameters to pass a function to be executed after server answer.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 Collection.goTo(n, \{\line
+  success: function( collection, response ) \{\line
+    // called is server request success\line
+  \},\line
+  error: function( collection, response ) \{\line
+    // called if server request fail\line
+  \}\line
+\});\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 To manage callback, you could also use the {\field{\*\fldinst{HYPERLINK "http://api.jquery.com/jQuery.ajax/#jqXHR"}}{\fldrslt{\ul
+jqXHR
+}}}
+ returned by these methods to manage callback.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 Collection\line
+  .requestNextPage()\line
+  .done(function( data, textStatus, jqXHR ) \{\line
+    // called is server request success\line
+  \})\line
+  .fail(function( data, textStatus, jqXHR ) \{\line
+    // called if server request fail\line
+  \})\line
+  .always(function( data, textStatus, jqXHR ) \{\line
+    // do something after server request is complete\line
+  \});\line
+\});\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 If you\u8217'd like to add the incoming models to the current collection, instead of replacing the collection\u8217's contents, pass {\f1 \{add: true\}} as an option to these methods.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 Collection.requestPreviousPage(\{ add: true \});\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \b \fs32 Paginator.clientPager\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 The {\f1 clientPager} works similar to the {\f1 requestPager}, except that our configuration values influence the pagination of data already returned at a UI-level. Whilst not shown (yet) there is also a lot more UI logic that ties in with the {\f1 clientPager}. An example of this can be seen in views/clientPagination.js.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 The {\f1 clientPager} works similar to the {\f1 requestPager}, except that our configuration values influence the pagination of data already returned at a UI-level. Whilst not shown (yet) there is also a lot more UI logic that ties in with the {\f1 clientPager}. An example of this can be seen in \u8216'views/clientPagination.js\u8217'.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \b \fs24 1. Create a new paginated collection with a model and URL\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 As with {\f1 requestPager}, let\u8217's first create a new Paginated {\f1 Backbone.Paginator.clientPager} collection, with a model and base URL:\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 \f1 var PaginatedCollection = Backbone.Paginator.clientPager.extend(\{\line
+{\pard \ql \f0 \sa180 \li0 \fi0 As with {\f1 requestPager}, let\u8217's first create a new Paginated {\f1 Backbone.Paginator.clientPager} collection, with a model:\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1     var PaginatedCollection = Backbone.Paginator.clientPager.extend(\{\line
 \line
-        model: model,\line
+        model: model,\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs24 2. Configure the base URL and the type of the request\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 We need to set a base URL. The {\f1 type} of the request is {\f1 GET} by default, and the {\f1 dataType} is {\f1 jsonp} in order to enable cross-domain requests.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1     paginator_core: \{\line
+      // the type of the request (GET by default)\line
+      type: 'GET',\line
 \line
-        url: 'http://odata.netflix.com/v2/Catalog/Titles?&',\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs24 2. Map the attributes supported by your API (URL)\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 We\u8217're similarly going to map request parameter names for your API to those supported in the paginator:\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 \f1         perPageAttribute: '$top',\line
+      // the type of reply (jsonp by default)\line
+      dataType: 'jsonp',\line
 \line
-        skipAttribute: '$skip',\line
+      // the URL (or base URL) for the service\line
+      url: 'http://odata.netflix.com/v2/Catalog/Titles?&'\line
+    \},\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs24 3. Configure how the library will show the results\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 We need to tell the library how many items per page would we like to see, etc\u8230?\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1     paginator_ui: \{\line
+      // the lowest page index your API allows to be accessed\line
+      firstPage: 1,\line
 \line
-        orderAttribute: '$orderBy',\line
+      // which page should the paginator start from \line
+      // (also, the actual page the paginator is on)\line
+      currentPage: 1,\line
 \line
-        customAttribute1: '$inlinecount',\line
+      // how many items per page should be shown\line
+      perPage: 3,\line
 \line
-        queryAttribute: '$filter',\line
+      // a default number of total pages to query in case the API or \line
+      // service you are using does not support providing the total \line
+      // number of pages for us.\line
+      // 10 as a default in case your service doesn't return the total\line
+      totalPages: 10\line
+    \},\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs24 4. Configure the parameters we want to send to the server\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Only the base URL won\u8217't be enough for most cases, so you can pass more parameters to the server. Note how you can use functions insead of hardcoded values, and you can also reffer to the values you specified in {\f1 paginator_ui}.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1     server_api: \{\line
+      // the query field in the request\line
+      '$filter': 'substringof(\\'america\\',Name)',\line
 \line
-        formatAttribute: '$format',\line
+      // number of items to return per request/page\line
+      '$top': function() \{ return this.perPage \},\line
 \line
-        customAttribute2: '$callback',\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs24 3. Configure how to paginate data at a UI-level\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 We then get to configuration for the paginated data in the UI. {\f1 perPage} specifies how many results to return from the server whilst {\f1 displayPerPage} configures how many of the items in returned results to display per \u8216'page\u8217' in the UI. e.g If we request 100 results and only display 20 per page, we have 5 sub-pages of results that can be navigated through in the UI.\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 \f1         // M: how many results to query from the service\line
-        perPage: 40,\line
+      // how many results the request should skip ahead to\line
+      // customize as needed. For the Netflix API, skipping ahead based on\line
+      // page * number of results per page was necessary.\line
+      '$skip': function() \{ return this.currentPage * this.perPage \},\line
 \line
-        // N: how many results to display per 'page' within the UI\line
-        // Effectively M/N = the number of pages the data will be split into.\line
-        displayPerPage: 20,\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs24 4. Configure the rest of the request parameter default values\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 We can then configure default values for the rest of our request parameters:\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 \f1         // current page to query from the service\line
-        page: 1,\line
+      // field to sort by\line
+      '$orderby': 'ReleaseYear',\line
 \line
-        // a default. This should be overridden in the collection's parse()\line
-        // sort direction\line
-        sortDirection: 'asc',\line
+      // what format would you like to request results in?\line
+      '$format': 'json',\line
 \line
-        // sort field\line
-        sortField: 'ReleaseYear',\line
-        //or year(Instant/AvailableFrom)\line
-\line
-        // query\line
-        query: "substringof('" + escape('the') + "',Name)",\line
-\line
-        // request format\line
-        format: 'json',\line
-\line
-        // custom parameters for the request that may be specific to your\line
-        // application\line
-        customParam1: 'allpages',\line
-\line
-        customParam2: 'callback',\par}
+      // custom parameters\line
+      '$inlinecount': 'allpages',\line
+      '$callback': 'callback'                                     \line
+    \},\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \b \fs24 5. Finally, configure Collection.parse() and we\u8217're done\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 And finally we have our {\f1 parse()} method, which in this case isn\u8217't concerned with the total number of result pages available on the server as we have our own total count of pages for the paginated data in the UI.\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 \f1 parse: function (response) \{\line
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1     parse: function (response) \{\line
             var tags = response.d.results;\line
             return tags;\line
         \}\line
 \line
-\});\par}
+    \});\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \b \fs24 Convenience methods:\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 As mentioned, your views can hook into a number of convenience methods to navigate around UI-paginated data. For {\f1 clientPager} these include:\par}
 {\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\b Collection.goTo(n)} - go to a specific page\par}
 {\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\b Collection.previousPage()} - go to the previous page\par}
 {\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\b Collection.nextPage()} - go to the next page\par}
 {\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\b Collection.howManyPer(n)} - set how many items to display per page\par}
-{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\b Collection.pager(sortBy, sortDirection)} - update sort on the current view\sa180\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs32 Views/Templates\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 Although the collection layer is perhaps the most important part of Backbone.Paginator, it would be of little use without views interacting with it. The project zipball comes with three complete examples of using the components with the Netflix API, but here\u8217's a sample view and template from the {\f1 requestPager()} example for those interested in learning more:\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 First, we have a view for a pagination bar in our UI that allows us to navigate around our paginated collection:\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 \f1 (function ( views ) \{\line
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\b Collection.setSort(sortBy, sortDirection)} - update sort on the current view. Sorting will automatically detect if you\u8217're trying to sort numbers (even if they\u8217're strored as strings) and will do the right thing.\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\b Collection.setFilter(filterFields, filterWords)} - filter the current view. Filtering supports multiple words without any specific order, so you\u8217'll basically get a full-text search ability. Also, you can pass it only one field from the model, or you can pass an array with fields and all of them will get filtered. Last option is to pass it an object containing a comparison method and rules. Currently, only {\f1 levenshtein} method is available.\sa180\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1   this.collection.setFilter(\line
+    \{'Name': \{cmp_method: 'levenshtein', max_distance: 7\}\}\line
+    , "Amreican P" // Note the switched 'r' and 'e', and the 'P' from 'Pie'\line
+  );\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Also note that the levenshtein plugin should be loaded and enabled using the {\f1 useLevenshteinPlugin} variable.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Last but not less important: Performing Levenshtein comparison returns the {\f1 distance} between to strings. It won\u8217't let you {\i search} lenghty text.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 The distance between two strings means the number of characters that should be added, removed or moved to the left or to the right so the strings get equal.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 That means that comparing \u8220"Something\u8221" in \u8220"This is a test that could show something\u8221" will return 32, which is bigger than comparing \u8220"Something\u8221" and \u8220"ABCDEFG\u8221" (9).\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Use levenshtein only for short texts (titles, names, etc).\par}
+{\pard \ql \f0 \sa180 \li360 \fi-360 \bullet \tx360\tab {\b Collection.doFakeFilter(filterFields, filterWords)} - returns the models count after fake-applying a call to {\f1 Collection.setFilter}.\par}
+{\pard \ql \f0 \sa180 \li360 \fi-360 \bullet \tx360\tab {\b Collection.setFieldFilter(rules)} - filter each value of each model according to {\f1 rules} that you pass as argument. Example: You have a collection of books with \u8216'release year\u8217' and \u8216'author\u8217'. You can filter only the books that were released between 1999 and 2003. And then you can add another {\f1 rule} that will filter those books only to authors who\u8217's name start with \u8216'A\u8217'. Possible rules: function, required, min, max, range, minLength, maxLength, rangeLength, oneOf, equalTo, pattern. ```javascript my_collection.setFieldFilter([ \{field: \u8216'release_year\u8217', type: \u8216'range\u8217', value: \{min: \u8216'1999\u8217', max: \u8216'2003\u8217'\}\}, \{field: \u8216'author\u8217', type: \u8216'pattern\u8217', value: new RegExp(\u8216'A*\u8217', \u8216'igm\u8217')\} ]);\sa180\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 //Rules: // //var my_var = \u8216'green\u8217'; // //\{field: \u8216'color\u8217', type: \u8216'equalTo\u8217', value: my_var\} //\{field: \u8216'color\u8217', type: \u8216'function\u8217', value: function(field_value)\{ return field_value == my_var; \} \} //\{field: \u8216'color\u8217', type: \u8216'required\u8217'\} //\{field: \u8216'number_of_colors\u8217', type: \u8216'min\u8217', value: \u8216'2\u8217'\} //\{field: \u8216'number_of_colors\u8217', type: \u8216'max\u8217', value: \u8216'4\u8217'\} //\{field: \u8216'number_of_colors\u8217', type: \u8216'range\u8217', value: \{min: \u8216'2\u8217', max: \u8216'4\u8217'\} \} //\{field: \u8216'color_name\u8217', type: \u8216'minLength\u8217', value: \u8216'4\u8217'\} //\{field: \u8216'color_name\u8217', type: \u8216'maxLength\u8217', value: \u8216'6\u8217'\} //\{field: \u8216'color_name\u8217', type: \u8216'rangeLength\u8217', value: \{min: \u8216'4\u8217', max: \u8216'6\u8217'\}\} //\{field: \u8216'color_name\u8217', type: \u8216'oneOf\u8217', value: [\u8216'green\u8217', \u8216'yellow\u8217']\} //\{field: \u8216'color_name\u8217', type: \u8216'pattern\u8217', value: new RegExp(\u8216'gre*\u8217', \u8216'ig\u8217')\} ```\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\b Collection.doFakeFieldFilter(rules)} - returns the models count after fake-applying a call to {\f1 Collection.setFieldFilter}.\sa180\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs24 Implementation notes:\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 You can use some variables in your {\f1 View} to represent the actual state of the paginator.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\f1 totalUnfilteredRecords} - Contains the number of records, including all records filtered in any way. (Only available in {\f1 clientPager})\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\f1 totalRecords} - Contains the number of records\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\f1 currentPage} - The actual page were the paginator is at.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\f1 perPage} - The number of records the paginator will show per page.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\f1 totalPages} - The number of total pages.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\f1 startRecord} - The posicion of the first record shown in the current page (eg 41 to 50 from 2000 records) (Only available in {\f1 clientPager})\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\f1 endRecord} - The posicion of the last record shown in the current page (eg 41 to 50 from 2000 records) (Only available in {\f1 clientPager})\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs32 Plugins\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b Diacritic.js}\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 A plugin for Backbone.Paginator that replaces diacritic characters ({\f1 \u180?}, {\f1 \u733?}, {\f1 \u783?}, {\f1 \u730?},{\f1 ~} etc.) with characters that match them most closely. This is particularly useful for filtering.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 To enable the plugin, set {\f1 this.useDiacriticsPlugin} to true, as can be seen in the example below:\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 Paginator.clientPager = Backbone.Collection.extend(\{\line
 \line
-    views.PaginatedView = Backbone.View.extend(\{\line
-\line
-        events: \{\line
-            'click a.servernext': 'nextResultPage',\line
-            'click a.serverprevious': 'previousResultPage',\line
-            'click a.orderUpdate': 'updateSortBy',\line
-            'click a.serverlast': 'gotoLast',\line
-            'click a.page': 'gotoPage',\line
-            'click a.serverfirst': 'gotoFirst',\line
-            'click a.serverpage': 'gotoPage',\line
-            'click .serverhowmany a': 'changeCount'\line
-\line
-        \},\line
-\line
-        tagName: 'aside',\line
-\line
-        template: _.template($('#tmpServerPagination').html()),\line
-\line
-        initialize: function () \{\line
-\line
-            this.collection.on('reset', this.render, this);\line
-            this.collection.on('change', this.render, this);\line
-            this.$el.appendTo('#pagination');\line
-\line
-        \},\line
-\line
-        render: function () \{\line
-            var html = this.template(this.collection.info());\line
-            this.$el.html(html);\line
-        \},\line
-\line
-        updateSortBy: function (e) \{\line
-            e.preventDefault();\line
-            var currentSort = $('#sortByField').val();\line
-            this.collection.updateOrder(currentSort);\line
-        \},\line
-\line
-        nextResultPage: function (e) \{\line
-            e.preventDefault();\line
-            this.collection.requestNextPage();\line
-        \},\line
-\line
-        previousResultPage: function (e) \{\line
-            e.preventDefault();\line
-            this.collection.requestPreviousPage();\line
-        \},\line
-\line
-        gotoFirst: function (e) \{\line
-            e.preventDefault();\line
-            this.collection.goTo(this.collection.information.firstPage);\line
-        \},\line
-\line
-        gotoLast: function (e) \{\line
-            e.preventDefault();\line
-            this.collection.goTo(this.collection.information.lastPage);\line
-        \},\line
-\line
-        gotoPage: function (e) \{\line
-            e.preventDefault();\line
-            var page = $(e.target).text();\line
-            this.collection.goTo(page);\line
-        \},\line
-\line
-        changeCount: function (e) \{\line
-            e.preventDefault();\line
-            var per = $(e.target).text();\line
-            this.collection.howManyPer(per);\line
-        \}\line
-\line
-    \});\line
-\line
-\})( app.views );\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 which we use with a template like this to generate the necessary pagination links (more are shown in the full example):\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 \f1 <span class="divider">/</span>  \line
-        <% if (page > firstPage) \{ %>  \line
-            <a href="#" class="serverprevious">Previous</a>  \line
-        <% \}else\{ %>  \line
-            <span>Previous</span>  \line
-        <% \}%>  \line
-        <% if (page < totalPages) \{ %>  \line
-            <a href="#" class="servernext">Next</a>  \line
-        <% \} %>  \line
-        <% if (firstPage != page) \{ %>  \line
-            <a href="#" class="serverfirst">First</a>  \line
-        <% \} %>  \line
-        <% if (lastPage != page) \{ %>  \line
-            <a href="#" class="serverlast">Last</a>  \line
-        <% \} %>  \line
-        <span class="divider">/</span>  \line
-        <span class="cell serverhowmany">  \line
-            Show  \line
-            <a href="#" class="selected">3</a>  \line
-            |  \line
-            <a href="#" class="">9</a>  \line
-            |  \line
-            <a href="#" class="">12</a>  \line
-            per page  \line
-        </span>  \line
-        <span class="divider">/</span>  \line
-        <span class="cell first records">  \line
-            Page: <span class="current"><%= page %></span>  \line
-            of  \line
-            <span class="total"><%= totalPages %></span>  \line
-                        shown  \line
-        </span>  \line
-<span class="divider">/</span>  \line
-    <span class="cell sort">  \line
-        <a href="#" class="orderUpdate btn small">Sort by:</a>  \line
-    </span>  \line
-    <select id="sortByField">  \line
-        <option value="cid">Select a field to sort on</option>  \line
-        <option value="ReleaseYear">Release year</option>  \line
-        <option value="ShortName">Alphabetical</option>  \line
-    </select>  \line
-</span>  \par}
+    // Default values used when sorting and/or filtering.\line
+    initialize: function()\{\line
+      this.useDiacriticsPlugin = true; // use diacritics plugin if available\line
+    ... \par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \b \fs32 Backbone & jQuery Mobile\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \b \fs28 Resolving the routing conflicts\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 The first major hurdle developers typically run into when building Backbone applications with jQuery Mobile is that both frameworks have their own opinions about how to handle application navigation.\par}

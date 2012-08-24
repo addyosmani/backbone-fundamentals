@@ -1,5 +1,6 @@
 
 # A little build script for compiling the HTML, ePub and RTF versions of the book.
+# use with sh build.sh in this directory
 
 #pandoc is the path to the pandoc executable. It can either simply be 'pandoc', 
 #or if you require a custom path just replace it with that path. 
