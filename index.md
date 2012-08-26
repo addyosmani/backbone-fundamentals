@@ -28,6 +28,8 @@ I hope you find this book helpful!
     * [Routers](#thebasics-routers)
     * [Namespacing](#thebasics-namespacing)
 
+* ####Practical: Todos - Your First Application (coming soon)
+
 * ####[Backbone Boilerplate & Grunt BBB](#backboneboilerplate) *
 
 * ####[Common Problems & Solutions](#commonproblems) *
@@ -40,20 +42,22 @@ I hope you find this book helpful!
     * Disposing Parent And Child Views
     * Appending Views
 
-* ####[RESTful Applications](#restfulapps)
-    * [Building RESTful applications with Backbone.js](#restful)
-    * [Building Backbone.js apps with Node.js, Express, Mongoose and MongoDB](#stack1)
-    * [Building Backbone.js apps with Ruby, Sinatra, Haml and MongoDB](#stack2)
+* ####[Modular Development](#advanced)    
+    * [Introduction](#modularjs)
+    * [Organizing modules with Require.js and AMD](#organizingmodules)
+    * [Keeping your templates external](#externaltemplates)
+    * [Practical: A Modular App Using AMD & Require.js](#practicalrequirejs)
+    * [Optimize Apps With The Require.js Optimizer](#optimizingrequirejs)
+    * [Optimize Apps With Require.js Using Packages](#optimizebuild) *
+    * [Decoupling Backbone With The Mediator and Facade patterns](#decouplingbackbone)
+
+* ####[RESTful Applications With Backbone.js](#restfulapps)
+    * [Building RESTful applications](#restful)
+    * [Apps With Node.js, Express, Mongoose and MongoDB](#stack1)
+    * [Apps with Ruby, Sinatra, Haml and MongoDB](#stack2)
     * [Paginating Backbone.js Requests & Collections](#pagination) *
 
-* ####[Going Modular](#advanced)    
-    * [Modular JavaScript](#modularjs)
-    * [Organizing modules with Require.js and AMD](#organizingmodules)
-    * [Keeping your templates external with the Require.js text plugin](#externaltemplates)
-    * [Optimizing Backbone apps for production with the Require.js Optimizer](#optimizingrequirejs)
-    * [Optimize and Build a Backbone.js Application With Require.js Using Packages](#optimizebuild) *
-    * [Practical: A Modular Backbone.js Application Using AMD & Require.js](#practicalrequirejs)
-    * [Decoupling Backbone With The Mediator and Facade patterns](#decouplingbackbone)
+* ####Mobile Applications
     * Backbone & jQuery Mobile
     * Practical: Building A Modular Mobile App With Backbone & jQuery Mobile
 
@@ -533,7 +537,7 @@ It *is* however worth understanding where and why these concepts originated, so 
 
 ###What is Backbone?
 
-Backbone.js is one of a number of JavaScript frameworks for creating MVC-like web applications. On the front-end, it's my architectural framework of choice as it's both mature, relatively lightweight and can be easily tested using third-party toolkits such as Jasmine or QUnit. Other MVC frameworks you may be familiar with include Ember.js (SproutCore 2.0), Spine, YUILibrary and JavaScriptMVC.
+As a short reminder, Backbone.js is one of a number of JavaScript frameworks for creating MVC-like web applications. On the front-end, it's my architectural framework of choice as it's both mature, relatively lightweight and can be easily tested using third-party toolkits such as Jasmine or QUnit. Other MVC frameworks you may be familiar with include Ember.js (SproutCore 2.0), Spine, YUILibrary and JavaScriptMVC.
 
 Backbone is maintained by a number of contributors, most notably: Jeremy Ashkenas, creator of CoffeeScript, Docco and Underscore.js. As Jeremy is a believer in detailed documentation, there's a level of comfort in knowing you're unlikely to run into issues which are either not explained in the official docs or which can't be nailed down with some assistance from the #documentcloud IRC channel. I strongly recommend using the latter if you find yourself getting stuck.
 
@@ -844,7 +848,7 @@ Presto! This populates the template, giving you a data-complete set of markup in
 
 **The `events` attribute**
 
-The Backbone `events` attribute allows us to attach event listeners to either custom selectors, or directly to `el` if no selector is provided. An event takes the form `{"eventName selector": "callbackFunction"}` and a number of event-types are supported, including `click`, `submit`, `mouseover`, `dblclick` and more.
+The Backbone `events` attribute allows us to attach event listeners to either custom selectors, or directly to `el` if no selector is provided. An event takes the form `{"eventName selector": "callbackFunction"}` and a number of DOM event-types are supported, including `click`, `submit`, `mouseover`, `dblclick` and more.
 
 What isn't instantly obvious is that under the bonnet, Backbone uses jQuery's `.delegate()` to provide instant support for event delegation but goes a little further, extending it so that `this` always refers to the current view object. The only thing to really keep in mind is that any string callback supplied to the events attribute must have a corresponding function with the same name within the scope of your view.
  
@@ -2126,6 +2130,7 @@ This works in that one doesn't need to worry about maintaining the order of your
 An alternative approach which doesn't suffer from the re-delegation problem could be written as follows:
 
 ```javascript
+
 initialize : function () {
 
 },
@@ -2137,8 +2142,10 @@ render : function () {
     this.innerView1 = new Subview({options});
     this.innerView2 = new Subview({options});
 
+
     this.$el.append(this.innerView1.render().el, this.innerView2.render().el);
 }
+
 ```
 In this version, we also don't require a template containing empty placeholders and the issue with `tagName`s is solved as they are defined by the view once again. 
 

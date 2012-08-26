@@ -66,6 +66,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <li><a href="#thebasics-routers">Routers</a></li>
 <li><a href="#thebasics-namespacing">Namespacing</a></li>
 </ul></li>
+<li><h4>Practical: Todos - Your First Application (coming soon)</h4></li>
 <li><h4><a href="#backboneboilerplate">Backbone Boilerplate &amp; Grunt BBB</a> *</h4></li>
 <li><h4><a href="#commonproblems">Common Problems &amp; Solutions</a> *</h4>
 <ul>
@@ -78,22 +79,25 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <li>Disposing Parent And Child Views</li>
 <li>Appending Views</li>
 </ul></li>
-<li><h4><a href="#restfulapps">RESTful Applications</a></h4>
+<li><h4><a href="#advanced">Modular Development</a></h4>
 <ul>
-<li><a href="#restful">Building RESTful applications with Backbone.js</a></li>
-<li><a href="#stack1">Building Backbone.js apps with Node.js, Express, Mongoose and MongoDB</a></li>
-<li><a href="#stack2">Building Backbone.js apps with Ruby, Sinatra, Haml and MongoDB</a></li>
+<li><a href="#modularjs">Introduction</a></li>
+<li><a href="#organizingmodules">Organizing modules with Require.js and AMD</a></li>
+<li><a href="#externaltemplates">Keeping your templates external</a></li>
+<li><a href="#practicalrequirejs">Practical: A Modular App Using AMD &amp; Require.js</a></li>
+<li><a href="#optimizingrequirejs">Optimize Apps With The Require.js Optimizer</a></li>
+<li><a href="#optimizebuild">Optimize Apps With Require.js Using Packages</a> *</li>
+<li><a href="#decouplingbackbone">Decoupling Backbone With The Mediator and Facade patterns</a></li>
+</ul></li>
+<li><h4><a href="#restfulapps">RESTful Applications With Backbone.js</a></h4>
+<ul>
+<li><a href="#restful">Building RESTful applications</a></li>
+<li><a href="#stack1">Apps With Node.js, Express, Mongoose and MongoDB</a></li>
+<li><a href="#stack2">Apps with Ruby, Sinatra, Haml and MongoDB</a></li>
 <li><a href="#pagination">Paginating Backbone.js Requests &amp; Collections</a> *</li>
 </ul></li>
-<li><h4><a href="#advanced">Going Modular</a></h4>
+<li><h4>Mobile Applications</h4>
 <ul>
-<li><a href="#modularjs">Modular JavaScript</a></li>
-<li><a href="#organizingmodules">Organizing modules with Require.js and AMD</a></li>
-<li><a href="#externaltemplates">Keeping your templates external with the Require.js text plugin</a></li>
-<li><a href="#optimizingrequirejs">Optimizing Backbone apps for production with the Require.js Optimizer</a></li>
-<li><a href="#optimizebuild">Optimize and Build a Backbone.js Application With Require.js Using Packages</a> *</li>
-<li><a href="#practicalrequirejs">Practical: A Modular Backbone.js Application Using AMD &amp; Require.js</a></li>
-<li><a href="#decouplingbackbone">Decoupling Backbone With The Mediator and Facade patterns</a></li>
 <li>Backbone &amp; jQuery Mobile</li>
 <li>Practical: Building A Modular Mobile App With Backbone &amp; jQuery Mobile</li>
 </ul></li>
@@ -416,7 +420,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 </ul>
 <h2 id="the-internals">##<a name="theinternals">The Internals</a></h2>
 <h3 id="what-is-backbone">What is Backbone?</h3>
-<p>Backbone.js is one of a number of JavaScript frameworks for creating MVC-like web applications. On the front-end, it's my architectural framework of choice as it's both mature, relatively lightweight and can be easily tested using third-party toolkits such as Jasmine or QUnit. Other MVC frameworks you may be familiar with include Ember.js (SproutCore 2.0), Spine, YUILibrary and JavaScriptMVC.</p>
+<p>As a short reminder, Backbone.js is one of a number of JavaScript frameworks for creating MVC-like web applications. On the front-end, it's my architectural framework of choice as it's both mature, relatively lightweight and can be easily tested using third-party toolkits such as Jasmine or QUnit. Other MVC frameworks you may be familiar with include Ember.js (SproutCore 2.0), Spine, YUILibrary and JavaScriptMVC.</p>
 <p>Backbone is maintained by a number of contributors, most notably: Jeremy Ashkenas, creator of CoffeeScript, Docco and Underscore.js. As Jeremy is a believer in detailed documentation, there's a level of comfort in knowing you're unlikely to run into issues which are either not explained in the official docs or which can't be nailed down with some assistance from the #documentcloud IRC channel. I strongly recommend using the latter if you find yourself getting stuck.</p>
 <h3 id="why-should-you-consider-using-it">Why should you consider using it?</h3>
 <p>Backbone's main benefits, regardless of your target platform or device, include helping:</p>
@@ -628,7 +632,7 @@ id: &#39;header&#39;, // optional</code></pre>
 <p>The <code>_.template</code> method in Underscore compiles JavaScript templates into functions which can be evaluated for rendering. In the above view, I'm passing the markup from a template with id <code>results-template</code> to <code>_.template()</code> to be compiled. Next, I set the html of the <code>el</code> DOM element to the output of processing a JSON version of the model associated with the view through the compiled template.</p>
 <p>Presto! This populates the template, giving you a data-complete set of markup in just a few short lines of code.</p>
 <p><strong>The <code>events</code> attribute</strong></p>
-<p>The Backbone <code>events</code> attribute allows us to attach event listeners to either custom selectors, or directly to <code>el</code> if no selector is provided. An event takes the form <code>{&quot;eventName selector&quot;: &quot;callbackFunction&quot;}</code> and a number of event-types are supported, including <code>click</code>, <code>submit</code>, <code>mouseover</code>, <code>dblclick</code> and more.</p>
+<p>The Backbone <code>events</code> attribute allows us to attach event listeners to either custom selectors, or directly to <code>el</code> if no selector is provided. An event takes the form <code>{&quot;eventName selector&quot;: &quot;callbackFunction&quot;}</code> and a number of DOM event-types are supported, including <code>click</code>, <code>submit</code>, <code>mouseover</code>, <code>dblclick</code> and more.</p>
 <p>What isn't instantly obvious is that under the bonnet, Backbone uses jQuery's <code>.delegate()</code> to provide instant support for event delegation but goes a little further, extending it so that <code>this</code> always refers to the current view object. The only thing to really keep in mind is that any string callback supplied to the events attribute must have a corresponding function with the same name within the scope of your view.</p>
 <h3 id="collections"><a name="thebasics-collections" id="thebasics-collections">Collections</a></h3>
 <p>Collections are sets of Models and are created by extending <code>Backbone.Collection</code>.</p>
@@ -1547,7 +1551,8 @@ Initialized from template &quot;module&quot;.</code></pre>
 }</code></pre>
 <p>This works in that one doesn't need to worry about maintaining the order of your DOM elements when appending. Views are initialized early and the render() method doesn't need to take on too many responsibilities at once. Unfortunately, a downside is that you don't have the ability to set the <code>tagName</code> of elements and events need to be re-delegated.</p>
 <p>An alternative approach which doesn't suffer from the re-delegation problem could be written as follows:</p>
-<p>```javascript initialize : function () {</p>
+<p>```javascript</p>
+<p>initialize : function () {</p>
 <p>},</p>
 <p>render : function () {</p>
 <pre><code>this.$el.empty();
@@ -1555,8 +1560,10 @@ Initialized from template &quot;module&quot;.</code></pre>
 this.innerView1 = new Subview({options});
 this.innerView2 = new Subview({options});
 
+
 this.$el.append(this.innerView1.render().el, this.innerView2.render().el);</code></pre>
-<p>} ``<code>In this version, we also don't require a template containing empty placeholders and the issue with</code>tagName`s is solved as they are defined by the view once again.</p>
+<p>}</p>
+<p>``<code>In this version, we also don't require a template containing empty placeholders and the issue with</code>tagName`s is solved as they are defined by the view once again.</p>
 <p>Yet another variation which moves logic into an <code>onRender</code> event, could be written with only a few subtle changes:</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="dt">initialize </span>: <span class="kw">function</span> () {
     <span class="kw">this</span>.<span class="fu">on</span>(<span class="ch">&#39;render&#39;</span>, <span class="kw">this</span>.<span class="fu">onRender</span>);
