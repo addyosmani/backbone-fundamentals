@@ -819,8 +819,41 @@ Backbone.sync = function(method, model) \{\line
 docs
 }}}
 .\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs28 Chainable API\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Speaking of utility methods, another bit of sugar in Backbone is the support for Underscore\u8217's chain method. This works by calling the original method with the current array of models and returning the result. In case you haven\u8217't seen it before, the chainable API looks like this:\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 var collection = new Backbone.Collection([\line
+  \{ name: 'Tim', age: 5 \},\line
+  \{ name: 'Ida', age: 26 \},\line
+  \{ name: 'Rob', age: 55 \}\line
+]);\line
+\line
+collection.chain()\line
+  .filter(function(item) \{ return item.get('age') > 10; \})\line
+  .map(function(item) \{ return item.get('name'); \})\line
+  .value();\line
+\line
+// Will return ['Ida', 'Rob']\line
+Some of the Backbone-specific method will return this, which means they can be chained as well:\line
+\line
+var collection = new Backbone.Collection();\line
+\line
+collection\line
+    .add(\{ name: 'John', age: 23 \})\line
+    .add(\{ name: 'Harry', age: 33 \})\line
+    .add(\{ name: 'Steve', age: 41 \});\line
+\line
+collection.pluck('name');\line
+// ['John', 'Harry', 'Steve']\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \b \fs32 Events\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 {\f1 Backbone.Events} has the ability to give any object a way to bind and trigger custom events. We can mix this module into any object easily and there isn\u8217't a requirement for events to be declared prior to them being bound.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 As we\u8217've covered, Backbone\u8217's objects are designed to be inherited from and every single one of the following objects inherits from {\f1 Backbone.Events}:\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Backbone.Model\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Backbone.Collection\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Backbone.Router\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Backbone.History\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Backbone.View\sa180\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Events are the standard way to deal with user interface actions, through the declarative event bindings on views, and also model and collection changes. Mastering events is one of the quickest ways to become more productive with Backbone.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\f1 Backbone.Events} also has the ability to give any object a way to bind and trigger custom events. We can mix this module into any object easily and there isn\u8217't a requirement for events to be declared prior to them being bound.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Example:\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \f1 var ourObject = \{\};\line
 \line
 // Mixin\line
@@ -945,31 +978,6 @@ zoomPhoto: function(factor)\{\line
     this.zoom(factor); //imagine this zooms into the image\line
     this.navigate("zoom/" + factor, true); //updates the fragment for us and triggers the route\line
 \}\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs28 Chainable API\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 Another bit of sugar is the support for Underscore\u8217's chain method. This works by calling the original method with the current array of models and returning the result. In case you haven\u8217't seen it before, the chainable API looks like this:\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 \f1 var collection = new Backbone.Collection([\line
-  \{ name: 'Tim', age: 5 \},\line
-  \{ name: 'Ida', age: 26 \},\line
-  \{ name: 'Rob', age: 55 \}\line
-]);\line
-\line
-collection.chain()\line
-  .filter(function(item) \{ return item.get('age') > 10; \})\line
-  .map(function(item) \{ return item.get('name'); \})\line
-  .value();\line
-\line
-// Will return ['Ida', 'Rob']\line
-Some of the Backbone-specific method will return this, which means they can be chained as well:\line
-\line
-var collection = new Backbone.Collection();\line
-\line
-collection\line
-    .add(\{ name: 'John', age: 23 \})\line
-    .add(\{ name: 'Harry', age: 33 \})\line
-    .add(\{ name: 'Steve', age: 41 \});\line
-\line
-collection.pluck('name');\line
-// ['John', 'Harry', 'Steve']\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \b \fs28 Backbone\u8217's Sync API\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 The Backbone.sync method is intended to be overridden to support other backends. The built-in method is tailed to a certain breed of RESTful JSON APIs \u8211- Backbone was originally extracted from a Ruby on Rails application, which uses HTTP methods like PUT the same way.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 The way this works is the model and collection classes have a sync method that calls Backbone.sync. Both will call this.sync internally when fetching, saving, or deleting items.\par}
@@ -1050,22 +1058,6 @@ if (typeof exports !== 'undefined') \{\line
 \} else \{\line
   Backbone = root.Backbone = \{\};\line
 \}\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 The existence of Underscore.js (also by DocumentCloud) and a jQuery-like library is checked as well.\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs28 Leverage Events\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 Backbone\u8217's classes are designed to be inherited from. Every single one of these classes inherits from Backbone.Events:\par}
-{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Backbone.Model\par}
-{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Backbone.Collection\par}
-{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Backbone.Router\par}
-{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Backbone.History\par}
-{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Backbone.View\sa180\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 That means when designing applications built with Backbone, events are a key architectural component. Events are the standard way to deal with user interface actions, through the declarative event bindings on views, and also model and collection changes. However, you can easily add your own custom events.\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 When learning Backbone it\u8217's important to get a feel for the built-in event names. Incorrectly binding a collection reset event, for example, could cause your application to render more often than it should. Mastering events is one of the quickest ways to become more productive with Backbone.\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs24 Underscore.js\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 Since Backbone depends on Underscore, it\u8217's worth keeping this in mind when dealing with any kind of arrays or collections of data. Also, familiarity with Underscore\u8217's methods will help work with Backbone.Collection effectively.\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs24 Views\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 It\u8217's easy to slip into using ,\u8198?{\i b}{\i u}{\i t}{\i a}{\i v}{\i o}{\i i}{\i d}{\i t}{\i h}{\i i}{\i s}{\i w}{\i h}{\i e}{\i r}{\i e}{\i p}{\i o}{\i s}{\i s}{\i i}{\i b}{\i l}{\i e}.\u8198?{\i B}{\i a}{\i c}{\i k}{\i b}{\i o}{\i n}{\i e}{\i c}{\i a}{\i c}{\i h}{\i e}{\i s}{\i a}{\i v}{\i i}{\i e}{\i w}\u8217'{\i s}{\i e}{\i l}{\i e}{\i m}{\i e}{\i n}{\i t},\u8198?{\i s}{\i o}{\i u}{\i s}{\i e}{\i t}{\i h}{\i i}{\i s}.\u8198?el instead. Design views based on the single responsibility principle.\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 It might be tempting to let \u8220"container\u8221" view render HTML directly by using $().html, but resisting the temptation and creating a hierarchy of views will make it much easier to debug your code and write automated tests.\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 Interestingly, Backbone doesn\u8217't have a lot of code dedicated to templates, but it can work with the template method. I use this with Require.js text file dependencies to load remote templates during development, then I use the Require.js build script to generate something suitable for deployment. This makes code easy to test and fast to load.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \b \fs32 Inheritance & Mixins\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 For its inheritance, Backbone internally uses an {\f1 inherits} function inspired by {\f1 goog.inherits}, Google\u8217's implementation from the Closure Library. It\u8217's basically a function to correctly setup the prototype chain.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \f1  var inherits = function(parent, protoProps, staticProps) \{\line

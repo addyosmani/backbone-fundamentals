@@ -732,8 +732,43 @@ id: &#39;header&#39;, // optional</code></pre>
     <span class="kw">return</span> <span class="kw">photo</span>.<span class="fu">get</span>(<span class="st">&quot;title&quot;</span>).<span class="fu">toLowerCase</span>();
 });</code></pre>
 <p>The complete list of what Underscore can do is beyond the scope of this guide, but can be found in its official <a href="http://documentcloud.github.com/underscore/">docs</a>.</p>
+<h3 id="chainable-api">Chainable API</h3>
+<p>Speaking of utility methods, another bit of sugar in Backbone is the support for Underscore’s chain method. This works by calling the original method with the current array of models and returning the result. In case you haven’t seen it before, the chainable API looks like this:</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> collection = <span class="kw">new</span> <span class="kw">Backbone</span>.<span class="fu">Collection</span>([
+  { <span class="dt">name</span>: <span class="ch">&#39;Tim&#39;</span>, <span class="dt">age</span>: <span class="dv">5</span> },
+  { <span class="dt">name</span>: <span class="ch">&#39;Ida&#39;</span>, <span class="dt">age</span>: <span class="dv">26</span> },
+  { <span class="dt">name</span>: <span class="ch">&#39;Rob&#39;</span>, <span class="dt">age</span>: <span class="dv">55</span> }
+]);
+
+<span class="kw">collection</span>.<span class="fu">chain</span>()
+  .<span class="fu">filter</span>(<span class="kw">function</span>(item) { <span class="kw">return</span> <span class="kw">item</span>.<span class="fu">get</span>(<span class="ch">&#39;age&#39;</span>) &gt; <span class="dv">10</span>; })
+  .<span class="fu">map</span>(<span class="kw">function</span>(item) { <span class="kw">return</span> <span class="kw">item</span>.<span class="fu">get</span>(<span class="ch">&#39;name&#39;</span>); })
+  .<span class="fu">value</span>();
+
+<span class="co">// Will return [&#39;Ida&#39;, &#39;Rob&#39;]</span>
+Some of the Backbone-specific method will <span class="kw">return</span> <span class="kw">this</span>, which means they can be chained as <span class="dt">well</span>:
+
+<span class="kw">var</span> collection = <span class="kw">new</span> <span class="kw">Backbone</span>.<span class="fu">Collection</span>();
+
+collection
+    .<span class="fu">add</span>({ <span class="dt">name</span>: <span class="ch">&#39;John&#39;</span>, <span class="dt">age</span>: <span class="dv">23</span> })
+    .<span class="fu">add</span>({ <span class="dt">name</span>: <span class="ch">&#39;Harry&#39;</span>, <span class="dt">age</span>: <span class="dv">33</span> })
+    .<span class="fu">add</span>({ <span class="dt">name</span>: <span class="ch">&#39;Steve&#39;</span>, <span class="dt">age</span>: <span class="dv">41</span> });
+
+<span class="kw">collection</span>.<span class="fu">pluck</span>(<span class="ch">&#39;name&#39;</span>);
+<span class="co">// [&#39;John&#39;, &#39;Harry&#39;, &#39;Steve&#39;]</span></code></pre>
 <h2 id="events"><a name="thebasics-events" id="thebasics-events">Events</a></h2>
-<p><code>Backbone.Events</code> has the ability to give any object a way to bind and trigger custom events. We can mix this module into any object easily and there isn't a requirement for events to be declared prior to them being bound.</p>
+<p>As we've covered, Backbone's objects are designed to be inherited from and every single one of the following objects inherits from <code>Backbone.Events</code>:</p>
+<ul>
+<li>Backbone.Model</li>
+<li>Backbone.Collection</li>
+<li>Backbone.Router</li>
+<li>Backbone.History</li>
+<li>Backbone.View</li>
+</ul>
+<p>Events are the standard way to deal with user interface actions, through the declarative event bindings on views, and also model and collection changes. Mastering events is one of the quickest ways to become more productive with Backbone.</p>
+<p><code>Backbone.Events</code> also has the ability to give any object a way to bind and trigger custom events. We can mix this module into any object easily and there isn't a requirement for events to be declared prior to them being bound.</p>
+<p>Example:</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> ourObject = {};
 
 <span class="co">// Mixin</span>
@@ -858,31 +893,6 @@ id: &#39;header&#39;, // optional</code></pre>
     <span class="kw">this</span>.<span class="fu">zoom</span>(factor); <span class="co">//imagine this zooms into the image</span>
     <span class="kw">this</span>.<span class="fu">navigate</span>(<span class="st">&quot;zoom/&quot;</span> + factor, <span class="kw">true</span>); <span class="co">//updates the fragment for us and triggers the route</span>
 }</code></pre>
-<h3 id="chainable-api">Chainable API</h3>
-<p>Another bit of sugar is the support for Underscore’s chain method. This works by calling the original method with the current array of models and returning the result. In case you haven’t seen it before, the chainable API looks like this:</p>
-<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> collection = <span class="kw">new</span> <span class="kw">Backbone</span>.<span class="fu">Collection</span>([
-  { <span class="dt">name</span>: <span class="ch">&#39;Tim&#39;</span>, <span class="dt">age</span>: <span class="dv">5</span> },
-  { <span class="dt">name</span>: <span class="ch">&#39;Ida&#39;</span>, <span class="dt">age</span>: <span class="dv">26</span> },
-  { <span class="dt">name</span>: <span class="ch">&#39;Rob&#39;</span>, <span class="dt">age</span>: <span class="dv">55</span> }
-]);
-
-<span class="kw">collection</span>.<span class="fu">chain</span>()
-  .<span class="fu">filter</span>(<span class="kw">function</span>(item) { <span class="kw">return</span> <span class="kw">item</span>.<span class="fu">get</span>(<span class="ch">&#39;age&#39;</span>) &gt; <span class="dv">10</span>; })
-  .<span class="fu">map</span>(<span class="kw">function</span>(item) { <span class="kw">return</span> <span class="kw">item</span>.<span class="fu">get</span>(<span class="ch">&#39;name&#39;</span>); })
-  .<span class="fu">value</span>();
-
-<span class="co">// Will return [&#39;Ida&#39;, &#39;Rob&#39;]</span>
-Some of the Backbone-specific method will <span class="kw">return</span> <span class="kw">this</span>, which means they can be chained as <span class="dt">well</span>:
-
-<span class="kw">var</span> collection = <span class="kw">new</span> <span class="kw">Backbone</span>.<span class="fu">Collection</span>();
-
-collection
-    .<span class="fu">add</span>({ <span class="dt">name</span>: <span class="ch">&#39;John&#39;</span>, <span class="dt">age</span>: <span class="dv">23</span> })
-    .<span class="fu">add</span>({ <span class="dt">name</span>: <span class="ch">&#39;Harry&#39;</span>, <span class="dt">age</span>: <span class="dv">33</span> })
-    .<span class="fu">add</span>({ <span class="dt">name</span>: <span class="ch">&#39;Steve&#39;</span>, <span class="dt">age</span>: <span class="dv">41</span> });
-
-<span class="kw">collection</span>.<span class="fu">pluck</span>(<span class="ch">&#39;name&#39;</span>);
-<span class="co">// [&#39;John&#39;, &#39;Harry&#39;, &#39;Steve&#39;]</span></code></pre>
 <h3 id="backbones-sync-api">Backbone’s Sync API</h3>
 <p>The Backbone.sync method is intended to be overridden to support other backends. The built-in method is tailed to a certain breed of RESTful JSON APIs – Backbone was originally extracted from a Ruby on Rails application, which uses HTTP methods like PUT the same way.</p>
 <p>The way this works is the model and collection classes have a sync method that calls Backbone.sync. Both will call this.sync internally when fetching, saving, or deleting items.</p>
@@ -967,24 +977,6 @@ collection
 } <span class="kw">else</span> {
   Backbone = <span class="kw">root</span>.<span class="fu">Backbone</span> = {};
 }</code></pre>
-<p>The existence of Underscore.js (also by DocumentCloud) and a jQuery-like library is checked as well.</p>
-<h3 id="leverage-events">Leverage Events</h3>
-<p>Backbone’s classes are designed to be inherited from. Every single one of these classes inherits from Backbone.Events:</p>
-<ul>
-<li>Backbone.Model</li>
-<li>Backbone.Collection</li>
-<li>Backbone.Router</li>
-<li>Backbone.History</li>
-<li>Backbone.View</li>
-</ul>
-<p>That means when designing applications built with Backbone, events are a key architectural component. Events are the standard way to deal with user interface actions, through the declarative event bindings on views, and also model and collection changes. However, you can easily add your own custom events.</p>
-<p>When learning Backbone it’s important to get a feel for the built-in event names. Incorrectly binding a collection reset event, for example, could cause your application to render more often than it should. Mastering events is one of the quickest ways to become more productive with Backbone.</p>
-<h4 id="underscore.js">Underscore.js</h4>
-<p>Since Backbone depends on Underscore, it’s worth keeping this in mind when dealing with any kind of arrays or collections of data. Also, familiarity with Underscore’s methods will help work with Backbone.Collection effectively.</p>
-<h4 id="views-2">Views</h4>
-<p>It’s easy to slip into using <span class="math">, <em>b</em><em>u</em><em>t</em><em>a</em><em>v</em><em>o</em><em>i</em><em>d</em><em>t</em><em>h</em><em>i</em><em>s</em><em>w</em><em>h</em><em>e</em><em>r</em><em>e</em><em>p</em><em>o</em><em>s</em><em>s</em><em>i</em><em>b</em><em>l</em><em>e</em>. <em>B</em><em>a</em><em>c</em><em>k</em><em>b</em><em>o</em><em>n</em><em>e</em><em>c</em><em>a</em><em>c</em><em>h</em><em>e</em><em>s</em><em>a</em><em>v</em><em>i</em><em>e</em><em>w</em>’<em>s</em><em>e</em><em>l</em><em>e</em><em>m</em><em>e</em><em>n</em><em>t</em>, <em>s</em><em>o</em><em>u</em><em>s</em><em>e</em><em>t</em><em>h</em><em>i</em><em>s</em>. </span>el instead. Design views based on the single responsibility principle.</p>
-<p>It might be tempting to let “container” view render HTML directly by using $().html, but resisting the temptation and creating a hierarchy of views will make it much easier to debug your code and write automated tests.</p>
-<p>Interestingly, Backbone doesn’t have a lot of code dedicated to templates, but it can work with the template method. I use this with Require.js text file dependencies to load remote templates during development, then I use the Require.js build script to generate something suitable for deployment. This makes code easy to test and fast to load.</p>
 <h2 id="inheritance-mixins"><a name="thebasics-inheritance" id="thebasics-inheritance">Inheritance &amp; Mixins</a></h2>
 <p>For its inheritance, Backbone internally uses an <code>inherits</code> function inspired by <code>goog.inherits</code>, Google’s implementation from the Closure Library. It's basically a function to correctly setup the prototype chain.</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"> <span class="kw">var</span> inherits = <span class="kw">function</span>(parent, protoProps, staticProps) {
@@ -3137,7 +3129,7 @@ app.rb
 <p>Lastly, the <code>views</code> directory hosts the Haml source files for our application's index and templates, both of which are compiled to standard HTML markup at runtime.</p>
 <p>These can be viewed along with other note-worthy snippets of code from the application below.</p>
 <h3 id="backbone">Backbone</h3>
-<h4 id="views-3">Views</h4>
+<h4 id="views-2">Views</h4>
 <p>In our main application view (AppView), we want to load any previously stored Todo items in our Mongo database when the view initializes. This is done below with the line <code>Todos.fetch()</code> in the <code>initialize()</code> method where we also bind to the relevant events on the <code>Todos</code> collection for when items are added or changed.</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="co">// Our overall **AppView** is the top-level piece of UI.</span>
 <span class="kw">var</span> AppView = <span class="kw">Backbone.View</span>.<span class="fu">extend</span>({
@@ -5048,7 +5040,7 @@ it(<span class="st">&quot;should contain a text value if not the default value&q
         }
 
     });</code></pre>
-<h2 id="views-4"><a name="testing-jasmine-views">Views</a></h2>
+<h2 id="views-3"><a name="testing-jasmine-views">Views</a></h2>
 <p>Before we take a look at testing Backbone views, let's briefly review a jQuery plugin that can assist with writing Jasmine specs for them.</p>
 <p><strong>The Jasmine jQuery Plugin</strong></p>
 <p>As we know our Todo application will be using jQuery for DOM manipulation, there's a useful jQuery plugin called <a href="https://github.com/velesin/jasmine-jquery">jasmine-jquery</a> we can use to help simplify BDD testing rendered elements that our views may produce.</p>
@@ -5921,7 +5913,7 @@ test(<span class="ch">&#39;Fires custom named events when the models change.&#39
 
     ok( <span class="kw">removeModelCallback</span>.<span class="fu">called</span> );
 });</code></pre>
-<h3 id="views-5">Views</h3>
+<h3 id="views-4">Views</h3>
 <p>For our views we want to ensure:</p>
 <ul>
 <li>They are being correctly tied to a DOM element when created</li>

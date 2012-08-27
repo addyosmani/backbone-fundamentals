@@ -1030,11 +1030,54 @@ var sortedByAlphabet = PhotoCollection.sortBy(function (photo) {
 ```
 
 The complete list of what Underscore can do is beyond the scope of this guide, but can be found in its official [docs](http://documentcloud.github.com/underscore/).
- 
+
+
+### Chainable API
+
+Speaking of utility methods, another bit of sugar in Backbone is the support for Underscore’s chain method. This works by calling the original method with the current array of models and returning the result. In case you haven’t seen it before, the chainable API looks like this:
+
+```javascript
+var collection = new Backbone.Collection([
+  { name: 'Tim', age: 5 },
+  { name: 'Ida', age: 26 },
+  { name: 'Rob', age: 55 }
+]);
+
+collection.chain()
+  .filter(function(item) { return item.get('age') > 10; })
+  .map(function(item) { return item.get('name'); })
+  .value();
+
+// Will return ['Ida', 'Rob']
+Some of the Backbone-specific method will return this, which means they can be chained as well:
+
+var collection = new Backbone.Collection();
+
+collection
+    .add({ name: 'John', age: 23 })
+    .add({ name: 'Harry', age: 33 })
+    .add({ name: 'Steve', age: 41 });
+
+collection.pluck('name');
+// ['John', 'Harry', 'Steve']
+```
+
+
 ##<a name="thebasics-events" id="thebasics-events">Events</a>
 
-`Backbone.Events` has the ability to give any object a way to bind and trigger custom events. We can mix this module into any object easily and there isn't a requirement for events to be declared prior to them being bound. 
+As we've covered, Backbone's objects are designed to be inherited from and every single one of the following objects inherits from `Backbone.Events`:
 
+* Backbone.Model
+* Backbone.Collection
+* Backbone.Router
+* Backbone.History
+* Backbone.View
+
+Events are the standard way to deal with user interface actions, through the declarative event bindings on views, and also model and collection changes. Mastering events is one of the quickest ways to become more productive with Backbone.
+
+`Backbone.Events` also has the ability to give any object a way to bind and trigger custom events. We can mix this module into any object easily and there isn't a requirement for events to be declared prior to them being bound. 
+
+Example:
 
 ```javascript
 var ourObject = {};
@@ -1051,7 +1094,6 @@ ourObject.on("dance", function(msg){
 ourObject.trigger("dance", "our event");
 ```
 
-
 If you're familiar with jQuery custom events or the concept of Publish/Subscribe, `Backbone.Events` provides a system that is very similar with `on` being analogous to `subscribe` and `trigger` being similar to `publish`.
 
 `on` basically allows us to bind a callback function to any object, as we've done with `dance` in the above example. Whenever the event is fired, our callback is invoked.
@@ -1061,7 +1103,6 @@ The official Backbone.js documentation recommends namespacing event names using 
 ```javascript
 ourObject.on("dance:tap", ...);
 ```
-
 
 A special `all` event is made available in case you would like an event to be triggered when any event occurs (e.g if you would like to screen events in a single location). The `all` event can be used as follows:
 
@@ -1098,7 +1139,6 @@ myObject.trigger("dance");
 // Multiple events
 myObject.trigger("dance jump skip");
 ```
-
 
 It is also possible to pass along additional arguments to each (or all) of these events via a second argument supported by `trigger`. e.g:
 
@@ -1235,38 +1275,6 @@ zoomPhoto: function(factor){
 ```
 
 
-
-### Chainable API
-
-Another bit of sugar is the support for Underscore’s chain method. This works by calling the original method with the current array of models and returning the result. In case you haven’t seen it before, the chainable API looks like this:
-
-```javascript
-var collection = new Backbone.Collection([
-  { name: 'Tim', age: 5 },
-  { name: 'Ida', age: 26 },
-  { name: 'Rob', age: 55 }
-]);
-
-collection.chain()
-  .filter(function(item) { return item.get('age') > 10; })
-  .map(function(item) { return item.get('name'); })
-  .value();
-
-// Will return ['Ida', 'Rob']
-Some of the Backbone-specific method will return this, which means they can be chained as well:
-
-var collection = new Backbone.Collection();
-
-collection
-    .add({ name: 'John', age: 23 })
-    .add({ name: 'Harry', age: 33 })
-    .add({ name: 'Steve', age: 41 });
-
-collection.pluck('name');
-// ['John', 'Harry', 'Steve']
-```
-
-
 ### Backbone’s Sync API
 
 The Backbone.sync method is intended to be overridden to support other backends. The built-in method is tailed to a certain breed of RESTful JSON APIs – Backbone was originally extracted from a Ruby on Rails application, which uses HTTP methods like PUT the same way.
@@ -1375,36 +1383,6 @@ if (typeof exports !== 'undefined') {
   Backbone = root.Backbone = {};
 }
 ```
-
-The existence of Underscore.js (also by DocumentCloud) and a jQuery-like library is checked as well.
-
-
-### Leverage Events
-
-Backbone’s classes are designed to be inherited from. Every single one of these classes inherits from Backbone.Events:
-
-* Backbone.Model
-* Backbone.Collection
-* Backbone.Router
-* Backbone.History
-* Backbone.View
-
-That means when designing applications built with Backbone, events are a key architectural component. Events are the standard way to deal with user interface actions, through the declarative event bindings on views, and also model and collection changes. However, you can easily add your own custom events.
-
-When learning Backbone it’s important to get a feel for the built-in event names. Incorrectly binding a collection reset event, for example, could cause your application to render more often than it should. Mastering events is one of the quickest ways to become more productive with Backbone.
-
-#### Underscore.js
-
-Since Backbone depends on Underscore, it’s worth keeping this in mind when dealing with any kind of arrays or collections of data. Also, familiarity with Underscore’s methods will help work with Backbone.Collection effectively.
-
-#### Views
-
-It’s easy to slip into using $, but avoid this where possible. Backbone caches a view’s element, so use this.$el instead. Design views based on the single responsibility principle.
-
-It might be tempting to let “container” view render HTML directly by using $().html, but resisting the temptation and creating a hierarchy of views will make it much easier to debug your code and write automated tests.
-
-Interestingly, Backbone doesn’t have a lot of code dedicated to templates, but it can work with the template method. I use this with Require.js text file dependencies to load remote templates during development, then I use the Require.js build script to generate something suitable for deployment. This makes code easy to test and fast to load.
-
 
 ##<a name="thebasics-inheritance" id="thebasics-inheritance">Inheritance & Mixins</a>
 
