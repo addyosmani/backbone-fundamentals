@@ -6,7 +6,7 @@
 {\pard \qc \f0 \sa180 \li0 \fi0  Addy Osmani\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \b \fs32 Prelude\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 Welcome to my (in-progress) book about the {\field{\*\fldinst{HYPERLINK "http://documentcloud.github.com/backbone/"}}{\fldrslt{\ul
+{\pard \ql \f0 \sa180 \li0 \fi0  Welcome to my (in-progress) book about the {\field{\*\fldinst{HYPERLINK "http://documentcloud.github.com/backbone/"}}{\fldrslt{\ul
 Backbone.js
 }}}
  framework for structuring JavaScript applications. It\u8217's released under a Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported {\field{\*\fldinst{HYPERLINK "http://creativecommons.org/licenses/by-nc-sa/3.0/"}}{\fldrslt{\ul
@@ -63,6 +63,10 @@ Views
 Collections
 }}}
 \par}
+{\pard \ql \f0 \sa0 \li720 \fi-360 \endash \tx360\tab {\field{\*\fldinst{HYPERLINK "#thebasics-events"}}{\fldrslt{\ul
+Events
+}}}
+\par}
 {\pard \ql \f0 \sa0 \li720 \fi-360 \endash \tx360\tab {\field{\*\fldinst{HYPERLINK "#thebasics-routers"}}{\fldrslt{\ul
 Routers
 }}}
@@ -71,7 +75,10 @@ Routers
 Namespacing
 }}}
 \sa180\par}
-{\pard \ql \f0 \sa180 \li360 \fi-360 \bullet \tx360\tab \b \fs24 Practical: Todos - Your First Application (coming soon)\par}
+{\pard \ql \f0 \sa180 \li360 \fi-360 \bullet \tx360\tab \b \fs24 {\field{\*\fldinst{HYPERLINK "#practicaltodos"}}{\fldrslt{\ul
+Practical: Todos - Your First Backbone.js App
+}}}
+ *\par}
 {\pard \ql \f0 \sa180 \li360 \fi-360 \bullet \tx360\tab \b \fs24 {\field{\*\fldinst{HYPERLINK "#backboneboilerplate"}}{\fldrslt{\ul
 Backbone Boilerplate & Grunt BBB
 }}}
@@ -183,18 +190,29 @@ Resources
 \sa180\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \b \fs32 Introduction\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 As JavaScript developers, we are at an interesting point in time where not only do we have mature solutions to help organize the JavaScript powering our applications based on a separation of concerns, but developers looking to build non-trivial projects are almost spoiled for choice for frameworks that can help structure their applications.\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 Maturity in software (framework) development isn\u8217't simply about how long a framework has been around. It\u8217's about how solid the framework is and more importantly how well it\u8217's evolved to fill its role. Has it become more effective at solving common problems? Does it continue to improve as developers build larger and more complex applications with it?\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 In this book, I will be covering the popular Backbone.js, which I consider the best of the current family of JavaScript architectural frameworks.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Maturity in software (framework) development isn\u8217't simply about how long a framework has been around. It\u8217's about how solid the framework is and more importantly how well it\u8217's evolved to fill its role. Has it become more effective at solving common problems? Does it continue to improve as developers build larger and more complex applications with it?\line In this book, I will be covering the Backbone.js MVC library, which I consider the best of the current family of JavaScript architectural solutions for helping better structure your code.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 Topics will include MVC theory and how to build applications using Backbone\u8217's models, views, collections and routers. I\u8217'll also be taking you through advanced topics like modular development with Backbone.js and AMD (via Require.js), how to build applications using modern software stacks (like Node and Express), how to solve the routing problems with Backbone and jQuery Mobile, tips about scaffolding tools, and a lot more.\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 If this is your first time looking at Backbone.js and you\u8217're still unsure whether or not to give it a try, why not take a look at how {\field{\*\fldinst{HYPERLINK "http://github.com/addyosmani/todomvc"}}{\fldrslt{\ul
-a Todo application
-}}}
- can be implemented in Backbone and several other popular Javascript frameworks before reading further?\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs28 What is Backbone?\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Backbone.js is one of a number of JavaScript frameworks for creating MVC-like web applications. On the front-end, it\u8217's my architectural framework of choice as it\u8217's both mature, relatively lightweight and can be easily tested using third-party toolkits such as Jasmine or QUnit. Other MVC frameworks you may be familiar with include Ember.js, Spine, YUILibrary and JavaScriptMVC.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Backbone is maintained by a number of contributors, most notably: Jeremy Ashkenas, creator of CoffeeScript, Docco and Underscore.js. As Jeremy is a believer in detailed documentation, there\u8217's a level of comfort in knowing you\u8217're unlikely to run into issues which are either not explained in the official docs or which can\u8217't be nailed down with some assistance from the #documentcloud IRC channel. I strongly recommend using the latter if you find yourself getting stuck.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs28 Why should you consider using it?\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Backbone\u8217's main benefits, regardless of your target platform or device, include helping:\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Organize the structure to your application\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Simplify server-side persistence\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Decouple the DOM from your page\u8217's data\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Model data, views and routers in a succinct manner\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Provide DOM, model and collection synchronization\sa180\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs28 Is Backbone right for you?\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Does the following describe you?:\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 "I want something flexible which offers a minimalist solution to separating concerns in my application. It should support a persistence layer and RESTful sync, models, views (with controllers), event-driven communication, templating and routing. It should be imperative, allowing one to update the View when a model changes. I\u8217'd like some decisions about the architecture left up to me. Ideally, many large companies have used the solution to build non-trivial applications.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 As I may be building something complex, I\u8217'd like there to be an active extension community around the framework that have already tried addressing larger problems (Marionette, Chaplin, Aura, Thorax). Ideally, there are also scaffolding tools (grunt-bbb, brunch) available for the solution."\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 If so, continue reading.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 The goal of this book is to create an authoritative and centralized repository of information that can help those developing real-world apps with Backbone. If you come across a section or topic which you think could be improved or expanded on, please feel free to submit a pull-request. It won\u8217't take long and you\u8217'll be helping other developers avoid problems you\u8217've run into before.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \b \fs32 Fundamentals\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 In this section we are going to cover the context into which a framework like Backbone.js fits. Let\u8217's begin our journey into understanding Backbone better with a look at code architecture.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 In this section, we\u8217're going to explore how frameworks like Backbone.js fit in the world of JavaScript application architecture. Clasically, developers creating desktop and server-class applications have had a wealth of design patterns available for them to lean on, but it\u8217's only been in the past few years that such patterns have come to client-side development.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Before exploring any JavaScript frameworks that assist in structuring applications, it can be useful to gain a basic understanding of architectural design patterns.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \b \fs28 MVC, MVP & Backbone.js\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 Before exploring any JavaScript frameworks that assist in structuring applications, it can be useful to gain a basic understanding of architectural design patterns. Design patterns are proven solutions to common development problems and can suggest structural approaches to help guide developers in adding some organization to their applications.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Design patterns are proven solutions to common development problems and can suggest structural approaches to help guide developers in adding some organization to their applications.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 Patterns are useful because they\u8217're a set of practices that build upon the collective experience of skilled developers who have repeatedly solved similar problems. Although developers 10 or 20 years ago may not have been using the same programming languages when implementing patterns in their projects, there are many lessons we can learn from their efforts.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 In this section, we\u8217're going to review two popular patterns - MVC and MVP. We\u8217'll be exploring in greater detail how Backbone.js implements these patterns shortly to better appreciate where it fits in.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \b \fs32 MVC\par}
@@ -502,29 +520,13 @@ this
  which can help\line \par}
 {\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Clear and flexible conventions for structuring applications. Backbone doesn\u8217't force usage of all of its components and can work with only those needed.\sa180\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \b \fs32 ##The Internals\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs28 What is Backbone?\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 As a short reminder, Backbone.js is one of a number of JavaScript frameworks for creating MVC-like web applications. On the front-end, it\u8217's my architectural framework of choice as it\u8217's both mature, relatively lightweight and can be easily tested using third-party toolkits such as Jasmine or QUnit. Other MVC frameworks you may be familiar with include Ember.js (SproutCore 2.0), Spine, YUILibrary and JavaScriptMVC.\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 Backbone is maintained by a number of contributors, most notably: Jeremy Ashkenas, creator of CoffeeScript, Docco and Underscore.js. As Jeremy is a believer in detailed documentation, there\u8217's a level of comfort in knowing you\u8217're unlikely to run into issues which are either not explained in the official docs or which can\u8217't be nailed down with some assistance from the #documentcloud IRC channel. I strongly recommend using the latter if you find yourself getting stuck.\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs28 Why should you consider using it?\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 Backbone\u8217's main benefits, regardless of your target platform or device, include helping:\par}
-{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Organize the structure to your application\par}
-{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Simplify server-side persistence\par}
-{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Decouple the DOM from your page\u8217's data\par}
-{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Model data, views and routers in a succinct manner\par}
-{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Provide DOM, model and collection synchronization\sa180\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs32 Is Backbone right for you?\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 Does the following describe you?:\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 "I want something flexible which offers a minimalist solution to separating concerns in my application. It should support a persistence layer and RESTful sync, models, views (with controllers), event-driven communication, templating and routing. It should be imperative, allowing one to update the View when a model changes. I\u8217'd like some decisions about the architecture left up to me. Ideally, many large companies have used the solution to build non-trivial applications.\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 As I may be building something complex, I\u8217'd like there to be an active extension community around the framework that have already tried addressing larger problems (Marionette, Chaplin, Aura, Thorax). Ideally, there are also scaffolding tools (grunt-bbb, brunch) available for the solution."\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 If so, continue reading.\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs32 The Basics\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 In this section, you\u8217'll learn the essentials of Backbone\u8217's models, views, collections and routers, as well as about using namespacing to organize your code. This isn\u8217't meant as a replacement for the official documentation, but it will help you understand many of the core concepts behind Backbone before you start building applications with it.\par}
 {\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Models\par}
 {\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Collections\par}
 {\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Routers\par}
 {\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Views\par}
 {\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Namespacing\sa180\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs28 Models\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs32 Models\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 Backbone models contain interactive data for an application as well as the logic around this data. For example, we can use a model to represent the concept of a photo object including its attributes like tags, titles and a location.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 Models can be created by extending {\f1 Backbone.Model} as follows:\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \f1 var Photo = Backbone.Model.extend(\{\line
@@ -671,7 +673,7 @@ myPhoto.set(\{ title: "On the beach" \});\line
 here
 }}}
 .\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs28 Views\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs32 Views\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 Views in Backbone don\u8217't contain the markup for your application, but rather they are there to support models by defining the logic for how they should be represented to the user. This is usually achieved using JavaScript templating (e.g.\u160?Mustache, jQuery-tmpl, etc.). A view\u8217's {\f1 render()} function can be bound to a model\u8217's {\f1 change()} event, allowing the view to always be up to date without requiring a full page refresh.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \b \fs24 Creating new views\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 Similar to the previous sections, creating a new view is relatively straight-forward. To create a new View, simply extend {\f1 Backbone.View}. I\u8217'll explain this code in detail below:\par}
@@ -716,7 +718,7 @@ id: 'header', // optional\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 {\b The {\f1 events} attribute}\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 The Backbone {\f1 events} attribute allows us to attach event listeners to either custom selectors, or directly to {\f1 el} if no selector is provided. An event takes the form {\f1 \{"eventName selector": "callbackFunction"\}} and a number of DOM event-types are supported, including {\f1 click}, {\f1 submit}, {\f1 mouseover}, {\f1 dblclick} and more.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 What isn\u8217't instantly obvious is that under the bonnet, Backbone uses jQuery\u8217's {\f1 .delegate()} to provide instant support for event delegation but goes a little further, extending it so that {\f1 this} always refers to the current view object. The only thing to really keep in mind is that any string callback supplied to the events attribute must have a corresponding function with the same name within the scope of your view.\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs28 Collections\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs32 Collections\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 Collections are sets of Models and are created by extending {\f1 Backbone.Collection}.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 Normally, when creating a collection you\u8217'll also want to pass through a property specifying the model that your collection will contain, as well as any instance properties required.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 In the following example, we create a PhotoCollection that will contain our Photo models:\par}
@@ -779,7 +781,11 @@ Backbone.sync = function(method, model) \{\line
 \};\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 {\b Resetting/Refreshing Collections}\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 Rather than adding or removing models individually, you might occasionally wish to update an entire collection at once. {\f1 Collection.reset()} allows us to replace an entire collection with new models as follows:\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 {\f1 javascript PhotoCollection.reset([   \{title: "My trip to Scotland", src: "scotland-trip.jpg"\},   \{title: "The flight from Scotland", src: "long-flight.jpg"\},   \{title: "Latest snap of Loch Ness", src: "lochness.jpg"\}]);} Note that using {\f1 Collection.reset()} doesn\u8217't fire any {\f1 add} or {\f1 remove} events. A {\f1 reset} event is fired instead.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 PhotoCollection.reset([\line
+  \{title: "My trip to Scotland", src: "scotland-trip.jpg"\},\line
+  \{title: "The flight from Scotland", src: "long-flight.jpg"\},\line
+  \{title: "Latest snap of Loch Ness", src: "lochness.jpg"\}]);\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Note that using {\f1 Collection.reset()} doesn\u8217't fire any {\f1 add} or {\f1 remove} events. A {\f1 reset} event is fired instead.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \b \fs28 Underscore utility functions\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 As Backbone requires Underscore as a hard dependency, we\u8217're able to use many of the utilities it has to offer to aid with our application development. Here\u8217's an example of how Underscore\u8217's {\f1 sortBy()} method can be used to sort a collection of photos based on a particular attribute.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \f1 var sortedByAlphabet = PhotoCollection.sortBy(function (photo) \{\line
@@ -789,7 +795,42 @@ Backbone.sync = function(method, model) \{\line
 docs
 }}}
 .\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs28 Routers\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs32 Events\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\f1 Backbone.Events} has the ability to give any object a way to bind and trigger custom events. We can mix this module into any object easily and there isn\u8217't a requirement for events to be declared prior to them being bound.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 var ourObject = \{\};\line
+\line
+// Mixin\line
+_.extend(ourObject, Backbone.Events);\line
+\line
+// Add a custom event\line
+ourObject.on("dance", function(msg)\{\line
+  console.log("We triggered" + msg);\line
+\});\line
+\line
+// Trigger the custom event\line
+ourObject.trigger("dance", "our event");\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 If you\u8217're familiar with jQuery custom events or the concept of Publish/Subscribe, {\f1 Backbone.Events} provides a system that is very similar with {\f1 on} being analogous to {\f1 subscribe} and {\f1 trigger} being similar to {\f1 publish}.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\f1 on} basically allows us to bind a callback function to any object, as we\u8217've done with {\f1 dance} in the above example. Whenever the event is fired, our callback is invoked.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 The official Backbone.js documentation recommends namespacing event names using colors if you end up using quite a few of these on your page. e.g:\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 ourObject.on("dance:tap", ...);\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 A special {\f1 all} event is made available in case you would like an event to be triggered when any event occurs (e.g if you would like to screen events in a single location). The {\f1 all} event can be used as follows:\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 ourObject.on("all", function(eventName)\{\line
+  console.log("The name of the event passed was " + eventName);\line
+\});\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\f1 off} allows us to remove a callback function that has previously been bound from an object. Going back to our Publish/Subscribe comparison, think of it as an {\f1 unsubscribe} for custom events.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 To remove the {\f1 dance} event we previously bound to {\f1 myObject}, we would simply do:\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 myObject.off("dance");\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 This will remove all callbacks for the {\f1 dance} event. If we wish to remove just a callback by a specific name, we can do:\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 myObject.off("dance", callbackName);\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Finally, {\f1 trigger} triggers a callback for a specified event (or a space-separated listof events). e.g:\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 // Single event\line
+myObject.trigger("dance");\line
+\line
+// Multiple events\line
+myObject.trigger("dance jump skip");\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 It is also possible to pass along additional arguments to each (or all) of these events via a second argument supported by {\f1 trigger}. e.g:\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 myObject.trigger("dance", \{duration: "5 minutes"\});\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs32 Routers\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 In Backbone, routers are used to help manage application state and for connecting URLs to application events. This is achieved using hash-tags with URL fragments, or using the browser\u8217's pushState and History API. Some examples of routes may be seen below:\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \f1 http://unicorns.com/#whatsup\line
 http://unicorns.com/#search/seasonal-horns/page2\par}
@@ -1024,7 +1065,7 @@ if (typeof exports !== 'undefined') \{\line
 {\pard \ql \f0 \sa180 \li0 \fi0 \b \fs24 Testing Backbone\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 So far we\u8217've been reviewing Backbone\u8217's code to demystify the framework as a whole. However, it\u8217's worth noting that other technologies work very well with Backbone and Underscore. Require.js and AMD modules can be a great way to break up projects.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 However, one area that Backbone doesn\u8217't address is testing. This is unfortunate, because testing Backbone projects definitely isn\u8217't obvious. Later in the book we\u8217'll look at testing in more detail.\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs28 Namespacing\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs32 Namespacing\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 When learning how to use Backbone, an important and commonly overlooked area by tutorials is namespacing. If you already have experience with namespacing in JavaScript, the following section will provide some advice on how to specifically apply concepts you know to Backbone, however I will also be covering explanations for beginners to ensure everyone is on the same page.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \b \fs24 What is namespacing?\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 The basic idea around namespacing is to avoid collisions with other objects or variables in the global namespace. They\u8217're important as it\u8217's best to safeguard your code from breaking in the event of another script on the page using the same variable names as you are. As a good \u8216'citizen\u8217' of the global namespace, it\u8217's also imperative that you do your best to similarly not prevent other developer\u8217's scripts executing due to the same issues.\par}
@@ -1133,6 +1174,625 @@ galleryApp.model.special.Admin = Backbone.Model.extend(\{\});\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 {\b Recommendation}\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 Reviewing the namespace patterns above, the option that I prefer when writing Backbone applications is nested object namespacing with the object literal pattern.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 Single global variables may work fine for applications that are relatively trivial. However, larger codebases requiring both namespaces and deep sub-namespaces require a succinct solution that\u8217's both readable and scalable. I feel this pattern achieves both of these objectives and is a good choice for most Backbone development.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs36 Practical: Todos - Your First Backbone.js App\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Building a Todo List application is a great way to learn about Backbone, and Backbone\u8217's conventions. It\u8217's a simple enough app, but contains enough interesting problems to be useful, such as binding, persisting model data, routing and template rendering.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 For this chapter, we\u8217're going to learn how to create the Backbone.js Todo app listed on {\field{\*\fldinst{HYPERLINK "http://todomvc.com"}}{\fldrslt{\ul
+TodoMVC.com
+}}}
+.\par}
+{\pard \ql \f0 \sa0 \li0 \fi0 \par}
+{\pard \ql \f0 \sa180 \li0 \fi0 So let\u8217's think about what we need from a high level architectural standpoint.\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab A Todo model to describe individual todo items\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab A TodoList collection to store and persist todos\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab A way of creating todos\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Listing todos\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Editing existing todos\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Completing todos\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Deleting todos\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab A way to bookmark the items that have been completed or are remaining\sa180\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Basically your classic {\field{\*\fldinst{HYPERLINK "http://en.wikipedia.org/wiki/Create,_read,_update_and_delete"}}{\fldrslt{\ul
+CRUD
+}}}
+ methods. Let\u8217's get started!\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs32 Index\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 The first step is to setup the basic application dependencies, which in this case will be: {\field{\*\fldinst{HYPERLINK "http://jquery.com"}}{\fldrslt{\ul
+jQuery
+}}}
+, {\field{\*\fldinst{HYPERLINK "http://underscorejs.org"}}{\fldrslt{\ul
+Underscore
+}}}
+, Backbone.js and the {\field{\*\fldinst{HYPERLINK "https://github.com/jeromegn/Backbone.localStorage"}}{\fldrslt{\ul
+Backbone LocalStorage adapter
+}}}
+. These will be loaded in our main (and only) HTML file, index.html:\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 \line
+<!doctype html>\line
+<html lang="en">\line
+<head>\line
+  <meta charset="utf-8">\line
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">\line
+  <title>Backbone.js \u8226? TodoMVC</title>\line
+  <link rel="stylesheet" href="../../assets/base.css">\line
+  <!--[if IE]>\line
+  <script src="../../assets/ie.js"></script>\line
+  <![endif]-->\line
+</head>\line
+<body>\line
+  <script src="../../assets/base.js"></script>\line
+  <script src="../../assets/jquery.min.js"></script>\line
+  <script src="js/lib/underscore-min.js"></script>\line
+  <script src="js/lib/backbone-min.js"></script>\line
+  <script src="js/lib/backbone-localstorage.js"></script>\line
+  <script src="js/models/todo.js"></script>\line
+  <script src="js/collections/todos.js"></script>\line
+  <script src="js/views/todos.js"></script>\line
+  <script src="js/views/app.js"></script>\line
+  <script src="js/routers/router.js"></script>\line
+  <script src="js/app.js"></script>\line
+</body>\line
+</html>\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 To help demonstrate how the various parts of our application can be split up, individual concerns are cleanly organized into folders representing our models, views, collections and routers. An app.js file is used to kick everything off.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs32 Application HTML\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Now let\u8217's take a look at our application\u8217's static HTML. We\u8217're going to need an {\f1 <input>} for creating new todos a {\f1 <ul id="todo-list" />} for listing the actual todos, and a section containing some operations, such as clearing completed todos.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1   <section id="todoapp">\line
+    <header id="header">\line
+      <h1>todos</h1>\line
+      <input id="new-todo" placeholder="What needs to be done?" autofocus>\line
+    </header>\line
+    <section id="main">\line
+      <input id="toggle-all" type="checkbox">\line
+      <label for="toggle-all">Mark all as complete</label>\line
+      <ul id="todo-list"></ul>\line
+    </section>\line
+    <footer id="footer"></footer>\line
+  </section>\line
+  <div id="info">\line
+    <p>Double-click to edit a todo</p>\line
+    <p>Written by <a href="https://github.com/addyosmani">Addy Osmani</a></p>\line
+    <p>Part of <a href="http://todomvc.com">TodoMVC</a></p>\line
+  </div>\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 We\u8217'll be populating our todo-list and adding a statistics section with details about what items are left to be completed later on.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 So far so good. Now in order to tie this into our Backbone Todo app, we\u8217're going to have to go back to the fundamentals - a Todo model.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs32 Todo model\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 The Todo model is remarkably straightforward. Firstly a todo has two attributes, a {\f1 title} and a {\f1 completed} status that indicates whether it\u8217's been completed. These attributes are passed as defaults, as you can see in the example below:\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 \line
+var app = app || \{\};\line
+\line
+  // Todo Model\line
+  // ----------\line
+  // Our basic **Todo** model has `title`, `order`, and `completed` attributes.\line
+\line
+  app.Todo = Backbone.Model.extend(\{\line
+\line
+    // Default attributes for the todo\line
+    // and ensure that each todo created has `title` and `completed` keys.\line
+    defaults: \{\line
+      title: '',\line
+      completed: false\line
+    \},\line
+\line
+    // Toggle the `completed` state of this todo item.\line
+    toggle: function() \{\line
+      this.save(\{\line
+        completed: !this.get('completed')\line
+      \});\line
+    \}\line
+\line
+  \});\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 We also have a {\f1 toggle()} function which allows to set whether a Todo item has been completed.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs32 Todo collection\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Next we have our Todo collection used to group our models. The collection is being extended by localStorage which automatically persists Todo records to HTML5 Local Storage via the Backbone LocalStorage adapter, so they\u8217're saved between page requests.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 We\u8217've then got some static methods, {\f1 completed()} and {\f1 remaining()}, which return an array of unfinished and finished todos respectively.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Finally we have a {\f1 nextOrder()} function, that keeps our Todo items in sequential order as well as a {\f1 comparator()} used to sort items by their insertion order.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 \line
+  // Todo Collection\line
+  // ---------------\line
+\line
+  // The collection of todos is backed by *localStorage* instead of a remote\line
+  // server.\line
+  var TodoList = Backbone.Collection.extend(\{\line
+\line
+    // Reference to this collection's model.\line
+    model: app.Todo,\line
+\line
+    // Save all of the todo items under the `"todos"` namespace.\line
+    localStorage: new Store('todos-backbone'),\line
+\line
+    // Filter down the list of all todo items that are finished.\line
+    completed: function() \{\line
+      return this.filter(function( todo ) \{\line
+        return todo.get('completed');\line
+      \});\line
+    \},\line
+\line
+    // Filter down the list to only todo items that are still not finished.\line
+    remaining: function() \{\line
+      return this.without.apply( this, this.completed() );\line
+    \},\line
+\line
+    // We keep the Todos in sequential order, despite being saved by unordered\line
+    // GUID in the database. This generates the next order number for new items.\line
+    nextOrder: function() \{\line
+      if ( !this.length ) \{\line
+        return 1;\line
+      \}\line
+      return this.last().get('order') + 1;\line
+    \},\line
+\line
+    // Todos are sorted by their original insertion order.\line
+    comparator: function( todo ) \{\line
+      return todo.get('order');\line
+    \}\line
+  \});\line
+\line
+  // Create our global collection of **Todos**.\line
+  app.Todos = new TodoList();\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs32 Application View\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 So let\u8217's look at the core of the application\u8217's logic, the views. Since each todo has a fair bit of logic associated with it, such as edit in place, we\u8217're going to use the element controller pattern - a pattern which consists of two views, one that controls a collection of items, and the other deals with each individual item.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 In other words, we\u8217're going to have one view {\f1 AppView}, which will be in charge creating new todos, and rendering the initial todo list. Then we\u8217'll have another view called TodoView instances of which will be associated with an individual Todo record. Todo instances will be in charge of editing, updating and destroying their associated todo.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 To keep thing simple, we\u8217'll keep things \u8216'read-only\u8217' at the moment, and won\u8217't provide any functionality for creating, editing or deleting todos:\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 \line
+  // The Application\line
+  // ---------------\line
+\line
+  // Our overall **AppView** is the top-level piece of UI.\line
+  app.AppView = Backbone.View.extend(\{\line
+\line
+    // Instead of generating a new element, bind to the existing skeleton of\line
+    // the App already present in the HTML.\line
+    el: '#todoapp',\line
+\line
+    // Our template for the line of statistics at the bottom of the app.\line
+    statsTemplate: _.template( $('#stats-template').html() ),\line
+\line
+    // At initialization we bind to the relevant events on the `Todos`\line
+    // collection, when items are added or changed. Kick things off by\line
+    // loading any preexisting todos that might be saved in *localStorage*.\line
+    initialize: function() \{\line
+      this.input = this.$('#new-todo');\line
+      this.allCheckbox = this.$('#toggle-all')[0];\line
+      this.$footer = this.$('#footer');\line
+      this.$main = this.$('#main');\line
+\line
+      window.app.Todos.on( 'add', this.addAll, this );\line
+      window.app.Todos.on( 'reset', this.addAll, this );\line
+      window.app.Todos.on( 'all', this.render, this );\line
+\line
+      app.Todos.fetch();\line
+    \},\line
+\line
+    // Re-rendering the App just means refreshing the statistics -- the rest\line
+    // of the app doesn't change.\line
+    render: function() \{\line
+      var completed = app.Todos.completed().length;\line
+      var remaining = app.Todos.remaining().length;\line
+\line
+      if ( app.Todos.length ) \{\line
+        this.$main.show();\line
+        this.$footer.show();\line
+\line
+        this.$footer.html(this.statsTemplate(\{\line
+          completed: completed,\line
+          remaining: remaining\line
+        \}));\line
+\line
+      \} else \{\line
+        this.$main.hide();\line
+        this.$footer.hide();\line
+      \}\line
+\line
+      this.allCheckbox.checked = !remaining;\line
+    \},\line
+\line
+    // Add a single todo item to the list by creating a view for it, and\line
+    // appending its element to the `<ul>`.\line
+    addOne: function( todo ) \{\line
+      var view = new app.TodoView(\{ model: todo \});\line
+      $('#todo-list').append( view.render().el );\line
+    \},\line
+\line
+    // Add all items in the **Todos** collection at once.\line
+    addAll: function() \{\line
+      this.$('#todo-list').html('');\line
+      app.Todos.each(this.addOne, this);\line
+    \}\line
+\line
+  \});\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 You can see we\u8217've got a couple of things going on, an el (element), a {\f1 statsTemplate}, a constructor function and several view specific methods. On the left of the el: key is a DOM element selector for the element with ID {\f1 todoapp}. The value of this is just a string and Backbone will create a reference pointing to any element matching the selector #todoapp, where here it will be the {\f1 <section id=\u8221"todoapp />} element, defined in the HTML section earlier.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 In a nutshell this means we can now refer to this.el in our controller, which points to the {\f1 <section class="todoapp" />} element. As you can see, we\u8217're referring to el in the {\f1 addOne()} function, appending an element to the list.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Now let\u8217's take a look at the constructor function. It\u8217's binding to several events on the Todo model, such as add, reset and all. Since we\u8217're delegating handling of updates and deletes to the TodoView view, we don\u8217't need to to worry about that here. The two pieces of logic are:\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 When a new todo is created, the add event will be fired, calling {\f1 addOne()} which instantiates the {\f1 TodoView} view, rendering it and appending the resultant element to our todo list\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 When a reset event is called (i.e.\u160?the todos have been loaded from Local Storage), {\f1 addAll()} will be called. This function iterates over all the todos, passing them to {\f1 addOne()}.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 We can then add in the logic for creating new todos, editing them and filtering them based on whether they are complete.\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab events: We define an events hash containing declarative callbacks for our DOM events.\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\f1 createOnEnter()}: When a user hits return inside the {\f1 <input/>} field, this creates a new Todo item and resets the main {\f1 <input/>} field value to prepare it for the next entry.\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\f1 clearCompleted()}: Removes the items in the todo list that have been marked as completed\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\f1 toggleAllComplete()}: Allows a user to set all of the items in the todo list to completed.\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\f1 initialize()}: We bind a callback for a change:completed event, letting us know a change has been made as well to an existing todo item We also bind a callback for a filter event, which works a little similar to addOne() and addAll(). It\u8217's responsibility is to toggle what todo items are visible based on the filter currently selected in the UI (all, completed or remaining) through filterOne() and filterAll().\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\f1 render()}: We add some conditional CSS styling based on the filter currently selected so that the route that has been selected is highlighted\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\f1 createOnEnter()}: Creates a new Todo model which persists in localStorage when a user hits return. This creates the model via newAttributes(), which is an object literal composed of the title, order and completed state of the new item being added.\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\f1 clearCompleted()}: Clears all the todo items that have been marked as complete\sa180\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 \line
+// The Application\line
+  // ---------------\line
+\line
+  // Our overall **AppView** is the top-level piece of UI.\line
+  app.AppView = Backbone.View.extend(\{\line
+\line
+    // Instead of generating a new element, bind to the existing skeleton of\line
+    // the App already present in the HTML.\line
+    el: '#todoapp',\line
+\line
+    // Our template for the line of statistics at the bottom of the app.\line
+    statsTemplate: _.template( $('#stats-template').html() ),\line
+\line
+    // Delegated events for creating new items, and clearing completed ones.\line
+    events: \{\line
+      'keypress #new-todo': 'createOnEnter',\line
+      'click #clear-completed': 'clearCompleted',\line
+      'click #toggle-all': 'toggleAllComplete'\line
+    \},\line
+\line
+    // At initialization we bind to the relevant events on the `Todos`\line
+    // collection, when items are added or changed. Kick things off by\line
+    // loading any preexisting todos that might be saved in *localStorage*.\line
+    initialize: function() \{\line
+      this.input = this.$('#new-todo');\line
+      this.allCheckbox = this.$('#toggle-all')[0];\line
+      this.$footer = this.$('#footer');\line
+      this.$main = this.$('#main');\line
+\line
+      window.app.Todos.on( 'add', this.addAll, this );\line
+      window.app.Todos.on( 'reset', this.addAll, this );\line
+      window.app.Todos.on('change:completed', this.filterOne, this);\line
+      window.app.Todos.on("filter", this.filterAll, this);\line
+\line
+      window.app.Todos.on( 'all', this.render, this );\line
+\line
+      app.Todos.fetch();\line
+    \},\line
+\line
+    // Re-rendering the App just means refreshing the statistics -- the rest\line
+    // of the app doesn't change.\line
+    render: function() \{\line
+      var completed = app.Todos.completed().length;\line
+      var remaining = app.Todos.remaining().length;\line
+\line
+      if ( app.Todos.length ) \{\line
+        this.$main.show();\line
+        this.$footer.show();\line
+\line
+        this.$footer.html(this.statsTemplate(\{\line
+          completed: completed,\line
+          remaining: remaining\line
+        \}));\line
+\line
+        this.$('#filters li a')\line
+          .removeClass('selected')\line
+          .filter('[href="#/' + ( app.TodoFilter || '' ) + '"]')\line
+          .addClass('selected');\line
+      \} else \{\line
+        this.$main.hide();\line
+        this.$footer.hide();\line
+      \}\line
+\line
+      this.allCheckbox.checked = !remaining;\line
+    \},\line
+\line
+    // Add a single todo item to the list by creating a view for it, and\line
+    // appending its element to the `<ul>`.\line
+    addOne: function( todo ) \{\line
+      var view = new app.TodoView(\{ model: todo \});\line
+      $('#todo-list').append( view.render().el );\line
+    \},\line
+\line
+    // Add all items in the **Todos** collection at once.\line
+    addAll: function() \{\line
+      this.$('#todo-list').html('');\line
+      app.Todos.each(this.addOne, this);\line
+    \},\line
+\line
+    filterOne : function (todo) \{\line
+      todo.trigger("visible");\line
+    \},\line
+\line
+    filterAll : function () \{\line
+      app.Todos.each(this.filterOne, this);\line
+    \},\line
+\line
+    // Generate the attributes for a new Todo item.\line
+    newAttributes: function() \{\line
+      return \{\line
+        title: this.input.val().trim(),\line
+        order: app.Todos.nextOrder(),\line
+        completed: false\line
+      \};\line
+    \},\line
+\line
+    // If you hit return in the main input field, create new **Todo** model,\line
+    // persisting it to *localStorage*.\line
+    createOnEnter: function( e ) \{\line
+      if ( e.which !== ENTER_KEY || !this.input.val().trim() ) \{\line
+        return;\line
+      \}\line
+\line
+      app.Todos.create( this.newAttributes() );\line
+      this.input.val('');\line
+    \},\line
+\line
+    // Clear all completed todo items, destroying their models.\line
+    clearCompleted: function() \{\line
+      _.each( window.app.Todos.completed(), function( todo ) \{\line
+        todo.destroy();\line
+      \});\line
+\line
+      return false;\line
+    \},\line
+\line
+    toggleAllComplete: function() \{\line
+      var completed = this.allCheckbox.checked;\line
+\line
+      app.Todos.each(function( todo ) \{\line
+        todo.save(\{\line
+          'completed': completed\line
+        \});\line
+      \});\line
+    \}\line
+  \});\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs32 Setup\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 So now we have two views: {\f1 AppView} and {\f1 TodoView}. The former needs to get instantiated when the page loads, so some code actually gets run. You can do this simply enough, by using jQuery\u8217's {\f1 ready()} utility, which will execute a function when the DOM\u8217's loaded.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 \line
+var app = app || \{\};\line
+var ENTER_KEY = 13;\line
+\line
+$(function() \{\line
+\line
+  // Kick things off by creating the **App**.\line
+  new app.AppView();\line
+\line
+\});\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs32 Creating new todos\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 It\u8217's all very good creating todos from the console, but we can hardly expect our users to do that. Let\u8217's hook up the todo creation section to provide a better interface. All the HTML is already there (in index.html); all we have to do is add some event listeners to that section, creating some todos.\par}
+{\pard \ql \f0 \sa0 \li0 \fi0 \par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Let\u8217's look at the {\f1 TodoView} view. This will be in charge of individual Todo records, making sure the view updates then the todo does.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 \line
+  // Todo Item View\line
+  // --------------\line
+\line
+  // The DOM element for a todo item...\line
+  app.TodoView = Backbone.View.extend(\{\line
+\line
+    //... is a list tag.\line
+    tagName:  'li',\line
+\line
+    // Cache the template function for a single item.\line
+    template: _.template( $('#item-template').html() ),\line
+\line
+    // The DOM events specific to an item.\line
+    events: \{\line
+      'dblclick label': 'edit',\line
+      'keypress .edit': 'updateOnEnter',\line
+      'blur .edit':   'close'\line
+    \},\line
+\line
+    // The TodoView listens for changes to its model, re-rendering. Since there's\line
+    // a one-to-one correspondence between a **Todo** and a **TodoView** in this\line
+    // app, we set a direct reference on the model for convenience.\line
+    initialize: function() \{\line
+      this.model.on( 'change', this.render, this );\line
+    \},\line
+\line
+    // Re-render the titles of the todo item.\line
+    render: function() \{\line
+      this.$el.html( this.template( this.model.toJSON() ) );\line
+      this.input = this.$('.edit');\line
+      return this;\line
+    \},\line
+\line
+    // Switch this view into `"editing"` mode, displaying the input field.\line
+    edit: function() \{\line
+      this.$el.addClass('editing');\line
+      this.input.focus();\line
+    \},\line
+\line
+    // Close the `"editing"` mode, saving changes to the todo.\line
+    close: function() \{\line
+      var value = this.input.val().trim();\line
+\line
+      if ( value ) \{\line
+        this.model.save(\{ title: value \});\line
+      \} \line
+\line
+      this.$el.removeClass('editing');\line
+    \},\line
+\line
+    // If you hit `enter`, we're through editing the item.\line
+    updateOnEnter: function( e ) \{\line
+      if ( e.which === ENTER_KEY ) \{\line
+        this.close();\line
+      \}\line
+    \}\line
+  \});\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 In the {\f1 initialize()} constructor, we\u8217're setting up a listener to the todo model\u8217's change event. In other words, when the todo updates, we want to re-render the view to reflect its changes.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 In the {\f1 render()} method, we\u8217're rendering an Underscore.js JavaScript template, called {\f1 #item-template}, which we\u8217've previously compiled into this.template using Underscore\u8217's {\f1 _.template()} method. This returns a piece of HTML that we\u8217're using to replace the view\u8217's current element. In other words, the rendered template is now present under {\f1 this.el}, and can be appended to the todo list.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Our events hash includes three callbacks:\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\f1 edit()}: Changes the current view into editing mode when a user double-clicks on an existing item in the todo list. This allows them to change the existing value of the item\u8217's title attribute\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\f1 updateOnEnter()}: checks that the user has hit the return/enter key and executes the close() function.\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\f1 close()}: This trims the value of the current text in our {\f1 <input/>} field, ensuring that we don\u8217't process it further if it contains no text (e.g \u8216'\u8217'). If a valid value has been provided, we save the changes to the current todo model and close editing mode, by removing the corresponding CSS class.\sa180\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs32 In action\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Now we\u8217've gone far enough without checking that things work as they should. Open up index.html and, if everything\u8217's going to plan, you shouldn\u8217't see any errors in the console. The todo list will be blank (we haven\u8217't created any todos yet), and the todo-list won\u8217't work, as we haven\u8217't yet hooked it up. However, we can create a Todo from the console.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Type in: {\f1 window.app.Todos.create(\{ title: \u8216'My first Todo item\});} and hit return.\par}
+{\pard \ql \f0 \sa0 \li0 \fi0 \par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Once you\u8217've run the above in the console, we should be looking at a brand new todo in the list of todos. Notice that if you refresh the page, the todo still persists using Local Storage.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs32 Templates\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 The {\f1 #item-template} used in the {\f1 TodoView} view needs defining, so let\u8217's do that. One way of including templates in the page is by using custom script tags. These don\u8217't get evaluated by the browser, which just interprets them as plain text. Underscore micro-templating can then access the templates, rendering pieces of HTML.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1   <script type="text/template" id="item-template">\line
+    <div class="view">\line
+      <input class="toggle" type="checkbox" <%= completed ? 'checked' : '' %>>\line
+      <label><%- title %></label>\line
+      <button class="destroy"></button>\line
+    </div>\line
+    <input class="edit" value="<%- title %>">\line
+  </script>\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 The template tags demonstrated above, such as {\f1 <%=} , are specific to Underscore.js, and documented on the Underscore site. In your own applications, you have a choice of template libraries, such as Mustache or Handlebars. Use whichever you prefer, Backbone doesn\u8217't mind.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Now when {\f1 _.template( $('#item-template').html() )} is called in the {\f1 TodoView} view our template will render correctly.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 We also need to define #stats-template template we use to display how many items have been completed, as well as allowing the user to clear these items.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1   <script type="text/template" id="stats-template">\line
+    <span id="todo-count"><strong><%= remaining %></strong> <%= remaining === 1 ? 'item' : 'items' %> left</span>\line
+    <ul id="filters">\line
+      <li>\line
+        <a class="selected" href="#/">All</a>\line
+      </li>\line
+      <li>\line
+        <a href="#/active">Active</a>\line
+      </li>\line
+      <li>\line
+        <a href="#/completed">Completed</a>\line
+      </li>\line
+    </ul>\line
+    <% if (completed) \{ %>\line
+    <button id="clear-completed">Clear completed (<%= completed %>)</button>\line
+    <% \} %>\line
+  </script>\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs32 In action\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Now refresh index.html to see the fruits of our labour. We should be able to type a todo name, and press return to submit the form, creating a new todo.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\cf1 [image: img/todocompleted.png]\cf0}\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Excellent, we\u8217're making great progress, but how about completing and deleting todos?\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs32 Completing & deleting todos\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 So the next part of our tutorial is going to cover completing and deleting todos. These two actions are specific to each Todo item, so we need to add this functionality to the TodoView view.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 The key part of this is the two event handlers we\u8217've added, a togglecompleted event on the todo\u8217's checkbox, and a click event on the todo\u8217's {\f1 <button class="destroy" />} button.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 The checkbox\u8217's togglecompleted event invokes the toggle() function, which toggles the todos\u8217's completed status, then resaving the todo - very straightforward! The button\u8217's click event invokes {\f1 clear()}, which will simply destroy the todo.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 That\u8217's all there is to it. Since we\u8217're binding to the change event, whenever the todo changes the view will automatically be re-rendered, checking or un-checking the checkbox as appropriate. Similarly, when the todo is destroyed, the model\u8217's {\f1 destroy()} function will be called, removing the todo from the view as we\u8217're binding to the destroy event too.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 One more piece to mention is that we\u8217've also binded to a visible event to handle the visibility state of the todo item. This is used in conjunction with the filtering in our routes and collections so that we only display an item if its completed state falls in line with the current filter.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 This tutorial is long enough as is, so we won\u8217't go into in-place editing or updating. If you want an example of that, see the {\field{\*\fldinst{HYPERLINK "https://github.com/addyosmani/todomvc/tree/master/architecture-examples/backbone/"}}{\fldrslt{\ul
+complete source
+}}}
+.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 \line
+  // Todo Item View\line
+  // --------------\line
+\line
+  // The DOM element for a todo item...\line
+  app.TodoView = Backbone.View.extend(\{\line
+\line
+    //... is a list tag.\line
+    tagName:  'li',\line
+\line
+    // Cache the template function for a single item.\line
+    template: _.template( $('#item-template').html() ),\line
+\line
+    // The DOM events specific to an item.\line
+    events: \{\line
+      'click .toggle':  'togglecompleted',\line
+      'dblclick label': 'edit',\line
+      'click .destroy': 'clear',\line
+      'keypress .edit': 'updateOnEnter',\line
+      'blur .edit':   'close'\line
+    \},\line
+\line
+    // The TodoView listens for changes to its model, re-rendering. Since there's\line
+    // a one-to-one correspondence between a **Todo** and a **TodoView** in this\line
+    // app, we set a direct reference on the model for convenience.\line
+    initialize: function() \{\line
+      this.model.on( 'change', this.render, this );\line
+      this.model.on( 'destroy', this.remove, this );\line
+      this.model.on( 'visible', this.toggleVisible, this );\line
+    \},\line
+\line
+    // Re-render the titles of the todo item.\line
+    render: function() \{\line
+      this.$el.html( this.template( this.model.toJSON() ) );\line
+      this.$el.toggleClass( 'completed', this.model.get('completed') );\line
+\line
+      this.toggleVisible();\line
+      this.input = this.$('.edit');\line
+      return this;\line
+    \},\line
+\line
+    toggleVisible : function () \{\line
+      this.$el.toggleClass( 'hidden',  this.isHidden());\line
+    \},\line
+\line
+    isHidden : function () \{\line
+      var isCompleted = this.model.get('completed');\line
+      return ( // hidden cases only\line
+        (!isCompleted && app.TodoFilter === 'completed')\line
+        || (isCompleted && app.TodoFilter === 'active')\line
+      );\line
+    \},\line
+\line
+    // Toggle the `"completed"` state of the model.\line
+    togglecompleted: function() \{\line
+      this.model.toggle();\line
+    \},\line
+\line
+    // Switch this view into `"editing"` mode, displaying the input field.\line
+    edit: function() \{\line
+      this.$el.addClass('editing');\line
+      this.input.focus();\line
+    \},\line
+\line
+    // Close the `"editing"` mode, saving changes to the todo.\line
+    close: function() \{\line
+      var value = this.input.val().trim();\line
+\line
+      if ( value ) \{\line
+        this.model.save(\{ title: value \});\line
+      \} else \{\line
+        this.clear();\line
+      \}\line
+\line
+      this.$el.removeClass('editing');\line
+    \},\line
+\line
+    // If you hit `enter`, we're through editing the item.\line
+    updateOnEnter: function( e ) \{\line
+      if ( e.which === ENTER_KEY ) \{\line
+        this.close();\line
+      \}\line
+    \},\line
+\line
+    // Remove the item, destroy the model from *localStorage* and delete its view.\line
+    clear: function() \{\line
+      this.model.destroy();\line
+    \}\line
+  \});\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs32 Todo routing\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Finally, we move on to routing, which will allow us to easily bookmark the list of items that are active as well as those which have been completed. We\u8217'll be supporting the following routes:\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 #/ (all - default)\line
+#/active \line
+#/completed\par}
+{\pard \ql \f0 \sa0 \li0 \fi0 \par}
+{\pard \ql \f0 \sa180 \li0 \fi0 When the route changes the todo list will be filtered on a model level and the selected class on the filter links will be toggled. When an item is updated while in a filtered state, it will be updated accordingly. E.g. if the filter is active and the item is checked, it will be hidden. The active filter is persisted on reload.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 \line
+  // Todo Router\line
+  // ----------\line
+\line
+  var Workspace = Backbone.Router.extend(\{\line
+    routes:\{\line
+      '*filter': 'setFilter'\line
+    \},\line
+\line
+    setFilter: function( param ) \{\line
+      // Set the current filter to be used\line
+      window.app.TodoFilter = param.trim() || '';\line
+\line
+      // Trigger a collection filter event, causing hiding/unhiding\line
+      // of Todo view items\line
+      window.app.Todos.trigger('filter');\line
+    \}\line
+  \});\line
+\line
+  app.TodoRouter = new Workspace();\line
+  Backbone.history.start();\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 As we can see in the line {\f1 window.app.Todos.trigger('filter')}, once a string filter has been set, we simply trigger our filter at a collection level to toggle which items are displayed and which of those are hidden.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Finally, we call {\f1 Backbone.history.start()} to route the initial URL during page load.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs32 Conclusions\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 We\u8217've now learned how to build our first complete Backbone.js application. The app can be viewed online at any time and the sources are readily available via {\field{\*\fldinst{HYPERLINK "http://www.todomvc.com"}}{\fldrslt{\ul
+TodoMVC
+}}}
+.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Later on in the book, we\u8217'll learn how to further modularize this application using Require.js, swap out our persistence layer to a database back-end and finally unit test the application with a few different testing frameworks.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \b \fs36 Backbone Boilerplate And Grunt-BBB\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 {\field{\*\fldinst{HYPERLINK "https://github.com/tbranyen/backbone-boilerplate/"}}{\fldrslt{\ul
 Backbone Boilerplate
