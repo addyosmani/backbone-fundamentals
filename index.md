@@ -27,6 +27,7 @@ I hope you find this book helpful!
     * [Collections](#thebasics-collections)
     * [Events](#thebasics-events)
     * [Routers](#thebasics-routers)
+    * [Inheritance & Mixins](#thebasics-inheritance) *
     * [Namespacing](#thebasics-namespacing)
 
 * ####[Practical: Todos - Your First Backbone.js App](#practicaltodos) *
@@ -36,7 +37,6 @@ I hope you find this book helpful!
 * ####[Common Problems & Solutions](#commonproblems) *
     * Sub-Views And Nesting
     * Managing Models In Nested Views
-    * View Inheritance
     * Views Triggering Other Views
     * Child Views Rendering Parent Views
     * Cleanly Disposing Views
@@ -1230,40 +1230,6 @@ collection.pluck('name');
 ```
 
 
-### Backbone’s inheritance Implementation
-
-The comments indicate that the inherits function is inspired by goog.inherits. Google’s implementation is from the Closure Library, but Backbone’s API accepts two objects (incorrectly referred to as a hash) containing “instance” and “static” methods. Each of Backbone’s objects has an extend method:
-
-Model.extend = Collection.extend = Router.extend = View.extend = extend;
-Most development with Backbone is based around inheriting from these objects, and they’re designed to mimic a classical object-oriented implementation.
-
-Backbone uses Underscore’s extend method:
-
-```javascript
-each(slice.call(arguments, 1), function(source) {
-  for (var prop in source) {
-    obj[prop] = source[prop];
-  }
-});
-
-return obj;
-```
-
-This isn’t the same as ES5’s Object.create, it’s actually copying properties (methods and values) from one object to another. Since this isn’t enough to support Backbone’s inheritance and class model, the following steps are performed:
-
-* The instance methods are checked to see if there’s a constructor property. If so, the class’s constructor is used, otherwise the parent’s constructor is used (i.e., Backbone.Model)
-
-* Underscore’s extend method is called to add the parent class’s methods to the new child class
-The prototype property of a blank constructor function is assigned with the parent’s prototype, and a new instance of this is set to the child’s prototype property
-
-* Underscore’s extend method is called twice to add the static and instance methods to the child class
-
-* The child’s prototype’s constructor and a __super__ property are assigned
-
-This pattern is also used for classes in CoffeeScript, so Backbone classes are compatible with CoffeeScript classes.
-
-
-
 ### Backbone’s Sync API
 
 The Backbone.sync method is intended to be overridden to support other backends. The built-in method is tailed to a certain breed of RESTful JSON APIs – Backbone was originally extracted from a Ruby on Rails application, which uses HTTP methods like PUT the same way.
@@ -1402,18 +1368,138 @@ It might be tempting to let “container” view render HTML directly by using $
 
 Interestingly, Backbone doesn’t have a lot of code dedicated to templates, but it can work with the template method. I use this with Require.js text file dependencies to load remote templates during development, then I use the Require.js build script to generate something suitable for deployment. This makes code easy to test and fast to load.
 
-#### API Style
 
-Backbone’s API is thankfully very consistent. Even the history API accepts a silent option, which is used throughout the library to stop events from firing when they’re not required.
+##<a name="thebasics-inheritance" id="thebasics-inheritance">Inheritance & Mixins</a>
 
-Backbone’s collections have Underscore’s chainable API, which can be handy, but care must be taken to use this correctly.
+For its inheritance, Backbone internally uses an `inherits` function inspired by `goog.inherits`, Google’s implementation from the Closure Library. It's basically a function to correctly setup the prototype chain.
 
-#### Testing Backbone
+```javascript
+ var inherits = function(parent, protoProps, staticProps) {
+      ...
+```
 
-So far we’ve been reviewing Backbone’s code to demystify the framework as a whole. However, it’s worth noting that other technologies work very well with Backbone and Underscore. Require.js and AMD modules can be a great way to break up projects.
+The only major difference here is that Backbone’s API accepts two objects containing “instance” and “static” methods. 
 
-However, one area that Backbone doesn’t address is testing. This is unfortunate, because testing Backbone projects definitely isn’t obvious. Later in the book we'll look at testing in more detail.
+Following on from this, for inheritance purposes all of Backbone's objects contain an `extend` method as follows:
 
+```javascript
+Model.extend = Collection.extend = Router.extend = View.extend = extend;
+```
+
+Most development with Backbone is based around inheriting from these objects, and they’re designed to mimic a classical object-oriented implementation.
+
+If this sounds familiar, it's because `extend` is an Underscore.js utility, although Backbone itself does a lot more with this. See below for Underscore's `extend`:
+
+```
+each(slice.call(arguments, 1), function(source) {
+  for (var prop in source) {
+    obj[prop] = source[prop];
+  }
+});
+return obj;
+```
+
+The above isn’t quite the same as ES5’s `Object.create`, as it’s actually copying properties (methods and values) from one object to another. As this isn’t enough to support Backbone’s inheritance and class model, the following steps are performed:
+
+* The instance methods are checked to see if there’s a constructor property. If so, the class’s constructor is used, otherwise the parent’s constructor is used (i.e., Backbone.Model)
+* Underscore’s extend method is called to add the parent class’s methods to the new child class
+* The `prototype` property of a blank constructor function is assigned with the parent’s prototype, and a new instance of this is set to the child’s `prototype` property
+Underscore’s extend method is called twice to add the static and instance methods to the child class
+* The child’s prototype’s constructor and a `__super__` property are assigned
+* This pattern is also used for classes in CoffeeScript, so Backbone classes are compatible with CoffeeScript classes.
+
+`extend` can be used for a great deal more and developers who are fans of mixins will like that it can be used for this too. You can define functionality on any custom object, and then quite literally copy & paste all of the methods and attributes from that object to a Backbone one:
+
+For example:
+
+```javascript
+ var MyMixin = {
+  foo: "bar",
+  sayFoo: function(){alert(this.foo);}
+}
+
+var MyView = Backbone.View.extend({
+ // ...
+});
+
+_.extend(MyView.prototype, MyMixin);
+
+myView = new MyView();
+myView.sayFoo(); //=> "bar"
+```
+
+We can take this further and also apply it to View inheritance. The following is an example of how to extend one View using another:
+
+```javascript
+var Panel = Backbone.View.extend({
+});
+
+var PanelAdvanced = Panel.extend({
+});
+```
+
+However, if you have an `initialize()` method in Panel, then it won't be called if you also have an `initialize()` method in PanelAdvanced, so you would have to call Panel's initialize method explicitly:
+
+```javascript
+var Panel = Backbone.View.extend({
+   initialize: function(options){
+      console.log('Panel initialized');
+      this.foo = 'bar';
+   }
+});
+
+var PanelAdvanced = Panel.extend({
+   initialize: function(options){
+      this.constructor.__super__.initialize.apply(this, [options])
+      console.log('PanelAdvanced initialized');
+      console.log(this.foo); // Log: bar
+   }
+});
+```
+
+This isn't the most elegant of solutions because if you have a lot of Views that inherit from Panel, then you'll have to remember to call Panel's initialize from all of them. 
+
+It's worth noting that if Panel doesn't have an initialize method now but you choose to add it in the future, then you'll need to go to all of the inherited classes in the future and make sure they call Panel's initialize. 
+
+So here's an alternative way to define Panel so that your inherited views don't need to call Panel's initialize method:
+
+```javascript
+var Panel = function (options) {
+
+    // put all of Panel's initialization code here
+    console.log('Panel initialized');
+    this.foo = 'bar';
+
+    Backbone.View.apply(this, [options]);
+};
+
+_.extend(Panel.prototype, Backbone.View.prototype, {
+
+    // put all of Panel's methods here. For example:
+    sayHi: function () {
+        console.log('hello from Panel');
+    }
+});
+
+Panel.extend = Backbone.View.extend;
+
+
+// other classes then inherit from Panel like this:
+var PanelAdvanced = Panel.extend({
+
+    initialize: function (options) {
+        console.log('PanelAdvanced initialized');
+        console.log(this.foo);
+    }
+});
+
+var PanelAdvanced = new PanelAdvanced(); //Log: Panel initialized, PanelAdvanced initialized, bar
+PanelAdvanced.sayHi(); // Log: hello from Panel
+```
+
+When used appropriately, Backbone's `extend` method can save a great deal of time and effort writing redundant code.
+
+(Thanks to [Alex Young](http://dailyjs.com), [Derick Bailey](http://stackoverflow.com/users/93448/derick-bailey) and [JohnnyO](http://stackoverflow.com/users/188740/johnnyo) for the heads up about these tips).
 
 
 ##<a name="thebasics-namespacing" id="thebasics-namespacing">Namespacing</a>
@@ -3139,100 +3225,6 @@ var ModelA = Backbone.Model.extend({
 There is more information about this technique available on [GitHub](https://github.com/powmedia/backbone-forms#customising-templates).
 
 (Thanks to [Jens Alm](http://stackoverflow.com/users/100952/jens-alm) and [Artem Oboturov](http://stackoverflow.com/users/801466/artem-oboturov) for these tips)
-
-
-#### How would one go about writing Views which inherit from other Views?
-
-Underscore.js provides an `_.extend()` method that gives us the ability to both write mixins for Views and inherit from Views quite easily. 
-
-For mixins, you can define functionality on any object, and then quite literally copy & paste all of the methods and attributes from that object to another.
-
-Backbone's extend methods on Views, Models, and Routers are a wrapper around underscore's _.extend().
-
-For example:
-
-```javascript
- var MyMixin = {
-  foo: "bar",
-  sayFoo: function(){alert(this.foo);}
-}
-
-var MyView = Backbone.View.extend({
- // ...
-});
-
-_.extend(MyView.prototype, MyMixin);
-
-myView = new MyView();
-myView.sayFoo(); //=> "bar"
-```
-
-The .extend() method can also be used for View inheritance, which is an even more interesting use case.The following is an example of how to extend one View using another:
-
-```javascript
-var Panel = Backbone.View.extend({
-});
-
-var PanelAdvanced = Panel.extend({
-});
-```
-
-However, if you have an initialize() method in Panel, then it won't be called if you also have an initialize() method in PanelAdvanced, so you would have to call Panel's initialize method explicitly:
-
-```javascript
-var Panel = Backbone.View.extend({
-   initialize: function(options){
-      console.log('Panel initialized');
-      this.foo = 'bar';
-   }
-});
-
-var PanelAdvanced = Panel.extend({
-   initialize: function(options){
-      this.constructor.__super__.initialize.apply(this, [options])
-      console.log('PanelAdvanced initialized');
-      console.log(this.foo); // Log: bar
-   }
-});
-```
-
-This isn't the most elegant of solutions because if you have a lot of Views that inherit from Panel, then you'll have to remember to call Panel's initialize from all of them. Even worse, if Panel doesn't have an initialize method now but you choose to add it in the future, then you'll need to go to all of the inherited classes in the future and make sure they call Panel's initialize. So here's an alternative way to define Panel so that your inherited views don't need to call Panel's initialize method:
-
-```javascript
-var Panel = function (options) {
-
-    // put all of Panel's initialization code here
-    console.log('Panel initialized');
-    this.foo = 'bar';
-
-    Backbone.View.apply(this, [options]);
-};
-
-_.extend(Panel.prototype, Backbone.View.prototype, {
-
-    // put all of Panel's methods here. For example:
-    sayHi: function () {
-        console.log('hello from Panel');
-    }
-});
-
-Panel.extend = Backbone.View.extend;
-
-
-// other classes inherit from Panel like this:
-var PanelAdvanced = Panel.extend({
-
-    initialize: function (options) {
-        console.log('PanelAdvanced initialized');
-        console.log(this.foo);
-    }
-});
-
-var PanelAdvanced = new PanelAdvanced(); //Log: Panel initialized, PanelAdvanced initialized, bar
-PanelAdvanced.sayHi(); // Log: hello from Panel
-```
-
-(Thanks to [Derick Bailey](http://stackoverflow.com/users/93448/derick-bailey) and [JohnnyO](http://stackoverflow.com/users/188740/johnnyo) for these tips)
 
 #### Is it possible to have one Backbone.js View trigger updates in other Views?
 

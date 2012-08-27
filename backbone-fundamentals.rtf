@@ -71,6 +71,10 @@ Events
 Routers
 }}}
 \par}
+{\pard \ql \f0 \sa0 \li720 \fi-360 \endash \tx360\tab {\field{\*\fldinst{HYPERLINK "#thebasics-inheritance"}}{\fldrslt{\ul
+Inheritance & Mixins
+}}}
+ *\par}
 {\pard \ql \f0 \sa0 \li720 \fi-360 \endash \tx360\tab {\field{\*\fldinst{HYPERLINK "#thebasics-namespacing"}}{\fldrslt{\ul
 Namespacing
 }}}
@@ -89,7 +93,6 @@ Common Problems & Solutions
  *\par}
 {\pard \ql \f0 \sa0 \li720 \fi-360 \endash \tx360\tab Sub-Views And Nesting\par}
 {\pard \ql \f0 \sa0 \li720 \fi-360 \endash \tx360\tab Managing Models In Nested Views\par}
-{\pard \ql \f0 \sa0 \li720 \fi-360 \endash \tx360\tab View Inheritance\par}
 {\pard \ql \f0 \sa0 \li720 \fi-360 \endash \tx360\tab Views Triggering Other Views\par}
 {\pard \ql \f0 \sa0 \li720 \fi-360 \endash \tx360\tab Child Views Rendering Parent Views\par}
 {\pard \ql \f0 \sa0 \li720 \fi-360 \endash \tx360\tab Cleanly Disposing Views\par}
@@ -946,23 +949,6 @@ collection\line
 \line
 collection.pluck('name');\line
 // ['John', 'Harry', 'Steve']\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs28 Backbone\u8217's inheritance Implementation\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 The comments indicate that the inherits function is inspired by goog.inherits. Google\u8217's implementation is from the Closure Library, but Backbone\u8217's API accepts two objects (incorrectly referred to as a hash) containing \u8220"instance\u8221" and \u8220"static\u8221" methods. Each of Backbone\u8217's objects has an extend method:\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 Model.extend = Collection.extend = Router.extend = View.extend = extend; Most development with Backbone is based around inheriting from these objects, and they\u8217're designed to mimic a classical object-oriented implementation.\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 Backbone uses Underscore\u8217's extend method:\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 \f1 each(slice.call(arguments, 1), function(source) \{\line
-  for (var prop in source) \{\line
-    obj[prop] = source[prop];\line
-  \}\line
-\});\line
-\line
-return obj;\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 This isn\u8217't the same as ES5\u8217's Object.create, it\u8217's actually copying properties (methods and values) from one object to another. Since this isn\u8217't enough to support Backbone\u8217's inheritance and class model, the following steps are performed:\par}
-{\pard \ql \f0 \sa180 \li360 \fi-360 \bullet \tx360\tab The instance methods are checked to see if there\u8217's a constructor property. If so, the class\u8217's constructor is used, otherwise the parent\u8217's constructor is used (i.e., Backbone.Model)\par}
-{\pard \ql \f0 \sa180 \li360 \fi-360 \bullet \tx360\tab Underscore\u8217's extend method is called to add the parent class\u8217's methods to the new child class The prototype property of a blank constructor function is assigned with the parent\u8217's prototype, and a new instance of this is set to the child\u8217's prototype property\par}
-{\pard \ql \f0 \sa180 \li360 \fi-360 \bullet \tx360\tab Underscore\u8217's extend method is called twice to add the static and instance methods to the child class\par}
-{\pard \ql \f0 \sa180 \li360 \fi-360 \bullet \tx360\tab The child\u8217's prototype\u8217's constructor and a {\b super} property are assigned\sa180\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 This pattern is also used for classes in CoffeeScript, so Backbone classes are compatible with CoffeeScript classes.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \b \fs28 Backbone\u8217's Sync API\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 The Backbone.sync method is intended to be overridden to support other backends. The built-in method is tailed to a certain breed of RESTful JSON APIs \u8211- Backbone was originally extracted from a Ruby on Rails application, which uses HTTP methods like PUT the same way.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 The way this works is the model and collection classes have a sync method that calls Backbone.sync. Both will call this.sync internally when fetching, saving, or deleting items.\par}
@@ -1059,12 +1045,108 @@ if (typeof exports !== 'undefined') \{\line
 {\pard \ql \f0 \sa180 \li0 \fi0 It\u8217's easy to slip into using ,\u8198?{\i b}{\i u}{\i t}{\i a}{\i v}{\i o}{\i i}{\i d}{\i t}{\i h}{\i i}{\i s}{\i w}{\i h}{\i e}{\i r}{\i e}{\i p}{\i o}{\i s}{\i s}{\i i}{\i b}{\i l}{\i e}.\u8198?{\i B}{\i a}{\i c}{\i k}{\i b}{\i o}{\i n}{\i e}{\i c}{\i a}{\i c}{\i h}{\i e}{\i s}{\i a}{\i v}{\i i}{\i e}{\i w}\u8217'{\i s}{\i e}{\i l}{\i e}{\i m}{\i e}{\i n}{\i t},\u8198?{\i s}{\i o}{\i u}{\i s}{\i e}{\i t}{\i h}{\i i}{\i s}.\u8198?el instead. Design views based on the single responsibility principle.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 It might be tempting to let \u8220"container\u8221" view render HTML directly by using $().html, but resisting the temptation and creating a hierarchy of views will make it much easier to debug your code and write automated tests.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 Interestingly, Backbone doesn\u8217't have a lot of code dedicated to templates, but it can work with the template method. I use this with Require.js text file dependencies to load remote templates during development, then I use the Require.js build script to generate something suitable for deployment. This makes code easy to test and fast to load.\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs24 API Style\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 Backbone\u8217's API is thankfully very consistent. Even the history API accepts a silent option, which is used throughout the library to stop events from firing when they\u8217're not required.\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 Backbone\u8217's collections have Underscore\u8217's chainable API, which can be handy, but care must be taken to use this correctly.\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs24 Testing Backbone\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 So far we\u8217've been reviewing Backbone\u8217's code to demystify the framework as a whole. However, it\u8217's worth noting that other technologies work very well with Backbone and Underscore. Require.js and AMD modules can be a great way to break up projects.\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 However, one area that Backbone doesn\u8217't address is testing. This is unfortunate, because testing Backbone projects definitely isn\u8217't obvious. Later in the book we\u8217'll look at testing in more detail.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs32 Inheritance & Mixins\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 For its inheritance, Backbone internally uses an {\f1 inherits} function inspired by {\f1 goog.inherits}, Google\u8217's implementation from the Closure Library. It\u8217's basically a function to correctly setup the prototype chain.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1  var inherits = function(parent, protoProps, staticProps) \{\line
+      ...\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 The only major difference here is that Backbone\u8217's API accepts two objects containing \u8220"instance\u8221" and \u8220"static\u8221" methods.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Following on from this, for inheritance purposes all of Backbone\u8217's objects contain an {\f1 extend} method as follows:\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 Model.extend = Collection.extend = Router.extend = View.extend = extend;\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Most development with Backbone is based around inheriting from these objects, and they\u8217're designed to mimic a classical object-oriented implementation.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 If this sounds familiar, it\u8217's because {\f1 extend} is an Underscore.js utility, although Backbone itself does a lot more with this. See below for Underscore\u8217's {\f1 extend}:\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 each(slice.call(arguments, 1), function(source) \{\line
+  for (var prop in source) \{\line
+    obj[prop] = source[prop];\line
+  \}\line
+\});\line
+return obj;\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 The above isn\u8217't quite the same as ES5\u8217's {\f1 Object.create}, as it\u8217's actually copying properties (methods and values) from one object to another. As this isn\u8217't enough to support Backbone\u8217's inheritance and class model, the following steps are performed:\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab The instance methods are checked to see if there\u8217's a constructor property. If so, the class\u8217's constructor is used, otherwise the parent\u8217's constructor is used (i.e., Backbone.Model)\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Underscore\u8217's extend method is called to add the parent class\u8217's methods to the new child class\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab The {\f1 prototype} property of a blank constructor function is assigned with the parent\u8217's prototype, and a new instance of this is set to the child\u8217's {\f1 prototype} property Underscore\u8217's extend method is called twice to add the static and instance methods to the child class\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab The child\u8217's prototype\u8217's constructor and a {\f1 __super__} property are assigned\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab This pattern is also used for classes in CoffeeScript, so Backbone classes are compatible with CoffeeScript classes.\sa180\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\f1 extend} can be used for a great deal more and developers who are fans of mixins will like that it can be used for this too. You can define functionality on any custom object, and then quite literally copy & paste all of the methods and attributes from that object to a Backbone one:\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 For example:\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1  var MyMixin = \{\line
+  foo: "bar",\line
+  sayFoo: function()\{alert(this.foo);\}\line
+\}\line
+\line
+var MyView = Backbone.View.extend(\{\line
+ // ...\line
+\});\line
+\line
+_.extend(MyView.prototype, MyMixin);\line
+\line
+myView = new MyView();\line
+myView.sayFoo(); //=> "bar"\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 We can take this further and also apply it to View inheritance. The following is an example of how to extend one View using another:\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 var Panel = Backbone.View.extend(\{\line
+\});\line
+\line
+var PanelAdvanced = Panel.extend(\{\line
+\});\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 However, if you have an {\f1 initialize()} method in Panel, then it won\u8217't be called if you also have an {\f1 initialize()} method in PanelAdvanced, so you would have to call Panel\u8217's initialize method explicitly:\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 var Panel = Backbone.View.extend(\{\line
+   initialize: function(options)\{\line
+      console.log('Panel initialized');\line
+      this.foo = 'bar';\line
+   \}\line
+\});\line
+\line
+var PanelAdvanced = Panel.extend(\{\line
+   initialize: function(options)\{\line
+      this.constructor.__super__.initialize.apply(this, [options])\line
+      console.log('PanelAdvanced initialized');\line
+      console.log(this.foo); // Log: bar\line
+   \}\line
+\});\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 This isn\u8217't the most elegant of solutions because if you have a lot of Views that inherit from Panel, then you\u8217'll have to remember to call Panel\u8217's initialize from all of them.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 It\u8217's worth noting that if Panel doesn\u8217't have an initialize method now but you choose to add it in the future, then you\u8217'll need to go to all of the inherited classes in the future and make sure they call Panel\u8217's initialize.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 So here\u8217's an alternative way to define Panel so that your inherited views don\u8217't need to call Panel\u8217's initialize method:\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 var Panel = function (options) \{\line
+\line
+    // put all of Panel's initialization code here\line
+    console.log('Panel initialized');\line
+    this.foo = 'bar';\line
+\line
+    Backbone.View.apply(this, [options]);\line
+\};\line
+\line
+_.extend(Panel.prototype, Backbone.View.prototype, \{\line
+\line
+    // put all of Panel's methods here. For example:\line
+    sayHi: function () \{\line
+        console.log('hello from Panel');\line
+    \}\line
+\});\line
+\line
+Panel.extend = Backbone.View.extend;\line
+\line
+\line
+// other classes then inherit from Panel like this:\line
+var PanelAdvanced = Panel.extend(\{\line
+\line
+    initialize: function (options) \{\line
+        console.log('PanelAdvanced initialized');\line
+        console.log(this.foo);\line
+    \}\line
+\});\line
+\line
+var PanelAdvanced = new PanelAdvanced(); //Log: Panel initialized, PanelAdvanced initialized, bar\line
+PanelAdvanced.sayHi(); // Log: hello from Panel\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 When used appropriately, Backbone\u8217's {\f1 extend} method can save a great deal of time and effort writing redundant code.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 (Thanks to {\field{\*\fldinst{HYPERLINK "http://dailyjs.com"}}{\fldrslt{\ul
+Alex Young
+}}}
+, {\field{\*\fldinst{HYPERLINK "http://stackoverflow.com/users/93448/derick-bailey"}}{\fldrslt{\ul
+Derick Bailey
+}}}
+ and {\field{\*\fldinst{HYPERLINK "http://stackoverflow.com/users/188740/johnnyo"}}{\fldrslt{\ul
+JohnnyO
+}}}
+ for the heads up about these tips).\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \b \fs32 Namespacing\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 When learning how to use Backbone, an important and commonly overlooked area by tutorials is namespacing. If you already have experience with namespacing in JavaScript, the following section will provide some advice on how to specifically apply concepts you know to Backbone, however I will also be covering explanations for beginners to ensure everyone is on the same page.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \b \fs24 What is namespacing?\par}
@@ -2519,84 +2601,6 @@ Jens Alm
 }}}
  and {\field{\*\fldinst{HYPERLINK "http://stackoverflow.com/users/801466/artem-oboturov"}}{\fldrslt{\ul
 Artem Oboturov
-}}}
- for these tips)\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs24 How would one go about writing Views which inherit from other Views?\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 Underscore.js provides an {\f1 _.extend()} method that gives us the ability to both write mixins for Views and inherit from Views quite easily.\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 For mixins, you can define functionality on any object, and then quite literally copy & paste all of the methods and attributes from that object to another.\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 Backbone\u8217's extend methods on Views, Models, and Routers are a wrapper around underscore\u8217's _.extend().\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 For example:\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 \f1  var MyMixin = \{\line
-  foo: "bar",\line
-  sayFoo: function()\{alert(this.foo);\}\line
-\}\line
-\line
-var MyView = Backbone.View.extend(\{\line
- // ...\line
-\});\line
-\line
-_.extend(MyView.prototype, MyMixin);\line
-\line
-myView = new MyView();\line
-myView.sayFoo(); //=> "bar"\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 The .extend() method can also be used for View inheritance, which is an even more interesting use case.The following is an example of how to extend one View using another:\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 \f1 var Panel = Backbone.View.extend(\{\line
-\});\line
-\line
-var PanelAdvanced = Panel.extend(\{\line
-\});\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 However, if you have an initialize() method in Panel, then it won\u8217't be called if you also have an initialize() method in PanelAdvanced, so you would have to call Panel\u8217's initialize method explicitly:\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 \f1 var Panel = Backbone.View.extend(\{\line
-   initialize: function(options)\{\line
-      console.log('Panel initialized');\line
-      this.foo = 'bar';\line
-   \}\line
-\});\line
-\line
-var PanelAdvanced = Panel.extend(\{\line
-   initialize: function(options)\{\line
-      this.constructor.__super__.initialize.apply(this, [options])\line
-      console.log('PanelAdvanced initialized');\line
-      console.log(this.foo); // Log: bar\line
-   \}\line
-\});\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 This isn\u8217't the most elegant of solutions because if you have a lot of Views that inherit from Panel, then you\u8217'll have to remember to call Panel\u8217's initialize from all of them. Even worse, if Panel doesn\u8217't have an initialize method now but you choose to add it in the future, then you\u8217'll need to go to all of the inherited classes in the future and make sure they call Panel\u8217's initialize. So here\u8217's an alternative way to define Panel so that your inherited views don\u8217't need to call Panel\u8217's initialize method:\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 \f1 var Panel = function (options) \{\line
-\line
-    // put all of Panel's initialization code here\line
-    console.log('Panel initialized');\line
-    this.foo = 'bar';\line
-\line
-    Backbone.View.apply(this, [options]);\line
-\};\line
-\line
-_.extend(Panel.prototype, Backbone.View.prototype, \{\line
-\line
-    // put all of Panel's methods here. For example:\line
-    sayHi: function () \{\line
-        console.log('hello from Panel');\line
-    \}\line
-\});\line
-\line
-Panel.extend = Backbone.View.extend;\line
-\line
-\line
-// other classes inherit from Panel like this:\line
-var PanelAdvanced = Panel.extend(\{\line
-\line
-    initialize: function (options) \{\line
-        console.log('PanelAdvanced initialized');\line
-        console.log(this.foo);\line
-    \}\line
-\});\line
-\line
-var PanelAdvanced = new PanelAdvanced(); //Log: Panel initialized, PanelAdvanced initialized, bar\line
-PanelAdvanced.sayHi(); // Log: hello from Panel\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 (Thanks to {\field{\*\fldinst{HYPERLINK "http://stackoverflow.com/users/93448/derick-bailey"}}{\fldrslt{\ul
-Derick Bailey
-}}}
- and {\field{\*\fldinst{HYPERLINK "http://stackoverflow.com/users/188740/johnnyo"}}{\fldrslt{\ul
-JohnnyO
 }}}
  for these tips)\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \b \fs24 Is it possible to have one Backbone.js View trigger updates in other Views?\par}
