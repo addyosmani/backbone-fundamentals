@@ -17,6 +17,10 @@ I hope you find this book helpful!
 ##Table Of Contents
 
 * ####[Introduction](#introduction)
+    * MVC, Or Rather MV* Frameworks
+    * What is Backbone.js?
+    * When Do You Need A JavaScript MV* Framework?
+    * When To Consider Using Backbone.js
 
 * ####[Fundamentals](#fundamentals)
     * [MVC, MVP & Backbone.js](#mvc-mvp)
@@ -93,34 +97,57 @@ I hope you find this book helpful!
 * ####[Resources](#resources)
 
 
-<a name="introduction">Introduction</a>
----
 
-As JavaScript developers, we are at an interesting point in time where not only do we have mature solutions to help organize the JavaScript powering our applications based on a separation of concerns, but developers looking to build non-trivial projects are almost spoiled for choice for frameworks that can help structure their applications. 
+##<a name="introduction">Introduction</a>
 
-Maturity in software (framework) development isn't simply about how long a framework has been around. It's about how solid the framework is and more importantly how well it's evolved to fill its role. Has it become more effective at solving common problems? Does it continue to improve as developers build larger and more complex applications with it?  
-In this book, I will be covering the Backbone.js MVC library, which I consider the best of the current family of JavaScript architectural solutions for helping better structure your code.
+When writing a Web application from scratch, it’s easy to feel like we can get by simply by relying on a DOM manipulation library (like jQuery) and a handful of utility plugins. The problem with this is that it doesn’t take long to get lost in a nested pile of jQuery callbacks and DOM elements without any real structure in place for our applications.
 
-Topics will include MVC theory and how to build applications using Backbone's models, views, collections and routers. I'll also be taking you through advanced topics like modular development with Backbone.js and AMD (via Require.js), how to build applications using modern software stacks (like Node and Express), how to solve the routing problems with Backbone and jQuery Mobile, tips about scaffolding tools, and a lot more.
+In short, we’re stuck with spaghetti code. Fortunately there are modern JavaScript frameworks that can assist with bringing structure and organization to our projects, improving how easily maintainable they are in the long-run.
+
+### What Is MVC, Or Rather MV*?
+
+These modern frameworks provide developers an easy path to organizing their code using variations of a pattern known as MVC (Model-View-Controller). MVC separates the concerns in an application down into three parts:
+
+* Models represent the domain-specific knowledge and data in an application. Think of this as being a ‘type’ of data you can model — like a User, Photo or Note. Models should notify anyone observing them about their current state (e.g Views).
+* Views are typically considered the User-interface in an application (e.g your markup and templates), but don’t have to be. They should know about the existence of Models in order to observe them, but don’t directly communicate with them.
+* Controllers handle the input (e.g clicks, user actions) in an application and Views can be considered as handling the output. When a Controller updates the state of a model (such as editing the caption on a Photo), it doesn’t directly tell the View. This is what the observing nature of the View and Model relationship is for.
+
+JavaScript ‘MVC’ frameworks that can help us structure our code don’t always strictly follow the above pattern. Some frameworks will include the responsibility of the Controller in the View (e.g Backbone.js) whilst others add their own opinionated components into the mix as they feel this is more effective.
+
+For this reason we refer to such frameworks as following the MV* pattern, that is, you’re likely to have a View and a Model, but more likely to have something else also included.
+
+###What exactly is Backbone.js?
+
+<img src="img/backbonejsorg.png" style="margin:0 auto;" width="700px"/>
+
+Backbone.js is a lightweight JavaScript framework for adding structure to your client-side code. It makes it easy to manage and decouple concerns in your application, leaving you with code that is more maintainable in the long term. 
+
+Developers commonly use frameworks like Backbone.js to create single-page applications or SPAs. To put it simply, these apps enable the browser to react to changes in data on the client-side without the need to completely load up all your markup from the server, meaning no complete page-refreshes are necessary.
+
+Backbone.js is a mature, popular framework at the time of writing and has both a large development community online as well as a wealth of plugins and extensions available to build upon it. It has been used to create non-trivial applications by companies such as 
+Disqus, Walmart, SoundCloud and  Foursquare.
+
+### When Do You Need A JavaScript MV* Framework?
+
+When building a single-page application using JavaScript, whether it involves a complex user interface or is simply trying to reduce the number of HTTP requests required for new Views, you will likely find yourself inventing many of the pieces that make up an MV* framework like Backbone or Ember.
+
+At the outset, it isn’t terribly difficult to write an application framework that offers some opinionated way to avoid spaghetti code, however to say that it is equally as trivial to write something of the standard of Backbone would be a grossly incorrect assumption.
+
+There’s a lot more that goes into structuring an application than tying together a DOM manipulation library, templating and routing. Mature MV* frameworks typically not only include many of the pieces you would find yourself writing, but also include solutions to problems you’ll find yourself running into later on down the road. This is a time-saver that you shouldn’t underestimate the value of.
+
+So, where will you likely need an MV* framework and where won’t you?
+
+If you’re writing an application that will likely only be communicating with an API or back-end data service, where much of the heavy lifting for viewing or manipulating that data will be occurring in the browser, you may find a JavaScript MV* framework useful.
+Good examples of applications that fall into this category are GMail and Google Docs.
+
+These applications typically download a single payload containing all the scripts, stylesheets and markup users need for common tasks and then perform a lot of additional behavior in the background. It’s trivial to switch between reading an email or document to writing one and you don’t need to ask the application to render the whole page again at all.
+
+If, however, you’re building an application that still relies on the server for most of the heavy-lifting of Views/pages and you’re just using a little JavaScript or jQuery to make things a little more interactive, an MV framework may be overkill. There certainly are complex Web applications where the partial rendering of views can* be coupled with a single-page application effectively, but for everything else, you may find yourself better sticking to a simpler setup.
+
+Maturity in software (framework) development isn't simply about how long a framework has been around. It's about how solid the framework is and more importantly how well it's evolved to fill its role. Has it become more effective at solving common problems? Does it continue to improve as developers build larger and more complex applications with it? 
 
 
-###What is Backbone?
-
-Backbone.js is one of a number of JavaScript frameworks for creating MVC-like web applications. On the front-end, it's my architectural framework of choice as it's both mature, relatively lightweight and can be easily tested using third-party toolkits such as Jasmine or QUnit. Other MVC frameworks you may be familiar with include Ember.js, Spine, YUILibrary and JavaScriptMVC.
-
-Backbone is maintained by a number of contributors, most notably: Jeremy Ashkenas, creator of CoffeeScript, Docco and Underscore.js. As Jeremy is a believer in detailed documentation, there's a level of comfort in knowing you're unlikely to run into issues which are either not explained in the official docs or which can't be nailed down with some assistance from the #documentcloud IRC channel. I strongly recommend using the latter if you find yourself getting stuck.
-
-###Why should you consider using it?
-
-Backbone's main benefits, regardless of your target platform or device, include helping:
-
-* Organize the structure to your application
-* Simplify server-side persistence
-* Decouple the DOM from your page's data
-* Model data, views and routers in a succinct manner
-* Provide DOM, model and collection synchronization
-
-###Is Backbone right for you?
+###Why should you consider using Backbone.js?
 
 Does the following describe you?:
 
@@ -130,7 +157,17 @@ As I may be building something complex, I’d like there to be an active extensi
 
 If so, continue reading.
 
+Backbone's main benefits, regardless of your target platform or device, include helping:
+
+* Organize the structure to your application
+* Simplify server-side persistence
+* Decouple the DOM from your page's data
+* Model data, views and routers in a succinct manner
+* Provide DOM, model and collection synchronization
+
 The goal of this book is to create an authoritative and centralized repository of information that can help those developing real-world apps with Backbone. If you come across a section or topic which you think could be improved or expanded on, please feel free to submit a pull-request. It won't take long and you'll be helping other developers avoid problems you've run into before.
+
+Topics will include MVC theory and how to build applications using Backbone's models, views, collections and routers. I'll also be taking you through advanced topics like modular development with Backbone.js and AMD (via Require.js), how to build applications using modern software stacks (like Node and Express), how to solve the routing problems with Backbone and jQuery Mobile, tips about scaffolding tools, and a lot more.
 
 
 ## <a name="fundamentals">Fundamentals</a>
