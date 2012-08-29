@@ -145,7 +145,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 </ul></li>
 <li><h4><a href="#resources">Resources</a></h4></li>
 </ul>
-<h2 id="introduction"><a name="introduction">Introduction</a></h2>
+<h1 id="introduction"><a name="introduction">Introduction</a></h1>
 <p>When writing a Web application from scratch, it’s easy to feel like we can get by simply by relying on a DOM manipulation library (like jQuery) and a handful of utility plugins. The problem with this is that it doesn’t take long to get lost in a nested pile of jQuery callbacks and DOM elements without any real structure in place for our applications.</p>
 <p>In short, we’re stuck with spaghetti code. Fortunately there are modern JavaScript frameworks that can assist with bringing structure and organization to our projects, improving how easily maintainable they are in the long-run.</p>
 <h3 id="what-is-mvc-or-rather-mv">What Is MVC, Or Rather MV*?</h3>
@@ -186,7 +186,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 </ul>
 <p>The goal of this book is to create an authoritative and centralized repository of information that can help those developing real-world apps with Backbone. If you come across a section or topic which you think could be improved or expanded on, please feel free to submit a pull-request. It won't take long and you'll be helping other developers avoid problems you've run into before.</p>
 <p>Topics will include MVC theory and how to build applications using Backbone's models, views, collections and routers. I'll also be taking you through advanced topics like modular development with Backbone.js and AMD (via Require.js), how to build applications using modern software stacks (like Node and Express), how to solve the routing problems with Backbone and jQuery Mobile, tips about scaffolding tools, and a lot more.</p>
-<h2 id="fundamentals"><a name="fundamentals">Fundamentals</a></h2>
+<h1 id="fundamentals"><a name="fundamentals">Fundamentals</a></h1>
 <p>In this section, we're going to explore how frameworks like Backbone.js fit in the world of JavaScript application architecture. Clasically, developers creating desktop and server-class applications have had a wealth of design patterns available for them to lean on, but it's only been in the past few years that such patterns have come to client-side development.</p>
 <p>Before exploring any JavaScript frameworks that assist in structuring applications, it can be useful to gain a basic understanding of architectural design patterns.</p>
 <h3 id="mvc-mvp-backbone.js"><a name="mvc-mvp">MVC, MVP &amp; Backbone.js</a></h3>
@@ -460,7 +460,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <li>Doesn't support deeply nested models, though there are Backbone plugins such as <a href="https://github.com/PaulUithol/Backbone-relational">this</a> which can help<br /></li>
 <li>Clear and flexible conventions for structuring applications. Backbone doesn't force usage of all of its components and can work with only those needed.</li>
 </ul>
-<h2 id="the-internals">##<a name="theinternals">The Internals</a></h2>
+<h1 id="the-internals"><a name="theinternals">The Internals</a></h1>
 <p>In this section, you'll learn the essentials of Backbone's models, views, collections and routers, as well as about using namespacing to organize your code. This isn't meant as a replacement for the official documentation, but it will help you understand many of the core concepts behind Backbone before you start building applications with it.</p>
 <ul>
 <li>Models</li>
@@ -1178,13 +1178,13 @@ myApplication_galleryView = <span class="kw">Backbone.View</span>.<span class="f
 <p>Reviewing the namespace patterns above, the option that I prefer when writing Backbone applications is nested object namespacing with the object literal pattern.</p>
 <p>Single global variables may work fine for applications that are relatively trivial. However, larger codebases requiring both namespaces and deep sub-namespaces require a succinct solution that's both readable and scalable. I feel this pattern achieves both of these objectives and is a good choice for most Backbone development.</p>
 <h1 id="practical-todos---your-first-backbone.js-app"><a name="practicaltodos">Practical: Todos - Your First Backbone.js App</a></h1>
-<p>Building a Todo List application is a great way to learn about Backbone, and Backbone’s conventions. It's a simple enough app, but contains enough interesting problems to be useful, such as binding, persisting model data, routing and template rendering.</p>
+<p>Now that we've journeyed through the fundamentals, let's move on to writing our first Backbone.js app - a Todo List application. Building a Todo List is a great way to learn about Backbone’s conventions. It's a simple enough app, but contains enough interesting problems to be useful, such as binding, persisting model data, routing and template rendering.</p>
 <p>For this chapter, we’re going to learn how to create the Backbone.js Todo app listed on <a href="http://todomvc.com">TodoMVC.com</a>.</p>
 <img src="img/todoapp.png" width="700px"/>
-<p>So let's think about what we need from a high level architectural standpoint.</p>
+<p>Let's think about what we need from a high level architectural standpoint.</p>
 <ul>
-<li>A Todo model to describe individual todo items</li>
-<li>A TodoList collection to store and persist todos</li>
+<li>A <code>Todo</code> model to describe individual todo items</li>
+<li>A <code>TodoList</code> collection to store and persist todos</li>
 <li>A way of creating todos</li>
 <li>Listing todos</li>
 <li>Editing existing todos</li>
@@ -1203,9 +1203,6 @@ myApplication_galleryView = <span class="kw">Backbone.View</span>.<span class="f
   &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge,chrome=1&quot;&gt;
   &lt;title&gt;Backbone.js • TodoMVC&lt;/title&gt;
   &lt;link rel=&quot;stylesheet&quot; href=&quot;../../assets/base.css&quot;&gt;
-  &lt;!--[if IE]&gt;
-  &lt;script src=&quot;../../assets/ie.js&quot;&gt;&lt;/script&gt;
-  &lt;![endif]--&gt;
 &lt;/head&gt;
 &lt;body&gt;
   &lt;script src=&quot;../../assets/base.js&quot;&gt;&lt;/script&gt;
@@ -1224,7 +1221,7 @@ myApplication_galleryView = <span class="kw">Backbone.View</span>.<span class="f
 </code></pre>
 <p>To help demonstrate how the various parts of our application can be split up, individual concerns are cleanly organized into folders representing our models, views, collections and routers. An app.js file is used to kick everything off.</p>
 <h2 id="application-html">Application HTML</h2>
-<p>Now let's take a look at our application's static HTML. We're going to need an <code>&lt;input&gt;</code> for creating new todos a <code>&lt;ul id=&quot;todo-list&quot; /&gt;</code> for listing the actual todos, and a section containing some operations, such as clearing completed todos.</p>
+<p>Now let's take a look at our application's static HTML. We're going to need an <code>&lt;input&gt;</code> for creating new todos, a <code>&lt;ul id=&quot;todo-list&quot; /&gt;</code> for listing the actual todos, and a section containing some operations, such as clearing completed todos.</p>
 <pre><code>  &lt;section id=&quot;todoapp&quot;&gt;
     &lt;header id=&quot;header&quot;&gt;
       &lt;h1&gt;todos&lt;/h1&gt;
@@ -1245,7 +1242,7 @@ myApplication_galleryView = <span class="kw">Backbone.View</span>.<span class="f
 <p>We’ll be populating our todo-list and adding a statistics section with details about what items are left to be completed later on.</p>
 <p>So far so good. Now in order to tie this into our Backbone Todo app, we're going to have to go back to the fundamentals - a Todo model.</p>
 <h2 id="todo-model">Todo model</h2>
-<p>The Todo model is remarkably straightforward. Firstly a todo has two attributes, a <code>title</code> and a <code>completed</code> status that indicates whether it's been completed. These attributes are passed as defaults, as you can see in the example below:</p>
+<p>The <code>Todo</code> model is remarkably straightforward. Firstly a todo has two attributes, a <code>title</code> and a <code>completed</code> status that indicates whether it's been completed. These attributes are passed as defaults, as you can see in the example below:</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript">
 <span class="kw">var</span> app = app || {};
 
@@ -1272,7 +1269,7 @@ myApplication_galleryView = <span class="kw">Backbone.View</span>.<span class="f
   });</code></pre>
 <p>We also have a <code>toggle()</code> function which allows to set whether a Todo item has been completed.</p>
 <h2 id="todo-collection">Todo collection</h2>
-<p>Next we have our Todo collection used to group our models. The collection is being extended by localStorage which automatically persists Todo records to HTML5 Local Storage via the Backbone LocalStorage adapter, so they're saved between page requests.</p>
+<p>Next we have our <code>TodoList</code> collection used to group our models. The collection is being extended by localStorage which automatically persists Todo records to HTML5 Local Storage via the Backbone LocalStorage adapter, so they're saved between page requests.</p>
 <p>We've then got some static methods, <code>completed()</code> and <code>remaining()</code>, which return an array of unfinished and finished todos respectively.</p>
 <p>Finally we have a <code>nextOrder()</code> function, that keeps our Todo items in sequential order as well as a <code>comparator()</code> used to sort items by their insertion order.</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript">
@@ -1391,9 +1388,12 @@ myApplication_galleryView = <span class="kw">Backbone.View</span>.<span class="f
   });</code></pre>
 <p>You can see we've got a couple of things going on, an el (element), a <code>statsTemplate</code>, a constructor function and several view specific methods. On the left of the el: key is a DOM element selector for the element with ID <code>todoapp</code>. The value of this is just a string and Backbone will create a reference pointing to any element matching the selector #todoapp, where here it will be the <code>&lt;section id=”todoapp /&gt;</code> element, defined in the HTML section earlier.</p>
 <p>In a nutshell this means we can now refer to this.el in our controller, which points to the <code>&lt;section class=&quot;todoapp&quot; /&gt;</code> element. As you can see, we're referring to el in the <code>addOne()</code> function, appending an element to the list.</p>
-<p>Now let's take a look at the constructor function. It's binding to several events on the Todo model, such as add, reset and all. Since we're delegating handling of updates and deletes to the TodoView view, we don't need to to worry about that here. The two pieces of logic are:</p>
-<p>When a new todo is created, the add event will be fired, calling <code>addOne()</code> which instantiates the <code>TodoView</code> view, rendering it and appending the resultant element to our todo list</p>
-<p>When a reset event is called (i.e. the todos have been loaded from Local Storage), <code>addAll()</code> will be called. This function iterates over all the todos, passing them to <code>addOne()</code>.</p>
+<p>Now let's take a look at the constructor function. It's binding to several events on the Todo model, such as add, reset and all. Since we're delegating handling of updates and deletes to the <code>TodoView</code> view, we don't need to to worry about that here. The two pieces of logic are:</p>
+<ul>
+<li><p>When a new todo is created, the <code>add</code> event will be fired, calling <code>addAll()</code>. This iterates over all of the Todos currently in our collection and fires <code>addOne()</code> for each item.</p></li>
+<li><p><code>addOne()</code> instantiates the TodoView view, rendering it and appending the resultant element to our Todo list.</p></li>
+<li><p>When a <code>reset</code> event is called (i.e. we wish to update the collection in bulk such as when the Todos have been loaded from Local Storage), <code>addAll()</code> is similarly called again.</p></li>
+</ul>
 <p>We can then add in the logic for creating new todos, editing them and filtering them based on whether they are complete.</p>
 <ul>
 <li>events: We define an events hash containing declarative callbacks for our DOM events.</li>
@@ -2258,7 +2258,7 @@ Initialized from template &quot;module&quot;.</code></pre>
 <p>As we've seen, scaffolding tools can assist in expediting how quickly you can begin a new application by creating the basic files required for a project automatically. If you appreciate such tools, I'm happy to also recommend checking out <a href="http://yeoman.io">Yeoman</a> (one of my upcoming projects) and <a href="https://github.com/brunch/brunch">Brunch</a>.</p>
 <p>Brunch works very well with Backbone, Underscore, jQuery and CoffeeScript and is even used by companies such as Red Bull and Jim Beam. You may have to update any third party dependencies (e.g. latest jQuery or Zepto) when using it, but other than that it should be fairly stable to use right out of the box.</p>
 <p>Brunch can be installed via the nodejs package manager and is easy to get started with. If you happen to use Vim or Textmate as your editor of choice, you'll be happy to know that there are Brunch bundles available for both.</p>
-<h2 id="common-problems-solutions"><a name="commonproblems" id="commonproblems">Common Problems &amp; Solutions</a></h2>
+<h1 id="common-problems-solutions"><a name="commonproblems" id="commonproblems">Common Problems &amp; Solutions</a></h1>
 <p>In this section, we will review a number of common problems developers often experience once they've started to work on relatively non-trivial projects using Backbone.js, as well as present potential solutions.</p>
 <p>Perhaps the most frequent of these questions surround how to do more with Views. If you are interested in discovering how to work with nested Views, learn about view disposal and inheritance, this section will hopefully have you covered.</p>
 <h4 id="nesting-what-is-the-best-approach-for-rendering-and-appending-sub-views-in-backbone.js">Nesting: What is the best approach for rendering and appending Sub-Views in Backbone.js?</h4>
@@ -2578,7 +2578,7 @@ NewChildView = <span class="kw">Backbone.View</span>.<span class="fu">extend</sp
 <h4 id="is-backbone-too-simple-for-my-needs">Is Backbone too simple for my needs?</h4>
 <p>Backbone can be used for building both trivial and complex applications as demonstrated by the many examples Ashkenas has been referencing in the Backbone documentation. As with any MVC framework however, it's important to dedicate time towards planning out what models and views your application really needs. Diving straight into development without doing this can result in either spaghetti code or a large refactor later on and it's best to avoid this where possible.</p>
 <p>At the end of the day, the key to building large applications is not to build large applications in the first place. If you find that Backbone doesn't cut it for your requirements (which is unlikely for many many use-cases), I strongly recommend checking out AngularJS, Ember.js, Spine.js or CanJS as they offer a little more than Backbone out of the box. Dojo and Dojo Mobile may also be of interest as these have also been used to build significantly complex apps by other developers.</p>
-<h2 id="restful-applications"># <a name="restfulapps">RESTful Applications</a></h2>
+<h1 id="restful-applications"><a name="restfulapps">RESTful Applications</a></h1>
 <h2 id="building-restful-applications-with-backbone"><a name="restful">Building RESTful applications with Backbone</a></h2>
 <p>In this section of the book, we're going to take a look at developing RESTful applications using Backbone.js and modern technology stacks. When the data for your back-end is exposed through a purely RESTful API, tasks such as retrieving (GET), creating (POST), updating (PUT) and deleting (DELETE) models are made easy through Backbone's Model API. This API is so intuitive in fact that switching from storing records in a local data-store (e.g localStorage) to a database/noSQL data-store is a lot simpler than you may think.</p>
 <h2 id="stack-1-building-a-backbone-app-with-node.js-express-mongoose-and-mongodb"><a name="stack1">Stack 1: Building A Backbone App With Node.js, Express, Mongoose and MongoDB</a></h2>
@@ -3369,8 +3369,8 @@ put <span class="st">&#39;/api/:thing/:id&#39;</span> <span class="kw">do</span>
 <h2 id="conclusions-2">Conclusions</h2>
 <p>In this chapter, we looked at creating a Backbone application backed by an API powered by Ruby, Sinatra, Haml, MongoDB and the MongoDB driver. I personally found developing APIs with Sinatra a relatively painless experience and one which I felt was on-par with the effort required for the Node/Express implementation of the same application.</p>
 <p>This section is by no means the most comprehensive guide on building complex apps using all of the items in this particular stack. I do however hope it was an introduction sufficient enough to help you decide on what stack to try out for your next project.</p>
-<h2 id="advanced"># <a name="advanced">Advanced</a></h2>
-<h2 id="modular-javascript"><a name="modularjs">Modular JavaScript</a></h2>
+<h1 id="modular-development"><a name="advanced">Modular Development</a></h1>
+<h2 id="introduction-2"><a name="modularjs">Introduction</a></h2>
 <p>When we say an application is modular, we generally mean it's composed of a set of highly decoupled, distinct pieces of functionality stored in modules. As you probably know, loose coupling facilitates easier maintainability of apps by removing dependencies where possible. When this is implemented efficiently, its quite easy to see how changes to one part of a system may affect another.</p>
 <p>Unlike some more traditional programming languages however, the current iteration of JavaScript (ECMA-262) doesn't provide developers with the means to import such modules of code in a clean, organized manner. It's one of the concerns with specifications that haven't required great thought until more recent years where the need for more organized JavaScript applications became apparent.</p>
 <p>Instead, developers at present are left to fall back on variations of the module or object literal patterns. With many of these, module scripts are strung together in the DOM with namespaces being described by a single global object where it's still possible to incur naming collisions in your architecture. There's also no clean way to handle dependency management without some manual effort or third party tools.</p>
@@ -4686,9 +4686,9 @@ $.<span class="fu">mobile</span>.<span class="fu">changePage</span>( url , { <sp
 <p>If you open up Flickly in a desktop browser, you'll get an image search UI that's modeled on Google.com, however, review the components (buttons, text inputs, tabs) on the page for a moment. The desktop UI doesn't look anything like a mobile application yet I'm still using jQM for theming mobile components; the tabs, date-picker, sliders - everything in the desktop UI is re-using what jQM would be providing users on mobile devices. Thanks to some media queries, the desktop UI can make optimal use of whitespace, expanding component blocks out and providing alternative layouts whilst still making use of jQM as a component framework.</p>
 <p>The benefit of this is that I don't need to go pulling in jQuery UI separately to be able to take advantage of these features. Thanks to the recent ThemeRoller my components can look pretty much exactly how I would like them to and users of the app can get a jQM UI for lower-resolutions and a jQM-ish UI for everything else.</p>
 <p>The takeaway here is just to remember that if you're not (already) going through the hassle of conditional script/style loading based on screen-resolution (using matchMedia.js etc), there are simpler approaches that can be taken to cross-device component theming.</p>
-<h2 id="unit-testing"><a name="testing">Unit Testing</a></h2>
-<h1 id="unit-testing-backbone-applications-with-jasmine"><a name="unittestingjasmine">Unit Testing Backbone Applications With Jasmine</a></h1>
-<h2 id="introduction-2">Introduction</h2>
+<h1 id="unit-testing"><a name="testing">Unit Testing</a></h1>
+<h2 id="unit-testing-backbone-applications-with-jasmine"><a name="unittestingjasmine">Unit Testing Backbone Applications With Jasmine</a></h2>
+<h2 id="introduction-3">Introduction</h2>
 <p>One definition of unit testing is the process of taking the smallest piece of testable code in an application, isolating it from the remainder of your codebase and determining if it behaves exactly as expected. In this section, we'll be taking a look at how to unit test Backbone applications using a popular JavaScript testing framework called <a href="http://pivotal.github.com/jasmine/">Jasmine</a> from Pivotal Labs.</p>
 <p>For an application to be considered 'well'-tested, distinct functionality should ideally have its own separate unit tests where it's tested against the different conditions you expect it to work under. All tests must pass before functionality is considered 'complete'. This allows developers to both modify a unit of code and its dependencies with a level of confidence about whether these changes have caused any breakage.</p>
 <p>As a basic example of unit testing is where a developer may wish to assert whether passing specific values through to a sum function results in the correct output being returned. For an example more relevant to this book, we may wish to assert whether a user adding a new Todo item to a list correctly adds a Model of a specific type to a Todos Collection.</p>
@@ -5292,8 +5292,8 @@ expect(<span class="ch">&#39;click&#39;</span>).<span class="fu">toHaveBeenTrigg
 <li><a href="http://japhr.blogspot.com/2011/11/jasmine-backbonejs-revisited.html">Jasmine + Backbone Revisited</a></li>
 <li><a href="http://japhr.blogspot.com/2011/12/phantomjs-and-backbonejs-and-requirejs.html">Backbone, PhantomJS and Jasmine</a></li>
 </ul>
-<h1 id="unit-testing-backbone-applications-with-qunit-and-sinonjs"><a name="unittestingqunit">Unit Testing Backbone Applications With QUnit And SinonJS</a></h1>
-<h2 id="introduction-3">Introduction</h2>
+<h2 id="unit-testing-backbone-applications-with-qunit-and-sinonjs"><a name="unittestingqunit">Unit Testing Backbone Applications With QUnit And SinonJS</a></h2>
+<h2 id="introduction-4">Introduction</h2>
 <p>QUnit is a powerful JavaScript test suite written by jQuery team member <a href="http://bassistance.de/">Jörn Zaefferer</a> and used by many large open-source projects (such as jQuery and Backbone.js) to test their code. It's both capable of testing standard JavaScript code in the browser as well as code on the server-side (where environments supported include Rhino, V8 and SpiderMonkey). This makes it a robust solution for a large number of use-cases.</p>
 <p>Quite a few Backbone.js contributors feel that QUnit is a better introductory framework for testing if you don't wish to start off with Jasmine and BDD right away. As we'll see later on in this chapter, QUnit can also be combined with third-party solutions such as SinonJS to produce an even more powerful testing solution supporting spies and mocks, which some say is preferable over Jasmine.</p>
 <p>My personal recommendation is that it's worth comparing both frameworks and opting for the solution that you feel the most comfortable with.</p>
@@ -6140,7 +6140,7 @@ test( <span class="ch">&#39;Should bind Collection events to View creation.&#39;
 <li><strong><a href="https://github.com/jc00ke/qunit-backbone">Another QUnit/Backbone.js demo project</a></strong><br /></li>
 <li><strong><a href="http://devblog.supportbee.com/2012/02/10/helpers-for-testing-backbone-js-apps-using-jasmine-and-sinon-js/">SinonJS helpers for Backbone</a></strong></li>
 </ul>
-<h2 id="resources"><a name="resources">Resources</a></h2>
+<h1 id="resources"><a name="resources">Resources</a></h1>
 <p>Whilst what we get with Backbone out of the box can be terribly useful, there are some equally beneficial add-ons that can help simplify our development process. These include:</p>
 <ul>
 <li><a href="https://github.com/derickbailey/backbone.marionette">Backbone Marionette</a></li>
@@ -6152,7 +6152,7 @@ test( <span class="ch">&#39;Should bind Collection events to View creation.&#39;
 <li><a href="https://github.com/n-time/backbone.validations">Backbone Validations - HTML5 inspired validations</a></li>
 </ul>
 <p>In time, there will be tutorials in the book covering some of these resources but until then, please feel free to check them out.</p>
-<h2 id="conclusions-4"><a name="conclusions">Conclusions</a></h2>
+<h1 id="conclusions-4"><a name="conclusions">Conclusions</a></h1>
 <p>That's it for 'Developing Backbone.js Applications'. I hope you found this book both useful, enlightening and a good start for your journey into exploring Backbone.js.</p>
 <p>If there are other topics or areas of this book you feel could be expanded further, please feel free to let me know, or better yet, send a pull request upstream. I'm always interested in making this title as comprehensive as possible.</p>
 <p>Until next time, the very best of luck with the rest of your journey!</p>

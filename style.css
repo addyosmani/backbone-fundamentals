@@ -42,6 +42,10 @@ h1 {
     margin-bottom: 18px;
     font-size: 30px;
 }
+h1 a{
+    margin-top:100px;
+    display: block;
+}
 h2 {
     font-size: 24px;
 }
