@@ -326,7 +326,7 @@ Underscore
 \line
      var render= function()\{\line
         // We use a templating library such as Underscore\line
-        // templating which generates the HTML for our \line
+        // templating which generates the HTML for our\line
         // photo entry\line
         photoEl.innerHTML = _.template('photoTemplate', \{src: photoModel.getSrc()\});\line
      \}\line
@@ -361,7 +361,7 @@ Underscore
 {\pard \ql \f0 \sa180 \li0 \fi0 \f1 <li class="photo">\line
   <h2>\{\{caption\}\}</h2>\line
   <img class="source" src="\{\{src\}\}"/>\line
-  <div class="meta-data"> \line
+  <div class="meta-data">\line
     \{\{metadata\}\}\line
   </div>\line
 </li>\par}
@@ -369,7 +369,7 @@ Underscore
 {\pard \ql \f0 \sa180 \li0 \fi0 \f1 <li class="photo">\line
   <h2><%= caption %></h2>\line
   <img class="source" src="<%= src %>"/>\line
-  <div class="meta-data"> \line
+  <div class="meta-data">\line
     <%= metadata %>\line
   </div>\line
 </li>\par}
@@ -393,7 +393,7 @@ Spine.js
 {\pard \ql \f0 \sa180 \li0 \fi0 (Note: We won\u8217't be delving heavily into Spine.js beyond this example, but it\u8217's worth looking at it to learn more about Javascript frameworks in general.)\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \f1 // Controllers in Spine are created by inheriting from Spine.Controller\line
 \line
-var PhotosController = Spine.Controller.sub(\{      \line
+var PhotosController = Spine.Controller.sub(\{\line
   init: function()\{\line
     this.item.bind("update", this.proxy(this.render));\line
     this.item.bind("destroy", this.proxy(this.remove));\line
@@ -429,8 +429,8 @@ var PhotosController = Spine.Controller.sub(\{      \line
 \}):\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \b \fs32 What does MVC give us?\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 To summarize, the separation of concerns in MVC facilitates modularization of an application\u8217's functionality and enables:\par}
-{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Easier overall maintenance. When updates need to be made to the application it is clear whether the changes are data-centric, meaning changes to models and possibly controllers, or merely visual, meaning changes to views.\line \par}
-{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Decoupling models and views means that it\u8217's straight-forward to write unit tests for business logic\line \par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Easier overall maintenance. When updates need to be made to the application it is clear whether the changes are data-centric, meaning changes to models and possibly controllers, or merely visual, meaning changes to views.\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Decoupling models and views means that it\u8217's straight-forward to write unit tests for business logic\par}
 {\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Duplication of low-level model and controller code is eliminated across the application\par}
 {\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Depending on the size of the application and separation of roles, this modularity allows developers responsible for core logic and developers working on the user-interfaces to work simultaneously\sa180\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \b \fs28 Delving deeper\par}
@@ -476,7 +476,7 @@ Irene Ros
  subscribes to this way of thinking as when she separates Backbone views out into their own distinct components, she needs something to actually assemble them for her. This could either be a controller route (such as a {\f1 Backbone.Router}, covered later in the book) or a callback in response to data being fetched.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 That said, some developers do however feel that Backbone.js better fits the description of MVP than it does MVC . Their view is that:\par}
 {\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab The presenter in MVP better describes the {\f1 Backbone.View} (the layer between View templates and the data bound to it) than a controller does\par}
-{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab The model fits {\f1 Backbone.Model} (it isn\u8217't that different from the classical MVC \u8220"Model\u8221")\line \par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab The model fits {\f1 Backbone.Model} (it isn\u8217't that different from the classical MVC \u8220"Model\u8221")\par}
 {\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab The views best represent templates (e.g Handlebars/Mustache markup templates)\sa180\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 A response to this could be that the view can also just be a View (as per MVC) because Backbone is flexible enough to let it be used for multiple purposes. The V in MVC and the P in MVP can both be accomplished by {\f1 Backbone.View} because they\u8217're able to achieve two purposes: both rendering atomic components and assembling those components rendered by other views.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 We\u8217've also seen that in Backbone the responsibility of a controller is shared with both the Backbone.View and Backbone.Router and in the following example we can actually see that aspects of that are certainly true.\par}
@@ -543,7 +543,7 @@ trivial
 {\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Doesn\u8217't support deeply nested models, though there are Backbone plugins such as {\field{\*\fldinst{HYPERLINK "https://github.com/PaulUithol/Backbone-relational"}}{\fldrslt{\ul
 this
 }}}
- which can help\line \par}
+ which can help\par}
 {\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Clear and flexible conventions for structuring applications. Backbone doesn\u8217't force usage of all of its components and can work with only those needed.\sa180\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \b \fs36 The Internals\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 In this section, you\u8217'll learn the essentials of Backbone\u8217's models, views, collections and routers, as well as about using namespacing to organize your code. This isn\u8217't meant as a replacement for the official documentation, but it will help you understand many of the core concepts behind Backbone before you start building applications with it.\par}
@@ -563,7 +563,7 @@ this
     \},\line
     initialize: function()\{\line
         this.on("change:src", function()\{\line
-            var src = this.get("src"); \line
+            var src = this.get("src");\line
             console.log('Image source updated to ' + src);\line
         \});\line
     \},\line
@@ -587,9 +587,9 @@ var myPhoto = new Photo();\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \b \fs24 Getters & Setters\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 {\b Model.get()}\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 {\f1 Model.get()} provides easy access to a model\u8217's attributes. Attributes which are passed through to the model on instantiation are instantly available for retrieval.\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 \f1 var myPhoto = new Photo(\{ title: "My awesome photo", \line
-                          src:"boston.jpg", \line
-                          location: "Boston", \line
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 var myPhoto = new Photo(\{ title: "My awesome photo",\line
+                          src:"boston.jpg",\line
+                          location: "Boston",\line
                           tags:['the big game', 'vacation']\}),\line
 \line
     title = myPhoto.get("title"), //My awesome photo\line
@@ -603,10 +603,10 @@ console.log(myAttributes);\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 Accessing {\f1 Model.attributes} directly is generally discouraged. Instead, should you need to read or clone data, {\f1 Model.toJSON()} is recommended for this purpose. If you would like to access or copy a model\u8217's attributes for purposes such as JSON stringification (e.g.\u160?for serialization prior to being passed to a view), this can be achieved using Model.toJSON(). Remember that this will return an object and JSON.stringify() should be used to get a string representation of the data:\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \f1 var myAttributes = myPhoto.toJSON();\line
 console.log(JSON.stringify(myattributes));\line
-/* this returns: \line
- \{ title: "My awesome photo", \line
-   src:"boston.jpg", \line
-   location: "Boston", \line
+/* this returns:\line
+ \{ title: "My awesome photo",\line
+   src:"boston.jpg",\line
+   location: "Boston",\line
    tags:['the big game', 'vacation']\}\line
 */\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \b \fs24 Model.set()\par}
@@ -637,7 +637,7 @@ myPhoto2.set(\{ title:'Vacation in Florida', location: 'Florida' \});\par}
     \}\line
 \});\line
 \line
-var myPhoto = new Photo(\{ location: "Boston", \line
+var myPhoto = new Photo(\{ location: "Boston",\line
                           tags:['the big game', 'vacation']\}),\line
     title   = myPhoto.get("title"), //Another photo!\line
     location = myPhoto.get("location"), //Boston\line
@@ -670,7 +670,7 @@ var myPhoto = new Photo(\{ location: "Boston", \line
 \});\line
 \line
 var myPhoto = new Photo(\{ title:"Fishing at the lake", src:"fishing.jpg"\});\line
-myPhoto.setTitle('Fishing at sea'); \line
+myPhoto.setTitle('Fishing at sea');\line
 //logs 'My title has been changed to.. Fishing at sea'\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 {\b Validation}\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 Backbone supports model validation through {\f1 Model.validate()}, which allows checking the attribute values for a model prior to them being set.\par}
@@ -728,7 +728,7 @@ here
 {\pard \ql \f0 \sa180 \li0 \fi0 \b \fs24 What is {\f1 el}?\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 {\f1 el} is basically a reference to a DOM element and all views must have one. It allows for all of the contents of a view to be inserted into the DOM at once, which makes for faster rendering because the browser performs the minimum required reflows and repaints.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 There are two ways to attach a DOM element to a view: the element already exists in the page or a new element is created for the view and added manually by the developer. If the element already exists in the page, you can set {\f1 el} as either a CSS selector that matches the element or a simple reference to the DOM element.\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 \f1 el: '#footer', \line
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 el: '#footer',\line
 // OR\line
 el: document.getElementById( 'footer' )\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 If you want to create a new element for your view, set any combination of the following view\u8217's properties: {\f1 tagName}, {\f1 id} and {\f1 className}. A new element will be created for you by the framework and a reference to it will be available at the {\f1 el} property.\par}
@@ -766,7 +766,7 @@ photoCollection.remove([a,b]);\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 As collections represent a group of items, we\u8217're also able to listen for {\f1 add} and {\f1 remove} events for when new models are added or removed from the collection. Here\u8217's an example:\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \f1 var PhotoCollection = new Backbone.Collection();\line
 PhotoCollection.on("add", function(photo) \{\line
-  console.log("I liked " + photo.get("title") + ' its this one, right? '  + photo.get("src"));\line
+  console.log("I liked " + photo.get("title") + ' it\\'s this one, right? '  + photo.get("src"));\line
 \});\line
 \line
 PhotoCollection.add([\line
@@ -776,7 +776,7 @@ PhotoCollection.add([\line
 ]);\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 In addition, we\u8217're able to bind a {\f1 change} event to listen for changes to models in the collection.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \f1 PhotoCollection.on("change:title", function()\{\line
-    console.log("there have been updates made to this collection's titles");    \line
+    console.log("there have been updates made to this collection's titles");\line
 \});\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 {\b Fetching models from the server}\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 {\f1 Collections.fetch()} retrieves a default set of models from the server in the form of a JSON array. When this data returns, the current collection\u8217's contents will be replaced with the contents of the array.\par}
@@ -863,14 +863,14 @@ _.extend(ourObject, Backbone.Events);\line
 \line
 // Add a custom event\line
 ourObject.on("dance", function(msg)\{\line
-  console.log("We triggered" + msg);\line
+  console.log("We triggered " + msg);\line
 \});\line
 \line
 // Trigger the custom event\line
 ourObject.trigger("dance", "our event");\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 If you\u8217're familiar with jQuery custom events or the concept of Publish/Subscribe, {\f1 Backbone.Events} provides a system that is very similar with {\f1 on} being analogous to {\f1 subscribe} and {\f1 trigger} being similar to {\f1 publish}.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 {\f1 on} basically allows us to bind a callback function to any object, as we\u8217've done with {\f1 dance} in the above example. Whenever the event is fired, our callback is invoked.\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 The official Backbone.js documentation recommends namespacing event names using colors if you end up using quite a few of these on your page. e.g:\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 The official Backbone.js documentation recommends namespacing event names using colons if you end up using quite a few of these on your page. e.g:\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \f1 ourObject.on("dance:tap", ...);\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 A special {\f1 all} event is made available in case you would like an event to be triggered when any event occurs (e.g if you would like to screen events in a single location). The {\f1 all} event can be used as follows:\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \f1 ourObject.on("all", function(eventName)\{\line
@@ -904,13 +904,13 @@ http://unicorns.com/#search/seasonal-horns/page2\par}
         /*Sample usage: http://unicorns.com/#about*/\line
 \line
         "photos/:id" : "getPhoto",\line
-        /*This is an example of using a ":param" variable which allows us to match \line
+        /*This is an example of using a ":param" variable which allows us to match\line
         any of the components between two URL slashes*/\line
         /*Sample usage: http://unicorns.com/#photos/5*/\line
 \line
         "search/:query" : "searchPhotos",\line
         /*We can also define multiple routes that are bound to the same map function,\line
-        in this case searchPhotos(). Note below how we're optionally passing in a \line
+        in this case searchPhotos(). Note below how we're optionally passing in a\line
         reference to a page number if one is supplied*/\line
         /*Sample usage: http://unicorns.com/#search/lolcats*/\line
 \line
@@ -919,11 +919,11 @@ http://unicorns.com/#search/seasonal-horns/page2\par}
         /*Sample usage: http://unicorns.com/#search/lolcats/p1*/\line
 \line
         "photos/:id/download/*imagePath" : "downloadPhoto",\line
-        /*This is an example of using a *splat. splats are able to match any number of \line
+        /*This is an example of using a *splat. splats are able to match any number of\line
         URL components and can be combined with ":param"s*/\line
         /*Sample usage: http://unicorns.com/#photos/5/download/files/lolcat-car.jpg*/\line
 \line
-        /*If you wish to use splats for anything beyond default routing, it's probably a good \line
+        /*If you wish to use splats for anything beyond default routing, it's probably a good\line
         idea to leave them at the end of a URL otherwise you may need to apply regular\line
         expression parsing on your fragment*/\line
 \line
@@ -939,7 +939,7 @@ http://unicorns.com/#search/seasonal-horns/page2\par}
     \},\line
 \line
     getPhoto: function(id)\{\line
-        /* \line
+        /*\line
         Note that the id matched in the above route will be passed to this function\line
         */\line
         console.log("You are trying to reach photo " + id);\line
@@ -1237,7 +1237,7 @@ myGalleryViews.galleryView = Backbone.View.extend(\{\});\par}
         skin: 'a',\line
         toolbars: \{\line
             index: 'ui-navigation-toolbar',\line
-            pages: 'ui-custom-toolbar'    \line
+            pages: 'ui-custom-toolbar'\line
         \}\line
     \}\line
 \}\par}
@@ -1258,12 +1258,12 @@ galleryApp.model = galleryApp.model || \{\};\line
 galleryApp.model.special = galleryApp.model.special || \{\};\line
 \line
 // routers\line
-galleryApp.routers.Workspace   = Backbone.Router.extend(\{\}); \line
-galleryApp.routers.PhotoSearch = Backbone.Router.extend(\{\}); \line
+galleryApp.routers.Workspace   = Backbone.Router.extend(\{\});\line
+galleryApp.routers.PhotoSearch = Backbone.Router.extend(\{\});\line
 \line
 // models\line
 galleryApp.model.Photo   = Backbone.Model.extend(\{\});\line
-galleryApp.model.Comment = Backbone.Model.extend(\{\}); \line
+galleryApp.model.Comment = Backbone.Model.extend(\{\});\line
 \line
 // special models\line
 galleryApp.model.special.Admin = Backbone.Model.extend(\{\});\par}
@@ -1696,7 +1696,7 @@ $(function() \{\line
 \line
       if ( value ) \{\line
         this.model.save(\{ title: value \});\line
-      \} \line
+      \}\line
 \line
       this.$el.removeClass('editing');\line
     \},\line
@@ -1855,7 +1855,7 @@ complete source
 {\pard \ql \f0 \sa180 \li0 \fi0 \b \fs32 Todo routing\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 Finally, we move on to routing, which will allow us to easily bookmark the list of items that are active as well as those which have been completed. We\u8217'll be supporting the following routes:\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \f1 #/ (all - default)\line
-#/active \line
+#/active\line
 #/completed\par}
 {\pard \ql \f0 \sa0 \li0 \fi0 \par}
 {\pard \ql \f0 \sa180 \li0 \fi0 When the route changes the todo list will be filtered on a model level and the selected class on the filter links will be toggled. When an item is updated while in a filtered state, it will be updated accordingly. E.g. if the filter is active and the item is checked, it will be hidden. The active filter is persisted on reload.\par}
@@ -2542,7 +2542,7 @@ Ian Taylor
 {\pard \ql \f0 \sa180 \li0 \fi0 In order to reach attributes on related models in a nested setup, the models involved need to have some prior knowledge about which models this refers to. Backbone.js doesn\u8217't implicitly handle relations or nesting, meaning it\u8217's up to us to ensure models have a knowledge of each other.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 One approach is to make sure each child model has a \u8216'parent\u8217' attribute. This way you can traverse the nesting first up to the parent and then down to any siblings that you know of. So, assuming we have models modelA, modelB and modelC:\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \f1 \line
-// When initializing modelA, I would suggest setting a link to the parent \line
+// When initializing modelA, I would suggest setting a link to the parent\line
 // model when doing this, like this:\line
 \line
 ModelA = Backbone.Model.extend(\{\line
@@ -2630,7 +2630,7 @@ Artem Oboturov
 // for an implementation or alternatively for a more thorough one\line
 // http://thejacklawson.com/Mediator.js/\line
 \line
-var mediator = new Mediator(); \line
+var mediator = new Mediator();\line
 \line
 var ApplicationViewB = Backbone.View.extend(\{\line
     toggle_select: function() \{\line
@@ -2698,7 +2698,7 @@ _.extend(BaseView.prototype, Backbone.View.prototype, \{\line
     \},\line
 \line
     dispose: function () \{\line
-        this.unbindFromAll(); // this will unbind all events that this view has bound to \line
+        this.unbindFromAll(); // this will unbind all events that this view has bound to\line
         this.unbind(); // this will unbind all listeners to events from this view. This is probably not necessary because this view will be garbage collected.\line
         this.remove(); // uses the default Backbone.View.remove() method which removes this.el from the DOM and removes DOM events.\line
     \}\line
@@ -2813,20 +2813,9 @@ Marionette
 {\pard \ql \f0 \sa180 \li0 \fi0 Some simple validation that could be written using the current Backbone {\f1 validate} method to work with this form could be implemented using something like:\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \f1 validate: function(attrs) \{\line
 \line
-    if(!attrs.firstname) \{\line
-         console.log('first name is empty');\line
-         return false;\line
-    \}\line
-\line
-    if(!attrs.lastname) \{\line
-        console.log('last name is empty');\line
-        return false;\line
-    \}\line
-\line
-    if(!attrs.email) \{\line
-        console.log('email is empty');\line
-        return false;\line
-    \}\line
+    if(!attrs.firstname) return 'first name is empty';\line
+    if(!attrs.lastname) return 'last name is empty';\line
+    if(!attrs.email) return 'email is empty';\line
 \line
 \}\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 Unfortunately, this method would trigger a first name error each time any of the fields were blurred and only an error message next to the first name field would be presented.\par}
@@ -2929,7 +2918,7 @@ var User = Backbone.Model.extend(\{\line
           \},\line
          ...\line
 \line
-    // We can determine which properties are getting validated by \line
+    // We can determine which properties are getting validated by\line
     // checking to see if properties are equal to null\line
 \line
         validate: function(attrs) \{\line
@@ -2942,9 +2931,9 @@ var User = Backbone.Model.extend(\{\line
                   console.log('first name isEmpty validation called');\line
               \}\line
 \line
-              else if(!this.validators.minLength(attrs.firstname, 2)) \line
+              else if(!this.validators.minLength(attrs.firstname, 2))\line
                 errors.firstname = 'firstname is too short';\line
-              else if(!this.validators.maxLength(attrs.firstname, 15)) \line
+              else if(!this.validators.maxLength(attrs.firstname, 15))\line
                 errors.firstname = 'firstname is too large';\line
               else if(this.validators.hasSpecialCharacter(attrs.firstname)) errors.firstname = 'firstname cannot contain special characters';\line
           \}\line
@@ -2956,11 +2945,11 @@ var User = Backbone.Model.extend(\{\line
                   console.log('last name isEmpty validation called');\line
               \}\line
 \line
-              else if(!this.validators.minLength(attrs.lastname, 2)) \line
+              else if(!this.validators.minLength(attrs.lastname, 2))\line
                 errors.lastname = 'lastname is too short';\line
-              else if(!this.validators.maxLength(attrs.lastname, 15)) \line
+              else if(!this.validators.maxLength(attrs.lastname, 15))\line
                 errors.lastname = 'lastname is too large';\line
-              else if(this.validators.hasSpecialCharacter(attrs.lastname)) errors.lastname = 'lastname cannot contain special characters';  \line
+              else if(this.validators.hasSpecialCharacter(attrs.lastname)) errors.lastname = 'lastname cannot contain special characters';\line
 \line
           \}\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 This allows the logic inside of our validate methods to determine which form fields are currently being set/validated, and does not care about the other model properties that are not trying to be set.\par}
@@ -3155,7 +3144,7 @@ script#item-template(type="text/template")\line
   <div class="todo <%= done ? 'done' : '' %>">\line
   .display\line
     <input class="check" type="checkbox" <%= done ? 'checked="checked"' : '' %> />\line
-    .todo-text \line
+    .todo-text\line
     span#todo-destroy\line
   .edit\line
     input.todo-input(type="text", "value"="")\line
@@ -3164,7 +3153,7 @@ script#item-template(type="text/template")\line
 script#stats-template(type="text/template")\line
   <% if (total) \{ %>\line
   span.todo-count\line
-    span.number <%= remaining %> \line
+    span.number <%= remaining %>\line
     span.word <%= remaining == 1 ? 'item' : 'items' %>\line
     |  left.\line
   <% \} %>\line
@@ -3640,7 +3629,7 @@ var AppView = Backbone.View.extend(\{\line
     render: function() \{\line
       this.$('#todo-stats').html(this.statsTemplate(\{\line
         total:      Todos.length,\line
-        done:   \line
+        done:\line
  \u8230?.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \b \fs28 Collections\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 In the TodoList collection below, we\u8217've set the {\f1 url} property to point to {\f1 /api/todos} to reference the collection\u8217's location on the server. When we attempt to access this from our Sinatra-backed API, it should return a list of all the Todo items that have been previously stored in Mongo.\par}
@@ -3723,13 +3712,13 @@ require 'json'\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 {\f1 haml :index} instructs Sinatra to use the {\f1 views/index.haml} for the application index, whilst {\f1 attr_wrapper} is simply defining the values to be used for any local variables defined inside the template. This similarly applies Todo items with the template `views/todo.haml\u8217'.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 The rest of our routes make use of the {\f1 params} hash and a number of useful helper methods included with the MongoDB Ruby driver. For more details on these, please read the comments I\u8217've made inline below:\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \f1 get '/api/:thing' do\line
-  # query a collection :thing, convert the output to an array, map the _id \line
+  # query a collection :thing, convert the output to an array, map the _id\line
   # to a string representation of the object's _id and finally output to JSON\line
   DB.collection(params[:thing]).find.to_a.map\{|t| from_bson_id(t)\}.to_json\line
 end\line
 \line
 get '/api/:thing/:id' do\line
-  # get the first document with the id :id in the collection :thing as a single document (rather \line
+  # get the first document with the id :id in the collection :thing as a single document (rather\line
   # than a Cursor, the standard output) using find_one(). Our bson utilities assist with\line
   # ID conversion and the final output returned is also JSON\line
   from_bson_id(DB.collection(params[:thing]).find_one(to_bson_id(params[:id]))).to_json\line
@@ -3819,7 +3808,7 @@ end\par}
   <div class="todo <%= done ? 'done' : '' %>">\line
   %div.display\line
     <input class="check" type="checkbox" <%= done ? 'checked="checked"' : '' %> />\line
-    %div.todo-text \line
+    %div.todo-text\line
     %span#todo-destroy\line
   %div.edit\line
     %input.todo-input\{"type" => "text", "value" =>""\}/\line
@@ -3867,15 +3856,15 @@ a detailed article
 {\pard \ql \f0 \sa180 \li0 \fi0 \b \fs28 Writing AMD modules with Require.js\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 As discussed above, the overall goal for the AMD format is to provide a solution for modular JavaScript that developers can use today. The two key concepts you need to be aware of when using it with a script-loader are a {\f1 define()} method for facilitating module definition and a {\f1 require()} method for handling dependency loading. {\f1 define()} is used to define named or unnamed modules based on the proposal using the following signature:\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \f1 define(\line
-    module_id /*optional*/, \line
-    [dependencies] /*optional*/, \line
+    module_id /*optional*/,\line
+    [dependencies] /*optional*/,\line
     definition function /*function for instantiating the module or object*/\line
 );\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 As you can tell by the inline comments, the {\f1 module_id} is an optional argument which is typically only required when non-AMD concatenation tools are being used (there may be some other edge cases where it\u8217's useful too). When this argument is left out, we call the module \u8216'anonymous\u8217'. When working with anonymous modules, the idea of a module\u8217's identity is DRY, making it trivial to avoid duplication of filenames and code.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 Back to the define signature, the dependencies argument represents an array of dependencies which are required by the module you are defining and the third argument (\u8216'definition function\u8217') is a function that\u8217's executed to instantiate your module. A barebone module (compatible with Require.js) could be defined using {\f1 define()} as follows:\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \f1 // A module ID has been omitted here to make the module anonymous\line
 \line
-define(['foo', 'bar'], \line
+define(['foo', 'bar'],\line
     // module definition function\line
     // dependencies (foo and bar) are mapped to function parameters\line
     function ( foo, bar ) \{\line
@@ -3931,7 +3920,7 @@ require(['foo', 'bar'], function ( foo, bar ) \{\line
 {\pard \ql \f0 \sa180 \li0 \fi0 \f1 define(['underscore', 'backbone'], function(_, Backbone) \{\line
   var myModel = Backbone.Model.extend(\{\line
 \line
-    // Default attributes \line
+    // Default attributes\line
     defaults: \{\line
       content: "hello world",\line
     \},\line
@@ -3951,7 +3940,7 @@ require(['foo', 'bar'], function ( foo, bar ) \{\line
 {\pard \ql \f0 \sa180 \li0 \fi0 Note how we alias Underscore.js\u8217's instance to {\f1 _} and Backbone to just {\f1 Backbone}, making it very trivial to convert non-AMD code over to using this module format. For a view which might require other dependencies such as jQuery, this can similarly be done as follows:\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \f1 define([\line
   'jquery',\line
-  'underscore', \line
+  'underscore',\line
   'backbone',\line
   'collections/mycollection',\line
   'views/myview'\line
@@ -3990,7 +3979,7 @@ require(['foo', 'bar'], function ( foo, bar ) \{\line
 {\pard \ql \f0 \sa180 \li0 \fi0 HTML:\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \f1 <script type="text/template" id="mainViewTemplate">\line
     <% _.each( person, function( person_item )\{ %>\line
-        <li><%= person_item.get("name") %></li>  \line
+        <li><%= person_item.get("name") %></li>\line
     <% \}); %>\line
 </script>\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 JS:\par}
@@ -4023,7 +4012,7 @@ my post and screencast on this topic
 optimizer docs
 }}}
  this means that Backbone modules defined like this:\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 \f1 define(['jquery','backbone','underscore', 'collections/sample','views/test'], \line
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 define(['jquery','backbone','underscore', 'collections/sample','views/test'],\line
     function($,Backbone, _, Sample, Test)\{\line
         //...\line
     \});\par}
@@ -4250,10 +4239,10 @@ Jasmine
 {\pard \ql \f0 \sa180 \li0 \fi0 The above build profile is designed for balancing scalability and performance.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 {\b Examples of the grouped sets of code dependencies}\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 The contents of the vendor.js which is not built into a package may use some {\i no conflict} calls as well.\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 \f1 // List of vendor libraries, e.g. jQuery, Underscore, Backbone, etc.  \line
-// this module is used with the r.js optimizer tool during build  \line
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 // List of vendor libraries, e.g. jQuery, Underscore, Backbone, etc.\line
+// this module is used with the r.js optimizer tool during build\line
 // @see <http://requirejs.org/docs/faq-optimization.html>\line
-define([ "jquery", "underscore", "backbone", "modernizr", "mustache" ], \line
+define([ "jquery", "underscore", "backbone", "modernizr", "mustache" ],\line
 function ($,        _,            Backbone,   Modernizr,   Mustache) \{\line
     // call no conflicts so if needed you can use multiple versions of $\line
     $.noConflict();\line
@@ -4262,7 +4251,7 @@ function ($,        _,            Backbone,   Modernizr,   Mustache) \{\line
 \});\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 For your application common library code.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \f1 // List of utility libraries,\line
-define([ "utils/ajax", "utils/baselib", "utils/localstorage", "utils/debug", "utils/shims" ], \line
+define([ "utils/ajax", "utils/baselib", "utils/localstorage", "utils/debug", "utils/shims" ],\line
 function (ajax,         baselib,         localstorage,         debug) \{\line
     return \{\line
         "ajax" : ajax,\line
@@ -4273,12 +4262,12 @@ function (ajax,         baselib,         localstorage,         debug) \{\line
     // the shim only extend JavaScript when needed, e.g. Object.create\line
 \});\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 An example where you intend to use require the common models in another package file.\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 \f1 // List of models  \line
-// models in this directory are intended for site-wide usage  \line
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 // List of models\line
+// models in this directory are intended for site-wide usage\line
 // grouping site-wide models in this module (object)\line
 // optimizes the performance and keeps dependencies organized\line
 // when the (build) optimizer is run.\line
-define([ "models/branding", "models/section" ], \line
+define([ "models/branding", "models/section" ],\line
 function (Branding,          Section) \{\line
     return \{\line
         "Branding" : Branding,\line
@@ -4290,18 +4279,18 @@ function (Branding,          Section) \{\line
 {\pard \ql \f0 \sa180 \li0 \fi0 The convention recommended is to use Upper CamelCase for constructors and lower camelCase for others.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \b \fs24 Common Pitfall when organizing code in modules\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 Be careful not define circular dependencies. For example, in a common {\i models} package (models.js) dependencies are listed for the files in your models directory\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 \f1 define([ "models/branding", "models/section" ], function (branding, section)  \line
-// ...  \line
-return \{ "branding" : branding, "section", section \}  \par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 define([ "models/branding", "models/section" ], function (branding, section)\line
+// ...\line
+return \{ "branding" : branding, "section", section \}\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 Then when another packages requires a common model you can access the models objects returned from your common models.js file like so\u8230?\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 \f1 define([ "models", "utils" ], function (models, utils) \{  \line
-var branding = models.branding, debug = utils.debug;  \par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 define([ "models", "utils" ], function (models, utils) \{\line
+var branding = models.branding, debug = utils.debug;\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 Perhaps after using the model a few times you get into the habit of requiring \u8220"model\u8221". Later you need add another common model with extends a model you already defined. So the pitfall begins, you add a new model inside your models directory and add a reference this same model in the model.js:\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 \f1 define([ "models/branding", "models/section", "models/section-b" ], function (branding, section)  \line
-// ...  \line
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 define([ "models/branding", "models/section", "models/section-b" ], function (branding, section)\line
+// ...\line
 return \{ "branding" : branding, "section", section, "section-b" : section-b \}\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 However in your {\i models/section-b.js} file you define a dependency using the model.js which returns the models in an object like so\u8230?\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 \f1 define([ "models" ], function (models, utils) \{  \line
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 define([ "models" ], function (models, utils) \{\line
 var section = models.section;\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 Above is the mistake in models.js a dependency was added for models/section-b and in section-b a dependency is defined for model. The new models/section-b.js requires {\i model} and model.js requires {\i models/section-b.js} - a circular dependency. This should result in a load timeout error from require.js, but not tell you about the circular dependency.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 For other common mistakes see the {\field{\*\fldinst{HYPERLINK "http://requirejs.org/docs/errors.html"}}{\fldrslt{\ul
@@ -4419,7 +4408,7 @@ RequireJS docs
     // The TodoView listens for changes to its model, re-rendering. Since there's\line
     // a one-to-one correspondence between a **Todo** and a **TodoView** in this\line
     // app, we set a direct reference on the model for convenience.\line
-    initialize: function() \{      \line
+    initialize: function() \{\line
       this.model.on('change', this.render, this);\line
       this.model.view = this;\line
     \},\line
@@ -4441,8 +4430,8 @@ RequireJS docs
 {\pard \ql \f0 \sa180 \li0 \fi0 Let\u8217's now take a look at the AMD-version of our view. As discussed earlier, the \u8216'module\u8217' is wrapped using AMD\u8217's {\f1 define()} which allows us to specify the dependencies our view requires. Using the mapped paths to \u8216'jquery\u8217' etc. simplifies referencing common dependencies and instances of dependencies are themselves mapped to local variables that we can access (e.g \u8216'jquery\u8217' is mapped to {\f1 $}).\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 {\b views/todos.js}\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \f1 define([\line
-  'jquery', \line
-  'underscore', \line
+  'jquery',\line
+  'underscore',\line
   'backbone',\line
   'text!templates/todos.html'\line
   ], function($, _, Backbone, todosTemplate)\{\line
@@ -4465,7 +4454,7 @@ RequireJS docs
     // The TodoView listens for changes to its model, re-rendering. Since there's\line
     // a one-to-one correspondence between a **Todo** and a **TodoView** in this\line
     // app, we set a direct reference on the model for convenience.\line
-    initialize: function() \{      \line
+    initialize: function() \{\line
       this.model.on('change', this.render, this);\line
       this.model.view = this;\line
     \},\line
@@ -4532,9 +4521,9 @@ RequireJS docs
 {\pard \ql \f0 \sa180 \li0 \fi0 As per other types of dependencies, we can easily map our model module to a local variable (in this case {\f1 Todo}) so it can be referenced as the model to use for our {\f1 TodosCollection}. This collection also supports a simple {\f1 done()} filter for narrowing down Todo items that have been completed and a {\f1 remaining()} filter for those that are still outstanding.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 {\b collections/todos.js}\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \f1 define([\line
-  'underscore', \line
-  'backbone', \line
-  'libs/backbone/localstorage', \line
+  'underscore',\line
+  'backbone',\line
+  'libs/backbone/localstorage',\line
   'models/todo'\line
   ], function(_, Backbone, Store, Todo)\{\line
 \line
@@ -4560,7 +4549,7 @@ RequireJS docs
 {\pard \ql \f0 \sa180 \li0 \fi0 {\b views/app.js}\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \f1 define([\line
   'jquery',\line
-  'underscore', \line
+  'underscore',\line
   'backbone',\line
   'collections/todos',\line
   'views/todos',\line
@@ -4708,7 +4697,7 @@ module.facade(\{run: true, val:10\});\line
     facade.subscribe = function(subscriber, channel, callback)\{\line
 \line
         // Note: Handling permissions/security is optional here\line
-        // The permissions check can be removed \line
+        // The permissions check can be removed\line
         // to just use the mediator directly.\line
 \line
         if(permissions.validate(subscriber, channel))\{\line
@@ -4732,8 +4721,8 @@ module.facade(\{run: true, val:10\});\line
     // Permissions\line
 \line
     // A permissions structure can support checking\line
-    // against subscriptions prior to allowing them \line
-    // to clear. This enforces a flexible security \line
+    // against subscriptions prior to allowing them\line
+    // to clear. This enforces a flexible security\line
     // layer for your application.\line
 \line
     var permissions = \{\line
@@ -4787,10 +4776,10 @@ module.facade(\{run: true, val:10\});\line
 {\pard \ql \f0 \sa180 \li0 \fi0 In order to update your Backbone application to primarily use pub/sub, a lot of the work you may end up doing will be moving logic coupled inside of specific views to modules outside of it which are reactionary.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 Take the {\f1 todoSaver} for example - its responsibility is saving new Todo items to models once the a {\f1 notificationName} called \u8216'newContentAvailable\u8217' has fired. If you take a look at the permissions structure in the last code sample, you\u8217'll notice that \u8216'newContentAvailable\u8217' is present there. If I wanted to prevent subscribers from being able to subscribe to this notification, I simply set it to a boolean value of {\f1 false}.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 Again, this is a massive oversimplification of how advanced your permissions structures could get, but it\u8217's certainly one way of controlling what parts of your application can or can\u8217't be accessed by specific modules at any time.\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 \f1 define(["jquery", "underscore", "aura/facade"], \line
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 define(["jquery", "underscore", "aura/facade"],\line
 function ($, _, facade) \{\line
 \line
-    // Subscription 'modules' for our views. These take the \line
+    // Subscription 'modules' for our views. These take the\line
     // the form facade.subscribe( subscriberName, notificationName , callBack )\line
 \line
     // Update view with latest todo content\line
@@ -4853,7 +4842,7 @@ function ($, _, facade) \{\line
     \});\line
 \line
 \line
-    // Create a new todo entry \line
+    // Create a new todo entry\line
     // Subscribes to: createWhenEntered\line
     facade.subscribe('keyboardManager','createWhenEntered', function (context, e, todos) \{\line
         if (e.keyCode != 13) return;\line
@@ -4953,15 +4942,15 @@ Diacritic Plugin
       // the lowest page index your API allows to be accessed\line
       firstPage: 0,\line
 \line
-      // which page should the paginator start from \line
+      // which page should the paginator start from\line
       // (also, the actual page the paginator is on)\line
       currentPage: 0,\line
 \line
       // how many items per page should be shown\line
       perPage: 3,\line
 \line
-      // a default number of total pages to query in case the API or \line
-      // service you are using does not support providing the total \line
+      // a default number of total pages to query in case the API or\line
+      // service you are using does not support providing the total\line
       // number of pages for us.\line
       // 10 as a default in case your service doesn't return the total\line
       totalPages: 10\line
@@ -4988,7 +4977,7 @@ Diacritic Plugin
 \line
       // custom parameters\line
       '$inlinecount': 'allpages',\line
-      '$callback': 'callback'                                     \line
+      '$callback': 'callback'\line
     \},\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \b \fs24 6. Finally, configure Collection.parse() and we\u8217're done\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 The last thing we need to do is configure our collection\u8217's {\f1 parse()} method. We want to ensure we\u8217're returning the correct part of our JSON response containing the data our collection will be populated with, which below is {\f1 response.d.results} (for the Netflix API).\par}
@@ -5068,15 +5057,15 @@ jqXHR
       // the lowest page index your API allows to be accessed\line
       firstPage: 1,\line
 \line
-      // which page should the paginator start from \line
+      // which page should the paginator start from\line
       // (also, the actual page the paginator is on)\line
       currentPage: 1,\line
 \line
       // how many items per page should be shown\line
       perPage: 3,\line
 \line
-      // a default number of total pages to query in case the API or \line
-      // service you are using does not support providing the total \line
+      // a default number of total pages to query in case the API or\line
+      // service you are using does not support providing the total\line
       // number of pages for us.\line
       // 10 as a default in case your service doesn't return the total\line
       totalPages: 10\line
@@ -5103,7 +5092,7 @@ jqXHR
 \line
       // custom parameters\line
       '$inlinecount': 'allpages',\line
-      '$callback': 'callback'                                     \line
+      '$callback': 'callback'\line
     \},\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \b \fs24 5. Finally, configure Collection.parse() and we\u8217're done\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 And finally we have our {\f1 parse()} method, which in this case isn\u8217't concerned with the total number of result pages available on the server as we have our own total count of pages for the paginated data in the UI.\par}
@@ -5172,7 +5161,7 @@ jqXHR
     // Default values used when sorting and/or filtering.\line
     initialize: function()\{\line
       this.useDiacriticsPlugin = true; // use diacritics plugin if available\line
-    ... \par}
+    ...\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \b \fs32 Backbone & jQuery Mobile\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \b \fs28 Resolving the routing conflicts\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 The first major hurdle developers typically run into when building Backbone applications with jQuery Mobile is that both frameworks have their own opinions about how to handle application navigation.\par}
@@ -5283,7 +5272,7 @@ TDD
 {\pard \ql \f0 \sa180 \li0 \fi0 Each spec is a JavaScript function, described with a call to {\f1 it()} using a description string and a function. The description should describe the behaviour the particular unit of code should exhibit and keeping in mind BDD, it should ideally be meaningful. Here\u8217's an example of a basic spec:\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \f1 it('should be incrementing in value', function()\{\line
     var counter = 0;\line
-    counter++;  \line
+    counter++;\line
 \});\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 On its own, a spec isn\u8217't particularly useful until expectations are set about the behavior of the code. Expectations in specs are defined using the {\f1 expect()} function and an {\field{\*\fldinst{HYPERLINK "https://github.com/pivotal/jasmine/wiki/Matchers"}}{\fldrslt{\ul
 expectation matcher
@@ -5291,7 +5280,7 @@ expectation matcher
  (e.g {\f1 toEqual()}, {\f1 toBeTruthy()}, {\f1 toContain()}). A revised example using an expectation matcher would look like:\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \f1 it('should be incrementing in value', function()\{\line
     var counter = 0;\line
-    counter++;  \line
+    counter++;\line
     expect(counter).toEqual(1);\line
 \});\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 The above code passes our behavioral expectation as {\f1 counter} equals 1. Notice how easy this was to read the expectation on the last line (you probably grokked it without any explanation).\par}
@@ -5410,12 +5399,12 @@ function getTodo(id, callback) \{\line
 {\pard \ql \f0 \sa180 \li0 \fi0 \f1 beforeEach(function()\{\line
    this.todo = new Backbone.Model(\{\line
       text: "Buy some more groceries",\line
-      done: false \line
+      done: false\line
    \});\line
 \});\line
 \line
 it("should contain a text value if not the default value", function()\{\line
-   expect(this.todo.get('text')).toEqual("Buy some more groceries"); \line
+   expect(this.todo.get('text')).toEqual("Buy some more groceries");\line
 \});\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 Each nested {\f1 describe()} in your tests can have their own {\f1 beforeEach()} and {\f1 afterEach()} methods which support including setup and teardown methods relevant to a particular suite. We\u8217'll be using {\f1 beforeEach()} in practice a little later.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \b \fs32 Shared scope\par}
@@ -5512,7 +5501,7 @@ window.Todo = Backbone.Model.extend(\{\line
 \line
     todo.on('error', errorCallback);\line
 \line
-    // What would you need to set on the todo properties to \line
+    // What would you need to set on the todo properties to\line
     // cause validation to fail?\line
 \line
     todo.set(\{done:'a non-integer value'\});\line
@@ -5580,7 +5569,7 @@ window.Todo = Backbone.Model.extend(\{\line
         expect(todos.length).toBe(1);\line
 \line
         todos.add([\line
-            \{ text: 'Do the laundry', done: true \}, \line
+            \{ text: 'Do the laundry', done: true \},\line
             \{ text: 'Go to the gym'\}\line
         ]);\line
 \line
@@ -5612,8 +5601,8 @@ window.Todo = Backbone.Model.extend(\{\line
         \},\line
 \line
         nextOrder: function() \{\line
-            if (!this.length) \{ \line
-                return 1; \line
+            if (!this.length) \{\line
+                return 1;\line
             \}\line
 \line
             return this.last().get('order') + 1;\line
@@ -5810,7 +5799,7 @@ expect('click').toHaveBeenTriggeredOn($('#el'));\par}
 \line
 \});\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 This will fail with the following message:\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 {\f1 Expected '<label class="todo-content">My Todo</label>'  to have class 'done'.}\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\f1 Expected '<label class="todo-content">My Todo</label>' to have class 'done'.}\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 which can be fixed in the existing render() method as follows:\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \f1 render: function() \{\line
   var template = '<label class="todo-content">' +\line
@@ -5917,28 +5906,28 @@ QUnit website
 .\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 If you would prefer, you can use a hosted version of the QUnit source files for testing purposes. The hosted URLs can be found at [http://github.com/jquery/qunit/raw/master/qunit/].\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \b \fs24 Sample HTML with QUnit-compatible markup:\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 \f1 <!DOCTYPE html>  \line
-<html>  \line
-<head>  \line
-    <title>QUnit Test Suite</title>  \line
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 <!DOCTYPE html>\line
+<html>\line
+<head>\line
+    <title>QUnit Test Suite</title>\line
 \line
-     <link rel="stylesheet" href="qunit.css">  \line
-     <script src="qunit.js"></script>  \line
+     <link rel="stylesheet" href="qunit.css">\line
+     <script src="qunit.js"></script>\line
 \line
-     <!-- Your application -->  \line
-     <script src="app.js"></script>  \line
+     <!-- Your application -->\line
+     <script src="app.js"></script>\line
 \line
-     <!-- Your tests -->  \line
-     <script src="tests.js"></script>   \line
-</head>  \line
-<body>  \line
-    <h1 id="qunit-header">QUnit Test Suite</h1>  \line
-    <h2 id="qunit-banner"></h2>  \line
-    <div id="qunit-testrunner-toolbar"></div>  \line
-    <h2 id="qunit-userAgent"></h2>  \line
-    <ol id="qunit-tests">test markup, hidden.</ol>  \line
-</body>  \line
-</html>  \par}
+     <!-- Your tests -->\line
+     <script src="tests.js"></script>\line
+</head>\line
+<body>\line
+    <h1 id="qunit-header">QUnit Test Suite</h1>\line
+    <h2 id="qunit-banner"></h2>\line
+    <div id="qunit-testrunner-toolbar"></div>\line
+    <h2 id="qunit-userAgent"></h2>\line
+    <ol id="qunit-tests">test markup, hidden.</ol>\line
+</body>\line
+</html>\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 Let\u8217's go through the elements above with qunit mentioned in their ID. When QUnit is running:\par}
 {\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\b qunit-header} shows the name of the test suite\par}
 {\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\b qunit-banner} shows up as red if a test fails and green if all tests pass\par}
@@ -5981,29 +5970,29 @@ test( 'Our first QUnit test - asserting results', function()\{\line
     return str.split("").reverse().join("");\line
 \}\line
 \line
-test( 'reverseString()', function() \{ \line
+test( 'reverseString()', function() \{\line
     expect( 5 );\line
-    equal( reverseString('hello'), 'olleh', 'The value expected was olleh' ); \line
-    equal( reverseString('foobar'), 'raboof', 'The value expected was raboof' ); \line
-    equal( reverseString('world'), 'dlrow', 'The value expected was dlrow' ); \line
-    notEqual( reverseString('world'), 'dlroo', 'The value was expected to not be dlroo' ); \line
-    equal( reverseString('bubble'), 'double', 'The value expected was elbbub' ); \line
-\})  \par}
+    equal( reverseString('hello'), 'olleh', 'The value expected was olleh' );\line
+    equal( reverseString('foobar'), 'raboof', 'The value expected was raboof' );\line
+    equal( reverseString('world'), 'dlrow', 'The value expected was dlrow' );\line
+    notEqual( reverseString('world'), 'dlroo', 'The value was expected to not be dlroo' );\line
+    equal( reverseString('bubble'), 'double', 'The value expected was elbbub' );\line
+\})\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 Running these tests in the QUnit test runner (which you would see when your HTML test page was loaded) we would find that four of the assertions pass whilst the last one does not. The reason the test against {\f1 'double'} fails is because it was purposefully written incorrectly. In your own projects if a test fails to pass and your assertions are correct, you\u8217've probably just found a bug!\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \b \fs32 Adding structure to assertions\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 Housing all of our assertions in one test case can quickly become difficult to maintain, but luckily QUnit supports structuring blocks of assertions more cleanly. This can be done using {\f1 module()} - a method that allows us to easily group tests together. A typical approach to grouping might be keeping multiple tests testing a specific method as part of the same group (module).\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \b \fs24 Basic QUnit Modules:\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 \f1 module( 'Module One' );  \line
-test( 'first test', function() \{\} );  \line
-test( 'another test', function() \{\} );  \line
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 module( 'Module One' );\line
+test( 'first test', function() \{\} );\line
+test( 'another test', function() \{\} );\line
 \line
-module( 'Module Two' );  \line
-test( 'second test', function() \{\} );  \line
-test( 'another test', function() \{\} );  \line
+module( 'Module Two' );\line
+test( 'second test', function() \{\} );\line
+test( 'another test', function() \{\} );\line
 \line
-module( 'Module Three' );  \line
-test( 'third test', function() \{\} );  \line
-test( 'another test', function() \{\} );  \par}
+module( 'Module Three' );\line
+test( 'third test', function() \{\} );\line
+test( 'another test', function() \{\} );\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 We can take this further by introducing {\f1 setup()} and {\f1 teardown()} callbacks to our modules, where {\f1 setup()} is run before each test whilst {\f1 teardown()} is run after each test.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \b \fs24 Using setup() and teardown() :\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \f1 module( "Module One", \{\line
@@ -6219,7 +6208,7 @@ test( "1 passed as an argument", 3, function() \{\line
             \});\line
             start();\line
         \}\line
-    \}); \line
+    \});\line
 \});\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 A jQuery {\f1 $.ajax()} request is used to connect to a test resource and assert that the data returned is correct. {\f1 deepEqual()} is used here as it allows us to compare different data types (e.g objects, arrays) and ensures that what is returned is exactly what we\u8217're expecting. We know that our Ajax request is asynchronous and so we first call {\f1 stop()}, run the code making the request and finally at the very end of our callback, inform QUnit that it is okay to continue running other tests.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 Note: rather than including {\f1 stop()}, we can simply exclude it and substitute {\f1 test()} with {\f1 asyncTest()} if we prefer. This improves readability when dealing with a mixture of asynchronous and synchronous tests in your suite. Whilst this setup should work fine for many use-cases, there is no guarantee that the callback in our {\f1 $.ajax()} request will actually get called. To factor this into our tests, we can use {\f1 expect()} once again to define how many assertions we expect to see within our test. This is a healthy safety blanket as it ensures that if a test completes with an insufficient number of assertions, we know something went wrong and fix it.\par}
@@ -6279,10 +6268,10 @@ SinonJS-QUnit adapter
     PubSub.publishSync( "message", 12, 34 );\line
 \line
     // This passes\line
-    assertTrue( spy.calledWith("many") );     \line
+    assertTrue( spy.calledWith("many") );\line
 \line
-    // This however, fails   \line
-    assertTrue( spy.calledWithExactly( "many" ) ); \line
+    // This however, fails\line
+    assertTrue( spy.calledWithExactly( "many" ) );\line
 \});\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \b \fs24 Testing call order: testing if a spy was called before or after another spy:\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \f1 test( "Should call a subscriber and maintain call order": function () \{\line
@@ -6335,7 +6324,7 @@ this.todoList;\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 After this, we need to alter what the constructor returns, which can be efficiently done using a plain {\f1 Backbone.Model} constructor. Whilst this isn\u8217't a Todo model, it does still provide us an actual Backbone model.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \f1 teardown: function() \{\line
     this.model = new Backbone.Model(\{\line
-      id: 2, \line
+      id: 2,\line
       title: "Hello world"\line
     \});\line
     this.todoStub.returns( this.model );\line
@@ -6349,7 +6338,7 @@ this.todoList;\par}
 \line
     this.todoStub = sinon.stub(window, "Todo");\line
     this.model = new Backbone.Model(\{\line
-      id: 2, \line
+      id: 2,\line
       title: "Hello world"\line
     \});\line
 \line
@@ -6357,9 +6346,9 @@ this.todoList;\par}
     this.todos = new TodoList();\line
 \line
     // Let's reset the relationship to use a stub\line
-    this.todos.model = Todo; \line
+    this.todos.model = Todo;\line
     this.todos.add(\{\line
-      id: 2, \line
+      id: 2,\line
       title: "Hello world"\line
     \});\line
   \},\line
@@ -6479,7 +6468,7 @@ test( 'Can add Model instances as objects and arrays.', function() \{\line
     equal( todos.length, 1 );\line
 \line
     todos.add([\line
-        \{ text: 'Do the laundry', done: true \}, \line
+        \{ text: 'Do the laundry', done: true \},\line
         \{ text: 'Go to the gym' \}\line
     ]);\line
 \line
@@ -6544,7 +6533,7 @@ test('Can render, after which the DOM representation of the view will be visible
    this.todoView.render();\line
 \line
     // Hint: render() just builds the DOM representation of the view, but doesn't insert it into the DOM.\line
-    //       How would you append it to the ul#todoList? \line
+    //       How would you append it to the ul#todoList?\line
     //       How do you access the view's DOM representation?\line
     //\line
     // Hint: http://documentcloud.github.com/backbone/#View-el\line
@@ -6555,7 +6544,7 @@ test('Can render, after which the DOM representation of the view will be visible
 \line
 asyncTest('Can wire up view methods to DOM elements.', function() \{\line
     expect( 2 );\line
-    var viewElt;    \line
+    var viewElt;\line
 \line
     $('#todoList').append( this.todoView.render().el );\line
 \line
@@ -6701,7 +6690,7 @@ test('Also can remove custom events from objects.', function() \{\line
 {\pard \ql \f0 \sa180 \li0 \fi0 \f1 module( 'About Backbone Applications' , \{\line
     setup: function() \{\line
         Backbone.localStorageDB = new Store('testTodos');\line
-        $('#qunit-fixture').append('<div id="app"></div>');   \line
+        $('#qunit-fixture').append('<div id="app"></div>');\line
         this.App = new TodoApp(\{ appendTo: $('#app') \});\line
     \},\line
 \line
@@ -6752,7 +6741,7 @@ Ben Alman\u8217's Unit Testing With QUnit
 {\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\b {\field{\*\fldinst{HYPERLINK "https://github.com/jc00ke/qunit-backbone"}}{\fldrslt{\ul
 Another QUnit/Backbone.js demo project
 }}}
-}\line \par}
+}\par}
 {\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\b {\field{\*\fldinst{HYPERLINK "http://devblog.supportbee.com/2012/02/10/helpers-for-testing-backbone-js-apps-using-jasmine-and-sinon-js/"}}{\fldrslt{\ul
 SinonJS helpers for Backbone
 }}}
