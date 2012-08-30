@@ -694,7 +694,7 @@ myPhoto.setTitle('Fishing at sea');\line
 var myPhoto = new Photo();\line
 myPhoto.set(\{ title: "On the beach" \});\line
 //logs Remember to set a source for your image!\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 {\b Note}: Backbone passes the {\f1 attributes} object by shallow copy to the {\f1 validate} function using the Underscore {\f1 _.extend} method. This means that it is not possible to change any {\f1 Number}, {\f1 String} or {\f1 Boolean} attribute by reference in the way that one might expect a JavaScript object to behave. As shallow copy doesn\u8217't copy objects by implicitly copying them, but rather, by reference, one ca change the attributes on those objects.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b Note}: Backbone passes the {\f1 attributes} object by shallow copy to the {\f1 validate} function using the Underscore {\f1 _.extend} method. This means that it is not possible to change any Number, String or Boolean attribute but it {\i is} possible to change attributes of objects because they are passed by reference. As shallow copy doesn\u8217't copy objects by implicitly copying them, but rather, by reference, one can change the attributes on those objects.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 An example of this (by @fivetanley) is available {\field{\*\fldinst{HYPERLINK "http://jsfiddle.net/2NdDY/7/"}}{\fldrslt{\ul
 here
 }}}
