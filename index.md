@@ -176,7 +176,7 @@ Topics will include MVC theory and how to build applications using Backbone's mo
 
 #<a name="fundamentals">Fundamentals</a>
 
-In this section, we're going to explore how frameworks like Backbone.js fit in the world of JavaScript application architecture. Clasically, developers creating desktop and server-class applications have had a wealth of design patterns available for them to lean on, but it's only been in the past few years that such patterns have come to client-side development.
+In this section, we're going to explore how frameworks like Backbone.js fit in the world of JavaScript application architecture. Classically, developers creating desktop and server-class applications have had a wealth of design patterns available for them to lean on, but it's only been in the past few years that such patterns have come to client-side development.
 
 Before exploring any JavaScript frameworks that assist in structuring applications, it can be useful to gain a basic understanding of architectural design patterns.
 

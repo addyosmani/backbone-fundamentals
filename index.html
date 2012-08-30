@@ -189,7 +189,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <p>The goal of this book is to create an authoritative and centralized repository of information that can help those developing real-world apps with Backbone. If you come across a section or topic which you think could be improved or expanded on, please feel free to submit a pull-request. It won't take long and you'll be helping other developers avoid problems you've run into before.</p>
 <p>Topics will include MVC theory and how to build applications using Backbone's models, views, collections and routers. I'll also be taking you through advanced topics like modular development with Backbone.js and AMD (via Require.js), how to build applications using modern software stacks (like Node and Express), how to solve the routing problems with Backbone and jQuery Mobile, tips about scaffolding tools, and a lot more.</p>
 <h1 id="fundamentals"><a name="fundamentals">Fundamentals</a></h1>
-<p>In this section, we're going to explore how frameworks like Backbone.js fit in the world of JavaScript application architecture. Clasically, developers creating desktop and server-class applications have had a wealth of design patterns available for them to lean on, but it's only been in the past few years that such patterns have come to client-side development.</p>
+<p>In this section, we're going to explore how frameworks like Backbone.js fit in the world of JavaScript application architecture. Classically, developers creating desktop and server-class applications have had a wealth of design patterns available for them to lean on, but it's only been in the past few years that such patterns have come to client-side development.</p>
 <p>Before exploring any JavaScript frameworks that assist in structuring applications, it can be useful to gain a basic understanding of architectural design patterns.</p>
 <h3 id="mvc-mvp-backbone.js"><a name="mvc-mvp">MVC, MVP &amp; Backbone.js</a></h3>
 <p>Design patterns are proven solutions to common development problems and can suggest structural approaches to help guide developers in adding some organization to their applications.</p>
@@ -333,13 +333,13 @@ code > span.er { color: #ff0000; font-weight: bold; }
 
 <span class="kw">var</span> PhotosController = <span class="kw">Spine.Controller</span>.<span class="fu">sub</span>({
   <span class="dt">init</span>: <span class="kw">function</span>(){
-<span class="er">    this.item.bind(&quot;update&quot;, this.proxy(this.render));</span>
-<span class="er">    this.item.bind(&quot;destroy&quot;, this.proxy(this.remove));</span>
+    <span class="kw">this</span>.<span class="fu">item</span>.<span class="fu">bind</span>(<span class="st">&quot;update&quot;</span>, <span class="kw">this</span>.<span class="fu">proxy</span>(<span class="kw">this</span>.<span class="fu">render</span>));
+    <span class="kw">this</span>.<span class="fu">item</span>.<span class="fu">bind</span>(<span class="st">&quot;destroy&quot;</span>, <span class="kw">this</span>.<span class="fu">proxy</span>(<span class="kw">this</span>.<span class="fu">remove</span>));
   },
 
   <span class="dt">render</span>: <span class="kw">function</span>(){
     <span class="co">// Handle templating</span>
-<span class="er">    this.replace($(&quot;#photoTemplate&quot;).tmpl(this.item));</span>
+    <span class="kw">this</span>.<span class="fu">replace</span>($(<span class="st">&quot;#photoTemplate&quot;</span>).<span class="fu">tmpl</span>(<span class="kw">this</span>.<span class="fu">item</span>));
     <span class="kw">return</span> <span class="kw">this</span>;
   },
 
@@ -428,8 +428,8 @@ code > span.er { color: #ff0000; font-weight: bold; }
 
     <span class="dt">initialize</span>: <span class="kw">function</span>() {
       <span class="kw">_</span>.<span class="fu">bindAll</span>(<span class="kw">this</span>, <span class="ch">&#39;render&#39;</span>);
-<span class="er">      this.model.on(&#39;change&#39;, this.render);</span>
-<span class="er">      this.model.on(&#39;destroy&#39;, this.remove);</span>
+      <span class="kw">this</span>.<span class="fu">model</span>.<span class="fu">on</span>(<span class="ch">&#39;change&#39;</span>, <span class="kw">this</span>.<span class="fu">render</span>);
+      <span class="kw">this</span>.<span class="fu">model</span>.<span class="fu">on</span>(<span class="ch">&#39;destroy&#39;</span>, <span class="kw">this</span>.<span class="fu">remove</span>);
     },
 
     <span class="co">// Re-render the photo entry</span>
@@ -774,7 +774,7 @@ collection
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> ourObject = {};
 
 <span class="co">// Mixin</span>
-<span class="er">_.extend(ourObject, Backbone.Events);</span>
+<span class="kw">_</span>.<span class="fu">extend</span>(ourObject, <span class="kw">Backbone</span>.<span class="fu">Events</span>);
 
 <span class="co">// Add a custom event</span>
 <span class="kw">ourObject</span>.<span class="fu">on</span>(<span class="st">&quot;dance&quot;</span>, <span class="kw">function</span>(msg){
@@ -786,7 +786,7 @@ collection
 <p>If you're familiar with jQuery custom events or the concept of Publish/Subscribe, <code>Backbone.Events</code> provides a system that is very similar with <code>on</code> being analogous to <code>subscribe</code> and <code>trigger</code> being similar to <code>publish</code>.</p>
 <p><code>on</code> basically allows us to bind a callback function to any object, as we've done with <code>dance</code> in the above example. Whenever the event is fired, our callback is invoked.</p>
 <p>The official Backbone.js documentation recommends namespacing event names using colons if you end up using quite a few of these on your page. e.g:</p>
-<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="er">ourObject.on(&quot;dance:tap&quot;, ...);</span></code></pre>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">ourObject</span>.<span class="fu">on</span>(<span class="st">&quot;dance:tap&quot;</span>, ...);</code></pre>
 <p>A special <code>all</code> event is made available in case you would like an event to be triggered when any event occurs (e.g if you would like to screen events in a single location). The <code>all</code> event can be used as follows:</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">ourObject</span>.<span class="fu">on</span>(<span class="st">&quot;all&quot;</span>, <span class="kw">function</span>(eventName){
   <span class="kw">console</span>.<span class="fu">log</span>(<span class="st">&quot;The name of the event passed was &quot;</span> + eventName);
@@ -910,14 +910,14 @@ collection
 
   <span class="kw">function</span> success(result) {
     <span class="co">// Handle results from MyAPI</span>
-<span class="er">    if (options.success) {</span>
+    <span class="kw">if</span> (<span class="kw">options</span>.<span class="fu">success</span>) {
       <span class="kw">options</span>.<span class="fu">success</span>(result);
     }
   }
 
   <span class="kw">function</span> error(result) {
     <span class="co">// Handle results from MyAPI</span>
-<span class="er">    if (options.error) {</span>
+    <span class="kw">if</span> (<span class="kw">options</span>.<span class="fu">error</span>) {
       <span class="kw">options</span>.<span class="fu">error</span>(result);
     }
   }
@@ -1006,7 +1006,7 @@ return obj;</code></pre>
 <p>For example:</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"> <span class="kw">var</span> MyMixin = {
   <span class="dt">foo</span>: <span class="st">&quot;bar&quot;</span>,
-<span class="er">  sayFoo: function(){alert(this.foo);}</span>
+  <span class="dt">sayFoo</span>: <span class="kw">function</span>(){alert(<span class="kw">this</span>.<span class="fu">foo</span>);}
 }
 
 <span class="kw">var</span> MyView = <span class="kw">Backbone.View</span>.<span class="fu">extend</span>({
@@ -1035,7 +1035,7 @@ myView = <span class="kw">new</span> MyView();
    <span class="dt">initialize</span>: <span class="kw">function</span>(options){
       <span class="kw">this</span>.<span class="fu">constructor</span>.__<span class="fu">super</span>__.<span class="fu">initialize</span>.<span class="fu">apply</span>(<span class="kw">this</span>, [options])
       <span class="kw">console</span>.<span class="fu">log</span>(<span class="ch">&#39;PanelAdvanced initialized&#39;</span>);
-<span class="er">      console.log(this.foo); // Log: bar</span>
+      <span class="kw">console</span>.<span class="fu">log</span>(<span class="kw">this</span>.<span class="fu">foo</span>); <span class="co">// Log: bar</span>
    }
 });</code></pre>
 <p>This isn't the most elegant of solutions because if you have a lot of Views that inherit from Panel, then you'll have to remember to call Panel's initialize from all of them.</p>
@@ -1066,7 +1066,7 @@ myView = <span class="kw">new</span> MyView();
 
     <span class="dt">initialize</span>: <span class="kw">function</span> (options) {
         <span class="kw">console</span>.<span class="fu">log</span>(<span class="ch">&#39;PanelAdvanced initialized&#39;</span>);
-<span class="er">        console.log(this.foo);</span>
+        <span class="kw">console</span>.<span class="fu">log</span>(<span class="kw">this</span>.<span class="fu">foo</span>);
     }
 });
 
@@ -2024,7 +2024,7 @@ bbb init</code></pre>
       }
 
       <span class="co">// If a layout already exists, remove it from the DOM.</span>
-<span class="er">      if (this.layout) {</span>
+      <span class="kw">if</span> (<span class="kw">this</span>.<span class="fu">layout</span>) {
         <span class="kw">this</span>.<span class="fu">layout</span>.<span class="fu">remove</span>();
       }
 
@@ -2036,7 +2036,7 @@ bbb init</code></pre>
       });
 
       <span class="co">// Insert into the DOM.</span>
-<span class="er">      $(&quot;#main&quot;).empty().append(layout.el);</span>
+      $(<span class="st">&quot;#main&quot;</span>).<span class="fu">empty</span>().<span class="fu">append</span>(<span class="kw">layout</span>.<span class="fu">el</span>);
 
       <span class="co">// Render the layout.</span>
       <span class="kw">layout</span>.<span class="fu">render</span>();
@@ -2047,7 +2047,7 @@ bbb init</code></pre>
       <span class="co">// Return the reference, for chainability.</span>
       <span class="kw">return</span> layout;
     }
-<span class="er">  }, Backbone.Events);</span>
+  }, <span class="kw">Backbone</span>.<span class="fu">Events</span>);
 
 });</code></pre>
 <h3 id="creating-backbone-boilerplate-modules">Creating Backbone Boilerplate Modules</h3>
@@ -2298,18 +2298,18 @@ Initialized from template &quot;module&quot;.</code></pre>
     <span class="kw">this</span>.<span class="fu">innerView2</span> = <span class="kw">new</span> Subview({options});
 
 
-<span class="er">    this.$el.append(this.innerView1.render().el, this.innerView2.render().el);</span>
+    <span class="kw">this</span>.$<span class="fu">el</span>.<span class="fu">append</span>(<span class="kw">this</span>.<span class="fu">innerView1</span>.<span class="fu">render</span>().<span class="fu">el</span>, <span class="kw">this</span>.<span class="fu">innerView2</span>.<span class="fu">render</span>().<span class="fu">el</span>);
 }</code></pre>
 <p>In this version, we also don't require a template containing empty placeholders and the issue with <code>tagName</code>s is solved as they are defined by the view once again.</p>
 <p>Yet another variation which moves logic into an <code>onRender</code> event, could be written with only a few subtle changes:</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript">
 <span class="dt">initialize </span>: <span class="kw">function</span> () {
-<span class="er">    this.on(&#39;render&#39;, this.onRender);</span>
+    <span class="kw">this</span>.<span class="fu">on</span>(<span class="ch">&#39;render&#39;</span>, <span class="kw">this</span>.<span class="fu">onRender</span>);
 },
 
 <span class="dt">render </span>: <span class="kw">function</span> () {
 
-<span class="er">    this.$el.html(this.template);</span>
+    <span class="kw">this</span>.$<span class="fu">el</span>.<span class="fu">html</span>(<span class="kw">this</span>.<span class="fu">template</span>);
 
     <span class="co">// more logic</span>
 
@@ -2331,7 +2331,7 @@ Initialized from template &quot;module&quot;.</code></pre>
 
     <span class="dt">render</span>: <span class="kw">function</span>() {
         <span class="kw">this</span>.$<span class="fu">el</span>.<span class="fu">html</span>(template); <span class="co">// or this.$el.empty() if you have no template</span>
-<span class="er">        this.$el.append(this.inner.$el);</span>
+        <span class="kw">this</span>.$<span class="fu">el</span>.<span class="fu">append</span>(<span class="kw">this</span>.<span class="fu">inner</span>.$<span class="fu">el</span>);
         <span class="kw">this</span>.<span class="fu">inner</span>.<span class="fu">render</span>();
     }
 });
@@ -2358,7 +2358,7 @@ Initialized from template &quot;module&quot;.</code></pre>
     <span class="dt">render</span>: <span class="kw">function</span>() {
         <span class="kw">this</span>.$<span class="fu">el</span>.<span class="fu">html</span>(template); <span class="co">// or this.$el.empty() if you have no template</span>
         <span class="kw">this</span>.<span class="fu">inner</span> = <span class="kw">new</span> InnerView();
-<span class="er">        this.$el.append(this.inner.$el);</span>
+        <span class="kw">this</span>.$<span class="fu">el</span>.<span class="fu">append</span>(<span class="kw">this</span>.<span class="fu">inner</span>.$<span class="fu">el</span>);
     }
 });
 
@@ -2403,7 +2403,7 @@ ModelA = <span class="kw">Backbone.Model</span>.<span class="fu">extend</span>({
     <span class="dt">initialize</span>: <span class="kw">function</span>(){
        <span class="kw">this</span>.<span class="fu">viewB</span> = <span class="kw">new</span> ViewB();
        <span class="kw">this</span>.<span class="fu">viewB</span>.<span class="fu">parentView</span> = <span class="kw">this</span>;
-<span class="er">       $(this.el).append(this.viewB.el);</span>
+       $(<span class="kw">this</span>.<span class="fu">el</span>).<span class="fu">append</span>(<span class="kw">this</span>.<span class="fu">viewB</span>.<span class="fu">el</span>);
     }
 });
 
@@ -2412,13 +2412,13 @@ ViewB = <span class="kw">Backbone.View</span>.<span class="fu">extend</span>({
     <span class="dt">tagName</span>: <span class="st">&quot;h1&quot;</span>,
 
     <span class="dt">render</span>: <span class="kw">function</span>(){
-<span class="er">        $(this.el).html(&quot;Header text&quot;); // or use this.options.headerText or equivalent</span>
+        $(<span class="kw">this</span>.<span class="fu">el</span>).<span class="fu">html</span>(<span class="st">&quot;Header text&quot;</span>); <span class="co">// or use this.options.headerText or equivalent</span>
     },
 
     <span class="dt">funcB1</span>: <span class="kw">function</span>(){
         <span class="kw">this</span>.<span class="fu">model</span>.<span class="fu">parent</span>.<span class="fu">doSomethingOnParent</span>();
         <span class="kw">this</span>.<span class="fu">model</span>.<span class="fu">parent</span>.<span class="fu">modelC</span>.<span class="fu">doSomethingOnSibling</span>();
-<span class="er">        $(this.parentView.el).shakeViolently();</span>
+        $(<span class="kw">this</span>.<span class="fu">parentView</span>.<span class="fu">el</span>).<span class="fu">shakeViolently</span>();
     }
 
 });</code></pre>
@@ -2469,7 +2469,7 @@ ViewB = <span class="kw">Backbone.View</span>.<span class="fu">extend</span>({
 
 <span class="kw">var</span> ApplicationViewA = <span class="kw">Backbone.View</span>.<span class="fu">extend</span>({
     <span class="dt">initialize</span>: <span class="kw">function</span>() {
-<span class="er">        mediator.subscribe(&#39;selected&#39;, this.delete_selected)</span>
+        <span class="kw">mediator</span>.<span class="fu">subscribe</span>(<span class="ch">&#39;selected&#39;</span>, <span class="kw">this</span>.<span class="fu">delete</span>_<span class="fu">selected</span>)
     },
 
     <span class="dt">delete_selected</span>: <span class="kw">function</span>(any, data, you, want) {
@@ -2513,7 +2513,7 @@ ViewB = <span class="kw">Backbone.View</span>.<span class="fu">extend</span>({
 
     <span class="dt">unbindFromAll</span>: <span class="kw">function</span> () {
         <span class="kw">_</span>.<span class="fu">each</span>(<span class="kw">this</span>.<span class="fu">bindings</span>, <span class="kw">function</span> (binding) {
-<span class="er">            binding.model.unbind(binding.ev, binding.callback);</span>
+            <span class="kw">binding.model</span>.<span class="fu">unbind</span>(<span class="kw">binding</span>.<span class="fu">ev</span>, <span class="kw">binding</span>.<span class="fu">callback</span>);
         });
         <span class="kw">this</span>.<span class="fu">bindings</span> = [];
     },
@@ -2543,7 +2543,7 @@ ViewB = <span class="kw">Backbone.View</span>.<span class="fu">extend</span>({
 <p>Where your application is setup with multiple Parent and Child Views, it is also common to desire removing any DOM elements associated with such views as well as unbinding any event handlers tied to child elements when you no longer require them.</p>
 <p>The solution in the last question should be enough to handle this use-case, but if you require a more-explicit example that handles children, we can see one below:</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">Backbone.View.prototype</span>.<span class="fu">close</span> = <span class="kw">function</span>() {
-<span class="er">    if (this.onClose) {</span>
+    <span class="kw">if</span> (<span class="kw">this</span>.<span class="fu">onClose</span>) {
         <span class="kw">this</span>.<span class="fu">onClose</span>();
     }
     <span class="kw">this</span>.<span class="fu">remove</span>();
@@ -2556,11 +2556,11 @@ NewView = <span class="kw">Backbone.View</span>.<span class="fu">extend</span>({
     },
     <span class="dt">renderChildren</span>: <span class="kw">function</span>(item) {
         <span class="kw">var</span> itemView = <span class="kw">new</span> NewChildView({ <span class="dt">model</span>: item });
-<span class="er">        $(this.el).prepend(itemView.render());</span>
+        $(<span class="kw">this</span>.<span class="fu">el</span>).<span class="fu">prepend</span>(<span class="kw">itemView</span>.<span class="fu">render</span>());
         <span class="kw">this</span>.<span class="fu">childViews</span>.<span class="fu">push</span>(itemView);
     },
     <span class="dt">onClose</span>: <span class="kw">function</span>() {
-<span class="er">      _(this.childViews).each(function(view) {</span>
+      _(<span class="kw">this</span>.<span class="fu">childViews</span>).<span class="fu">each</span>(<span class="kw">function</span>(view) {
         <span class="kw">view</span>.<span class="fu">close</span>();
       });
     }
@@ -2621,9 +2621,9 @@ NewChildView = <span class="kw">Backbone.View</span>.<span class="fu">extend</sp
 <p>Some simple validation that could be written using the current Backbone <code>validate</code> method to work with this form could be implemented using something like:</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="dt">validate</span>: <span class="kw">function</span>(attrs) {
 
-<span class="er">    if(!attrs.firstname) return &#39;first name is empty&#39;;</span>
-<span class="er">    if(!attrs.lastname) return &#39;last name is empty&#39;;</span>
-<span class="er">    if(!attrs.email) return &#39;email is empty&#39;;</span>
+    <span class="kw">if</span>(!<span class="kw">attrs</span>.<span class="fu">firstname</span>) <span class="kw">return</span> <span class="ch">&#39;first name is empty&#39;</span>;
+    <span class="kw">if</span>(!<span class="kw">attrs</span>.<span class="fu">lastname</span>) <span class="kw">return</span> <span class="ch">&#39;last name is empty&#39;</span>;
+    <span class="kw">if</span>(!<span class="kw">attrs</span>.<span class="fu">email</span>) <span class="kw">return</span> <span class="ch">&#39;email is empty&#39;</span>;
 
 }</code></pre>
 <p>Unfortunately, this method would trigger a first name error each time any of the fields were blurred and only an error message next to the first name field would be presented.</p>
@@ -2632,9 +2632,9 @@ NewChildView = <span class="kw">Backbone.View</span>.<span class="fu">extend</sp
 
   <span class="kw">var</span> errors = {};
 
-<span class="er">  if (!attrs.firstname) errors.firstname = &#39;first name is empty&#39;;</span>
-<span class="er">  if (!attrs.lastname) errors.lastname = &#39;last name is empty&#39;;</span>
-<span class="er">  if (!attrs.email) errors.email = &#39;email is empty&#39;;</span>
+  <span class="kw">if</span> (!<span class="kw">attrs</span>.<span class="fu">firstname</span>) <span class="kw">errors</span>.<span class="fu">firstname</span> = <span class="ch">&#39;first name is empty&#39;</span>;
+  <span class="kw">if</span> (!<span class="kw">attrs</span>.<span class="fu">lastname</span>) <span class="kw">errors</span>.<span class="fu">lastname</span> = <span class="ch">&#39;last name is empty&#39;</span>;
+  <span class="kw">if</span> (!<span class="kw">attrs</span>.<span class="fu">email</span>) <span class="kw">errors</span>.<span class="fu">email</span> = <span class="ch">&#39;email is empty&#39;</span>;
 
   <span class="kw">if</span> (!<span class="kw">_</span>.<span class="fu">isEmpty</span>(errors)) <span class="kw">return</span> errors;
 
@@ -2649,9 +2649,9 @@ $(<span class="kw">function</span>($) {
 
       <span class="kw">var</span> errors = <span class="kw">this</span>.<span class="fu">errors</span> = {};
 
-<span class="er">      if (!attrs.firstname) errors.firstname = &#39;firstname is required&#39;;</span>
-<span class="er">      if (!attrs.lastname) errors.lastname = &#39;lastname is required&#39;;</span>
-<span class="er">      if (!attrs.email) errors.email = &#39;email is required&#39;;</span>
+      <span class="kw">if</span> (!<span class="kw">attrs</span>.<span class="fu">firstname</span>) <span class="kw">errors</span>.<span class="fu">firstname</span> = <span class="ch">&#39;firstname is required&#39;</span>;
+      <span class="kw">if</span> (!<span class="kw">attrs</span>.<span class="fu">lastname</span>) <span class="kw">errors</span>.<span class="fu">lastname</span> = <span class="ch">&#39;lastname is required&#39;</span>;
+      <span class="kw">if</span> (!<span class="kw">attrs</span>.<span class="fu">email</span>) <span class="kw">errors</span>.<span class="fu">email</span> = <span class="ch">&#39;email is required&#39;</span>;
 
       <span class="kw">if</span> (!<span class="kw">_</span>.<span class="fu">isEmpty</span>(errors)) <span class="kw">return</span> errors;
 
@@ -2724,11 +2724,13 @@ $(<span class="kw">function</span>($) {
 
     <span class="dt">isEmail</span>: <span class="kw">function</span>(value) {
 
-<span class="er">      return User.prototype.validators.pattern(value, User.prototype.patterns.email);</span>
+           <span class="dt">isEmail</span>: <span class="kw">function</span>(value) {
+            <span class="kw">return</span> <span class="kw">User.prototype.validators</span>.<span class="fu">pattern</span>(value, <span class="kw">User.prototype.patterns</span>.<span class="fu">email</span>);
 
     },
 
-    <span class="dt">hasSpecialCharacter</span>: <span class="kw">function</span>(value) {
+          <span class="dt">hasSpecialCharacter</span>: <span class="kw">function</span>(value) {
+            <span class="kw">return</span> <span class="kw">User.prototype.validators</span>.<span class="fu">pattern</span>(value, <span class="kw">User.prototype.patterns</span>.<span class="fu">specialCharacters</span>);
 
 <span class="er">      return User.prototype.validators.pattern(value, User.prototype.patterns.specialCharacters);</span>
 
@@ -2742,21 +2744,31 @@ $(<span class="kw">function</span>($) {
 
       <span class="kw">var</span> errors = <span class="kw">this</span>.<span class="fu">errors</span> = {};
 
-      <span class="kw">if</span>(<span class="kw">attrs</span>.<span class="fu">firstname</span> != null) {
+          <span class="kw">if</span>(<span class="kw">attrs</span>.<span class="fu">firstname</span> != null) {
+              <span class="kw">if</span> (!<span class="kw">attrs</span>.<span class="fu">firstname</span>) {
+                  <span class="kw">errors</span>.<span class="fu">firstname</span> = <span class="ch">&#39;firstname is required&#39;</span>;
+                  <span class="kw">console</span>.<span class="fu">log</span>(<span class="ch">&#39;first name isEmpty validation called&#39;</span>);
+              }
 
-<span class="er">        if (!attrs.firstname) errors.firstname = &#39;firstname is required&#39;;</span>
-        <span class="kw">else</span> <span class="kw">if</span>(!<span class="kw">this</span>.<span class="fu">validators</span>.<span class="fu">minLength</span>(<span class="kw">attrs</span>.<span class="fu">firstname</span>, <span class="dv">2</span>)) <span class="kw">errors</span>.<span class="fu">firstname</span> = <span class="ch">&#39;firstname is too short&#39;</span>;
-        <span class="kw">else</span> <span class="kw">if</span>(!<span class="kw">this</span>.<span class="fu">validators</span>.<span class="fu">maxLength</span>(<span class="kw">attrs</span>.<span class="fu">firstname</span>, <span class="dv">15</span>)) <span class="kw">errors</span>.<span class="fu">firstname</span> = <span class="ch">&#39;firstname is too large&#39;</span>;
-<span class="er">        else if(this.validators.hasSpecialCharacter(attrs.firstname)) errors.firstname = &#39;firstname cannot contain special characters&#39;;</span>
+              <span class="kw">else</span> <span class="kw">if</span>(!<span class="kw">this</span>.<span class="fu">validators</span>.<span class="fu">minLength</span>(<span class="kw">attrs</span>.<span class="fu">firstname</span>, <span class="dv">2</span>))
+                <span class="kw">errors</span>.<span class="fu">firstname</span> = <span class="ch">&#39;firstname is too short&#39;</span>;
+              <span class="kw">else</span> <span class="kw">if</span>(!<span class="kw">this</span>.<span class="fu">validators</span>.<span class="fu">maxLength</span>(<span class="kw">attrs</span>.<span class="fu">firstname</span>, <span class="dv">15</span>))
+                <span class="kw">errors</span>.<span class="fu">firstname</span> = <span class="ch">&#39;firstname is too large&#39;</span>;
+              <span class="kw">else</span> <span class="kw">if</span>(<span class="kw">this</span>.<span class="fu">validators</span>.<span class="fu">hasSpecialCharacter</span>(<span class="kw">attrs</span>.<span class="fu">firstname</span>)) <span class="kw">errors</span>.<span class="fu">firstname</span> = <span class="ch">&#39;firstname cannot contain special characters&#39;</span>;
+          }
 
       }
 
-      <span class="kw">if</span>(<span class="kw">attrs</span>.<span class="fu">lastname</span> != null) {
+              <span class="kw">if</span> (!<span class="kw">attrs</span>.<span class="fu">lastname</span>) {
+                  <span class="kw">errors</span>.<span class="fu">lastname</span> = <span class="ch">&#39;lastname is required&#39;</span>;
+                  <span class="kw">console</span>.<span class="fu">log</span>(<span class="ch">&#39;last name isEmpty validation called&#39;</span>);
+              }
 
-<span class="er">        if (!attrs.lastname) errors.lastname = &#39;lastname is required&#39;;</span>
-        <span class="kw">else</span> <span class="kw">if</span>(!<span class="kw">this</span>.<span class="fu">validators</span>.<span class="fu">minLength</span>(<span class="kw">attrs</span>.<span class="fu">lastname</span>, <span class="dv">2</span>)) <span class="kw">errors</span>.<span class="fu">lastname</span> = <span class="ch">&#39;lastname is too short&#39;</span>;
-        <span class="kw">else</span> <span class="kw">if</span>(!<span class="kw">this</span>.<span class="fu">validators</span>.<span class="fu">maxLength</span>(<span class="kw">attrs</span>.<span class="fu">lastname</span>, <span class="dv">15</span>)) <span class="kw">errors</span>.<span class="fu">lastname</span> = <span class="ch">&#39;lastname is too large&#39;</span>;
-<span class="er">        else if(this.validators.hasSpecialCharacter(attrs.lastname)) errors.lastname = &#39;lastname cannot contain special characters&#39;;</span>
+              <span class="kw">else</span> <span class="kw">if</span>(!<span class="kw">this</span>.<span class="fu">validators</span>.<span class="fu">minLength</span>(<span class="kw">attrs</span>.<span class="fu">lastname</span>, <span class="dv">2</span>))
+                <span class="kw">errors</span>.<span class="fu">lastname</span> = <span class="ch">&#39;lastname is too short&#39;</span>;
+              <span class="kw">else</span> <span class="kw">if</span>(!<span class="kw">this</span>.<span class="fu">validators</span>.<span class="fu">maxLength</span>(<span class="kw">attrs</span>.<span class="fu">lastname</span>, <span class="dv">15</span>))
+                <span class="kw">errors</span>.<span class="fu">lastname</span> = <span class="ch">&#39;lastname is too large&#39;</span>;
+              <span class="kw">else</span> <span class="kw">if</span>(<span class="kw">this</span>.<span class="fu">validators</span>.<span class="fu">hasSpecialCharacter</span>(<span class="kw">attrs</span>.<span class="fu">lastname</span>)) <span class="kw">errors</span>.<span class="fu">lastname</span> = <span class="ch">&#39;lastname cannot contain special characters&#39;</span>;
 
       }</code></pre>
 <p>This allows the logic inside of our validate methods to determine which form fields are currently being set/validated, and does not care about the other model properties that are not trying to be set.</p>
@@ -2808,7 +2820,7 @@ $(<span class="kw">function</span>($) {
   <span class="co">// the bodyParser middleware parses JSON request bodies</span>
   <span class="kw">app</span>.<span class="fu">use</span>(<span class="kw">express</span>.<span class="fu">bodyParser</span>());
   <span class="kw">app</span>.<span class="fu">use</span>(<span class="kw">express</span>.<span class="fu">methodOverride</span>());
-<span class="er">  app.use(app.router);</span>
+  <span class="kw">app</span>.<span class="fu">use</span>(<span class="kw">app</span>.<span class="fu">router</span>);
   <span class="kw">app</span>.<span class="fu">use</span>(<span class="kw">express</span>.<span class="fu">static</span>(<span class="kw">path</span>.<span class="fu">join</span>(application_root, <span class="st">&quot;public&quot;</span>)));
   <span class="kw">app</span>.<span class="fu">use</span>(<span class="kw">express</span>.<span class="fu">errorHandler</span>({ <span class="dt">dumpExceptions</span>: <span class="kw">true</span>, <span class="dt">showStack</span>: <span class="kw">true</span> }));
   <span class="kw">app</span>.<span class="fu">set</span>(<span class="ch">&#39;views&#39;</span>, <span class="kw">path</span>.<span class="fu">join</span>(application_root, <span class="st">&quot;views&quot;</span>));
@@ -3381,7 +3393,7 @@ app.rb
     <span class="co">// We keep the Todos in sequential order, despite being saved by unordered</span>
     <span class="co">// GUID in the database. This generates the next order number for new items.</span>
     <span class="dt">nextOrder</span>: <span class="kw">function</span>() {
-<span class="er">      if (!this.length) return 1;</span>
+      <span class="kw">if</span> (!<span class="kw">this</span>.<span class="fu">length</span>) <span class="kw">return</span> <span class="dv">1</span>;
       <span class="kw">return</span> <span class="kw">this</span>.<span class="fu">last</span>().<span class="fu">get</span>(<span class="ch">&#39;order&#39;</span>) + <span class="dv">1</span>;
     },
 
@@ -4140,7 +4152,7 @@ require([<span class="ch">&#39;views/app&#39;</span>], <span class="kw">function
       <span class="kw">var</span> content = <span class="kw">this</span>.<span class="fu">model</span>.<span class="fu">get</span>(<span class="ch">&#39;content&#39;</span>);
       <span class="kw">this</span>.$(<span class="ch">&#39;.todo-content&#39;</span>).<span class="fu">text</span>(content);
       <span class="kw">this</span>.<span class="fu">input</span> = <span class="kw">this</span>.$(<span class="ch">&#39;.todo-input&#39;</span>);
-<span class="er">      this.input.on(&#39;blur&#39;, this.close);</span>
+      <span class="kw">this</span>.<span class="fu">input</span>.<span class="fu">on</span>(<span class="ch">&#39;blur&#39;</span>, <span class="kw">this</span>.<span class="fu">close</span>);
       <span class="kw">this</span>.<span class="fu">input</span>.<span class="fu">val</span>(content);
     },
     ...</code></pre>
@@ -4325,7 +4337,7 @@ require([<span class="ch">&#39;views/app&#39;</span>], <span class="kw">function
     <span class="kw">var</span> _private = {
         <span class="dt">i</span>:<span class="dv">5</span>,
         <span class="dt">get </span>: <span class="kw">function</span>() {
-<span class="er">            console.log(&#39;current value:&#39; + this.i);</span>
+            <span class="kw">console</span>.<span class="fu">log</span>(<span class="ch">&#39;current value:&#39;</span> + <span class="kw">this</span>.<span class="fu">i</span>);
         },
         <span class="dt">set </span>: <span class="kw">function</span>( val ) {
             <span class="kw">this</span>.<span class="fu">i</span> = val;
@@ -4339,7 +4351,7 @@ require([<span class="ch">&#39;views/app&#39;</span>], <span class="kw">function
     };
     <span class="kw">return</span> {
         <span class="dt">facade </span>: <span class="kw">function</span>( args ) {
-<span class="er">            _private.set(args.val);</span>
+            <span class="kw">_private</span>.<span class="fu">set</span>(<span class="kw">args</span>.<span class="fu">val</span>);
             <span class="kw">_private</span>.<span class="fu">get</span>();
             <span class="kw">if</span> ( <span class="kw">args</span>.<span class="fu">run</span> ) {
                 <span class="kw">_private</span>.<span class="fu">run</span>();
@@ -4452,7 +4464,7 @@ require([<span class="ch">&#39;views/app&#39;</span>], <span class="kw">function
         <span class="kw">var</span> content = <span class="kw">context.model</span>.<span class="fu">get</span>(<span class="ch">&#39;content&#39;</span>);
         <span class="kw">context</span>.$(<span class="ch">&#39;.todo-content&#39;</span>).<span class="fu">text</span>(content);
         <span class="kw">context</span>.<span class="fu">input</span> = <span class="kw">context</span>.$(<span class="ch">&#39;.todo-input&#39;</span>);
-<span class="er">        context.input.bind(&#39;blur&#39;, context.close);</span>
+        <span class="kw">context.input</span>.<span class="fu">bind</span>(<span class="ch">&#39;blur&#39;</span>, <span class="kw">context</span>.<span class="fu">close</span>);
         <span class="kw">context.input</span>.<span class="fu">val</span>(content);
     });
 
@@ -4488,7 +4500,7 @@ require([<span class="ch">&#39;views/app&#39;</span>], <span class="kw">function
         <span class="kw">var</span> tooltip = <span class="kw">context</span>.$(<span class="st">&quot;.ui-tooltip-top&quot;</span>);
         <span class="kw">var</span> val = <span class="kw">context.input</span>.<span class="fu">val</span>();
         <span class="kw">tooltip</span>.<span class="fu">fadeOut</span>();
-<span class="er">        if (context.tooltipTimeout) clearTimeout(context.tooltipTimeout);</span>
+        <span class="kw">if</span> (<span class="kw">context</span>.<span class="fu">tooltipTimeout</span>) clearTimeout(<span class="kw">context</span>.<span class="fu">tooltipTimeout</span>);
         <span class="kw">if</span> (val == <span class="ch">&#39;&#39;</span> || val == <span class="kw">context.input</span>.<span class="fu">attr</span>(<span class="ch">&#39;placeholder&#39;</span>)) <span class="kw">return</span>;
         <span class="kw">var</span> show = <span class="kw">function</span> () {
                 <span class="kw">tooltip</span>.<span class="fu">show</span>().<span class="fu">fadeIn</span>();
@@ -4635,7 +4647,7 @@ require([<span class="ch">&#39;views/app&#39;</span>], <span class="kw">function
             <span class="co">//Normally this.totalPages would equal response.d.__count</span>
             <span class="co">//but as this particular NetFlix request only returns a</span>
             <span class="co">//total count of items for the search, we divide.</span>
-<span class="er">            this.totalPages = Math.floor(response.d.__count / this.perPage);</span>
+            <span class="kw">this</span>.<span class="fu">totalPages</span> = <span class="kw">Math</span>.<span class="fu">floor</span>(<span class="kw">response.d</span>.__<span class="fu">count</span> / <span class="kw">this</span>.<span class="fu">perPage</span>);
             <span class="kw">return</span> tags;
         }
     });
@@ -4959,12 +4971,12 @@ describe(<span class="ch">&#39;a simple spy&#39;</span>, <span class="kw">functi
         spyOn(myTodo, <span class="ch">&#39;setComplete&#39;</span>);
         <span class="kw">myTodo</span>.<span class="fu">setComplete</span>(<span class="ch">&#39;foo bar&#39;</span>);
 
-<span class="er">        expect(myTodo.setComplete).toHaveBeenCalledWith(&#39;foo bar&#39;);</span>
+        expect(<span class="kw">myTodo</span>.<span class="fu">setComplete</span>).<span class="fu">toHaveBeenCalledWith</span>(<span class="ch">&#39;foo bar&#39;</span>);
 
         <span class="kw">var</span> myTodo2 = <span class="kw">new</span> Todo();
         spyOn(myTodo2, <span class="ch">&#39;setComplete&#39;</span>);
 
-<span class="er">        expect(myTodo2.setComplete).not.toHaveBeenCalled();</span>
+        expect(<span class="kw">myTodo2</span>.<span class="fu">setComplete</span>).<span class="fu">not</span>.<span class="fu">toHaveBeenCalled</span>();
 
     });
 });</code></pre>
@@ -5126,7 +5138,7 @@ it(<span class="st">&quot;should contain a text value if not the default value&q
 });</code></pre>
 <p>The code to make the above failing test support validation is relatively simple. In our model, we override the validate() method (as recommended in the Backbone docs), checking to make sure a model both has a 'done' property and is a valid boolean before allowing it to pass.</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="dt">validate</span>: <span class="kw">function</span>(attrs) {
-<span class="er">    if (attrs.hasOwnProperty(&#39;done&#39;) &amp;&amp; !_.isBoolean(attrs.done)) {</span>
+    <span class="kw">if</span> (<span class="kw">attrs</span>.<span class="fu">hasOwnProperty</span>(<span class="ch">&#39;done&#39;</span>) &amp;&amp; !<span class="kw">_</span>.<span class="fu">isBoolean</span>(<span class="kw">attrs</span>.<span class="fu">done</span>)) {
         <span class="kw">return</span> <span class="ch">&#39;Todo.done must be a boolean value.&#39;</span>;
     }
 }</code></pre>
@@ -5150,7 +5162,7 @@ it(<span class="st">&quot;should contain a text value if not the default value&q
     },
 
     <span class="dt">validate</span>: <span class="kw">function</span>(attrs) {
-<span class="er">        if (attrs.hasOwnProperty(&#39;done&#39;) &amp;&amp; !_.isBoolean(attrs.done)) {</span>
+        <span class="kw">if</span> (<span class="kw">attrs</span>.<span class="fu">hasOwnProperty</span>(<span class="ch">&#39;done&#39;</span>) &amp;&amp; !<span class="kw">_</span>.<span class="fu">isBoolean</span>(<span class="kw">attrs</span>.<span class="fu">done</span>)) {
             <span class="kw">return</span> <span class="ch">&#39;Todo.done must be a boolean value.&#39;</span>;
         }
     },
@@ -5175,12 +5187,12 @@ it(<span class="st">&quot;should contain a text value if not the default value&q
     it(<span class="ch">&#39;Can add Model instances as objects and arrays.&#39;</span>, <span class="kw">function</span>() {
         <span class="kw">var</span> todos = <span class="kw">new</span> TodoList();
 
-<span class="er">        expect(todos.length).toBe(0);</span>
+        expect(<span class="kw">todos</span>.<span class="fu">length</span>).<span class="fu">toBe</span>(<span class="dv">0</span>);
 
         <span class="kw">todos</span>.<span class="fu">add</span>({ <span class="dt">text</span>: <span class="ch">&#39;Clean the kitchen&#39;</span> });
 
         <span class="co">// how many todos have been added so far?</span>
-<span class="er">        expect(todos.length).toBe(1);</span>
+        expect(<span class="kw">todos</span>.<span class="fu">length</span>).<span class="fu">toBe</span>(<span class="dv">1</span>);
 
         <span class="kw">todos</span>.<span class="fu">add</span>([
             { <span class="dt">text</span>: <span class="ch">&#39;Do the laundry&#39;</span>, <span class="dt">done</span>: <span class="kw">true</span> },
@@ -5188,7 +5200,7 @@ it(<span class="st">&quot;should contain a text value if not the default value&q
         ]);
 
         <span class="co">// how many are there in total now?</span>
-<span class="er">        expect(todos.length).toBe(3);</span>
+        expect(<span class="kw">todos</span>.<span class="fu">length</span>).<span class="fu">toBe</span>(<span class="dv">3</span>);
     });
 ...</code></pre>
 <p>Similar to model attributes, it's also quite straight-forward to test attributes in collections. Here we have a spec that ensures the collection.url (i.e the url reference to the collection's location on the server) is what we expect it to be:</p>
@@ -5196,7 +5208,7 @@ it(<span class="st">&quot;should contain a text value if not the default value&q
         <span class="kw">var</span> todos = <span class="kw">new</span> TodoList();
 
         <span class="co">// what has been specified as the url base in our model?</span>
-<span class="er">        expect(todos.url).toBe(&#39;/todos/&#39;);</span>
+        expect(<span class="kw">todos</span>.<span class="fu">url</span>).<span class="fu">toBe</span>(<span class="ch">&#39;/todos/&#39;</span>);
 });</code></pre>
 <p>For the third spec, it's useful to remember that the implementation for our collection will have methods for filtering how many Todo items are done and how many are remaining - we can call these <code>done()</code> and <code>remaining()</code>. Consider writing a spec which creates a new collection and adds one new model that has a preset <code>done</code> state of <code>true</code> and two others that have the default <code>done</code> state of <code>false</code>. Testing the length of what's returned using <code>done()</code> and <code>remaining()</code> should allow us to know whether the state management in our application is working or needs a little tweaking.</p>
 <p>The final implementation for our TodoList collection can be found below:</p>
@@ -5215,7 +5227,7 @@ it(<span class="st">&quot;should contain a text value if not the default value&q
         },
 
         <span class="dt">nextOrder</span>: <span class="kw">function</span>() {
-<span class="er">            if (!this.length) {</span>
+            <span class="kw">if</span> (!<span class="kw">this</span>.<span class="fu">length</span>) {
                 <span class="kw">return</span> <span class="dv">1</span>;
             }
 
@@ -5288,7 +5300,7 @@ expect(<span class="ch">&#39;click&#39;</span>).<span class="fu">toHaveBeenTrigg
 <p>You may have noticed that in <code>beforeEach()</code>, we passed our view an initial (albeit unfilled) Todo model. Views should be backed by a model instance which provides data. As this is quite important to our view's ability to function, we can write a spec to ensure a model is both defined (using the <code>toBeDefined()</code> matcher) and then test attributes of the model to ensure defaults both exist and are the value we expect them to be.</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript">it(<span class="ch">&#39;Is backed by a model instance, which provides the data.&#39;</span>, <span class="kw">function</span>() {
 
-<span class="er">    expect(todoView.model).toBeDefined();</span>
+    expect(<span class="kw">todoView</span>.<span class="fu">model</span>).<span class="fu">toBeDefined</span>();
 
     <span class="co">// what&#39;s the value for Todo.get(&#39;done&#39;) here?</span>
     expect(<span class="kw">todoView.model</span>.<span class="fu">get</span>(<span class="ch">&#39;done&#39;</span>)).<span class="fu">toBe</span>(<span class="kw">false</span>); <span class="co">//or toBeFalsy()</span>
@@ -5312,7 +5324,7 @@ expect(<span class="ch">&#39;click&#39;</span>).<span class="fu">toHaveBeenTrigg
   describe(<span class="st">&quot;Rendering&quot;</span>, <span class="kw">function</span>() {
 
     it(<span class="st">&quot;returns the view object&quot;</span>, <span class="kw">function</span>() {
-<span class="er">      expect(this.view.render()).toEqual(this.view);</span>
+      expect(<span class="kw">this</span>.<span class="fu">view</span>.<span class="fu">render</span>()).<span class="fu">toEqual</span>(<span class="kw">this</span>.<span class="fu">view</span>);
     });
 
     it(<span class="st">&quot;produces the correct HTML&quot;</span>, <span class="kw">function</span>() {
@@ -5320,7 +5332,7 @@ expect(<span class="ch">&#39;click&#39;</span>).<span class="fu">toHaveBeenTrigg
 
       <span class="co">//let&#39;s use jasmine-jquery&#39;s toContain() to avoid</span>
       <span class="co">//testing for the complete content of a todo&#39;s markup</span>
-<span class="er">      expect(this.view.el.innerHTML)</span>
+      expect(<span class="kw">this</span>.<span class="fu">view</span>.<span class="fu">el</span>.<span class="fu">innerHTML</span>)
         .<span class="fu">toContain</span>(<span class="ch">&#39;&lt;label class=&quot;todo-content&quot;&gt;My Todo&lt;/label&gt;&#39;</span>);
     });
 
@@ -5377,7 +5389,7 @@ expect(<span class="ch">&#39;click&#39;</span>).<span class="fu">toHaveBeenTrigg
   describe(<span class="st">&quot;Template&quot;</span>, <span class="kw">function</span>() {
 
     beforeEach(<span class="kw">function</span>() {
-<span class="er">      $(&#39;.todos&#39;).append(this.view.render().el);</span>
+      $(<span class="ch">&#39;.todos&#39;</span>).<span class="fu">append</span>(<span class="kw">this</span>.<span class="fu">view</span>.<span class="fu">render</span>().<span class="fu">el</span>);
     });
 
     it(<span class="st">&quot;has the correct text content&quot;</span>, <span class="kw">function</span>() {
@@ -5396,7 +5408,7 @@ expect(<span class="ch">&#39;click&#39;</span>).<span class="fu">toHaveBeenTrigg
 
   beforeEach(<span class="kw">function</span>() {
     <span class="kw">this</span>.<span class="fu">model</span>.<span class="fu">set</span>({<span class="dt">done</span>: <span class="kw">true</span>}, {<span class="dt">silent</span>: <span class="kw">true</span>});
-<span class="er">    $(&#39;.todos&#39;).append(this.view.render().el);</span>
+    $(<span class="ch">&#39;.todos&#39;</span>).<span class="fu">append</span>(<span class="kw">this</span>.<span class="fu">view</span>.<span class="fu">render</span>().<span class="fu">el</span>);
   });
 
   it(<span class="st">&quot;has a done class&quot;</span>, <span class="kw">function</span>() {
@@ -5937,7 +5949,7 @@ test( <span class="st">&quot;1 passed as an argument&quot;</span>, <span class="
       <span class="dt">title</span>: <span class="st">&quot;Hello world&quot;</span>
     });
 
-<span class="er">    this.todoStub.returns(this.model);</span>
+    <span class="kw">this</span>.<span class="fu">todoStub</span>.<span class="fu">returns</span>(<span class="kw">this</span>.<span class="fu">model</span>);
     <span class="kw">this</span>.<span class="fu">todos</span> = <span class="kw">new</span> TodoList();
 
     <span class="co">// Let&#39;s reset the relationship to use a stub</span>
@@ -6139,7 +6151,7 @@ test(<span class="ch">&#39;Can render, after which the DOM representation of the
     <span class="co">//</span>
     <span class="co">// Hint: http://documentcloud.github.com/backbone/#View-el</span>
 
-<span class="er">    $(&#39;ul#todoList&#39;).append(this.todoView.el);</span>
+    $(<span class="ch">&#39;ul#todoList&#39;</span>).<span class="fu">append</span>(<span class="kw">this</span>.<span class="fu">todoView</span>.<span class="fu">el</span>);
     equal($(<span class="ch">&#39;#todoList&#39;</span>).<span class="fu">find</span>(<span class="ch">&#39;li&#39;</span>).<span class="fu">length</span>, <span class="dv">1</span>);
 });
 
