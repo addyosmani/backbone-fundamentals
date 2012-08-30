@@ -267,7 +267,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 
      <span class="kw">var</span> render= <span class="kw">function</span>(){
         <span class="co">// We use a templating library such as Underscore</span>
-        <span class="co">// templating which generates the HTML for our </span>
+        <span class="co">// templating which generates the HTML for our</span>
         <span class="co">// photo entry</span>
         <span class="kw">photoEl</span>.<span class="fu">innerHTML</span> = <span class="kw">_</span>.<span class="fu">template</span>(<span class="ch">&#39;photoTemplate&#39;</span>, {<span class="dt">src</span>: <span class="kw">photoModel</span>.<span class="fu">getSrc</span>()});
      }
@@ -302,7 +302,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <pre class="sourceCode html"><code class="sourceCode html"><span class="kw">&lt;li</span><span class="ot"> class=</span><span class="st">&quot;photo&quot;</span><span class="kw">&gt;</span>
   <span class="kw">&lt;h2&gt;</span>{{caption}}<span class="kw">&lt;/h2&gt;</span>
   <span class="kw">&lt;img</span><span class="ot"> class=</span><span class="st">&quot;source&quot;</span><span class="ot"> src=</span><span class="st">&quot;{{src}}&quot;</span><span class="kw">/&gt;</span>
-  <span class="kw">&lt;div</span><span class="ot"> class=</span><span class="st">&quot;meta-data&quot;</span><span class="kw">&gt;</span> 
+  <span class="kw">&lt;div</span><span class="ot"> class=</span><span class="st">&quot;meta-data&quot;</span><span class="kw">&gt;</span>
     {{metadata}}
   <span class="kw">&lt;/div&gt;</span>
 <span class="kw">&lt;/li&gt;</span></code></pre>
@@ -310,7 +310,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <pre class="sourceCode html"><code class="sourceCode html"><span class="kw">&lt;li</span><span class="ot"> class=</span><span class="st">&quot;photo&quot;</span><span class="kw">&gt;</span>
   <span class="kw">&lt;h2&gt;</span><span class="er">&lt;</span>%= caption %&gt;<span class="kw">&lt;/h2&gt;</span>
   <span class="kw">&lt;img</span><span class="ot"> class=</span><span class="st">&quot;source&quot;</span><span class="ot"> src=</span><span class="st">&quot;</span><span class="er">&lt;</span><span class="st">%= src %&gt;&quot;</span><span class="kw">/&gt;</span>
-  <span class="kw">&lt;div</span><span class="ot"> class=</span><span class="st">&quot;meta-data&quot;</span><span class="kw">&gt;</span> 
+  <span class="kw">&lt;div</span><span class="ot"> class=</span><span class="st">&quot;meta-data&quot;</span><span class="kw">&gt;</span>
     <span class="er">&lt;</span>%= metadata %&gt;
   <span class="kw">&lt;/div&gt;</span>
 <span class="kw">&lt;/li&gt;</span></code></pre>
@@ -331,15 +331,15 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <p>(Note: We won't be delving heavily into Spine.js beyond this example, but it's worth looking at it to learn more about Javascript frameworks in general.)</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="co">// Controllers in Spine are created by inheriting from Spine.Controller</span>
 
-<span class="kw">var</span> PhotosController = <span class="kw">Spine.Controller</span>.<span class="fu">sub</span>({      
+<span class="kw">var</span> PhotosController = <span class="kw">Spine.Controller</span>.<span class="fu">sub</span>({
   <span class="dt">init</span>: <span class="kw">function</span>(){
-    <span class="kw">this</span>.<span class="fu">item</span>.<span class="fu">bind</span>(<span class="st">&quot;update&quot;</span>, <span class="kw">this</span>.<span class="fu">proxy</span>(<span class="kw">this</span>.<span class="fu">render</span>));
-    <span class="kw">this</span>.<span class="fu">item</span>.<span class="fu">bind</span>(<span class="st">&quot;destroy&quot;</span>, <span class="kw">this</span>.<span class="fu">proxy</span>(<span class="kw">this</span>.<span class="fu">remove</span>));
+<span class="er">    this.item.bind(&quot;update&quot;, this.proxy(this.render));</span>
+<span class="er">    this.item.bind(&quot;destroy&quot;, this.proxy(this.remove));</span>
   },
 
   <span class="dt">render</span>: <span class="kw">function</span>(){
     <span class="co">// Handle templating</span>
-    <span class="kw">this</span>.<span class="fu">replace</span>($(<span class="st">&quot;#photoTemplate&quot;</span>).<span class="fu">tmpl</span>(<span class="kw">this</span>.<span class="fu">item</span>));
+<span class="er">    this.replace($(&quot;#photoTemplate&quot;).tmpl(this.item));</span>
     <span class="kw">return</span> <span class="kw">this</span>;
   },
 
@@ -368,8 +368,8 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <h2 id="what-does-mvc-give-us">What does MVC give us?</h2>
 <p>To summarize, the separation of concerns in MVC facilitates modularization of an application's functionality and enables:</p>
 <ul>
-<li>Easier overall maintenance. When updates need to be made to the application it is clear whether the changes are data-centric, meaning changes to models and possibly controllers, or merely visual, meaning changes to views.<br /></li>
-<li>Decoupling models and views means that it's straight-forward to write unit tests for business logic<br /></li>
+<li>Easier overall maintenance. When updates need to be made to the application it is clear whether the changes are data-centric, meaning changes to models and possibly controllers, or merely visual, meaning changes to views.</li>
+<li>Decoupling models and views means that it's straight-forward to write unit tests for business logic</li>
 <li>Duplication of low-level model and controller code is eliminated across the application</li>
 <li>Depending on the size of the application and separation of roles, this modularity allows developers responsible for core logic and developers working on the user-interfaces to work simultaneously</li>
 </ul>
@@ -402,7 +402,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <p>That said, some developers do however feel that Backbone.js better fits the description of MVP than it does MVC . Their view is that:</p>
 <ul>
 <li>The presenter in MVP better describes the <code>Backbone.View</code> (the layer between View templates and the data bound to it) than a controller does</li>
-<li>The model fits <code>Backbone.Model</code> (it isn't that different from the classical MVC &quot;Model&quot;)<br /></li>
+<li>The model fits <code>Backbone.Model</code> (it isn't that different from the classical MVC &quot;Model&quot;)</li>
 <li>The views best represent templates (e.g Handlebars/Mustache markup templates)</li>
 </ul>
 <p>A response to this could be that the view can also just be a View (as per MVC) because Backbone is flexible enough to let it be used for multiple purposes. The V in MVC and the P in MVP can both be accomplished by <code>Backbone.View</code> because they're able to achieve two purposes: both rendering atomic components and assembling those components rendered by other views.</p>
@@ -428,8 +428,8 @@ code > span.er { color: #ff0000; font-weight: bold; }
 
     <span class="dt">initialize</span>: <span class="kw">function</span>() {
       <span class="kw">_</span>.<span class="fu">bindAll</span>(<span class="kw">this</span>, <span class="ch">&#39;render&#39;</span>);
-      <span class="kw">this</span>.<span class="fu">model</span>.<span class="fu">on</span>(<span class="ch">&#39;change&#39;</span>, <span class="kw">this</span>.<span class="fu">render</span>);
-      <span class="kw">this</span>.<span class="fu">model</span>.<span class="fu">on</span>(<span class="ch">&#39;destroy&#39;</span>, <span class="kw">this</span>.<span class="fu">remove</span>);
+<span class="er">      this.model.on(&#39;change&#39;, this.render);</span>
+<span class="er">      this.model.on(&#39;destroy&#39;, this.remove);</span>
     },
 
     <span class="co">// Re-render the photo entry</span>
@@ -459,7 +459,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <li>Extensive eventing system. It's <a href="http://lostechies.com/derickbailey/2011/07/19/references-routing-and-the-event-aggregator-coordinating-views-in-backbone-js/">trivial</a> to add support for pub/sub in Backbone</li>
 <li>Prototypes are instantiated with the <code>new</code> keyword, which some developers prefer</li>
 <li>Agnostic about templating frameworks, however Underscore's micro-templating is available by default. Backbone works well with libraries like Handlebars</li>
-<li>Doesn't support deeply nested models, though there are Backbone plugins such as <a href="https://github.com/PaulUithol/Backbone-relational">this</a> which can help<br /></li>
+<li>Doesn't support deeply nested models, though there are Backbone plugins such as <a href="https://github.com/PaulUithol/Backbone-relational">this</a> which can help</li>
 <li>Clear and flexible conventions for structuring applications. Backbone doesn't force usage of all of its components and can work with only those needed.</li>
 </ul>
 <h1 id="the-internals"><a name="theinternals">The Internals</a></h1>
@@ -482,7 +482,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
     },
     <span class="dt">initialize</span>: <span class="kw">function</span>(){
         <span class="kw">this</span>.<span class="fu">on</span>(<span class="st">&quot;change:src&quot;</span>, <span class="kw">function</span>(){
-            <span class="kw">var</span> src = <span class="kw">this</span>.<span class="fu">get</span>(<span class="st">&quot;src&quot;</span>); 
+            <span class="kw">var</span> src = <span class="kw">this</span>.<span class="fu">get</span>(<span class="st">&quot;src&quot;</span>);
             <span class="kw">console</span>.<span class="fu">log</span>(<span class="ch">&#39;Image source updated to &#39;</span> + src);
         });
     },
@@ -506,9 +506,9 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <h4 id="getters-setters">Getters &amp; Setters</h4>
 <p><strong>Model.get()</strong></p>
 <p><code>Model.get()</code> provides easy access to a model's attributes. Attributes which are passed through to the model on instantiation are instantly available for retrieval.</p>
-<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> myPhoto = <span class="kw">new</span> Photo({ <span class="dt">title</span>: <span class="st">&quot;My awesome photo&quot;</span>, 
-                          <span class="dt">src</span>:<span class="st">&quot;boston.jpg&quot;</span>, 
-                          <span class="dt">location</span>: <span class="st">&quot;Boston&quot;</span>, 
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> myPhoto = <span class="kw">new</span> Photo({ <span class="dt">title</span>: <span class="st">&quot;My awesome photo&quot;</span>,
+                          <span class="dt">src</span>:<span class="st">&quot;boston.jpg&quot;</span>,
+                          <span class="dt">location</span>: <span class="st">&quot;Boston&quot;</span>,
                           <span class="dt">tags</span>:[<span class="ch">&#39;the big game&#39;</span>, <span class="ch">&#39;vacation&#39;</span>]}),
 
     title = <span class="kw">myPhoto</span>.<span class="fu">get</span>(<span class="st">&quot;title&quot;</span>), <span class="co">//My awesome photo</span>
@@ -522,10 +522,10 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <p>Accessing <code>Model.attributes</code> directly is generally discouraged. Instead, should you need to read or clone data, <code>Model.toJSON()</code> is recommended for this purpose. If you would like to access or copy a model's attributes for purposes such as JSON stringification (e.g. for serialization prior to being passed to a view), this can be achieved using Model.toJSON(). Remember that this will return an object and JSON.stringify() should be used to get a string representation of the data:</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> myAttributes = <span class="kw">myPhoto</span>.<span class="fu">toJSON</span>();
 <span class="kw">console</span>.<span class="fu">log</span>(<span class="kw">JSON</span>.<span class="fu">stringify</span>(myattributes));
-<span class="co">/* this returns: </span>
-<span class="co"> { title: &quot;My awesome photo&quot;, </span>
-<span class="co">   src:&quot;boston.jpg&quot;, </span>
-<span class="co">   location: &quot;Boston&quot;, </span>
+<span class="co">/* this returns:</span>
+<span class="co"> { title: &quot;My awesome photo&quot;,</span>
+<span class="co">   src:&quot;boston.jpg&quot;,</span>
+<span class="co">   location: &quot;Boston&quot;,</span>
 <span class="co">   tags:[&#39;the big game&#39;, &#39;vacation&#39;]}</span>
 <span class="co">*/</span></code></pre>
 <h4 id="model.set">Model.set()</h4>
@@ -556,7 +556,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
     }
 });
 
-<span class="kw">var</span> myPhoto = <span class="kw">new</span> Photo({ <span class="dt">location</span>: <span class="st">&quot;Boston&quot;</span>, 
+<span class="kw">var</span> myPhoto = <span class="kw">new</span> Photo({ <span class="dt">location</span>: <span class="st">&quot;Boston&quot;</span>,
                           <span class="dt">tags</span>:[<span class="ch">&#39;the big game&#39;</span>, <span class="ch">&#39;vacation&#39;</span>]}),
     title   = <span class="kw">myPhoto</span>.<span class="fu">get</span>(<span class="st">&quot;title&quot;</span>), <span class="co">//Another photo!</span>
     location = <span class="kw">myPhoto</span>.<span class="fu">get</span>(<span class="st">&quot;location&quot;</span>), <span class="co">//Boston</span>
@@ -589,7 +589,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 });
 
 <span class="kw">var</span> myPhoto = <span class="kw">new</span> Photo({ <span class="dt">title</span>:<span class="st">&quot;Fishing at the lake&quot;</span>, <span class="dt">src</span>:<span class="st">&quot;fishing.jpg&quot;</span>});
-<span class="kw">myPhoto</span>.<span class="fu">setTitle</span>(<span class="ch">&#39;Fishing at sea&#39;</span>); 
+<span class="kw">myPhoto</span>.<span class="fu">setTitle</span>(<span class="ch">&#39;Fishing at sea&#39;</span>);
 <span class="co">//logs &#39;My title has been changed to.. Fishing at sea&#39;</span></code></pre>
 <p><strong>Validation</strong></p>
 <p>Backbone supports model validation through <code>Model.validate()</code>, which allows checking the attribute values for a model prior to them being set.</p>
@@ -644,7 +644,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <h4 id="what-is-el">What is <code>el</code>?</h4>
 <p><code>el</code> is basically a reference to a DOM element and all views must have one. It allows for all of the contents of a view to be inserted into the DOM at once, which makes for faster rendering because the browser performs the minimum required reflows and repaints.</p>
 <p>There are two ways to attach a DOM element to a view: the element already exists in the page or a new element is created for the view and added manually by the developer. If the element already exists in the page, you can set <code>el</code> as either a CSS selector that matches the element or a simple reference to the DOM element.</p>
-<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="dt">el</span>: <span class="ch">&#39;#footer&#39;</span>, 
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="dt">el</span>: <span class="ch">&#39;#footer&#39;</span>,
 <span class="co">// OR</span>
 <span class="dt">el</span>: <span class="kw">document</span>.<span class="fu">getElementById</span>( <span class="ch">&#39;footer&#39;</span> )</code></pre>
 <p>If you want to create a new element for your view, set any combination of the following view's properties: <code>tagName</code>, <code>id</code> and <code>className</code>. A new element will be created for you by the framework and a reference to it will be available at the <code>el</code> property.</p>
@@ -682,7 +682,7 @@ id: &#39;header&#39;, // optional</code></pre>
 <p>As collections represent a group of items, we're also able to listen for <code>add</code> and <code>remove</code> events for when new models are added or removed from the collection. Here's an example:</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> PhotoCollection = <span class="kw">new</span> <span class="kw">Backbone</span>.<span class="fu">Collection</span>();
 <span class="kw">PhotoCollection</span>.<span class="fu">on</span>(<span class="st">&quot;add&quot;</span>, <span class="kw">function</span>(photo) {
-  <span class="kw">console</span>.<span class="fu">log</span>(<span class="st">&quot;I liked &quot;</span> + <span class="kw">photo</span>.<span class="fu">get</span>(<span class="st">&quot;title&quot;</span>) + <span class="ch">&#39; its this one, right? &#39;</span>  + <span class="kw">photo</span>.<span class="fu">get</span>(<span class="st">&quot;src&quot;</span>));
+  <span class="kw">console</span>.<span class="fu">log</span>(<span class="st">&quot;I liked &quot;</span> + <span class="kw">photo</span>.<span class="fu">get</span>(<span class="st">&quot;title&quot;</span>) + <span class="ch">&#39; it\&#39;s this one, right? &#39;</span>  + <span class="kw">photo</span>.<span class="fu">get</span>(<span class="st">&quot;src&quot;</span>));
 });
 
 <span class="kw">PhotoCollection</span>.<span class="fu">add</span>([
@@ -692,7 +692,7 @@ id: &#39;header&#39;, // optional</code></pre>
 ]);</code></pre>
 <p>In addition, we're able to bind a <code>change</code> event to listen for changes to models in the collection.</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">PhotoCollection</span>.<span class="fu">on</span>(<span class="st">&quot;change:title&quot;</span>, <span class="kw">function</span>(){
-    <span class="kw">console</span>.<span class="fu">log</span>(<span class="st">&quot;there have been updates made to this collection&#39;s titles&quot;</span>);    
+    <span class="kw">console</span>.<span class="fu">log</span>(<span class="st">&quot;there have been updates made to this collection&#39;s titles&quot;</span>);
 });</code></pre>
 <p><strong>Fetching models from the server</strong></p>
 <p><code>Collections.fetch()</code> retrieves a default set of models from the server in the form of a JSON array. When this data returns, the current collection's contents will be replaced with the contents of the array.</p>
@@ -774,19 +774,19 @@ collection
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> ourObject = {};
 
 <span class="co">// Mixin</span>
-<span class="kw">_</span>.<span class="fu">extend</span>(ourObject, <span class="kw">Backbone</span>.<span class="fu">Events</span>);
+<span class="er">_.extend(ourObject, Backbone.Events);</span>
 
 <span class="co">// Add a custom event</span>
 <span class="kw">ourObject</span>.<span class="fu">on</span>(<span class="st">&quot;dance&quot;</span>, <span class="kw">function</span>(msg){
-  <span class="kw">console</span>.<span class="fu">log</span>(<span class="st">&quot;We triggered&quot;</span> + msg);
+  <span class="kw">console</span>.<span class="fu">log</span>(<span class="st">&quot;We triggered &quot;</span> + msg);
 });
 
 <span class="co">// Trigger the custom event</span>
 <span class="kw">ourObject</span>.<span class="fu">trigger</span>(<span class="st">&quot;dance&quot;</span>, <span class="st">&quot;our event&quot;</span>);</code></pre>
 <p>If you're familiar with jQuery custom events or the concept of Publish/Subscribe, <code>Backbone.Events</code> provides a system that is very similar with <code>on</code> being analogous to <code>subscribe</code> and <code>trigger</code> being similar to <code>publish</code>.</p>
 <p><code>on</code> basically allows us to bind a callback function to any object, as we've done with <code>dance</code> in the above example. Whenever the event is fired, our callback is invoked.</p>
-<p>The official Backbone.js documentation recommends namespacing event names using colors if you end up using quite a few of these on your page. e.g:</p>
-<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">ourObject</span>.<span class="fu">on</span>(<span class="st">&quot;dance:tap&quot;</span>, ...);</code></pre>
+<p>The official Backbone.js documentation recommends namespacing event names using colons if you end up using quite a few of these on your page. e.g:</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="er">ourObject.on(&quot;dance:tap&quot;, ...);</span></code></pre>
 <p>A special <code>all</code> event is made available in case you would like an event to be triggered when any event occurs (e.g if you would like to screen events in a single location). The <code>all</code> event can be used as follows:</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">ourObject</span>.<span class="fu">on</span>(<span class="st">&quot;all&quot;</span>, <span class="kw">function</span>(eventName){
   <span class="kw">console</span>.<span class="fu">log</span>(<span class="st">&quot;The name of the event passed was &quot;</span> + eventName);
@@ -819,13 +819,13 @@ collection
         <span class="co">/*Sample usage: http://unicorns.com/#about*/</span>
 
         <span class="st">&quot;photos/:id&quot;</span> : <span class="st">&quot;getPhoto&quot;</span>,
-        <span class="co">/*This is an example of using a &quot;:param&quot; variable which allows us to match </span>
+        <span class="co">/*This is an example of using a &quot;:param&quot; variable which allows us to match</span>
 <span class="co">        any of the components between two URL slashes*/</span>
         <span class="co">/*Sample usage: http://unicorns.com/#photos/5*/</span>
 
         <span class="st">&quot;search/:query&quot;</span> : <span class="st">&quot;searchPhotos&quot;</span>,
         <span class="co">/*We can also define multiple routes that are bound to the same map function,</span>
-<span class="co">        in this case searchPhotos(). Note below how we&#39;re optionally passing in a </span>
+<span class="co">        in this case searchPhotos(). Note below how we&#39;re optionally passing in a</span>
 <span class="co">        reference to a page number if one is supplied*/</span>
         <span class="co">/*Sample usage: http://unicorns.com/#search/lolcats*/</span>
 
@@ -834,11 +834,11 @@ collection
         <span class="co">/*Sample usage: http://unicorns.com/#search/lolcats/p1*/</span>
 
         <span class="st">&quot;photos/:id/download/*imagePath&quot;</span> : <span class="st">&quot;downloadPhoto&quot;</span>,
-        <span class="co">/*This is an example of using a *splat. splats are able to match any number of </span>
+        <span class="co">/*This is an example of using a *splat. splats are able to match any number of</span>
 <span class="co">        URL components and can be combined with &quot;:param&quot;s*/</span>
         <span class="co">/*Sample usage: http://unicorns.com/#photos/5/download/files/lolcat-car.jpg*/</span>
 
-        <span class="co">/*If you wish to use splats for anything beyond default routing, it&#39;s probably a good </span>
+        <span class="co">/*If you wish to use splats for anything beyond default routing, it&#39;s probably a good</span>
 <span class="co">        idea to leave them at the end of a URL otherwise you may need to apply regular</span>
 <span class="co">        expression parsing on your fragment*/</span>
 
@@ -854,7 +854,7 @@ collection
     },
 
     <span class="dt">getPhoto</span>: <span class="kw">function</span>(id){
-        <span class="co">/* </span>
+        <span class="co">/*</span>
 <span class="co">        Note that the id matched in the above route will be passed to this function</span>
 <span class="co">        */</span>
         <span class="kw">console</span>.<span class="fu">log</span>(<span class="st">&quot;You are trying to reach photo &quot;</span> + id);
@@ -910,14 +910,14 @@ collection
 
   <span class="kw">function</span> success(result) {
     <span class="co">// Handle results from MyAPI</span>
-    <span class="kw">if</span> (<span class="kw">options</span>.<span class="fu">success</span>) {
+<span class="er">    if (options.success) {</span>
       <span class="kw">options</span>.<span class="fu">success</span>(result);
     }
   }
 
   <span class="kw">function</span> error(result) {
     <span class="co">// Handle results from MyAPI</span>
-    <span class="kw">if</span> (<span class="kw">options</span>.<span class="fu">error</span>) {
+<span class="er">    if (options.error) {</span>
       <span class="kw">options</span>.<span class="fu">error</span>(result);
     }
   }
@@ -1006,7 +1006,7 @@ return obj;</code></pre>
 <p>For example:</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"> <span class="kw">var</span> MyMixin = {
   <span class="dt">foo</span>: <span class="st">&quot;bar&quot;</span>,
-  <span class="dt">sayFoo</span>: <span class="kw">function</span>(){alert(<span class="kw">this</span>.<span class="fu">foo</span>);}
+<span class="er">  sayFoo: function(){alert(this.foo);}</span>
 }
 
 <span class="kw">var</span> MyView = <span class="kw">Backbone.View</span>.<span class="fu">extend</span>({
@@ -1035,7 +1035,7 @@ myView = <span class="kw">new</span> MyView();
    <span class="dt">initialize</span>: <span class="kw">function</span>(options){
       <span class="kw">this</span>.<span class="fu">constructor</span>.__<span class="fu">super</span>__.<span class="fu">initialize</span>.<span class="fu">apply</span>(<span class="kw">this</span>, [options])
       <span class="kw">console</span>.<span class="fu">log</span>(<span class="ch">&#39;PanelAdvanced initialized&#39;</span>);
-      <span class="kw">console</span>.<span class="fu">log</span>(<span class="kw">this</span>.<span class="fu">foo</span>); <span class="co">// Log: bar</span>
+<span class="er">      console.log(this.foo); // Log: bar</span>
    }
 });</code></pre>
 <p>This isn't the most elegant of solutions because if you have a lot of Views that inherit from Panel, then you'll have to remember to call Panel's initialize from all of them.</p>
@@ -1066,7 +1066,7 @@ myView = <span class="kw">new</span> MyView();
 
     <span class="dt">initialize</span>: <span class="kw">function</span> (options) {
         <span class="kw">console</span>.<span class="fu">log</span>(<span class="ch">&#39;PanelAdvanced initialized&#39;</span>);
-        <span class="kw">console</span>.<span class="fu">log</span>(<span class="kw">this</span>.<span class="fu">foo</span>);
+<span class="er">        console.log(this.foo);</span>
     }
 });
 
@@ -1148,7 +1148,7 @@ myApplication_galleryView = <span class="kw">Backbone.View</span>.<span class="f
         <span class="dt">skin</span>: <span class="ch">&#39;a&#39;</span>,
         <span class="dt">toolbars</span>: {
             <span class="dt">index</span>: <span class="ch">&#39;ui-navigation-toolbar&#39;</span>,
-            <span class="dt">pages</span>: <span class="ch">&#39;ui-custom-toolbar&#39;</span>    
+            <span class="dt">pages</span>: <span class="ch">&#39;ui-custom-toolbar&#39;</span>
         }
     }
 }</code></pre>
@@ -1166,12 +1166,12 @@ myApplication_galleryView = <span class="kw">Backbone.View</span>.<span class="f
 <span class="kw">galleryApp.model</span>.<span class="fu">special</span> = <span class="kw">galleryApp.model</span>.<span class="fu">special</span> || {};
 
 <span class="co">// routers</span>
-<span class="kw">galleryApp.routers</span>.<span class="fu">Workspace</span>   = <span class="kw">Backbone.Router</span>.<span class="fu">extend</span>({}); 
-<span class="kw">galleryApp.routers</span>.<span class="fu">PhotoSearch</span> = <span class="kw">Backbone.Router</span>.<span class="fu">extend</span>({}); 
+<span class="kw">galleryApp.routers</span>.<span class="fu">Workspace</span>   = <span class="kw">Backbone.Router</span>.<span class="fu">extend</span>({});
+<span class="kw">galleryApp.routers</span>.<span class="fu">PhotoSearch</span> = <span class="kw">Backbone.Router</span>.<span class="fu">extend</span>({});
 
 <span class="co">// models</span>
 <span class="kw">galleryApp.model</span>.<span class="fu">Photo</span>   = <span class="kw">Backbone.Model</span>.<span class="fu">extend</span>({});
-<span class="kw">galleryApp.model</span>.<span class="fu">Comment</span> = <span class="kw">Backbone.Model</span>.<span class="fu">extend</span>({}); 
+<span class="kw">galleryApp.model</span>.<span class="fu">Comment</span> = <span class="kw">Backbone.Model</span>.<span class="fu">extend</span>({});
 
 <span class="co">// special models</span>
 <span class="kw">galleryApp.model.special</span>.<span class="fu">Admin</span> = <span class="kw">Backbone.Model</span>.<span class="fu">extend</span>({});</code></pre>
@@ -1596,7 +1596,7 @@ $(<span class="kw">function</span>() {
 
       <span class="kw">if</span> ( value ) {
         <span class="kw">this</span>.<span class="fu">model</span>.<span class="fu">save</span>({ <span class="dt">title</span>: value });
-      } 
+      }
 
       <span class="kw">this</span>.$<span class="fu">el</span>.<span class="fu">removeClass</span>(<span class="ch">&#39;editing&#39;</span>);
     },
@@ -1756,7 +1756,7 @@ $(<span class="kw">function</span>() {
 <h2 id="todo-routing">Todo routing</h2>
 <p>Finally, we move on to routing, which will allow us to easily bookmark the list of items that are active as well as those which have been completed. We’ll be supporting the following routes:</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript">#/ (all - <span class="kw">default</span>)
-#/active 
+#/active
 #/completed</code></pre>
 <img src="img/todorouting.png" width="700px"/>
 <p>When the route changes the todo list will be filtered on a model level and the selected class on the filter links will be toggled. When an item is updated while in a filtered state, it will be updated accordingly. E.g. if the filter is active and the item is checked, it will be hidden. The active filter is persisted on reload.</p>
@@ -2024,7 +2024,7 @@ bbb init</code></pre>
       }
 
       <span class="co">// If a layout already exists, remove it from the DOM.</span>
-      <span class="kw">if</span> (<span class="kw">this</span>.<span class="fu">layout</span>) {
+<span class="er">      if (this.layout) {</span>
         <span class="kw">this</span>.<span class="fu">layout</span>.<span class="fu">remove</span>();
       }
 
@@ -2036,7 +2036,7 @@ bbb init</code></pre>
       });
 
       <span class="co">// Insert into the DOM.</span>
-      $(<span class="st">&quot;#main&quot;</span>).<span class="fu">empty</span>().<span class="fu">append</span>(<span class="kw">layout</span>.<span class="fu">el</span>);
+<span class="er">      $(&quot;#main&quot;).empty().append(layout.el);</span>
 
       <span class="co">// Render the layout.</span>
       <span class="kw">layout</span>.<span class="fu">render</span>();
@@ -2047,7 +2047,7 @@ bbb init</code></pre>
       <span class="co">// Return the reference, for chainability.</span>
       <span class="kw">return</span> layout;
     }
-  }, <span class="kw">Backbone</span>.<span class="fu">Events</span>);
+<span class="er">  }, Backbone.Events);</span>
 
 });</code></pre>
 <h3 id="creating-backbone-boilerplate-modules">Creating Backbone Boilerplate Modules</h3>
@@ -2298,18 +2298,18 @@ Initialized from template &quot;module&quot;.</code></pre>
     <span class="kw">this</span>.<span class="fu">innerView2</span> = <span class="kw">new</span> Subview({options});
 
 
-    <span class="kw">this</span>.$<span class="fu">el</span>.<span class="fu">append</span>(<span class="kw">this</span>.<span class="fu">innerView1</span>.<span class="fu">render</span>().<span class="fu">el</span>, <span class="kw">this</span>.<span class="fu">innerView2</span>.<span class="fu">render</span>().<span class="fu">el</span>);
+<span class="er">    this.$el.append(this.innerView1.render().el, this.innerView2.render().el);</span>
 }</code></pre>
 <p>In this version, we also don't require a template containing empty placeholders and the issue with <code>tagName</code>s is solved as they are defined by the view once again.</p>
 <p>Yet another variation which moves logic into an <code>onRender</code> event, could be written with only a few subtle changes:</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript">
 <span class="dt">initialize </span>: <span class="kw">function</span> () {
-    <span class="kw">this</span>.<span class="fu">on</span>(<span class="ch">&#39;render&#39;</span>, <span class="kw">this</span>.<span class="fu">onRender</span>);
+<span class="er">    this.on(&#39;render&#39;, this.onRender);</span>
 },
 
 <span class="dt">render </span>: <span class="kw">function</span> () {
 
-    <span class="kw">this</span>.$<span class="fu">el</span>.<span class="fu">html</span>(<span class="kw">this</span>.<span class="fu">template</span>);
+<span class="er">    this.$el.html(this.template);</span>
 
     <span class="co">// more logic</span>
 
@@ -2331,7 +2331,7 @@ Initialized from template &quot;module&quot;.</code></pre>
 
     <span class="dt">render</span>: <span class="kw">function</span>() {
         <span class="kw">this</span>.$<span class="fu">el</span>.<span class="fu">html</span>(template); <span class="co">// or this.$el.empty() if you have no template</span>
-        <span class="kw">this</span>.$<span class="fu">el</span>.<span class="fu">append</span>(<span class="kw">this</span>.<span class="fu">inner</span>.$<span class="fu">el</span>);
+<span class="er">        this.$el.append(this.inner.$el);</span>
         <span class="kw">this</span>.<span class="fu">inner</span>.<span class="fu">render</span>();
     }
 });
@@ -2358,7 +2358,7 @@ Initialized from template &quot;module&quot;.</code></pre>
     <span class="dt">render</span>: <span class="kw">function</span>() {
         <span class="kw">this</span>.$<span class="fu">el</span>.<span class="fu">html</span>(template); <span class="co">// or this.$el.empty() if you have no template</span>
         <span class="kw">this</span>.<span class="fu">inner</span> = <span class="kw">new</span> InnerView();
-        <span class="kw">this</span>.$<span class="fu">el</span>.<span class="fu">append</span>(<span class="kw">this</span>.<span class="fu">inner</span>.$<span class="fu">el</span>);
+<span class="er">        this.$el.append(this.inner.$el);</span>
     }
 });
 
@@ -2381,7 +2381,7 @@ Initialized from template &quot;module&quot;.</code></pre>
 <p>In order to reach attributes on related models in a nested setup, the models involved need to have some prior knowledge about which models this refers to. Backbone.js doesn't implicitly handle relations or nesting, meaning it's up to us to ensure models have a knowledge of each other.</p>
 <p>One approach is to make sure each child model has a 'parent' attribute. This way you can traverse the nesting first up to the parent and then down to any siblings that you know of. So, assuming we have models modelA, modelB and modelC:</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript">
-<span class="co">// When initializing modelA, I would suggest setting a link to the parent </span>
+<span class="co">// When initializing modelA, I would suggest setting a link to the parent</span>
 <span class="co">// model when doing this, like this:</span>
 
 ModelA = <span class="kw">Backbone.Model</span>.<span class="fu">extend</span>({
@@ -2403,7 +2403,7 @@ ModelA = <span class="kw">Backbone.Model</span>.<span class="fu">extend</span>({
     <span class="dt">initialize</span>: <span class="kw">function</span>(){
        <span class="kw">this</span>.<span class="fu">viewB</span> = <span class="kw">new</span> ViewB();
        <span class="kw">this</span>.<span class="fu">viewB</span>.<span class="fu">parentView</span> = <span class="kw">this</span>;
-       $(<span class="kw">this</span>.<span class="fu">el</span>).<span class="fu">append</span>(<span class="kw">this</span>.<span class="fu">viewB</span>.<span class="fu">el</span>);
+<span class="er">       $(this.el).append(this.viewB.el);</span>
     }
 });
 
@@ -2412,13 +2412,13 @@ ViewB = <span class="kw">Backbone.View</span>.<span class="fu">extend</span>({
     <span class="dt">tagName</span>: <span class="st">&quot;h1&quot;</span>,
 
     <span class="dt">render</span>: <span class="kw">function</span>(){
-        $(<span class="kw">this</span>.<span class="fu">el</span>).<span class="fu">html</span>(<span class="st">&quot;Header text&quot;</span>); <span class="co">// or use this.options.headerText or equivalent</span>
+<span class="er">        $(this.el).html(&quot;Header text&quot;); // or use this.options.headerText or equivalent</span>
     },
 
     <span class="dt">funcB1</span>: <span class="kw">function</span>(){
         <span class="kw">this</span>.<span class="fu">model</span>.<span class="fu">parent</span>.<span class="fu">doSomethingOnParent</span>();
         <span class="kw">this</span>.<span class="fu">model</span>.<span class="fu">parent</span>.<span class="fu">modelC</span>.<span class="fu">doSomethingOnSibling</span>();
-        $(<span class="kw">this</span>.<span class="fu">parentView</span>.<span class="fu">el</span>).<span class="fu">shakeViolently</span>();
+<span class="er">        $(this.parentView.el).shakeViolently();</span>
     }
 
 });</code></pre>
@@ -2457,7 +2457,7 @@ ViewB = <span class="kw">Backbone.View</span>.<span class="fu">extend</span>({
 <span class="co">// for an implementation or alternatively for a more thorough one</span>
 <span class="co">// http://thejacklawson.com/Mediator.js/</span>
 
-<span class="kw">var</span> mediator = <span class="kw">new</span> Mediator(); 
+<span class="kw">var</span> mediator = <span class="kw">new</span> Mediator();
 
 <span class="kw">var</span> ApplicationViewB = <span class="kw">Backbone.View</span>.<span class="fu">extend</span>({
     <span class="dt">toggle_select</span>: <span class="kw">function</span>() {
@@ -2469,7 +2469,7 @@ ViewB = <span class="kw">Backbone.View</span>.<span class="fu">extend</span>({
 
 <span class="kw">var</span> ApplicationViewA = <span class="kw">Backbone.View</span>.<span class="fu">extend</span>({
     <span class="dt">initialize</span>: <span class="kw">function</span>() {
-        <span class="kw">mediator</span>.<span class="fu">subscribe</span>(<span class="ch">&#39;selected&#39;</span>, <span class="kw">this</span>.<span class="fu">delete</span>_<span class="fu">selected</span>)
+<span class="er">        mediator.subscribe(&#39;selected&#39;, this.delete_selected)</span>
     },
 
     <span class="dt">delete_selected</span>: <span class="kw">function</span>(any, data, you, want) {
@@ -2513,13 +2513,13 @@ ViewB = <span class="kw">Backbone.View</span>.<span class="fu">extend</span>({
 
     <span class="dt">unbindFromAll</span>: <span class="kw">function</span> () {
         <span class="kw">_</span>.<span class="fu">each</span>(<span class="kw">this</span>.<span class="fu">bindings</span>, <span class="kw">function</span> (binding) {
-            <span class="kw">binding.model</span>.<span class="fu">unbind</span>(<span class="kw">binding</span>.<span class="fu">ev</span>, <span class="kw">binding</span>.<span class="fu">callback</span>);
+<span class="er">            binding.model.unbind(binding.ev, binding.callback);</span>
         });
         <span class="kw">this</span>.<span class="fu">bindings</span> = [];
     },
 
     <span class="dt">dispose</span>: <span class="kw">function</span> () {
-        <span class="kw">this</span>.<span class="fu">unbindFromAll</span>(); <span class="co">// this will unbind all events that this view has bound to </span>
+        <span class="kw">this</span>.<span class="fu">unbindFromAll</span>(); <span class="co">// this will unbind all events that this view has bound to</span>
         <span class="kw">this</span>.<span class="fu">unbind</span>(); <span class="co">// this will unbind all listeners to events from this view. This is probably not necessary because this view will be garbage collected.</span>
         <span class="kw">this</span>.<span class="fu">remove</span>(); <span class="co">// uses the default Backbone.View.remove() method which removes this.el from the DOM and removes DOM events.</span>
     }
@@ -2543,7 +2543,7 @@ ViewB = <span class="kw">Backbone.View</span>.<span class="fu">extend</span>({
 <p>Where your application is setup with multiple Parent and Child Views, it is also common to desire removing any DOM elements associated with such views as well as unbinding any event handlers tied to child elements when you no longer require them.</p>
 <p>The solution in the last question should be enough to handle this use-case, but if you require a more-explicit example that handles children, we can see one below:</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">Backbone.View.prototype</span>.<span class="fu">close</span> = <span class="kw">function</span>() {
-    <span class="kw">if</span> (<span class="kw">this</span>.<span class="fu">onClose</span>) {
+<span class="er">    if (this.onClose) {</span>
         <span class="kw">this</span>.<span class="fu">onClose</span>();
     }
     <span class="kw">this</span>.<span class="fu">remove</span>();
@@ -2556,11 +2556,11 @@ NewView = <span class="kw">Backbone.View</span>.<span class="fu">extend</span>({
     },
     <span class="dt">renderChildren</span>: <span class="kw">function</span>(item) {
         <span class="kw">var</span> itemView = <span class="kw">new</span> NewChildView({ <span class="dt">model</span>: item });
-        $(<span class="kw">this</span>.<span class="fu">el</span>).<span class="fu">prepend</span>(<span class="kw">itemView</span>.<span class="fu">render</span>());
+<span class="er">        $(this.el).prepend(itemView.render());</span>
         <span class="kw">this</span>.<span class="fu">childViews</span>.<span class="fu">push</span>(itemView);
     },
     <span class="dt">onClose</span>: <span class="kw">function</span>() {
-      _(<span class="kw">this</span>.<span class="fu">childViews</span>).<span class="fu">each</span>(<span class="kw">function</span>(view) {
+<span class="er">      _(this.childViews).each(function(view) {</span>
         <span class="kw">view</span>.<span class="fu">close</span>();
       });
     }
@@ -2621,20 +2621,9 @@ NewChildView = <span class="kw">Backbone.View</span>.<span class="fu">extend</sp
 <p>Some simple validation that could be written using the current Backbone <code>validate</code> method to work with this form could be implemented using something like:</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="dt">validate</span>: <span class="kw">function</span>(attrs) {
 
-    <span class="kw">if</span>(!<span class="kw">attrs</span>.<span class="fu">firstname</span>) {
-         <span class="kw">console</span>.<span class="fu">log</span>(<span class="ch">&#39;first name is empty&#39;</span>);
-         <span class="kw">return</span> <span class="kw">false</span>;
-    }
-
-    <span class="kw">if</span>(!<span class="kw">attrs</span>.<span class="fu">lastname</span>) {
-        <span class="kw">console</span>.<span class="fu">log</span>(<span class="ch">&#39;last name is empty&#39;</span>);
-        <span class="kw">return</span> <span class="kw">false</span>;
-    }
-
-    <span class="kw">if</span>(!<span class="kw">attrs</span>.<span class="fu">email</span>) {
-        <span class="kw">console</span>.<span class="fu">log</span>(<span class="ch">&#39;email is empty&#39;</span>);
-        <span class="kw">return</span> <span class="kw">false</span>;
-    }
+<span class="er">    if(!attrs.firstname) return &#39;first name is empty&#39;;</span>
+<span class="er">    if(!attrs.lastname) return &#39;last name is empty&#39;;</span>
+<span class="er">    if(!attrs.email) return &#39;email is empty&#39;;</span>
 
 }</code></pre>
 <p>Unfortunately, this method would trigger a first name error each time any of the fields were blurred and only an error message next to the first name field would be presented.</p>
@@ -2642,9 +2631,9 @@ NewChildView = <span class="kw">Backbone.View</span>.<span class="fu">extend</sp
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="dt">validate</span>: <span class="kw">function</span>(attrs) {
   <span class="kw">var</span> errors = {};
 
-  <span class="kw">if</span> (!<span class="kw">attrs</span>.<span class="fu">firstname</span>) <span class="kw">errors</span>.<span class="fu">firstname</span> = <span class="ch">&#39;first name is empty&#39;</span>;
-  <span class="kw">if</span> (!<span class="kw">attrs</span>.<span class="fu">lastname</span>) <span class="kw">errors</span>.<span class="fu">lastname</span> = <span class="ch">&#39;last name is empty&#39;</span>;
-  <span class="kw">if</span> (!<span class="kw">attrs</span>.<span class="fu">email</span>) <span class="kw">errors</span>.<span class="fu">email</span> = <span class="ch">&#39;email is empty&#39;</span>;
+<span class="er">  if (!attrs.firstname) errors.firstname = &#39;first name is empty&#39;;</span>
+<span class="er">  if (!attrs.lastname) errors.lastname = &#39;last name is empty&#39;;</span>
+<span class="er">  if (!attrs.email) errors.email = &#39;email is empty&#39;;</span>
 
   <span class="kw">if</span> (!<span class="kw">_</span>.<span class="fu">isEmpty</span>(errors)) <span class="kw">return</span> errors;
 }</code></pre>
@@ -2656,9 +2645,9 @@ $(<span class="kw">function</span>($) {
     <span class="dt">validate</span>: <span class="kw">function</span>(attrs) {
       <span class="kw">var</span> errors = <span class="kw">this</span>.<span class="fu">errors</span> = {};
 
-      <span class="kw">if</span> (!<span class="kw">attrs</span>.<span class="fu">firstname</span>) <span class="kw">errors</span>.<span class="fu">firstname</span> = <span class="ch">&#39;firstname is required&#39;</span>;
-      <span class="kw">if</span> (!<span class="kw">attrs</span>.<span class="fu">lastname</span>) <span class="kw">errors</span>.<span class="fu">lastname</span> = <span class="ch">&#39;lastname is required&#39;</span>;
-      <span class="kw">if</span> (!<span class="kw">attrs</span>.<span class="fu">email</span>) <span class="kw">errors</span>.<span class="fu">email</span> = <span class="ch">&#39;email is required&#39;</span>;
+<span class="er">      if (!attrs.firstname) errors.firstname = &#39;firstname is required&#39;;</span>
+<span class="er">      if (!attrs.lastname) errors.lastname = &#39;lastname is required&#39;;</span>
+<span class="er">      if (!attrs.email) errors.email = &#39;email is required&#39;;</span>
 
       <span class="kw">if</span> (!<span class="kw">_</span>.<span class="fu">isEmpty</span>(errors)) <span class="kw">return</span> errors;
     }
@@ -2715,17 +2704,17 @@ $(<span class="kw">function</span>($) {
           },
 
            <span class="dt">isEmail</span>: <span class="kw">function</span>(value) {
-            <span class="kw">return</span> <span class="kw">User.prototype.validators</span>.<span class="fu">pattern</span>(value, <span class="kw">User.prototype.patterns</span>.<span class="fu">email</span>);
+<span class="er">            return User.prototype.validators.pattern(value, User.prototype.patterns.email);</span>
 
           },
 
           <span class="dt">hasSpecialCharacter</span>: <span class="kw">function</span>(value) {
-            <span class="kw">return</span> <span class="kw">User.prototype.validators</span>.<span class="fu">pattern</span>(value, <span class="kw">User.prototype.patterns</span>.<span class="fu">specialCharacters</span>);
+<span class="er">            return User.prototype.validators.pattern(value, User.prototype.patterns.specialCharacters);</span>
 
           },
          ...
 
-    <span class="co">// We can determine which properties are getting validated by </span>
+    <span class="co">// We can determine which properties are getting validated by</span>
     <span class="co">// checking to see if properties are equal to null</span>
 
         <span class="dt">validate</span>: <span class="kw">function</span>(attrs) {
@@ -2733,30 +2722,30 @@ $(<span class="kw">function</span>($) {
           <span class="kw">var</span> errors = <span class="kw">this</span>.<span class="fu">errors</span> = {};
 
           <span class="kw">if</span>(<span class="kw">attrs</span>.<span class="fu">firstname</span> != null) {
-              <span class="kw">if</span> (!<span class="kw">attrs</span>.<span class="fu">firstname</span>) {
+<span class="er">              if (!attrs.firstname) {</span>
                   <span class="kw">errors</span>.<span class="fu">firstname</span> = <span class="ch">&#39;firstname is required&#39;</span>;
                   <span class="kw">console</span>.<span class="fu">log</span>(<span class="ch">&#39;first name isEmpty validation called&#39;</span>);
               }
 
-              <span class="kw">else</span> <span class="kw">if</span>(!<span class="kw">this</span>.<span class="fu">validators</span>.<span class="fu">minLength</span>(<span class="kw">attrs</span>.<span class="fu">firstname</span>, <span class="dv">2</span>)) 
+              <span class="kw">else</span> <span class="kw">if</span>(!<span class="kw">this</span>.<span class="fu">validators</span>.<span class="fu">minLength</span>(<span class="kw">attrs</span>.<span class="fu">firstname</span>, <span class="dv">2</span>))
                 <span class="kw">errors</span>.<span class="fu">firstname</span> = <span class="ch">&#39;firstname is too short&#39;</span>;
-              <span class="kw">else</span> <span class="kw">if</span>(!<span class="kw">this</span>.<span class="fu">validators</span>.<span class="fu">maxLength</span>(<span class="kw">attrs</span>.<span class="fu">firstname</span>, <span class="dv">15</span>)) 
+              <span class="kw">else</span> <span class="kw">if</span>(!<span class="kw">this</span>.<span class="fu">validators</span>.<span class="fu">maxLength</span>(<span class="kw">attrs</span>.<span class="fu">firstname</span>, <span class="dv">15</span>))
                 <span class="kw">errors</span>.<span class="fu">firstname</span> = <span class="ch">&#39;firstname is too large&#39;</span>;
-              <span class="kw">else</span> <span class="kw">if</span>(<span class="kw">this</span>.<span class="fu">validators</span>.<span class="fu">hasSpecialCharacter</span>(<span class="kw">attrs</span>.<span class="fu">firstname</span>)) <span class="kw">errors</span>.<span class="fu">firstname</span> = <span class="ch">&#39;firstname cannot contain special characters&#39;</span>;
+<span class="er">              else if(this.validators.hasSpecialCharacter(attrs.firstname)) errors.firstname = &#39;firstname cannot contain special characters&#39;;</span>
           }
 
           <span class="kw">if</span>(<span class="kw">attrs</span>.<span class="fu">lastname</span> != null) {
 
-              <span class="kw">if</span> (!<span class="kw">attrs</span>.<span class="fu">lastname</span>) {
+<span class="er">              if (!attrs.lastname) {</span>
                   <span class="kw">errors</span>.<span class="fu">lastname</span> = <span class="ch">&#39;lastname is required&#39;</span>;
                   <span class="kw">console</span>.<span class="fu">log</span>(<span class="ch">&#39;last name isEmpty validation called&#39;</span>);
               }
 
-              <span class="kw">else</span> <span class="kw">if</span>(!<span class="kw">this</span>.<span class="fu">validators</span>.<span class="fu">minLength</span>(<span class="kw">attrs</span>.<span class="fu">lastname</span>, <span class="dv">2</span>)) 
+              <span class="kw">else</span> <span class="kw">if</span>(!<span class="kw">this</span>.<span class="fu">validators</span>.<span class="fu">minLength</span>(<span class="kw">attrs</span>.<span class="fu">lastname</span>, <span class="dv">2</span>))
                 <span class="kw">errors</span>.<span class="fu">lastname</span> = <span class="ch">&#39;lastname is too short&#39;</span>;
-              <span class="kw">else</span> <span class="kw">if</span>(!<span class="kw">this</span>.<span class="fu">validators</span>.<span class="fu">maxLength</span>(<span class="kw">attrs</span>.<span class="fu">lastname</span>, <span class="dv">15</span>)) 
+              <span class="kw">else</span> <span class="kw">if</span>(!<span class="kw">this</span>.<span class="fu">validators</span>.<span class="fu">maxLength</span>(<span class="kw">attrs</span>.<span class="fu">lastname</span>, <span class="dv">15</span>))
                 <span class="kw">errors</span>.<span class="fu">lastname</span> = <span class="ch">&#39;lastname is too large&#39;</span>;
-              <span class="kw">else</span> <span class="kw">if</span>(<span class="kw">this</span>.<span class="fu">validators</span>.<span class="fu">hasSpecialCharacter</span>(<span class="kw">attrs</span>.<span class="fu">lastname</span>)) <span class="kw">errors</span>.<span class="fu">lastname</span> = <span class="ch">&#39;lastname cannot contain special characters&#39;</span>;  
+<span class="er">              else if(this.validators.hasSpecialCharacter(attrs.lastname)) errors.lastname = &#39;lastname cannot contain special characters&#39;;</span>
 
           }</code></pre>
 <p>This allows the logic inside of our validate methods to determine which form fields are currently being set/validated, and does not care about the other model properties that are not trying to be set.</p>
@@ -2807,7 +2796,7 @@ $(<span class="kw">function</span>($) {
   <span class="co">// the bodyParser middleware parses JSON request bodies</span>
   <span class="kw">app</span>.<span class="fu">use</span>(<span class="kw">express</span>.<span class="fu">bodyParser</span>());
   <span class="kw">app</span>.<span class="fu">use</span>(<span class="kw">express</span>.<span class="fu">methodOverride</span>());
-  <span class="kw">app</span>.<span class="fu">use</span>(<span class="kw">app</span>.<span class="fu">router</span>);
+<span class="er">  app.use(app.router);</span>
   <span class="kw">app</span>.<span class="fu">use</span>(<span class="kw">express</span>.<span class="fu">static</span>(<span class="kw">path</span>.<span class="fu">join</span>(application_root, <span class="st">&quot;public&quot;</span>)));
   <span class="kw">app</span>.<span class="fu">use</span>(<span class="kw">express</span>.<span class="fu">errorHandler</span>({ <span class="dt">dumpExceptions</span>: <span class="kw">true</span>, <span class="dt">showStack</span>: <span class="kw">true</span> }));
   <span class="kw">app</span>.<span class="fu">set</span>(<span class="ch">&#39;views&#39;</span>, <span class="kw">path</span>.<span class="fu">join</span>(application_root, <span class="st">&quot;views&quot;</span>));
@@ -2914,7 +2903,7 @@ script#item-template(type=&quot;text/template&quot;)
   <span class="kw">&lt;div</span><span class="ot"> class=</span><span class="st">&quot;todo </span><span class="er">&lt;</span><span class="st">%= done ? &#39;done&#39; : &#39;&#39; %&gt;&quot;</span><span class="kw">&gt;</span>
   .display
     <span class="kw">&lt;input</span><span class="ot"> class=</span><span class="st">&quot;check&quot;</span><span class="ot"> type=</span><span class="st">&quot;checkbox&quot;</span> <span class="er">&lt;%</span><span class="ot">=</span> <span class="st">done</span> <span class="st">?</span> <span class="er">&#39;checked</span><span class="ot">=</span><span class="st">&quot;checked&quot;</span><span class="er">&#39;</span><span class="ot"> :</span> <span class="er">&#39;&#39;</span> <span class="er">%</span><span class="kw">&gt;</span> /&gt;
-    .todo-text 
+    .todo-text
     span#todo-destroy
   .edit
     input.todo-input(type=&quot;text&quot;, &quot;value&quot;=&quot;&quot;)
@@ -2923,7 +2912,7 @@ script#item-template(type=&quot;text/template&quot;)
 script#stats-template(type=&quot;text/template&quot;)
   <span class="er">&lt;</span>% if (total) { %&gt;
   span.todo-count
-    span.number <span class="er">&lt;</span>%= remaining %&gt; 
+    span.number <span class="er">&lt;</span>%= remaining %&gt;
     span.word <span class="er">&lt;</span>%= remaining == 1 ? &#39;item&#39; : &#39;items&#39; %&gt;
     |  left.
   <span class="er">&lt;</span>% } %&gt;
@@ -3351,7 +3340,7 @@ app.rb
     <span class="dt">render</span>: <span class="kw">function</span>() {
       <span class="kw">this</span>.$(<span class="ch">&#39;#todo-stats&#39;</span>).<span class="fu">html</span>(<span class="kw">this</span>.<span class="fu">statsTemplate</span>({
         <span class="dt">total</span>:      <span class="kw">Todos</span>.<span class="fu">length</span>,
-        <span class="dt">done</span>:   
+        <span class="dt">done</span>:
  ….</code></pre>
 <h3 id="collections-1">Collections</h3>
 <p>In the TodoList collection below, we've set the <code>url</code> property to point to <code>/api/todos</code> to reference the collection's location on the server. When we attempt to access this from our Sinatra-backed API, it should return a list of all the Todo items that have been previously stored in Mongo.</p>
@@ -3380,7 +3369,7 @@ app.rb
     <span class="co">// We keep the Todos in sequential order, despite being saved by unordered</span>
     <span class="co">// GUID in the database. This generates the next order number for new items.</span>
     <span class="dt">nextOrder</span>: <span class="kw">function</span>() {
-      <span class="kw">if</span> (!<span class="kw">this</span>.<span class="fu">length</span>) <span class="kw">return</span> <span class="dv">1</span>;
+<span class="er">      if (!this.length) return 1;</span>
       <span class="kw">return</span> <span class="kw">this</span>.<span class="fu">last</span>().<span class="fu">get</span>(<span class="ch">&#39;order&#39;</span>) + <span class="dv">1</span>;
     },
 
@@ -3434,13 +3423,13 @@ require <span class="st">&#39;json&#39;</span></code></pre>
 <p><code>haml :index</code> instructs Sinatra to use the <code>views/index.haml</code> for the application index, whilst <code>attr_wrapper</code> is simply defining the values to be used for any local variables defined inside the template. This similarly applies Todo items with the template `views/todo.haml'.</p>
 <p>The rest of our routes make use of the <code>params</code> hash and a number of useful helper methods included with the MongoDB Ruby driver. For more details on these, please read the comments I've made inline below:</p>
 <pre class="sourceCode ruby"><code class="sourceCode ruby">get <span class="st">&#39;/api/:thing&#39;</span> <span class="kw">do</span>
-  <span class="co"># query a collection :thing, convert the output to an array, map the _id </span>
+  <span class="co"># query a collection :thing, convert the output to an array, map the _id</span>
   <span class="co"># to a string representation of the object&#39;s _id and finally output to JSON</span>
   <span class="dt">DB</span>.collection(params[<span class="st">:thing</span>]).find.to_a.map{|t| from_bson_id(t)}.to_json
 <span class="kw">end</span>
 
 get <span class="st">&#39;/api/:thing/:id&#39;</span> <span class="kw">do</span>
-  <span class="co"># get the first document with the id :id in the collection :thing as a single document (rather </span>
+  <span class="co"># get the first document with the id :id in the collection :thing as a single document (rather</span>
   <span class="co"># than a Cursor, the standard output) using find_one(). Our bson utilities assist with</span>
   <span class="co"># ID conversion and the final output returned is also JSON</span>
   from_bson_id(<span class="dt">DB</span>.collection(params[<span class="st">:thing</span>]).find_one(to_bson_id(params[<span class="st">:id</span>]))).to_json
@@ -3532,7 +3521,7 @@ put <span class="st">&#39;/api/:thing/:id&#39;</span> <span class="kw">do</span>
   <span class="kw">&lt;div</span><span class="ot"> class=</span><span class="st">&quot;todo </span><span class="er">&lt;</span><span class="st">%= done ? &#39;done&#39; : &#39;&#39; %&gt;&quot;</span><span class="kw">&gt;</span>
   %div.display
     <span class="kw">&lt;input</span><span class="ot"> class=</span><span class="st">&quot;check&quot;</span><span class="ot"> type=</span><span class="st">&quot;checkbox&quot;</span> <span class="er">&lt;%</span><span class="ot">=</span> <span class="st">done</span> <span class="st">?</span> <span class="er">&#39;checked</span><span class="ot">=</span><span class="st">&quot;checked&quot;</span><span class="er">&#39;</span><span class="ot"> :</span> <span class="er">&#39;&#39;</span> <span class="er">%</span><span class="kw">&gt;</span> /&gt;
-    %div.todo-text 
+    %div.todo-text
     %span#todo-destroy
   %div.edit
     %input.todo-input{&quot;type&quot; =&gt; &quot;text&quot;, &quot;value&quot; =&gt;&quot;&quot;}/
@@ -3578,15 +3567,15 @@ put <span class="st">&#39;/api/:thing/:id&#39;</span> <span class="kw">do</span>
 <h3 id="writing-amd-modules-with-require.js">Writing AMD modules with Require.js</h3>
 <p>As discussed above, the overall goal for the AMD format is to provide a solution for modular JavaScript that developers can use today. The two key concepts you need to be aware of when using it with a script-loader are a <code>define()</code> method for facilitating module definition and a <code>require()</code> method for handling dependency loading. <code>define()</code> is used to define named or unnamed modules based on the proposal using the following signature:</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript">define(
-    module_id <span class="co">/*optional*/</span>, 
-    [dependencies] <span class="co">/*optional*/</span>, 
+    module_id <span class="co">/*optional*/</span>,
+    [dependencies] <span class="co">/*optional*/</span>,
     definition <span class="kw">function</span> <span class="co">/*function for instantiating the module or object*/</span>
 );</code></pre>
 <p>As you can tell by the inline comments, the <code>module_id</code> is an optional argument which is typically only required when non-AMD concatenation tools are being used (there may be some other edge cases where it's useful too). When this argument is left out, we call the module 'anonymous'. When working with anonymous modules, the idea of a module's identity is DRY, making it trivial to avoid duplication of filenames and code.</p>
 <p>Back to the define signature, the dependencies argument represents an array of dependencies which are required by the module you are defining and the third argument ('definition function') is a function that's executed to instantiate your module. A barebone module (compatible with Require.js) could be defined using <code>define()</code> as follows:</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="co">// A module ID has been omitted here to make the module anonymous</span>
 
-define([<span class="ch">&#39;foo&#39;</span>, <span class="ch">&#39;bar&#39;</span>], 
+define([<span class="ch">&#39;foo&#39;</span>, <span class="ch">&#39;bar&#39;</span>],
     <span class="co">// module definition function</span>
     <span class="co">// dependencies (foo and bar) are mapped to function parameters</span>
     <span class="kw">function</span> ( foo, bar ) {
@@ -3639,7 +3628,7 @@ require([<span class="ch">&#39;foo&#39;</span>, <span class="ch">&#39;bar&#39;</
 <pre class="sourceCode javascript"><code class="sourceCode javascript">define([<span class="ch">&#39;underscore&#39;</span>, <span class="ch">&#39;backbone&#39;</span>], <span class="kw">function</span>(_, Backbone) {
   <span class="kw">var</span> myModel = <span class="kw">Backbone.Model</span>.<span class="fu">extend</span>({
 
-    <span class="co">// Default attributes </span>
+    <span class="co">// Default attributes</span>
     <span class="dt">defaults</span>: {
       <span class="dt">content</span>: <span class="st">&quot;hello world&quot;</span>,
     },
@@ -3659,7 +3648,7 @@ require([<span class="ch">&#39;foo&#39;</span>, <span class="ch">&#39;bar&#39;</
 <p>Note how we alias Underscore.js's instance to <code>_</code> and Backbone to just <code>Backbone</code>, making it very trivial to convert non-AMD code over to using this module format. For a view which might require other dependencies such as jQuery, this can similarly be done as follows:</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript">define([
   <span class="ch">&#39;jquery&#39;</span>,
-  <span class="ch">&#39;underscore&#39;</span>, 
+  <span class="ch">&#39;underscore&#39;</span>,
   <span class="ch">&#39;backbone&#39;</span>,
   <span class="ch">&#39;collections/mycollection&#39;</span>,
   <span class="ch">&#39;views/myview&#39;</span>
@@ -3704,7 +3693,7 @@ require([<span class="ch">&#39;foo&#39;</span>, <span class="ch">&#39;bar&#39;</
 <p>HTML:</p>
 <pre><code>&lt;script type=&quot;text/template&quot; id=&quot;mainViewTemplate&quot;&gt;
     &lt;% _.each( person, function( person_item ){ %&gt;
-        &lt;li&gt;&lt;%= person_item.get(&quot;name&quot;) %&gt;&lt;/li&gt;  
+        &lt;li&gt;&lt;%= person_item.get(&quot;name&quot;) %&gt;&lt;/li&gt;
     &lt;% }); %&gt;
 &lt;/script&gt;</code></pre>
 <p>JS:</p>
@@ -3730,7 +3719,7 @@ require([<span class="ch">&#39;foo&#39;</span>, <span class="ch">&#39;bar&#39;</
 <li>The ability to run AMD projects in both Node and Rhino (more on this later)</li>
 </ul>
 <p>You'll notice that I mentioned the word 'specific' in the first bullet point. The Require.js optimizer only concatenates module scripts that have been specified in arrays of string literals passed to top-level (i.e non-local) require and define calls. As clarified by the <a href="http://requirejs.org/docs/optimization.html">optimizer docs</a> this means that Backbone modules defined like this:</p>
-<pre class="sourceCode javascript"><code class="sourceCode javascript">define([<span class="ch">&#39;jquery&#39;</span>,<span class="ch">&#39;backbone&#39;</span>,<span class="ch">&#39;underscore&#39;</span>, <span class="ch">&#39;collections/sample&#39;</span>,<span class="ch">&#39;views/test&#39;</span>], 
+<pre class="sourceCode javascript"><code class="sourceCode javascript">define([<span class="ch">&#39;jquery&#39;</span>,<span class="ch">&#39;backbone&#39;</span>,<span class="ch">&#39;underscore&#39;</span>, <span class="ch">&#39;collections/sample&#39;</span>,<span class="ch">&#39;views/test&#39;</span>],
     <span class="kw">function</span>($,Backbone, _, Sample, Test){
         <span class="co">//...</span>
     });</code></pre>
@@ -3920,10 +3909,10 @@ require([<span class="ch">&#39;foo&#39;</span>, <span class="ch">&#39;bar&#39;</
 <p>The above build profile is designed for balancing scalability and performance.</p>
 <p><strong>Examples of the grouped sets of code dependencies</strong></p>
 <p>The contents of the vendor.js which is not built into a package may use some <em>no conflict</em> calls as well.</p>
-<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="co">// List of vendor libraries, e.g. jQuery, Underscore, Backbone, etc.  </span>
-<span class="co">// this module is used with the r.js optimizer tool during build  </span>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="co">// List of vendor libraries, e.g. jQuery, Underscore, Backbone, etc.</span>
+<span class="co">// this module is used with the r.js optimizer tool during build</span>
 <span class="co">// @see &lt;http://requirejs.org/docs/faq-optimization.html&gt;</span>
-define([ <span class="st">&quot;jquery&quot;</span>, <span class="st">&quot;underscore&quot;</span>, <span class="st">&quot;backbone&quot;</span>, <span class="st">&quot;modernizr&quot;</span>, <span class="st">&quot;mustache&quot;</span> ], 
+define([ <span class="st">&quot;jquery&quot;</span>, <span class="st">&quot;underscore&quot;</span>, <span class="st">&quot;backbone&quot;</span>, <span class="st">&quot;modernizr&quot;</span>, <span class="st">&quot;mustache&quot;</span> ],
 <span class="kw">function</span> ($,        _,            Backbone,   Modernizr,   Mustache) {
     <span class="co">// call no conflicts so if needed you can use multiple versions of $</span>
     $.<span class="fu">noConflict</span>();
@@ -3932,7 +3921,7 @@ define([ <span class="st">&quot;jquery&quot;</span>, <span class="st">&quot;unde
 });</code></pre>
 <p>For your application common library code.</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="co">// List of utility libraries,</span>
-define([ <span class="st">&quot;utils/ajax&quot;</span>, <span class="st">&quot;utils/baselib&quot;</span>, <span class="st">&quot;utils/localstorage&quot;</span>, <span class="st">&quot;utils/debug&quot;</span>, <span class="st">&quot;utils/shims&quot;</span> ], 
+define([ <span class="st">&quot;utils/ajax&quot;</span>, <span class="st">&quot;utils/baselib&quot;</span>, <span class="st">&quot;utils/localstorage&quot;</span>, <span class="st">&quot;utils/debug&quot;</span>, <span class="st">&quot;utils/shims&quot;</span> ],
 <span class="kw">function</span> (ajax,         baselib,         localstorage,         debug) {
     <span class="kw">return</span> {
         <span class="st">&quot;ajax&quot;</span> : ajax,
@@ -3943,12 +3932,12 @@ define([ <span class="st">&quot;utils/ajax&quot;</span>, <span class="st">&quot;
     <span class="co">// the shim only extend JavaScript when needed, e.g. Object.create</span>
 });</code></pre>
 <p>An example where you intend to use require the common models in another package file.</p>
-<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="co">// List of models  </span>
-<span class="co">// models in this directory are intended for site-wide usage  </span>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="co">// List of models</span>
+<span class="co">// models in this directory are intended for site-wide usage</span>
 <span class="co">// grouping site-wide models in this module (object)</span>
 <span class="co">// optimizes the performance and keeps dependencies organized</span>
 <span class="co">// when the (build) optimizer is run.</span>
-define([ <span class="st">&quot;models/branding&quot;</span>, <span class="st">&quot;models/section&quot;</span> ], 
+define([ <span class="st">&quot;models/branding&quot;</span>, <span class="st">&quot;models/section&quot;</span> ],
 <span class="kw">function</span> (Branding,          Section) {
     <span class="kw">return</span> {
         <span class="st">&quot;Branding&quot;</span> : Branding,
@@ -3960,18 +3949,18 @@ define([ <span class="st">&quot;models/branding&quot;</span>, <span class="st">&
 <p>The convention recommended is to use Upper CamelCase for constructors and lower camelCase for others.</p>
 <h4 id="common-pitfall-when-organizing-code-in-modules">Common Pitfall when organizing code in modules</h4>
 <p>Be careful not define circular dependencies. For example, in a common <em>models</em> package (models.js) dependencies are listed for the files in your models directory</p>
-<pre><code>define([ &quot;models/branding&quot;, &quot;models/section&quot; ], function (branding, section)  
-// ...  
-return { &quot;branding&quot; : branding, &quot;section&quot;, section }  </code></pre>
+<pre><code>define([ &quot;models/branding&quot;, &quot;models/section&quot; ], function (branding, section)
+// ...
+return { &quot;branding&quot; : branding, &quot;section&quot;, section }</code></pre>
 <p>Then when another packages requires a common model you can access the models objects returned from your common models.js file like so...</p>
-<pre><code>define([ &quot;models&quot;, &quot;utils&quot; ], function (models, utils) {  
-var branding = models.branding, debug = utils.debug;  </code></pre>
+<pre><code>define([ &quot;models&quot;, &quot;utils&quot; ], function (models, utils) {
+var branding = models.branding, debug = utils.debug;</code></pre>
 <p>Perhaps after using the model a few times you get into the habit of requiring &quot;model&quot;. Later you need add another common model with extends a model you already defined. So the pitfall begins, you add a new model inside your models directory and add a reference this same model in the model.js:</p>
-<pre><code>define([ &quot;models/branding&quot;, &quot;models/section&quot;, &quot;models/section-b&quot; ], function (branding, section)  
-// ...  
+<pre><code>define([ &quot;models/branding&quot;, &quot;models/section&quot;, &quot;models/section-b&quot; ], function (branding, section)
+// ...
 return { &quot;branding&quot; : branding, &quot;section&quot;, section, &quot;section-b&quot; : section-b }</code></pre>
 <p>However in your <em>models/section-b.js</em> file you define a dependency using the model.js which returns the models in an object like so...</p>
-<pre><code>define([ &quot;models&quot; ], function (models, utils) {  
+<pre><code>define([ &quot;models&quot; ], function (models, utils) {
 var section = models.section;</code></pre>
 <p>Above is the mistake in models.js a dependency was added for models/section-b and in section-b a dependency is defined for model. The new models/section-b.js requires <em>model</em> and model.js requires <em>models/section-b.js</em> - a circular dependency. This should result in a load timeout error from require.js, but not tell you about the circular dependency.</p>
 <p>For other common mistakes see the <a href="http://requirejs.org/docs/errors.html" title="RequireJS common errors page">COMMON ERRORS</a> page on the Require.js site.</p>
@@ -4076,7 +4065,7 @@ require([<span class="ch">&#39;views/app&#39;</span>], <span class="kw">function
     <span class="co">// The TodoView listens for changes to its model, re-rendering. Since there&#39;s</span>
     <span class="co">// a one-to-one correspondence between a **Todo** and a **TodoView** in this</span>
     <span class="co">// app, we set a direct reference on the model for convenience.</span>
-    <span class="dt">initialize</span>: <span class="kw">function</span>() {      
+    <span class="dt">initialize</span>: <span class="kw">function</span>() {
       <span class="kw">this</span>.<span class="fu">model</span>.<span class="fu">on</span>(<span class="ch">&#39;change&#39;</span>, <span class="kw">this</span>.<span class="fu">render</span>, <span class="kw">this</span>);
       <span class="kw">this</span>.<span class="fu">model</span>.<span class="fu">view</span> = <span class="kw">this</span>;
     },
@@ -4098,8 +4087,8 @@ require([<span class="ch">&#39;views/app&#39;</span>], <span class="kw">function
 <p>Let's now take a look at the AMD-version of our view. As discussed earlier, the 'module' is wrapped using AMD's <code>define()</code> which allows us to specify the dependencies our view requires. Using the mapped paths to 'jquery' etc. simplifies referencing common dependencies and instances of dependencies are themselves mapped to local variables that we can access (e.g 'jquery' is mapped to <code>$</code>).</p>
 <p><strong>views/todos.js</strong></p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript">define([
-  <span class="ch">&#39;jquery&#39;</span>, 
-  <span class="ch">&#39;underscore&#39;</span>, 
+  <span class="ch">&#39;jquery&#39;</span>,
+  <span class="ch">&#39;underscore&#39;</span>,
   <span class="ch">&#39;backbone&#39;</span>,
   <span class="ch">&#39;text!templates/todos.html&#39;</span>
   ], <span class="kw">function</span>($, _, Backbone, todosTemplate){
@@ -4122,7 +4111,7 @@ require([<span class="ch">&#39;views/app&#39;</span>], <span class="kw">function
     <span class="co">// The TodoView listens for changes to its model, re-rendering. Since there&#39;s</span>
     <span class="co">// a one-to-one correspondence between a **Todo** and a **TodoView** in this</span>
     <span class="co">// app, we set a direct reference on the model for convenience.</span>
-    <span class="dt">initialize</span>: <span class="kw">function</span>() {      
+    <span class="dt">initialize</span>: <span class="kw">function</span>() {
       <span class="kw">this</span>.<span class="fu">model</span>.<span class="fu">on</span>(<span class="ch">&#39;change&#39;</span>, <span class="kw">this</span>.<span class="fu">render</span>, <span class="kw">this</span>);
       <span class="kw">this</span>.<span class="fu">model</span>.<span class="fu">view</span> = <span class="kw">this</span>;
     },
@@ -4139,7 +4128,7 @@ require([<span class="ch">&#39;views/app&#39;</span>], <span class="kw">function
       <span class="kw">var</span> content = <span class="kw">this</span>.<span class="fu">model</span>.<span class="fu">get</span>(<span class="ch">&#39;content&#39;</span>);
       <span class="kw">this</span>.$(<span class="ch">&#39;.todo-content&#39;</span>).<span class="fu">text</span>(content);
       <span class="kw">this</span>.<span class="fu">input</span> = <span class="kw">this</span>.$(<span class="ch">&#39;.todo-input&#39;</span>);
-      <span class="kw">this</span>.<span class="fu">input</span>.<span class="fu">on</span>(<span class="ch">&#39;blur&#39;</span>, <span class="kw">this</span>.<span class="fu">close</span>);
+<span class="er">      this.input.on(&#39;blur&#39;, this.close);</span>
       <span class="kw">this</span>.<span class="fu">input</span>.<span class="fu">val</span>(content);
     },
     ...</code></pre>
@@ -4189,9 +4178,9 @@ require([<span class="ch">&#39;views/app&#39;</span>], <span class="kw">function
 <p>As per other types of dependencies, we can easily map our model module to a local variable (in this case <code>Todo</code>) so it can be referenced as the model to use for our <code>TodosCollection</code>. This collection also supports a simple <code>done()</code> filter for narrowing down Todo items that have been completed and a <code>remaining()</code> filter for those that are still outstanding.</p>
 <p><strong>collections/todos.js</strong></p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript">define([
-  <span class="ch">&#39;underscore&#39;</span>, 
-  <span class="ch">&#39;backbone&#39;</span>, 
-  <span class="ch">&#39;libs/backbone/localstorage&#39;</span>, 
+  <span class="ch">&#39;underscore&#39;</span>,
+  <span class="ch">&#39;backbone&#39;</span>,
+  <span class="ch">&#39;libs/backbone/localstorage&#39;</span>,
   <span class="ch">&#39;models/todo&#39;</span>
   ], <span class="kw">function</span>(_, Backbone, Store, Todo){
 
@@ -4217,7 +4206,7 @@ require([<span class="ch">&#39;views/app&#39;</span>], <span class="kw">function
 <p><strong>views/app.js</strong></p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript">define([
   <span class="ch">&#39;jquery&#39;</span>,
-  <span class="ch">&#39;underscore&#39;</span>, 
+  <span class="ch">&#39;underscore&#39;</span>,
   <span class="ch">&#39;backbone&#39;</span>,
   <span class="ch">&#39;collections/todos&#39;</span>,
   <span class="ch">&#39;views/todos&#39;</span>,
@@ -4324,7 +4313,7 @@ require([<span class="ch">&#39;views/app&#39;</span>], <span class="kw">function
     <span class="kw">var</span> _private = {
         <span class="dt">i</span>:<span class="dv">5</span>,
         <span class="dt">get </span>: <span class="kw">function</span>() {
-            <span class="kw">console</span>.<span class="fu">log</span>(<span class="ch">&#39;current value:&#39;</span> + <span class="kw">this</span>.<span class="fu">i</span>);
+<span class="er">            console.log(&#39;current value:&#39; + this.i);</span>
         },
         <span class="dt">set </span>: <span class="kw">function</span>( val ) {
             <span class="kw">this</span>.<span class="fu">i</span> = val;
@@ -4338,7 +4327,7 @@ require([<span class="ch">&#39;views/app&#39;</span>], <span class="kw">function
     };
     <span class="kw">return</span> {
         <span class="dt">facade </span>: <span class="kw">function</span>( args ) {
-            <span class="kw">_private</span>.<span class="fu">set</span>(<span class="kw">args</span>.<span class="fu">val</span>);
+<span class="er">            _private.set(args.val);</span>
             <span class="kw">_private</span>.<span class="fu">get</span>();
             <span class="kw">if</span> ( <span class="kw">args</span>.<span class="fu">run</span> ) {
                 <span class="kw">_private</span>.<span class="fu">run</span>();
@@ -4359,7 +4348,7 @@ require([<span class="ch">&#39;views/app&#39;</span>], <span class="kw">function
     <span class="kw">facade</span>.<span class="fu">subscribe</span> = <span class="kw">function</span>(subscriber, channel, callback){
 
         <span class="co">// Note: Handling permissions/security is optional here</span>
-        <span class="co">// The permissions check can be removed </span>
+        <span class="co">// The permissions check can be removed</span>
         <span class="co">// to just use the mediator directly.</span>
 
         <span class="kw">if</span>(<span class="kw">permissions</span>.<span class="fu">validate</span>(subscriber, channel)){
@@ -4383,8 +4372,8 @@ require([<span class="ch">&#39;views/app&#39;</span>], <span class="kw">function
     <span class="co">// Permissions</span>
 
     <span class="co">// A permissions structure can support checking</span>
-    <span class="co">// against subscriptions prior to allowing them </span>
-    <span class="co">// to clear. This enforces a flexible security </span>
+    <span class="co">// against subscriptions prior to allowing them</span>
+    <span class="co">// to clear. This enforces a flexible security</span>
     <span class="co">// layer for your application.</span>
 
     <span class="kw">var</span> permissions = {
@@ -4438,10 +4427,10 @@ require([<span class="ch">&#39;views/app&#39;</span>], <span class="kw">function
 <p>In order to update your Backbone application to primarily use pub/sub, a lot of the work you may end up doing will be moving logic coupled inside of specific views to modules outside of it which are reactionary.</p>
 <p>Take the <code>todoSaver</code> for example - its responsibility is saving new Todo items to models once the a <code>notificationName</code> called 'newContentAvailable' has fired. If you take a look at the permissions structure in the last code sample, you'll notice that 'newContentAvailable' is present there. If I wanted to prevent subscribers from being able to subscribe to this notification, I simply set it to a boolean value of <code>false</code>.</p>
 <p>Again, this is a massive oversimplification of how advanced your permissions structures could get, but it's certainly one way of controlling what parts of your application can or can't be accessed by specific modules at any time.</p>
-<pre class="sourceCode javascript"><code class="sourceCode javascript">define([<span class="st">&quot;jquery&quot;</span>, <span class="st">&quot;underscore&quot;</span>, <span class="st">&quot;aura/facade&quot;</span>], 
+<pre class="sourceCode javascript"><code class="sourceCode javascript">define([<span class="st">&quot;jquery&quot;</span>, <span class="st">&quot;underscore&quot;</span>, <span class="st">&quot;aura/facade&quot;</span>],
 <span class="kw">function</span> ($, _, facade) {
 
-    <span class="co">// Subscription &#39;modules&#39; for our views. These take the </span>
+    <span class="co">// Subscription &#39;modules&#39; for our views. These take the</span>
     <span class="co">// the form facade.subscribe( subscriberName, notificationName , callBack )</span>
 
     <span class="co">// Update view with latest todo content</span>
@@ -4451,7 +4440,7 @@ require([<span class="ch">&#39;views/app&#39;</span>], <span class="kw">function
         <span class="kw">var</span> content = <span class="kw">context.model</span>.<span class="fu">get</span>(<span class="ch">&#39;content&#39;</span>);
         <span class="kw">context</span>.$(<span class="ch">&#39;.todo-content&#39;</span>).<span class="fu">text</span>(content);
         <span class="kw">context</span>.<span class="fu">input</span> = <span class="kw">context</span>.$(<span class="ch">&#39;.todo-input&#39;</span>);
-        <span class="kw">context.input</span>.<span class="fu">bind</span>(<span class="ch">&#39;blur&#39;</span>, <span class="kw">context</span>.<span class="fu">close</span>);
+<span class="er">        context.input.bind(&#39;blur&#39;, context.close);</span>
         <span class="kw">context.input</span>.<span class="fu">val</span>(content);
     });
 
@@ -4487,7 +4476,7 @@ require([<span class="ch">&#39;views/app&#39;</span>], <span class="kw">function
         <span class="kw">var</span> tooltip = <span class="kw">context</span>.$(<span class="st">&quot;.ui-tooltip-top&quot;</span>);
         <span class="kw">var</span> val = <span class="kw">context.input</span>.<span class="fu">val</span>();
         <span class="kw">tooltip</span>.<span class="fu">fadeOut</span>();
-        <span class="kw">if</span> (<span class="kw">context</span>.<span class="fu">tooltipTimeout</span>) clearTimeout(<span class="kw">context</span>.<span class="fu">tooltipTimeout</span>);
+<span class="er">        if (context.tooltipTimeout) clearTimeout(context.tooltipTimeout);</span>
         <span class="kw">if</span> (val == <span class="ch">&#39;&#39;</span> || val == <span class="kw">context.input</span>.<span class="fu">attr</span>(<span class="ch">&#39;placeholder&#39;</span>)) <span class="kw">return</span>;
         <span class="kw">var</span> show = <span class="kw">function</span> () {
                 <span class="kw">tooltip</span>.<span class="fu">show</span>().<span class="fu">fadeIn</span>();
@@ -4504,7 +4493,7 @@ require([<span class="ch">&#39;views/app&#39;</span>], <span class="kw">function
     });
 
 
-    <span class="co">// Create a new todo entry </span>
+    <span class="co">// Create a new todo entry</span>
     <span class="co">// Subscribes to: createWhenEntered</span>
     <span class="kw">facade</span>.<span class="fu">subscribe</span>(<span class="ch">&#39;keyboardManager&#39;</span>,<span class="ch">&#39;createWhenEntered&#39;</span>, <span class="kw">function</span> (context, e, todos) {
         <span class="kw">if</span> (<span class="kw">e</span>.<span class="fu">keyCode</span> != <span class="dv">13</span>) <span class="kw">return</span>;
@@ -4587,15 +4576,15 @@ require([<span class="ch">&#39;views/app&#39;</span>], <span class="kw">function
       <span class="co">// the lowest page index your API allows to be accessed</span>
       <span class="dt">firstPage</span>: <span class="dv">0</span>,
 
-      <span class="co">// which page should the paginator start from </span>
+      <span class="co">// which page should the paginator start from</span>
       <span class="co">// (also, the actual page the paginator is on)</span>
       <span class="dt">currentPage</span>: <span class="dv">0</span>,
 
       <span class="co">// how many items per page should be shown</span>
       <span class="dt">perPage</span>: <span class="dv">3</span>,
 
-      <span class="co">// a default number of total pages to query in case the API or </span>
-      <span class="co">// service you are using does not support providing the total </span>
+      <span class="co">// a default number of total pages to query in case the API or</span>
+      <span class="co">// service you are using does not support providing the total</span>
       <span class="co">// number of pages for us.</span>
       <span class="co">// 10 as a default in case your service doesn&#39;t return the total</span>
       <span class="dt">totalPages</span>: <span class="dv">10</span>
@@ -4622,7 +4611,7 @@ require([<span class="ch">&#39;views/app&#39;</span>], <span class="kw">function
 
       <span class="co">// custom parameters</span>
       <span class="ch">&#39;$inlinecount&#39;</span>: <span class="ch">&#39;allpages&#39;</span>,
-      <span class="ch">&#39;$callback&#39;</span>: <span class="ch">&#39;callback&#39;</span>                                     
+      <span class="ch">&#39;$callback&#39;</span>: <span class="ch">&#39;callback&#39;</span>
     },</code></pre>
 <h4 id="finally-configure-collection.parse-and-were-done">6. Finally, configure Collection.parse() and we're done</h4>
 <p>The last thing we need to do is configure our collection's <code>parse()</code> method. We want to ensure we're returning the correct part of our JSON response containing the data our collection will be populated with, which below is <code>response.d.results</code> (for the Netflix API).</p>
@@ -4634,7 +4623,7 @@ require([<span class="ch">&#39;views/app&#39;</span>], <span class="kw">function
             <span class="co">//Normally this.totalPages would equal response.d.__count</span>
             <span class="co">//but as this particular NetFlix request only returns a</span>
             <span class="co">//total count of items for the search, we divide.</span>
-            <span class="kw">this</span>.<span class="fu">totalPages</span> = <span class="kw">Math</span>.<span class="fu">floor</span>(<span class="kw">response.d</span>.__<span class="fu">count</span> / <span class="kw">this</span>.<span class="fu">perPage</span>);
+<span class="er">            this.totalPages = Math.floor(response.d.__count / this.perPage);</span>
             <span class="kw">return</span> tags;
         }
     });
@@ -4698,15 +4687,15 @@ require([<span class="ch">&#39;views/app&#39;</span>], <span class="kw">function
       <span class="co">// the lowest page index your API allows to be accessed</span>
       <span class="dt">firstPage</span>: <span class="dv">1</span>,
 
-      <span class="co">// which page should the paginator start from </span>
+      <span class="co">// which page should the paginator start from</span>
       <span class="co">// (also, the actual page the paginator is on)</span>
       <span class="dt">currentPage</span>: <span class="dv">1</span>,
 
       <span class="co">// how many items per page should be shown</span>
       <span class="dt">perPage</span>: <span class="dv">3</span>,
 
-      <span class="co">// a default number of total pages to query in case the API or </span>
-      <span class="co">// service you are using does not support providing the total </span>
+      <span class="co">// a default number of total pages to query in case the API or</span>
+      <span class="co">// service you are using does not support providing the total</span>
       <span class="co">// number of pages for us.</span>
       <span class="co">// 10 as a default in case your service doesn&#39;t return the total</span>
       <span class="dt">totalPages</span>: <span class="dv">10</span>
@@ -4733,7 +4722,7 @@ require([<span class="ch">&#39;views/app&#39;</span>], <span class="kw">function
 
       <span class="co">// custom parameters</span>
       <span class="ch">&#39;$inlinecount&#39;</span>: <span class="ch">&#39;allpages&#39;</span>,
-      <span class="ch">&#39;$callback&#39;</span>: <span class="ch">&#39;callback&#39;</span>                                     
+      <span class="ch">&#39;$callback&#39;</span>: <span class="ch">&#39;callback&#39;</span>
     },</code></pre>
 <h4 id="finally-configure-collection.parse-and-were-done-1">5. Finally, configure Collection.parse() and we're done</h4>
 <p>And finally we have our <code>parse()</code> method, which in this case isn't concerned with the total number of result pages available on the server as we have our own total count of pages for the paginated data in the UI.</p>
@@ -4808,7 +4797,7 @@ require([<span class="ch">&#39;views/app&#39;</span>], <span class="kw">function
     <span class="co">// Default values used when sorting and/or filtering.</span>
     <span class="dt">initialize</span>: <span class="kw">function</span>(){
       <span class="kw">this</span>.<span class="fu">useDiacriticsPlugin</span> = <span class="kw">true</span>; <span class="co">// use diacritics plugin if available</span>
-    ... </code></pre>
+    ...</code></pre>
 <h2 id="backbone-jquery-mobile">Backbone &amp; jQuery Mobile</h2>
 <h3 id="resolving-the-routing-conflicts">Resolving the routing conflicts</h3>
 <p>The first major hurdle developers typically run into when building Backbone applications with jQuery Mobile is that both frameworks have their own opinions about how to handle application navigation.</p>
@@ -4906,12 +4895,12 @@ $.<span class="fu">mobile</span>.<span class="fu">changePage</span>( url , { <sp
 <p>Each spec is a JavaScript function, described with a call to <code>it()</code> using a description string and a function. The description should describe the behaviour the particular unit of code should exhibit and keeping in mind BDD, it should ideally be meaningful. Here's an example of a basic spec:</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript">it(<span class="ch">&#39;should be incrementing in value&#39;</span>, <span class="kw">function</span>(){
     <span class="kw">var</span> counter = <span class="dv">0</span>;
-    counter++;  
+    counter++;
 });</code></pre>
 <p>On its own, a spec isn't particularly useful until expectations are set about the behavior of the code. Expectations in specs are defined using the <code>expect()</code> function and an <a href="https://github.com/pivotal/jasmine/wiki/Matchers">expectation matcher</a> (e.g <code>toEqual()</code>, <code>toBeTruthy()</code>, <code>toContain()</code>). A revised example using an expectation matcher would look like:</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript">it(<span class="ch">&#39;should be incrementing in value&#39;</span>, <span class="kw">function</span>(){
     <span class="kw">var</span> counter = <span class="dv">0</span>;
-    counter++;  
+    counter++;
     expect(counter).<span class="fu">toEqual</span>(<span class="dv">1</span>);
 });</code></pre>
 <p>The above code passes our behavioral expectation as <code>counter</code> equals 1. Notice how easy this was to read the expectation on the last line (you probably grokked it without any explanation).</p>
@@ -4958,12 +4947,12 @@ describe(<span class="ch">&#39;a simple spy&#39;</span>, <span class="kw">functi
         spyOn(myTodo, <span class="ch">&#39;setComplete&#39;</span>);
         <span class="kw">myTodo</span>.<span class="fu">setComplete</span>(<span class="ch">&#39;foo bar&#39;</span>);
 
-        expect(<span class="kw">myTodo</span>.<span class="fu">setComplete</span>).<span class="fu">toHaveBeenCalledWith</span>(<span class="ch">&#39;foo bar&#39;</span>);
+<span class="er">        expect(myTodo.setComplete).toHaveBeenCalledWith(&#39;foo bar&#39;);</span>
 
         <span class="kw">var</span> myTodo2 = <span class="kw">new</span> Todo();
         spyOn(myTodo2, <span class="ch">&#39;setComplete&#39;</span>);
 
-        expect(<span class="kw">myTodo2</span>.<span class="fu">setComplete</span>).<span class="fu">not</span>.<span class="fu">toHaveBeenCalled</span>();
+<span class="er">        expect(myTodo2.setComplete).not.toHaveBeenCalled();</span>
 
     });
 });</code></pre>
@@ -5028,12 +5017,12 @@ describe(<span class="ch">&#39;a simple spy&#39;</span>, <span class="kw">functi
 <pre class="sourceCode javascript"><code class="sourceCode javascript">beforeEach(<span class="kw">function</span>(){
    <span class="kw">this</span>.<span class="fu">todo</span> = <span class="kw">new</span> <span class="kw">Backbone</span>.<span class="fu">Model</span>({
       <span class="dt">text</span>: <span class="st">&quot;Buy some more groceries&quot;</span>,
-      <span class="dt">done</span>: <span class="kw">false</span> 
+      <span class="dt">done</span>: <span class="kw">false</span>
    });
 });
 
 it(<span class="st">&quot;should contain a text value if not the default value&quot;</span>, <span class="kw">function</span>(){
-   expect(<span class="kw">this</span>.<span class="fu">todo</span>.<span class="fu">get</span>(<span class="ch">&#39;text&#39;</span>)).<span class="fu">toEqual</span>(<span class="st">&quot;Buy some more groceries&quot;</span>); 
+   expect(<span class="kw">this</span>.<span class="fu">todo</span>.<span class="fu">get</span>(<span class="ch">&#39;text&#39;</span>)).<span class="fu">toEqual</span>(<span class="st">&quot;Buy some more groceries&quot;</span>);
 });</code></pre>
 <p>Each nested <code>describe()</code> in your tests can have their own <code>beforeEach()</code> and <code>afterEach()</code> methods which support including setup and teardown methods relevant to a particular suite. We'll be using <code>beforeEach()</code> in practice a little later.</p>
 <h2 id="shared-scope">Shared scope</h2>
@@ -5112,7 +5101,7 @@ it(<span class="st">&quot;should contain a text value if not the default value&q
 
     <span class="kw">todo</span>.<span class="fu">on</span>(<span class="ch">&#39;error&#39;</span>, errorCallback);
 
-    <span class="co">// What would you need to set on the todo properties to </span>
+    <span class="co">// What would you need to set on the todo properties to</span>
     <span class="co">// cause validation to fail?</span>
 
     <span class="kw">todo</span>.<span class="fu">set</span>({<span class="dt">done</span>:<span class="ch">&#39;a non-integer value&#39;</span>});
@@ -5125,7 +5114,7 @@ it(<span class="st">&quot;should contain a text value if not the default value&q
 });</code></pre>
 <p>The code to make the above failing test support validation is relatively simple. In our model, we override the validate() method (as recommended in the Backbone docs), checking to make sure a model both has a 'done' property and is a valid boolean before allowing it to pass.</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="dt">validate</span>: <span class="kw">function</span>(attrs) {
-    <span class="kw">if</span> (<span class="kw">attrs</span>.<span class="fu">hasOwnProperty</span>(<span class="ch">&#39;done&#39;</span>) &amp;&amp; !<span class="kw">_</span>.<span class="fu">isBoolean</span>(<span class="kw">attrs</span>.<span class="fu">done</span>)) {
+<span class="er">    if (attrs.hasOwnProperty(&#39;done&#39;) &amp;&amp; !_.isBoolean(attrs.done)) {</span>
         <span class="kw">return</span> <span class="ch">&#39;Todo.done must be a boolean value.&#39;</span>;
     }
 }</code></pre>
@@ -5149,7 +5138,7 @@ it(<span class="st">&quot;should contain a text value if not the default value&q
     },
 
     <span class="dt">validate</span>: <span class="kw">function</span>(attrs) {
-        <span class="kw">if</span> (<span class="kw">attrs</span>.<span class="fu">hasOwnProperty</span>(<span class="ch">&#39;done&#39;</span>) &amp;&amp; !<span class="kw">_</span>.<span class="fu">isBoolean</span>(<span class="kw">attrs</span>.<span class="fu">done</span>)) {
+<span class="er">        if (attrs.hasOwnProperty(&#39;done&#39;) &amp;&amp; !_.isBoolean(attrs.done)) {</span>
             <span class="kw">return</span> <span class="ch">&#39;Todo.done must be a boolean value.&#39;</span>;
         }
     },
@@ -5174,20 +5163,20 @@ it(<span class="st">&quot;should contain a text value if not the default value&q
     it(<span class="ch">&#39;Can add Model instances as objects and arrays.&#39;</span>, <span class="kw">function</span>() {
         <span class="kw">var</span> todos = <span class="kw">new</span> TodoList();
 
-        expect(<span class="kw">todos</span>.<span class="fu">length</span>).<span class="fu">toBe</span>(<span class="dv">0</span>);
+<span class="er">        expect(todos.length).toBe(0);</span>
 
         <span class="kw">todos</span>.<span class="fu">add</span>({ <span class="dt">text</span>: <span class="ch">&#39;Clean the kitchen&#39;</span> });
 
         <span class="co">// how many todos have been added so far?</span>
-        expect(<span class="kw">todos</span>.<span class="fu">length</span>).<span class="fu">toBe</span>(<span class="dv">1</span>);
+<span class="er">        expect(todos.length).toBe(1);</span>
 
         <span class="kw">todos</span>.<span class="fu">add</span>([
-            { <span class="dt">text</span>: <span class="ch">&#39;Do the laundry&#39;</span>, <span class="dt">done</span>: <span class="kw">true</span> }, 
+            { <span class="dt">text</span>: <span class="ch">&#39;Do the laundry&#39;</span>, <span class="dt">done</span>: <span class="kw">true</span> },
             { <span class="dt">text</span>: <span class="ch">&#39;Go to the gym&#39;</span>}
         ]);
 
         <span class="co">// how many are there in total now?</span>
-        expect(<span class="kw">todos</span>.<span class="fu">length</span>).<span class="fu">toBe</span>(<span class="dv">3</span>);
+<span class="er">        expect(todos.length).toBe(3);</span>
     });
 ...</code></pre>
 <p>Similar to model attributes, it's also quite straight-forward to test attributes in collections. Here we have a spec that ensures the collection.url (i.e the url reference to the collection's location on the server) is what we expect it to be:</p>
@@ -5195,7 +5184,7 @@ it(<span class="st">&quot;should contain a text value if not the default value&q
         <span class="kw">var</span> todos = <span class="kw">new</span> TodoList();
 
         <span class="co">// what has been specified as the url base in our model?</span>
-        expect(<span class="kw">todos</span>.<span class="fu">url</span>).<span class="fu">toBe</span>(<span class="ch">&#39;/todos/&#39;</span>);
+<span class="er">        expect(todos.url).toBe(&#39;/todos/&#39;);</span>
 });</code></pre>
 <p>For the third spec, it's useful to remember that the implementation for our collection will have methods for filtering how many Todo items are done and how many are remaining - we can call these <code>done()</code> and <code>remaining()</code>. Consider writing a spec which creates a new collection and adds one new model that has a preset <code>done</code> state of <code>true</code> and two others that have the default <code>done</code> state of <code>false</code>. Testing the length of what's returned using <code>done()</code> and <code>remaining()</code> should allow us to know whether the state management in our application is working or needs a little tweaking.</p>
 <p>The final implementation for our TodoList collection can be found below:</p>
@@ -5214,8 +5203,8 @@ it(<span class="st">&quot;should contain a text value if not the default value&q
         },
 
         <span class="dt">nextOrder</span>: <span class="kw">function</span>() {
-            <span class="kw">if</span> (!<span class="kw">this</span>.<span class="fu">length</span>) { 
-                <span class="kw">return</span> <span class="dv">1</span>; 
+<span class="er">            if (!this.length) {</span>
+                <span class="kw">return</span> <span class="dv">1</span>;
             }
 
             <span class="kw">return</span> <span class="kw">this</span>.<span class="fu">last</span>().<span class="fu">get</span>(<span class="ch">&#39;order&#39;</span>) + <span class="dv">1</span>;
@@ -5287,7 +5276,7 @@ expect(<span class="ch">&#39;click&#39;</span>).<span class="fu">toHaveBeenTrigg
 <p>You may have noticed that in <code>beforeEach()</code>, we passed our view an initial (albeit unfilled) Todo model. Views should be backed by a model instance which provides data. As this is quite important to our view's ability to function, we can write a spec to ensure a model is both defined (using the <code>toBeDefined()</code> matcher) and then test attributes of the model to ensure defaults both exist and are the value we expect them to be.</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript">it(<span class="ch">&#39;Is backed by a model instance, which provides the data.&#39;</span>, <span class="kw">function</span>() {
 
-    expect(<span class="kw">todoView</span>.<span class="fu">model</span>).<span class="fu">toBeDefined</span>();
+<span class="er">    expect(todoView.model).toBeDefined();</span>
 
     <span class="co">// what&#39;s the value for Todo.get(&#39;done&#39;) here?</span>
     expect(<span class="kw">todoView.model</span>.<span class="fu">get</span>(<span class="ch">&#39;done&#39;</span>)).<span class="fu">toBe</span>(<span class="kw">false</span>); <span class="co">//or toBeFalsy()</span>
@@ -5311,7 +5300,7 @@ expect(<span class="ch">&#39;click&#39;</span>).<span class="fu">toHaveBeenTrigg
   describe(<span class="st">&quot;Rendering&quot;</span>, <span class="kw">function</span>() {
 
     it(<span class="st">&quot;returns the view object&quot;</span>, <span class="kw">function</span>() {
-      expect(<span class="kw">this</span>.<span class="fu">view</span>.<span class="fu">render</span>()).<span class="fu">toEqual</span>(<span class="kw">this</span>.<span class="fu">view</span>);
+<span class="er">      expect(this.view.render()).toEqual(this.view);</span>
     });
 
     it(<span class="st">&quot;produces the correct HTML&quot;</span>, <span class="kw">function</span>() {
@@ -5319,7 +5308,7 @@ expect(<span class="ch">&#39;click&#39;</span>).<span class="fu">toHaveBeenTrigg
 
       <span class="co">//let&#39;s use jasmine-jquery&#39;s toContain() to avoid</span>
       <span class="co">//testing for the complete content of a todo&#39;s markup</span>
-      expect(<span class="kw">this</span>.<span class="fu">view</span>.<span class="fu">el</span>.<span class="fu">innerHTML</span>)
+<span class="er">      expect(this.view.el.innerHTML)</span>
         .<span class="fu">toContain</span>(<span class="ch">&#39;&lt;label class=&quot;todo-content&quot;&gt;My Todo&lt;/label&gt;&#39;</span>);
     });
 
@@ -5376,7 +5365,7 @@ expect(<span class="ch">&#39;click&#39;</span>).<span class="fu">toHaveBeenTrigg
   describe(<span class="st">&quot;Template&quot;</span>, <span class="kw">function</span>() {
 
     beforeEach(<span class="kw">function</span>() {
-      $(<span class="ch">&#39;.todos&#39;</span>).<span class="fu">append</span>(<span class="kw">this</span>.<span class="fu">view</span>.<span class="fu">render</span>().<span class="fu">el</span>);
+<span class="er">      $(&#39;.todos&#39;).append(this.view.render().el);</span>
     });
 
     it(<span class="st">&quot;has the correct text content&quot;</span>, <span class="kw">function</span>() {
@@ -5395,7 +5384,7 @@ expect(<span class="ch">&#39;click&#39;</span>).<span class="fu">toHaveBeenTrigg
 
   beforeEach(<span class="kw">function</span>() {
     <span class="kw">this</span>.<span class="fu">model</span>.<span class="fu">set</span>({<span class="dt">done</span>: <span class="kw">true</span>}, {<span class="dt">silent</span>: <span class="kw">true</span>});
-    $(<span class="ch">&#39;.todos&#39;</span>).<span class="fu">append</span>(<span class="kw">this</span>.<span class="fu">view</span>.<span class="fu">render</span>().<span class="fu">el</span>);
+<span class="er">    $(&#39;.todos&#39;).append(this.view.render().el);</span>
   });
 
   it(<span class="st">&quot;has a done class&quot;</span>, <span class="kw">function</span>() {
@@ -5405,7 +5394,7 @@ expect(<span class="ch">&#39;click&#39;</span>).<span class="fu">toHaveBeenTrigg
 
 });</code></pre>
 <p>This will fail with the following message:</p>
-<p><code>Expected '&lt;label class=&quot;todo-content&quot;&gt;My Todo&lt;/label&gt;'  to have class 'done'.</code></p>
+<p><code>Expected '&lt;label class=&quot;todo-content&quot;&gt;My Todo&lt;/label&gt;' to have class 'done'.</code></p>
 <p>which can be fixed in the existing render() method as follows:</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="dt">render</span>: <span class="kw">function</span>() {
   <span class="kw">var</span> template = <span class="ch">&#39;&lt;label class=&quot;todo-content&quot;&gt;&#39;</span> +
@@ -5495,28 +5484,28 @@ expect(<span class="ch">&#39;click&#39;</span>).<span class="fu">toHaveBeenTrigg
 <p>The latter two of these can be downloaded from the <a href="http://qunitjs.com">QUnit website</a>.</p>
 <p>If you would prefer, you can use a hosted version of the QUnit source files for testing purposes. The hosted URLs can be found at [http://github.com/jquery/qunit/raw/master/qunit/].</p>
 <h4 id="sample-html-with-qunit-compatible-markup">Sample HTML with QUnit-compatible markup:</h4>
-<pre class="sourceCode html"><code class="sourceCode html"><span class="dt">&lt;!DOCTYPE </span>html<span class="dt">&gt;</span>  
-<span class="kw">&lt;html&gt;</span>  
-<span class="kw">&lt;head&gt;</span>  
-    <span class="kw">&lt;title&gt;</span>QUnit Test Suite<span class="kw">&lt;/title&gt;</span>  
+<pre class="sourceCode html"><code class="sourceCode html"><span class="dt">&lt;!DOCTYPE </span>html<span class="dt">&gt;</span>
+<span class="kw">&lt;html&gt;</span>
+<span class="kw">&lt;head&gt;</span>
+    <span class="kw">&lt;title&gt;</span>QUnit Test Suite<span class="kw">&lt;/title&gt;</span>
 
-     <span class="kw">&lt;link</span><span class="ot"> rel=</span><span class="st">&quot;stylesheet&quot;</span><span class="ot"> href=</span><span class="st">&quot;qunit.css&quot;</span><span class="kw">&gt;</span>  
-     <span class="kw">&lt;script</span><span class="ot"> src=</span><span class="st">&quot;qunit.js&quot;</span><span class="kw">&gt;&lt;/script&gt;</span>  
+     <span class="kw">&lt;link</span><span class="ot"> rel=</span><span class="st">&quot;stylesheet&quot;</span><span class="ot"> href=</span><span class="st">&quot;qunit.css&quot;</span><span class="kw">&gt;</span>
+     <span class="kw">&lt;script</span><span class="ot"> src=</span><span class="st">&quot;qunit.js&quot;</span><span class="kw">&gt;&lt;/script&gt;</span>
 
-     <span class="co">&lt;!-- Your application --&gt;</span>  
-     <span class="kw">&lt;script</span><span class="ot"> src=</span><span class="st">&quot;app.js&quot;</span><span class="kw">&gt;&lt;/script&gt;</span>  
+     <span class="co">&lt;!-- Your application --&gt;</span>
+     <span class="kw">&lt;script</span><span class="ot"> src=</span><span class="st">&quot;app.js&quot;</span><span class="kw">&gt;&lt;/script&gt;</span>
 
-     <span class="co">&lt;!-- Your tests --&gt;</span>  
-     <span class="kw">&lt;script</span><span class="ot"> src=</span><span class="st">&quot;tests.js&quot;</span><span class="kw">&gt;&lt;/script&gt;</span>   
-<span class="kw">&lt;/head&gt;</span>  
-<span class="kw">&lt;body&gt;</span>  
-    <span class="kw">&lt;h1</span><span class="ot"> id=</span><span class="st">&quot;qunit-header&quot;</span><span class="kw">&gt;</span>QUnit Test Suite<span class="kw">&lt;/h1&gt;</span>  
-    <span class="kw">&lt;h2</span><span class="ot"> id=</span><span class="st">&quot;qunit-banner&quot;</span><span class="kw">&gt;&lt;/h2&gt;</span>  
-    <span class="kw">&lt;div</span><span class="ot"> id=</span><span class="st">&quot;qunit-testrunner-toolbar&quot;</span><span class="kw">&gt;&lt;/div&gt;</span>  
-    <span class="kw">&lt;h2</span><span class="ot"> id=</span><span class="st">&quot;qunit-userAgent&quot;</span><span class="kw">&gt;&lt;/h2&gt;</span>  
-    <span class="kw">&lt;ol</span><span class="ot"> id=</span><span class="st">&quot;qunit-tests&quot;</span><span class="kw">&gt;</span>test markup, hidden.<span class="kw">&lt;/ol&gt;</span>  
-<span class="kw">&lt;/body&gt;</span>  
-<span class="kw">&lt;/html&gt;</span>  </code></pre>
+     <span class="co">&lt;!-- Your tests --&gt;</span>
+     <span class="kw">&lt;script</span><span class="ot"> src=</span><span class="st">&quot;tests.js&quot;</span><span class="kw">&gt;&lt;/script&gt;</span>
+<span class="kw">&lt;/head&gt;</span>
+<span class="kw">&lt;body&gt;</span>
+    <span class="kw">&lt;h1</span><span class="ot"> id=</span><span class="st">&quot;qunit-header&quot;</span><span class="kw">&gt;</span>QUnit Test Suite<span class="kw">&lt;/h1&gt;</span>
+    <span class="kw">&lt;h2</span><span class="ot"> id=</span><span class="st">&quot;qunit-banner&quot;</span><span class="kw">&gt;&lt;/h2&gt;</span>
+    <span class="kw">&lt;div</span><span class="ot"> id=</span><span class="st">&quot;qunit-testrunner-toolbar&quot;</span><span class="kw">&gt;&lt;/div&gt;</span>
+    <span class="kw">&lt;h2</span><span class="ot"> id=</span><span class="st">&quot;qunit-userAgent&quot;</span><span class="kw">&gt;&lt;/h2&gt;</span>
+    <span class="kw">&lt;ol</span><span class="ot"> id=</span><span class="st">&quot;qunit-tests&quot;</span><span class="kw">&gt;</span>test markup, hidden.<span class="kw">&lt;/ol&gt;</span>
+<span class="kw">&lt;/body&gt;</span>
+<span class="kw">&lt;/html&gt;</span></code></pre>
 <p>Let's go through the elements above with qunit mentioned in their ID. When QUnit is running:</p>
 <ul>
 <li><strong>qunit-header</strong> shows the name of the test suite</li>
@@ -5569,29 +5558,29 @@ test( <span class="ch">&#39;Our first QUnit test - asserting results&#39;</span>
     <span class="kw">return</span> <span class="kw">str</span>.<span class="fu">split</span>(<span class="st">&quot;&quot;</span>).<span class="fu">reverse</span>().<span class="fu">join</span>(<span class="st">&quot;&quot;</span>);
 }
 
-test( <span class="ch">&#39;reverseString()&#39;</span>, <span class="kw">function</span>() { 
+test( <span class="ch">&#39;reverseString()&#39;</span>, <span class="kw">function</span>() {
     expect( <span class="dv">5</span> );
-    equal( reverseString(<span class="ch">&#39;hello&#39;</span>), <span class="ch">&#39;olleh&#39;</span>, <span class="ch">&#39;The value expected was olleh&#39;</span> ); 
-    equal( reverseString(<span class="ch">&#39;foobar&#39;</span>), <span class="ch">&#39;raboof&#39;</span>, <span class="ch">&#39;The value expected was raboof&#39;</span> ); 
-    equal( reverseString(<span class="ch">&#39;world&#39;</span>), <span class="ch">&#39;dlrow&#39;</span>, <span class="ch">&#39;The value expected was dlrow&#39;</span> ); 
-    notEqual( reverseString(<span class="ch">&#39;world&#39;</span>), <span class="ch">&#39;dlroo&#39;</span>, <span class="ch">&#39;The value was expected to not be dlroo&#39;</span> ); 
-    equal( reverseString(<span class="ch">&#39;bubble&#39;</span>), <span class="ch">&#39;double&#39;</span>, <span class="ch">&#39;The value expected was elbbub&#39;</span> ); 
-})  </code></pre>
+    equal( reverseString(<span class="ch">&#39;hello&#39;</span>), <span class="ch">&#39;olleh&#39;</span>, <span class="ch">&#39;The value expected was olleh&#39;</span> );
+    equal( reverseString(<span class="ch">&#39;foobar&#39;</span>), <span class="ch">&#39;raboof&#39;</span>, <span class="ch">&#39;The value expected was raboof&#39;</span> );
+    equal( reverseString(<span class="ch">&#39;world&#39;</span>), <span class="ch">&#39;dlrow&#39;</span>, <span class="ch">&#39;The value expected was dlrow&#39;</span> );
+    notEqual( reverseString(<span class="ch">&#39;world&#39;</span>), <span class="ch">&#39;dlroo&#39;</span>, <span class="ch">&#39;The value was expected to not be dlroo&#39;</span> );
+    equal( reverseString(<span class="ch">&#39;bubble&#39;</span>), <span class="ch">&#39;double&#39;</span>, <span class="ch">&#39;The value expected was elbbub&#39;</span> );
+})</code></pre>
 <p>Running these tests in the QUnit test runner (which you would see when your HTML test page was loaded) we would find that four of the assertions pass whilst the last one does not. The reason the test against <code>'double'</code> fails is because it was purposefully written incorrectly. In your own projects if a test fails to pass and your assertions are correct, you've probably just found a bug!</p>
 <h2 id="adding-structure-to-assertions">Adding structure to assertions</h2>
 <p>Housing all of our assertions in one test case can quickly become difficult to maintain, but luckily QUnit supports structuring blocks of assertions more cleanly. This can be done using <code>module()</code> - a method that allows us to easily group tests together. A typical approach to grouping might be keeping multiple tests testing a specific method as part of the same group (module).</p>
 <h4 id="basic-qunit-modules">Basic QUnit Modules:</h4>
-<pre class="sourceCode javascript"><code class="sourceCode javascript">module( <span class="ch">&#39;Module One&#39;</span> );  
-test( <span class="ch">&#39;first test&#39;</span>, <span class="kw">function</span>() {} );  
-test( <span class="ch">&#39;another test&#39;</span>, <span class="kw">function</span>() {} );  
+<pre class="sourceCode javascript"><code class="sourceCode javascript">module( <span class="ch">&#39;Module One&#39;</span> );
+test( <span class="ch">&#39;first test&#39;</span>, <span class="kw">function</span>() {} );
+test( <span class="ch">&#39;another test&#39;</span>, <span class="kw">function</span>() {} );
 
-module( <span class="ch">&#39;Module Two&#39;</span> );  
-test( <span class="ch">&#39;second test&#39;</span>, <span class="kw">function</span>() {} );  
-test( <span class="ch">&#39;another test&#39;</span>, <span class="kw">function</span>() {} );  
+module( <span class="ch">&#39;Module Two&#39;</span> );
+test( <span class="ch">&#39;second test&#39;</span>, <span class="kw">function</span>() {} );
+test( <span class="ch">&#39;another test&#39;</span>, <span class="kw">function</span>() {} );
 
-module( <span class="ch">&#39;Module Three&#39;</span> );  
-test( <span class="ch">&#39;third test&#39;</span>, <span class="kw">function</span>() {} );  
-test( <span class="ch">&#39;another test&#39;</span>, <span class="kw">function</span>() {} );  </code></pre>
+module( <span class="ch">&#39;Module Three&#39;</span> );
+test( <span class="ch">&#39;third test&#39;</span>, <span class="kw">function</span>() {} );
+test( <span class="ch">&#39;another test&#39;</span>, <span class="kw">function</span>() {} );</code></pre>
 <p>We can take this further by introducing <code>setup()</code> and <code>teardown()</code> callbacks to our modules, where <code>setup()</code> is run before each test whilst <code>teardown()</code> is run after each test.</p>
 <h4 id="using-setup-and-teardown">Using setup() and teardown() :</h4>
 <pre class="sourceCode javascript"><code class="sourceCode javascript">module( <span class="st">&quot;Module One&quot;</span>, {
@@ -5806,7 +5795,7 @@ test( <span class="st">&quot;1 passed as an argument&quot;</span>, <span class="
             });
             start();
         }
-    }); 
+    });
 });</code></pre>
 <p>A jQuery <code>$.ajax()</code> request is used to connect to a test resource and assert that the data returned is correct. <code>deepEqual()</code> is used here as it allows us to compare different data types (e.g objects, arrays) and ensures that what is returned is exactly what we're expecting. We know that our Ajax request is asynchronous and so we first call <code>stop()</code>, run the code making the request and finally at the very end of our callback, inform QUnit that it is okay to continue running other tests.</p>
 <p>Note: rather than including <code>stop()</code>, we can simply exclude it and substitute <code>test()</code> with <code>asyncTest()</code> if we prefer. This improves readability when dealing with a mixture of asynchronous and synchronous tests in your suite. Whilst this setup should work fine for many use-cases, there is no guarantee that the callback in our <code>$.ajax()</code> request will actually get called. To factor this into our tests, we can use <code>expect()</code> once again to define how many assertions we expect to see within our test. This is a healthy safety blanket as it ensures that if a test completes with an insufficient number of assertions, we know something went wrong and fix it.</p>
@@ -5862,10 +5851,10 @@ test( <span class="st">&quot;1 passed as an argument&quot;</span>, <span class="
     <span class="kw">PubSub</span>.<span class="fu">publishSync</span>( <span class="st">&quot;message&quot;</span>, <span class="dv">12</span>, <span class="dv">34</span> );
 
     <span class="co">// This passes</span>
-    assertTrue( <span class="kw">spy</span>.<span class="fu">calledWith</span>(<span class="st">&quot;many&quot;</span>) );     
+    assertTrue( <span class="kw">spy</span>.<span class="fu">calledWith</span>(<span class="st">&quot;many&quot;</span>) );
 
-    <span class="co">// This however, fails   </span>
-    assertTrue( <span class="kw">spy</span>.<span class="fu">calledWithExactly</span>( <span class="st">&quot;many&quot;</span> ) ); 
+    <span class="co">// This however, fails</span>
+    assertTrue( <span class="kw">spy</span>.<span class="fu">calledWithExactly</span>( <span class="st">&quot;many&quot;</span> ) );
 });</code></pre>
 <h4 id="testing-call-order-testing-if-a-spy-was-called-before-or-after-another-spy">Testing call order: testing if a spy was called before or after another spy:</h4>
 <pre class="sourceCode javascript"><code class="sourceCode javascript">test( <span class="st">&quot;Should call a subscriber and maintain call order&quot;</span>: <span class="kw">function</span> () {
@@ -5918,7 +5907,7 @@ test( <span class="st">&quot;1 passed as an argument&quot;</span>, <span class="
 <p>After this, we need to alter what the constructor returns, which can be efficiently done using a plain <code>Backbone.Model</code> constructor. Whilst this isn't a Todo model, it does still provide us an actual Backbone model.</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="dt">teardown</span>: <span class="kw">function</span>() {
     <span class="kw">this</span>.<span class="fu">model</span> = <span class="kw">new</span> <span class="kw">Backbone</span>.<span class="fu">Model</span>({
-      <span class="dt">id</span>: <span class="dv">2</span>, 
+      <span class="dt">id</span>: <span class="dv">2</span>,
       <span class="dt">title</span>: <span class="st">&quot;Hello world&quot;</span>
     });
     <span class="kw">this</span>.<span class="fu">todoStub</span>.<span class="fu">returns</span>( <span class="kw">this</span>.<span class="fu">model</span> );
@@ -5932,17 +5921,17 @@ test( <span class="st">&quot;1 passed as an argument&quot;</span>, <span class="
 
     <span class="kw">this</span>.<span class="fu">todoStub</span> = <span class="kw">sinon</span>.<span class="fu">stub</span>(<span class="kw">window</span>, <span class="st">&quot;Todo&quot;</span>);
     <span class="kw">this</span>.<span class="fu">model</span> = <span class="kw">new</span> <span class="kw">Backbone</span>.<span class="fu">Model</span>({
-      <span class="dt">id</span>: <span class="dv">2</span>, 
+      <span class="dt">id</span>: <span class="dv">2</span>,
       <span class="dt">title</span>: <span class="st">&quot;Hello world&quot;</span>
     });
 
-    <span class="kw">this</span>.<span class="fu">todoStub</span>.<span class="fu">returns</span>(<span class="kw">this</span>.<span class="fu">model</span>);
+<span class="er">    this.todoStub.returns(this.model);</span>
     <span class="kw">this</span>.<span class="fu">todos</span> = <span class="kw">new</span> TodoList();
 
     <span class="co">// Let&#39;s reset the relationship to use a stub</span>
-    <span class="kw">this</span>.<span class="fu">todos</span>.<span class="fu">model</span> = Todo; 
+    <span class="kw">this</span>.<span class="fu">todos</span>.<span class="fu">model</span> = Todo;
     <span class="kw">this</span>.<span class="fu">todos</span>.<span class="fu">add</span>({
-      <span class="dt">id</span>: <span class="dv">2</span>, 
+      <span class="dt">id</span>: <span class="dv">2</span>,
       <span class="dt">title</span>: <span class="st">&quot;Hello world&quot;</span>
     });
   },
@@ -6066,7 +6055,7 @@ test( <span class="ch">&#39;Can add Model instances as objects and arrays.&#39;<
     equal( <span class="kw">todos</span>.<span class="fu">length</span>, <span class="dv">1</span> );
 
     <span class="kw">todos</span>.<span class="fu">add</span>([
-        { <span class="dt">text</span>: <span class="ch">&#39;Do the laundry&#39;</span>, <span class="dt">done</span>: <span class="kw">true</span> }, 
+        { <span class="dt">text</span>: <span class="ch">&#39;Do the laundry&#39;</span>, <span class="dt">done</span>: <span class="kw">true</span> },
         { <span class="dt">text</span>: <span class="ch">&#39;Go to the gym&#39;</span> }
     ]);
 
@@ -6133,18 +6122,18 @@ test(<span class="ch">&#39;Can render, after which the DOM representation of the
    <span class="kw">this</span>.<span class="fu">todoView</span>.<span class="fu">render</span>();
 
     <span class="co">// Hint: render() just builds the DOM representation of the view, but doesn&#39;t insert it into the DOM.</span>
-    <span class="co">//       How would you append it to the ul#todoList? </span>
+    <span class="co">//       How would you append it to the ul#todoList?</span>
     <span class="co">//       How do you access the view&#39;s DOM representation?</span>
     <span class="co">//</span>
     <span class="co">// Hint: http://documentcloud.github.com/backbone/#View-el</span>
 
-    $(<span class="ch">&#39;ul#todoList&#39;</span>).<span class="fu">append</span>(<span class="kw">this</span>.<span class="fu">todoView</span>.<span class="fu">el</span>);
+<span class="er">    $(&#39;ul#todoList&#39;).append(this.todoView.el);</span>
     equal($(<span class="ch">&#39;#todoList&#39;</span>).<span class="fu">find</span>(<span class="ch">&#39;li&#39;</span>).<span class="fu">length</span>, <span class="dv">1</span>);
 });
 
 asyncTest(<span class="ch">&#39;Can wire up view methods to DOM elements.&#39;</span>, <span class="kw">function</span>() {
     expect( <span class="dv">2</span> );
-    <span class="kw">var</span> viewElt;    
+    <span class="kw">var</span> viewElt;
 
     $(<span class="ch">&#39;#todoList&#39;</span>).<span class="fu">append</span>( <span class="kw">this</span>.<span class="fu">todoView</span>.<span class="fu">render</span>().<span class="fu">el</span> );
 
@@ -6292,7 +6281,7 @@ test(<span class="ch">&#39;Also can remove custom events from objects.&#39;</spa
 <pre class="sourceCode javascript"><code class="sourceCode javascript">module( <span class="ch">&#39;About Backbone Applications&#39;</span> , {
     <span class="dt">setup</span>: <span class="kw">function</span>() {
         <span class="kw">Backbone</span>.<span class="fu">localStorageDB</span> = <span class="kw">new</span> Store(<span class="ch">&#39;testTodos&#39;</span>);
-        $(<span class="ch">&#39;#qunit-fixture&#39;</span>).<span class="fu">append</span>(<span class="ch">&#39;&lt;div id=&quot;app&quot;&gt;&lt;/div&gt;&#39;</span>);   
+        $(<span class="ch">&#39;#qunit-fixture&#39;</span>).<span class="fu">append</span>(<span class="ch">&#39;&lt;div id=&quot;app&quot;&gt;&lt;/div&gt;&#39;</span>);
         <span class="kw">this</span>.<span class="fu">App</span> = <span class="kw">new</span> TodoApp({ <span class="dt">appendTo</span>: $(<span class="ch">&#39;#app&#39;</span>) });
     },
 
@@ -6323,7 +6312,7 @@ test( <span class="ch">&#39;Should bind Collection events to View creation.&#39;
 <li><strong><a href="http://cjohansen.no/en/javascript/using_sinon_js_with_qunit">SinonJS and QUnit</a></strong></li>
 <li><strong><a href="http://msdn.microsoft.com/en-us/scriptjunkie/gg749824">Automating JavaScript Testing With QUnit</a></strong></li>
 <li><strong><a href="http://benalman.com/talks/unit-testing-qunit.html">Ben Alman's Unit Testing With QUnit</a></strong></li>
-<li><strong><a href="https://github.com/jc00ke/qunit-backbone">Another QUnit/Backbone.js demo project</a></strong><br /></li>
+<li><strong><a href="https://github.com/jc00ke/qunit-backbone">Another QUnit/Backbone.js demo project</a></strong></li>
 <li><strong><a href="http://devblog.supportbee.com/2012/02/10/helpers-for-testing-backbone-js-apps-using-jasmine-and-sinon-js/">SinonJS helpers for Backbone</a></strong></li>
 </ul>
 <h1 id="resources"><a name="resources">Resources</a></h1>

@@ -3501,20 +3501,9 @@ Some simple validation that could be written using the current Backbone `validat
 ```javascript
 validate: function(attrs) {
 
-    if(!attrs.firstname) {
-         console.log('first name is empty');
-         return false;
-    }
-
-    if(!attrs.lastname) {
-        console.log('last name is empty');
-        return false;
-    }
-
-    if(!attrs.email) {
-        console.log('email is empty');
-        return false;
-    }
+    if(!attrs.firstname) return 'first name is empty';
+    if(!attrs.lastname) return 'last name is empty';
+    if(!attrs.email) return 'email is empty';
 
 }
 ```
