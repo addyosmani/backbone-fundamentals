@@ -126,7 +126,7 @@ Backbone.js is a lightweight JavaScript framework for adding structure to your c
 Developers commonly use frameworks like Backbone.js to create single-page applications or SPAs. To put it simply, these apps enable the browser to react to changes in data on the client-side without the need to completely load up all your markup from the server, meaning no complete page-refreshes are necessary.
 
 Backbone.js is a mature, popular framework at the time of writing and has both a large development community online as well as a wealth of plugins and extensions available to build upon it. It has been used to create non-trivial applications by companies such as
-Disqus, Walmart, SoundCloud and  Foursquare.
+Disqus, Walmart, SoundCloud and Foursquare.
 
 ### When Do You Need A JavaScript MV* Framework?
 
@@ -939,7 +939,7 @@ As collections represent a group of items, we're also able to listen for `add` a
 ```javascript
 var PhotoCollection = new Backbone.Collection();
 PhotoCollection.on("add", function(photo) {
-  console.log("I liked " + photo.get("title") + ' its this one, right? '  + photo.get("src"));
+  console.log("I liked " + photo.get("title") + ' it\'s this one, right? '  + photo.get("src"));
 });
 
 PhotoCollection.add([
@@ -1091,7 +1091,7 @@ _.extend(ourObject, Backbone.Events);
 
 // Add a custom event
 ourObject.on("dance", function(msg){
-  console.log("We triggered" + msg);
+  console.log("We triggered " + msg);
 });
 
 // Trigger the custom event
@@ -1102,7 +1102,7 @@ If you're familiar with jQuery custom events or the concept of Publish/Subscribe
 
 `on` basically allows us to bind a callback function to any object, as we've done with `dance` in the above example. Whenever the event is fired, our callback is invoked.
 
-The official Backbone.js documentation recommends namespacing event names using colors if you end up using quite a few of these on your page. e.g:
+The official Backbone.js documentation recommends namespacing event names using colons if you end up using quite a few of these on your page. e.g:
 
 ```javascript
 ourObject.on("dance:tap", ...);
