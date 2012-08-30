@@ -101,7 +101,8 @@ Common Problems & Solutions
 {\pard \ql \f0 \sa0 \li720 \fi-360 \endash \tx360\tab Child Views Rendering Parent Views\par}
 {\pard \ql \f0 \sa0 \li720 \fi-360 \endash \tx360\tab Cleanly Disposing Views\par}
 {\pard \ql \f0 \sa0 \li720 \fi-360 \endash \tx360\tab Disposing Parent And Child Views\par}
-{\pard \ql \f0 \sa0 \li720 \fi-360 \endash \tx360\tab Appending Views\sa180\par}
+{\pard \ql \f0 \sa0 \li720 \fi-360 \endash \tx360\tab Appending Views\par}
+{\pard \ql \f0 \sa0 \li720 \fi-360 \endash \tx360\tab Better Model Property Validation *\sa180\par}
 {\pard \ql \f0 \sa180 \li360 \fi-360 \bullet \tx360\tab \b \fs24 {\field{\*\fldinst{HYPERLINK "#advanced"}}{\fldrslt{\ul
 Modular Development
 }}}
@@ -230,6 +231,7 @@ Resources
 {\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Decouple the DOM from your page\u8217's data\par}
 {\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Model data, views and routers in a succinct manner\par}
 {\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Provide DOM, model and collection synchronization\sa180\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs28 What should you expect to see in this book?\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 The goal of this book is to create an authoritative and centralized repository of information that can help those developing real-world apps with Backbone. If you come across a section or topic which you think could be improved or expanded on, please feel free to submit a pull-request. It won\u8217't take long and you\u8217'll be helping other developers avoid problems you\u8217've run into before.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 Topics will include MVC theory and how to build applications using Backbone\u8217's models, views, collections and routers. I\u8217'll also be taking you through advanced topics like modular development with Backbone.js and AMD (via Require.js), how to build applications using modern software stacks (like Node and Express), how to solve the routing problems with Backbone and jQuery Mobile, tips about scaffolding tools, and a lot more.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \b \fs36 Fundamentals\par}
@@ -2442,21 +2444,25 @@ render : function () \{\line
 \}\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 This works in that one doesn\u8217't need to worry about maintaining the order of your DOM elements when appending. Views are initialized early and the render() method doesn\u8217't need to take on too many responsibilities at once. Unfortunately, a downside is that you don\u8217't have the ability to set the {\f1 tagName} of elements and events need to be re-delegated.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 An alternative approach which doesn\u8217't suffer from the re-delegation problem could be written as follows:\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 ```javascript\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 initialize : function () \{\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 \},\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 render : function () \{\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 \f1 this.$el.empty();\line
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 \line
+initialize : function () \{\line
 \line
-this.innerView1 = new Subview(\{options\});\line
-this.innerView2 = new Subview(\{options\});\line
+\},\line
+\line
+render : function () \{\line
+\line
+    this.$el.empty();\line
+\line
+    this.innerView1 = new Subview(\{options\});\line
+    this.innerView2 = new Subview(\{options\});\line
 \line
 \line
-this.$el.append(this.innerView1.render().el, this.innerView2.render().el);\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 \}\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 ``{\f1 In this version, we also don't require a template containing empty placeholders and the issue with}tagName`s is solved as they are defined by the view once again.\par}
+    this.$el.append(this.innerView1.render().el, this.innerView2.render().el);\line
+\}\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 In this version, we also don\u8217't require a template containing empty placeholders and the issue with {\f1 tagName}s is solved as they are defined by the view once again.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 Yet another variation which moves logic into an {\f1 onRender} event, could be written with only a few subtle changes:\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 \f1 initialize : function () \{\line
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 \line
+initialize : function () \{\line
     this.on('render', this.onRender);\line
 \},\line
 \line
@@ -2769,9 +2775,203 @@ online
 Marionette
 }}}
  too.\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs24 Is Backbone too simple for my needs?\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 Backbone can be used for building both trivial and complex applications as demonstrated by the many examples Ashkenas has been referencing in the Backbone documentation. As with any MVC framework however, it\u8217's important to dedicate time towards planning out what models and views your application really needs. Diving straight into development without doing this can result in either spaghetti code or a large refactor later on and it\u8217's best to avoid this where possible.\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 At the end of the day, the key to building large applications is not to build large applications in the first place. If you find that Backbone doesn\u8217't cut it for your requirements (which is unlikely for many many use-cases), I strongly recommend checking out AngularJS, Ember.js, Spine.js or CanJS as they offer a little more than Backbone out of the box. Dojo and Dojo Mobile may also be of interest as these have also been used to build significantly complex apps by other developers.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs36 Better Model Property Validation\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 As we learned earlier in the book, the {\f1 validate} method on a Model is called before {\f1 set} and {\f1 save}, and is passed the model attributes updated with the values from these methods.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 By default, where we define a custom {\f1 validate} method, Backbone passes all of a Model\u8217's attributes through this validation each time, regardless of which model attributes are being set.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 This means that it can be a challenge to determine which specific fields are being set or validated without being concerned about the others that aren\u8217't being set at the same time.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 To illustrate this problem better, let us look at a typical registration form use case that:\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Validates form fields using the blur event\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Validates each field regardless of whether other model attributes (aka other form data) are valid or not.\sa180\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Here is one example of a desired use case:\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 We have a form where a user focuses and blurs first name, last name, and email HTML input boxes without entering any data. A \u8220"this field is required\u8221" message should be presented next to each form field.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 HTML:\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 <!doctype html>\line
+<html>\line
+<head>\line
+  <meta charset=utf-8>\line
+  <title>Form Validation - Model#validate</title>\line
+  <script src='http://code.jquery.com/jquery.js'></script>\line
+  <script src='http://underscorejs.org/underscore.js'></script>\line
+  <script src='http://backbonejs.org/backbone.js'></script>\line
+</head>\line
+<body>\line
+  <form>\line
+    <label>First Name</label>\line
+    <input name='firstname'>\line
+    <span data-msg='firstname'></span>\line
+    <br>\line
+    <label>Last Name</label>\line
+    <input name='lastname'>\line
+    <span data-msg='lastname'></span>\line
+    <br>\line
+    <label>Email</label>\line
+    <input name='email'>\line
+    <span data-msg='email'></span>\line
+  </form>\line
+</body>\line
+</html>\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Some simple validation that could be written using the current Backbone {\f1 validate} method to work with this form could be implemented using something like:\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 validate: function(attrs) \{\line
+\line
+    if(!attrs.firstname) \{\line
+         console.log('first name is empty');\line
+         return false;\line
+    \}\line
+\line
+    if(!attrs.lastname) \{\line
+        console.log('last name is empty');\line
+        return false;\line
+    \}\line
+\line
+    if(!attrs.email) \{\line
+        console.log('email is empty');\line
+        return false;\line
+    \}\line
+\line
+\}\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Unfortunately, this method would trigger a first name error each time any of the fields were blurred and only an error message next to the first name field would be presented.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 One potential solution to the problem could be to validate all fields and return all of the errors:\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 validate: function(attrs) \{\line
+  var errors = \{\};\line
+\line
+  if (!attrs.firstname) errors.firstname = 'first name is empty';\line
+  if (!attrs.lastname) errors.lastname = 'last name is empty';\line
+  if (!attrs.email) errors.email = 'email is empty';\line
+\line
+  if (!_.isEmpty(errors)) return errors;\line
+\}\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 This can be adapted into a complete solution that defines a Field model for each input in our form and works within the parameters of our use-case as follows:\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 \line
+$(function($) \{\line
+\line
+  var User = Backbone.Model.extend(\{\line
+    validate: function(attrs) \{\line
+      var errors = this.errors = \{\};\line
+\line
+      if (!attrs.firstname) errors.firstname = 'firstname is required';\line
+      if (!attrs.lastname) errors.lastname = 'lastname is required';\line
+      if (!attrs.email) errors.email = 'email is required';\line
+\line
+      if (!_.isEmpty(errors)) return errors;\line
+    \}\line
+  \});\line
+\line
+  var Field = Backbone.View.extend(\{\line
+    events: \{blur: 'validate'\},\line
+    initialize: function() \{\line
+      this.name = this.$el.attr('name');\line
+      this.$msg = $('[data-msg=' + this.name + ']');\line
+    \},\line
+    validate: function() \{\line
+      this.model.set(this.name, this.$el.val());\line
+      this.$msg.text(this.model.errors[this.name] || '');\line
+    \}\line
+  \});\line
+\line
+  var user = new User;\line
+\line
+  $('input').each(function() \{\line
+    new Field(\{el: this, model: user\});\line
+  \});\line
+\line
+\});\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 This works great as the solution checks the validation for each attribute individually and sets the message for the correct blurred field. A {\field{\*\fldinst{HYPERLINK "http://jsbin.com/afetez/2/edit"}}{\fldrslt{\ul
+demo
+}}}
+ of the above by {\field{\*\fldinst{HYPERLINK "http://github.com/braddunbar"}}{\fldrslt{\ul
+@braddunbar
+}}}
+ is also available.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 It unfortunately however forces us to validate all of your form fields every time. If we have multiple client-side validation methods with our particular use case, we may not want to have to call each validation method on every attribute every time, so this solution might not be ideal for everyone.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 A potentially better alternative to the above is to use {\field{\*\fldinst{HYPERLINK "http://github.com/@franko"}}{\fldrslt{\ul
+@gfranko
+}}}
+\u8217's {\field{\*\fldinst{HYPERLINK "https://github.com/gfranko/Backbone.validateAll"}}{\fldrslt{\ul
+Backbone.validateAll
+}}}
+ plugin, specifically created to validate specific Model properties (or form fields) without worrying about the validation of any other Model properties (or form fields).\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Here is how we would setup a partial User Model and validate method using this plugin, that caters to our use-case:\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 \line
+// Create a new User Model\line
+var User = Backbone.Model.extend(\{\line
+\line
+      // RegEx Patterns\line
+      patterns: \{\line
+\line
+          specialCharacters: "[^a-zA-Z 0-9]+",\line
+\line
+          digits: "[0-9]",\line
+\line
+          email: "^[a-zA-Z0-9._-]+@[a-zA-Z0-9][a-zA-Z0-9.-]*[.]\{1\}[a-zA-Z]\{2,6\}$"\line
+      \},\line
+\line
+    // Validators\line
+      validators: \{\line
+\line
+      minLength: function(value, minLength) \{\line
+            return value.length >= minLength;\line
+\line
+          \},\line
+\line
+          maxLength: function(value, maxLength) \{\line
+            return value.length <= maxLength;\line
+\line
+          \},\line
+\line
+           isEmail: function(value) \{\line
+            return User.prototype.validators.pattern(value, User.prototype.patterns.email);\line
+\line
+          \},\line
+\line
+          hasSpecialCharacter: function(value) \{\line
+            return User.prototype.validators.pattern(value, User.prototype.patterns.specialCharacters);\line
+\line
+          \},\line
+         ...\line
+\line
+    // We can determine which properties are getting validated by \line
+    // checking to see if properties are equal to null\line
+\line
+        validate: function(attrs) \{\line
+\line
+          var errors = this.errors = \{\};\line
+\line
+          if(attrs.firstname != null) \{\line
+              if (!attrs.firstname) \{\line
+                  errors.firstname = 'firstname is required';\line
+                  console.log('first name isEmpty validation called');\line
+              \}\line
+\line
+              else if(!this.validators.minLength(attrs.firstname, 2)) \line
+                errors.firstname = 'firstname is too short';\line
+              else if(!this.validators.maxLength(attrs.firstname, 15)) \line
+                errors.firstname = 'firstname is too large';\line
+              else if(this.validators.hasSpecialCharacter(attrs.firstname)) errors.firstname = 'firstname cannot contain special characters';\line
+          \}\line
+\line
+          if(attrs.lastname != null) \{\line
+\line
+              if (!attrs.lastname) \{\line
+                  errors.lastname = 'lastname is required';\line
+                  console.log('last name isEmpty validation called');\line
+              \}\line
+\line
+              else if(!this.validators.minLength(attrs.lastname, 2)) \line
+                errors.lastname = 'lastname is too short';\line
+              else if(!this.validators.maxLength(attrs.lastname, 15)) \line
+                errors.lastname = 'lastname is too large';\line
+              else if(this.validators.hasSpecialCharacter(attrs.lastname)) errors.lastname = 'lastname cannot contain special characters';  \line
+\line
+          \}\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 This allows the logic inside of our validate methods to determine which form fields are currently being set/validated, and does not care about the other model properties that are not trying to be set.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 It\u8217's fairly straight-forward to use as well. We can simply define a new Model instance and then set the data on our model using the {\f1 validateAll} option to use the behavior defined by the plugin:\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 var user = new User();\line
+user.set(\{ "firstname": "Greg" \}, \{validateAll: false\});\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 That\u8217's it!.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 The Backbone.validateAll logic doesn\u8217't override the default Backbone logic by default and so it\u8217's perfectly capable of being used for scenarios where you might care more about field-validation {\field{\*\fldinst{HYPERLINK "http://jsperf.com/backbone-validateall"}}{\fldrslt{\ul
+performance
+}}}
+ as well as those where you don\u8217't. Both solutions presented in this section should work fine however.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \b \fs36 RESTful Applications\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \b \fs32 Building RESTful applications with Backbone\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 In this section of the book, we\u8217're going to take a look at developing RESTful applications using Backbone.js and modern technology stacks. When the data for your back-end is exposed through a purely RESTful API, tasks such as retrieving (GET), creating (POST), updating (PUT) and deleting (DELETE) models are made easy through Backbone\u8217's Model API. This API is so intuitive in fact that switching from storing records in a local data-store (e.g localStorage) to a database/noSQL data-store is a lot simpler than you may think.\par}
@@ -4437,7 +4637,6 @@ spoken
 {\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\b Modules}: There are almost two concepts of what defines a module. As AMD is being used as a module wrapper, technically each model, view and collection can be considered a module. We then have the concept of modules being distinct blocks of code outside of just MVC/MV*. For the latter, these types of \u8216'modules\u8217' are primarily concerned with broadcasting and subscribing to events of interest rather than directly communicating with each other.They are made possible through the Mediator pattern.\par}
 {\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\b Mediator}: The mediator has a varying role depending on just how you wish to implement it. In my article, I mention using it as a module manager with the ability to start and stop modules at will, however when it comes to Backbone, I feel that simplifying it down to the role of a central \u8216'controller\u8217' that provides pub/sub capabilities should suffice. One can of course go all out in terms of building a module system that supports module starting, stopping, pausing etc, however the scope of this is outside of this chapter.\par}
 {\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\b Facade}: This acts as a secure middle-layer that both abstracts an application core (Mediator) and relays messages from the modules back to the Mediator so they don\u8217't touch it directly. The Facade also performs the duty of application security guard; it checks event notifications from modules against a configuration (permissions.js, which we will look at later) to ensure requests from modules are only processed if they are permitted to execute the behavior passed.\sa180\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 F\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \b \fs28 Practical\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 For the practical section of this chapter, we\u8217'll be extending the well-known Backbone Todo application using the three patterns mentioned above.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 The application is broken down into AMD modules that cover everything from Backbone models through to application-level modules. The views publish events of interest to the rest of the application and modules can then subscribe to these event notifications.\par}

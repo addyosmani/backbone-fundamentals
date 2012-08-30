@@ -85,6 +85,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <li>Cleanly Disposing Views</li>
 <li>Disposing Parent And Child Views</li>
 <li>Appending Views</li>
+<li>Better Model Property Validation *</li>
 </ul></li>
 <li><h4><a href="#advanced">Modular Development</a></h4>
 <ul>
@@ -184,6 +185,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <li>Model data, views and routers in a succinct manner</li>
 <li>Provide DOM, model and collection synchronization</li>
 </ul>
+<h3 id="what-should-you-expect-to-see-in-this-book">What should you expect to see in this book?</h3>
 <p>The goal of this book is to create an authoritative and centralized repository of information that can help those developing real-world apps with Backbone. If you come across a section or topic which you think could be improved or expanded on, please feel free to submit a pull-request. It won't take long and you'll be helping other developers avoid problems you've run into before.</p>
 <p>Topics will include MVC theory and how to build applications using Backbone's models, views, collections and routers. I'll also be taking you through advanced topics like modular development with Backbone.js and AMD (via Require.js), how to build applications using modern software stacks (like Node and Express), how to solve the routing problems with Backbone and jQuery Mobile, tips about scaffolding tools, and a lot more.</p>
 <h1 id="fundamentals"><a name="fundamentals">Fundamentals</a></h1>
@@ -2283,21 +2285,25 @@ Initialized from template &quot;module&quot;.</code></pre>
 }</code></pre>
 <p>This works in that one doesn't need to worry about maintaining the order of your DOM elements when appending. Views are initialized early and the render() method doesn't need to take on too many responsibilities at once. Unfortunately, a downside is that you don't have the ability to set the <code>tagName</code> of elements and events need to be re-delegated.</p>
 <p>An alternative approach which doesn't suffer from the re-delegation problem could be written as follows:</p>
-<p>```javascript</p>
-<p>initialize : function () {</p>
-<p>},</p>
-<p>render : function () {</p>
-<pre><code>this.$el.empty();
+<pre class="sourceCode javascript"><code class="sourceCode javascript">
+<span class="dt">initialize </span>: <span class="kw">function</span> () {
 
-this.innerView1 = new Subview({options});
-this.innerView2 = new Subview({options});
+},
+
+<span class="dt">render </span>: <span class="kw">function</span> () {
+
+    <span class="kw">this</span>.$<span class="fu">el</span>.<span class="fu">empty</span>();
+
+    <span class="kw">this</span>.<span class="fu">innerView1</span> = <span class="kw">new</span> Subview({options});
+    <span class="kw">this</span>.<span class="fu">innerView2</span> = <span class="kw">new</span> Subview({options});
 
 
-this.$el.append(this.innerView1.render().el, this.innerView2.render().el);</code></pre>
-<p>}</p>
-<p>``<code>In this version, we also don't require a template containing empty placeholders and the issue with</code>tagName`s is solved as they are defined by the view once again.</p>
+    <span class="kw">this</span>.$<span class="fu">el</span>.<span class="fu">append</span>(<span class="kw">this</span>.<span class="fu">innerView1</span>.<span class="fu">render</span>().<span class="fu">el</span>, <span class="kw">this</span>.<span class="fu">innerView2</span>.<span class="fu">render</span>().<span class="fu">el</span>);
+}</code></pre>
+<p>In this version, we also don't require a template containing empty placeholders and the issue with <code>tagName</code>s is solved as they are defined by the view once again.</p>
 <p>Yet another variation which moves logic into an <code>onRender</code> event, could be written with only a few subtle changes:</p>
-<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="dt">initialize </span>: <span class="kw">function</span> () {
+<pre class="sourceCode javascript"><code class="sourceCode javascript">
+<span class="dt">initialize </span>: <span class="kw">function</span> () {
     <span class="kw">this</span>.<span class="fu">on</span>(<span class="ch">&#39;render&#39;</span>, <span class="kw">this</span>.<span class="fu">onRender</span>);
 },
 
@@ -2575,9 +2581,190 @@ NewChildView = <span class="kw">Backbone.View</span>.<span class="fu">extend</sp
 <p>It can render a single model with a template. It can also take a collection from that model and for each model in that collection, render a view. By default it uses the same composite view type that you've defined, to render each of the models in the collection. All you have to do is tell the view instance where the collection is, via the initialize method, and you'll get a recursive hierarchy rendered.</p>
 <p>There is a working demo of this in action available <a href="http://jsfiddle.net/derickbailey/AdWjU/">online</a>.</p>
 <p>And you can get the source code and documentation for <a href="https://github.com/derickbailey/backbone.marionette">Marionette</a> too.</p>
-<h4 id="is-backbone-too-simple-for-my-needs">Is Backbone too simple for my needs?</h4>
-<p>Backbone can be used for building both trivial and complex applications as demonstrated by the many examples Ashkenas has been referencing in the Backbone documentation. As with any MVC framework however, it's important to dedicate time towards planning out what models and views your application really needs. Diving straight into development without doing this can result in either spaghetti code or a large refactor later on and it's best to avoid this where possible.</p>
-<p>At the end of the day, the key to building large applications is not to build large applications in the first place. If you find that Backbone doesn't cut it for your requirements (which is unlikely for many many use-cases), I strongly recommend checking out AngularJS, Ember.js, Spine.js or CanJS as they offer a little more than Backbone out of the box. Dojo and Dojo Mobile may also be of interest as these have also been used to build significantly complex apps by other developers.</p>
+<h1 id="better-model-property-validation">Better Model Property Validation</h1>
+<p>As we learned earlier in the book, the <code>validate</code> method on a Model is called before <code>set</code> and <code>save</code>, and is passed the model attributes updated with the values from these methods.</p>
+<p>By default, where we define a custom <code>validate</code> method, Backbone passes all of a Model's attributes through this validation each time, regardless of which model attributes are being set.</p>
+<p>This means that it can be a challenge to determine which specific fields are being set or validated without being concerned about the others that aren't being set at the same time.</p>
+<p>To illustrate this problem better, let us look at a typical registration form use case that:</p>
+<ul>
+<li>Validates form fields using the blur event</li>
+<li>Validates each field regardless of whether other model attributes (aka other form data) are valid or not.</li>
+</ul>
+<p>Here is one example of a desired use case:</p>
+<p>We have a form where a user focuses and blurs first name, last name, and email HTML input boxes without entering any data. A &quot;this field is required&quot; message should be presented next to each form field.</p>
+<p>HTML:</p>
+<pre><code>&lt;!doctype html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;meta charset=utf-8&gt;
+  &lt;title&gt;Form Validation - Model#validate&lt;/title&gt;
+  &lt;script src=&#39;http://code.jquery.com/jquery.js&#39;&gt;&lt;/script&gt;
+  &lt;script src=&#39;http://underscorejs.org/underscore.js&#39;&gt;&lt;/script&gt;
+  &lt;script src=&#39;http://backbonejs.org/backbone.js&#39;&gt;&lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;form&gt;
+    &lt;label&gt;First Name&lt;/label&gt;
+    &lt;input name=&#39;firstname&#39;&gt;
+    &lt;span data-msg=&#39;firstname&#39;&gt;&lt;/span&gt;
+    &lt;br&gt;
+    &lt;label&gt;Last Name&lt;/label&gt;
+    &lt;input name=&#39;lastname&#39;&gt;
+    &lt;span data-msg=&#39;lastname&#39;&gt;&lt;/span&gt;
+    &lt;br&gt;
+    &lt;label&gt;Email&lt;/label&gt;
+    &lt;input name=&#39;email&#39;&gt;
+    &lt;span data-msg=&#39;email&#39;&gt;&lt;/span&gt;
+  &lt;/form&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+<p>Some simple validation that could be written using the current Backbone <code>validate</code> method to work with this form could be implemented using something like:</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="dt">validate</span>: <span class="kw">function</span>(attrs) {
+
+    <span class="kw">if</span>(!<span class="kw">attrs</span>.<span class="fu">firstname</span>) {
+         <span class="kw">console</span>.<span class="fu">log</span>(<span class="ch">&#39;first name is empty&#39;</span>);
+         <span class="kw">return</span> <span class="kw">false</span>;
+    }
+
+    <span class="kw">if</span>(!<span class="kw">attrs</span>.<span class="fu">lastname</span>) {
+        <span class="kw">console</span>.<span class="fu">log</span>(<span class="ch">&#39;last name is empty&#39;</span>);
+        <span class="kw">return</span> <span class="kw">false</span>;
+    }
+
+    <span class="kw">if</span>(!<span class="kw">attrs</span>.<span class="fu">email</span>) {
+        <span class="kw">console</span>.<span class="fu">log</span>(<span class="ch">&#39;email is empty&#39;</span>);
+        <span class="kw">return</span> <span class="kw">false</span>;
+    }
+
+}</code></pre>
+<p>Unfortunately, this method would trigger a first name error each time any of the fields were blurred and only an error message next to the first name field would be presented.</p>
+<p>One potential solution to the problem could be to validate all fields and return all of the errors:</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="dt">validate</span>: <span class="kw">function</span>(attrs) {
+  <span class="kw">var</span> errors = {};
+
+  <span class="kw">if</span> (!<span class="kw">attrs</span>.<span class="fu">firstname</span>) <span class="kw">errors</span>.<span class="fu">firstname</span> = <span class="ch">&#39;first name is empty&#39;</span>;
+  <span class="kw">if</span> (!<span class="kw">attrs</span>.<span class="fu">lastname</span>) <span class="kw">errors</span>.<span class="fu">lastname</span> = <span class="ch">&#39;last name is empty&#39;</span>;
+  <span class="kw">if</span> (!<span class="kw">attrs</span>.<span class="fu">email</span>) <span class="kw">errors</span>.<span class="fu">email</span> = <span class="ch">&#39;email is empty&#39;</span>;
+
+  <span class="kw">if</span> (!<span class="kw">_</span>.<span class="fu">isEmpty</span>(errors)) <span class="kw">return</span> errors;
+}</code></pre>
+<p>This can be adapted into a complete solution that defines a Field model for each input in our form and works within the parameters of our use-case as follows:</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript">
+$(<span class="kw">function</span>($) {
+
+  <span class="kw">var</span> User = <span class="kw">Backbone.Model</span>.<span class="fu">extend</span>({
+    <span class="dt">validate</span>: <span class="kw">function</span>(attrs) {
+      <span class="kw">var</span> errors = <span class="kw">this</span>.<span class="fu">errors</span> = {};
+
+      <span class="kw">if</span> (!<span class="kw">attrs</span>.<span class="fu">firstname</span>) <span class="kw">errors</span>.<span class="fu">firstname</span> = <span class="ch">&#39;firstname is required&#39;</span>;
+      <span class="kw">if</span> (!<span class="kw">attrs</span>.<span class="fu">lastname</span>) <span class="kw">errors</span>.<span class="fu">lastname</span> = <span class="ch">&#39;lastname is required&#39;</span>;
+      <span class="kw">if</span> (!<span class="kw">attrs</span>.<span class="fu">email</span>) <span class="kw">errors</span>.<span class="fu">email</span> = <span class="ch">&#39;email is required&#39;</span>;
+
+      <span class="kw">if</span> (!<span class="kw">_</span>.<span class="fu">isEmpty</span>(errors)) <span class="kw">return</span> errors;
+    }
+  });
+
+  <span class="kw">var</span> Field = <span class="kw">Backbone.View</span>.<span class="fu">extend</span>({
+    <span class="dt">events</span>: {<span class="dt">blur</span>: <span class="ch">&#39;validate&#39;</span>},
+    <span class="dt">initialize</span>: <span class="kw">function</span>() {
+      <span class="kw">this</span>.<span class="fu">name</span> = <span class="kw">this</span>.$<span class="fu">el</span>.<span class="fu">attr</span>(<span class="ch">&#39;name&#39;</span>);
+      <span class="kw">this</span>.$<span class="fu">msg</span> = $(<span class="ch">&#39;[data-msg=&#39;</span> + <span class="kw">this</span>.<span class="fu">name</span> + <span class="ch">&#39;]&#39;</span>);
+    },
+    <span class="dt">validate</span>: <span class="kw">function</span>() {
+      <span class="kw">this</span>.<span class="fu">model</span>.<span class="fu">set</span>(<span class="kw">this</span>.<span class="fu">name</span>, <span class="kw">this</span>.$<span class="fu">el</span>.<span class="fu">val</span>());
+      <span class="kw">this</span>.$<span class="fu">msg</span>.<span class="fu">text</span>(<span class="kw">this</span>.<span class="fu">model</span>.<span class="fu">errors</span>[<span class="kw">this</span>.<span class="fu">name</span>] || <span class="ch">&#39;&#39;</span>);
+    }
+  });
+
+  <span class="kw">var</span> user = <span class="kw">new</span> User;
+
+  $(<span class="ch">&#39;input&#39;</span>).<span class="fu">each</span>(<span class="kw">function</span>() {
+    <span class="kw">new</span> Field({<span class="dt">el</span>: <span class="kw">this</span>, <span class="dt">model</span>: user});
+  });
+
+});</code></pre>
+<p>This works great as the solution checks the validation for each attribute individually and sets the message for the correct blurred field. A <a href="http://jsbin.com/afetez/2/edit">demo</a> of the above by <a href="http://github.com/braddunbar">@braddunbar</a> is also available.</p>
+<p>It unfortunately however forces us to validate all of your form fields every time. If we have multiple client-side validation methods with our particular use case, we may not want to have to call each validation method on every attribute every time, so this solution might not be ideal for everyone.</p>
+<p>A potentially better alternative to the above is to use <a href="http://github.com/@franko">@gfranko</a>'s <a href="https://github.com/gfranko/Backbone.validateAll">Backbone.validateAll</a> plugin, specifically created to validate specific Model properties (or form fields) without worrying about the validation of any other Model properties (or form fields).</p>
+<p>Here is how we would setup a partial User Model and validate method using this plugin, that caters to our use-case:</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript">
+<span class="co">// Create a new User Model</span>
+<span class="kw">var</span> User = <span class="kw">Backbone.Model</span>.<span class="fu">extend</span>({
+
+      <span class="co">// RegEx Patterns</span>
+      <span class="dt">patterns</span>: {
+
+          <span class="dt">specialCharacters</span>: <span class="st">&quot;[^a-zA-Z 0-9]+&quot;</span>,
+
+          <span class="dt">digits</span>: <span class="st">&quot;[0-9]&quot;</span>,
+
+          <span class="dt">email</span>: <span class="st">&quot;^[a-zA-Z0-9._-]+@[a-zA-Z0-9][a-zA-Z0-9.-]*[.]{1}[a-zA-Z]{2,6}$&quot;</span>
+      },
+
+    <span class="co">// Validators</span>
+      <span class="dt">validators</span>: {
+
+      <span class="dt">minLength</span>: <span class="kw">function</span>(value, minLength) {
+            <span class="kw">return</span> <span class="kw">value</span>.<span class="fu">length</span> &gt;= minLength;
+
+          },
+
+          <span class="dt">maxLength</span>: <span class="kw">function</span>(value, maxLength) {
+            <span class="kw">return</span> <span class="kw">value</span>.<span class="fu">length</span> &lt;= maxLength;
+
+          },
+
+           <span class="dt">isEmail</span>: <span class="kw">function</span>(value) {
+            <span class="kw">return</span> <span class="kw">User.prototype.validators</span>.<span class="fu">pattern</span>(value, <span class="kw">User.prototype.patterns</span>.<span class="fu">email</span>);
+
+          },
+
+          <span class="dt">hasSpecialCharacter</span>: <span class="kw">function</span>(value) {
+            <span class="kw">return</span> <span class="kw">User.prototype.validators</span>.<span class="fu">pattern</span>(value, <span class="kw">User.prototype.patterns</span>.<span class="fu">specialCharacters</span>);
+
+          },
+         ...
+
+    <span class="co">// We can determine which properties are getting validated by </span>
+    <span class="co">// checking to see if properties are equal to null</span>
+
+        <span class="dt">validate</span>: <span class="kw">function</span>(attrs) {
+
+          <span class="kw">var</span> errors = <span class="kw">this</span>.<span class="fu">errors</span> = {};
+
+          <span class="kw">if</span>(<span class="kw">attrs</span>.<span class="fu">firstname</span> != null) {
+              <span class="kw">if</span> (!<span class="kw">attrs</span>.<span class="fu">firstname</span>) {
+                  <span class="kw">errors</span>.<span class="fu">firstname</span> = <span class="ch">&#39;firstname is required&#39;</span>;
+                  <span class="kw">console</span>.<span class="fu">log</span>(<span class="ch">&#39;first name isEmpty validation called&#39;</span>);
+              }
+
+              <span class="kw">else</span> <span class="kw">if</span>(!<span class="kw">this</span>.<span class="fu">validators</span>.<span class="fu">minLength</span>(<span class="kw">attrs</span>.<span class="fu">firstname</span>, <span class="dv">2</span>)) 
+                <span class="kw">errors</span>.<span class="fu">firstname</span> = <span class="ch">&#39;firstname is too short&#39;</span>;
+              <span class="kw">else</span> <span class="kw">if</span>(!<span class="kw">this</span>.<span class="fu">validators</span>.<span class="fu">maxLength</span>(<span class="kw">attrs</span>.<span class="fu">firstname</span>, <span class="dv">15</span>)) 
+                <span class="kw">errors</span>.<span class="fu">firstname</span> = <span class="ch">&#39;firstname is too large&#39;</span>;
+              <span class="kw">else</span> <span class="kw">if</span>(<span class="kw">this</span>.<span class="fu">validators</span>.<span class="fu">hasSpecialCharacter</span>(<span class="kw">attrs</span>.<span class="fu">firstname</span>)) <span class="kw">errors</span>.<span class="fu">firstname</span> = <span class="ch">&#39;firstname cannot contain special characters&#39;</span>;
+          }
+
+          <span class="kw">if</span>(<span class="kw">attrs</span>.<span class="fu">lastname</span> != null) {
+
+              <span class="kw">if</span> (!<span class="kw">attrs</span>.<span class="fu">lastname</span>) {
+                  <span class="kw">errors</span>.<span class="fu">lastname</span> = <span class="ch">&#39;lastname is required&#39;</span>;
+                  <span class="kw">console</span>.<span class="fu">log</span>(<span class="ch">&#39;last name isEmpty validation called&#39;</span>);
+              }
+
+              <span class="kw">else</span> <span class="kw">if</span>(!<span class="kw">this</span>.<span class="fu">validators</span>.<span class="fu">minLength</span>(<span class="kw">attrs</span>.<span class="fu">lastname</span>, <span class="dv">2</span>)) 
+                <span class="kw">errors</span>.<span class="fu">lastname</span> = <span class="ch">&#39;lastname is too short&#39;</span>;
+              <span class="kw">else</span> <span class="kw">if</span>(!<span class="kw">this</span>.<span class="fu">validators</span>.<span class="fu">maxLength</span>(<span class="kw">attrs</span>.<span class="fu">lastname</span>, <span class="dv">15</span>)) 
+                <span class="kw">errors</span>.<span class="fu">lastname</span> = <span class="ch">&#39;lastname is too large&#39;</span>;
+              <span class="kw">else</span> <span class="kw">if</span>(<span class="kw">this</span>.<span class="fu">validators</span>.<span class="fu">hasSpecialCharacter</span>(<span class="kw">attrs</span>.<span class="fu">lastname</span>)) <span class="kw">errors</span>.<span class="fu">lastname</span> = <span class="ch">&#39;lastname cannot contain special characters&#39;</span>;  
+
+          }</code></pre>
+<p>This allows the logic inside of our validate methods to determine which form fields are currently being set/validated, and does not care about the other model properties that are not trying to be set.</p>
+<p>It's fairly straight-forward to use as well. We can simply define a new Model instance and then set the data on our model using the <code>validateAll</code> option to use the behavior defined by the plugin:</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> user = <span class="kw">new</span> User();
+<span class="kw">user</span>.<span class="fu">set</span>({ <span class="st">&quot;firstname&quot;</span>: <span class="st">&quot;Greg&quot;</span> }, {<span class="dt">validateAll</span>: <span class="kw">false</span>});</code></pre>
+<p>That's it!.</p>
+<p>The Backbone.validateAll logic doesn't override the default Backbone logic by default and so it's perfectly capable of being used for scenarios where you might care more about field-validation <a href="http://jsperf.com/backbone-validateall">performance</a> as well as those where you don't. Both solutions presented in this section should work fine however.</p>
 <h1 id="restful-applications"><a name="restfulapps">RESTful Applications</a></h1>
 <h2 id="building-restful-applications-with-backbone"><a name="restful">Building RESTful applications with Backbone</a></h2>
 <p>In this section of the book, we're going to take a look at developing RESTful applications using Backbone.js and modern technology stacks. When the data for your back-end is exposed through a purely RESTful API, tasks such as retrieving (GET), creating (POST), updating (PUT) and deleting (DELETE) models are made easy through Backbone's Model API. This API is so intuitive in fact that switching from storing records in a local data-store (e.g localStorage) to a database/noSQL data-store is a lot simpler than you may think.</p>
@@ -4101,7 +4288,6 @@ require([<span class="ch">&#39;views/app&#39;</span>], <span class="kw">function
 <li><strong>Mediator</strong>: The mediator has a varying role depending on just how you wish to implement it. In my article, I mention using it as a module manager with the ability to start and stop modules at will, however when it comes to Backbone, I feel that simplifying it down to the role of a central 'controller' that provides pub/sub capabilities should suffice. One can of course go all out in terms of building a module system that supports module starting, stopping, pausing etc, however the scope of this is outside of this chapter.</li>
 <li><strong>Facade</strong>: This acts as a secure middle-layer that both abstracts an application core (Mediator) and relays messages from the modules back to the Mediator so they don't touch it directly. The Facade also performs the duty of application security guard; it checks event notifications from modules against a configuration (permissions.js, which we will look at later) to ensure requests from modules are only processed if they are permitted to execute the behavior passed.</li>
 </ul>
-<p>F</p>
 <h3 id="practical-2">Practical</h3>
 <p>For the practical section of this chapter, we'll be extending the well-known Backbone Todo application using the three patterns mentioned above.</p>
 <p>The application is broken down into AMD modules that cover everything from Backbone models through to application-level modules. The views publish events of interest to the rest of the application and modules can then subscribe to these event notifications.</p>

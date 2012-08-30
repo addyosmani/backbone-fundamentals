@@ -46,6 +46,7 @@ I hope you find this book helpful!
     * Cleanly Disposing Views
     * Disposing Parent And Child Views
     * Appending Views
+    * Better Model Property Validation *
 
 * ####[Modular Development](#advanced)    
     * [Introduction](#modularjs)
@@ -164,6 +165,9 @@ Backbone's main benefits, regardless of your target platform or device, include 
 * Decouple the DOM from your page's data
 * Model data, views and routers in a succinct manner
 * Provide DOM, model and collection synchronization
+
+
+###What should you expect to see in this book?
 
 The goal of this book is to create an authoritative and centralized repository of information that can help those developing real-world apps with Backbone. If you come across a section or topic which you think could be improved or expanded on, please feel free to submit a pull-request. It won't take long and you'll be helping other developers avoid problems you've run into before.
 
@@ -3060,11 +3064,14 @@ render : function () {
 }
 
 ```
+
 In this version, we also don't require a template containing empty placeholders and the issue with `tagName`s is solved as they are defined by the view once again. 
 
 Yet another variation which moves logic into an `onRender` event, could be written with only a few subtle changes:
 
+
 ```javascript
+
 initialize : function () {
     this.on('render', this.onRender);
 },
@@ -3439,11 +3446,239 @@ There is a working demo of this in action available [online](http://jsfiddle.net
 And you can get the source code and documentation for [Marionette](https://github.com/derickbailey/backbone.marionette) too.
 
 
-####Is Backbone too simple for my needs?
 
-Backbone can be used for building both trivial and complex applications as demonstrated by the many examples Ashkenas has been referencing in the Backbone documentation. As with any MVC framework however, it's important to dedicate time towards planning out what models and views your application really needs. Diving straight into development without doing this can result in either spaghetti code or a large refactor later on and it's best to avoid this where possible. 
 
-At the end of the day, the key to building large applications is not to build large applications in the first place. If you find that Backbone doesn't cut it for your requirements (which is unlikely for many many use-cases), I strongly recommend checking out AngularJS, Ember.js, Spine.js or CanJS as they offer a little more than Backbone out of the box. Dojo and Dojo Mobile may also be of interest as these have also been used to build significantly complex apps by other developers.
+# Better Model Property Validation
+
+As we learned earlier in the book, the `validate` method on a Model is called before `set` and `save`, and is passed the model attributes updated with the values from these methods.
+
+By default, where we define a custom `validate` method, Backbone passes all of a Model's attributes through this validation each time, regardless of which model attributes are being set. 
+
+This means that it can be a challenge to determine which specific fields are being set or validated without being concerned about the others that aren't being set at the same time.
+
+To illustrate this problem better, let us look at a typical registration form use case that:
+
+* Validates form fields using the blur event
+* Validates each field regardless of whether other model attributes (aka other form data) are valid or not.
+
+Here is one example of a desired use case:
+
+We have a form where a user focuses and blurs first name, last name, and email HTML input boxes without entering any data. A "this field is required" message should be presented next to each form field.
+
+HTML:
+
+```
+<!doctype html>
+<html>
+<head>
+  <meta charset=utf-8>
+  <title>Form Validation - Model#validate</title>
+  <script src='http://code.jquery.com/jquery.js'></script>
+  <script src='http://underscorejs.org/underscore.js'></script>
+  <script src='http://backbonejs.org/backbone.js'></script>
+</head>
+<body>
+  <form>
+    <label>First Name</label>
+    <input name='firstname'>
+    <span data-msg='firstname'></span>
+    <br>
+    <label>Last Name</label>
+    <input name='lastname'>
+    <span data-msg='lastname'></span>
+    <br>
+    <label>Email</label>
+    <input name='email'>
+    <span data-msg='email'></span>
+  </form>
+</body>
+</html>
+```
+
+Some simple validation that could be written using the current Backbone `validate` method to work with this form could be implemented using something like:
+
+
+```javascript
+validate: function(attrs) {
+
+    if(!attrs.firstname) {
+         console.log('first name is empty');
+         return false;
+    }
+
+    if(!attrs.lastname) {
+        console.log('last name is empty');
+        return false;
+    }
+
+    if(!attrs.email) {
+        console.log('email is empty');
+        return false;
+    }
+
+}
+```
+
+Unfortunately, this method would trigger a first name error each time any of the fields were blurred and only an error message next to the first name field would be presented.
+
+One potential solution to the problem could be to validate all fields and return all of the errors:
+
+```javascript
+validate: function(attrs) {
+  var errors = {};
+
+  if (!attrs.firstname) errors.firstname = 'first name is empty';
+  if (!attrs.lastname) errors.lastname = 'last name is empty';
+  if (!attrs.email) errors.email = 'email is empty';
+
+  if (!_.isEmpty(errors)) return errors;
+}
+```
+
+This can be adapted into a complete solution that defines a Field model for each input in our form and works within the parameters of our use-case as follows:
+
+```javascript
+
+$(function($) {
+  
+  var User = Backbone.Model.extend({
+    validate: function(attrs) {
+      var errors = this.errors = {};
+      
+      if (!attrs.firstname) errors.firstname = 'firstname is required';
+      if (!attrs.lastname) errors.lastname = 'lastname is required';
+      if (!attrs.email) errors.email = 'email is required';
+      
+      if (!_.isEmpty(errors)) return errors;
+    }
+  });
+  
+  var Field = Backbone.View.extend({
+    events: {blur: 'validate'},
+    initialize: function() {
+      this.name = this.$el.attr('name');
+      this.$msg = $('[data-msg=' + this.name + ']');
+    },
+    validate: function() {
+      this.model.set(this.name, this.$el.val());
+      this.$msg.text(this.model.errors[this.name] || '');
+    }
+  });
+  
+  var user = new User;
+  
+  $('input').each(function() {
+    new Field({el: this, model: user});
+  });
+  
+});
+
+```
+
+
+This works great as the solution checks the validation for each attribute individually and sets the message for the correct blurred field. A [demo](http://jsbin.com/afetez/2/edit) of the above by [@braddunbar](http://github.com/braddunbar) is also available.
+
+It unfortunately however forces us to validate all of your form fields every time.
+If we have multiple client-side validation methods with our particular use case, we may not want to have to call each validation method on every attribute every time, so this solution might not be ideal for everyone.
+
+A potentially better alternative to the above is to use [@gfranko](http://github.com/@franko)'s [Backbone.validateAll](https://github.com/gfranko/Backbone.validateAll) plugin, specifically created to validate specific Model properties (or form fields) without worrying about the validation of any other Model properties (or form fields).
+
+Here is how we would setup a partial User Model and validate method using this plugin, that caters to our use-case:
+
+
+```javascript
+
+// Create a new User Model
+var User = Backbone.Model.extend({
+
+      // RegEx Patterns
+      patterns: {
+
+          specialCharacters: "[^a-zA-Z 0-9]+",
+
+          digits: "[0-9]",
+
+          email: "^[a-zA-Z0-9._-]+@[a-zA-Z0-9][a-zA-Z0-9.-]*[.]{1}[a-zA-Z]{2,6}$"
+      },
+
+    // Validators
+      validators: {
+
+      minLength: function(value, minLength) {
+            return value.length >= minLength;
+
+          },
+
+          maxLength: function(value, maxLength) {
+            return value.length <= maxLength;
+
+          },
+
+           isEmail: function(value) {
+            return User.prototype.validators.pattern(value, User.prototype.patterns.email);
+
+          },
+
+          hasSpecialCharacter: function(value) {
+            return User.prototype.validators.pattern(value, User.prototype.patterns.specialCharacters);
+
+          },
+         ...
+
+    // We can determine which properties are getting validated by 
+    // checking to see if properties are equal to null
+      
+        validate: function(attrs) {
+
+          var errors = this.errors = {};
+
+          if(attrs.firstname != null) {
+              if (!attrs.firstname) {
+                  errors.firstname = 'firstname is required';
+                  console.log('first name isEmpty validation called');
+              }
+
+              else if(!this.validators.minLength(attrs.firstname, 2)) 
+                errors.firstname = 'firstname is too short';
+              else if(!this.validators.maxLength(attrs.firstname, 15)) 
+                errors.firstname = 'firstname is too large';
+              else if(this.validators.hasSpecialCharacter(attrs.firstname)) errors.firstname = 'firstname cannot contain special characters';
+          }
+
+          if(attrs.lastname != null) {
+
+              if (!attrs.lastname) {
+                  errors.lastname = 'lastname is required';
+                  console.log('last name isEmpty validation called');
+              }
+
+              else if(!this.validators.minLength(attrs.lastname, 2)) 
+                errors.lastname = 'lastname is too short';
+              else if(!this.validators.maxLength(attrs.lastname, 15)) 
+                errors.lastname = 'lastname is too large';
+              else if(this.validators.hasSpecialCharacter(attrs.lastname)) errors.lastname = 'lastname cannot contain special characters';  
+
+          }
+```
+
+
+This allows the logic inside of our validate methods to determine which form fields are currently being set/validated, and does not care about the other model properties that are not trying to be set.
+
+It's fairly straight-forward to use as well. We can simply define a new Model instance and then set the data on our model using the `validateAll` option to use the behavior defined by the plugin:
+
+
+
+```javascript
+var user = new User();
+user.set({ "firstname": "Greg" }, {validateAll: false});
+
+```
+
+
+That's it!. 
+
+The Backbone.validateAll logic doesn't override the default Backbone logic by default and so it's perfectly capable of being used for scenarios where you might care more about field-validation [performance](http://jsperf.com/backbone-validateall) as well as those where you don't. Both solutions presented in this section should work fine however.
+
 
 
 # <a name="restfulapps">RESTful Applications</a>
@@ -5623,7 +5858,6 @@ Their specific roles in this architecture can be found below.
 * **Mediator**: The mediator has a varying role depending on just how you wish to implement it. In my article, I mention using it as a module manager with the ability to start and stop modules at will, however when it comes to Backbone, I feel that simplifying it down to the role of a central 'controller' that provides pub/sub capabilities should suffice. One can of course go all out in terms of building a module system that supports module starting, stopping, pausing etc, however the scope of this is outside of this chapter.
 * **Facade**: This acts as a secure middle-layer that both abstracts an application core (Mediator) and relays messages from the modules back to the Mediator so they don't touch it directly. The Facade also performs the duty of application security guard; it checks event notifications from modules against a configuration (permissions.js, which we will look at later) to ensure requests from modules are only processed if they are permitted to execute the behavior passed.
 
-F
 
 ### Practical
 
