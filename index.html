@@ -747,10 +747,9 @@ id: &#39;header&#39;, // optional</code></pre>
   .<span class="fu">map</span>(<span class="kw">function</span>(item) { <span class="kw">return</span> <span class="kw">item</span>.<span class="fu">get</span>(<span class="ch">&#39;name&#39;</span>); })
   .<span class="fu">value</span>();
 
-<span class="co">// Will return [&#39;Ida&#39;, &#39;Rob&#39;]</span>
-Some of the Backbone-specific method will <span class="kw">return</span> <span class="kw">this</span>, which means they can be chained as <span class="dt">well</span>:
-
-<span class="kw">var</span> collection = <span class="kw">new</span> <span class="kw">Backbone</span>.<span class="fu">Collection</span>();
+<span class="co">// Will return [&#39;Ida&#39;, &#39;Rob&#39;]</span></code></pre>
+<p>Some of the Backbone-specific method will return <code>this</code>, which means they can be chained as well:</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> collection = <span class="kw">new</span> <span class="kw">Backbone</span>.<span class="fu">Collection</span>();
 
 collection
     .<span class="fu">add</span>({ <span class="dt">name</span>: <span class="ch">&#39;John&#39;</span>, <span class="dt">age</span>: <span class="dv">23</span> })
