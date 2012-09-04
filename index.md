@@ -871,7 +871,7 @@ id: 'header', // optional
 The above code creates the ```DOMElement``` below but doesn't append it to the DOM.
 
 
-	<p id="header" class="container"></p>
+  <p id="header" class="container"></p>
 
 
 
@@ -3514,6 +3514,7 @@ One potential solution to the problem could be to validate all fields and return
 
 ```javascript
 validate: function(attrs) {
+
   var errors = {};
 
   if (!attrs.firstname) errors.firstname = 'first name is empty';
@@ -3521,6 +3522,7 @@ validate: function(attrs) {
   if (!attrs.email) errors.email = 'email is empty';
 
   if (!_.isEmpty(errors)) return errors;
+
 }
 ```
 
@@ -3531,7 +3533,9 @@ This can be adapted into a complete solution that defines a Field model for each
 $(function($) {
 
   var User = Backbone.Model.extend({
+
     validate: function(attrs) {
+
       var errors = this.errors = {};
 
       if (!attrs.firstname) errors.firstname = 'firstname is required';
@@ -3539,25 +3543,37 @@ $(function($) {
       if (!attrs.email) errors.email = 'email is required';
 
       if (!_.isEmpty(errors)) return errors;
+
     }
+
   });
 
   var Field = Backbone.View.extend({
+
     events: {blur: 'validate'},
+
     initialize: function() {
+
       this.name = this.$el.attr('name');
       this.$msg = $('[data-msg=' + this.name + ']');
+
     },
+
     validate: function() {
+
       this.model.set(this.name, this.$el.val());
       this.$msg.text(this.model.errors[this.name] || '');
+
     }
+
   });
 
   var user = new User;
 
   $('input').each(function() {
+
     new Field({el: this, model: user});
+
   });
 
 });
@@ -3565,12 +3581,14 @@ $(function($) {
 ```
 
 
-This works great as the solution checks the validation for each attribute individually and sets the message for the correct blurred field. A [demo](http://jsbin.com/afetez/2/edit) of the above by [@braddunbar](http://github.com/braddunbar) is also available.
+This works great as the solution checks the validation for each attribute individually and sets the message for the correct blurred field.
 
-It unfortunately however forces us to validate all of your form fields every time.
+**Note**: A [demo](http://jsbin.com/afetez/2/edit) of the above solution by [@braddunbar](http://github.com/braddunbar) is also available.
+
+Unfortunately, this solution forces each form field to be validated every time a blur event is fired.
 If we have multiple client-side validation methods with our particular use case, we may not want to have to call each validation method on every attribute every time, so this solution might not be ideal for everyone.
 
-A potentially better alternative to the above is to use [@gfranko](http://github.com/@franko)'s [Backbone.validateAll](https://github.com/gfranko/Backbone.validateAll) plugin, specifically created to validate specific Model properties (or form fields) without worrying about the validation of any other Model properties (or form fields).
+A potentially better alternative to the above solution is to use [@gfranko](http://github.com/gfranko)'s [Backbone.validateAll](https://github.com/gfranko/Backbone.validateAll) plugin, which was specifically created to provide an option to validate only Model properties that are currently being set/saved.
 
 Here is how we would setup a partial User Model and validate method using this plugin, that caters to our use-case:
 
@@ -3580,78 +3598,74 @@ Here is how we would setup a partial User Model and validate method using this p
 // Create a new User Model
 var User = Backbone.Model.extend({
 
-      // RegEx Patterns
-      patterns: {
+  // RegEx Patterns
+  patterns: {
 
-          specialCharacters: "[^a-zA-Z 0-9]+",
+    specialCharacters: "[^a-zA-Z 0-9]+",
 
-          digits: "[0-9]",
+    digits: "[0-9]",
 
-          email: "^[a-zA-Z0-9._-]+@[a-zA-Z0-9][a-zA-Z0-9.-]*[.]{1}[a-zA-Z]{2,6}$"
-      },
+    email: "^[a-zA-Z0-9._-]+@[a-zA-Z0-9][a-zA-Z0-9.-]*[.]{1}[a-zA-Z]{2,6}$"
+  },
 
-    // Validators
-      validators: {
+  // Validators
+  validators: {
 
-      minLength: function(value, minLength) {
-            return value.length >= minLength;
+    minLength: function(value, minLength) {
 
-          },
+      return value.length >= minLength;
 
-          maxLength: function(value, maxLength) {
-            return value.length <= maxLength;
+    },
 
-          },
+    maxLength: function(value, maxLength) {
 
-           isEmail: function(value) {
-            return User.prototype.validators.pattern(value, User.prototype.patterns.email);
+      return value.length <= maxLength;
 
-          },
+    },
 
-          hasSpecialCharacter: function(value) {
-            return User.prototype.validators.pattern(value, User.prototype.patterns.specialCharacters);
+    isEmail: function(value) {
 
-          },
-         ...
+      return User.prototype.validators.pattern(value, User.prototype.patterns.email);
+
+    },
+
+    hasSpecialCharacter: function(value) {
+
+      return User.prototype.validators.pattern(value, User.prototype.patterns.specialCharacters);
+
+    },
+    ...
 
     // We can determine which properties are getting validated by
     // checking to see if properties are equal to null
 
-        validate: function(attrs) {
+    validate: function(attrs) {
 
-          var errors = this.errors = {};
+      var errors = this.errors = {};
 
-          if(attrs.firstname != null) {
-              if (!attrs.firstname) {
-                  errors.firstname = 'firstname is required';
-                  console.log('first name isEmpty validation called');
-              }
+      if(attrs.firstname != null) {
 
-              else if(!this.validators.minLength(attrs.firstname, 2))
-                errors.firstname = 'firstname is too short';
-              else if(!this.validators.maxLength(attrs.firstname, 15))
-                errors.firstname = 'firstname is too large';
-              else if(this.validators.hasSpecialCharacter(attrs.firstname)) errors.firstname = 'firstname cannot contain special characters';
-          }
+        if (!attrs.firstname) errors.firstname = 'firstname is required';
+        else if(!this.validators.minLength(attrs.firstname, 2)) errors.firstname = 'firstname is too short';
+        else if(!this.validators.maxLength(attrs.firstname, 15)) errors.firstname = 'firstname is too large';
+        else if(this.validators.hasSpecialCharacter(attrs.firstname)) errors.firstname = 'firstname cannot contain special characters';
 
-          if(attrs.lastname != null) {
+      }
 
-              if (!attrs.lastname) {
-                  errors.lastname = 'lastname is required';
-                  console.log('last name isEmpty validation called');
-              }
+      if(attrs.lastname != null) {
 
-              else if(!this.validators.minLength(attrs.lastname, 2))
-                errors.lastname = 'lastname is too short';
-              else if(!this.validators.maxLength(attrs.lastname, 15))
-                errors.lastname = 'lastname is too large';
-              else if(this.validators.hasSpecialCharacter(attrs.lastname)) errors.lastname = 'lastname cannot contain special characters';
+        if (!attrs.lastname) errors.lastname = 'lastname is required';
+        else if(!this.validators.minLength(attrs.lastname, 2)) errors.lastname = 'lastname is too short';
+        else if(!this.validators.maxLength(attrs.lastname, 15)) errors.lastname = 'lastname is too large';
+        else if(this.validators.hasSpecialCharacter(attrs.lastname)) errors.lastname = 'lastname cannot contain special characters';
 
-          }
+      }
 ```
 
 
 This allows the logic inside of our validate methods to determine which form fields are currently being set/validated, and does not care about the other model properties that are not trying to be set.
+
+**Note**: A [demo](http://jsbin.com/afetez/11/edit) of the above solution by [@gfranko](http://github.com/gfranko) is also available.
 
 It's fairly straight-forward to use as well. We can simply define a new Model instance and then set the data on our model using the `validateAll` option to use the behavior defined by the plugin:
 
@@ -3664,7 +3678,7 @@ user.set({ "firstname": "Greg" }, {validateAll: false});
 ```
 
 
-That's it!.
+That's it!
 
 The Backbone.validateAll logic doesn't override the default Backbone logic by default and so it's perfectly capable of being used for scenarios where you might care more about field-validation [performance](http://jsperf.com/backbone-validateall) as well as those where you don't. Both solutions presented in this section should work fine however.
 
@@ -4722,13 +4736,13 @@ application root (`/`) and the other for our todo items route `/todo` - we're us
 ```ruby
 class TodoApp < Sinatra::Base
 
-	get '/' do
-	  haml :index, :attr_wrapper => '"', :locals => {:title => 'hello'}
-	end
+  get '/' do
+    haml :index, :attr_wrapper => '"', :locals => {:title => 'hello'}
+  end
 
-	get '/todo' do
-	  haml :todo, :attr_wrapper => '"', :locals => {:title => 'Our Sinatra Todo app'}
-	end
+  get '/todo' do
+    haml :todo, :attr_wrapper => '"', :locals => {:title => 'Our Sinatra Todo app'}
+  end
 ```
 
 `haml :index` instructs Sinatra to use the `views/index.haml` for the application index, whilst ```attr_wrapper``` is simply defining the values to be used for any local variables defined inside the template.
@@ -5085,11 +5099,11 @@ With Underscore.js's micro-templating (and jQuery) this would typically be:
 
 HTML:
 
-	<script type="text/template" id="mainViewTemplate">
-	    <% _.each( person, function( person_item ){ %>
-	        <li><%= person_item.get("name") %></li>
-	    <% }); %>
-	</script>
+  <script type="text/template" id="mainViewTemplate">
+      <% _.each( person, function( person_item ){ %>
+          <li><%= person_item.get("name") %></li>
+      <% }); %>
+  </script>
 
 
 JS:
@@ -6893,23 +6907,23 @@ Let's review [SpecRunner.html](https://github.com/pivotal/jasmine/blob/master/li
 It first includes both Jasmine and the necessary CSS required for reporting:
 
 
-	<link rel="stylesheet" type="text/css" href="lib/jasmine-1.1.0.rc1/jasmine.css"/>
-	<script type="text/javascript" src="lib/jasmine-1.1.0.rc1/jasmine.js"></script>
-	<script type="text/javascript" src="lib/jasmine-1.1.0.rc1/jasmine-html.js"></script>
+  <link rel="stylesheet" type="text/css" href="lib/jasmine-1.1.0.rc1/jasmine.css"/>
+  <script type="text/javascript" src="lib/jasmine-1.1.0.rc1/jasmine.js"></script>
+  <script type="text/javascript" src="lib/jasmine-1.1.0.rc1/jasmine-html.js"></script>
 
 
 Next, some sample tests are included:
 
 
-	<script type="text/javascript" src="spec/SpecHelper.js"></script>
-	<script type="text/javascript" src="spec/PlayerSpec.js"></script>
+  <script type="text/javascript" src="spec/SpecHelper.js"></script>
+  <script type="text/javascript" src="spec/PlayerSpec.js"></script>
 
 
 And finally the sources being tested:
 
 
-	<script type="text/javascript" src="src/Player.js"></script>
-	<script type="text/javascript" src="src/Song.js"></script>
+  <script type="text/javascript" src="src/Player.js"></script>
+  <script type="text/javascript" src="src/Song.js"></script>
 
 
 ***Note:*** Below this section of SpecRunner is code responsible for running the actual tests. Given that we won't be covering modifying this code, I'm going to skip reviewing it. I do however encourage you to take a look through [PlayerSpec.js](https://github.com/pivotal/jasmine/blob/master/lib/jasmine-core/example/spec/PlayerSpec.js) and [SpecHelper.js](https://github.com/pivotal/jasmine/blob/master/lib/jasmine-core/example/spec/SpecHelper.js). They're a useful basic example to go through how a minimal set of tests might work.
@@ -7310,16 +7324,16 @@ Once these specs are run, only the second one ('produces the correct HTML') fail
 
 
 
-	<div class="todo <%= done ? 'done' : '' %>">
-	        <div class="display">
-	          <input class="check" type="checkbox" <%= done ? 'checked="checked"' : '' %> />
-	          <label class="todo-content"><%= text %></label>
-	          <span class="todo-destroy"></span>
-	        </div>
-	        <div class="edit">
-	          <input class="todo-input" type="text" value="<%= content %>" />
-	        </div>
-	</div>
+  <div class="todo <%= done ? 'done' : '' %>">
+          <div class="display">
+            <input class="check" type="checkbox" <%= done ? 'checked="checked"' : '' %> />
+            <label class="todo-content"><%= text %></label>
+            <span class="todo-destroy"></span>
+          </div>
+          <div class="edit">
+            <input class="todo-input" type="text" value="<%= content %>" />
+          </div>
+  </div>
 
 
 
@@ -8634,4 +8648,3 @@ I would like to thank the Backbone.js, Stack Overflow, DailyJS (Alex Young) and 
 
 ---
 Where relevant, copyright Addy Osmani, 2012.
-

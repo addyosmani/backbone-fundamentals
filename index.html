@@ -652,7 +652,11 @@ code > span.er { color: #ff0000; font-weight: bold; }
 className: &#39;container&#39;, // optional, you can assign multiple classes to this property like so &#39;container homepage&#39;
 id: &#39;header&#39;, // optional</code></pre>
 <p>The above code creates the <code>DOMElement</code> below but doesn't append it to the DOM.</p>
-<pre><code>&lt;p id=&quot;header&quot; class=&quot;container&quot;&gt;&lt;/p&gt;</code></pre>
+
+<p id="header" class="container"></p>
+
+
+
 <p><strong>Understanding <code>render()</code></strong></p>
 <p><code>render()</code> is an optional function that defines the logic for rendering a template. We'll use Underscore's micro-templating in these examples, but remember you can use other templating frameworks if you prefer.</p>
 <p>The <code>_.template</code> method in Underscore compiles JavaScript templates into functions which can be evaluated for rendering. In the above view, I'm passing the markup from a template with id <code>results-template</code> to <code>_.template()</code> to be compiled. Next, I set the html of the <code>el</code> DOM element to the output of processing a JSON version of the model associated with the view through the compiled template.</p>
@@ -2629,6 +2633,7 @@ NewChildView = <span class="kw">Backbone.View</span>.<span class="fu">extend</sp
 <p>Unfortunately, this method would trigger a first name error each time any of the fields were blurred and only an error message next to the first name field would be presented.</p>
 <p>One potential solution to the problem could be to validate all fields and return all of the errors:</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="dt">validate</span>: <span class="kw">function</span>(attrs) {
+
   <span class="kw">var</span> errors = {};
 
 <span class="er">  if (!attrs.firstname) errors.firstname = &#39;first name is empty&#39;;</span>
@@ -2636,13 +2641,16 @@ NewChildView = <span class="kw">Backbone.View</span>.<span class="fu">extend</sp
 <span class="er">  if (!attrs.email) errors.email = &#39;email is empty&#39;;</span>
 
   <span class="kw">if</span> (!<span class="kw">_</span>.<span class="fu">isEmpty</span>(errors)) <span class="kw">return</span> errors;
+
 }</code></pre>
 <p>This can be adapted into a complete solution that defines a Field model for each input in our form and works within the parameters of our use-case as follows:</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript">
 $(<span class="kw">function</span>($) {
 
   <span class="kw">var</span> User = <span class="kw">Backbone.Model</span>.<span class="fu">extend</span>({
+
     <span class="dt">validate</span>: <span class="kw">function</span>(attrs) {
+
       <span class="kw">var</span> errors = <span class="kw">this</span>.<span class="fu">errors</span> = {};
 
 <span class="er">      if (!attrs.firstname) errors.firstname = &#39;firstname is required&#39;;</span>
@@ -2650,109 +2658,117 @@ $(<span class="kw">function</span>($) {
 <span class="er">      if (!attrs.email) errors.email = &#39;email is required&#39;;</span>
 
       <span class="kw">if</span> (!<span class="kw">_</span>.<span class="fu">isEmpty</span>(errors)) <span class="kw">return</span> errors;
+
     }
+
   });
 
   <span class="kw">var</span> Field = <span class="kw">Backbone.View</span>.<span class="fu">extend</span>({
+
     <span class="dt">events</span>: {<span class="dt">blur</span>: <span class="ch">&#39;validate&#39;</span>},
+
     <span class="dt">initialize</span>: <span class="kw">function</span>() {
+
       <span class="kw">this</span>.<span class="fu">name</span> = <span class="kw">this</span>.$<span class="fu">el</span>.<span class="fu">attr</span>(<span class="ch">&#39;name&#39;</span>);
       <span class="kw">this</span>.$<span class="fu">msg</span> = $(<span class="ch">&#39;[data-msg=&#39;</span> + <span class="kw">this</span>.<span class="fu">name</span> + <span class="ch">&#39;]&#39;</span>);
+
     },
+
     <span class="dt">validate</span>: <span class="kw">function</span>() {
+
       <span class="kw">this</span>.<span class="fu">model</span>.<span class="fu">set</span>(<span class="kw">this</span>.<span class="fu">name</span>, <span class="kw">this</span>.$<span class="fu">el</span>.<span class="fu">val</span>());
       <span class="kw">this</span>.$<span class="fu">msg</span>.<span class="fu">text</span>(<span class="kw">this</span>.<span class="fu">model</span>.<span class="fu">errors</span>[<span class="kw">this</span>.<span class="fu">name</span>] || <span class="ch">&#39;&#39;</span>);
+
     }
+
   });
 
   <span class="kw">var</span> user = <span class="kw">new</span> User;
 
   $(<span class="ch">&#39;input&#39;</span>).<span class="fu">each</span>(<span class="kw">function</span>() {
+
     <span class="kw">new</span> Field({<span class="dt">el</span>: <span class="kw">this</span>, <span class="dt">model</span>: user});
+
   });
 
 });</code></pre>
-<p>This works great as the solution checks the validation for each attribute individually and sets the message for the correct blurred field. A <a href="http://jsbin.com/afetez/2/edit">demo</a> of the above by <a href="http://github.com/braddunbar">@braddunbar</a> is also available.</p>
-<p>It unfortunately however forces us to validate all of your form fields every time. If we have multiple client-side validation methods with our particular use case, we may not want to have to call each validation method on every attribute every time, so this solution might not be ideal for everyone.</p>
-<p>A potentially better alternative to the above is to use <a href="http://github.com/@franko">@gfranko</a>'s <a href="https://github.com/gfranko/Backbone.validateAll">Backbone.validateAll</a> plugin, specifically created to validate specific Model properties (or form fields) without worrying about the validation of any other Model properties (or form fields).</p>
+<p>This works great as the solution checks the validation for each attribute individually and sets the message for the correct blurred field.</p>
+<p><strong>Note</strong>: A <a href="http://jsbin.com/afetez/2/edit">demo</a> of the above solution by <a href="http://github.com/braddunbar">@braddunbar</a> is also available.</p>
+<p>Unfortunately, this solution forces each form field to be validated every time a blur event is fired. If we have multiple client-side validation methods with our particular use case, we may not want to have to call each validation method on every attribute every time, so this solution might not be ideal for everyone.</p>
+<p>A potentially better alternative to the above solution is to use <a href="http://github.com/gfranko">@gfranko</a>'s <a href="https://github.com/gfranko/Backbone.validateAll">Backbone.validateAll</a> plugin, which was specifically created to provide an option to validate only Model properties that are currently being set/saved.</p>
 <p>Here is how we would setup a partial User Model and validate method using this plugin, that caters to our use-case:</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript">
 <span class="co">// Create a new User Model</span>
 <span class="kw">var</span> User = <span class="kw">Backbone.Model</span>.<span class="fu">extend</span>({
 
-      <span class="co">// RegEx Patterns</span>
-      <span class="dt">patterns</span>: {
+  <span class="co">// RegEx Patterns</span>
+  <span class="dt">patterns</span>: {
 
-          <span class="dt">specialCharacters</span>: <span class="st">&quot;[^a-zA-Z 0-9]+&quot;</span>,
+    <span class="dt">specialCharacters</span>: <span class="st">&quot;[^a-zA-Z 0-9]+&quot;</span>,
 
-          <span class="dt">digits</span>: <span class="st">&quot;[0-9]&quot;</span>,
+    <span class="dt">digits</span>: <span class="st">&quot;[0-9]&quot;</span>,
 
-          <span class="dt">email</span>: <span class="st">&quot;^[a-zA-Z0-9._-]+@[a-zA-Z0-9][a-zA-Z0-9.-]*[.]{1}[a-zA-Z]{2,6}$&quot;</span>
-      },
+    <span class="dt">email</span>: <span class="st">&quot;^[a-zA-Z0-9._-]+@[a-zA-Z0-9][a-zA-Z0-9.-]*[.]{1}[a-zA-Z]{2,6}$&quot;</span>
+  },
 
-    <span class="co">// Validators</span>
-      <span class="dt">validators</span>: {
+  <span class="co">// Validators</span>
+  <span class="dt">validators</span>: {
 
-      <span class="dt">minLength</span>: <span class="kw">function</span>(value, minLength) {
-            <span class="kw">return</span> <span class="kw">value</span>.<span class="fu">length</span> &gt;= minLength;
+    <span class="dt">minLength</span>: <span class="kw">function</span>(value, minLength) {
 
-          },
+      <span class="kw">return</span> <span class="kw">value</span>.<span class="fu">length</span> &gt;= minLength;
 
-          <span class="dt">maxLength</span>: <span class="kw">function</span>(value, maxLength) {
-            <span class="kw">return</span> <span class="kw">value</span>.<span class="fu">length</span> &lt;= maxLength;
+    },
 
-          },
+    <span class="dt">maxLength</span>: <span class="kw">function</span>(value, maxLength) {
 
-           <span class="dt">isEmail</span>: <span class="kw">function</span>(value) {
-<span class="er">            return User.prototype.validators.pattern(value, User.prototype.patterns.email);</span>
+      <span class="kw">return</span> <span class="kw">value</span>.<span class="fu">length</span> &lt;= maxLength;
 
-          },
+    },
 
-          <span class="dt">hasSpecialCharacter</span>: <span class="kw">function</span>(value) {
-<span class="er">            return User.prototype.validators.pattern(value, User.prototype.patterns.specialCharacters);</span>
+    <span class="dt">isEmail</span>: <span class="kw">function</span>(value) {
 
-          },
-         ...
+<span class="er">      return User.prototype.validators.pattern(value, User.prototype.patterns.email);</span>
+
+    },
+
+    <span class="dt">hasSpecialCharacter</span>: <span class="kw">function</span>(value) {
+
+<span class="er">      return User.prototype.validators.pattern(value, User.prototype.patterns.specialCharacters);</span>
+
+    },
+    ...
 
     <span class="co">// We can determine which properties are getting validated by</span>
     <span class="co">// checking to see if properties are equal to null</span>
 
-        <span class="dt">validate</span>: <span class="kw">function</span>(attrs) {
+    <span class="dt">validate</span>: <span class="kw">function</span>(attrs) {
 
-          <span class="kw">var</span> errors = <span class="kw">this</span>.<span class="fu">errors</span> = {};
+      <span class="kw">var</span> errors = <span class="kw">this</span>.<span class="fu">errors</span> = {};
 
-          <span class="kw">if</span>(<span class="kw">attrs</span>.<span class="fu">firstname</span> != null) {
-<span class="er">              if (!attrs.firstname) {</span>
-                  <span class="kw">errors</span>.<span class="fu">firstname</span> = <span class="ch">&#39;firstname is required&#39;</span>;
-                  <span class="kw">console</span>.<span class="fu">log</span>(<span class="ch">&#39;first name isEmpty validation called&#39;</span>);
-              }
+      <span class="kw">if</span>(<span class="kw">attrs</span>.<span class="fu">firstname</span> != null) {
 
-              <span class="kw">else</span> <span class="kw">if</span>(!<span class="kw">this</span>.<span class="fu">validators</span>.<span class="fu">minLength</span>(<span class="kw">attrs</span>.<span class="fu">firstname</span>, <span class="dv">2</span>))
-                <span class="kw">errors</span>.<span class="fu">firstname</span> = <span class="ch">&#39;firstname is too short&#39;</span>;
-              <span class="kw">else</span> <span class="kw">if</span>(!<span class="kw">this</span>.<span class="fu">validators</span>.<span class="fu">maxLength</span>(<span class="kw">attrs</span>.<span class="fu">firstname</span>, <span class="dv">15</span>))
-                <span class="kw">errors</span>.<span class="fu">firstname</span> = <span class="ch">&#39;firstname is too large&#39;</span>;
-<span class="er">              else if(this.validators.hasSpecialCharacter(attrs.firstname)) errors.firstname = &#39;firstname cannot contain special characters&#39;;</span>
-          }
+<span class="er">        if (!attrs.firstname) errors.firstname = &#39;firstname is required&#39;;</span>
+        <span class="kw">else</span> <span class="kw">if</span>(!<span class="kw">this</span>.<span class="fu">validators</span>.<span class="fu">minLength</span>(<span class="kw">attrs</span>.<span class="fu">firstname</span>, <span class="dv">2</span>)) <span class="kw">errors</span>.<span class="fu">firstname</span> = <span class="ch">&#39;firstname is too short&#39;</span>;
+        <span class="kw">else</span> <span class="kw">if</span>(!<span class="kw">this</span>.<span class="fu">validators</span>.<span class="fu">maxLength</span>(<span class="kw">attrs</span>.<span class="fu">firstname</span>, <span class="dv">15</span>)) <span class="kw">errors</span>.<span class="fu">firstname</span> = <span class="ch">&#39;firstname is too large&#39;</span>;
+<span class="er">        else if(this.validators.hasSpecialCharacter(attrs.firstname)) errors.firstname = &#39;firstname cannot contain special characters&#39;;</span>
 
-          <span class="kw">if</span>(<span class="kw">attrs</span>.<span class="fu">lastname</span> != null) {
+      }
 
-<span class="er">              if (!attrs.lastname) {</span>
-                  <span class="kw">errors</span>.<span class="fu">lastname</span> = <span class="ch">&#39;lastname is required&#39;</span>;
-                  <span class="kw">console</span>.<span class="fu">log</span>(<span class="ch">&#39;last name isEmpty validation called&#39;</span>);
-              }
+      <span class="kw">if</span>(<span class="kw">attrs</span>.<span class="fu">lastname</span> != null) {
 
-              <span class="kw">else</span> <span class="kw">if</span>(!<span class="kw">this</span>.<span class="fu">validators</span>.<span class="fu">minLength</span>(<span class="kw">attrs</span>.<span class="fu">lastname</span>, <span class="dv">2</span>))
-                <span class="kw">errors</span>.<span class="fu">lastname</span> = <span class="ch">&#39;lastname is too short&#39;</span>;
-              <span class="kw">else</span> <span class="kw">if</span>(!<span class="kw">this</span>.<span class="fu">validators</span>.<span class="fu">maxLength</span>(<span class="kw">attrs</span>.<span class="fu">lastname</span>, <span class="dv">15</span>))
-                <span class="kw">errors</span>.<span class="fu">lastname</span> = <span class="ch">&#39;lastname is too large&#39;</span>;
-<span class="er">              else if(this.validators.hasSpecialCharacter(attrs.lastname)) errors.lastname = &#39;lastname cannot contain special characters&#39;;</span>
+<span class="er">        if (!attrs.lastname) errors.lastname = &#39;lastname is required&#39;;</span>
+        <span class="kw">else</span> <span class="kw">if</span>(!<span class="kw">this</span>.<span class="fu">validators</span>.<span class="fu">minLength</span>(<span class="kw">attrs</span>.<span class="fu">lastname</span>, <span class="dv">2</span>)) <span class="kw">errors</span>.<span class="fu">lastname</span> = <span class="ch">&#39;lastname is too short&#39;</span>;
+        <span class="kw">else</span> <span class="kw">if</span>(!<span class="kw">this</span>.<span class="fu">validators</span>.<span class="fu">maxLength</span>(<span class="kw">attrs</span>.<span class="fu">lastname</span>, <span class="dv">15</span>)) <span class="kw">errors</span>.<span class="fu">lastname</span> = <span class="ch">&#39;lastname is too large&#39;</span>;
+<span class="er">        else if(this.validators.hasSpecialCharacter(attrs.lastname)) errors.lastname = &#39;lastname cannot contain special characters&#39;;</span>
 
-          }</code></pre>
+      }</code></pre>
 <p>This allows the logic inside of our validate methods to determine which form fields are currently being set/validated, and does not care about the other model properties that are not trying to be set.</p>
+<p><strong>Note</strong>: A <a href="http://jsbin.com/afetez/11/edit">demo</a> of the above solution by <a href="http://github.com/gfranko">@gfranko</a> is also available.</p>
 <p>It's fairly straight-forward to use as well. We can simply define a new Model instance and then set the data on our model using the <code>validateAll</code> option to use the behavior defined by the plugin:</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> user = <span class="kw">new</span> User();
 <span class="kw">user</span>.<span class="fu">set</span>({ <span class="st">&quot;firstname&quot;</span>: <span class="st">&quot;Greg&quot;</span> }, {<span class="dt">validateAll</span>: <span class="kw">false</span>});</code></pre>
-<p>That's it!.</p>
+<p>That's it!</p>
 <p>The Backbone.validateAll logic doesn't override the default Backbone logic by default and so it's perfectly capable of being used for scenarios where you might care more about field-validation <a href="http://jsperf.com/backbone-validateall">performance</a> as well as those where you don't. Both solutions presented in this section should work fine however.</p>
 <h1 id="restful-applications"><a name="restfulapps">RESTful Applications</a></h1>
 <h2 id="building-restful-applications-with-backbone"><a name="restful">Building RESTful applications with Backbone</a></h2>
@@ -3413,13 +3429,13 @@ require <span class="st">&#39;json&#39;</span></code></pre>
 <p>Finally we define the routes to be supported by our API. Note that in the first two blocks - one for our application root (<code>/</code>) and the other for our todo items route <code>/todo</code> - we're using Haml for template rendering.</p>
 <pre class="sourceCode ruby"><code class="sourceCode ruby"><span class="kw">class</span> <span class="dt">TodoApp</span> &lt; <span class="dt">Sinatra</span>::<span class="dt">Base</span>
 
-    get <span class="st">&#39;/&#39;</span> <span class="kw">do</span>
-      haml <span class="st">:index</span>, <span class="st">:attr_wrapper</span> =&gt; <span class="st">&#39;&quot;&#39;</span>, <span class="st">:locals</span> =&gt; {<span class="st">:title</span> =&gt; <span class="st">&#39;hello&#39;</span>}
-    <span class="kw">end</span>
+  get <span class="st">&#39;/&#39;</span> <span class="kw">do</span>
+    haml <span class="st">:index</span>, <span class="st">:attr_wrapper</span> =&gt; <span class="st">&#39;&quot;&#39;</span>, <span class="st">:locals</span> =&gt; {<span class="st">:title</span> =&gt; <span class="st">&#39;hello&#39;</span>}
+  <span class="kw">end</span>
 
-    get <span class="st">&#39;/todo&#39;</span> <span class="kw">do</span>
-      haml <span class="st">:todo</span>, <span class="st">:attr_wrapper</span> =&gt; <span class="st">&#39;&quot;&#39;</span>, <span class="st">:locals</span> =&gt; {<span class="st">:title</span> =&gt; <span class="st">&#39;Our Sinatra Todo app&#39;</span>}
-    <span class="kw">end</span></code></pre>
+  get <span class="st">&#39;/todo&#39;</span> <span class="kw">do</span>
+    haml <span class="st">:todo</span>, <span class="st">:attr_wrapper</span> =&gt; <span class="st">&#39;&quot;&#39;</span>, <span class="st">:locals</span> =&gt; {<span class="st">:title</span> =&gt; <span class="st">&#39;Our Sinatra Todo app&#39;</span>}
+  <span class="kw">end</span></code></pre>
 <p><code>haml :index</code> instructs Sinatra to use the <code>views/index.haml</code> for the application index, whilst <code>attr_wrapper</code> is simply defining the values to be used for any local variables defined inside the template. This similarly applies Todo items with the template `views/todo.haml'.</p>
 <p>The rest of our routes make use of the <code>params</code> hash and a number of useful helper methods included with the MongoDB Ruby driver. For more details on these, please read the comments I've made inline below:</p>
 <pre class="sourceCode ruby"><code class="sourceCode ruby">get <span class="st">&#39;/api/:thing&#39;</span> <span class="kw">do</span>
@@ -3691,11 +3707,14 @@ require([<span class="ch">&#39;foo&#39;</span>, <span class="ch">&#39;bar&#39;</
 </ol>
 <p>With Underscore.js's micro-templating (and jQuery) this would typically be:</p>
 <p>HTML:</p>
-<pre><code>&lt;script type=&quot;text/template&quot; id=&quot;mainViewTemplate&quot;&gt;
-    &lt;% _.each( person, function( person_item ){ %&gt;
-        &lt;li&gt;&lt;%= person_item.get(&quot;name&quot;) %&gt;&lt;/li&gt;
-    &lt;% }); %&gt;
-&lt;/script&gt;</code></pre>
+
+<script type="text/template" id="mainViewTemplate">
+      <% _.each( person, function( person_item ){ %>
+          <li><%= person_item.get("name") %></li>
+      <% }); %>
+  </script>
+
+
 <p>JS:</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> compiled_template = <span class="kw">_</span>.<span class="fu">template</span>( $(<span class="ch">&#39;#mainViewTemplate&#39;</span>).<span class="fu">html</span>() );</code></pre>
 <p>With Require.js and the text plugin however, it's as simple as saving your template into an external text file (say, <code>mainView.html</code>) and doing the following:</p>
@@ -5033,15 +5052,23 @@ it(<span class="st">&quot;should contain a text value if not the default value&q
 <p>You'll need a file called SpecRunner.html in addition to the release. It can be downloaded from https://github.com/pivotal/jasmine/tree/master/lib/jasmine-core/example or as part of a download of the complete Jasmine <a href="https://github.com/pivotal/jasmine/zipball/master">repo</a>.Alternatively, you can <code>git clone</code> the main Jasmine repository from https://github.com/pivotal/jasmine.git.</p>
 <p>Let's review <a href="https://github.com/pivotal/jasmine/blob/master/lib/jasmine-core/example/SpecRunner.html">SpecRunner.html</a>:</p>
 <p>It first includes both Jasmine and the necessary CSS required for reporting:</p>
-<pre><code>&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;lib/jasmine-1.1.0.rc1/jasmine.css&quot;/&gt;
-&lt;script type=&quot;text/javascript&quot; src=&quot;lib/jasmine-1.1.0.rc1/jasmine.js&quot;&gt;&lt;/script&gt;
-&lt;script type=&quot;text/javascript&quot; src=&quot;lib/jasmine-1.1.0.rc1/jasmine-html.js&quot;&gt;&lt;/script&gt;</code></pre>
+<link rel="stylesheet" type="text/css" href="lib/jasmine-1.1.0.rc1/jasmine.css"/>
+<script type="text/javascript" src="lib/jasmine-1.1.0.rc1/jasmine.js"></script>
+  <script type="text/javascript" src="lib/jasmine-1.1.0.rc1/jasmine-html.js"></script>
+
+
 <p>Next, some sample tests are included:</p>
-<pre><code>&lt;script type=&quot;text/javascript&quot; src=&quot;spec/SpecHelper.js&quot;&gt;&lt;/script&gt;
-&lt;script type=&quot;text/javascript&quot; src=&quot;spec/PlayerSpec.js&quot;&gt;&lt;/script&gt;</code></pre>
+
+<script type="text/javascript" src="spec/SpecHelper.js"></script>
+  <script type="text/javascript" src="spec/PlayerSpec.js"></script>
+
+
 <p>And finally the sources being tested:</p>
-<pre><code>&lt;script type=&quot;text/javascript&quot; src=&quot;src/Player.js&quot;&gt;&lt;/script&gt;
-&lt;script type=&quot;text/javascript&quot; src=&quot;src/Song.js&quot;&gt;&lt;/script&gt;</code></pre>
+
+<script type="text/javascript" src="src/Player.js"></script>
+  <script type="text/javascript" src="src/Song.js"></script>
+
+
 <p><strong><em>Note:</em></strong> Below this section of SpecRunner is code responsible for running the actual tests. Given that we won't be covering modifying this code, I'm going to skip reviewing it. I do however encourage you to take a look through <a href="https://github.com/pivotal/jasmine/blob/master/lib/jasmine-core/example/spec/PlayerSpec.js">PlayerSpec.js</a> and <a href="https://github.com/pivotal/jasmine/blob/master/lib/jasmine-core/example/spec/SpecHelper.js">SpecHelper.js</a>. They're a useful basic example to go through how a minimal set of tests might work.</p>
 <h2 id="tdd-with-backbone">TDD With Backbone</h2>
 <p>When developing applications with Backbone, it can be necessary to test both individual modules of code as well as modules, views, collections and routers. Taking a TDD approach to testing, let's review some specs for testing these Backbone components using the popular Backbone <a href="https://github.com/addyosmani/todomvc/tree/master/todo-example/backbone">Todo</a> application. For this section we will be using a modified version of Larry Myers Backbone Koans project, which can be found in the <code>practicals\jasmine-koans</code> folder.</p>
@@ -5317,16 +5344,21 @@ expect(<span class="ch">&#39;click&#39;</span>).<span class="fu">toHaveBeenTrigg
 });</code></pre>
 <p>Once these specs are run, only the second one ('produces the correct HTML') fails. Our first spec ('returns the view object'), which is testing that the TodoView instance is returned from <code>render()</code>, only passed as this is Backbone's default behavior. We haven't yet overwritten the <code>render()</code> method with our own version.</p>
 <p><strong>Note:</strong> For the purposes of maintaining readability, all template examples in this section will use a minimal version of the following Todo view template. As it's relatively trivial to expand this, please feel free to refer to this sample if needed:</p>
-<pre><code>&lt;div class=&quot;todo &lt;%= done ? &#39;done&#39; : &#39;&#39; %&gt;&quot;&gt;
-        &lt;div class=&quot;display&quot;&gt;
-          &lt;input class=&quot;check&quot; type=&quot;checkbox&quot; &lt;%= done ? &#39;checked=&quot;checked&quot;&#39; : &#39;&#39; %&gt; /&gt;
-          &lt;label class=&quot;todo-content&quot;&gt;&lt;%= text %&gt;&lt;/label&gt;
-          &lt;span class=&quot;todo-destroy&quot;&gt;&lt;/span&gt;
-        &lt;/div&gt;
-        &lt;div class=&quot;edit&quot;&gt;
-          &lt;input class=&quot;todo-input&quot; type=&quot;text&quot; value=&quot;&lt;%= content %&gt;&quot; /&gt;
-        &lt;/div&gt;
-&lt;/div&gt;</code></pre>
+
+<div class="todo <%= done ? 'done' : '' %>
+&quot;&gt;
+<div class="display">
+            
+<input class="check" type="checkbox" <%= done ? 'checked="checked"' : '' %> /&gt; <label class="todo-content">&lt;%= text %&gt;</label> <span class="todo-destroy"></span>
+</div>
+          <div class="edit">
+            
+<input class="todo-input" type="text" value="<%= content %>&quot; /&gt;
+</div>
+  </div>
+
+
+
 <p>The second spec fails with the following message:</p>
 <p><code>Expected '' to contain '&lt;label class=&quot;todo-content&quot;&gt;My Todo&lt;/label&gt;'.</code></p>
 <p>The reason for this is the default behavior for render() doesn't create any markup. Let's write a replacement for render() which fixes this:</p>

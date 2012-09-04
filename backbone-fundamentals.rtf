@@ -736,7 +736,7 @@ el: document.getElementById( 'footer' )\par}
 className: 'container', // optional, you can assign multiple classes to this property like so 'container homepage'\line
 id: 'header', // optional\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 The above code creates the {\f1 DOMElement} below but doesn\u8217't append it to the DOM.\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 \f1 <p id="header" class="container"></p>\par}
+{\pard \ql \f0 \sa0 \li0 \fi0 \par}
 {\pard \ql \f0 \sa180 \li0 \fi0 {\b Understanding {\f1 render()}}\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 {\f1 render()} is an optional function that defines the logic for rendering a template. We\u8217'll use Underscore\u8217's micro-templating in these examples, but remember you can use other templating frameworks if you prefer.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 The {\f1 _.template} method in Underscore compiles JavaScript templates into functions which can be evaluated for rendering. In the above view, I\u8217'm passing the markup from a template with id {\f1 results-template} to {\f1 _.template()} to be compiled. Next, I set the html of the {\f1 el} DOM element to the output of processing a JSON version of the model associated with the view through the compiled template.\par}
@@ -2821,6 +2821,7 @@ Marionette
 {\pard \ql \f0 \sa180 \li0 \fi0 Unfortunately, this method would trigger a first name error each time any of the fields were blurred and only an error message next to the first name field would be presented.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 One potential solution to the problem could be to validate all fields and return all of the errors:\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \f1 validate: function(attrs) \{\line
+\line
   var errors = \{\};\line
 \line
   if (!attrs.firstname) errors.firstname = 'first name is empty';\line
@@ -2828,13 +2829,16 @@ Marionette
   if (!attrs.email) errors.email = 'email is empty';\line
 \line
   if (!_.isEmpty(errors)) return errors;\line
+\line
 \}\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 This can be adapted into a complete solution that defines a Field model for each input in our form and works within the parameters of our use-case as follows:\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \f1 \line
 $(function($) \{\line
 \line
   var User = Backbone.Model.extend(\{\line
+\line
     validate: function(attrs) \{\line
+\line
       var errors = this.errors = \{\};\line
 \line
       if (!attrs.firstname) errors.firstname = 'firstname is required';\line
@@ -2842,121 +2846,135 @@ $(function($) \{\line
       if (!attrs.email) errors.email = 'email is required';\line
 \line
       if (!_.isEmpty(errors)) return errors;\line
+\line
     \}\line
+\line
   \});\line
 \line
   var Field = Backbone.View.extend(\{\line
+\line
     events: \{blur: 'validate'\},\line
+\line
     initialize: function() \{\line
+\line
       this.name = this.$el.attr('name');\line
       this.$msg = $('[data-msg=' + this.name + ']');\line
+\line
     \},\line
+\line
     validate: function() \{\line
+\line
       this.model.set(this.name, this.$el.val());\line
       this.$msg.text(this.model.errors[this.name] || '');\line
+\line
     \}\line
+\line
   \});\line
 \line
   var user = new User;\line
 \line
   $('input').each(function() \{\line
+\line
     new Field(\{el: this, model: user\});\line
+\line
   \});\line
 \line
 \});\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 This works great as the solution checks the validation for each attribute individually and sets the message for the correct blurred field. A {\field{\*\fldinst{HYPERLINK "http://jsbin.com/afetez/2/edit"}}{\fldrslt{\ul
+{\pard \ql \f0 \sa180 \li0 \fi0 This works great as the solution checks the validation for each attribute individually and sets the message for the correct blurred field.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b Note}: A {\field{\*\fldinst{HYPERLINK "http://jsbin.com/afetez/2/edit"}}{\fldrslt{\ul
 demo
 }}}
- of the above by {\field{\*\fldinst{HYPERLINK "http://github.com/braddunbar"}}{\fldrslt{\ul
+ of the above solution by {\field{\*\fldinst{HYPERLINK "http://github.com/braddunbar"}}{\fldrslt{\ul
 @braddunbar
 }}}
  is also available.\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 It unfortunately however forces us to validate all of your form fields every time. If we have multiple client-side validation methods with our particular use case, we may not want to have to call each validation method on every attribute every time, so this solution might not be ideal for everyone.\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 A potentially better alternative to the above is to use {\field{\*\fldinst{HYPERLINK "http://github.com/@franko"}}{\fldrslt{\ul
+{\pard \ql \f0 \sa180 \li0 \fi0 Unfortunately, this solution forces each form field to be validated every time a blur event is fired. If we have multiple client-side validation methods with our particular use case, we may not want to have to call each validation method on every attribute every time, so this solution might not be ideal for everyone.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 A potentially better alternative to the above solution is to use {\field{\*\fldinst{HYPERLINK "http://github.com/gfranko"}}{\fldrslt{\ul
 @gfranko
 }}}
 \u8217's {\field{\*\fldinst{HYPERLINK "https://github.com/gfranko/Backbone.validateAll"}}{\fldrslt{\ul
 Backbone.validateAll
 }}}
- plugin, specifically created to validate specific Model properties (or form fields) without worrying about the validation of any other Model properties (or form fields).\par}
+ plugin, which was specifically created to provide an option to validate only Model properties that are currently being set/saved.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 Here is how we would setup a partial User Model and validate method using this plugin, that caters to our use-case:\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \f1 \line
 // Create a new User Model\line
 var User = Backbone.Model.extend(\{\line
 \line
-      // RegEx Patterns\line
-      patterns: \{\line
+  // RegEx Patterns\line
+  patterns: \{\line
 \line
-          specialCharacters: "[^a-zA-Z 0-9]+",\line
+    specialCharacters: "[^a-zA-Z 0-9]+",\line
 \line
-          digits: "[0-9]",\line
+    digits: "[0-9]",\line
 \line
-          email: "^[a-zA-Z0-9._-]+@[a-zA-Z0-9][a-zA-Z0-9.-]*[.]\{1\}[a-zA-Z]\{2,6\}$"\line
-      \},\line
+    email: "^[a-zA-Z0-9._-]+@[a-zA-Z0-9][a-zA-Z0-9.-]*[.]\{1\}[a-zA-Z]\{2,6\}$"\line
+  \},\line
 \line
-    // Validators\line
-      validators: \{\line
+  // Validators\line
+  validators: \{\line
 \line
-      minLength: function(value, minLength) \{\line
-            return value.length >= minLength;\line
+    minLength: function(value, minLength) \{\line
 \line
-          \},\line
+      return value.length >= minLength;\line
 \line
-          maxLength: function(value, maxLength) \{\line
-            return value.length <= maxLength;\line
+    \},\line
 \line
-          \},\line
+    maxLength: function(value, maxLength) \{\line
 \line
-           isEmail: function(value) \{\line
-            return User.prototype.validators.pattern(value, User.prototype.patterns.email);\line
+      return value.length <= maxLength;\line
 \line
-          \},\line
+    \},\line
 \line
-          hasSpecialCharacter: function(value) \{\line
-            return User.prototype.validators.pattern(value, User.prototype.patterns.specialCharacters);\line
+    isEmail: function(value) \{\line
 \line
-          \},\line
-         ...\line
+      return User.prototype.validators.pattern(value, User.prototype.patterns.email);\line
+\line
+    \},\line
+\line
+    hasSpecialCharacter: function(value) \{\line
+\line
+      return User.prototype.validators.pattern(value, User.prototype.patterns.specialCharacters);\line
+\line
+    \},\line
+    ...\line
 \line
     // We can determine which properties are getting validated by\line
     // checking to see if properties are equal to null\line
 \line
-        validate: function(attrs) \{\line
+    validate: function(attrs) \{\line
 \line
-          var errors = this.errors = \{\};\line
+      var errors = this.errors = \{\};\line
 \line
-          if(attrs.firstname != null) \{\line
-              if (!attrs.firstname) \{\line
-                  errors.firstname = 'firstname is required';\line
-                  console.log('first name isEmpty validation called');\line
-              \}\line
+      if(attrs.firstname != null) \{\line
 \line
-              else if(!this.validators.minLength(attrs.firstname, 2))\line
-                errors.firstname = 'firstname is too short';\line
-              else if(!this.validators.maxLength(attrs.firstname, 15))\line
-                errors.firstname = 'firstname is too large';\line
-              else if(this.validators.hasSpecialCharacter(attrs.firstname)) errors.firstname = 'firstname cannot contain special characters';\line
-          \}\line
+        if (!attrs.firstname) errors.firstname = 'firstname is required';\line
+        else if(!this.validators.minLength(attrs.firstname, 2)) errors.firstname = 'firstname is too short';\line
+        else if(!this.validators.maxLength(attrs.firstname, 15)) errors.firstname = 'firstname is too large';\line
+        else if(this.validators.hasSpecialCharacter(attrs.firstname)) errors.firstname = 'firstname cannot contain special characters';\line
 \line
-          if(attrs.lastname != null) \{\line
+      \}\line
 \line
-              if (!attrs.lastname) \{\line
-                  errors.lastname = 'lastname is required';\line
-                  console.log('last name isEmpty validation called');\line
-              \}\line
+      if(attrs.lastname != null) \{\line
 \line
-              else if(!this.validators.minLength(attrs.lastname, 2))\line
-                errors.lastname = 'lastname is too short';\line
-              else if(!this.validators.maxLength(attrs.lastname, 15))\line
-                errors.lastname = 'lastname is too large';\line
-              else if(this.validators.hasSpecialCharacter(attrs.lastname)) errors.lastname = 'lastname cannot contain special characters';\line
+        if (!attrs.lastname) errors.lastname = 'lastname is required';\line
+        else if(!this.validators.minLength(attrs.lastname, 2)) errors.lastname = 'lastname is too short';\line
+        else if(!this.validators.maxLength(attrs.lastname, 15)) errors.lastname = 'lastname is too large';\line
+        else if(this.validators.hasSpecialCharacter(attrs.lastname)) errors.lastname = 'lastname cannot contain special characters';\line
 \line
-          \}\par}
+      \}\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 This allows the logic inside of our validate methods to determine which form fields are currently being set/validated, and does not care about the other model properties that are not trying to be set.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b Note}: A {\field{\*\fldinst{HYPERLINK "http://jsbin.com/afetez/11/edit"}}{\fldrslt{\ul
+demo
+}}}
+ of the above solution by {\field{\*\fldinst{HYPERLINK "http://github.com/gfranko"}}{\fldrslt{\ul
+@gfranko
+}}}
+ is also available.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 It\u8217's fairly straight-forward to use as well. We can simply define a new Model instance and then set the data on our model using the {\f1 validateAll} option to use the behavior defined by the plugin:\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \f1 var user = new User();\line
 user.set(\{ "firstname": "Greg" \}, \{validateAll: false\});\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 That\u8217's it!.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 That\u8217's it!\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 The Backbone.validateAll logic doesn\u8217't override the default Backbone logic by default and so it\u8217's perfectly capable of being used for scenarios where you might care more about field-validation {\field{\*\fldinst{HYPERLINK "http://jsperf.com/backbone-validateall"}}{\fldrslt{\ul
 performance
 }}}
@@ -3702,13 +3720,13 @@ require 'json'\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 Finally we define the routes to be supported by our API. Note that in the first two blocks - one for our application root ({\f1 /}) and the other for our todo items route {\f1 /todo} - we\u8217're using Haml for template rendering.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \f1 class TodoApp < Sinatra::Base\line
 \line
-    get '/' do\line
-      haml :index, :attr_wrapper => '"', :locals => \{:title => 'hello'\}\line
-    end\line
+  get '/' do\line
+    haml :index, :attr_wrapper => '"', :locals => \{:title => 'hello'\}\line
+  end\line
 \line
-    get '/todo' do\line
-      haml :todo, :attr_wrapper => '"', :locals => \{:title => 'Our Sinatra Todo app'\}\line
-    end\par}
+  get '/todo' do\line
+    haml :todo, :attr_wrapper => '"', :locals => \{:title => 'Our Sinatra Todo app'\}\line
+  end\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 {\f1 haml :index} instructs Sinatra to use the {\f1 views/index.haml} for the application index, whilst {\f1 attr_wrapper} is simply defining the values to be used for any local variables defined inside the template. This similarly applies Todo items with the template `views/todo.haml\u8217'.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 The rest of our routes make use of the {\f1 params} hash and a number of useful helper methods included with the MongoDB Ruby driver. For more details on these, please read the comments I\u8217've made inline below:\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \f1 get '/api/:thing' do\line
@@ -3977,11 +3995,7 @@ require(['foo', 'bar'], function ( foo, bar ) \{\line
 {\pard \ql \f0 \sa0 \li360 \fi-360 4.\tx360\tab Finally we can use the text resource that\u8217's been loaded for templating purposes. You\u8217're probably used to storing your HTML templates inline using a script with a specific identifier.\sa180\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 With Underscore.js\u8217's micro-templating (and jQuery) this would typically be:\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 HTML:\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 \f1 <script type="text/template" id="mainViewTemplate">\line
-    <% _.each( person, function( person_item )\{ %>\line
-        <li><%= person_item.get("name") %></li>\line
-    <% \}); %>\line
-</script>\par}
+{\pard \ql \f0 \sa0 \li0 \fi0 \par}
 {\pard \ql \f0 \sa180 \li0 \fi0 JS:\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \f1 var compiled_template = _.template( $('#mainViewTemplate').html() );\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 With Require.js and the text plugin however, it\u8217's as simple as saving your template into an external text file (say, {\f1 mainView.html}) and doing the following:\par}
@@ -5424,15 +5438,11 @@ SpecRunner.html
 }}}
 :\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 It first includes both Jasmine and the necessary CSS required for reporting:\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 \f1 <link rel="stylesheet" type="text/css" href="lib/jasmine-1.1.0.rc1/jasmine.css"/>\line
-<script type="text/javascript" src="lib/jasmine-1.1.0.rc1/jasmine.js"></script>\line
-<script type="text/javascript" src="lib/jasmine-1.1.0.rc1/jasmine-html.js"></script>\par}
+{\pard \ql \f0 \sa0 \li0 \fi0 \par}
 {\pard \ql \f0 \sa180 \li0 \fi0 Next, some sample tests are included:\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 \f1 <script type="text/javascript" src="spec/SpecHelper.js"></script>\line
-<script type="text/javascript" src="spec/PlayerSpec.js"></script>\par}
+{\pard \ql \f0 \sa0 \li0 \fi0 \par}
 {\pard \ql \f0 \sa180 \li0 \fi0 And finally the sources being tested:\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 \f1 <script type="text/javascript" src="src/Player.js"></script>\line
-<script type="text/javascript" src="src/Song.js"></script>\par}
+{\pard \ql \f0 \sa0 \li0 \fi0 \par}
 {\pard \ql \f0 \sa180 \li0 \fi0 {\b {\i Note:}} Below this section of SpecRunner is code responsible for running the actual tests. Given that we won\u8217't be covering modifying this code, I\u8217'm going to skip reviewing it. I do however encourage you to take a look through {\field{\*\fldinst{HYPERLINK "https://github.com/pivotal/jasmine/blob/master/lib/jasmine-core/example/spec/PlayerSpec.js"}}{\fldrslt{\ul
 PlayerSpec.js
 }}}
@@ -5722,16 +5732,10 @@ expect('click').toHaveBeenTriggeredOn($('#el'));\par}
 \});\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 Once these specs are run, only the second one (\u8216'produces the correct HTML\u8217') fails. Our first spec (\u8216'returns the view object\u8217'), which is testing that the TodoView instance is returned from {\f1 render()}, only passed as this is Backbone\u8217's default behavior. We haven\u8217't yet overwritten the {\f1 render()} method with our own version.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 {\b Note:} For the purposes of maintaining readability, all template examples in this section will use a minimal version of the following Todo view template. As it\u8217's relatively trivial to expand this, please feel free to refer to this sample if needed:\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 \f1 <div class="todo <%= done ? 'done' : '' %>">\line
-        <div class="display">\line
-          <input class="check" type="checkbox" <%= done ? 'checked="checked"' : '' %> />\line
-          <label class="todo-content"><%= text %></label>\line
-          <span class="todo-destroy"></span>\line
-        </div>\line
-        <div class="edit">\line
-          <input class="todo-input" type="text" value="<%= content %>" />\line
-        </div>\line
-</div>\par}
+{\pard \ql \f0 \sa0 \li0 \fi0 \par}
+{\pard \ql \f0 \sa0 \li0 \fi0 ">\par}
+{\pard \ql \f0 \sa0 \li0 \fi0  /> <%= text %> \par}
+{\pard \ql \f0 \sa0 \li0 \fi0 " />\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 The second spec fails with the following message:\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 {\f1 Expected '' to contain '<label class="todo-content">My Todo</label>'.}\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 The reason for this is the default behavior for render() doesn\u8217't create any markup. Let\u8217's write a replacement for render() which fixes this:\par}
