@@ -1934,7 +1934,7 @@ To keep thing simple, we'll keep things 'read-only' at the moment, and won't pro
 ```
 
 
-You can see we've got a couple of things going on, an el (element), a `statsTemplate`, a constructor function and several view specific methods. On the left of the el: key is a DOM element selector for the element with ID `todoapp`. The value of this is just a string and Backbone will create a reference pointing to any element matching the selector #todoapp, where here it will be the `<section id=”todoapp />` element, defined in the HTML section earlier.
+You can see we've got a couple of things going on, an el (element), a `statsTemplate`, a constructor function and several view specific methods. To the right of the `el:` key is a DOM element selector for the element with ID `todoapp`. The value of this is just a string and Backbone will create a reference pointing to any element matching the selector #todoapp, where here it will be the `<section id=”todoapp />` element, defined in the HTML section earlier.
 
 In a nutshell this means we can now refer to this.el in our controller, which points to the `<section class="todoapp" />` element. As you can see, we're referring to el in the `addOne()` function, appending an element to the list.
 
