@@ -2821,6 +2821,7 @@ Marionette
 {\pard \ql \f0 \sa180 \li0 \fi0 Unfortunately, this method would trigger a first name error each time any of the fields were blurred and only an error message next to the first name field would be presented.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 One potential solution to the problem could be to validate all fields and return all of the errors:\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \f1 validate: function(attrs) \{\line
+\line
   var errors = \{\};\line
 \line
   if (!attrs.firstname) errors.firstname = 'first name is empty';\line
@@ -2828,13 +2829,16 @@ Marionette
   if (!attrs.email) errors.email = 'email is empty';\line
 \line
   if (!_.isEmpty(errors)) return errors;\line
+\line
 \}\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 This can be adapted into a complete solution that defines a Field model for each input in our form and works within the parameters of our use-case as follows:\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \f1 \line
 $(function($) \{\line
 \line
   var User = Backbone.Model.extend(\{\line
+\line
     validate: function(attrs) \{\line
+\line
       var errors = this.errors = \{\};\line
 \line
       if (!attrs.firstname) errors.firstname = 'firstname is required';\line
@@ -2842,121 +2846,135 @@ $(function($) \{\line
       if (!attrs.email) errors.email = 'email is required';\line
 \line
       if (!_.isEmpty(errors)) return errors;\line
+\line
     \}\line
+\line
   \});\line
 \line
   var Field = Backbone.View.extend(\{\line
+\line
     events: \{blur: 'validate'\},\line
+\line
     initialize: function() \{\line
+\line
       this.name = this.$el.attr('name');\line
       this.$msg = $('[data-msg=' + this.name + ']');\line
+\line
     \},\line
+\line
     validate: function() \{\line
+\line
       this.model.set(this.name, this.$el.val());\line
       this.$msg.text(this.model.errors[this.name] || '');\line
+\line
     \}\line
+\line
   \});\line
 \line
   var user = new User;\line
 \line
   $('input').each(function() \{\line
+\line
     new Field(\{el: this, model: user\});\line
+\line
   \});\line
 \line
 \});\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 This works great as the solution checks the validation for each attribute individually and sets the message for the correct blurred field. A {\field{\*\fldinst{HYPERLINK "http://jsbin.com/afetez/2/edit"}}{\fldrslt{\ul
+{\pard \ql \f0 \sa180 \li0 \fi0 This works great as the solution checks the validation for each attribute individually and sets the message for the correct blurred field.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b Note}: A {\field{\*\fldinst{HYPERLINK "http://jsbin.com/afetez/2/edit"}}{\fldrslt{\ul
 demo
 }}}
- of the above by {\field{\*\fldinst{HYPERLINK "http://github.com/braddunbar"}}{\fldrslt{\ul
+ of the above solution by {\field{\*\fldinst{HYPERLINK "http://github.com/braddunbar"}}{\fldrslt{\ul
 @braddunbar
 }}}
  is also available.\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 It unfortunately however forces us to validate all of your form fields every time. If we have multiple client-side validation methods with our particular use case, we may not want to have to call each validation method on every attribute every time, so this solution might not be ideal for everyone.\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 A potentially better alternative to the above is to use {\field{\*\fldinst{HYPERLINK "http://github.com/@franko"}}{\fldrslt{\ul
+{\pard \ql \f0 \sa180 \li0 \fi0 Unfortunately, this solution forces each form field to be validated every time a blur event is fired. If we have multiple client-side validation methods with our particular use case, we may not want to have to call each validation method on every attribute every time, so this solution might not be ideal for everyone.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 A potentially better alternative to the above solution is to use {\field{\*\fldinst{HYPERLINK "http://github.com/gfranko"}}{\fldrslt{\ul
 @gfranko
 }}}
 \u8217's {\field{\*\fldinst{HYPERLINK "https://github.com/gfranko/Backbone.validateAll"}}{\fldrslt{\ul
 Backbone.validateAll
 }}}
- plugin, specifically created to validate specific Model properties (or form fields) without worrying about the validation of any other Model properties (or form fields).\par}
+ plugin, which was specifically created to provide an option to validate only Model properties that are currently being set/saved.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 Here is how we would setup a partial User Model and validate method using this plugin, that caters to our use-case:\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \f1 \line
 // Create a new User Model\line
 var User = Backbone.Model.extend(\{\line
 \line
-      // RegEx Patterns\line
-      patterns: \{\line
+  // RegEx Patterns\line
+  patterns: \{\line
 \line
-          specialCharacters: "[^a-zA-Z 0-9]+",\line
+    specialCharacters: "[^a-zA-Z 0-9]+",\line
 \line
-          digits: "[0-9]",\line
+    digits: "[0-9]",\line
 \line
-          email: "^[a-zA-Z0-9._-]+@[a-zA-Z0-9][a-zA-Z0-9.-]*[.]\{1\}[a-zA-Z]\{2,6\}$"\line
-      \},\line
+    email: "^[a-zA-Z0-9._-]+@[a-zA-Z0-9][a-zA-Z0-9.-]*[.]\{1\}[a-zA-Z]\{2,6\}$"\line
+  \},\line
 \line
-    // Validators\line
-      validators: \{\line
+  // Validators\line
+  validators: \{\line
 \line
-      minLength: function(value, minLength) \{\line
-            return value.length >= minLength;\line
+    minLength: function(value, minLength) \{\line
 \line
-          \},\line
+      return value.length >= minLength;\line
 \line
-          maxLength: function(value, maxLength) \{\line
-            return value.length <= maxLength;\line
+    \},\line
 \line
-          \},\line
+    maxLength: function(value, maxLength) \{\line
 \line
-           isEmail: function(value) \{\line
-            return User.prototype.validators.pattern(value, User.prototype.patterns.email);\line
+      return value.length <= maxLength;\line
 \line
-          \},\line
+    \},\line
 \line
-          hasSpecialCharacter: function(value) \{\line
-            return User.prototype.validators.pattern(value, User.prototype.patterns.specialCharacters);\line
+    isEmail: function(value) \{\line
 \line
-          \},\line
-         ...\line
+      return User.prototype.validators.pattern(value, User.prototype.patterns.email);\line
+\line
+    \},\line
+\line
+    hasSpecialCharacter: function(value) \{\line
+\line
+      return User.prototype.validators.pattern(value, User.prototype.patterns.specialCharacters);\line
+\line
+    \},\line
+    ...\line
 \line
     // We can determine which properties are getting validated by\line
     // checking to see if properties are equal to null\line
 \line
-        validate: function(attrs) \{\line
+    validate: function(attrs) \{\line
 \line
-          var errors = this.errors = \{\};\line
+      var errors = this.errors = \{\};\line
 \line
-          if(attrs.firstname != null) \{\line
-              if (!attrs.firstname) \{\line
-                  errors.firstname = 'firstname is required';\line
-                  console.log('first name isEmpty validation called');\line
-              \}\line
+      if(attrs.firstname != null) \{\line
 \line
-              else if(!this.validators.minLength(attrs.firstname, 2))\line
-                errors.firstname = 'firstname is too short';\line
-              else if(!this.validators.maxLength(attrs.firstname, 15))\line
-                errors.firstname = 'firstname is too large';\line
-              else if(this.validators.hasSpecialCharacter(attrs.firstname)) errors.firstname = 'firstname cannot contain special characters';\line
-          \}\line
+        if (!attrs.firstname) errors.firstname = 'firstname is required';\line
+        else if(!this.validators.minLength(attrs.firstname, 2)) errors.firstname = 'firstname is too short';\line
+        else if(!this.validators.maxLength(attrs.firstname, 15)) errors.firstname = 'firstname is too large';\line
+        else if(this.validators.hasSpecialCharacter(attrs.firstname)) errors.firstname = 'firstname cannot contain special characters';\line
 \line
-          if(attrs.lastname != null) \{\line
+      \}\line
 \line
-              if (!attrs.lastname) \{\line
-                  errors.lastname = 'lastname is required';\line
-                  console.log('last name isEmpty validation called');\line
-              \}\line
+      if(attrs.lastname != null) \{\line
 \line
-              else if(!this.validators.minLength(attrs.lastname, 2))\line
-                errors.lastname = 'lastname is too short';\line
-              else if(!this.validators.maxLength(attrs.lastname, 15))\line
-                errors.lastname = 'lastname is too large';\line
-              else if(this.validators.hasSpecialCharacter(attrs.lastname)) errors.lastname = 'lastname cannot contain special characters';\line
+        if (!attrs.lastname) errors.lastname = 'lastname is required';\line
+        else if(!this.validators.minLength(attrs.lastname, 2)) errors.lastname = 'lastname is too short';\line
+        else if(!this.validators.maxLength(attrs.lastname, 15)) errors.lastname = 'lastname is too large';\line
+        else if(this.validators.hasSpecialCharacter(attrs.lastname)) errors.lastname = 'lastname cannot contain special characters';\line
 \line
-          \}\par}
+      \}\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 This allows the logic inside of our validate methods to determine which form fields are currently being set/validated, and does not care about the other model properties that are not trying to be set.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b Note}: A {\field{\*\fldinst{HYPERLINK "http://jsbin.com/afetez/11/edit"}}{\fldrslt{\ul
+demo
+}}}
+ of the above solution by {\field{\*\fldinst{HYPERLINK "http://github.com/gfranko"}}{\fldrslt{\ul
+@gfranko
+}}}
+ is also available.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 It\u8217's fairly straight-forward to use as well. We can simply define a new Model instance and then set the data on our model using the {\f1 validateAll} option to use the behavior defined by the plugin:\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \f1 var user = new User();\line
 user.set(\{ "firstname": "Greg" \}, \{validateAll: false\});\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 That\u8217's it!.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 That\u8217's it!\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 The Backbone.validateAll logic doesn\u8217't override the default Backbone logic by default and so it\u8217's perfectly capable of being used for scenarios where you might care more about field-validation {\field{\*\fldinst{HYPERLINK "http://jsperf.com/backbone-validateall"}}{\fldrslt{\ul
 performance
 }}}
