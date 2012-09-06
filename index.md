@@ -2451,7 +2451,7 @@ $ git clone git://github.com/tbranyen/backbone-boilerplate.git
 or alternatively, just fetching the latest tarball as follows:
 
 ```shell
-curl -C - -O https://github.com/tbranyen/backbone-boilerplate/zipball/master
+$ curl -C - -O https://github.com/tbranyen/backbone-boilerplate/zipball/master
 ```
 
 ### Grunt-BBB
@@ -2771,7 +2771,7 @@ We can easily create a new Boilerplate module using `grunt-bbb` once again using
 
 ```shell
 # Create a new module
-bbb init:module
+$ bbb init:module
 
 # Grunt prompt
 Please answer the following:
