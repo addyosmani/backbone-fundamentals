@@ -925,11 +925,15 @@ var mySkiingCrash = PhotoCollection.getByCid(456);
 Backbone Collections don't have setters as such, but do support adding new models via `.add()` and removing models via `.remove()`.
 
 ```javascript
-var a = new Backbone.Model({ title: 'my vacation'}),
-    b = new Backbone.Model({ title: 'my holiday'});
+var a = new Photo({ title: 'my vacation'}),
+    b = new Photo({ title: 'my holiday'}),
+    c = new Photo({ title: 'my weekend'});
 
 var photoCollection = new PhotoCollection([a,b]);
+photoCollection.add(c);
+
 photoCollection.remove([a,b]);
+photoCollection.remove(c);
 ```
 
 **Listening for events**
