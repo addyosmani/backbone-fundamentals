@@ -2469,8 +2469,8 @@ $ npm install -g grunt
 # followed by
 $ npm install -g bbb
 
-# Create a new project
-bbb init
+# finally create a new project
+$ bbb init
 ```
 
 That's it. We should now be good to go.
