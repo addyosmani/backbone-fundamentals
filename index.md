@@ -1057,8 +1057,11 @@ collection.chain()
   .value();
 
 // Will return ['Ida', 'Rob']
+```
+
 Some of the Backbone-specific method will return this, which means they can be chained as well:
 
+```javascript
 var collection = new Backbone.Collection();
 
 collection
