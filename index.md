@@ -2451,7 +2451,7 @@ $ git clone git://github.com/tbranyen/backbone-boilerplate.git
 or alternatively, just fetching the latest tarball as follows:
 
 ```shell
-curl -C - -O https://github.com/tbranyen/backbone-boilerplate/zipball/master
+$ curl -C - -O https://github.com/tbranyen/backbone-boilerplate/zipball/master
 ```
 
 ### Grunt-BBB
@@ -2469,8 +2469,8 @@ $ npm install -g grunt
 # followed by
 $ npm install -g bbb
 
-# Create a new project
-bbb init
+# finally create a new project
+$ bbb init
 ```
 
 That's it. We should now be good to go.
@@ -2771,7 +2771,7 @@ We can easily create a new Boilerplate module using `grunt-bbb` once again using
 
 ```shell
 # Create a new module
-bbb init:module
+$ bbb init:module
 
 # Grunt prompt
 Please answer the following:
@@ -3003,7 +3003,7 @@ If you would like to learn more about how this project helps structure your app,
 
 These include a boilerplate tutorial project (`bbb init:tutorial`) and an implementation of my [TodoMVC](http://todomvc) project (`bbb init:todomvc`). I recommend checking these out as they'll provide you with a more complete picture of how Backbone Boilerplate, its templates and so on fit into the overall setup for a web app.
 
-For more about Grunt-BBB, remember to take a look at the official project [repositoryy](https://github.com/backbone-boilerplate/grunt-bbb). There is also a related [slide-deck](https://dl.dropbox.com/u/79007/talks/Modern_Web_Applications/slides/index.html) available for those interested in reading more.
+For more about Grunt-BBB, remember to take a look at the official project [repository](https://github.com/backbone-boilerplate/grunt-bbb). There is also a related [slide-deck](https://dl.dropbox.com/u/79007/talks/Modern_Web_Applications/slides/index.html) available for those interested in reading more.
 
 ## Related Tools & Projects
 
