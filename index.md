@@ -3435,7 +3435,7 @@ For example, if you are working on a blogging application and you remove a view 
 
 Let us say you have a Collection, where each item in the Collection could itself be a Collection. You can render each item in the Collection, and indeed can render any items which themselves are Collections. The problem you might have is how to render this structure where the HTML reflects the hierarchical nature of the data structure.
 
-The most straight-forward way to approach this problem is to use a framework like Derick Baileys [Backbone.Marionette](https://github.com/derickbailey/backbone.marionette). In this framework is a type of view called a CompositeView.
+The most straight-forward way to approach this problem is to use a framework like Derick Baileys [Backbone.Marionette](http://marionettejs.com). In this framework is a type of view called a CompositeView.
 
 The basic idea of a CompositeView is that it can render a model and a collection within the same view.
 
@@ -3443,7 +3443,7 @@ It can render a single model with a template. It can also take a collection from
 
 There is a working demo of this in action available [online](http://jsfiddle.net/derickbailey/AdWjU/).
 
-And you can get the source code and documentation for [Marionette](https://github.com/derickbailey/backbone.marionette) too.
+And you can get the source code and documentation for [Marionette](http://marionettejs.com) too.
 
 
 
@@ -8621,7 +8621,7 @@ That's it for this section on testing applications with QUnit and SinonJS. I enc
 
 Whilst what we get with Backbone out of the box can be terribly useful, there are some equally beneficial add-ons that can help simplify our development process. These include:
 
-* [Backbone Marionette](https://github.com/derickbailey/backbone.marionette)
+* [Backbone Marionette](http://marionettejs.com)
 * [Backbone Layout Manager](https://github.com/tbranyen/backbone.layoutmanager)
 * [Backbone Boilerplate](https://github.com/backbone-boilerplate/backbone-boilerplate)
 * [Backbone Model Binding](https://github.com/derickbailey/backbone.modelbinding)
