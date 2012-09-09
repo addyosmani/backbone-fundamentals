@@ -1,4 +1,4 @@
-##Prelude
+## Prelude
 
 <img src="img/logo.jpg" style="float:left"/> Welcome to my (in-progress) book about the [Backbone.js](http://documentcloud.github.com/backbone/) framework for structuring JavaScript applications. It's released under a Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported [license](http://creativecommons.org/licenses/by-nc-sa/3.0/) meaning you can both grab a copy of the book for free or help to further [improve](https://github.com/addyosmani/backbone-fundamentals/) it.
 
@@ -14,18 +14,18 @@ I hope you find this book helpful!
 * Items added or updated in the last month are marked with a * in the outline.
 * Once you're familiar with Backbone.js, you might be interested in checking out [Aura](https://github.com/addyosmani/aura).
 
-##Table Of Contents
+## Table Of Contents
 
-* ####[Introduction](#introduction)
+* #### [Introduction](#introduction)
     * MVC, Or Rather MV* Frameworks
     * What is Backbone.js?
     * When Do You Need A JavaScript MV* Framework?
     * When To Consider Using Backbone.js
 
-* ####[Fundamentals](#fundamentals)
+* #### [Fundamentals](#fundamentals)
     * [MVC, MVP & Backbone.js](#mvc-mvp)
 
-* ####[The Internals](#theinternals)
+* #### [The Internals](#theinternals)
     * [Models](#thebasics-models)
     * [Views](#thebasics-views)
     * [Collections](#thebasics-collections)
@@ -34,11 +34,11 @@ I hope you find this book helpful!
     * [Inheritance & Mixins](#thebasics-inheritance) *
     * [Namespacing](#thebasics-namespacing)
 
-* ####[Practical: Todos - Your First Backbone.js App](#practicaltodos) *
+* #### [Practical: Todos - Your First Backbone.js App](#practicaltodos) *
 
-* ####[Backbone Boilerplate & Grunt BBB](#backboneboilerplate) *
+* #### [Backbone Boilerplate & Grunt BBB](#backboneboilerplate) *
 
-* ####[Common Problems & Solutions](#commonproblems) *
+* #### [Common Problems & Solutions](#commonproblems) *
     * Sub-Views And Nesting
     * Managing Models In Nested Views
     * Views Triggering Other Views
@@ -48,7 +48,7 @@ I hope you find this book helpful!
     * Appending Views
     * Better Model Property Validation *
 
-* ####[Modular Development](#advanced)
+* #### [Modular Development](# <advanced)
     * [Introduction](#modularjs)
     * [Organizing modules with Require.js and AMD](#organizingmodules)
     * [Keeping your templates external](#externaltemplates)
@@ -57,17 +57,17 @@ I hope you find this book helpful!
     * [Optimize Apps With Require.js Using Packages](#optimizebuild) *
     * [Decoupling Backbone With The Mediator and Facade patterns](#decouplingbackbone)
 
-* ####[RESTful Applications With Backbone.js](#restfulapps)
+* #### [RESTful Applications With Backbone.js](#restfulapps)
     * [Building RESTful applications](#restful)
     * [Apps With Node.js, Express, Mongoose and MongoDB](#stack1)
     * [Apps with Ruby, Sinatra, Haml and MongoDB](#stack2)
     * [Paginating Backbone.js Requests & Collections](#pagination) *
 
-* ####Mobile Applications
+* #### Mobile Applications
     * Backbone & jQuery Mobile
     * Practical: Building A Modular Mobile App With Backbone & jQuery Mobile
 
-* ####[Unit Testing](#testing)
+* #### [Unit Testing](#testing)
     * [Unit Testing Backbone Applications With Jasmine](#unittestingjasmine)
       * Introduction
       * Jasmine
@@ -95,11 +95,11 @@ I hope you find this book helpful!
 
 
 
-* ####[Resources](#resources)
+* #### [Resources](#resources)
 
 
 
-#<a name="introduction">Introduction</a>
+# <a name="introduction">Introduction</a>
 
 When writing a Web application from scratch, it’s easy to feel like we can get by simply by relying on a DOM manipulation library (like jQuery) and a handful of utility plugins. The problem with this is that it doesn’t take long to get lost in a nested pile of jQuery callbacks and DOM elements without any real structure in place for our applications.
 
@@ -117,7 +117,7 @@ JavaScript ‘MVC’ frameworks that can help us structure our code don’t alwa
 
 For this reason we refer to such frameworks as following the MV* pattern, that is, you’re likely to have a View and a Model, but more likely to have something else also included.
 
-###What exactly is Backbone.js?
+### What exactly is Backbone.js?
 
 <img src="img/backbonejsorg.png" style="margin:0 auto;" width="700px"/>
 
@@ -148,7 +148,7 @@ If, however, you’re building an application that still relies on the server fo
 Maturity in software (framework) development isn't simply about how long a framework has been around. It's about how solid the framework is and more importantly how well it's evolved to fill its role. Has it become more effective at solving common problems? Does it continue to improve as developers build larger and more complex applications with it?
 
 
-###Why should you consider using Backbone.js?
+### Why should you consider using Backbone.js?
 
 Does the following describe you?:
 
@@ -167,20 +167,20 @@ Backbone's main benefits, regardless of your target platform or device, include 
 * Provide DOM, model and collection synchronization
 
 
-###What should you expect to see in this book?
+### What should you expect to see in this book?
 
 The goal of this book is to create an authoritative and centralized repository of information that can help those developing real-world apps with Backbone. If you come across a section or topic which you think could be improved or expanded on, please feel free to submit a pull-request. It won't take long and you'll be helping other developers avoid problems you've run into before.
 
 Topics will include MVC theory and how to build applications using Backbone's models, views, collections and routers. I'll also be taking you through advanced topics like modular development with Backbone.js and AMD (via Require.js), how to build applications using modern software stacks (like Node and Express), how to solve the routing problems with Backbone and jQuery Mobile, tips about scaffolding tools, and a lot more.
 
 
-#<a name="fundamentals">Fundamentals</a>
+# <a name="fundamentals">Fundamentals</a>
 
 In this section, we're going to explore how frameworks like Backbone.js fit in the world of JavaScript application architecture. Classically, developers creating desktop and server-class applications have had a wealth of design patterns available for them to lean on, but it's only been in the past few years that such patterns have come to client-side development.
 
 Before exploring any JavaScript frameworks that assist in structuring applications, it can be useful to gain a basic understanding of architectural design patterns.
 
-###<a name="mvc-mvp">MVC, MVP & Backbone.js</a>
+### <a name="mvc-mvp">MVC, MVP & Backbone.js</a>
 
 Design patterns are proven solutions to common development problems and can suggest structural approaches to help guide developers in adding some organization to their applications.
 
@@ -189,12 +189,12 @@ Patterns are useful because they're a set of practices that build upon the colle
 In this section, we're going to review two popular patterns - MVC and MVP. We'll be exploring in greater detail how Backbone.js implements these patterns shortly to better appreciate where it fits in.
 
 
-##MVC
+## MVC
 
 MVC (Model-View-Controller) is an architectural design pattern that encourages improved application organization through a separation of concerns. It enforces the isolation of business data (Models) from user interfaces (Views), with a third component (Controllers) traditionally present to manage logic, user-input and the coordination of models and views. The pattern was originally designed by [Trygve Reenskaug](http://en.wikipedia.org/wiki/Trygve_Reenskaug) while working on Smalltalk-80 (1979), where it was initially called Model-View-Controller-Editor. MVC was described in depth in [“Design Patterns: Elements of Reusable Object-Oriented Software”](http://www.amazon.co.uk/Design-patterns-elements-reusable-object-oriented/dp/0201633612) (The "GoF" or “Gang of Four” book) in 1994, which played a role in popularizing its use.
 
 
-###Smalltalk-80 MVC
+### Smalltalk-80 MVC
 
 It's important to understand what the original MVC pattern was aiming to solve as it has changed quite heavily since the days of its origin. Back in the 70's, graphical user-interfaces were few and far between. An approach known as [Separated Presentation](http://martinfowler.com/eaaDev/uiArchs.html) began to be used as a means to make a clear division between domain objects which modeled concepts in the real world (e.g a photo, a person) and the presentation objects which were rendered to the user's screen.
 
@@ -211,13 +211,13 @@ Martin Fowler has done an excellent job of writing about the [origins](http://ma
 
 
 
-##MVC As We Know It
+## MVC As We Know It
 
 We've reviewed the 70's, but let us now return to the here and now. The MVC pattern has been applied to a diverse range of programming languages. For example, the popular Ruby on Rails is an implementation of a web application framework based on MVC for the Ruby language. JavaScript now has a number of MVC frameworks, including Ember.js, JavaScriptMVC, and of course Backbone.js. Given the importance of avoiding "spaghetti" code, a term which describes code that is very difficult to read or maintain due to its lack of structure, let's look at what the MVC pattern enables the Javascript developer to do.
 
 MVC is composed of three core components:
 
-###Models
+### Models
 
 Models manage the data for an application. They are concerned with neither the user-interface nor presentation layers, but instead represent structured data that an application may require. When a model changes (e.g when it is updated), it will typically notify its observers (e.g views, a concept we will cover shortly) that a change has occurred so that they may react accordingly.
 
@@ -273,7 +273,7 @@ var PhotoGallery = Backbone.Collection.extend({
 If you read older texts on MVC, you may come across a description of models as also managing application 'state'. In JavaScript applications "state" has a specific meaning, typically referring to the current "state" of a view or sub-view on a user's screen at a fixed time. State is a topic which is regularly discussed when looking at Single-page applications, where the concept of state needs to be simulated.
 
 
-###Views
+### Views
 
 Views are a visual representation of models that present a filtered view of their current state. A view typically observes a model and is notified when the model changes, allowing the view to update itself accordingly. Design pattern literature commonly refers to views as 'dumb', given that their knowledge of models and controllers in an application is limited.
 
@@ -377,7 +377,7 @@ _.templateSettings = { interpolate : /\{\{(.+?)\}\}/g };
 It is also worth noting that in classical web development, navigating between independent views required the use of a page refresh. In single-page JavaScript applications, however, once data is fetched from a server via Ajax, it can be dynamically rendered in a new view within the same page. Since this doesn't automatically update the URL, the role of navigation thus falls to a "router", which assists in managing application state (e.g allowing users to bookmark a particular view they have navigated to). As routers are however neither a part of MVC nor present in every MVC-like framework, I will not be going into them in greater detail in this section.
 
 
-###Controllers
+### Controllers
 
 Controllers are an intermediary between models and views which are classically responsible for two tasks: they both update the view when the model changes and update the model when the user manipulates the view.
 
@@ -452,7 +452,7 @@ var PhotoRouter = Backbone.Router.extend({
 }):
 ```
 
-##What does MVC give us?
+## What does MVC give us?
 
 To summarize, the separation of concerns in MVC facilitates modularization of an application's functionality and enables:
 
@@ -462,7 +462,7 @@ To summarize, the separation of concerns in MVC facilitates modularization of an
 * Depending on the size of the application and separation of roles, this modularity allows developers responsible for core logic and developers working on the user-interfaces to work simultaneously
 
 
-###Delving deeper
+### Delving deeper
 
 Right now, you likely have a basic understanding of what the MVC pattern provides, but for the curious, we'll explore it a little further.
 
@@ -473,20 +473,20 @@ As we've discussed, models represent application data, while views handle what t
 For developers interested in knowing more about the decoupled nature of MVC (once again, depending on the implementation), one of the goals of the pattern is to help define one-to-many relationships between a topic and its observers. When a topic changes, its observers are updated. Views and controllers have a slightly different relationship. Controllers facilitate views to respond to different user input and are an example of the Strategy pattern.
 
 
-###Summary
+### Summary
 
 Having reviewed the classical MVC pattern, you should now understand how it allows developers to cleanly separate concerns in an application. You should also now appreciate how JavaScript MVC frameworks may differ in their interpretation of MVC, and how they share some of the fundamental concepts of the original pattern.
 
 When reviewing a new JavaScript MVC/MV* framework, remember - it can be useful to step back and consider how it's opted to approach Models, Views, Controllers or other alternatives, as this can better help you grok how the framework expects to be used.
 
 
-##MVP
+## MVP
 
 Model-view-presenter (MVP) is a derivative of the MVC design pattern which focuses on improving presentation logic. It originated at a company named [Taligent](http://en.wikipedia.org/wiki/Taligent) in the early 1990s while they were working on a model for a C++ CommonPoint environment. Whilst both MVC and MVP target the separation of concerns across multiple components, there are some fundamental differences between them.
 
 For the purposes of this summary we will focus on the version of MVP most suitable for web-based architectures.
 
-###Models, Views & Presenters
+### Models, Views & Presenters
 
 The P in MVP stands for presenter. It's a component which contains the user-interface business logic for the view. Unlike MVC, invocations from the view are delegated to the presenter, which are decoupled from the view and instead talk to it through an interface. This allows for all kinds of useful things such as being able to mock views in unit tests.
 
@@ -503,7 +503,7 @@ Although a common implementation of a [Passive View](http://martinfowler.com/eaa
 There is also a [Supervising Controller](http://martinfowler.com/eaaDev/SupervisingPresenter.html) variation of MVP, which is closer to the MVC and [MVVM](http://en.wikipedia.org/wiki/Model_View_ViewModel) patterns as it provides data-binding from the Model directly from the View. Key-value observing (KVO) plugins (such as Derick Bailey's Backbone.ModelBinding plugin) introduce this idea of a Supervising Controller to Backbone.
 
 
-##MVP or MVC?
+## MVP or MVC?
 
 MVP is generally used most often in enterprise-level applications where it's necessary to reuse as much presentation logic as possible. Applications with very complex views and a great deal of user interaction may find that MVC doesn't quite fit the bill here as solving this problem may mean heavily relying on multiple controllers. In MVP, all of this complex logic can be encapsulated in a presenter, which can simplify maintenance greatly.
 
@@ -513,7 +513,7 @@ Depending on the implementation, MVP may be more easy to automatically unit test
 
 At the end of the day, the underlying concerns you may have with MVC will likely hold true for MVP given that the differences between them are mainly semantic. As long as you are cleanly separating concerns into models, views and controllers (or presenters) you should be achieving most of the same benefits regardless of the pattern you opt for.
 
-##MVC, MVP and Backbone.js
+## MVC, MVP and Backbone.js
 
 There are very few, if any architectural JavaScript frameworks that claim to implement the MVC or MVP patterns in their classical form as many JavaScript developers don't view MVC and MVP as being mutually exclusive (we are actually more likely to see MVP strictly implemented when looking at web frameworks such as ASP.NET or GWT). This is because it's possible to have additional presenter/view logic in your application and yet still consider it a flavor of MVC.
 
@@ -580,9 +580,9 @@ As regular Backbone user Derick Bailey has [written](http://lostechies.com/deric
 It *is* however worth understanding where and why these concepts originated, so I hope that my explanations of MVC and MVP have been of help. Most structural JavaScript frameworks will adopt their own take on classical patterns, either intentionally or by accident, but the important thing is that they help us develop applications which are organized, clean and can be easily maintained.
 
 
-##Fast facts
+## Fast facts
 
-###Backbone.js
+### Backbone.js
 
 * Core components: Model, View, Collection, Router. Enforces its own flavor of MV*
 * Good documentation, with more improvements on the way
@@ -610,7 +610,7 @@ In this section, you'll learn the essentials of Backbone's models, views, collec
 * Namespacing
 
 
-##<a name="thebasics-models" id="thebasics-models">Models</a>
+## <a name="thebasics-models" id="thebasics-models">Models</a>
 
 Backbone models contain interactive data for an application as well as the logic around this data. For example, we can use a model to represent the concept of a photo object including its attributes like tags, titles and a location.
 
@@ -639,7 +639,7 @@ somePhoto.changeSrc("magic.jpg"); // which triggers "change:src" and logs an upd
 
 ```
 
-####Initialization
+#### Initialization
 
 The `initialize()` method is called when a new instance of a model is created. Its use is optional, however you'll see why it's good practice to use it below.
 
@@ -654,7 +654,7 @@ var Photo = Backbone.Model.extend({
 var myPhoto = new Photo();
 ```
 
-####Getters & Setters
+#### Getters & Setters
 
 **Model.get()**
 
@@ -695,7 +695,7 @@ console.log(JSON.stringify(myattributes));
 */
 ```
 
-####Model.set()
+#### Model.set()
 
 `Model.set()` allows us to pass attributes into an instance of our model. Attributes can either be set during initialization or at any time afterwards. It's important to avoid trying to set a Model's attributes directly (for example, `Model.caption = 'A new caption'`). Backbone uses Model.set() to know when to broadcast that a model's data has changed.
 
@@ -813,12 +813,12 @@ myPhoto.set({ title: "On the beach" });
 An example of this (by @fivetanley) is available [here](http://jsfiddle.net/2NdDY/7/).
 
 
-##<a name="thebasics-views" id="thebasics-views">Views</a>
+## <a name="thebasics-views" id="thebasics-views">Views</a>
 
 Views in Backbone don't contain the markup for your application, but rather they are there to support models by defining the logic for how they should be represented to the user. This is usually achieved using JavaScript templating (e.g. Mustache, jQuery-tmpl, etc.). A view's `render()` function can be bound to a model's `change()` event, allowing the view to always be up to date without requiring a full page refresh.
 
 
-####Creating new views
+#### Creating new views
 
 Similar to the previous sections, creating a new view is relatively straight-forward. To create a new View, simply extend `Backbone.View`. I'll explain this code in detail below:
 
@@ -847,7 +847,7 @@ var PhotoSearch = Backbone.View.extend({
 });
 ```
 
-####What is `el`?
+#### What is `el`?
 
 `el` is basically a reference to a DOM element and all views must have one. It allows for all of the contents of a view to be inserted into the DOM at once, which makes for faster rendering because the browser performs the minimum required reflows and repaints.
 
@@ -891,7 +891,7 @@ The Backbone `events` attribute allows us to attach event listeners to either cu
 What isn't instantly obvious is that under the bonnet, Backbone uses jQuery's `.delegate()` to provide instant support for event delegation but goes a little further, extending it so that `this` always refers to the current view object. The only thing to really keep in mind is that any string callback supplied to the events attribute must have a corresponding function with the same name within the scope of your view.
 
 
-##<a name="thebasics-collections" id="thebasics-collections">Collections</a>
+## <a name="thebasics-collections" id="thebasics-collections">Collections</a>
 
 Collections are sets of Models and are created by extending `Backbone.Collection`.
 
@@ -1027,7 +1027,7 @@ PhotoCollection.reset([
 
 Note that using `Collection.reset()` doesn't fire any `add` or `remove` events. A `reset` event is fired instead.
 
-###Underscore utility functions
+### Underscore utility functions
 
 As Backbone requires Underscore as a hard dependency, we're able to use many of the utilities it has to offer to aid with our application development. Here's an example of how Underscore's `sortBy()` method can be used to sort a collection of photos based on a particular attribute.
 
@@ -1071,7 +1071,7 @@ collection.pluck('name');
 ```
 
 
-##<a name="thebasics-events" id="thebasics-events">Events</a>
+## <a name="thebasics-events" id="thebasics-events">Events</a>
 
 As we've covered, Backbone's objects are designed to be inherited from and every single one of the following objects inherits from `Backbone.Events`:
 
@@ -1156,7 +1156,7 @@ myObject.trigger("dance", {duration: "5 minutes"});
 ```
 
 
-##<a name="thebasics-routers" id="thebasics-routers">Routers</a>
+## <a name="thebasics-routers" id="thebasics-routers">Routers</a>
 
 In Backbone, routers are used to help manage application state and for connecting URLs to application events. This is achieved using hash-tags with URL fragments, or using the browser's pushState and History API. Some examples of routes may be seen below:
 
@@ -1180,7 +1180,7 @@ var GalleryRouter = Backbone.Router.extend({
     /* define the route and function maps for this router */
     routes: {
         "about" : "showAbout",
-        /*Sample usage: http://unicorns.com/#about*/
+        /*Sample usage: http://unicorns.com/# <about*/
 
         "photos/:id" : "getPhoto",
         /*This is an example of using a ":param" variable which allows us to match
@@ -1210,7 +1210,7 @@ var GalleryRouter = Backbone.Router.extend({
         /*This is a default route that also uses a *splat. Consider the
         default route a wildcard for URLs that are either not matched or where
         the user has incorrectly typed in a route path manually*/
-        /*Sample usage: http://unicorns.com/#anything*/
+        /*Sample usage: http://unicorns.com/# <anything*/
 
     },
 
@@ -1246,12 +1246,12 @@ var myGalleryRouter = new GalleryRouter();
 As of Backbone 0.5+, it's possible to opt-in for HTML5 pushState support via `window.history.pushState`. This permits you to define routes such as http://www.scriptjunkie.com/just/an/example. This will be supported with automatic degradation when a user's browser doesn't support pushState. For the purposes of this tutorial, we'll use the hashtag method.
 
 
-####Is there a limit to the number of routers I should be using?
+#### Is there a limit to the number of routers I should be using?
 
 Andrew de Andrade has pointed out that DocumentCloud themselves usually only use a single router in most of their applications. You're very likely to not require more than one or two routers in your own projects as the majority of your application routing can be kept organized in a single controller without it getting unwieldy.
 
 
-####Backbone.history
+#### Backbone.history
 
 Next, we need to initialize `Backbone.history` as it handles `hashchange` events in our application. This will automatically handle routes that have been defined and trigger callbacks when they've been accessed.
 
@@ -1392,7 +1392,7 @@ if (typeof exports !== 'undefined') {
 }
 ```
 
-##<a name="thebasics-inheritance" id="thebasics-inheritance">Inheritance & Mixins</a>
+## <a name="thebasics-inheritance" id="thebasics-inheritance">Inheritance & Mixins</a>
 
 For its inheritance, Backbone internally uses an `inherits` function inspired by `goog.inherits`, Google’s implementation from the Closure Library. It's basically a function to correctly setup the prototype chain.
 
@@ -1525,11 +1525,11 @@ When used appropriately, Backbone's `extend` method can save a great deal of tim
 (Thanks to [Alex Young](http://dailyjs.com), [Derick Bailey](http://stackoverflow.com/users/93448/derick-bailey) and [JohnnyO](http://stackoverflow.com/users/188740/johnnyo) for the heads up about these tips).
 
 
-##<a name="thebasics-namespacing" id="thebasics-namespacing">Namespacing</a>
+## <a name="thebasics-namespacing" id="thebasics-namespacing">Namespacing</a>
 
 When learning how to use Backbone, an important and commonly overlooked area by tutorials is namespacing. If you already have experience with namespacing in JavaScript, the following section will provide some advice on how to specifically apply concepts you know to Backbone, however I will also be covering explanations for beginners to ensure everyone is on the same page.
 
-####What is namespacing?
+#### What is namespacing?
 
 The basic idea around namespacing is to avoid collisions with other objects or variables in the global namespace. They're important as it's best to safeguard your code from breaking in the event of another script on the page using the same variable names as you are. As a good 'citizen' of the global namespace, it's also imperative that you do your best to similarly not prevent other developer's scripts executing due to the same issues.
 
@@ -1707,7 +1707,7 @@ Let's think about what we need from a high level architectural standpoint.
 
 Basically your classic [CRUD](http://en.wikipedia.org/wiki/Create,_read,_update_and_delete) methods. Let's get started!
 
-##Index
+## Index
 
 The first step is to setup the basic application dependencies, which in this case will be: [jQuery](http://jquery.com), [Underscore](http://underscorejs.org), Backbone.js and the [Backbone LocalStorage adapter](https://github.com/jeromegn/Backbone.localStorage). These will be loaded in our main (and only) HTML file, index.html:
 
@@ -1742,7 +1742,7 @@ The first step is to setup the basic application dependencies, which in this cas
 To help demonstrate how the various parts of our application can be split up, individual concerns are cleanly organized into folders representing our models, views, collections and routers. An app.js file is used to kick everything off.
 
 
-##Application HTML
+## Application HTML
 
 Now let's take a look at our application's static HTML. We're going to need an `<input>` for creating new todos, a `<ul id="todo-list" />` for listing the actual todos, and a section containing some operations, such as clearing completed todos.
 
@@ -1804,7 +1804,7 @@ var app = app || {};
 We also have a `toggle()` function which allows to set whether a Todo item has been completed.
 
 
-##Todo collection
+## Todo collection
 
 
 Next we have our `TodoList` collection used to group our models. The collection is being extended by localStorage which automatically persists Todo records to HTML5 Local Storage via the Backbone LocalStorage adapter, so they're saved between page requests.
@@ -1859,7 +1859,7 @@ Finally we have a `nextOrder()` function, that keeps our Todo items in sequentia
   app.Todos = new TodoList();
 ```
 
-##Application View
+## Application View
 
 So let's look at the core of the application's logic, the views. Since each todo has a fair bit of logic associated with it, such as edit in place, we're going to use the element controller pattern - a pattern which consists of two views, one that controls a collection of items, and the other deals with each individual item.
 
@@ -2097,7 +2097,7 @@ We can then add in the logic for creating new todos, editing them and filtering 
 
 ```
 
-##Setup
+## Setup
 
 So now we have two views: `AppView` and `TodoView`. The former needs to get instantiated when the page loads, so some code actually gets run. You can do this simply enough, by using jQuery's `ready()` utility, which will execute a function when the DOM's loaded.
 
@@ -2115,7 +2115,7 @@ $(function() {
 
 ```
 
-##Creating new todos
+## Creating new todos
 
 
 It's all very good creating todos from the console, but we can hardly expect our users to do that. Let's hook up the todo creation section to provide a better interface. All the HTML is already there (in index.html); all we have to do is add some event listeners to that section, creating some todos.
@@ -2198,7 +2198,7 @@ Our events hash includes three callbacks:
 * `close()`: This trims the value of the current text in our `<input/>` field, ensuring that we don’t process it further if it contains no text (e.g ‘’). If a valid value has been provided, we save the changes to the current todo model and close editing mode, by removing the corresponding CSS class.
 
 
-##In action
+## In action
 
 Now we've gone far enough without checking that things work as they should. Open up index.html and, if everything's going to plan, you shouldn't see any errors in the console. The todo list will be blank (we haven't created any todos yet), and the todo-list won't work, as we haven't yet hooked it up. However, we can create a Todo from the console.
 
@@ -2208,7 +2208,7 @@ Type in: `window.app.Todos.create({ title: ‘My first Todo item});` and hit ret
 
 Once you've run the above in the console, we should be looking at a brand new todo in the list of todos. Notice that if you refresh the page, the todo still persists using Local Storage.
 
-##Templates
+## Templates
 
 
 The `#item-template` used in the `TodoView` view needs defining, so let's do that. One way of including templates in the page is by using custom script tags. These don't get evaluated by the browser, which just interprets them as plain text. Underscore micro-templating can then access the templates, rendering pieces of HTML.
@@ -2252,7 +2252,7 @@ We also need to define #stats-template template we use to display how many items
 ```
 
 
-##In action
+## In action
 
 Now refresh index.html to see the fruits of our labour. We should be able to type a todo name, and press return to submit the form, creating a new todo.
 
@@ -2261,7 +2261,7 @@ Now refresh index.html to see the fruits of our labour. We should be able to typ
 
 Excellent, we're making great progress, but how about completing and deleting todos?
 
-##Completing & deleting todos
+## Completing & deleting todos
 
 
 So the next part of our tutorial is going to cover completing and deleting todos. These two actions are specific to each Todo item, so we need to add this functionality to the TodoView view.
@@ -2373,7 +2373,7 @@ This tutorial is long enough as is, so we won't go into in-place editing or upda
 
 
 
-##Todo routing
+## Todo routing
 
 Finally, we move on to routing, which will allow us to easily bookmark the list of items that are active as well as those which have been completed. We’ll be supporting the following routes:
 
@@ -2415,7 +2415,7 @@ As we can see in the line  `window.app.Todos.trigger('filter')`, once a string f
 
 Finally, we call `Backbone.history.start()` to route the initial URL during page load.
 
-##Conclusions
+## Conclusions
 
 We’ve now learned how to build our first complete Backbone.js application. The app can be viewed online at any time and the sources are readily available via [TodoMVC](http://www.todomvc.com).
 
@@ -3677,12 +3677,12 @@ The Backbone.validateAll logic doesn't override the default Backbone logic by de
 # <a name="restfulapps">RESTful Applications</a>
 
 
-##<a name="restful">Building RESTful applications with Backbone</a>
+## <a name="restful">Building RESTful applications with Backbone</a>
 
 In this section of the book, we're going to take a look at developing RESTful applications using Backbone.js and modern technology stacks. When the data for your back-end is exposed through a purely RESTful API, tasks such as retrieving (GET), creating (POST), updating (PUT) and deleting (DELETE) models are made easy through Backbone's Model API. This API is so intuitive in fact that switching from storing records in a local data-store (e.g localStorage) to a database/noSQL data-store is a lot simpler than you may think.
 
 
-##<a name="stack1">Stack 1: Building A Backbone App With Node.js, Express, Mongoose and MongoDB</a>
+## <a name="stack1">Stack 1: Building A Backbone App With Node.js, Express, Mongoose and MongoDB</a>
 
 The first stack we'll be looking at is:
 
@@ -3693,7 +3693,7 @@ The first stack we'll be looking at is:
 
 with [Jade](http://jade-lang.com/) used optionally as a view/templating engine.
 
-###Reviewing the stack
+### Reviewing the stack
 
 As you may know, node.js is an event-driven platform (built on the [V8](http://code.google.com/apis/v8/design.html) runtime), designed for writing fast, scalable network applications. It's reasonably lightweight, efficient and great for real-time applications that are data-intensive.
 
@@ -3706,7 +3706,7 @@ Mongoose is a JavaScript library that simplifies how we interact with Mongo. Lik
 Jade is a template engine influenced by Haml (which we'll be looking at later). It's implemented with JavaScript (and also runs under node). In addition to supporting Express out of the box, it boasts a number of useful features including support for mixins, includes, caching, template inheritance and much more. Whilst abstractions like Jade certainly aren't for everyone, our practical will cover working both with and without it.
 
 
-###Practical
+### Practical
 
 For this practical, we're going to once again look at extending the popular Backbone Todo application. Rather than relying on localStorage for data persistence, we're going to switch to storing Todos in a MongoDB document-store instead. The code for this practical can be found in `practicals\stacks\option2`
 
@@ -4047,7 +4047,7 @@ Alternatively, a static version of our index which doesn't rely on Jade can be p
 
 We've now gone through the major points of developing a RESTful backend using Node.js, Express and Mongoose. Next, let's make sure you can get your environment setup to run the updated Todo app.
 
-####MongoDB
+#### MongoDB
 
 Once you've downloaded [MongoDB](http://www.mongodb.org/downloads), you'll need to complete two steps to get it up and running.
 
@@ -4078,7 +4078,7 @@ $ ./bin/mongo
 
 That's it!.
 
-####Express and Mongoose
+#### Express and Mongoose
 
 Option 1 (HTML) and Option 2 (Jade) of the practical download both come with an install.sh bash script. This allows you to easily install Express, Mongoose, Jade (and optionally MongoDB if you prefer to) through npm (the node package manager).
 
@@ -4114,9 +4114,9 @@ Finally, either of the example apps can now be accessed by navigating to:
 That's it! Whilst there's a lot more than can be done to expand on the concepts covered so far, the base we're reviewed should be enough to get you up and running with this stack if you wish to use it with Backbone.
 
 
-#<a name="stack2">Building Backbone.js Apps With Ruby, Sinatra, MongoDB and Haml</a>
+# <a name="stack2">Building Backbone.js Apps With Ruby, Sinatra, MongoDB and Haml</a>
 
-##Introduction
+## Introduction
 
 In this chapter we're going to explore writing Backbone.js applications with a Ruby back-end. To assist with this, we're going to use [Sinatra](http://www.sinatrarb.com/) - a DSL (domain specific language) for rapidly creating web applications in Ruby. Similar to the [section](https://github.com/addyosmani/backbone-fundamentals/#stack1) on writing an application with Node.js, our server-side language (Ruby) will be used to power an API whilst Backbone.js will be the client consuming it.
 
@@ -4144,7 +4144,7 @@ Let's review how to write and run a very basic Sinatra application. As most prog
 
 Note: Before beginning this section, I recommend installing Sinatra on your system. A guide to doing this can be found in the [prerequisites](#preq) section lower down in the article.
 
-###Routes
+### Routes
 
 As mentioned, Sinatra allows us to define new routes using HTTP actions. Semantically, a route follows quite a simple structure:
 
@@ -4212,7 +4212,7 @@ Sinatra also supports route matching via splats, wildcards and regular expressio
 
 Sinatra includes convenient handler methods for tasks such as redirection, halting and passing.
 
-####Redirection
+#### Redirection
 
 A simple route supporting redirection which returns a 302 response can be written as follows:
 
@@ -4225,13 +4225,13 @@ end
 And if we wish to pass additional parameters such as arguments we can do so like this:
 redirect 'http://site.com/', 'Oops! I think we have a problem!'
 
-####Halting
+#### Halting
 
 To immediately stop a request (halting) we can use 'halt'. Heres an example of halting a request where we specify the message body:
 
 ```halt "who goes there!?"```
 
-####Passing
+#### Passing
 
 'Passing' is the concept of deferring processing of a block to the next matching route. We do this using `pass`. In the following example if a parameter isnt the username we expect (rick-astley) we simply pass it on:
 
@@ -4267,7 +4267,7 @@ Note: By default enable:sessions will store all data in cookies. If this is not 
 This only touches the surface of what can be done using routes and handlers, but is sufficient for us to write the Sinatra-powered API service we require in the practical section of this chapter.
 
 
-##Templating And HAML
+## Templating And HAML
 
 
 Let's now discuss templating.Out of the box, we can begin using templates in our Sinatra applications with ERB. ERB is included with Ruby and allows Ruby code to be added to any plain text document for the purpose of generating information or flow control. In the following example using an ERB template, note that views are by default located in the ```views``` directory of our application.
@@ -4300,7 +4300,7 @@ Haml is a popular alternative to ERB which offers an abstract syntax for writing
 
 For the purpose of comparison, below we can see an ERB template compared to its Haml equivalent.
 
-####ERB
+#### ERB
 
 ```html
 <div class="todo" id="content">
@@ -4309,7 +4309,7 @@ For the purpose of comparison, below we can see an ERB template compared to its 
 </div>
 ```
 
-####Haml
+#### Haml
 
 ```html
 .todo#content
@@ -4354,7 +4354,7 @@ Note: Haml is whitespace sensitive and will not correctly work if it isn't inden
 #MongoDB Ruby Driver
 
 
-##Getting started
+## Getting started
 
 Once the MongoDB Ruby driver is installed, we can begin to use it to connect to a Mongo database. To create a  connection using localhost, we simply specify the driver as a dependency. Assuming we're using the default port we can then connect as follows:
 
@@ -4418,9 +4418,9 @@ We're going to use Sinatra in a similar manner to how we used Express in the las
 Remember that the default Todo example included with Backbone.js already persists data, although it does this via a localStorage adapter. Luckily there aren't a great deal of changes needed to switch over to using our Sinatra-based API.  Let's briefly review the code that will be powering the CRUD operations for this sections practical, as we won't be starting off with a near-complete base for most of our real world applications.
 
 
-###<a id="preq">Installing The Prerequisites</a>
+### <a id="preq">Installing The Prerequisites</a>
 
-####Ruby
+#### Ruby
 
 If using OSX or Linux, Ruby may be one of a number of open-source packages that come pre-installed and you can skip over to the next paragraph. In case you would like to check if check if you have Ruby installed, open up the terminal prompt and type:
 
@@ -4431,7 +4431,7 @@ The output of this will either be the version of Ruby installed or an error comp
 Should you need to install Ruby manually (e.g for an operating system such as Windows), you can do so by downloading the latest version from http://www.ruby-lang.org/en/downloads/. Alternatively, [RVM](http://beginrescueend.com/rvm/install/) (Ruby Version Manager) is a command-line tool that allows you to easily install and manage multiple ruby environments with ease.
 
 
-####Ruby Gems
+#### Ruby Gems
 
 Next, we will need to install Ruby Gems. Gems are a standard way to package programs or libraries written in Ruby and with Ruby Gems it's possible to install additional dependencies for Ruby applications very easily.
 
@@ -4454,7 +4454,7 @@ $ gem -v
 ```
 
 
-####Sinatra
+#### Sinatra
 
 With Ruby Gems setup, we can now easily install Sinatra. For Linux or OSX type this in your terminal:
 
@@ -4465,7 +4465,7 @@ and if you're on Windows, enter the following at a command prompt:
 ```c:\> gem install sinatra```
 
 
-####Haml
+#### Haml
 
 As with other DSLs and frameworks, Sinatra supports a wide range of different templating engines. [ERB](http://www.ruby-doc.org/stdlib/libdoc/erb/rdoc/classes/ERB.html) is the one most often recommended by the Sinatra camp, however
 as a part of this chapter, we're going to explore the use of [Haml](http://haml.hamptoncatlin.com/) to define our application templates.
@@ -4477,7 +4477,7 @@ Installing Haml can be done in just a line using Ruby Gems as follows:
 ```$ gem install haml```
 
 
-####MongoDB
+#### MongoDB
 
 If you haven't already downloaded and installed MongoDB from an earlier chapter, please [do so](http://www.mongodb.org/downloads) now. With Ruby Gems, Mongo can be installed in just one line:
 
@@ -4485,7 +4485,7 @@ If you haven't already downloaded and installed MongoDB from an earlier chapter,
 
 We now require two further steps to get everything up and running.
 
-#####1.Data directories
+##### 1.Data directories
 
 MongoDB stores data in the bin/data/db folder but won't actually create this directory for you. Navigate to where you've downloaded and extracted Mongo and run the following from terminal:
 
@@ -4494,7 +4494,7 @@ sudo mkdir -p /data/db/
 sudo chown `id -u` /data/db
 ```
 
-#####2.Running and connecting to your server
+##### 2.Running and connecting to your server
 
 Once this is done, open up two terminal windows.
 
@@ -4510,7 +4510,7 @@ Finally, in the second terminal, start the mongo shell which will connect up to 
 $ ./bin/mongo
 ```
 
-####MongoDB Ruby Driver
+#### MongoDB Ruby Driver
 
 As we'll be using the [MongoDB Ruby Driver](https://github.com/mongodb/mongo-ruby-driver), we'll also require the following gems:
 
@@ -4531,12 +4531,12 @@ This is basically a collection of extensions used to increase serialization spee
 That's it for our prerequisites!.
 
 
-##Tutorial
+## Tutorial
 
 To get started, let's get a local copy of the practical application working on our system.
 
 
-###Application Files
+### Application Files
 Clone [this](http://github.com/addyosmani/backbone-fundamentals) repository and navigate to `/practicals/stacks/option3`. Now run the following lines at the terminal:
 
 ```
@@ -4583,9 +4583,9 @@ Lastly, the `views` directory hosts the Haml source files for our application's 
 
 These can be viewed along with other note-worthy snippets of code from the application below.
 
-###Backbone
+### Backbone
 
-####Views
+#### Views
 
 In our main application view (AppView), we want to load any previously stored Todo items in our Mongo database when the view initializes. This is done below with the line ```Todos.fetch()``` in the ```initialize()``` method where we also bind to the relevant events on the `Todos` collection for when items are added or changed.
 
@@ -4627,7 +4627,7 @@ var AppView = Backbone.View.extend({
  ….
 ```
 
-###Collections
+### Collections
 
 In the TodoList collection below, we've set the `url` property to point to `/api/todos` to reference the collection's location on the server. When we attempt to access this from our Sinatra-backed API, it should return a list of all the Todo items that have been previously stored in Mongo.
 
@@ -4671,7 +4671,7 @@ For the sake of thoroughness, our API will also support returning the data for a
 ```
 
 
-###Model
+### Model
 
 The model for our Todo application remains largely unchanged from the versions previously covered in this book. It is however worth noting that calling the function `model.url()` within the below would return the relative URL where a specific Todo item could be located on the server.
 
@@ -4696,14 +4696,14 @@ The model for our Todo application remains largely unchanged from the versions p
   });
 ```
 
-###Ruby/Sinatra
+### Ruby/Sinatra
 
 Now that we've defined our main models, views and collections let's get the CRUD operations required by our Backbone application supported in our Sinatra API.
 
 We want to make sure that for any operations changing underlying data (create, update, delete) that our Mongo data store correctly reflects these.
 
 
-###app.rb
+### app.rb
 
 For `app.rb`, we first define the dependencies required by our application. These include Sinatra, Ruby Gems, the MongoDB Ruby driver and the JSON gem.
 
@@ -4792,7 +4792,7 @@ If you're a developer wishing to take this example further, why not try to add s
 * Search: search or filter down Todo items based on a set of keywords or within a certain date range
 * Pagination: only return the Nth number of Todo items or items from a start and end-point
 
-###Haml/Templates
+### Haml/Templates
 
 Finally, we move on to the Haml files that define our application index (layout.haml) and the template for a specific Todo item (todo.haml). Both of these are largely self-explanatory, but it's useful to see the differences between the Jade approach we reviewed in the last chapter vs. using Haml for this implementation.
 
@@ -4805,7 +4805,7 @@ compiles to:
 ```<!-- These are templates -->```
 
 
-###index.haml
+### index.haml
 
 ```html
 %head
@@ -4838,7 +4838,7 @@ compiles to:
   / end scripts
 ```
 
-###todo.haml
+### todo.haml
 
 ```html
 %div#todoapp
@@ -4882,7 +4882,7 @@ compiles to:
   <% } %>
 ```
 
-##Conclusions
+## Conclusions
 
 In this chapter, we looked at creating a Backbone application backed by an API powered by Ruby, Sinatra, Haml, MongoDB and the MongoDB driver. I personally found developing APIs with Sinatra a relatively painless experience and one which I felt was
 on-par with the effort required for the Node/Express implementation of the same application.
@@ -4893,7 +4893,7 @@ This section is by no means the most comprehensive guide on building complex app
 # <a name="advanced">Modular Development</a>
 
 
-##<a name="modularjs">Introduction</a>
+## <a name="modularjs">Introduction</a>
 
 When we say an application is modular, we generally mean it's composed of a set of highly decoupled, distinct pieces of functionality stored in modules. As you probably know, loose coupling facilitates easier maintainability of apps by removing dependencies where possible. When this is implemented efficiently, its quite easy to see how changes to one part of a system may affect another.
 
@@ -4906,7 +4906,7 @@ Whilst native solutions to these problems will be arriving in ES Harmony, the go
 In this next part of the book, we're going to look at how to use AMD modules and Require.js for cleanly wrapping units of code in your application into manageable modules.
 
 
-##<a name="organizingmodules">Organizing modules with Require.js and AMD</a>
+## <a name="organizingmodules">Organizing modules with Require.js and AMD</a>
 
 In case you haven't used it before, [Require.js](http://requirejs.org) is a popular script loader written by James Burke - a developer who has been quite instrumental in helping shape the AMD module format, which we'll discuss more shortly. Some of Require.js's capabilities include helping to load multiple script files, helping define modules with or without dependencies and loading in non-script dependencies such as text files.
 
@@ -4922,7 +4922,7 @@ Think about the GMail web-client for a moment. When users initially load up the 
 
 I've previously written [a detailed article](http://addyosmani.com/writing-modular-js) covering both AMD and other module formats and script loaders in case you'd like to explore this topic further. The takeaway is that although it's perfectly fine to develop applications without a script loader or clean module format in place, it can be of significant benefit to consider using these tools in your application development.
 
-###Writing AMD modules with Require.js
+### Writing AMD modules with Require.js
 
 As discussed above, the overall goal for the AMD format is to provide a solution for modular JavaScript that developers can use today. The two key concepts you need to be aware of when using it with a script-loader are a `define()` method for facilitating module definition and a `require()` method for handling dependency loading. `define()` is used to define named or unnamed modules based on the proposal using the following signature:
 
@@ -4959,7 +4959,7 @@ define(['foo', 'bar'],
 });
 ```
 
-####Alternate syntax
+#### Alternate syntax
 There is also a [sugared version](http://requirejs.org/docs/whyamd.html#sugar) of `define()` available that allows you to declare your dependencies as local variables using `require()`. This will feel familiar to anyone who's used node, and can be easier to add or remove dependencies.
 Here is the previous snippet using the alternate syntax:
 
@@ -5046,7 +5046,7 @@ define([
 Aliasing to the dollar-sign (`$`), once again makes it very easy to encapsulate any part of an application you wish using AMD.
 
 
-##<a name="externaltemplates">Keeping Your Templates External Using Require.js And The Text Plugin</a>
+## <a name="externaltemplates">Keeping Your Templates External Using Require.js And The Text Plugin</a>
 
 Moving your [Underscore/Mustache/Handlebars] templates to external files is actually quite straight-forward. As this application makes use of Require.js, I'll discuss how to implement external templates using this specific script loader.
 
@@ -5125,7 +5125,7 @@ All templating solutions will have their own custom methods for handling templat
 **Note:** You may also be interested in looking at [Require.js tpl](https://github.com/ZeeAgency/requirejs-tpl). It's an AMD-compatible version of the Underscore templating system that also includes support for optimization (pre-compiled templates) which can lead to better performance and no evals. I have yet to use it myself, but it comes as a recommended resource.
 
 
-##<a name="optimizingrequirejs">Optimizing Backbone apps for production with the Require.js Optimizer</a>
+## <a name="optimizingrequirejs">Optimizing Backbone apps for production with the Require.js Optimizer</a>
 
 As experienced developers may know, an essential final step when writing both small and large JavaScript web applications is the build process.  The majority of non-trivial apps are likely to consist of more than one or two scripts and so optimizing, minimizing and concatenating your scripts prior to pushing them to production will require your users to download a reduced number (if not just one) script file.
 
@@ -5463,7 +5463,7 @@ If you intalled r.js with Node's npm (package manager) like so...
     > r.js -o app.build.js
 
 
-##<a name="practicalrequirejs">Practical: Building a modular Backbone app with AMD & Require.js</a>
+## <a name="practicalrequirejs">Practical: Building a modular Backbone app with AMD & Require.js</a>
 
 In this chapter, we'll look at our first practical Backbone & Require.js project - how to build a modular Todo application. The application will allow us to add new todos, edit new todos and clear todo items that have been marked as completed. For a more advanced practical, see the section on mobile Backbone development.
 
@@ -5471,7 +5471,7 @@ The complete code for the application can can be found in the `practicals/modula
 
 **Note:** Thomas may be covering a practical on this exercise in more detail on [backbonetutorials.com](http://backbonetutorials.com) at some point soon, but for this section I'll be covering what I consider the core concepts.
 
-###Overview
+### Overview
 
 Writing a 'modular' Backbone application can be a straight-forward process. There are however, some key conceptual differences to be aware of if opting to use AMD as your module format of choice:
 
@@ -5505,7 +5505,7 @@ index.html
 ...css/
 ```
 
-###Markup
+### Markup
 
 The markup for the application is relatively simple and consists of three primary parts: an input section for entering new todo items (`create-todo`), a list section to display existing items (which can also be edited in-place) (`todo-list`) and finally a section summarizing how many items are left to be completed (`todo-stats`).
 
@@ -5532,7 +5532,7 @@ The markup for the application is relatively simple and consists of three primar
 
 The rest of the tutorial will now focus on the JavaScript side of the practical.
 
-###Configuration options
+### Configuration options
 
 If you've read the earlier chapter on AMD, you may have noticed that explicitly needing to define each dependency a Backbone module (view, collection or other module) may require with it can get a little tedious. This can however be improved.
 
@@ -5565,7 +5565,7 @@ In addition to offering name-mapping, the configuration object can be used to de
 For more information on configuration objects, please feel free to check out the excellent guide to them in the [RequireJS docs](http://requirejs.org/docs/api.html#config).
 
 
-###Modularizing our models, views and collections
+### Modularizing our models, views and collections
 
 Before we dive into AMD-wrapped versions of our Backbone components, let's review a sample of a non-AMD view. The following view listens for changes to its model (a Todo item) and re-renders if a user edits the value of the item.
 
@@ -5823,7 +5823,7 @@ To see how everything ties together, feel free to grab the source by cloning thi
 **Note:** While this first practical doesn't use a build profile as outlined in the chapter on using the Require.js optimizer, we will be using one in the section on building mobile Backbone applications.
 
 
-##<a name="decouplingbackbone">Decoupling Backbone with the Mediator and Facade patterns</a>
+## <a name="decouplingbackbone">Decoupling Backbone with the Mediator and Facade patterns</a>
 
 In this section we'll discuss applying some of the concepts I cover in my article on [Large-scale JavaScript Application development](http://addyosmani.com/largescalejavascript) to Backbone.
 
@@ -6148,7 +6148,7 @@ function ($, _, facade) {
 That's it for this section. If you've been intrigued by some of the concepts covered, I encourage you to consider taking a look at my [slides](http://addyosmani.com/blog/large-scale-javascript-application-architecture/) on Large-scale JS from the jQuery Summit or my longer post on the topic [here](http://addyosmani.com/largescalejavascript) for more information.
 
 
-##<a name="pagination">Paginating Backbone.js Requests & Collections</a>
+## <a name="pagination">Paginating Backbone.js Requests & Collections</a>
 
 Pagination is a ubiquitous problem we often find ourselves needing to solve on the web. Perhaps most predominantly when working with back-end APIs and JavaScript-heavy clients which consume them.
 
@@ -6190,24 +6190,27 @@ Live previews of both pagination components using the Netflix API can be found b
 * [Infinite Pagination (Backbone.Paginator.requestPager())](http://addyosmani.github.com/backbone.paginator/examples/netflix-infinite-paging/index.html)
 * [Diacritic Plugin](http://addyosmani.github.com/backbone.paginator/examples/google-diacritic/index.html)
 
-##Paginator.requestPager
+## Paginator.requestPager
 
 In this section we're going to walkthrough actually using the requestPager.
 
-####1. Create a new Paginated collection
+#### 1. Create a new Paginated collection
+
 First, we define a new Paginated collection using `Backbone.Paginator.requestPager()` as follows:
 
 ```javascript
 var PaginatedCollection = Backbone.Paginator.requestPager.extend({
 ```
-####2: Set the model for the collection as normal
+
+#### 2: Set the model for the collection as normal
 
 Within our collection, we then (as normal) specify the model to be used with this collection followed by the URL (or base URL) for the service providing our data (e.g the Netflix API).
 
 ```javascript
         model: model,
 ```
-####3. Configure the base URL and the type of the request
+
+#### 3. Configure the base URL and the type of the request
 
 We need to set a base URL. The `type` of the request is `GET` by default, and the `dataType` is `jsonp` in order to enable cross-domain requests.
 
@@ -6224,7 +6227,7 @@ We need to set a base URL. The `type` of the request is `GET` by default, and th
     },
 ```
 
-####4. Configure how the library will show the results
+#### 4. Configure how the library will show the results
 
 We need to tell the library how many items per page would we like to see, etc...
 
@@ -6248,7 +6251,7 @@ We need to tell the library how many items per page would we like to see, etc...
     },
 ```
 
-####5. Configure the parameters we want to send to the server
+#### 5. Configure the parameters we want to send to the server
 
 Only the base URL won't be enough for most cases, so you can pass more parameters to the server.
 Note how you can use functions insead of hardcoded values, and you can also reffer to the values you specified in `paginator_ui`.
@@ -6278,7 +6281,7 @@ Note how you can use functions insead of hardcoded values, and you can also reff
     },
 ```
 
-####6. Finally, configure Collection.parse() and we're done
+#### 6. Finally, configure Collection.parse() and we're done
 
 The last thing we need to do is configure our collection's `parse()` method. We want to ensure we're returning the correct part of our JSON response containing the data our collection will be populated with, which below is `response.d.results` (for the Netflix API).
 
@@ -6300,7 +6303,7 @@ You might also notice that we're setting `this.totalPages` to the total page cou
 });
 ```
 
-####Convenience methods:
+#### Convenience methods:
 
 For your convenience, the following methods are made available for use in your views to interact with the `requestPager`:
 
@@ -6347,11 +6350,11 @@ If you'd like to add the incoming models to the current collection, instead of r
 Collection.requestPreviousPage({ add: true });
 ```
 
-##Paginator.clientPager
+## Paginator.clientPager
 
 The `clientPager` works similar to the `requestPager`, except that our configuration values influence the pagination of data already returned at a UI-level. Whilst not shown (yet) there is also a lot more UI logic that ties in with the `clientPager`. An example of this can be seen in 'views/clientPagination.js'.
 
-####1. Create a new paginated collection with a model and URL
+#### 1. Create a new paginated collection with a model and URL
 As with `requestPager`, let's first create a new Paginated `Backbone.Paginator.clientPager` collection, with a model:
 
 ```javascript
@@ -6360,7 +6363,7 @@ As with `requestPager`, let's first create a new Paginated `Backbone.Paginator.c
         model: model,
 ```
 
-####2. Configure the base URL and the type of the request
+#### 2. Configure the base URL and the type of the request
 
 We need to set a base URL. The `type` of the request is `GET` by default, and the `dataType` is `jsonp` in order to enable cross-domain requests.
 
@@ -6377,7 +6380,7 @@ We need to set a base URL. The `type` of the request is `GET` by default, and th
     },
 ```
 
-####3. Configure how the library will show the results
+#### 3. Configure how the library will show the results
 
 We need to tell the library how many items per page would we like to see, etc...
 
@@ -6401,7 +6404,7 @@ We need to tell the library how many items per page would we like to see, etc...
     },
 ```
 
-####4. Configure the parameters we want to send to the server
+#### 4. Configure the parameters we want to send to the server
 
 Only the base URL won't be enough for most cases, so you can pass more parameters to the server.
 Note how you can use functions insead of hardcoded values, and you can also reffer to the values you specified in `paginator_ui`.
@@ -6431,7 +6434,7 @@ Note how you can use functions insead of hardcoded values, and you can also reff
     },
 ```
 
-####5. Finally, configure Collection.parse() and we're done
+#### 5. Finally, configure Collection.parse() and we're done
 
 And finally we have our `parse()` method, which in this case isn't concerned with the total number of result pages available on the server as we have our own total count of pages for the paginated data in the UI.
 
@@ -6444,7 +6447,7 @@ And finally we have our `parse()` method, which in this case isn't concerned wit
     });
 ```
 
-####Convenience methods:
+#### Convenience methods:
 
 As mentioned, your views can hook into a number of convenience methods to navigate around UI-paginated data. For `clientPager` these include:
 
@@ -6504,7 +6507,7 @@ Use levenshtein only for short texts (titles, names, etc).
 
 * **Collection.doFakeFieldFilter(rules)** - returns the models count after fake-applying a call to ```Collection.setFieldFilter```.
 
-####Implementation notes:
+#### Implementation notes:
 
 You can use some variables in your ```View``` to represent the actual state of the paginator.
 
@@ -6550,9 +6553,9 @@ Paginator.clientPager = Backbone.Collection.extend({
  [7]: https://github.com/cowboy/grunt
 
 
-##Backbone & jQuery Mobile
+## Backbone & jQuery Mobile
 
-###Resolving the routing conflicts
+### Resolving the routing conflicts
 
 The first major hurdle developers typically run into when building Backbone applications with jQuery Mobile is that both frameworks have their own opinions about how to handle application navigation.
 
@@ -6588,11 +6591,11 @@ In the above sample, `url` can refer to a URL or a hash identifier to navigate t
 **Note:** For some parallel work being done to explore how well the jQuery Mobile Router plugin works with Backbone, you may be interested in checking out [https://github.com/Filirom1/jquery-mobile-backbone-requirejs](https://github.com/Filirom1/jquery-mobile-backbone-requirejs).
 
 
-###Practical: A Backbone, Require.js/AMD app with jQuery Mobile
+### Practical: A Backbone, Require.js/AMD app with jQuery Mobile
 
 **Note:** The code for this practical can be found in `practicals/modular-mobile-app`.
 
-###Getting started
+### Getting started
 
 Once you feel comfortable with the [Backbone fundamentals](http://msdn.microsoft.com/en-us/scriptjunkie/hh377172.aspx) and you've put together a rough wireframe of the app you may wish to build, start to think about your application architecture. Ideally, you'll want to logically separate concerns so that it's as easy as possible to maintain the app in the future.
 
@@ -6643,7 +6646,7 @@ A number of possible routes need to be taken into consideration:
 This tutorial will be expanded shortly to fully cover the demo application. In the mean time, please see the practicals folder for the completed application that demonstrates the router resolution discussed earlier between Backbone and jQuery Mobile.
 
 
-###jQuery Mobile: Going beyond mobile application development
+### jQuery Mobile: Going beyond mobile application development
 
 The majority of jQM apps I've seen in production have been developed for the purpose of providing an optimal experience to users on mobile devices. Given that the framework was developed for this purpose, there's nothing fundamentally wrong with this, but many developers forget that jQM is a UI framework not dissimilar to jQuery UI. It's using the widget factory and is capable of being used for a lot more than we give it credit for.
 
@@ -6654,12 +6657,12 @@ The benefit of this is that I don't need to go pulling in jQuery UI separately t
 The takeaway here is just to remember that if you're not (already) going through the hassle of conditional script/style loading based on screen-resolution (using matchMedia.js etc), there are simpler approaches that can be taken to cross-device component theming.
 
 
-#<a name="testing">Unit Testing</a>
+# <a name="testing">Unit Testing</a>
 
 
-##<a name="unittestingjasmine">Unit Testing Backbone Applications With Jasmine</a>
+## <a name="unittestingjasmine">Unit Testing Backbone Applications With Jasmine</a>
 
-##Introduction
+## Introduction
 
 One definition of unit testing is the process of taking the smallest piece of testable code in an application, isolating it from the remainder of your codebase and determining if it behaves exactly as expected. In this section, we'll be taking a look at how to unit test Backbone applications using a popular JavaScript testing framework called [Jasmine](http://pivotal.github.com/jasmine/) from Pivotal Labs.
 
@@ -6669,7 +6672,7 @@ As a basic example of unit testing is where a developer may wish to assert wheth
 
 When building modern web-applications, it's typically considered best-practice to include automated unit testing as a part of your development process. Whilst we'll be focusing on Jasmine as a solution for this, there are a number of other alternatives worth considering, including QUnit.
 
-##Jasmine
+## Jasmine
 
 Jasmine describes itself as a behavior-driven development (BDD) framework for testing JavaScript code. Before we jump into how the framework works, it's useful to understand exactly what [BDD](http://en.wikipedia.org/wiki/Behavior_Driven_Development) is.
 
@@ -6702,7 +6705,7 @@ In this chapter we're going to use both BDD (with TDD) to write unit tests for a
 ***Note:*** I've seen a lot of developers also opt for writing tests to validate behavior of their code after having written it. While this is fine, note that it can come with pitfalls such as only testing for behavior your code currently supports, rather than behavior the problem needs to be supported.
 
 
-##Suites, Specs & Spies
+## Suites, Specs & Spies
 
 When using Jasmine, you'll be writing suites and specifications (specs). Suites basically describe scenarios whilst specs describe what can be done in these scenarios.
 
@@ -6860,7 +6863,7 @@ function getTodo(id, callback) {
 
 ***Note:*** It's useful to remember that when making real requests to a web server in your unit tests, this has the potential to massively slow down the speed at which tests run (due to many factors including server latency). As this also introduces an external dependency that can (and should) be minimized in your unit testing, it is strongly recommended that you opt for spies to remove the need for a web server to be used here.
 
-##beforeEach and afterEach()
+## beforeEach and afterEach()
 
 Jasmine also supports specifying code that can be run before each (```beforeEach()```) and after each (```afterEach```) test. This is useful for enforcing consistent conditions (such as resetting variables that may be required by specs). In the following example, ```beforeEach()``` is used to create a new sample Todo model specs can use for testing attributes.
 
@@ -6879,12 +6882,12 @@ it("should contain a text value if not the default value", function(){
 
 Each nested ```describe()``` in your tests can have their own ```beforeEach()``` and ```afterEach()``` methods which support including setup and teardown methods relevant to a particular suite. We'll be using ```beforeEach()``` in practice a little later.
 
-##Shared scope
+## Shared scope
 
 In the previous section you may have noticed that we initially declared a variable ```this.todo``` in our ```beforeEach()``` call and were then able to continue using this in ```afterEach()```. This is thanks to a powerful feature of Jasmine known as shared  functional scope. Shared scope allows ```this``` properties to be common to all blocks (including ```runs()```), but not declared variables (i.e ```var```s).
 
 
-##Getting setup
+## Getting setup
 
 Now that we've reviewed some fundamentals, let's go through downloading Jasmine and getting everything setup to write tests.
 
@@ -6918,11 +6921,11 @@ And finally the sources being tested:
 
 ***Note:*** Below this section of SpecRunner is code responsible for running the actual tests. Given that we won't be covering modifying this code, I'm going to skip reviewing it. I do however encourage you to take a look through [PlayerSpec.js](https://github.com/pivotal/jasmine/blob/master/lib/jasmine-core/example/spec/PlayerSpec.js) and [SpecHelper.js](https://github.com/pivotal/jasmine/blob/master/lib/jasmine-core/example/spec/SpecHelper.js). They're a useful basic example to go through how a minimal set of tests might work.
 
-##TDD With Backbone
+## TDD With Backbone
 
 When developing applications with Backbone, it can be necessary to test both individual modules of code as well as modules, views, collections and routers. Taking a TDD approach to testing, let's review some specs for testing these Backbone components using the popular Backbone [Todo](https://github.com/addyosmani/todomvc/tree/master/todo-example/backbone) application. For this section we will be using a modified version of Larry Myers Backbone Koans project, which can be found in the `practicals\jasmine-koans` folder.
 
-##<a name="testing-jasmine-models">Models</a>
+## <a name="testing-jasmine-models">Models</a>
 
 The complexity of Backbone models can vary greatly depending on what your application is trying to achieve. In the following example, we're going to test default values, attributes, state changes and validation rules.
 
@@ -7065,7 +7068,7 @@ window.Todo = Backbone.Model.extend({
 ```
 
 
-##<a name="testing-jasmine-collections">Collections</a>
+## <a name="testing-jasmine-collections">Collections</a>
 
 We now need to define specs to tests a Backbone collection of Todo models (a TodoList). Collections are responsible for a number of list tasks including managing order and filtering.
 
@@ -7151,7 +7154,7 @@ The final implementation for our TodoList collection can be found below:
 ```
 
 
-##<a name="testing-jasmine-views">Views</a>
+## <a name="testing-jasmine-views">Views</a>
 
 Before we take a look at testing Backbone views, let's briefly review a jQuery plugin that can assist with writing Jasmine specs for them.
 
@@ -7200,7 +7203,7 @@ expect('click').toHaveBeenTriggeredOn($('#el'));
 
 In this section we will review three dimensions to writing specs for Backbone Views: initial setup, view rendering and finally templating. The latter two of these are the most commonly tested, however we'll review shortly why writing specs for the initialization of your views can also be of benefit.
 
-##Initial setup
+## Initial setup
 
 At their most basic, specs for Backbone views should validate that they are being correctly tied to specific DOM elements and are backed by valid data models. The reason to consider doing this is that failures to such specs can trip up more complex tests later on and they're fairly simple to write, given the overall value offered.
 
@@ -7264,7 +7267,7 @@ it('Is backed by a model instance, which provides the data.', function() {
 });
 ```
 
-##View rendering
+## View rendering
 
 
 Next we're going to take a look at writing specs for view rendering. Specifically, we want to test that our TodoView elements are actually rendering as expected.
@@ -7398,7 +7401,7 @@ describe("TodoView", function() {
 What we're now doing in the above spec is appending the rendered todo item into the fixture. We then set expectations against the fixture, which may be something desirable when a view is setup against an element which already exists in the DOM. It would be necessary to provide both the fixture and test the ```el``` property correctly picking up the element expected when the view is instantiated.
 
 
-##Rendering with a templating system
+## Rendering with a templating system
 
 
 JavaScript templating systems (such as Handlebars, Mustache and even Underscore's own Micro-templating) support conditional logic in template strings. What this effectively means is that we can add if/else/ternery expressions inline which can then be evaluated as needed, allowing us to build even more powerful templates.
@@ -7519,25 +7522,25 @@ beforeEach(function() {
 This will now also pass without any issues. Remember that jasmine-jquery also supports loading external fixtures into your specs easily using its build in ```loadFixtures()``` and ```readFixtures()``` methods. For more information, consider reading the official jasmine-jquery [docs](https://github.com/velesin/jasmine-jquery).
 
 
-##Conclusions
+## Conclusions
 
 We have now covered how to write Jasmine tests for models, views and collections with Backbone.js. Whilst testing routing can at times be desirable, some developers feel it can be more optimal to leave this to third-party tools such as Selenium, so do keep this in mind.
 
 James Newbery was kind enough to help me with writing the Views section above and his articles on [Testing Backbone Apps With SinonJS](http://tinnedfruit.com/2011/04/26/testing-backbone-apps-with-jasmine-sinon-3.html) were of great inspiration (you'll actually find some Handlebars examples of the view specs in part 3 of his article). If you would like to learn more about writing spies and mocks for Backbone using [SinonJS](http://sinonjs.org) as well as how to test Backbone routers, do consider reading his series.
 
-##Exercise
+## Exercise
 
 As an exercise, I recommend now trying the Jasmine Koans in `practicals\jasmine-joans` and trying to fix some of the purposefully failing tests it has to offer. This is an excellent way of not just learning how Jasmine specs and suites work, but working through the examples (without peeking back) will also put your Backbone skills to test too.
 
 
-##Further reading
+## Further reading
 * [Jasmine + Backbone Revisited](http://japhr.blogspot.com/2011/11/jasmine-backbonejs-revisited.html)
 * [Backbone, PhantomJS and Jasmine](http://japhr.blogspot.com/2011/12/phantomjs-and-backbonejs-and-requirejs.html)
 
 
-##<a name="unittestingqunit">Unit Testing Backbone Applications With QUnit And SinonJS</a>
+## <a name="unittestingqunit">Unit Testing Backbone Applications With QUnit And SinonJS</a>
 
-##Introduction
+## Introduction
 
 QUnit is a powerful JavaScript test suite written by jQuery team member [Jörn Zaefferer](http://bassistance.de/) and used by many large open-source projects (such as jQuery and Backbone.js) to test their code. It's both capable of testing standard JavaScript code in the browser as well as code on the server-side (where environments supported include Rhino, V8 and SpiderMonkey). This makes it a robust solution for a large number of use-cases.
 
@@ -7548,7 +7551,7 @@ My personal recommendation is that it's worth comparing both frameworks and opti
 
 #QUnit
 
-##Getting Setup
+## Getting Setup
 
 Luckily, getting QUnit setup is a fairly straight-forward process that will take less than 5 minutes.
 
@@ -7562,7 +7565,7 @@ The latter two of these can be downloaded from the [QUnit website](http://qunitj
 
 If you would prefer, you can use a hosted version of the QUnit source files for testing purposes. The hosted URLs can be found at [http://github.com/jquery/qunit/raw/master/qunit/].
 
-####Sample HTML with QUnit-compatible markup:
+#### Sample HTML with QUnit-compatible markup:
 
 ```html
 <!DOCTYPE html>
@@ -7610,7 +7613,7 @@ If however any tests fail, the test gets highlighted (and the qunit-banner at th
 ![screenshot 3](img/3e5545.png)
 
 
-##Assertions
+## Assertions
 
 QUnit supports a number of basic **assertions**, which are used in testing to verify that the result being returned by our code is what we expect. If an assertion fails, we know that a bug exists.Similar to Jasmine, QUnit can be used to easily test for regressions. Specifically, when a bug is found one can write an assertion to test the existence of the bug, write a patch and then commit both. If subsequent changes to the code break the test you'll know what was responsible and be able to address it more easily.
 
@@ -7625,7 +7628,7 @@ Some of the supported QUnit assertions we're going to look at first are:
 
 Creating new test cases with QUnit is relatively straight-forward and can be done using ```test()```, which constructs a test where the first argument is the ```name``` of the test to be displayed in our results and the second is a ```callback``` function containing all of our assertions. This is called as soon as QUnit is running.
 
-####Basic test case using test( name, callback ):
+#### Basic test case using test( name, callback ):
 
 ```javascript
 var myString = 'Hello Backbone.js';
@@ -7647,7 +7650,7 @@ Note: Optionally in our test case, we could have passed an 'expected' value to `
 
 As testing a simple static variable is fairly trivial, we can take this further to test actual functions. In the following example we test the output of a function that reverses a string to ensure that the output is correct using ```equal()``` and ```notEqual()```:
 
-####Comparing the actual output of a function against the expected output:
+#### Comparing the actual output of a function against the expected output:
 
 ```javascript
 function reverseString( str ){
@@ -7667,11 +7670,11 @@ test( 'reverseString()', function() {
 Running these tests in the QUnit test runner (which you would see when your HTML test page was loaded) we would find that four of the assertions pass whilst the last one does not. The reason the test against `'double'` fails is because it was purposefully written incorrectly. In your own projects if a test fails to pass and your assertions are correct, you've probably just found a bug!
 
 
-##Adding structure to assertions
+## Adding structure to assertions
 
 Housing all of our assertions in one test case can quickly become difficult to maintain, but luckily QUnit supports structuring blocks of assertions more cleanly. This can be done using ```module()``` - a method that allows us to easily group tests together. A typical approach to grouping might be keeping multiple tests testing a specific method as part of the same group (module).
 
-####Basic QUnit Modules:
+#### Basic QUnit Modules:
 ```javascript
 module( 'Module One' );
 test( 'first test', function() {} );
@@ -7688,7 +7691,7 @@ test( 'another test', function() {} );
 
 We can take this further by introducing ```setup()``` and ```teardown()``` callbacks to our modules, where ```setup()``` is run before each test whilst ```teardown()``` is run after each test.
 
-####Using setup() and teardown() :
+#### Using setup() and teardown() :
 ```javascript
 module( "Module One", {
     setup: function() {
@@ -7706,7 +7709,7 @@ test("first test", function() {
 
 These callbacks can be used to define (or clear) any components we wish to instantiate for use in one or more of our tests. As we'll see shortly, this is ideal for defining new instances of views, collections, models or routers from a project that we can then reference across multiple tests.
 
-####Using setup() and teardown() for instantiation and clean-up:
+#### Using setup() and teardown() for instantiation and clean-up:
 ```javascript
 // Define a simple model and collection modeling a store and
 // list of stores
@@ -7745,11 +7748,11 @@ test( "test ordering", function() {
 Here, a list of stores is created and stored on ```setup()```. A ```teardown()``` callback is used to simply clear our a list of errors we might be storing within the window scope, but is otherwise not needed.
 
 
-##Assertion examples
+## Assertion examples
 
 Before we continue any further, let's review some more examples of how QUnits various assertions can be correctly used when writing tests:
 
-###equal - a comparison assertion. It passes if actual == expected
+### equal - a comparison assertion. It passes if actual == expected
 
 ```javascript
 test( "equal", 2, function() {
@@ -7760,7 +7763,7 @@ test( "equal", 2, function() {
 ```
 
 
-###notEqual - a comparison assertion. It passes if actual != expected
+### notEqual - a comparison assertion. It passes if actual != expected
 
 ```javascript
 test( "notEqual", 2, function() {
@@ -7770,7 +7773,7 @@ test( "notEqual", 2, function() {
 });
 ```
 
-###strictEqual - a comparison assertion. It passes if actual === expected.
+### strictEqual - a comparison assertion. It passes if actual === expected.
 
 ```javascript
 test( "strictEqual", 2, function() {
@@ -7780,7 +7783,7 @@ test( "strictEqual", 2, function() {
 });
 ```
 
-###notStrictEqual - a comparison assertion. It passes if actual !== expected.
+### notStrictEqual - a comparison assertion. It passes if actual !== expected.
 
 ```javascript
 test("notStrictEqual", 2, function() {
@@ -7790,7 +7793,7 @@ test("notStrictEqual", 2, function() {
 });
 ```
 
-###deepEqual - a recursive comparison assertion. Unlike strictEqual(), it works on objects, arrays and primitives.
+### deepEqual - a recursive comparison assertion. Unlike strictEqual(), it works on objects, arrays and primitives.
 
 ```javascript
 test("deepEqual", 4, function() {
@@ -7806,7 +7809,7 @@ test("deepEqual", 4, function() {
 });
 ```
 
-###notDeepEqual - a comparison assertion. This returns the opposite of deepEqual
+### notDeepEqual - a comparison assertion. This returns the opposite of deepEqual
 
 ```javascript
 test("notDeepEqual", 2, function() {
@@ -7816,7 +7819,7 @@ test("notDeepEqual", 2, function() {
 });
 ```
 
-###raises - an assertion which tests if a callback throws any exceptions
+### raises - an assertion which tests if a callback throws any exceptions
 
 ```javascript
 test("raises", 1, function() {
@@ -7826,12 +7829,12 @@ test("raises", 1, function() {
 });
 ```
 
-##Fixtures
+## Fixtures
 
 
 From time to time we may need to write tests that modify the DOM. Managing the clean-up of such operations between tests can be a genuine pain, but thankfully QUnit has a solution to this problem in the form of the `#qunit-fixture` element, seen below.
 
-####Fixture markup:
+#### Fixture markup:
 ```html
 <!DOCTYPE html>
 <html>
@@ -7856,7 +7859,7 @@ From time to time we may need to write tests that modify the DOM. Managing the c
 We can either opt to place static markup in the fixture or just insert/append any DOM elements we may need to it. QUnit will automatically reset the `innerHTML` of the fixture after each test to its original value. In case you're using jQuery, it's useful to know that QUnit checks for its availability and will opt to use ```$(el).html()``` instead, which will cleanup any jQuery event handlers too.
 
 
-###Fixtures example:
+### Fixtures example:
 
 Let us now go through a more complete example of using fixtures. One thing that most of us are used to doing in jQuery is working with lists - they're often used to define the markup for menus, grids and a number of other components. You may have used jQuery plugins before that manipulated a given list in a particular way and it can be useful to test that the final (manipulated) output of the plugin is what was expected.
 
@@ -7949,7 +7952,7 @@ test( "1 passed as an argument", 3, function() {
 
 ```
 
-##Asynchronous code
+## Asynchronous code
 
 As with Jasmine, the effort required to run synchronous tests with QUnit is fairly straight-forward. That said, what about tests that require asynchronous callbacks (such as expensive processes, Ajax requests and so on)? When we're dealing with asynchronous code, rather than letting QUnit control when the next test runs, we can inform that we need it to stop running and wait until it's okay to continue once again.
 
@@ -7988,7 +7991,7 @@ Similar to the section on testing Backbone.js apps using the Jasmine BDD framewo
 Before we start though, you may have noticed that QUnit doesn't support test spies. Test spies are functions which record arguments, exceptions and return values for any of their calls. They're typically used to test callbacks and how functions may be used in the application being tested. In testing frameworks, spies can usually be either anonymous functions or wrap functions which already exist.
 
 
-##What is SinonJS?
+## What is SinonJS?
 
 In order for us to substitute support for spies in QUnit, we will be taking advantage of a mocking framework called [SinonJS](http://sinonjs.org/) by Christian Johansen. We will also be using the [SinonJS-QUnit adapter](http://sinonjs.org/qunit/) which provides seamless integration with QUnit (meaning setup is minimal). Sinon.JS is completely test-framework agnostic and should be easy to use with any testing framework, so it's ideal for our needs.
 
@@ -8000,7 +8003,7 @@ The framework supports three features we'll be taking advantage of for unit test
 
 Using ```this.spy()``` without any arguments creates an anonymous spy. This is comparable to ```jasmine.createSpy()``` and we can observe basic usage of a SinonJS spy in the following example:
 
-####Basic Spies:
+#### Basic Spies:
 ```javascript
 test("should call all subscribers for a message exactly once", function () {
     var message = getUniqueString();
@@ -8015,7 +8018,7 @@ test("should call all subscribers for a message exactly once", function () {
 
 We can also use ```this.spy()``` to spy on existing functions (like jQuery's ```$.ajax```) in the example below. When spying on a function which already exists, the function behaves normally but we get access to data about its calls which can be very useful for testing purposes.
 
-####Spying On Existing Functions:
+#### Spying On Existing Functions:
 ```javascript
 test( "should inspect jQuery.getJSON's usage of jQuery.ajax", function () {
     this.spy( jQuery, "ajax" );
@@ -8031,7 +8034,7 @@ test( "should inspect jQuery.getJSON's usage of jQuery.ajax", function () {
 SinonJS comes with a rich spy interface which allows us to test whether a spy was called with a specific argument, if it was called a specific number of times and test against the values of arguments. A complete list of features supported in the interface can be found here (http://sinonjs.org/docs/), but let's take a look at some examples demonstrating some of the most commonly used ones:
 
 
-####Matching arguments: test a spy was called with a specific set of arguments:
+#### Matching arguments: test a spy was called with a specific set of arguments:
 
 ```javascript
 test( "Should call a subscriber with standard matching": function () {
@@ -8044,7 +8047,7 @@ test( "Should call a subscriber with standard matching": function () {
 });
 ```
 
-####Stricter argument matching: test a spy was called at least once with specific arguments and no others:
+#### Stricter argument matching: test a spy was called at least once with specific arguments and no others:
 
 ```javascript
 test( "Should call a subscriber with strict matching": function () {
@@ -8062,7 +8065,7 @@ test( "Should call a subscriber with strict matching": function () {
 });
 ```
 
-####Testing call order: testing if a spy was called before or after another spy:
+#### Testing call order: testing if a spy was called before or after another spy:
 
 ```javascript
 test( "Should call a subscriber and maintain call order": function () {
@@ -8080,7 +8083,7 @@ test( "Should call a subscriber and maintain call order": function () {
 });
 ```
 
-####Match execution counts: test a spy was called a specific number of times:
+#### Match execution counts: test a spy was called a specific number of times:
 
 ```javascript
 test( "Should call a subscriber and check call counts", function () {
@@ -8103,11 +8106,11 @@ test( "Should call a subscriber and check call counts", function () {
 ```
 
 
-##Stubs and mocks
+## Stubs and mocks
 
 SinonJS also supports two other powerful features which are useful to be aware of: stubs and mocks. Both stubs and mocks implement all of the features of the spy API, but have some added functionality.
 
-###Stubs
+### Stubs
 
 A stub allows us to replace any existing behaviour for a specific method with something else. They can be very useful for simulating exceptions and are most often used to write test cases when certain dependencies of your code-base may not yet be written.
 
@@ -8196,7 +8199,7 @@ test("should find a model by id", function() {
 ```
 
 
-###Mocks
+### Mocks
 
 Mocks are effectively the same as stubs, however they mock a complete API out and have some built-in expectations for how they should be used. The difference between a mock and a spy is that as the expectations for their use are pre-defined, it will fail if any of these are not met.
 
@@ -8230,7 +8233,7 @@ To get the most out of this section, I recommend looking at the QUnit Koans incl
 
 *In case you haven't had a chance to try out one of the Koans kits as yet, they are a set of unit tests using a specific testing framework that both demonstrate how a set of specs for an application may be written, but also leave some tests unfilled so that you can complete them as an exercise.*
 
-###Models
+### Models
 
 For our models we want to at minimum test that:
 
@@ -8300,7 +8303,7 @@ test('Can contain custom validation rules, and will trigger an error event on fa
 ```
 
 
-###Collections
+### Collections
 
 For our collection we'll want to test that:
 
@@ -8359,7 +8362,7 @@ test('Fires custom named events when the models change.', function() {
 
 
 
-###Views
+### Views
 
 For our views we want to ensure:
 
@@ -8432,7 +8435,7 @@ asyncTest('Can wire up view methods to DOM elements.', function() {
 });
 ```
 
-###Events
+### Events
 
 For events, we may want to test a few different use cases:
 
@@ -8558,7 +8561,7 @@ test('Also can remove custom events from objects.', function() {
 });
 ```
 
-###App
+### App
 
 It can also be useful to write specs for any application bootstrap you may have in place. For the following module, our setup initiates and appends a TodoApp view and we can test anything from local instances of views being correctly defined to application interactions correctly resulting in changes to instances of local collections.
 
@@ -8567,12 +8570,12 @@ module( 'About Backbone Applications' , {
     setup: function() {
         Backbone.localStorageDB = new Store('testTodos');
         $('#qunit-fixture').append('<div id="app"></div>');
-        this.App = new TodoApp({ appendTo: $('#app') });
+        this.App = new TodoApp({ appendTo: $('# <app') });
     },
 
     teardown: function() {
         this.App.todos.reset();
-        $('#app').remove();
+        $('# <app').remove();
     }
 });
 
@@ -8591,7 +8594,7 @@ test( 'Should bind Collection events to View creation.' , function() {
  });
 ```
 
-##Further Reading & Resources
+## Further Reading & Resources
 
 That's it for this section on testing applications with QUnit and SinonJS. I encourage you to try out the [QUnit Backbone.js Koans](https://github.com/addyosmani/backbone-koans-qunit) and see if you can extend some of the examples. For further reading consider looking at some of the additional resources below:
 
