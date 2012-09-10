@@ -17,10 +17,10 @@ I hope you find this book helpful!
 ## Table Of Contents
 
 * #### [Introduction](#introduction)
-    * MVC, Or Rather MV* Frameworks
-    * What is Backbone.js?
-    * When Do You Need A JavaScript MV* Framework?
-    * When To Consider Using Backbone.js
+    * [MVC, Or Rather MV* Frameworks](#whatismvc)
+    * [What is Backbone.js?](#whatisbackbone)
+    * [When Do You Need A JavaScript MV* Framework?](#whentousejsmvframework)
+    * [Why should you consider using Backbone.js?](#whyconsiderbackbone)
 
 * #### [Fundamentals](#fundamentals)
     * [MVC, MVP & Backbone.js](#mvc-mvp)
@@ -39,14 +39,14 @@ I hope you find this book helpful!
 * #### [Backbone Boilerplate & Grunt BBB](#backboneboilerplate) *
 
 * #### [Common Problems & Solutions](#commonproblems) *
-    * Sub-Views And Nesting
-    * Managing Models In Nested Views
-    * Views Triggering Other Views
-    * Child Views Rendering Parent Views
-    * Cleanly Disposing Views
-    * Disposing Parent And Child Views
-    * Appending Views
-    * Better Model Property Validation *
+    * [Sub-Views And Nesting](#subviewsnesting)
+    * [Managing Models In Nested Views](#managingmodelsnestedviews)
+    * [Views Triggering Other Views](#viewstriggeringotherviews)
+    * [Child Views Rendering Parent Views](#childviewsrenderingparents)
+    * [Cleanly Disposing Views](#disposingviews)
+    * [Disposing Parent And Child Views](#disposingparentchildviews)
+    * [Appending Views](#appendingviews)
+    * [Better Model Property Validation](#bettermodelpropvalidation) *
 
 * #### [Modular Development](#advanced)
     * [Introduction](#modularjs)
@@ -105,7 +105,7 @@ When writing a Web application from scratch, it’s easy to feel like we can get
 
 In short, we’re stuck with spaghetti code. Fortunately there are modern JavaScript frameworks that can assist with bringing structure and organization to our projects, improving how easily maintainable they are in the long-run.
 
-### What Is MVC, Or Rather MV*?
+### <a name="whatismvc">What Is MVC, Or Rather MV*?</a>
 
 These modern frameworks provide developers an easy path to organizing their code using variations of a pattern known as MVC (Model-View-Controller). MVC separates the concerns in an application down into three parts:
 
@@ -117,7 +117,7 @@ JavaScript ‘MVC’ frameworks that can help us structure our code don’t alwa
 
 For this reason we refer to such frameworks as following the MV* pattern, that is, you’re likely to have a View and a Model, but more likely to have something else also included.
 
-### What exactly is Backbone.js?
+### <a name="whatisbackbone">What exactly is Backbone.js?</a>
 
 <img src="img/backbonejsorg.png" style="margin:0 auto;" width="700px"/>
 
@@ -128,7 +128,7 @@ Developers commonly use frameworks like Backbone.js to create single-page applic
 Backbone.js is a mature, popular framework at the time of writing and has both a large development community online as well as a wealth of plugins and extensions available to build upon it. It has been used to create non-trivial applications by companies such as
 Disqus, Walmart, SoundCloud and Foursquare.
 
-### When Do You Need A JavaScript MV* Framework?
+### <a name="whentousejsmvframework">When Do You Need A JavaScript MV* Framework?</a>
 
 When building a single-page application using JavaScript, whether it involves a complex user interface or is simply trying to reduce the number of HTTP requests required for new Views, you will likely find yourself inventing many of the pieces that make up an MV* framework like Backbone or Ember.
 
@@ -148,7 +148,7 @@ If, however, you’re building an application that still relies on the server fo
 Maturity in software (framework) development isn't simply about how long a framework has been around. It's about how solid the framework is and more importantly how well it's evolved to fill its role. Has it become more effective at solving common problems? Does it continue to improve as developers build larger and more complex applications with it?
 
 
-### Why should you consider using Backbone.js?
+### <a name="whyconsiderbackbone">Why should you consider using Backbone.js?</a>
 
 Does the following describe you?:
 
@@ -167,7 +167,7 @@ Backbone's main benefits, regardless of your target platform or device, include 
 * Provide DOM, model and collection synchronization
 
 
-### What should you expect to see in this book?
+### <a name="whattoexpect">What should you expect to see in this book?</a>
 
 The goal of this book is to create an authoritative and centralized repository of information that can help those developing real-world apps with Backbone. If you come across a section or topic which you think could be improved or expanded on, please feel free to submit a pull-request. It won't take long and you'll be helping other developers avoid problems you've run into before.
 
@@ -3021,7 +3021,7 @@ In this section, we will review a number of common problems developers often exp
 Perhaps the most frequent of these questions surround how to do more with Views. If you are interested in discovering how to work with nested Views, learn about view disposal and inheritance, this section will hopefully have you covered.
 
 
-#### Nesting: What is the best approach for rendering and appending Sub-Views in Backbone.js?
+#### <a name="subviewsnesting">Nesting: What is the best approach for rendering and appending Sub-Views in Backbone.js?</a>
 
 Nesting is generally considered a good way to maintain hierarchal views for writing maintainable code. As a beginner, one might try writing a very simple setup with sub-views (e.g inner views) as follows:
 
@@ -3164,7 +3164,7 @@ Generally speaking, more developers opt for the first solution as:
 
 
 
-#### What is the best way to manage models in nested Views?
+#### <a name="managingmodelsnestedviews">What is the best way to manage models in nested Views?</a>
 
 In order to reach attributes on related models in a nested setup, the models involved need to have some prior knowledge about which models this refers to. Backbone.js doesn't implicitly handle relations or nesting, meaning it's up to us to ensure models have a knowledge of each other.
 
@@ -3252,7 +3252,7 @@ There is more information about this technique available on [GitHub](https://git
 
 (Thanks to [Jens Alm](http://stackoverflow.com/users/100952/jens-alm) and [Artem Oboturov](http://stackoverflow.com/users/801466/artem-oboturov) for these tips)
 
-#### Is it possible to have one Backbone.js View trigger updates in other Views?
+#### <a name="viewstriggeringotherviews">Is it possible to have one Backbone.js View trigger updates in other Views?</a>
 
 
 The Mediator pattern is an excellent option for implementing a solution to this problem.
@@ -3294,7 +3294,7 @@ This way your ApplicationViewA doesn't care if it is an ApplicationViewB or FooV
 
 (Thanks to [John McKim](http://stackoverflow.com/users/937577/john-mckim) for this tip and for referencing my Large Scale JavaScript Patterns article).
 
-#### How would one render a Parent View from one of its Children?
+#### <a name="childviewsrenderingparents">How would one render a Parent View from one of its Children?</a>
 
 If you say, have a view which contains another view (e.g a main view containing a modal view) and  would like to render or re-render the parent view from the child, this is extremely straight-forward.
 
@@ -3325,7 +3325,7 @@ The child will trigger a "somethingHappened" event and the parent's render funct
 
 
 
-#### How do you cleanly dispose Views to avoid memory leaks?
+#### <a name="disposingviews">How do you cleanly dispose Views to avoid memory leaks?</a>
 
 As your application grows, keeping live views around which aren't being used can quickly become difficult to maintain. Instead, you may find it more optimal to destroy views that are no longer required and simply create new ones as the necessity arises.
 
@@ -3389,7 +3389,7 @@ sampleView.dispose();
 
 (Thanks to [JohnnyO](http://stackoverflow.com/users/188740/johnnyo) for this tip).
 
-#### How does one handle View disposal on a Parent or Child View?
+#### <a name="disposingparentchildviews">How does one handle View disposal on a Parent or Child View?</a>
 
 In the last question, we looked at how to effectively dispose views to decreases memory usage (analogous to a type of garbage collection).
 
@@ -3435,7 +3435,7 @@ For example, if you are working on a blogging application and you remove a view 
 
 (Thanks to [dira](http://stackoverflow.com/users/906136/dira) for this tip)
 
-#### What's the best way to combine or append Views to each other?
+#### <a name="appendingviews">What's the best way to combine or append Views to each other?</a>
 
 Let us say you have a Collection, where each item in the Collection could itself be a Collection. You can render each item in the Collection, and indeed can render any items which themselves are Collections. The problem you might have is how to render this structure where the HTML reflects the hierarchical nature of the data structure.
 
@@ -3452,7 +3452,7 @@ And you can get the source code and documentation for [Marionette](https://githu
 
 
 
-# Better Model Property Validation
+# <a name="bettermodelpropvalidation">Better Model Property Validation</a>
 
 As we learned earlier in the book, the `validate` method on a Model is called before `set` and `save`, and is passed the model attributes updated with the values from these methods.
 
