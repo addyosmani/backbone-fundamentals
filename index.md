@@ -69,29 +69,29 @@ I hope you find this book helpful!
 
 * #### [Unit Testing](#testing)
     * [Unit Testing Backbone Applications With Jasmine](#unittestingjasmine)
-      * Introduction
-      * Jasmine
-        * Suites, Specs And Spies
-        * TDD With Backbone
-          * Testing Models
-          * Testing Collections
-          * Testing Views
+      * [Introduction](#jasmineintro)
+      * [Jasmine](#jasmine)
+        * [Suites, Specs And Spies](#suitesspecsspies)
+        * [TDD With Backbone](#tddbackbone)
+          * [Testing Models](#testing-jasmine-models)
+          * [Testing Collections](#testing-jasmine-collections)
+          * [Testing Views](#testing-jasmine-views)
     * [Unit Testing Backbone Applications With QUnit And SinonJS](#unittestingqunit)
-      * Introduction
-      * QUnit
-          * Assertions
-          * Adding structure to assertions
-          * Assertion examples
-          * Fixtures
-          * Asynchronous code
-      * SinonJS
-          * Stubs
-          * Mocks
-      * Practical
-          * Testing Models
-          * Testing Collections
-          * Testing Views
-          * Testing Events
+      * [Introduction](#qunitintro)
+      * [QUnit](#qunit)
+          * [Assertions](#assertions)
+          * [Adding structure to assertions](#addassertstructure)
+          * [Assertion examples](#assertionexamples)
+          * [Fixtures](#fixtures)
+          * [Asynchronous code](#asynccode)
+      * [SinonJS](#sinonjs)
+          * [Stubs](#stubs)
+          * [Mocks](#mocks)
+      * [Practical](#qunitpractical)
+          * [Testing Models](#testing-qunit-models)
+          * [Testing Collections](#testing-qunit-collections)
+          * [Testing Views](#testing-qunit-views)
+          * [Testing Events](#testing-qunit-events)
 
 
 
@@ -6664,7 +6664,7 @@ The takeaway here is just to remember that if you're not (already) going through
 
 ## <a name="unittestingjasmine">Unit Testing Backbone Applications With Jasmine</a>
 
-## Introduction
+## <a name="jasmineintro">Introduction</a>
 
 One definition of unit testing is the process of taking the smallest piece of testable code in an application, isolating it from the remainder of your codebase and determining if it behaves exactly as expected. In this section, we'll be taking a look at how to unit test Backbone applications using a popular JavaScript testing framework called [Jasmine](http://pivotal.github.com/jasmine/) from Pivotal Labs.
 
@@ -6674,7 +6674,7 @@ As a basic example of unit testing is where a developer may wish to assert wheth
 
 When building modern web-applications, it's typically considered best-practice to include automated unit testing as a part of your development process. Whilst we'll be focusing on Jasmine as a solution for this, there are a number of other alternatives worth considering, including QUnit.
 
-## Jasmine
+## <a name="jasmine">Jasmine</a>
 
 Jasmine describes itself as a behavior-driven development (BDD) framework for testing JavaScript code. Before we jump into how the framework works, it's useful to understand exactly what [BDD](http://en.wikipedia.org/wiki/Behavior_Driven_Development) is.
 
@@ -6707,7 +6707,7 @@ In this chapter we're going to use both BDD (with TDD) to write unit tests for a
 ***Note:*** I've seen a lot of developers also opt for writing tests to validate behavior of their code after having written it. While this is fine, note that it can come with pitfalls such as only testing for behavior your code currently supports, rather than behavior the problem needs to be supported.
 
 
-## Suites, Specs & Spies
+## <a name="suitesspecsspies">Suites, Specs & Spies</a>
 
 When using Jasmine, you'll be writing suites and specifications (specs). Suites basically describe scenarios whilst specs describe what can be done in these scenarios.
 
@@ -6923,7 +6923,7 @@ And finally the sources being tested:
 
 ***Note:*** Below this section of SpecRunner is code responsible for running the actual tests. Given that we won't be covering modifying this code, I'm going to skip reviewing it. I do however encourage you to take a look through [PlayerSpec.js](https://github.com/pivotal/jasmine/blob/master/lib/jasmine-core/example/spec/PlayerSpec.js) and [SpecHelper.js](https://github.com/pivotal/jasmine/blob/master/lib/jasmine-core/example/spec/SpecHelper.js). They're a useful basic example to go through how a minimal set of tests might work.
 
-## TDD With Backbone
+## <a name="tddbackbone">TDD With Backbone</a>
 
 When developing applications with Backbone, it can be necessary to test both individual modules of code as well as modules, views, collections and routers. Taking a TDD approach to testing, let's review some specs for testing these Backbone components using the popular Backbone [Todo](https://github.com/addyosmani/todomvc/tree/master/todo-example/backbone) application. For this section we will be using a modified version of Larry Myers Backbone Koans project, which can be found in the `practicals\jasmine-koans` folder.
 
@@ -7542,7 +7542,7 @@ As an exercise, I recommend now trying the Jasmine Koans in `practicals\jasmine-
 
 ## <a name="unittestingqunit">Unit Testing Backbone Applications With QUnit And SinonJS</a>
 
-## Introduction
+## <a name="qunitintro">Introduction</a>
 
 QUnit is a powerful JavaScript test suite written by jQuery team member [Jörn Zaefferer](http://bassistance.de/) and used by many large open-source projects (such as jQuery and Backbone.js) to test their code. It's both capable of testing standard JavaScript code in the browser as well as code on the server-side (where environments supported include Rhino, V8 and SpiderMonkey). This makes it a robust solution for a large number of use-cases.
 
@@ -7551,7 +7551,7 @@ Quite a few Backbone.js contributors feel that QUnit is a better introductory fr
 My personal recommendation is that it's worth comparing both frameworks and opting for the solution that you feel the most comfortable with.
 
 
-#QUnit
+# <a name="qunit">QUnit</a>
 
 ## Getting Setup
 
@@ -7615,7 +7615,7 @@ If however any tests fail, the test gets highlighted (and the qunit-banner at th
 ![screenshot 3](img/3e5545.png)
 
 
-## Assertions
+## <a name="assertions">Assertions</a>
 
 QUnit supports a number of basic **assertions**, which are used in testing to verify that the result being returned by our code is what we expect. If an assertion fails, we know that a bug exists.Similar to Jasmine, QUnit can be used to easily test for regressions. Specifically, when a bug is found one can write an assertion to test the existence of the bug, write a patch and then commit both. If subsequent changes to the code break the test you'll know what was responsible and be able to address it more easily.
 
@@ -7672,7 +7672,7 @@ test( 'reverseString()', function() {
 Running these tests in the QUnit test runner (which you would see when your HTML test page was loaded) we would find that four of the assertions pass whilst the last one does not. The reason the test against `'double'` fails is because it was purposefully written incorrectly. In your own projects if a test fails to pass and your assertions are correct, you've probably just found a bug!
 
 
-## Adding structure to assertions
+## <a name="addassertstructure">Adding structure to assertions</a>
 
 Housing all of our assertions in one test case can quickly become difficult to maintain, but luckily QUnit supports structuring blocks of assertions more cleanly. This can be done using ```module()``` - a method that allows us to easily group tests together. A typical approach to grouping might be keeping multiple tests testing a specific method as part of the same group (module).
 
@@ -7750,7 +7750,7 @@ test( "test ordering", function() {
 Here, a list of stores is created and stored on ```setup()```. A ```teardown()``` callback is used to simply clear our a list of errors we might be storing within the window scope, but is otherwise not needed.
 
 
-## Assertion examples
+## <a name="assertionexamples">Assertion examples</a>
 
 Before we continue any further, let's review some more examples of how QUnits various assertions can be correctly used when writing tests:
 
@@ -7831,7 +7831,7 @@ test("raises", 1, function() {
 });
 ```
 
-## Fixtures
+## <a name="fixtures">Fixtures</a>
 
 
 From time to time we may need to write tests that modify the DOM. Managing the clean-up of such operations between tests can be a genuine pain, but thankfully QUnit has a solution to this problem in the form of the `#qunit-fixture` element, seen below.
@@ -7954,7 +7954,7 @@ test( "1 passed as an argument", 3, function() {
 
 ```
 
-## Asynchronous code
+## <a name="asynccode">Asynchronous code</a>
 
 As with Jasmine, the effort required to run synchronous tests with QUnit is fairly straight-forward. That said, what about tests that require asynchronous callbacks (such as expensive processes, Ajax requests and so on)? When we're dealing with asynchronous code, rather than letting QUnit control when the next test runs, we can inform that we need it to stop running and wait until it's okay to continue once again.
 
@@ -7986,7 +7986,7 @@ Note: rather than including ```stop()```, we can simply exclude it and substitut
 
 
 
-#SinonJS
+# <a name="sinonjs">SinonJS</a>
 
 Similar to the section on testing Backbone.js apps using the Jasmine BDD framework, we're nearly ready to take what we've learned and write a number of QUnit tests for our Todo application.
 
@@ -8112,7 +8112,7 @@ test( "Should call a subscriber and check call counts", function () {
 
 SinonJS also supports two other powerful features which are useful to be aware of: stubs and mocks. Both stubs and mocks implement all of the features of the spy API, but have some added functionality.
 
-### Stubs
+### <a name="stubs">Stubs</a>
 
 A stub allows us to replace any existing behaviour for a specific method with something else. They can be very useful for simulating exceptions and are most often used to write test cases when certain dependencies of your code-base may not yet be written.
 
@@ -8201,7 +8201,7 @@ test("should find a model by id", function() {
 ```
 
 
-### Mocks
+### <a name="mocks">Mocks</a>
 
 Mocks are effectively the same as stubs, however they mock a complete API out and have some built-in expectations for how they should be used. The difference between a mock and a spy is that as the expectations for their use are pre-defined, it will fail if any of these are not met.
 
@@ -8226,8 +8226,7 @@ test("should call all subscribers when exceptions", function () {
 
 
 
-Practical
-====================
+## <a name="practicalqunit">Practical</a>
 
 We can now begin writing test specs for our Todo application, which are listed and separated by component (e.g Models, Collections etc.). It's useful to pay attention to the name of the test, the logic being tested and most importantly the assertions being made as this will give you some insight into how what we've learned can be applied to a complete application.
 
@@ -8235,7 +8234,7 @@ To get the most out of this section, I recommend looking at the QUnit Koans incl
 
 *In case you haven't had a chance to try out one of the Koans kits as yet, they are a set of unit tests using a specific testing framework that both demonstrate how a set of specs for an application may be written, but also leave some tests unfilled so that you can complete them as an exercise.*
 
-### Models
+### <a name="testing-qunit-models">Models</a>
 
 For our models we want to at minimum test that:
 
@@ -8305,7 +8304,7 @@ test('Can contain custom validation rules, and will trigger an error event on fa
 ```
 
 
-### Collections
+### <a name="testing-qunit-collections">Collections</a>
 
 For our collection we'll want to test that:
 
@@ -8364,7 +8363,7 @@ test('Fires custom named events when the models change.', function() {
 
 
 
-### Views
+### <a name="testing-qunit-views">Views</a>
 
 For our views we want to ensure:
 
@@ -8437,7 +8436,7 @@ asyncTest('Can wire up view methods to DOM elements.', function() {
 });
 ```
 
-### Events
+### <a name="testing-qunit-events">Events</a>
 
 For events, we may want to test a few different use cases:
 
