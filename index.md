@@ -87,7 +87,7 @@ I hope you find this book helpful!
       * [SinonJS](#sinonjs)
           * [Stubs](#stubs)
           * [Mocks](#mocks)
-      * [Practical](#qunitpractical)
+      * [Practical](#practicalqunit)
           * [Testing Models](#testing-qunit-models)
           * [Testing Collections](#testing-qunit-collections)
           * [Testing Views](#testing-qunit-views)
