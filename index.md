@@ -48,7 +48,7 @@ I hope you find this book helpful!
     * Appending Views
     * Better Model Property Validation *
 
-* #### [Modular Development](# <advanced)
+* #### [Modular Development](#advanced)
     * [Introduction](#modularjs)
     * [Organizing modules with Require.js and AMD](#organizingmodules)
     * [Keeping your templates external](#externaltemplates)
