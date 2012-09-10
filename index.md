@@ -63,9 +63,9 @@ I hope you find this book helpful!
     * [Apps with Ruby, Sinatra, Haml and MongoDB](#stack2)
     * [Paginating Backbone.js Requests & Collections](#pagination) *
 
-* #### Mobile Applications
-    * Backbone & jQuery Mobile
-    * Practical: Building A Modular Mobile App With Backbone & jQuery Mobile
+* #### [Mobile Applications](#mobileapps)
+    * [Backbone & jQuery Mobile](#backbonejquerymobile)
+    * [Practical: Building A Modular Mobile App With Backbone & jQuery Mobile](#practicaljquerymobile)
 
 * #### [Unit Testing](#testing)
     * [Unit Testing Backbone Applications With Jasmine](#unittestingjasmine)
@@ -6553,7 +6553,9 @@ Paginator.clientPager = Backbone.Collection.extend({
  [7]: https://github.com/cowboy/grunt
 
 
-## Backbone & jQuery Mobile
+# <a name="mobileapps">Mobile Applications</a>
+
+## <a name="backbonejquerymobile">Backbone & jQuery Mobile</a>
 
 ### Resolving the routing conflicts
 
@@ -6591,7 +6593,7 @@ In the above sample, `url` can refer to a URL or a hash identifier to navigate t
 **Note:** For some parallel work being done to explore how well the jQuery Mobile Router plugin works with Backbone, you may be interested in checking out [https://github.com/Filirom1/jquery-mobile-backbone-requirejs](https://github.com/Filirom1/jquery-mobile-backbone-requirejs).
 
 
-### Practical: A Backbone, Require.js/AMD app with jQuery Mobile
+### <a name="practicaljquerymobile">Practical: A Backbone, Require.js/AMD app with jQuery Mobile</a>
 
 **Note:** The code for this practical can be found in `practicals/modular-mobile-app`.
 
