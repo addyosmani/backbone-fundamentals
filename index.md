@@ -2216,13 +2216,33 @@ Our events hash includes three callbacks:
 
 ## In action
 
-Now we've gone far enough without checking that things work as they should. Open up index.html and, if everything's going to plan, you shouldn't see any errors in the console. The todo list will be blank (we haven't created any todos yet), and the todo-list won't work, as we haven't yet hooked it up. However, we can create a Todo from the console.
+Now we've gone far enough without checking that things work as they should. Open up index.html. You will see few errors in the console (ignore it for the moment, we will address that in following section). The todo list will be blank (we haven't created any todos yet), and the todo-list won't work, as we haven't yet hooked it up fully. However, we can create a Todo from the console.
 
 Type in: `window.app.Todos.create({ title: 'My first Todo item'});` and hit return.
 
 <img src="img/todoconsole.png" width="700px"/>
 
-Once you've run the above in the console, we should be looking at a brand new todo in the list of todos. Notice that if you refresh the page, the todo still persists using Local Storage.
+Once you've run the above in the console, we should be looking at a brand new todo (logged in console) we've just added in the todos collection. Created todo is saved into Local Storage as well and will be available on page refresh.
+
+`window.app.Todos.create()` used above is collection method (`collection.create(attributes, [options])`) which instantiate new model item of the type passed into the collection definition, in our case `app.Todo`:
+
+```javascript
+
+  var TodoList = Backbone.Collection.extend({
+
+      model: app.Todo // the model type used by collection.create();
+      ...
+  )};
+
+```
+
+Run this into console to check it out:
+
+`var secondTodo = window.app.Todos.create({ title: 'My second Todo item'});`
+
+`secondTodo instanceof app.Todo`
+
+<img src="img/todoconsole2.png" width="700px"/>
 
 ## Templates
 
@@ -2270,7 +2290,7 @@ We also need to define #stats-template template we use to display how many items
 
 ## In action
 
-Now refresh index.html to see the fruits of our labour. We should be able to type a todo name, and press return to submit the form, creating a new todo.
+Now refresh index.html and we should be able to see the fruits of our labour. Errors in console mentioned above should gone and todos added through console earlier should appear in the list populated from the Local Storage. Also, we should be able to type a todo name, and press return to submit the form, creating a new todo.
 
 ![](img/todocompleted.png)
 
