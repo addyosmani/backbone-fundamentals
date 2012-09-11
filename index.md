@@ -2110,32 +2110,9 @@ We can then add in the logic for creating new todos, editing them and filtering 
 
 ```
 
-## Setup
+## Individual Todo View
 
-So now we have two views: `AppView` and `TodoView`. The former needs to get instantiated when the page loads, so some code actually gets run. You can do this simply enough, by using jQuery's `ready()` utility, which will execute a function when the DOM's loaded.
-
-```javascript
-
-var app = app || {};
-var ENTER_KEY = 13;
-
-$(function() {
-
-  // Kick things off by creating the **App**.
-  new app.AppView();
-
-});
-
-```
-
-## Creating new todos
-
-
-It's all very good creating todos from the console, but we can hardly expect our users to do that. Let's hook up the todo creation section to provide a better interface. All the HTML is already there (in index.html); all we have to do is add some event listeners to that section, creating some todos.
-
-<img src="img/todoview.png" width="590px"/>
-
-Let’s look at the `TodoView` view. This will be in charge of individual Todo records, making sure the view updates when the todo does.
+Let’s look at the `TodoView` view, now. This will be in charge of individual Todo records, making sure the view updates when the todo does. To enable enable this interactive behavior we should add some event listeners to the view.
 
 ```javascript
 
@@ -2213,6 +2190,23 @@ Our events hash includes three callbacks:
 * `updateOnEnter()`: checks that the user has hit the return/enter key and executes the close() function.
 * `close()`: This trims the value of the current text in our `<input/>` field, ensuring that we don’t process it further if it contains no text (e.g ‘’). If a valid value has been provided, we save the changes to the current todo model and close editing mode, by removing the corresponding CSS class.
 
+## Setup
+
+So now we have two views: `AppView` and `TodoView`. The former needs to get instantiated when the page loads, so some code actually gets run. You can do this simply enough, by using jQuery's `ready()` utility, which will execute a function when the DOM's loaded.
+
+```javascript
+
+var app = app || {};
+var ENTER_KEY = 13;
+
+$(function() {
+
+  // Kick things off by creating the **App**.
+  new app.AppView();
+
+});
+
+```
 
 ## In action
 
