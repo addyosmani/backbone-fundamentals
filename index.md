@@ -1767,6 +1767,7 @@ Now let's take a look at our application's static HTML. We're going to need an `
     <p>Written by <a href="https://github.com/addyosmani">Addy Osmani</a></p>
     <p>Part of <a href="http://todomvc.com">TodoMVC</a></p>
   </div>
+
 ```
 
 We’ll be populating our todo-list and adding a statistics section with details about what items are left to be completed later on.
@@ -1779,7 +1780,7 @@ The `Todo` model is remarkably straightforward. Firstly a todo has two attribute
 
 ```javascript
 
-var app = app || {};
+  var app = app || {};
 
   // Todo Model
   // ----------
@@ -1802,6 +1803,7 @@ var app = app || {};
     }
 
   });
+
 ```
 
 We also have a `toggle()` function which allows to set whether a Todo item has been completed.
@@ -1817,6 +1819,8 @@ We've then got some static methods, `completed()` and `remaining()`, which retur
 Finally we have a `nextOrder()` function, that keeps our Todo items in sequential order as well as a `comparator()` used to sort items by their insertion order.
 
 ```javascript
+
+  var app = app || {};
 
   // Todo Collection
   // ---------------
@@ -1860,6 +1864,7 @@ Finally we have a `nextOrder()` function, that keeps our Todo items in sequentia
 
   // Create our global collection of **Todos**.
   app.Todos = new TodoList();
+
 ```
 
 ## Application View
@@ -1871,6 +1876,8 @@ In other words, we're going to have one view `AppView`, which will be in charge 
 To keep thing simple, we'll keep things 'read-only' at the moment, and won't provide any functionality for creating, editing or deleting todos:
 
 ```javascript
+
+  var app = app || {};
 
   // The Application
   // ---------------
@@ -1938,6 +1945,7 @@ To keep thing simple, we'll keep things 'read-only' at the moment, and won't pro
     }
 
   });
+
 ```
 
 
@@ -1971,7 +1979,9 @@ We can then add in the logic for creating new todos, editing them and filtering 
 
 ```javascript
 
-// The Application
+  var app = app || {};
+
+  // The Application
   // ---------------
 
   // Our overall **AppView** is the top-level piece of UI.
@@ -2129,6 +2139,8 @@ Let’s look at the `TodoView` view. This will be in charge of individual Todo r
 
 ```javascript
 
+  var app = app || {};
+
   // Todo Item View
   // --------------
 
@@ -2187,8 +2199,8 @@ Let’s look at the `TodoView` view. This will be in charge of individual Todo r
       }
     }
   });
-```
 
+```
 
 
 In the `initialize()` constructor, we're setting up a listener to the todo model’s change event. In other words, when the todo updates, we want to re-render the view to reflect its changes.
