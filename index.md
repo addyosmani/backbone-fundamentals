@@ -2415,7 +2415,8 @@ Finally, we move on to routing, which will allow us to easily bookmark the list 
 
 <img src="img/todorouting.png" width="700px"/>
 
-When the route changes the todo list will be filtered on a model level and the selected class on the filter links will be toggled. When an item is updated while in a filtered state, it will be updated accordingly. E.g. if the filter is active and the item is checked, it will be hidden. The active filter is persisted on reload.
+When the route changes the todo list will be filtered on a model level and just the models that pass the filter will be re-rendered. When an item is updated while in a filtered state, it will be updated accordingly. 
+E.g. if the filter is active and the item is checked, it will be hidden. The current filter is persisted on reload.
 
 ```javascript
 
@@ -2431,23 +2432,53 @@ When the route changes the todo list will be filtered on a model level and the s
       // Set the current filter to be used
       window.app.TodoFilter = param.trim() || '';
 
-      // Trigger a collection filter event, causing hiding/unhiding
-      // of Todo view items
-      window.app.Todos.trigger('filter');
+      // Trigger a collection reset event, causing AppView,
+      // which is listening to the event, re-render based
+      // on the TodoFilter value
+      window.app.Todos.trigger('reset');
     }
   });
 
   app.TodoRouter = new Workspace();
   Backbone.history.start();
+
 ```
 
-As we can see in the line  `window.app.Todos.trigger('filter')`, once a string filter has been set, we simply trigger our filter at a collection level to toggle which items are displayed and which of those are hidden.
+Also, to be able to respond to the event properly `app.AppView`'s `addAll()` function should be updated:
+
+```javascript
+
+  app.AppView = Backbone.View.extend({
+
+    ...
+    addAll: function() {
+      this.$('#todo-list').html('');
+      
+      switch( app.TodoFilter ) {
+        case 'active':
+          _.each( app.Todos.remaining(), this.addOne );
+          break;
+        case 'completed':
+          _.each( app.Todos.completed(), this.addOne );
+          break;
+        default:
+          app.Todos.each( this.addOne, this );
+          break;
+      }
+    },
+
+    ...
+  });
+
+```
+
+As we can see in the line `window.app.Todos.trigger('reset')`, once a filter has been set, we simply trigger our reset event at a collection level to enforce `app.AppView` to respond to it. It then re-renders todo items based on set filter as seen in `addAll()`.
 
 Finally, we call `Backbone.history.start()` to route the initial URL during page load.
 
 ## Conclusions
 
-We’ve now learned how to build our first complete Backbone.js application. The app can be viewed online at any time and the sources are readily available via [TodoMVC](http://www.todomvc.com).
+We’ve now learned how to build our first complete Backbone.js application. The full app can be viewed online at any time and the sources are readily available via [TodoMVC](http://www.todomvc.com).
 
 Later on in the book, we’ll learn how to further modularize this application using Require.js, swap out our persistence layer to a database back-end and finally unit test the application with a few different testing frameworks.
 
