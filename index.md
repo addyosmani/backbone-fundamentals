@@ -2125,7 +2125,7 @@ It's all very good creating todos from the console, but we can hardly expect our
 
 <img src="img/todoview.png" width="590px"/>
 
-Let’s look at the `TodoView` view. This will be in charge of individual Todo records, making sure the view updates then the todo does.
+Let’s look at the `TodoView` view. This will be in charge of individual Todo records, making sure the view updates when the todo does.
 
 ```javascript
 
