@@ -2155,7 +2155,8 @@ Let’s look at the `TodoView` view. This will be in charge of individual Todo r
       this.model.on( 'change', this.render, this );
     },
 
-    // Re-render the titles of the todo item.
+    // Re-renders the todo item to the current state of the model
+    // and updates the reference to the todo's edit input.
     render: function() {
       this.$el.html( this.template( this.model.toJSON() ) );
       this.input = this.$('.edit');
