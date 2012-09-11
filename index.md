@@ -2218,7 +2218,7 @@ Our events hash includes three callbacks:
 
 Now we've gone far enough without checking that things work as they should. Open up index.html and, if everything's going to plan, you shouldn't see any errors in the console. The todo list will be blank (we haven't created any todos yet), and the todo-list won't work, as we haven't yet hooked it up. However, we can create a Todo from the console.
 
-Type in: `window.app.Todos.create({ title: ‘My first Todo item});` and hit return.
+Type in: `window.app.Todos.create({ title: 'My first Todo item'});` and hit return.
 
 <img src="img/todoconsole.png" width="700px"/>
 
