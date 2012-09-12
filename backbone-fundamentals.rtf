@@ -103,7 +103,7 @@ Common Problems & Solutions
 {\pard \ql \f0 \sa0 \li720 \fi-360 \endash \tx360\tab Disposing Parent And Child Views\par}
 {\pard \ql \f0 \sa0 \li720 \fi-360 \endash \tx360\tab Appending Views\par}
 {\pard \ql \f0 \sa0 \li720 \fi-360 \endash \tx360\tab Better Model Property Validation *\sa180\par}
-{\pard \ql \f0 \sa180 \li360 \fi-360 \bullet \tx360\tab \b \fs24 {\field{\*\fldinst{HYPERLINK "#advanced"}}{\fldrslt{\ul
+{\pard \ql \f0 \sa180 \li360 \fi-360 \bullet \tx360\tab \b \fs24 {\field{\*\fldinst{HYPERLINK "#%20<advanced"}}{\fldrslt{\ul
 Modular Development
 }}}
 \par}
@@ -757,11 +757,15 @@ id: 'header', // optional\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 Sometimes you may also want to get a model based on its client id. The client id is a property that Backbone automatically assigns models that have not yet been saved. You can get a model\u8217's client id from its {\f1 .cid} property.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \f1 var mySkiingCrash = PhotoCollection.getByCid(456);\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 Backbone Collections don\u8217't have setters as such, but do support adding new models via {\f1 .add()} and removing models via {\f1 .remove()}.\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 \f1 var a = new Backbone.Model(\{ title: 'my vacation'\}),\line
-    b = new Backbone.Model(\{ title: 'my holiday'\});\line
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 var a = new Photo(\{ title: 'my vacation'\}),\line
+    b = new Photo(\{ title: 'my holiday'\}),\line
+    c = new Photo(\{ title: 'my weekend'\});\line
 \line
 var photoCollection = new PhotoCollection([a,b]);\line
-photoCollection.remove([a,b]);\par}
+photoCollection.add(c);\line
+\line
+photoCollection.remove([a,b]);\line
+photoCollection.remove(c);\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 {\b Listening for events}\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 As collections represent a group of items, we\u8217're also able to listen for {\f1 add} and {\f1 remove} events for when new models are added or removed from the collection. Here\u8217's an example:\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \f1 var PhotoCollection = new Backbone.Collection();\line
@@ -901,7 +905,7 @@ http://unicorns.com/#search/seasonal-horns/page2\par}
     /* define the route and function maps for this router */\line
     routes: \{\line
         "about" : "showAbout",\line
-        /*Sample usage: http://unicorns.com/#about*/\line
+        /*Sample usage: http://unicorns.com/# <about*/\line
 \line
         "photos/:id" : "getPhoto",\line
         /*This is an example of using a ":param" variable which allows us to match\line
@@ -931,7 +935,7 @@ http://unicorns.com/#search/seasonal-horns/page2\par}
         /*This is a default route that also uses a *splat. Consider the\line
         default route a wildcard for URLs that are either not matched or where\line
         the user has incorrectly typed in a route path manually*/\line
-        /*Sample usage: http://unicorns.com/#anything*/\line
+        /*Sample usage: http://unicorns.com/# <anything*/\line
 \line
     \},\line
 \line
@@ -1492,8 +1496,8 @@ var app = app || \{\};\line
     \}\line
 \line
   \});\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 You can see we\u8217've got a couple of things going on, an el (element), a {\f1 statsTemplate}, a constructor function and several view specific methods. On the left of the el: key is a DOM element selector for the element with ID {\f1 todoapp}. The value of this is just a string and Backbone will create a reference pointing to any element matching the selector #todoapp, where here it will be the {\f1 <section id=\u8221"todoapp />} element, defined in the HTML section earlier.\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 In a nutshell this means we can now refer to this.el in our controller, which points to the {\f1 <section class="todoapp" />} element. As you can see, we\u8217're referring to el in the {\f1 addOne()} function, appending an element to the list.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 You can see we\u8217've got a couple of things going on, an el (element), a {\f1 statsTemplate}, a constructor function and several view specific methods. To the right of the {\f1 el:} key is a DOM element selector for the element with ID {\f1 todoapp}. The value of this is just a string and Backbone will create a reference pointing to the element matching the selector #todoapp, where here it will be the {\f1 <section id="todoapp" />} element, which we previously defined in our HTML.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 In a nutshell this means we can now refer to this.el in our controller, which points to the {\f1 <section id="todoapp" />} element. As you can see, we\u8217're referring to el in the {\f1 addOne()} function, appending an element to the list.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 Now let\u8217's take a look at the constructor function. It\u8217's binding to several events on the Todo model, such as add, reset and all. Since we\u8217're delegating handling of updates and deletes to the {\f1 TodoView} view, we don\u8217't need to to worry about that here. The two pieces of logic are:\par}
 {\pard \ql \f0 \sa180 \li360 \fi-360 \bullet \tx360\tab When a new todo is created, the {\f1 add} event will be fired, calling {\f1 addAll()}. This iterates over all of the Todos currently in our collection and fires {\f1 addOne()} for each item.\par}
 {\pard \ql \f0 \sa180 \li360 \fi-360 \bullet \tx360\tab {\f1 addOne()} instantiates the TodoView view, rendering it and appending the resultant element to our Todo list.\par}
@@ -1927,7 +1931,7 @@ HTML5 Boilerplate
 {\pard \ql \f0 \sa180 \li0 \fi0 We can use Boilerplate to easily begin creating an application, but first, we\u8217'll need to install it. This can be done by grabbing the latest version of it by cloning the Boilerplate repo directly:\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \f1 $ git clone git://github.com/tbranyen/backbone-boilerplate.git\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 or alternatively, just fetching the latest tarball as follows:\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 \f1 curl -C - -O https://github.com/tbranyen/backbone-boilerplate/zipball/master\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 $ curl -C - -O https://github.com/tbranyen/backbone-boilerplate/zipball/master\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \b \fs28 Grunt-BBB\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 As Tim covers in the Boilerplate docs, we have to install {\field{\*\fldinst{HYPERLINK "http://gruntjs.org"}}{\fldrslt{\ul
 Grunt
@@ -1953,8 +1957,8 @@ $ npm install -g grunt\line
 # followed by\line
 $ npm install -g bbb\line
 \line
-# Create a new project\line
-bbb init\par}
+# finally create a new project\line
+$ bbb init\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 That\u8217's it. We should now be good to go.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 A typical workflow for using grunt-bbb, which we can use later on is:\par}
 {\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Initialize a new project ({\f1 bbb init})\par}
@@ -2203,7 +2207,7 @@ function($, _, Backbone) \{\line
 {\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Views (optional)\sa180\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 We can easily create a new Boilerplate module using {\f1 grunt-bbb} once again using {\f1 init}:\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \f1 # Create a new module\line
-bbb init:module\line
+$ bbb init:module\line
 \line
 # Grunt prompt\line
 Please answer the following:\line
@@ -2403,7 +2407,7 @@ TodoMVC
 }}}
  project ({\f1 bbb init:todomvc}). I recommend checking these out as they\u8217'll provide you with a more complete picture of how Backbone Boilerplate, its templates and so on fit into the overall setup for a web app.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 For more about Grunt-BBB, remember to take a look at the official project {\field{\*\fldinst{HYPERLINK "https://github.com/backbone-boilerplate/grunt-bbb"}}{\fldrslt{\ul
-repositoryy
+repository
 }}}
 . There is also a related {\field{\*\fldinst{HYPERLINK "https://dl.dropbox.com/u/79007/talks/Modern_Web_Applications/slides/index.html"}}{\fldrslt{\ul
 slide-deck
@@ -4922,9 +4926,11 @@ Diacritic Plugin
 {\pard \ql \f0 \sa180 \li0 \fi0 In this section we\u8217're going to walkthrough actually using the requestPager.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \b \fs24 1. Create a new Paginated collection\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 First, we define a new Paginated collection using {\f1 Backbone.Paginator.requestPager()} as follows:\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 {\f1 javascript var PaginatedCollection = Backbone.Paginator.requestPager.extend(\{} ####2: Set the model for the collection as normal\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 var PaginatedCollection = Backbone.Paginator.requestPager.extend(\{\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs24 2: Set the model for the collection as normal\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 Within our collection, we then (as normal) specify the model to be used with this collection followed by the URL (or base URL) for the service providing our data (e.g the Netflix API).\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 {\f1 javascript         model: model,} ####3. Configure the base URL and the type of the request\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1         model: model,\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs24 3. Configure the base URL and the type of the request\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 We need to set a base URL. The {\f1 type} of the request is {\f1 GET} by default, and the {\f1 dataType} is {\f1 jsonp} in order to enable cross-domain requests.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \f1     paginator_core: \{\line
       // the type of the request (GET by default)\line
@@ -6691,12 +6697,12 @@ test('Also can remove custom events from objects.', function() \{\line
     setup: function() \{\line
         Backbone.localStorageDB = new Store('testTodos');\line
         $('#qunit-fixture').append('<div id="app"></div>');\line
-        this.App = new TodoApp(\{ appendTo: $('#app') \});\line
+        this.App = new TodoApp(\{ appendTo: $('# <app') \});\line
     \},\line
 \line
     teardown: function() \{\line
         this.App.todos.reset();\line
-        $('#app').remove();\line
+        $('# <app').remove();\line
     \}\line
 \});\line
 \line
