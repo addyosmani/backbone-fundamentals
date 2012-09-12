@@ -41,6 +41,8 @@ code > span.er { color: #ff0000; font-weight: bold; }
 
   <p>&nbsp;<br></p>
 </div>
+
+<a href="http://shop.oreilly.com/product/0636920025344/ReviewSubmit.do?sortby=publicationDate?pageId=0636920025344.IP"><img style="position: absolute; top: -10px; right: -10px; border: 0;" src="http://addyosmani.github.com/backbone-fundamentals/img/helpful.png" alt="Was this helpful? We'd love you to write a review."></a>
 <h2 id="prelude">Prelude</h2>
 <p><img src="img/logo.jpg" style="float:left"/> Welcome to my (in-progress) book about the <a href="http://documentcloud.github.com/backbone/">Backbone.js</a> framework for structuring JavaScript applications. It's released under a Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported <a href="http://creativecommons.org/licenses/by-nc-sa/3.0/">license</a> meaning you can both grab a copy of the book for free or help to further <a href="https://github.com/addyosmani/backbone-fundamentals/">improve</a> it.</p>
 <p>I'm very pleased to announce that this book will be out in physical form later in the year via <a href="http://oreilly.com">O'Reilly Media</a>. Readers will have the option of purchasing the latest version in either print or a number of digital formats then or can grab a recent version from this repository.</p>
@@ -87,7 +89,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <li>Appending Views</li>
 <li>Better Model Property Validation *</li>
 </ul></li>
-<li><h4><a href="#advanced">Modular Development</a></h4>
+<li><h4><a href="#%20&lt;advanced">Modular Development</a></h4>
 <ul>
 <li><a href="#modularjs">Introduction</a></li>
 <li><a href="#organizingmodules">Organizing modules with Require.js and AMD</a></li>
@@ -673,11 +675,15 @@ id: &#39;header&#39;, // optional</code></pre>
 <p>Sometimes you may also want to get a model based on its client id. The client id is a property that Backbone automatically assigns models that have not yet been saved. You can get a model's client id from its <code>.cid</code> property.</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> mySkiingCrash = <span class="kw">PhotoCollection</span>.<span class="fu">getByCid</span>(<span class="dv">456</span>);</code></pre>
 <p>Backbone Collections don't have setters as such, but do support adding new models via <code>.add()</code> and removing models via <code>.remove()</code>.</p>
-<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> a = <span class="kw">new</span> <span class="kw">Backbone</span>.<span class="fu">Model</span>({ <span class="dt">title</span>: <span class="ch">&#39;my vacation&#39;</span>}),
-    b = <span class="kw">new</span> <span class="kw">Backbone</span>.<span class="fu">Model</span>({ <span class="dt">title</span>: <span class="ch">&#39;my holiday&#39;</span>});
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> a = <span class="kw">new</span> Photo({ <span class="dt">title</span>: <span class="ch">&#39;my vacation&#39;</span>}),
+    b = <span class="kw">new</span> Photo({ <span class="dt">title</span>: <span class="ch">&#39;my holiday&#39;</span>}),
+    c = <span class="kw">new</span> Photo({ <span class="dt">title</span>: <span class="ch">&#39;my weekend&#39;</span>});
 
 <span class="kw">var</span> photoCollection = <span class="kw">new</span> PhotoCollection([a,b]);
-<span class="kw">photoCollection</span>.<span class="fu">remove</span>([a,b]);</code></pre>
+<span class="kw">photoCollection</span>.<span class="fu">add</span>(c);
+
+<span class="kw">photoCollection</span>.<span class="fu">remove</span>([a,b]);
+<span class="kw">photoCollection</span>.<span class="fu">remove</span>(c);</code></pre>
 <p><strong>Listening for events</strong></p>
 <p>As collections represent a group of items, we're also able to listen for <code>add</code> and <code>remove</code> events for when new models are added or removed from the collection. Here's an example:</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> PhotoCollection = <span class="kw">new</span> <span class="kw">Backbone</span>.<span class="fu">Collection</span>();
@@ -747,9 +753,10 @@ id: &#39;header&#39;, // optional</code></pre>
   .<span class="fu">map</span>(<span class="kw">function</span>(item) { <span class="kw">return</span> <span class="kw">item</span>.<span class="fu">get</span>(<span class="ch">&#39;name&#39;</span>); })
   .<span class="fu">value</span>();
 
-<span class="co">// Will return [&#39;Ida&#39;, &#39;Rob&#39;]</span></code></pre>
-<p>Some of the Backbone-specific method will return <code>this</code>, which means they can be chained as well:</p>
-<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> collection = <span class="kw">new</span> <span class="kw">Backbone</span>.<span class="fu">Collection</span>();
+<span class="co">// Will return [&#39;Ida&#39;, &#39;Rob&#39;]</span>
+Some of the Backbone-specific method will <span class="kw">return</span> <span class="kw">this</span>, which means they can be chained as <span class="dt">well</span>:
+
+<span class="kw">var</span> collection = <span class="kw">new</span> <span class="kw">Backbone</span>.<span class="fu">Collection</span>();
 
 collection
     .<span class="fu">add</span>({ <span class="dt">name</span>: <span class="ch">&#39;John&#39;</span>, <span class="dt">age</span>: <span class="dv">23</span> })
@@ -815,7 +822,7 @@ collection
     <span class="co">/* define the route and function maps for this router */</span>
     <span class="dt">routes</span>: {
         <span class="st">&quot;about&quot;</span> : <span class="st">&quot;showAbout&quot;</span>,
-        <span class="co">/*Sample usage: http://unicorns.com/#about*/</span>
+        <span class="co">/*Sample usage: http://unicorns.com/# &lt;about*/</span>
 
         <span class="st">&quot;photos/:id&quot;</span> : <span class="st">&quot;getPhoto&quot;</span>,
         <span class="co">/*This is an example of using a &quot;:param&quot; variable which allows us to match</span>
@@ -845,7 +852,7 @@ collection
         <span class="co">/*This is a default route that also uses a *splat. Consider the</span>
 <span class="co">        default route a wildcard for URLs that are either not matched or where</span>
 <span class="co">        the user has incorrectly typed in a route path manually*/</span>
-        <span class="co">/*Sample usage: http://unicorns.com/#anything*/</span>
+        <span class="co">/*Sample usage: http://unicorns.com/# &lt;anything*/</span>
 
     },
 
@@ -1343,7 +1350,7 @@ myApplication_galleryView = <span class="kw">Backbone.View</span>.<span class="f
       <span class="kw">this</span>.$<span class="fu">footer</span> = <span class="kw">this</span>.$(<span class="ch">&#39;#footer&#39;</span>);
       <span class="kw">this</span>.$<span class="fu">main</span> = <span class="kw">this</span>.$(<span class="ch">&#39;#main&#39;</span>);
 
-      <span class="kw">window</span>.<span class="fu">app</span>.<span class="fu">Todos</span>.<span class="fu">on</span>( <span class="ch">&#39;add&#39;</span>, <span class="kw">this</span>.<span class="fu">addOne</span>, <span class="kw">this</span> );
+      <span class="kw">window</span>.<span class="fu">app</span>.<span class="fu">Todos</span>.<span class="fu">on</span>( <span class="ch">&#39;add&#39;</span>, <span class="kw">this</span>.<span class="fu">addAll</span>, <span class="kw">this</span> );
       <span class="kw">window</span>.<span class="fu">app</span>.<span class="fu">Todos</span>.<span class="fu">on</span>( <span class="ch">&#39;reset&#39;</span>, <span class="kw">this</span>.<span class="fu">addAll</span>, <span class="kw">this</span> );
       <span class="kw">window</span>.<span class="fu">app</span>.<span class="fu">Todos</span>.<span class="fu">on</span>( <span class="ch">&#39;all&#39;</span>, <span class="kw">this</span>.<span class="fu">render</span>, <span class="kw">this</span> );
 
@@ -1387,8 +1394,8 @@ myApplication_galleryView = <span class="kw">Backbone.View</span>.<span class="f
     }
 
   });</code></pre>
-<p>You can see we've got a couple of things going on, an el (element), a <code>statsTemplate</code>, a constructor function and several view specific methods. On the left of the el: key is a DOM element selector for the element with ID <code>todoapp</code>. The value of this is just a string and Backbone will create a reference pointing to any element matching the selector #todoapp, where here it will be the <code>&lt;section id=”todoapp /&gt;</code> element, defined in the HTML section earlier.</p>
-<p>In a nutshell this means we can now refer to this.el in our controller, which points to the <code>&lt;section class=&quot;todoapp&quot; /&gt;</code> element. As you can see, we're referring to el in the <code>addOne()</code> function, appending an element to the list.</p>
+<p>You can see we've got a couple of things going on, an el (element), a <code>statsTemplate</code>, a constructor function and several view specific methods. To the right of the <code>el:</code> key is a DOM element selector for the element with ID <code>todoapp</code>. The value of this is just a string and Backbone will create a reference pointing to the element matching the selector #todoapp, where here it will be the <code>&lt;section id=&quot;todoapp&quot; /&gt;</code> element, which we previously defined in our HTML.</p>
+<p>In a nutshell this means we can now refer to this.el in our controller, which points to the <code>&lt;section id=&quot;todoapp&quot; /&gt;</code> element. As you can see, we're referring to el in the <code>addOne()</code> function, appending an element to the list.</p>
 <p>Now let's take a look at the constructor function. It's binding to several events on the Todo model, such as add, reset and all. Since we're delegating handling of updates and deletes to the <code>TodoView</code> view, we don't need to to worry about that here. The two pieces of logic are:</p>
 <ul>
 <li><p>When a new todo is created, the <code>add</code> event will be fired, calling <code>addAll()</code>. This iterates over all of the Todos currently in our collection and fires <code>addOne()</code> for each item.</p></li>
@@ -1802,7 +1809,7 @@ $(<span class="kw">function</span>() {
 <p>We can use Boilerplate to easily begin creating an application, but first, we'll need to install it. This can be done by grabbing the latest version of it by cloning the Boilerplate repo directly:</p>
 <pre class="shell"><code>$ git clone git://github.com/tbranyen/backbone-boilerplate.git</code></pre>
 <p>or alternatively, just fetching the latest tarball as follows:</p>
-<pre class="shell"><code>curl -C - -O https://github.com/tbranyen/backbone-boilerplate/zipball/master</code></pre>
+<pre class="shell"><code>$ curl -C - -O https://github.com/tbranyen/backbone-boilerplate/zipball/master</code></pre>
 <h3 id="grunt-bbb">Grunt-BBB</h3>
 <p>As Tim covers in the Boilerplate docs, we have to install <a href="http://gruntjs.org">Grunt</a> if we want to use the build tools and grunt-bbb helpers he recommends.</p>
 <p>Grunt is an excellent Node-based JavaScript build tool by another <a href="http://bocoup.com">Bocoup</a> developer (<a href="http://benalman.com">Ben Alman</a>). Think of it as similar to <a href="http://ant.apache.org/">Ant</a> or <a href="https://github.com/jimweirich/rake">Rake</a>. The grunt-bbb helper is also useful to have as it provides several Backbone-specific utilities for scaffolding out your project, without the need to write boilerplate yourself.</p>
@@ -1813,8 +1820,8 @@ $ npm install -g grunt
 # followed by
 $ npm install -g bbb
 
-# Create a new project
-bbb init</code></pre>
+# finally create a new project
+$ bbb init</code></pre>
 <p>That's it. We should now be good to go.</p>
 <p>A typical workflow for using grunt-bbb, which we can use later on is:</p>
 <ul>
@@ -2058,7 +2065,7 @@ bbb init</code></pre>
 </ul>
 <p>We can easily create a new Boilerplate module using <code>grunt-bbb</code> once again using <code>init</code>:</p>
 <pre class="shell"><code># Create a new module
-bbb init:module
+$ bbb init:module
 
 # Grunt prompt
 Please answer the following:
@@ -2254,7 +2261,7 @@ Initialized from template &quot;module&quot;.</code></pre>
 <p>In this section we reviewed Backbone Boilerplate and learned how to use the BBB tool to help us scaffold out our application.</p>
 <p>If you would like to learn more about how this project helps structure your app, BBB includes some built-in boilerplate sample apps that can be easily generated for review.</p>
 <p>These include a boilerplate tutorial project (<code>bbb init:tutorial</code>) and an implementation of my <a href="http://todomvc">TodoMVC</a> project (<code>bbb init:todomvc</code>). I recommend checking these out as they'll provide you with a more complete picture of how Backbone Boilerplate, its templates and so on fit into the overall setup for a web app.</p>
-<p>For more about Grunt-BBB, remember to take a look at the official project <a href="https://github.com/backbone-boilerplate/grunt-bbb">repositoryy</a>. There is also a related <a href="https://dl.dropbox.com/u/79007/talks/Modern_Web_Applications/slides/index.html">slide-deck</a> available for those interested in reading more.</p>
+<p>For more about Grunt-BBB, remember to take a look at the official project <a href="https://github.com/backbone-boilerplate/grunt-bbb">repository</a>. There is also a related <a href="https://dl.dropbox.com/u/79007/talks/Modern_Web_Applications/slides/index.html">slide-deck</a> available for those interested in reading more.</p>
 <h2 id="related-tools-projects">Related Tools &amp; Projects</h2>
 <p>As we've seen, scaffolding tools can assist in expediting how quickly you can begin a new application by creating the basic files required for a project automatically. If you appreciate such tools, I'm happy to also recommend checking out <a href="http://yeoman.io">Yeoman</a> (one of my upcoming projects) and <a href="https://github.com/brunch/brunch">Brunch</a>.</p>
 <p>Brunch works very well with Backbone, Underscore, jQuery and CoffeeScript and is even used by companies such as Red Bull and Jim Beam. You may have to update any third party dependencies (e.g. latest jQuery or Zepto) when using it, but other than that it should be fairly stable to use right out of the box.</p>
@@ -4579,9 +4586,11 @@ require([<span class="ch">&#39;views/app&#39;</span>], <span class="kw">function
 <p>In this section we're going to walkthrough actually using the requestPager.</p>
 <h4 id="create-a-new-paginated-collection">1. Create a new Paginated collection</h4>
 <p>First, we define a new Paginated collection using <code>Backbone.Paginator.requestPager()</code> as follows:</p>
-<p><code>javascript var PaginatedCollection = Backbone.Paginator.requestPager.extend({</code> ####2: Set the model for the collection as normal</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> PaginatedCollection = <span class="kw">Backbone.Paginator.requestPager</span>.<span class="fu">extend</span>({</code></pre>
+<h4 id="set-the-model-for-the-collection-as-normal">2: Set the model for the collection as normal</h4>
 <p>Within our collection, we then (as normal) specify the model to be used with this collection followed by the URL (or base URL) for the service providing our data (e.g the Netflix API).</p>
-<p><code>javascript         model: model,</code> ####3. Configure the base URL and the type of the request</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript">        <span class="dt">model</span>: model,</code></pre>
+<h4 id="configure-the-base-url-and-the-type-of-the-request">3. Configure the base URL and the type of the request</h4>
 <p>We need to set a base URL. The <code>type</code> of the request is <code>GET</code> by default, and the <code>dataType</code> is <code>jsonp</code> in order to enable cross-domain requests.</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript">    <span class="dt">paginator_core</span>: {
       <span class="co">// the type of the request (GET by default)</span>
@@ -4692,7 +4701,7 @@ require([<span class="ch">&#39;views/app&#39;</span>], <span class="kw">function
 <pre class="sourceCode javascript"><code class="sourceCode javascript">    <span class="kw">var</span> PaginatedCollection = <span class="kw">Backbone.Paginator.clientPager</span>.<span class="fu">extend</span>({
 
         <span class="dt">model</span>: model,</code></pre>
-<h4 id="configure-the-base-url-and-the-type-of-the-request">2. Configure the base URL and the type of the request</h4>
+<h4 id="configure-the-base-url-and-the-type-of-the-request-1">2. Configure the base URL and the type of the request</h4>
 <p>We need to set a base URL. The <code>type</code> of the request is <code>GET</code> by default, and the <code>dataType</code> is <code>jsonp</code> in order to enable cross-domain requests.</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript">    <span class="dt">paginator_core</span>: {
       <span class="co">// the type of the request (GET by default)</span>
@@ -6305,12 +6314,12 @@ test(<span class="ch">&#39;Also can remove custom events from objects.&#39;</spa
     <span class="dt">setup</span>: <span class="kw">function</span>() {
         <span class="kw">Backbone</span>.<span class="fu">localStorageDB</span> = <span class="kw">new</span> Store(<span class="ch">&#39;testTodos&#39;</span>);
         $(<span class="ch">&#39;#qunit-fixture&#39;</span>).<span class="fu">append</span>(<span class="ch">&#39;&lt;div id=&quot;app&quot;&gt;&lt;/div&gt;&#39;</span>);
-        <span class="kw">this</span>.<span class="fu">App</span> = <span class="kw">new</span> TodoApp({ <span class="dt">appendTo</span>: $(<span class="ch">&#39;#app&#39;</span>) });
+        <span class="kw">this</span>.<span class="fu">App</span> = <span class="kw">new</span> TodoApp({ <span class="dt">appendTo</span>: $(<span class="ch">&#39;# &lt;app&#39;</span>) });
     },
 
     <span class="dt">teardown</span>: <span class="kw">function</span>() {
         <span class="kw">this</span>.<span class="fu">App</span>.<span class="fu">todos</span>.<span class="fu">reset</span>();
-        $(<span class="ch">&#39;#app&#39;</span>).<span class="fu">remove</span>();
+        $(<span class="ch">&#39;# &lt;app&#39;</span>).<span class="fu">remove</span>();
     }
 });
 
