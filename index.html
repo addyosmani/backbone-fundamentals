@@ -1932,7 +1932,7 @@ $ bbb init</code></pre>
 <p>This entire setup ensures that our scripts correctly get loaded in the order in which we expect.</p>
 <h3 id="main.js">main.js</h3>
 <p>Next, we have <code>main.js</code>, which defines the entry point for our application. We use a global <code>require()</code> method to load an array any other scripts needed, such as our application <code>app.js</code> and our main router <code>router.js</code>. Note that most of the time, we will only use <code>require()</code> for bootstrapping an application and a similar method called <code>define()</code> for all other purposes.</p>
-<p>The function defined after our array of dependencies is a callback which doesn't fire until these scripts have loaded. Notice howe we're able to locally alias references to &quot;app&quot; and &quot;router&quot; as <code>app</code> and <code>Router</code> for convenience.</p>
+<p>The function defined after our array of dependencies is a callback which doesn't fire until these scripts have loaded. Notice how we're able to locally alias references to &quot;app&quot; and &quot;router&quot; as <code>app</code> and <code>Router</code> for convenience.</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript">require([
   <span class="co">// Application.</span>
   <span class="st">&quot;app&quot;</span>,
