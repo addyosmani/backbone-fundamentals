@@ -48,14 +48,17 @@ I hope you find this book helpful!
     * Appending Views
     * Better Model Property Validation *
 
-* #### [Modular Development](# <advanced)
+* #### [Modular Development](#advanced)
     * [Introduction](#modularjs)
-    * [Organizing modules with Require.js and AMD](#organizingmodules)
+    * [Organizing modules with RequireJS and AMD](#organizingmodules)
     * [Keeping your templates external](#externaltemplates)
-    * [Practical: A Modular App Using AMD & Require.js](#practicalrequirejs)
-    * [Optimize Apps With The Require.js Optimizer](#optimizingrequirejs)
-    * [Optimize Apps With Require.js Using Packages](#optimizebuild) *
-    * [Decoupling Backbone With The Mediator and Facade patterns](#decouplingbackbone)
+    * [Practical: A Modular App Using AMD & RequireJS](#practicalrequirejs)
+    * [Optimize Apps With The RequireJS Optimizer](#optimizingrequirejs)
+    * [Optimize Apps With RequireJS Using Packages](#optimizebuild) *
+    * [Decoupling Backbone With The Mediator And Facade Patterns](#decouplingbackbone)
+
+* #### Backbone.js Extensions
+    * [Backbone Marionette](#marionette) *
 
 * #### [RESTful Applications With Backbone.js](#restfulapps)
     * [Building RESTful applications](#restful)
@@ -171,7 +174,7 @@ Backbone's main benefits, regardless of your target platform or device, include 
 
 The goal of this book is to create an authoritative and centralized repository of information that can help those developing real-world apps with Backbone. If you come across a section or topic which you think could be improved or expanded on, please feel free to submit a pull-request. It won't take long and you'll be helping other developers avoid problems you've run into before.
 
-Topics will include MVC theory and how to build applications using Backbone's models, views, collections and routers. I'll also be taking you through advanced topics like modular development with Backbone.js and AMD (via Require.js), how to build applications using modern software stacks (like Node and Express), how to solve the routing problems with Backbone and jQuery Mobile, tips about scaffolding tools, and a lot more.
+Topics will include MVC theory and how to build applications using Backbone's models, views, collections and routers. I'll also be taking you through advanced topics like modular development with Backbone.js and AMD (via RequireJS), how to build applications using modern software stacks (like Node and Express), how to solve the routing problems with Backbone and jQuery Mobile, tips about scaffolding tools, and a lot more.
 
 
 # <a name="fundamentals">Fundamentals</a>
@@ -1057,7 +1060,8 @@ collection.chain()
   .value();
 
 // Will return ['Ida', 'Rob']
-Some of the Backbone-specific method will return this, which means they can be chained as well:
+
+Some of the Backbone-specific methods will return this, which means they can be chained as well:
 
 var collection = new Backbone.Collection();
 
@@ -1891,7 +1895,7 @@ To keep thing simple, we'll keep things 'read-only' at the moment, and won't pro
       this.$footer = this.$('#footer');
       this.$main = this.$('#main');
 
-      window.app.Todos.on( 'add', this.addAll, this );
+      window.app.Todos.on( 'add', this.addOne, this );
       window.app.Todos.on( 'reset', this.addAll, this );
       window.app.Todos.on( 'all', this.render, this );
 
@@ -2419,7 +2423,7 @@ Finally, we call `Backbone.history.start()` to route the initial URL during page
 
 We’ve now learned how to build our first complete Backbone.js application. The app can be viewed online at any time and the sources are readily available via [TodoMVC](http://www.todomvc.com).
 
-Later on in the book, we’ll learn how to further modularize this application using Require.js, swap out our persistence layer to a database back-end and finally unit test the application with a few different testing frameworks.
+Later on in the book, we’ll learn how to further modularize this application using RequireJS, swap out our persistence layer to a database back-end and finally unit test the application with a few different testing frameworks.
 
 
 
@@ -2489,7 +2493,7 @@ Let's create a new folder for our project and run `bbb init` to kick things off.
 
 ### index.html
 
-This is a fairly standard stripped-down HTML5 Boilerplate foundation with the notable exception of including [Require.js](http://requirejs.org) at the bottom of the page.
+This is a fairly standard stripped-down HTML5 Boilerplate foundation with the notable exception of including [RequireJS](http://requirejs.org) at the bottom of the page.
 
 ```html
 <!doctype html>
@@ -2515,22 +2519,22 @@ This is a fairly standard stripped-down HTML5 Boilerplate foundation with the no
 </html>
 ```
 
-Require.js is an [AMD](https://github.com/amdjs/amdjs-api/wiki/AMD) (Asynchronous Module Definition) module and script loader, which will assist us with managing the modules in our application. We'll be covering it in a lot more detail later on in the book, but for now, let's cover at a high-level what this particular block does:
+RequireJS is an [AMD](https://github.com/amdjs/amdjs-api/wiki/AMD) (Asynchronous Module Definition) module and script loader, which will assist us with managing the modules in our application. We'll be covering it in a lot more detail later on in the book, but for now, let's cover at a high-level what this particular block does:
 
 ```
 <script data-main="app/config" src="/assets/js/libs/require.js"></script>
 ```
 
-The `data-main` attribute is used to inform Require.js to load `app/config.js` (a configuration object) after it has finished loading itself. You'll notice that we've omitted the `.js` extension here as require.js can automatically add this for us, however it will respect your paths if we do choose to include it regardless. Let's now look at the config file being referenced.
+The `data-main` attribute is used to inform RequireJS to load `app/config.js` (a configuration object) after it has finished loading itself. You'll notice that we've omitted the `.js` extension here as RequireJS can automatically add this for us, however it will respect your paths if we do choose to include it regardless. Let's now look at the config file being referenced.
 
 ### config.js
 
-A Require.js configuration object allows us to specify aliases and paths for dependencies we're likely to reference often (e.g jQuery), bootstrap properties like our base application URL and `shim` libraries that don't support AMD natively.
+A RequireJS configuration object allows us to specify aliases and paths for dependencies we're likely to reference often (e.g jQuery), bootstrap properties like our base application URL and `shim` libraries that don't support AMD natively.
 
 This is what the config file in Backbone Boilerplate looks like:
 
 ```javascript
-// Set the require.js configuration for your application.
+// Set the RequireJS configuration for your application.
 require.config({
 
   // Initialize the application with the main application file.
@@ -2561,7 +2565,7 @@ require.config({
 });
 ```
 
-The first option defined in the above config is `deps: ["main"]`. This informs Require.js to load up our main.js file, which is considered the entry point for our application. You may notice that we haven't specified any other path information for `main`.
+The first option defined in the above config is `deps: ["main"]`. This informs RequireJS to load up our main.js file, which is considered the entry point for our application. You may notice that we haven't specified any other path information for `main`.
 
 This is because as we haven't overridden the path to our scripts using the `baseUrl` option, Require will infer this using the path from our `data-main` attribute in index.html. In other words, our `baseUrl` is `app/` and any scripts we require will be loaded relative to this location.
 
@@ -2595,7 +2599,7 @@ Next we have the `shim` config:
   }
 ```
 
-`shim` is an important part of our Require.js configuration which allows us to load libraries which are not AMD compliant. The basic idea here is that rather than requiring all libraries to implement support for AMD, the `shim` takes care of the hard work for us.
+`shim` is an important part of our RequireJS configuration which allows us to load libraries which are not AMD compliant. The basic idea here is that rather than requiring all libraries to implement support for AMD, the `shim` takes care of the hard work for us.
 
 For example, in the block below, we state that Backbone.js is dependent on Lodash (a fork of Underscore.js) and jQuery being loaded before it. Once they've been loaded, we then use the global export `Backbone` as the module value.
 
@@ -2606,7 +2610,7 @@ For example, in the block below, we state that Backbone.js is dependent on Lodas
     }
 ```
 
-Finally, we inform Require.js that the Backbone [LayoutManager](https://github.com/tbranyen/backbone.layoutmanager) plugin (a template and layout manager, also included) requires that Backbone be loaded before it should be.
+Finally, we inform RequireJS that the Backbone [LayoutManager](https://github.com/tbranyen/backbone.layoutmanager) plugin (a template and layout manager, also included) requires that Backbone be loaded before it should be.
 
 ```javascript
     // Backbone.LayoutManager depends on Backbone.
@@ -4903,18 +4907,18 @@ Instead, developers at present are left to fall back on variations of the module
 
 Whilst native solutions to these problems will be arriving in ES Harmony, the good news is that writing modular JavaScript has never been easier and you can start doing it today.
 
-In this next part of the book, we're going to look at how to use AMD modules and Require.js for cleanly wrapping units of code in your application into manageable modules.
+In this next part of the book, we're going to look at how to use AMD modules and RequireJS for cleanly wrapping units of code in your application into manageable modules.
 
 
-## <a name="organizingmodules">Organizing modules with Require.js and AMD</a>
+## <a name="organizingmodules">Organizing modules with RequireJS and AMD</a>
 
-In case you haven't used it before, [Require.js](http://requirejs.org) is a popular script loader written by James Burke - a developer who has been quite instrumental in helping shape the AMD module format, which we'll discuss more shortly. Some of Require.js's capabilities include helping to load multiple script files, helping define modules with or without dependencies and loading in non-script dependencies such as text files.
+In case you haven't used it before, [RequireJS](http://requirejs.org) is a popular script loader written by James Burke - a developer who has been quite instrumental in helping shape the AMD module format, which we'll discuss more shortly. Some of RequireJS's capabilities include helping to load multiple script files, helping define modules with or without dependencies and loading in non-script dependencies such as text files.
 
-So, why use Require.js with Backbone? Although Backbone is excellent when it comes to providing a sanitary structure to your applications, there are a few key areas where some additional help could be used:
+So, why use RequireJS with Backbone? Although Backbone is excellent when it comes to providing a sanitary structure to your applications, there are a few key areas where some additional help could be used:
 
 1) Backbone doesn't endorse a particular approach to modular-development. Although this means it's quite open-ended for developers to opt for classical patterns like the module-pattern or Object Literals for structuring their apps (which both work fine), it also means developers aren't sure of what works best when other concerns come into play, such as dependency management.
 
-Require.js is compatible with the AMD (Asynchronous Module Definition) format, a format which was born from a desire to write something better than the 'write lots of script tags with implicit dependencies and manage them manually' approach to development. In addition to allowing you to clearly declare dependencies, AMD works well in the browser, supports string IDs for dependencies, declaring multiple modules in the same file and gives you easy-to-use tools to avoid polluting the global namespace.
+RequireJS is compatible with the AMD (Asynchronous Module Definition) format, a format which was born from a desire to write something better than the 'write lots of script tags with implicit dependencies and manage them manually' approach to development. In addition to allowing you to clearly declare dependencies, AMD works well in the browser, supports string IDs for dependencies, declaring multiple modules in the same file and gives you easy-to-use tools to avoid polluting the global namespace.
 
 2) Let's discuss dependency management a little more as it can actually be quite challenging to get right if you're doing it by hand. When we write modules in JavaScript, we ideally want to be able to handle the reuse of code units intelligently and sometimes this will mean pulling in other modules at run-time whilst at other times you may want to do this dynamically to avoid a large pay-load when the user first hits your application.
 
@@ -4922,7 +4926,7 @@ Think about the GMail web-client for a moment. When users initially load up the 
 
 I've previously written [a detailed article](http://addyosmani.com/writing-modular-js) covering both AMD and other module formats and script loaders in case you'd like to explore this topic further. The takeaway is that although it's perfectly fine to develop applications without a script loader or clean module format in place, it can be of significant benefit to consider using these tools in your application development.
 
-### Writing AMD modules with Require.js
+### Writing AMD modules with RequireJS
 
 As discussed above, the overall goal for the AMD format is to provide a solution for modular JavaScript that developers can use today. The two key concepts you need to be aware of when using it with a script-loader are a `define()` method for facilitating module definition and a `require()` method for handling dependency loading. `define()` is used to define named or unnamed modules based on the proposal using the following signature:
 
@@ -4936,7 +4940,7 @@ define(
 
 As you can tell by the inline comments, the `module_id` is an optional argument which is typically only required when non-AMD concatenation tools are being used (there may be some other edge cases where it's useful too). When this argument is left out, we call the module 'anonymous'. When working with anonymous modules, the idea of a module's identity is DRY, making it trivial to avoid duplication of filenames and code.
 
-Back to the define signature, the dependencies argument represents an array of dependencies which are required by the module you are defining and the third argument ('definition function') is a function that's executed to instantiate your module. A barebone module (compatible with Require.js) could be defined using `define()` as follows:
+Back to the define signature, the dependencies argument represents an array of dependencies which are required by the module you are defining and the third argument ('definition function') is a function that's executed to instantiate your module. A barebone module (compatible with RequireJS) could be defined using `define()` as follows:
 
 ```javascript
 // A module ID has been omitted here to make the module anonymous
@@ -5046,15 +5050,15 @@ define([
 Aliasing to the dollar-sign (`$`), once again makes it very easy to encapsulate any part of an application you wish using AMD.
 
 
-## <a name="externaltemplates">Keeping Your Templates External Using Require.js And The Text Plugin</a>
+## <a name="externaltemplates">Keeping Your Templates External Using RequireJS And The Text Plugin</a>
 
-Moving your [Underscore/Mustache/Handlebars] templates to external files is actually quite straight-forward. As this application makes use of Require.js, I'll discuss how to implement external templates using this specific script loader.
+Moving your [Underscore/Mustache/Handlebars] templates to external files is actually quite straight-forward. As this application makes use of RequireJS, I'll discuss how to implement external templates using this specific script loader.
 
-Require.js has a special plugin called text.js which is used to load in text file dependencies. To use the text plugin, simply follow these simple steps:
+RequireJS has a special plugin called text.js which is used to load in text file dependencies. To use the text plugin, simply follow these simple steps:
 
 1. Download the plugin from http://requirejs.org/docs/download.html#text and place it in either the same directory as your application's main JS file or a suitable sub-directory.
 
-2. Next, include the text.js plugin in your initial Require.js configuration options. In the code snippet below, we assume that Require.js is being included in our page prior to this code snippet being executed. Any of the other scripts being loaded are just there for the sake of example.
+2. Next, include the text.js plugin in your initial RequireJS configuration options. In the code snippet below, we assume that RequireJS is being included in our page prior to this code snippet being executed. Any of the other scripts being loaded are just there for the sake of example.
 
 ```javascript
 require.config( {
@@ -5072,7 +5076,7 @@ require.config( {
 } );
 ```
 
-3. When the `text!` prefix is used for a dependency, Require.js will automatically load the text plugin and treat the dependency as a text resource. A typical example of this in action may look like..
+3. When the `text!` prefix is used for a dependency, RequireJS will automatically load the text plugin and treat the dependency as a text resource. A typical example of this in action may look like..
 
 ```javascript
 require(['js/app', 'text!templates/mainView.html'],
@@ -5102,7 +5106,7 @@ JS:
 var compiled_template = _.template( $('#mainViewTemplate').html() );
 ```
 
-With Require.js and the text plugin however, it's as simple as saving your template into an external text file (say, `mainView.html`) and doing the following:
+With RequireJS and the text plugin however, it's as simple as saving your template into an external text file (say, `mainView.html`) and doing the following:
 
 ```javascript
 require(['js/app', 'text!templates/mainView.html'],
@@ -5122,22 +5126,22 @@ collection.someview.$el.html( compiled_template( { results: collection.models } 
 
 All templating solutions will have their own custom methods for handling template compilation, but if you understand the above, substituting Underscore's micro-templating for any other solution should be fairly trivial.
 
-**Note:** You may also be interested in looking at [Require.js tpl](https://github.com/ZeeAgency/requirejs-tpl). It's an AMD-compatible version of the Underscore templating system that also includes support for optimization (pre-compiled templates) which can lead to better performance and no evals. I have yet to use it myself, but it comes as a recommended resource.
+**Note:** You may also be interested in looking at [RequireJS tpl](https://github.com/ZeeAgency/requirejs-tpl). It's an AMD-compatible version of the Underscore templating system that also includes support for optimization (pre-compiled templates) which can lead to better performance and no evals. I have yet to use it myself, but it comes as a recommended resource.
 
 
-## <a name="optimizingrequirejs">Optimizing Backbone apps for production with the Require.js Optimizer</a>
+## <a name="optimizingrequirejs">Optimizing Backbone apps for production with the RequireJS Optimizer</a>
 
 As experienced developers may know, an essential final step when writing both small and large JavaScript web applications is the build process.  The majority of non-trivial apps are likely to consist of more than one or two scripts and so optimizing, minimizing and concatenating your scripts prior to pushing them to production will require your users to download a reduced number (if not just one) script file.
 
 Note: If you haven't looked at build processes before and this is your first time hearing about them, you might find [my post and screencast on this topic](http://addyosmani.com/blog/client-side-build-process/) useful.
 
-With some other structural JavaScript frameworks, my recommendation would normally be to implicitly use YUI Compressor or Google's closure compiler tools, but we have a slightly more elegant method available, when it comes to Backbone if you're using Require.js. Require.js has a command line optimization tool called r.js which has a number of capabilities, including:
+With some other structural JavaScript frameworks, my recommendation would normally be to implicitly use YUI Compressor or Google's closure compiler tools, but we have a slightly more elegant method available, when it comes to Backbone if you're using RequireJS. RequireJS has a command line optimization tool called r.js which has a number of capabilities, including:
 
 * Concatenating specific scripts and minifying them using external tools such as UglifyJS (which is used by default) or Google's Closure Compiler for optimal browser delivery, whilst preserving the ability to dynamically load modules
 * Optimizing CSS and stylesheets by inlining CSS files imported using @import, stripping out comments etc.
 * The ability to run AMD projects in both Node and Rhino (more on this later)
 
-You'll notice that I mentioned the word 'specific' in the first bullet point. The Require.js optimizer only concatenates module scripts that have been specified in arrays of string literals passed to top-level (i.e non-local) require and define calls. As clarified by the [optimizer docs](http://requirejs.org/docs/optimization.html) this means that Backbone modules defined like this:
+You'll notice that I mentioned the word 'specific' in the first bullet point. The RequireJS optimizer only concatenates module scripts that have been specified in arrays of string literals passed to top-level (i.e non-local) require and define calls. As clarified by the [optimizer docs](http://requirejs.org/docs/optimization.html) this means that Backbone modules defined like this:
 
 ```javascript
 define(['jquery','backbone','underscore', 'collections/sample','views/test'],
@@ -5154,11 +5158,11 @@ var models = someCondition ? ['models/ab','models/ac'] : ['models/ba','models/bc
 
 will be ignored. This is by design as it ensures that dynamic dependency/module loading can still take place even after optimization.
 
-Although the Require.js optimizer works fine in both Node and Java environments, it's strongly recommended to run it under Node as it executes significantly faster there. In my experience, it's a piece of cake to get setup with either environment, so go for whichever you feel most comfortable with.
+Although the RequireJS optimizer works fine in both Node and Java environments, it's strongly recommended to run it under Node as it executes significantly faster there. In my experience, it's a piece of cake to get setup with either environment, so go for whichever you feel most comfortable with.
 
-To get started with r.js, grab it from the [Require.js download page](http://requirejs.org/docs/download.html#rjs) or [through NPM](http://requirejs.org/docs/optimization.html#download). Now, the Require.js optimizer works absolutely fine for single script and CSS files, but for most cases you'll want to actually optimize an entire Backbone project. You *could* do this completely from the command-line, but a cleaner option is using build profiles.
+To get started with r.js, grab it from the [RequireJS download page](http://requirejs.org/docs/download.html#rjs) or [through NPM](http://requirejs.org/docs/optimization.html#download). Now, the RequireJS optimizer works absolutely fine for single script and CSS files, but for most cases you'll want to actually optimize an entire Backbone project. You *could* do this completely from the command-line, but a cleaner option is using build profiles.
 
-Below is an example of a build file taken from the modular jQuery Mobile app referenced later in this book. A **build profile** (commonly named `app.build.js`) informs Require.js to copy all of the content of `appDir` to a directory defined by `dir` (in this case `../release`). This will apply all of the necessary optimizations inside the release folder. The `baseUrl` is used to resolve the paths for your modules. It should ideally be relative to `appDir`.
+Below is an example of a build file taken from the modular jQuery Mobile app referenced later in this book. A **build profile** (commonly named `app.build.js`) informs RequireJS to copy all of the content of `appDir` to a directory defined by `dir` (in this case `../release`). This will apply all of the necessary optimizations inside the release folder. The `baseUrl` is used to resolve the paths for your modules. It should ideally be relative to `appDir`.
 
 Near the bottom of this sample file, you'll see an array called `modules`. This is where you specify the module names you wish to have optimized. In this case we're optimizing the main application called 'app', which maps to `appDir/app.js`. If we had set the `baseUrl` to 'scripts', it would be mapped to `appDir/scripts/app.js`.
 
@@ -5201,19 +5205,19 @@ node ../../r.js -o app.build.js
 That's it. As long as you have UglifyJS/Closure tools setup correctly, r.js should be able to easily optimize your entire Backbone project in just a few key-strokes. If you would like to learn more about build profiles, James Burke has a [heavily commented sample file](https://github.com/jrburke/r.js/blob/master/build/example.build.js) with all the possible options available.
 
 
-## <a name="optimizebuild">Optimize and Build a Backbone.js JavaScript application with Require.JS using Packages</a>
+## <a name="optimizebuild">Optimize and Build a Backbone.js JavaScript application with RequireJS using Packages</a>
 
 *Contributed by [Bill Heaton](https://github.com/pixelhandler)*
 
 When a JavaScript application is too complex or large to build in a single file, grouping the application’s components into packages allows for script dependencies to download in parallel, and facilitates only loading **packaged** and other modular code as the site experience requires the specific set of dependencies.
 
-Require.JS, the (JavaScript) module loading library, has an [optimizer](http://requirejs.org/docs/optimization.html "Require.JS optimizer") to build a JavaScript-based application and provides various options. A build profile is the recipe for your build, much like a build.xml file is used to build a project with ANT. The benefit of building with **r.js** not only results in speedy script loading with minified code, but also provides a way to package components of your application.
+RequireJS, the (JavaScript) module loading library, has an [optimizer](http://requirejs.org/docs/optimization.html "RequireJS optimizer") to build a JavaScript-based application and provides various options. A build profile is the recipe for your build, much like a build.xml file is used to build a project with ANT. The benefit of building with **r.js** not only results in speedy script loading with minified code, but also provides a way to package components of your application.
 
 * [Optimizing one JavaScript file](http://requirejs.org/docs/optimization.html#onejs "Optimizing one JavaScript file")
 * [Optimizing a whole project](http://requirejs.org/docs/optimization.html#wholeproject "Optimizing a whole project")
 * [Optimizing a project in layers or packages](http://requirejs.org/docs/faq-optimization.html#priority "Optimizing a project in layers or packages")
 
-In a complex application, organizing code into *packages* is an attractive build strategy. The build profile in this article is based on an test application currently under development (files list below). The application framework is built with open source libraries. The main objective in this build profile is to optimize an application developed with [Backbone.js](http://documentcloud.github.com/backbone/ "Backbone.js") using modular code, following the [Asynchronous Module Definition (AMD)](https://github.com/amdjs/amdjs-api/wiki/AMD "Asynchronous Module Definition (AMD) wiki page") format. AMD and Require.JS provide the structure for writing modular code with dependencies. Backbone.js provides the code organization for developing models, views and collections and also interactions with a RESTful API.
+In a complex application, organizing code into *packages* is an attractive build strategy. The build profile in this article is based on an test application currently under development (files list below). The application framework is built with open source libraries. The main objective in this build profile is to optimize an application developed with [Backbone.js](http://documentcloud.github.com/backbone/ "Backbone.js") using modular code, following the [Asynchronous Module Definition (AMD)](https://github.com/amdjs/amdjs-api/wiki/AMD "Asynchronous Module Definition (AMD) wiki page") format. AMD and RequireJS provide the structure for writing modular code with dependencies. Backbone.js provides the code organization for developing models, views and collections and also interactions with a RESTful API.
 
 Below is an outline of the applications file organization, followed by the build profile to build modular (or packaged) layers a JavaScript driven application.
 
@@ -5448,9 +5452,9 @@ However in your *models/section-b.js* file you define a dependency using the mod
     define([ "models" ], function (models, utils) {
     var section = models.section;
 
-Above is the mistake in models.js a dependency was added for models/section-b and in section-b a dependency is defined for model. The new models/section-b.js requires *model* and model.js requires *models/section-b.js* - a circular dependency. This should result in a load timeout error from require.js, but not tell you about the circular dependency.
+Above is the mistake in models.js a dependency was added for models/section-b and in section-b a dependency is defined for model. The new models/section-b.js requires *model* and model.js requires *models/section-b.js* - a circular dependency. This should result in a load timeout error from RequireJS, but not tell you about the circular dependency.
 
-For other common mistakes see the [COMMON ERRORS](http://requirejs.org/docs/errors.html "RequireJS common errors page") page on the Require.js site.
+For other common mistakes see the [COMMON ERRORS](http://requirejs.org/docs/errors.html "RequireJS common errors page") page on the RequireJS site.
 
 #### Executing the Build with r.js
 
@@ -5463,9 +5467,9 @@ If you intalled r.js with Node's npm (package manager) like so...
     > r.js -o app.build.js
 
 
-## <a name="practicalrequirejs">Practical: Building a modular Backbone app with AMD & Require.js</a>
+## <a name="practicalrequirejs">Practical: Building a modular Backbone app with AMD & RequireJS</a>
 
-In this chapter, we'll look at our first practical Backbone & Require.js project - how to build a modular Todo application. The application will allow us to add new todos, edit new todos and clear todo items that have been marked as completed. For a more advanced practical, see the section on mobile Backbone development.
+In this chapter, we'll look at our first practical Backbone & RequireJS project - how to build a modular Todo application. The application will allow us to add new todos, edit new todos and clear todo items that have been marked as completed. For a more advanced practical, see the section on mobile Backbone development.
 
 The complete code for the application can can be found in the `practicals/modular-todo-app` folder of this repo (thanks to Thomas Davis and J&eacute;r&ocirc;me Gravel-Niquet). Alternatively grab a copy of my side-project [TodoMVC](https://github.com/addyosmani/todomvc) which contains the sources to both AMD and non-AMD versions.
 
@@ -5475,7 +5479,7 @@ The complete code for the application can can be found in the `practicals/modula
 
 Writing a 'modular' Backbone application can be a straight-forward process. There are however, some key conceptual differences to be aware of if opting to use AMD as your module format of choice:
 
-* As AMD isn't a standard native to JavaScript or the browser, it's necessary to use a script loader (such as Require.js or curl.js) in order to support defining components and modules using this module format. As we've already reviewed, there are a number of advantages to using the AMD as well as Require.js to assist here.
+* As AMD isn't a standard native to JavaScript or the browser, it's necessary to use a script loader (such as RequireJS or curl.js) in order to support defining components and modules using this module format. As we've already reviewed, there are a number of advantages to using the AMD as well as RequireJS to assist here.
 * Models, views, controllers and routers need to be encapsulated *using* the AMD-format. This allows each component of our Backbone application to cleanly manage dependencies (e.g collections required by a view) in the same way that AMD allows non-Backbone modules to.
 * Non-Backbone components/modules (such as utilities or application helpers) can also be encapsulated using AMD. I encourage you to try developing these modules in such a way that they can both be used and tested independent of your Backbone code as this will increase their ability to be re-used elsewhere.
 
@@ -5536,7 +5540,7 @@ The rest of the tutorial will now focus on the JavaScript side of the practical.
 
 If you've read the earlier chapter on AMD, you may have noticed that explicitly needing to define each dependency a Backbone module (view, collection or other module) may require with it can get a little tedious. This can however be improved.
 
-In order to simplify referencing common paths the modules in our application may use, we use a Require.js [configuration object](http://requirejs.org/docs/api.html#config), which is typically defined as a top-level script file. Configuration objects have a number of useful capabilities, the most useful being mode name-mapping. Name-maps are basically a key:value pair, where the key defines the alias you wish to use for a path and the value represents the true location of the path.
+In order to simplify referencing common paths the modules in our application may use, we use a RequireJS [configuration object](http://requirejs.org/docs/api.html#config), which is typically defined as a top-level script file. Configuration objects have a number of useful capabilities, the most useful being mode name-mapping. Name-maps are basically a key:value pair, where the key defines the alias you wish to use for a path and the value represents the true location of the path.
 
 In the code-sample below, you can see some typical examples of common name-maps which include: `backbone`, `underscore`, `jquery` and depending on your choice, the RequireJS `text` plugin, which assists with loading text assets like templates.
 
@@ -5670,7 +5674,7 @@ define([
 
  From a maintenance perspective, there's nothing logically different in this version of our view, except for how we approach templating.
 
-Using the Require.js text plugin (the dependency marked `text`), we can actually store all of the contents for the template we looked at earlier in an external file (todos.html).
+Using the RequireJS text plugin (the dependency marked `text`), we can actually store all of the contents for the template we looked at earlier in an external file (todos.html).
 
 **templates/todos.html**
 
@@ -5820,10 +5824,14 @@ The rest of the source for the Todo app mainly consists of code for handling use
 
 To see how everything ties together, feel free to grab the source by cloning this repo or browse it [online](https://github.com/addyosmani/backbone-fundamentals/tree/master/practicals/modular-todo-app) to learn more. I hope you find it helpful!.
 
-**Note:** While this first practical doesn't use a build profile as outlined in the chapter on using the Require.js optimizer, we will be using one in the section on building mobile Backbone applications.
+**Note:** While this first practical doesn't use a build profile as outlined in the chapter on using the RequireJS optimizer, we will be using one in the section on building mobile Backbone applications.
 
 
-## <a name="decouplingbackbone">Decoupling Backbone with the Mediator and Facade patterns</a>
+
+
+
+
+## <a name="decouplingbackbone">Decoupling Backbone with the Mediator and Facade Patterns</a>
 
 In this section we'll discuss applying some of the concepts I cover in my article on [Large-scale JavaScript Application development](http://addyosmani.com/largescalejavascript) to Backbone.
 
@@ -6147,6 +6155,823 @@ function ($, _, facade) {
 
 That's it for this section. If you've been intrigued by some of the concepts covered, I encourage you to consider taking a look at my [slides](http://addyosmani.com/blog/large-scale-javascript-application-architecture/) on Large-scale JS from the jQuery Summit or my longer post on the topic [here](http://addyosmani.com/largescalejavascript) for more information.
 
+
+
+## <a name="marionette">Backbone.Marionette</a>
+
+*By Derick Bailey & Addy Osmani*
+
+As we've seen, Backbone provides a great set of building blocks for our JavaScript applications. It gives us the core constructs that are needed to build small to mid-sized apps, organize jQuery DOM events, or create single page apps that support mobile devices and large scale enterprise needs. But Backbone is not a complete framework. It's a set of building blocks that leaves much of the application design, architecture and scalability to the developer, including memory management, view management and more.
+
+[Backbone.Marionette](http://marionettejs.com) (or just "Marionette") provides many of the features that the non-trivial application developer needs, above what Backbone itself provides. It is a composite application library that aims to simplify the construction of large scale applications. It does this by providing a collection of common design and implementation patterns found in the applications that the creator, [Derick Bailey](http://lostechies.com/derickbailey/), and many other [contributors](https://github.com/marionettejs/backbone.marionette/graphs/contributors) have been using to build Backbone apps. 
+
+Marionette's key benefits include:
+
+* Scaling applications out with modular, event driven architecture
+* Sensible defaults, such as using Underscore templates for view rendering
+* Easy to modify to make it work with your application's specific needs
+* Reducing boilerplate for views, with specialized view types
+* Build on a modular architecture with an Application and modules that attach to it
+* Compose your application's visuals at runtime, with Region and Layout
+* Nested views and layouts within visual regions
+* Built-in memory management and zombie killing in views, regions and layouts
+* Built-in event clean up with the EventBinder
+* Event-driven architecture with the EventAggregator
+* Flexible, "as-needed" architecture allowing you to pick and choose what you need
+* And much, much more
+
+Marionette follows a similar philosophy to Backbone in that it provides a suite of components that can be used independently of each other, or used together to create a significant advantages for us as developers. But it steps above the structural components of Backbone and provides an application layer, with more than a dozen components and building blocks. 
+
+Marionette's components range greatly in the features they provide, but they all work together to create a composite application layer that can both reduce boilerplate code and provide a much needed application structure. It's core components include:
+
+* [**Backbone.Marionette.Application**](https://github.com/derickbailey/backbone.marionette/blob/master/docs/marionette.application.md): An application object that starts your app via initializers, and more
+* [**Backbone.Marionette.Application.module**](https://github.com/derickbailey/backbone.marionette/blob/master/docs/marionette.application.module.md): Create modules and sub-modules within the application
+* [**Backbone.Marionette.AppRouter**](https://github.com/derickbailey/backbone.marionette/blob/master/docs/marionette.approuter.md): Reduce your routers to nothing more than configuration
+* [**Backbone.Marionette.View**](https://github.com/derickbailey/backbone.marionette/blob/master/docs/marionette.view.md): The base View type that other Marionette views extend from (not intended to be used directly)
+* [**Backbone.Marionette.ItemView**](https://github.com/derickbailey/backbone.marionette/blob/master/docs/marionette.itemview.md): A view that renders a single item
+* [**Backbone.Marionette.CollectionView**](https://github.com/derickbailey/backbone.marionette/blob/master/docs/marionette.collectionview.md): A view that iterates over a collection, and renders individual `ItemView` instances for each model
+* [**Backbone.Marionette.CompositeView**](https://github.com/derickbailey/backbone.marionette/blob/master/docs/marionette.compositeview.md): A collection view and item view, for rendering leaf-branch/composite model hierarchies
+* [**Backbone.Marionette.Region**](https://github.com/derickbailey/backbone.marionette/blob/master/docs/marionette.region.md): Manage visual regions of your application, including display and removal of content
+* [**Backbone.Marionette.Layout**](https://github.com/derickbailey/backbone.marionette/blob/master/docs/marionette.layout.md): A view that renders a layout and creates region managers to manage areas within it
+* [**Backbone.Marionette.EventAggregator**](https://github.com/derickbailey/backbone.marionette/blob/master/docs/marionette.eventaggregator.md): An extension of Backbone.Events, to be used as an event-driven or pub-sub tool
+* [**Backbone.Marionette.EventBinder**](https://github.com/derickbailey/backbone.marionette/blob/master/docs/marionette.eventbinder.md): An event binding manager, to facilitate binding and unbinding of events
+* [**Backbone.Marionette.Renderer**](https://github.com/derickbailey/backbone.marionette/blob/master/docs/marionette.renderer.md): Render templates with or without data, in a consistent and common manner
+* [**Backbone.Marionette.TemplateCache**](https://github.com/derickbailey/backbone.marionette/blob/master/docs/marionette.templatecache.md): Cache templates that are stored in `<script>` blocks, for faster subsequent access
+* [**Backbone.Marionette.Callbacks**](https://github.com/derickbailey/backbone.marionette/blob/master/docs/marionette.callbacks.md): Manage a collection of callback methods, and execute them as needed
+
+But like Backbone itself, you're not required to use all of Marionette's components just because you want to use some of them. You can pick and choose which features you want to use, when. This allows you to work with other Backbone frameworks and plugins very easily. It also means that you are not required to engage in an all-or-nothing migration to begin using Marionette.
+
+### Boilerplate Rendering Code
+
+Consider the code that it typically requires to render a view with Backbone and Underscore template. We need a template to render, which can be placed in the DOM directly, and we need the JavaScript that defines a view to use the template, and populate that template with data from a model.
+
+```
+<script type="text/html" id="my-view-template">
+  <div class="row">
+    <label>First Name:</label>
+    <span><%= firstName %></span>
+  <div>
+  <div class="row">
+    <label>Last Name:</label>
+    <span><%= lastName %></span>
+  <div>
+  <div class="row">
+    <label>Email:</label>
+    <span><%= email %></span>
+  <div>
+</script>
+</pre>
+```
+
+```javascript
+var MyView = Backbone.View.extend({
+  template: "#my-view-template",
+
+  render: function(){
+
+    // compile the Underscore.js template
+    var template = $("#my-view-template");
+    var compiledTemplate = _.template(template);
+
+    // render the template with the model data
+    var data = this.model.toJSON();
+    var html = compiledTemplate(data);
+
+    // populate the view with the rendered html
+    this.$el.html(html);
+  }
+});
+```
+
+Once this is in place, you need to create an instance of your view and pass your model in to it. Then you can take the view's `el` and append it to the DOM in order to display the view.
+
+```javascript
+var myModel = new MyModel({
+  firstName: "Derick",
+  lastName: "Bailey",
+  email: "derickbailey@gmail.com"
+});
+
+var myView = new MyView({
+  model: myModel
+})
+
+myView.render();
+
+$("#content").html(myView.el)
+```
+
+This is a standard set up for defining, building, rendering, and displaying a view with Backbone. This is also what we call "boilerplate code" - code that is repeated over and over and over again, across every project and every implementation of the same functionality. It gets to be very tedious and repetitious very quickly.
+
+Enter Marionette's `ItemView` - a simple way to reduce the boilerplate of defining a view.
+
+### Reducing Boilerplate With Marionette.ItemView
+
+All of Marionette's view types - with the exception of `Marionette.View` - include a built-in `render` method that handles the core rendering logic for you. By changing the `MyView` instance from `Backbone.View` then, we can take advantage of this. Instead of having to provide our own `render` method for the view, we can let Marionette render it for us. We'll still use the same Underscore.js template and rendering mechanism, but the implementation of this is hidden behind the scenes for us. Thus, we can reduce the amount of code needed for this view.
+
+```javascript
+var MyView = Backbone.Marionette.ItemView.extend({
+  template: "#my-view-template"
+});
+```
+
+And that's it - that's all you need to get the exact same behaviour as the previous view implementation. Just replace `Backbone.View.extend` with `Backbone.Marionette.ItemView.extend`, then get rid of the `render` method. You can still create the view instance with a `model`, call the `render` method on the view instance, and display the view in the DOM the same way that we did before. But the view definition has been reduced to a single line of configuration for the template.
+
+### Memory Management
+
+In addition to the reduction of code needed to define a view, Marionette includes some advanced memory management in all of it's views, making the job of cleaning up a view instance and it's event handlers, easy.
+
+Consider the following view implementation:
+
+```javascript
+var ZombieView = Backbone.View.extend({
+  template: "#my-view-template",
+
+  initialize: function(){
+
+    // bind the model change to re-render this view
+    this.model.on("change", this.render, this);
+
+  },
+
+  render: function(){
+
+    // This alert is going to demonstrate a problem
+    alert("We're rendering the view");
+
+  }
+});
+```
+
+If we create two instances of this view using the same variable name for both instances, and then change a value in the model, how many times will we see the alert box? 
+
+```javascript
+var myModel = new MyModel({
+  firstName: "Jeremy",
+  lastName: "Ashkenas",
+  email: "jeremy@example.com"
+});
+
+// create the first view instance
+var zombieView = new ZombieView({
+  model: myModel
+})
+
+// create a second view instance, re-using
+// the same variable name to store it
+zombieView = new ZombieView({
+  model: myModel
+})
+
+myModel.set("email", "jeremy@gmail.com");
+```
+
+Since we're re-using the save `zombieView` variable for both instances, the first instance of the view will fall out of scope immediately after the second is created. This allows the JavaScript garbage collector to come along and clean it up, which should mean the first view instance is no longer active and no longer going to respond to the model's "change" event.
+
+But when we run this code, we end up with the alert box showing up twice!
+
+The problem is caused by the model event binding in the view's `initialize` method. Whenever we pass `this.render` as the callback method to the model's `on` event binding, the model itself is being given a direct reference to the view instance. Since the model is now holding a reference to the view instance, replacing the `zombieView` variable with a new view instance is not going to let the original view fall out of scope. The model still has a reference, therefore the view is still in scope. 
+
+Since the original view is still in scope, and the second view instance is also in scope, changing data on the model will cause both view instances to respond.
+
+Fixing this is easy, though. You just need to call `off` when the view is done with it's work and ready to be closed. To do this, add a `close` method to the view.
+
+```javascript
+var ZombieView = Backbone.View.extend({
+  template: "#my-view-template",
+
+  initialize: function(){
+    // bind the model change to re-render this view
+    this.model.on("change", this.render, this);
+  },
+
+  close: function(){
+    this.model.off("change", this.render, this);
+  },
+
+  render: function(){
+
+    // This alert is going to demonstrate a problem
+    alert("We're rendering the view");
+
+  }
+});
+```
+
+Then call `close` on the first instance when it is no longer needed, and only one view instance will remain alive.
+
+```javascript
+var myModel = new MyModel({
+  firstName: "Jeremy",
+  lastName: "Ashkenas",
+  email: "jeremy@example.com"
+});
+
+// create the first view instance
+var zombieView = new ZombieView({
+  model: myModel
+})
+zombieView.close(); // double-tap the zombie
+
+// create a second view instance, re-using
+// the same variable name to store it
+zombieView = new ZombieView({
+  model: myModel
+})
+
+myModel.set("email", "jeremy@gmail.com");
+```
+
+Now we only see once alert box when this code runs. 
+
+Rather than having to manually remove these event handlers, though, we can let Marionette do it for us.
+
+```javascript
+var ZombieView = Backbone.Marionette.ItemView.extend({
+  template: "#my-view-template",
+
+  initialize: function(){
+
+    // bind the model change to re-render this view
+    this.bindTo(this.model, "change", this.render, this);
+
+  },
+
+  render: function(){
+
+    // This alert is going to demonstrate a problem
+    alert("We're rendering the view");
+
+  }
+});
+```
+
+Notice in this case we are using a method called `bindTo`. This method comes from Marionette's `EventBinder` object, and is added on to all of Marionette's view types. The `bindTo` method signature is similar to that of the `on` method, with the exception of passing the object that triggers the event as the first parameter. 
+
+Marionette's views also provide a `close` event, in which the event bindings that are set up with the `bindTo` are automatically removed. This means we no longer need to define a `close` method directly, and when we use the `bindTo` method, we know that our events will be removed and our views will not turn in to zombies.
+
+But how do we automate the call to `close` on a view, in the real application? When and where do we call that? Enter the `Marionette.Region` - an object that manages the lifecycle of an individual view.
+
+### Region Management
+
+After a view is created, it typically needs to be placed in the DOM so that it becomes visible. This is usually done with a jQuery selector and setting the `html()` of the resulting object:
+
+```javascript
+var myModel = new MyModel({
+  firstName: "Jeremy",
+  lastName: "Ashkenas",
+  email: "jeremy@gmail.com"
+});
+
+var myView = new MyView({
+  model: myModel
+})
+
+myView.render();
+
+// show the view in the DOM
+$("#content").html(myView.el)
+```
+
+This, again, is boilerplate code. We shouldn't have to manually call `render` and manually select the DOM elements to show the view. Furthermore, this code doesn't lend itself to closing any previous view instance that might be attached to the DOM element we want to populate. And we've seen the danger of zombie views already.
+
+To solve these problems, Marionette provides a `Region` object - an object that manages the lifecycle of individual views, displayed in a particular DOM element.
+
+```javascript
+// create a region instance, telling it which DOM element to manage
+var myRegion = new Backbone.Marionette.Region({
+  el: "#content"
+});
+
+// show a view in the region
+var view1 = new MyView({ /* ... */ });
+myRegion.show(view1);
+
+// somewhere else in the code,
+// show a different view
+var view2 = new MyView({ /* ... */ });
+myRegion.show(view2);
+```
+
+There are several things to note, here. First, we're telling the region what DOM element to manage by specifying an `el` in the region instance. Second, we're no longer calling the `render` method on our views. And lastly, we're not calling `close` on our view, either, though this is getting called for us. 
+
+When we use a region to manage the lifecycle of our views, and display the views in the DOM, the region itself handles these concerns. By passing a view instance in to the `show` method of the region, it will call the render method on the view for us. It will then take the resulting `el` of the view and populate the DOM element. 
+
+The next time we call the `show` method of the region, the region remembers that it is currently displaying a view. The region calls the `close` method on the view, removes it from the DOM, and then proceeds to run the render & display code for the new view that was passed in.
+
+Since the region handles calling `close` for us, and we're using the `bindTo` event binder in our view instance, we no longer have to worry about zombie views in our application.
+
+
+### Marionette Todo app
+
+Having learned about Marionette's high-level concepts, let's explore refactoring the Todo application we created in our first practical to use it. The complete code for this application can be found in Derick's TodoMVC [fork](https://github.com/derickbailey/todomvc/tree/master/labs/architecture-examples/backbone_marionette_modules/js).
+
+Our final implementation will be visually and functionally equivalent to the original app, as seen below.
+
+![](img/marionette_todo0.png)
+
+First, we define an application object representing our base TodoMVC app. This will contain initialisation code and define the default layout regions for our app. 
+
+**TodoMVC.js:**
+
+```javascript
+var TodoMVC = new Backbone.Marionette.Application();
+
+TodoMVC.addRegions({
+  header : '#header',
+  main   : '#main',
+  footer : '#footer'
+});
+
+TodoMVC.on("initialize:after", function(){
+  Backbone.history.start();
+});
+```
+
+Regions are used to manage the content that's displayed within specific elements, and the `addRegions` method on the `TodoMVC` object is just a shortcut for creating `Region` objects. We supply a jQuery selector for each region to manage (e.g `#header`, `#main` and `#footer`) and then tell the region to show various Backbone views within that region.
+
+![](img/marionette_todo1.png)
+
+Once the application object has been initialised, we call `Backbone.history.start()` to route the initial URL.
+
+Next, we define our Layouts. A layout is a specialised type of view that extends from `Marionette.ItemView` directly. This means its intended to render a single template and may or may not have a model (or `item`) associated with the template.
+
+One of the main differences between a Layout and an `ItemView` is that the layout contains regions. When defining a Layout, we supply it with a `template` but also the regions that the template contains. After rendering the layout, we can display other views within the layout using the regions that were defined.
+
+In our TodoMVC Layout module below, we define Layouts for:
+
+* Header: where we can create new Todos
+* Footer: where we summarise how many Todos are remaining/have been completed
+
+This captures some of the view logic that was previously in our `AppView` and `TodoView`.
+
+Note that Marionette modules (such as the below) offer a simple module system which are used to create privacy and encapsulation in Marionette apps. These certainly don't have to be used however, and later on in this section we'll provide links to alternative implementations using RequireJS + AMD instead.
+
+
+**TodoMVC.Layout.js:**
+
+```javascript
+TodoMVC.module("Layout", function(Layout, App, Backbone, Marionette, $, _){
+
+  // Layout Header View
+  // ------------------
+
+  Layout.Header = Backbone.Marionette.ItemView.extend({
+    template : "#template-header",
+
+    // UI bindings create cached attributes that
+    // point to jQuery selected objects
+    ui : {
+      input : '#new-todo'
+    },
+
+    events : {
+      'keypress #new-todo':   'onInputKeypress'
+    },
+
+    onInputKeypress : function(evt) {
+      var ENTER_KEY = 13;
+      var todoText = this.ui.input.val().trim();
+
+      if ( evt.which === ENTER_KEY && todoText ) {
+        this.collection.create({
+          title : todoText
+        });
+        this.ui.input.val('');
+      }
+    }
+  });
+
+  // Layout Footer View
+  // ------------------
+  
+  Layout.Footer = Backbone.Marionette.Layout.extend({
+    template : "#template-footer",
+
+    // UI bindings create cached attributes that
+    // point to jQuery selected objects
+    ui : {
+      count   : '#todo-count strong',
+      filters : '#filters a'
+    },
+
+    events : {
+      'click #clear-completed' : 'onClearClick'
+    },
+
+    initialize : function() {
+      this.bindTo(App.vent, 'todoList:filter', this.updateFilterSelection, this);
+      this.bindTo(this.collection, 'all', this.updateCount, this);
+    },
+
+    onRender : function() {
+      this.updateCount();
+    },
+
+    updateCount : function() {
+      var count = this.collection.getActive().length;
+      this.ui.count.html(count);
+
+      if (count === 0) {
+        this.$el.parent().hide();
+      } else {
+        this.$el.parent().show();
+      }
+    },
+
+    updateFilterSelection : function(filter) {
+      this.ui.filters
+        .removeClass('selected')
+        .filter('[href="#' + filter + '"]')
+        .addClass('selected');
+    },
+
+    onClearClick : function() {
+      var completed = this.collection.getCompleted();
+      completed.forEach(function destroy(todo) { 
+        todo.destroy(); 
+      });
+    }
+  });
+
+});
+
+```
+
+Next, we tackle application routing and workflow, such as controlling Layouts in the page which can be shown or hidden. 
+
+Marionette uses the concept of an AppRouter to simplify routing. This reduces the boilerplate for handling route events and allows routers to be configured to call methods on an object directly. We configure our AppRouter using `appRoutes`.  
+
+This replaces the `'*filter': 'setFilter'` route defined in our original Workspace router, seen below:
+
+```javascript
+        var Workspace = Backbone.Router.extend({
+                routes:{
+                        '*filter': 'setFilter'
+                },
+
+                setFilter: function( param ) {
+                        // Set the current filter to be used
+                        window.app.TodoFilter = param.trim() || '';
+
+                        // Trigger a collection reset/addAll
+                        window.app.Todos.trigger('reset');
+                }
+        });
+```
+
+The TodoList Controller, also found in this next code block, handles some of the remaining visibility logic originally found in `AppView` and `TodoView`, albeit using very readable Layouts.
+
+**TodoMVC.TodoList.js:**
+
+```javascript
+TodoMVC.module("TodoList", function(TodoList, App, Backbone, Marionette, $, _){
+
+  // TodoList Router
+  // ---------------
+  //
+  // Handle routes to show the active vs complete todo items
+
+  TodoList.Router = Marionette.AppRouter.extend({
+    appRoutes : {
+      "*filter": "filterItems"
+    }
+  });
+
+  // TodoList Controller (Mediator)
+  // ------------------------------
+  //
+  // Control the workflow and logic that exists at the application
+  // level, above the implementation detail of views and models
+  
+  TodoList.Controller = function(){
+    this.todoList = new App.Todos.TodoList();
+  };
+
+  _.extend(TodoList.Controller.prototype, {
+
+    // Start the app by showing the appropriate views
+    // and fetching the list of todo items, if there are any
+    start: function(){
+      this.showHeader(this.todoList);
+      this.showFooter(this.todoList);
+      this.showTodoList(this.todoList);
+
+      this.todoList.fetch();
+    },
+
+    showHeader: function(todoList){
+      var header = new App.Layout.Header({
+        collection: todoList
+      });
+      App.header.show(header);
+    },
+
+    showFooter: function(todoList){
+      var footer = new App.Layout.Footer({
+        collection: todoList
+      });
+      App.footer.show(footer);
+    },
+
+    showTodoList: function(todoList){
+      App.main.show(new TodoList.Views.ListView({
+        collection : todoList
+      }));
+    },
+
+    // Set the filter to show complete or all items
+    filterItems: function(filter){
+      App.vent.trigger("todoList:filter", filter.trim() || "");
+    }
+  });
+
+  // TodoList Initializer
+  // --------------------
+  //
+  // Get the TodoList up and running by initializing the mediator
+  // when the the application is started, pulling in all of the
+  // existing Todo items and displaying them.
+  
+  TodoList.addInitializer(function(){
+
+    var controller = new TodoList.Controller();
+    new TodoList.Router({
+      controller: controller
+    });
+
+    controller.start();
+
+  });
+
+});
+
+```
+
+####Controllers
+
+In this particular app, note that Controllers don't add a great deal to the overall workflow. In general however, Marionette's philosophy on routers is that they should be an after-thought in the implementation of applications. Quite often, we'll see many bad examples of developers abusing Backbone's routing system by making it the sole controller of the entire application workflow and logic. 
+
+This inevitably leads to mashing every possible combination of code in to the router methods - view creation, model loading, coordinating different parts of the app, etc. Developers such as Derick views this as a violation of the [single-responsibility principle](http://en.wikipedia.org/wiki/Single_responsibility_principle) (SRP) and separation of concerns. 
+
+Backbone's router and history exists to deal with a specific aspect of browsers - managing the forward and back buttons. Marionette feels it should be limited to that, with the code that gets executed by the navigation being somewhere else. This allows the application to be used with or without a router. We can call a controller's "show" method from a button click, from an application event handler, or from a router, and we will end up with the same application state no matter how we called that method.
+
+Derick has written extensively about his thoughts on this topic, which you can read more about on his blog:
+
+* [http://lostechies.com/derickbailey/2011/12/27/the-responsibilities-of-the-various-pieces-of-backbone-js/](http://lostechies.com/derickbailey/2011/12/27/the-responsibilities-of-the-various-pieces-of-backbone-js/)
+* [http://lostechies.com/derickbailey/2012/01/02/reducing-backbone-routers-to-nothing-more-than-configuration/](http://lostechies.com/derickbailey/2012/01/02/reducing-backbone-routers-to-nothing-more-than-configuration/)
+* [http://lostechies.com/derickbailey/2012/02/06/3-stages-of-a-backbone-applications-startup/](http://lostechies.com/derickbailey/2012/02/06/3-stages-of-a-backbone-applications-startup/)
+
+#### CompositeView
+
+We then get to defining the actual views for individual Todo items and lists of items in our TodoMVC application. For this, we make use of Marionette's `CompositeView`s. The idea behind a CompositeView is that it represents a visualisation of a composite or hierarchical structure of leaves (or nodes) and branches. 
+
+Think of these views as being a hierarchy of parent-child models, and recursive by default. For each item in a collection that the composite view is handling the same CompositeView type will be used to render the item. For non-recursive hierarchies, though, we are able to override the item view by defining an `itemView` attribute.
+
+For our Todo List Item View, we define it as an ItemView, then our Todo List View is a CompositeView where we override the `itemView` setting and tell it to use the Todo List item View for each item in the collection. 
+
+TodoMVC.TodoList.Views.js
+
+```javascript
+TodoMVC.module("TodoList.Views", function(Views, App, Backbone, Marionette, $, _){
+
+  // Todo List Item View
+  // -------------------
+  //
+  // Display an individual todo item, and respond to changes
+  // that are made to the item, including marking completed.
+
+  Views.ItemView = Marionette.ItemView.extend({
+    tagName : 'li',
+      template : "#template-todoItemView",
+
+      ui : {
+        edit : '.edit'
+      },
+
+      events : {
+        'click .destroy' : 'destroy',
+        'dblclick label' : 'onEditClick',
+        'keypress .edit' : 'onEditKeypress',
+        'click .toggle'  : 'toggle'
+      },
+
+      initialize : function() {
+        this.bindTo(this.model, 'change', this.render, this);
+      },
+
+      onRender : function() {
+        this.$el.removeClass('active completed');
+        if (this.model.get('completed')) this.$el.addClass('completed');
+        else this.$el.addClass('active');
+      },
+
+      destroy : function() {
+        this.model.destroy();
+      },
+
+      toggle  : function() {
+        this.model.toggle().save();
+      },
+
+      onEditClick : function() {
+        this.$el.addClass('editing');
+        this.ui.edit.focus();
+      },
+
+      onEditKeypress : function(evt) {
+        var ENTER_KEY = 13;
+        var todoText = this.ui.edit.val().trim();
+
+        if ( evt.which === ENTER_KEY && todoText ) {
+          this.model.set('title', todoText).save();
+          this.$el.removeClass('editing');
+        }
+      }
+  });
+
+  // Item List View
+  // --------------
+  //
+  // Controls the rendering of the list of items, including the
+  // filtering of active vs completed items for display.
+
+  Views.ListView = Backbone.Marionette.CompositeView.extend({
+    template : "#template-todoListCompositeView",
+      itemView : Views.ItemView,
+      itemViewContainer : '#todo-list',
+
+      ui : {
+        toggle : '#toggle-all'
+      },
+
+      events : {
+        'click #toggle-all' : 'onToggleAllClick'
+      },
+
+      initialize : function() {
+        this.bindTo(this.collection, 'all', this.update, this);
+      },
+
+      onRender : function() {
+        this.update();
+      },
+
+      update : function() {
+        function reduceCompleted(left, right) { return left && right.get('completed'); }
+        var allCompleted = this.collection.reduce(reduceCompleted,true);
+        this.ui.toggle.prop('checked', allCompleted);
+
+        if (this.collection.length === 0) {
+          this.$el.parent().hide();
+        } else {
+          this.$el.parent().show();
+        }
+      },
+
+      onToggleAllClick : function(evt) {
+        var isChecked = evt.currentTarget.checked;
+        this.collection.each(function(todo){
+          todo.save({'completed': isChecked});
+        });
+      }
+  });
+
+  // Application Event Handlers
+  // --------------------------
+  //
+  // Handler for filtering the list of items by showing and
+  // hiding through the use of various CSS classes
+  
+  App.vent.on('todoList:filter',function(filter) {
+    filter = filter || 'all';
+    $('#todoapp').attr('class', 'filter-' + filter);
+  });
+
+});
+
+```
+
+At the end of the last code block, you will also notice an event handler using `vent`. This is an event aggregator that allows us to handle `filterItem` triggers from our TodoList controller.
+
+Finally, we define the model and collection for representing our Todo items. These are semantically not very different from the original versions we used in our first practical and have been re-written to better fit in with Derick's preferred style of coding.
+
+**Todos.js:**
+
+```javascript
+TodoMVC.module("Todos", function(Todos, App, Backbone, Marionette, $, _){
+
+  // Todo Model
+  // ----------
+  
+  Todos.Todo = Backbone.Model.extend({
+    localStorage: new Backbone.LocalStorage('todos-backbone'),
+
+    defaults: {
+      title     : '',
+      completed : false,
+      created   : 0
+    },
+
+    initialize : function() {
+      if (this.isNew()) this.set('created', Date.now());
+    },
+
+    toggle  : function() {
+      return this.set('completed', !this.isCompleted());
+    },
+
+    isCompleted: function() { 
+      return this.get('completed'); 
+    }
+  });
+
+  // Todo Collection
+  // ---------------
+
+  Todos.TodoList = Backbone.Collection.extend({
+    model: Todos.Todo,
+
+    localStorage: new Backbone.LocalStorage('todos-backbone'),
+
+    getCompleted: function() {
+      return this.filter(this._isCompleted);
+    },
+
+    getActive: function() {
+      return this.reject(this._isCompleted);
+    },
+
+    comparator: function( todo ) {
+      return todo.get('created');
+    },
+
+    _isCompleted: function(todo){
+      return todo.isCompleted();
+    }
+  });
+
+});
+
+```
+
+We finally kick-start everything off in our application index file, by calling `start` on our main application object:
+
+Initialisation:
+
+```javascript
+      $(function(){
+        // Start the TodoMVC app (defined in js/TodoMVC.js)
+        TodoMVC.start();
+      });
+```
+
+And that's it!
+
+### Is the Marionette implementation of the Todo app more maintainable?
+
+Derick feels that maintainability largely comes down to modularity, separating responsibilities (SRP and SoC) and other related patterns for keeping concerns from being mixed together. It can however be difficult to simply extract things in to separate modules for the sake of extraction, abstraction, or dividing the concept down in to it's most finite parts. 
+
+The Single Responsibility Principle (SRP) tells us quite the opposite - that we need to understand the context in which things change. What parts always change together, in _this_ system? What parts can change independently? Without knowing this, we won't know what pieces should be broken out in to separate components and modules, vs put together in to the same module or object. 
+
+The way Derick organizes his apps into modules is by creating a breakdown of concepts at each level. A higher level module is a higher level of concern - an aggregation of responsibilities. Each responsibility is broken down in to an expressive API set that is implemented by lower level modules (Dependency Inversion Principle). These are coordinated through a mediator - which he typically refers to as the Controller in a module. 
+
+The way that Derick organizes his files also plays directly into maintainability and he has also written up posts about the importance of keeping a sane application folder structure that I recommend reading:
+
+* [http://lostechies.com/derickbailey/2012/02/02/javascript-file-folder-structures-just-pick-one/](http://lostechies.com/derickbailey/2012/02/02/javascript-file-folder-structures-just-pick-one/)
+* [http://hilojs.codeplex.com/discussions/362875#post869640](http://hilojs.codeplex.com/discussions/362875#post869640)
+
+### Marionette And Flexibility
+
+Marionette is a flexible framework, much like Backbone itself. It offers a wide variety of tools to help create and organize an application architecture on top of Backbone, but like Backbone itself, it doesn't dictate that you have to use all of it's pieces in order to use any of them. 
+
+The flexibility and versatility in Marionette is easiest to understand by examining three variations of TodoMVC that have been created for comparison purposes:
+
+* [Simple](https://github.com/jsoverson/todomvc/tree/master/labs/architecture-examples/backbone_marionette) - by Jarrod Oversion
+* [RequireJS](https://github.com/jsoverson/todomvc/tree/master/labs/dependency-examples/backbone_marionette_require) - also by Jarrod
+* [Marionette modules](https://github.com/derickbailey/todomvc/tree/master/labs/architecture-examples/backbone_marionette_modules/js) - by Derick Bailey
+
+**The simple version**: This version of TodoMVC shows some raw use of Marionette's various view types, an application object, and the event aggregator. The objects that are created are added directly to the global namespace and are fairly straightforward. This is a great example of how Marionette can be used to augment existing code without having to re-write everything around Marionette.
+
+**The RequireJS version**: Using Marionette with RequireJS helps to create a modularized application architecture - a tremendously important concept in scaling JavaScript applications. RequireJS provides a powerful set of tools that can be leveraged to great advantage, making Marionette even more flexible than it already is.
+
+**The Marionette module version**: RequireJS isn't the only way to create a modularized application architecture, though. For those that wish to build applications in modules and namespaces, Marionette provides a built-in module and namespacing structure. This example application takes the simple version of the application and re-writes it in to a namespaced application architecture, with an application controller (mediator / workflow object) that brings all of the pieces together.
+
+Marionette certainly provides its share of opinions in how a Backbone application should be architected. The combination of modules, view types, event aggregator, application objects, and more, can be used to create a very powerful and flexible architecture based on these opinions. 
+
+But as you can see, Marionette isn't a completely rigid, "my way or the highway" framework. It provides many elements of an application foundation that can be mixed and matched with other architectural styles, such as AMD or namespacing, or provide simple augmentation to existing projects by reducing boilerplate code for rendering views. 
+
+This flexibility creates a much greater opportunity for Marionette to provide value to you and your projects, as it allows you to scale the use of Marionette with your application's needs.
+
+### And So Much More
+
+This is just the tip of the proverbial ice-berg for Marionette, even for the `ItemView` and `Region` objects that we've explored. There is far more functionality, more features, and more flexibility and customizability that can be put to use in both of these objects. Then we have the other dozen or so components that Marionette provides, each with their own set of behaviors built in, customization and extension points, and more. 
+
+To learn more about Marionette, it's components, the features they provide and how to use them, check out the Marionette documentation, links to the wiki, to the source code, the project core contributors, and much more at [http://marionettejs.com](http://marionettejs.com). 
+
+
+<p>&nbsp;</p>
+<p>&nbsp;</p>
 
 ## <a name="pagination">Paginating Backbone.js Requests & Collections</a>
 
@@ -6591,7 +7416,7 @@ In the above sample, `url` can refer to a URL or a hash identifier to navigate t
 **Note:** For some parallel work being done to explore how well the jQuery Mobile Router plugin works with Backbone, you may be interested in checking out [https://github.com/Filirom1/jquery-mobile-backbone-requirejs](https://github.com/Filirom1/jquery-mobile-backbone-requirejs).
 
 
-### Practical: A Backbone, Require.js/AMD app with jQuery Mobile
+### Practical: A Backbone, RequireJS/AMD app with jQuery Mobile
 
 **Note:** The code for this practical can be found in `practicals/modular-mobile-app`.
 
