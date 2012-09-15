@@ -1717,7 +1717,7 @@ Basically your classic [CRUD](http://en.wikipedia.org/wiki/Create,_read,_update_
 The first step is to setup the basic application dependencies, which in this case will be: [jQuery](http://jquery.com), [Underscore](http://underscorejs.org), Backbone.js and the [Backbone LocalStorage adapter](https://github.com/jeromegn/Backbone.localStorage). These will be loaded in our main (and only) HTML file, index.html:
 
 
-```
+```html
 
 <!doctype html>
 <html lang="en">
@@ -1725,11 +1725,10 @@ The first step is to setup the basic application dependencies, which in this cas
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <title>Backbone.js • TodoMVC</title>
-  <link rel="stylesheet" href="../../assets/base.css">
+  <link rel="stylesheet" href="assets/base.css">
 </head>
 <body>
-  <script src="../../assets/base.js"></script>
-  <script src="../../assets/jquery.min.js"></script>
+  <script src="js/lib/jquery.min.js"></script>
   <script src="js/lib/underscore-min.js"></script>
   <script src="js/lib/backbone-min.js"></script>
   <script src="js/lib/backbone-localstorage.js"></script>
@@ -1746,12 +1745,14 @@ The first step is to setup the basic application dependencies, which in this cas
 
 To help demonstrate how the various parts of our application can be split up, individual concerns are cleanly organized into folders representing our models, views, collections and routers. An app.js file is used to kick everything off.
 
+Note: If you want to follow along, create directory structure as shown in index.html. Also, you will need [base.css](https://raw.github.com/addyosmani/todomvc/gh-pages/assets/base.css) and [bg.png](https://raw.github.com/addyosmani/todomvc/gh-pages/assets/bg.png), both in assets dir. As mentioned previously you can check out whole application at [TodoMVC.com](http://todomvc.com).
+
 
 ## Application HTML
 
 Now let's take a look at our application's static HTML. We're going to need an `<input>` for creating new todos, a `<ul id="todo-list" />` for listing the actual todos, and a section containing some operations, such as clearing completed todos.
 
-```
+```html
   <section id="todoapp">
     <header id="header">
       <h1>todos</h1>
@@ -1781,6 +1782,8 @@ So far so good. Now in order to tie this into our Backbone Todo app, we're going
 The `Todo` model is remarkably straightforward. Firstly a todo has two attributes, a `title` and a `completed` status that indicates whether it's been completed. These attributes are passed as defaults, as you can see in the example below:
 
 ```javascript
+
+  // js/models/todo.js
 
   var app = app || {};
 
@@ -1821,6 +1824,8 @@ We've then got some static methods, `completed()` and `remaining()`, which retur
 Finally we have a `nextOrder()` function, that keeps our Todo items in sequential order as well as a `comparator()` used to sort items by their insertion order.
 
 ```javascript
+
+  // js/collections/todos.js
 
   var app = app || {};
 
@@ -1878,6 +1883,8 @@ In other words, we're going to have one view `AppView`, which will be in charge 
 To keep thing simple, we'll keep things 'read-only' at the moment, and won't provide any functionality for creating, editing or deleting todos:
 
 ```javascript
+
+  // js/views/app.js
 
   var app = app || {};
 
@@ -1980,6 +1987,8 @@ We can then add in the logic for creating new todos, editing them and filtering 
     Clears all the todo items that have been marked as complete
 
 ```javascript
+
+  // js/views/app.js
 
   var app = app || {};
 
@@ -2118,6 +2127,8 @@ Let’s look at the `TodoView` view, now. This will be in charge of individual T
 
 ```javascript
 
+  // js/views/todos.js
+
   var app = app || {};
 
   // Todo Item View
@@ -2198,15 +2209,17 @@ So now we have two views: `AppView` and `TodoView`. The former needs to get inst
 
 ```javascript
 
-var app = app || {};
-var ENTER_KEY = 13;
+  // js/app.js
 
-$(function() {
+  var app = app || {};
+  var ENTER_KEY = 13;
 
-  // Kick things off by creating the **App**.
-  new app.AppView();
+  $(function() {
 
-});
+    // Kick things off by creating the **App**.
+    new app.AppView();
+
+  });
 
 ```
 
@@ -2214,7 +2227,7 @@ $(function() {
 
 Now we've gone far enough without checking that things work as they should. 
 
-If you are following along open up index.html. You will see few errors in the console (ignore it for the moment, we will address that in following section). The todo list will be blank (we haven't created any todos yet), and the todo-list won't work through our slick interface, as we haven't yet hooked it up fully. However, we can create a Todo from the console.
+If you are following along open up index.html and, if everything's going to plan, you shouldn't see any errors in the console. The todo list will be blank (we haven't created any todos yet), and the todo-list won't work through our slick interface, as we haven't yet hooked it up fully. However, we can create a Todo from the console.
 
 Type in: `window.app.Todos.create({ title: 'My first Todo item'});` and hit return.
 
@@ -2248,6 +2261,8 @@ Run this into console to check it out:
 The `#item-template` used in the `TodoView` view needs defining, so let's do that. One way of including templates in the page is by using custom script tags. These don't get evaluated by the browser, which just interprets them as plain text. Underscore micro-templating can then access the templates, rendering pieces of HTML.
 
 ```html
+  <!-- index.html -->
+
   <script type="text/template" id="item-template">
     <div class="view">
       <input class="toggle" type="checkbox" <%= completed ? 'checked' : '' %>>
@@ -2266,6 +2281,8 @@ Now when `_.template( $('#item-template').html() )` is called in the `TodoView` 
 We also need to define #stats-template template we use to display how many items have been completed, as well as allowing the user to clear these items.
 
 ```html
+  <!-- index.html -->
+
   <script type="text/template" id="stats-template">
     <span id="todo-count"><strong><%= remaining %></strong> <%= remaining === 1 ? 'item' : 'items' %> left</span>
     <ul id="filters">
@@ -2288,7 +2305,9 @@ We also need to define #stats-template template we use to display how many items
 
 ## In action
 
-Now refresh index.html and we should be able to see the fruits of our labour. Errors in console mentioned above should gone and todos added through console earlier should appear in the list populated from the Local Storage. Also, we should be able to type a todo name, and press return to submit the form, creating a new todo.
+Now refresh index.html and we should be able to see the fruits of our labour. 
+
+The todos added through console earlier should appear in the list populated from the Local Storage. Also, we should be able to type a todo name, and press return to submit the form, creating a new todo.
 
 ![](img/todocompleted.png)
 
@@ -2313,6 +2332,8 @@ One more piece to mention is that we’ve also binded to a visible event to hand
 This tutorial is long enough as is, so we won't go into in-place editing or updating. If you want an example of that, see the [complete source](https://github.com/addyosmani/todomvc/tree/master/architecture-examples/backbone/).
 
 ```javascript
+
+  // js/view/todos.js
 
   // Todo Item View
   // --------------
@@ -2423,6 +2444,8 @@ When the route changes the todo list will be filtered on a model level and the s
 E.g. if the filter is active and the item is checked, it will be hidden. The active filter is persisted on reload.
 
 ```javascript
+
+  // js/routers/router.js
 
   // Todo Router
   // ----------
