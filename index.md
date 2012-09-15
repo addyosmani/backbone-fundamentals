@@ -2114,7 +2114,7 @@ We can then add in the logic for creating new todos, editing them and filtering 
 
 ## Individual Todo View
 
-Let’s look at the `TodoView` view, now. This will be in charge of individual Todo records, making sure the view updates when the todo does. To enable enable this interactive behavior we should add some event listeners to the view.
+Let’s look at the `TodoView` view, now. This will be in charge of individual Todo records, making sure the view updates when the todo does. To enable enable this interactive behavior we should add some event listeners to the view, that will listen to the events on individual todo represented in html.
 
 ```javascript
 
@@ -2146,8 +2146,8 @@ Let’s look at the `TodoView` view, now. This will be in charge of individual T
       this.model.on( 'change', this.render, this );
     },
 
-    // Re-renders the todo item to the current state of the model
-    // and updates the reference to the todo's edit input.
+    // Re-renders the todo item to the current state of the model and
+    // updates the reference to the todo's edit input within the view.
     render: function() {
       this.$el.html( this.template( this.model.toJSON() ) );
       this.input = this.$('.edit');
@@ -2212,7 +2212,9 @@ $(function() {
 
 ## In action
 
-Now we've gone far enough without checking that things work as they should. Open up index.html. You will see few errors in the console (ignore it for the moment, we will address that in following section). The todo list will be blank (we haven't created any todos yet), and the todo-list won't work, as we haven't yet hooked it up fully. However, we can create a Todo from the console.
+Now we've gone far enough without checking that things work as they should. 
+
+If you are following along open up index.html. You will see few errors in the console (ignore it for the moment, we will address that in following section). The todo list will be blank (we haven't created any todos yet), and the todo-list won't work through our slick interface, as we haven't yet hooked it up fully. However, we can create a Todo from the console.
 
 Type in: `window.app.Todos.create({ title: 'My first Todo item'});` and hit return.
 
@@ -2226,7 +2228,7 @@ Once you've run the above in the console, we should be looking at a brand new to
 
   var TodoList = Backbone.Collection.extend({
 
-      model: app.Todo // the model type used by collection.create();
+      model: app.Todo // the model type used by collection.create() to instantiate new model in the collection
       ...
   )};
 
@@ -2417,8 +2419,8 @@ Finally, we move on to routing, which will allow us to easily bookmark the list 
 
 <img src="img/todorouting.png" width="700px"/>
 
-When the route changes the todo list will be filtered on a model level and just the models that pass the filter will be re-rendered. When an item is updated while in a filtered state, it will be updated accordingly. 
-E.g. if the filter is active and the item is checked, it will be hidden. The current filter is persisted on reload.
+When the route changes the todo list will be filtered on a model level and the selected class on the filter links will be toggled. When an item is updated while in a filtered state, it will be updated accordingly. 
+E.g. if the filter is active and the item is checked, it will be hidden. The active filter is persisted on reload.
 
 ```javascript
 
@@ -2434,10 +2436,9 @@ E.g. if the filter is active and the item is checked, it will be hidden. The cur
       // Set the current filter to be used
       window.app.TodoFilter = param.trim() || '';
 
-      // Trigger a collection reset event, causing AppView,
-      // which is listening to the event, re-render based
-      // on the TodoFilter value
-      window.app.Todos.trigger('reset');
+      // Trigger a collection filter event, causing hiding/unhiding
+      // of Todo view items
+      window.app.Todos.trigger('filter');
     }
   });
 
@@ -2446,35 +2447,7 @@ E.g. if the filter is active and the item is checked, it will be hidden. The cur
 
 ```
 
-Also, to be able to respond to the event properly `app.AppView`'s `addAll()` function should be updated:
-
-```javascript
-
-  app.AppView = Backbone.View.extend({
-
-    ...
-    addAll: function() {
-      this.$('#todo-list').html('');
-      
-      switch( app.TodoFilter ) {
-        case 'active':
-          _.each( app.Todos.remaining(), this.addOne );
-          break;
-        case 'completed':
-          _.each( app.Todos.completed(), this.addOne );
-          break;
-        default:
-          app.Todos.each( this.addOne, this );
-          break;
-      }
-    },
-
-    ...
-  });
-
-```
-
-As we can see in the line `window.app.Todos.trigger('reset')`, once a filter has been set, we simply trigger our reset event at a collection level to enforce `app.AppView` to respond to it. It then re-renders todo items based on set filter as seen in `addAll()`.
+As we can see in the line `window.app.Todos.trigger('filter')`, once a string filter has been set, we simply trigger our filter at a collection level to toggle which items are displayed and which of those are hidden.
 
 Finally, we call `Backbone.history.start()` to route the initial URL during page load.
 
