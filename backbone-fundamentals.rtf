@@ -112,7 +112,7 @@ Introduction
 }}}
 \par}
 {\pard \ql \f0 \sa0 \li720 \fi-360 \endash \tx360\tab {\field{\*\fldinst{HYPERLINK "#organizingmodules"}}{\fldrslt{\ul
-Organizing modules with Require.js and AMD
+Organizing modules with RequireJS and AMD
 }}}
 \par}
 {\pard \ql \f0 \sa0 \li720 \fi-360 \endash \tx360\tab {\field{\*\fldinst{HYPERLINK "#externaltemplates"}}{\fldrslt{\ul
@@ -120,21 +120,26 @@ Keeping your templates external
 }}}
 \par}
 {\pard \ql \f0 \sa0 \li720 \fi-360 \endash \tx360\tab {\field{\*\fldinst{HYPERLINK "#practicalrequirejs"}}{\fldrslt{\ul
-Practical: A Modular App Using AMD & Require.js
+Practical: A Modular App Using AMD & RequireJS
 }}}
 \par}
 {\pard \ql \f0 \sa0 \li720 \fi-360 \endash \tx360\tab {\field{\*\fldinst{HYPERLINK "#optimizingrequirejs"}}{\fldrslt{\ul
-Optimize Apps With The Require.js Optimizer
+Optimize Apps With The RequireJS Optimizer
 }}}
 \par}
 {\pard \ql \f0 \sa0 \li720 \fi-360 \endash \tx360\tab {\field{\*\fldinst{HYPERLINK "#optimizebuild"}}{\fldrslt{\ul
-Optimize Apps With Require.js Using Packages
+Optimize Apps With RequireJS Using Packages
 }}}
  *\par}
 {\pard \ql \f0 \sa0 \li720 \fi-360 \endash \tx360\tab {\field{\*\fldinst{HYPERLINK "#decouplingbackbone"}}{\fldrslt{\ul
-Decoupling Backbone With The Mediator and Facade patterns
+Decoupling Backbone With The Mediator And Facade Patterns
 }}}
 \sa180\par}
+{\pard \ql \f0 \sa180 \li360 \fi-360 \bullet \tx360\tab \b \fs24 Backbone.js Extensions\par}
+{\pard \ql \f0 \sa0 \li720 \fi-360 \endash \tx360\tab {\field{\*\fldinst{HYPERLINK "#marionette"}}{\fldrslt{\ul
+Backbone Marionette
+}}}
+ *\sa180\par}
 {\pard \ql \f0 \sa180 \li360 \fi-360 \bullet \tx360\tab \b \fs24 {\field{\*\fldinst{HYPERLINK "#restfulapps"}}{\fldrslt{\ul
 RESTful Applications With Backbone.js
 }}}
@@ -233,7 +238,7 @@ Resources
 {\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Provide DOM, model and collection synchronization\sa180\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \b \fs28 What should you expect to see in this book?\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 The goal of this book is to create an authoritative and centralized repository of information that can help those developing real-world apps with Backbone. If you come across a section or topic which you think could be improved or expanded on, please feel free to submit a pull-request. It won\u8217't take long and you\u8217'll be helping other developers avoid problems you\u8217've run into before.\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 Topics will include MVC theory and how to build applications using Backbone\u8217's models, views, collections and routers. I\u8217'll also be taking you through advanced topics like modular development with Backbone.js and AMD (via Require.js), how to build applications using modern software stacks (like Node and Express), how to solve the routing problems with Backbone and jQuery Mobile, tips about scaffolding tools, and a lot more.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Topics will include MVC theory and how to build applications using Backbone\u8217's models, views, collections and routers. I\u8217'll also be taking you through advanced topics like modular development with Backbone.js and AMD (via RequireJS), how to build applications using modern software stacks (like Node and Express), how to solve the routing problems with Backbone and jQuery Mobile, tips about scaffolding tools, and a lot more.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \b \fs36 Fundamentals\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 In this section, we\u8217're going to explore how frameworks like Backbone.js fit in the world of JavaScript application architecture. Classically, developers creating desktop and server-class applications have had a wealth of design patterns available for them to lean on, but it\u8217's only been in the past few years that such patterns have come to client-side development.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 Before exploring any JavaScript frameworks that assist in structuring applications, it can be useful to gain a basic understanding of architectural design patterns.\par}
@@ -757,11 +762,15 @@ id: 'header', // optional\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 Sometimes you may also want to get a model based on its client id. The client id is a property that Backbone automatically assigns models that have not yet been saved. You can get a model\u8217's client id from its {\f1 .cid} property.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \f1 var mySkiingCrash = PhotoCollection.getByCid(456);\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 Backbone Collections don\u8217't have setters as such, but do support adding new models via {\f1 .add()} and removing models via {\f1 .remove()}.\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 \f1 var a = new Backbone.Model(\{ title: 'my vacation'\}),\line
-    b = new Backbone.Model(\{ title: 'my holiday'\});\line
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 var a = new Photo(\{ title: 'my vacation'\}),\line
+    b = new Photo(\{ title: 'my holiday'\}),\line
+    c = new Photo(\{ title: 'my weekend'\});\line
 \line
 var photoCollection = new PhotoCollection([a,b]);\line
-photoCollection.remove([a,b]);\par}
+photoCollection.add(c);\line
+\line
+photoCollection.remove([a,b]);\line
+photoCollection.remove(c);\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 {\b Listening for events}\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 As collections represent a group of items, we\u8217're also able to listen for {\f1 add} and {\f1 remove} events for when new models are added or removed from the collection. Here\u8217's an example:\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \f1 var PhotoCollection = new Backbone.Collection();\line
@@ -835,7 +844,8 @@ collection.chain()\line
   .value();\line
 \line
 // Will return ['Ida', 'Rob']\line
-Some of the Backbone-specific method will return this, which means they can be chained as well:\line
+\line
+Some of the Backbone-specific methods will return this, which means they can be chained as well:\line
 \line
 var collection = new Backbone.Collection();\line
 \line
@@ -901,7 +911,7 @@ http://unicorns.com/#search/seasonal-horns/page2\par}
     /* define the route and function maps for this router */\line
     routes: \{\line
         "about" : "showAbout",\line
-        /*Sample usage: http://unicorns.com/#about*/\line
+        /*Sample usage: http://unicorns.com/# <about*/\line
 \line
         "photos/:id" : "getPhoto",\line
         /*This is an example of using a ":param" variable which allows us to match\line
@@ -931,7 +941,7 @@ http://unicorns.com/#search/seasonal-horns/page2\par}
         /*This is a default route that also uses a *splat. Consider the\line
         default route a wildcard for URLs that are either not matched or where\line
         the user has incorrectly typed in a route path manually*/\line
-        /*Sample usage: http://unicorns.com/#anything*/\line
+        /*Sample usage: http://unicorns.com/# <anything*/\line
 \line
     \},\line
 \line
@@ -1448,7 +1458,7 @@ var app = app || \{\};\line
       this.$footer = this.$('#footer');\line
       this.$main = this.$('#main');\line
 \line
-      window.app.Todos.on( 'add', this.addAll, this );\line
+      window.app.Todos.on( 'add', this.addOne, this );\line
       window.app.Todos.on( 'reset', this.addAll, this );\line
       window.app.Todos.on( 'all', this.render, this );\line
 \line
@@ -1492,8 +1502,8 @@ var app = app || \{\};\line
     \}\line
 \line
   \});\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 You can see we\u8217've got a couple of things going on, an el (element), a {\f1 statsTemplate}, a constructor function and several view specific methods. On the left of the el: key is a DOM element selector for the element with ID {\f1 todoapp}. The value of this is just a string and Backbone will create a reference pointing to any element matching the selector #todoapp, where here it will be the {\f1 <section id=\u8221"todoapp />} element, defined in the HTML section earlier.\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 In a nutshell this means we can now refer to this.el in our controller, which points to the {\f1 <section class="todoapp" />} element. As you can see, we\u8217're referring to el in the {\f1 addOne()} function, appending an element to the list.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 You can see we\u8217've got a couple of things going on, an el (element), a {\f1 statsTemplate}, a constructor function and several view specific methods. To the right of the {\f1 el:} key is a DOM element selector for the element with ID {\f1 todoapp}. The value of this is just a string and Backbone will create a reference pointing to the element matching the selector #todoapp, where here it will be the {\f1 <section id="todoapp" />} element, which we previously defined in our HTML.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 In a nutshell this means we can now refer to this.el in our controller, which points to the {\f1 <section id="todoapp" />} element. As you can see, we\u8217're referring to el in the {\f1 addOne()} function, appending an element to the list.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 Now let\u8217's take a look at the constructor function. It\u8217's binding to several events on the Todo model, such as add, reset and all. Since we\u8217're delegating handling of updates and deletes to the {\f1 TodoView} view, we don\u8217't need to to worry about that here. The two pieces of logic are:\par}
 {\pard \ql \f0 \sa180 \li360 \fi-360 \bullet \tx360\tab When a new todo is created, the {\f1 add} event will be fired, calling {\f1 addAll()}. This iterates over all of the Todos currently in our collection and fires {\f1 addOne()} for each item.\par}
 {\pard \ql \f0 \sa180 \li360 \fi-360 \bullet \tx360\tab {\f1 addOne()} instantiates the TodoView view, rendering it and appending the resultant element to our Todo list.\par}
@@ -1887,7 +1897,7 @@ complete source
 TodoMVC
 }}}
 .\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 Later on in the book, we\u8217'll learn how to further modularize this application using Require.js, swap out our persistence layer to a database back-end and finally unit test the application with a few different testing frameworks.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Later on in the book, we\u8217'll learn how to further modularize this application using RequireJS, swap out our persistence layer to a database back-end and finally unit test the application with a few different testing frameworks.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \b \fs36 Backbone Boilerplate And Grunt-BBB\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 {\field{\*\fldinst{HYPERLINK "https://github.com/tbranyen/backbone-boilerplate/"}}{\fldrslt{\ul
 Backbone Boilerplate
@@ -1927,7 +1937,7 @@ HTML5 Boilerplate
 {\pard \ql \f0 \sa180 \li0 \fi0 We can use Boilerplate to easily begin creating an application, but first, we\u8217'll need to install it. This can be done by grabbing the latest version of it by cloning the Boilerplate repo directly:\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \f1 $ git clone git://github.com/tbranyen/backbone-boilerplate.git\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 or alternatively, just fetching the latest tarball as follows:\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 \f1 curl -C - -O https://github.com/tbranyen/backbone-boilerplate/zipball/master\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 $ curl -C - -O https://github.com/tbranyen/backbone-boilerplate/zipball/master\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \b \fs28 Grunt-BBB\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 As Tim covers in the Boilerplate docs, we have to install {\field{\*\fldinst{HYPERLINK "http://gruntjs.org"}}{\fldrslt{\ul
 Grunt
@@ -1953,8 +1963,8 @@ $ npm install -g grunt\line
 # followed by\line
 $ npm install -g bbb\line
 \line
-# Create a new project\line
-bbb init\par}
+# finally create a new project\line
+$ bbb init\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 That\u8217's it. We should now be good to go.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 A typical workflow for using grunt-bbb, which we can use later on is:\par}
 {\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Initialize a new project ({\f1 bbb init})\par}
@@ -1966,7 +1976,7 @@ bbb init\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 Let\u8217's create a new folder for our project and run {\f1 bbb init} to kick things off. If everything has been correctly installed, this will sub out some project directories and files for us. Let\u8217's review what is generated.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \b \fs28 index.html\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 This is a fairly standard stripped-down HTML5 Boilerplate foundation with the notable exception of including {\field{\*\fldinst{HYPERLINK "http://requirejs.org"}}{\fldrslt{\ul
-Require.js
+RequireJS
 }}}
  at the bottom of the page.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \f1 <!doctype html>\line
@@ -1990,16 +2000,16 @@ Require.js
   <script data-main="/app/config" src="/assets/js/libs/require.js"></script>\line
 </body>\line
 </html>\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 Require.js is an {\field{\*\fldinst{HYPERLINK "https://github.com/amdjs/amdjs-api/wiki/AMD"}}{\fldrslt{\ul
+{\pard \ql \f0 \sa180 \li0 \fi0 RequireJS is an {\field{\*\fldinst{HYPERLINK "https://github.com/amdjs/amdjs-api/wiki/AMD"}}{\fldrslt{\ul
 AMD
 }}}
  (Asynchronous Module Definition) module and script loader, which will assist us with managing the modules in our application. We\u8217'll be covering it in a lot more detail later on in the book, but for now, let\u8217's cover at a high-level what this particular block does:\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \f1 <script data-main="app/config" src="/assets/js/libs/require.js"></script>\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 The {\f1 data-main} attribute is used to inform Require.js to load {\f1 app/config.js} (a configuration object) after it has finished loading itself. You\u8217'll notice that we\u8217've omitted the {\f1 .js} extension here as require.js can automatically add this for us, however it will respect your paths if we do choose to include it regardless. Let\u8217's now look at the config file being referenced.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 The {\f1 data-main} attribute is used to inform RequireJS to load {\f1 app/config.js} (a configuration object) after it has finished loading itself. You\u8217'll notice that we\u8217've omitted the {\f1 .js} extension here as RequireJS can automatically add this for us, however it will respect your paths if we do choose to include it regardless. Let\u8217's now look at the config file being referenced.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \b \fs28 config.js\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 A Require.js configuration object allows us to specify aliases and paths for dependencies we\u8217're likely to reference often (e.g jQuery), bootstrap properties like our base application URL and {\f1 shim} libraries that don\u8217't support AMD natively.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 A RequireJS configuration object allows us to specify aliases and paths for dependencies we\u8217're likely to reference often (e.g jQuery), bootstrap properties like our base application URL and {\f1 shim} libraries that don\u8217't support AMD natively.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 This is what the config file in Backbone Boilerplate looks like:\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 \f1 // Set the require.js configuration for your application.\line
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 // Set the RequireJS configuration for your application.\line
 require.config(\{\line
 \line
   // Initialize the application with the main application file.\line
@@ -2028,7 +2038,7 @@ require.config(\{\line
   \}\line
 \line
 \});\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 The first option defined in the above config is {\f1 deps: ["main"]}. This informs Require.js to load up our main.js file, which is considered the entry point for our application. You may notice that we haven\u8217't specified any other path information for {\f1 main}.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 The first option defined in the above config is {\f1 deps: ["main"]}. This informs RequireJS to load up our main.js file, which is considered the entry point for our application. You may notice that we haven\u8217't specified any other path information for {\f1 main}.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 This is because as we haven\u8217't overridden the path to our scripts using the {\f1 baseUrl} option, Require will infer this using the path from our {\f1 data-main} attribute in index.html. In other words, our {\f1 baseUrl} is {\f1 app/} and any scripts we require will be loaded relative to this location.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 The next block is {\f1 paths}, which we can use to specify paths relative to the {\f1 baseUrl} as well as the paths/aliases to dependencies we\u8217're likely to regularly reference.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \f1   paths: \{\line
@@ -2052,13 +2062,13 @@ require.config(\{\line
     // Backbone.LayoutManager depends on Backbone.\line
     "plugins/backbone.layoutmanager": ["backbone"]\line
   \}\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 {\f1 shim} is an important part of our Require.js configuration which allows us to load libraries which are not AMD compliant. The basic idea here is that rather than requiring all libraries to implement support for AMD, the {\f1 shim} takes care of the hard work for us.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\f1 shim} is an important part of our RequireJS configuration which allows us to load libraries which are not AMD compliant. The basic idea here is that rather than requiring all libraries to implement support for AMD, the {\f1 shim} takes care of the hard work for us.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 For example, in the block below, we state that Backbone.js is dependent on Lodash (a fork of Underscore.js) and jQuery being loaded before it. Once they\u8217've been loaded, we then use the global export {\f1 Backbone} as the module value.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \f1     backbone: \{\line
       deps: ["lodash", "jquery"],\line
       exports: "Backbone"\line
     \}\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 Finally, we inform Require.js that the Backbone {\field{\*\fldinst{HYPERLINK "https://github.com/tbranyen/backbone.layoutmanager"}}{\fldrslt{\ul
+{\pard \ql \f0 \sa180 \li0 \fi0 Finally, we inform RequireJS that the Backbone {\field{\*\fldinst{HYPERLINK "https://github.com/tbranyen/backbone.layoutmanager"}}{\fldrslt{\ul
 LayoutManager
 }}}
  plugin (a template and layout manager, also included) requires that Backbone be loaded before it should be.\par}
@@ -2203,7 +2213,7 @@ function($, _, Backbone) \{\line
 {\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Views (optional)\sa180\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 We can easily create a new Boilerplate module using {\f1 grunt-bbb} once again using {\f1 init}:\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \f1 # Create a new module\line
-bbb init:module\line
+$ bbb init:module\line
 \line
 # Grunt prompt\line
 Please answer the following:\line
@@ -2403,7 +2413,7 @@ TodoMVC
 }}}
  project ({\f1 bbb init:todomvc}). I recommend checking these out as they\u8217'll provide you with a more complete picture of how Backbone Boilerplate, its templates and so on fit into the overall setup for a web app.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 For more about Grunt-BBB, remember to take a look at the official project {\field{\*\fldinst{HYPERLINK "https://github.com/backbone-boilerplate/grunt-bbb"}}{\fldrslt{\ul
-repositoryy
+repository
 }}}
 . There is also a related {\field{\*\fldinst{HYPERLINK "https://dl.dropbox.com/u/79007/talks/Modern_Web_Applications/slides/index.html"}}{\fldrslt{\ul
 slide-deck
@@ -2761,7 +2771,7 @@ dira
  for this tip)\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \b \fs24 What\u8217's the best way to combine or append Views to each other?\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 Let us say you have a Collection, where each item in the Collection could itself be a Collection. You can render each item in the Collection, and indeed can render any items which themselves are Collections. The problem you might have is how to render this structure where the HTML reflects the hierarchical nature of the data structure.\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 The most straight-forward way to approach this problem is to use a framework like Derick Baileys {\field{\*\fldinst{HYPERLINK "https://github.com/derickbailey/backbone.marionette"}}{\fldrslt{\ul
+{\pard \ql \f0 \sa180 \li0 \fi0 The most straight-forward way to approach this problem is to use a framework like Derick Baileys {\field{\*\fldinst{HYPERLINK "https://github.com/marionettejs/backbone.marionette"}}{\fldrslt{\ul
 Backbone.Marionette
 }}}
 . In this framework is a type of view called a CompositeView.\par}
@@ -2771,7 +2781,7 @@ Backbone.Marionette
 online
 }}}
 .\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 And you can get the source code and documentation for {\field{\*\fldinst{HYPERLINK "https://github.com/derickbailey/backbone.marionette"}}{\fldrslt{\ul
+{\pard \ql \f0 \sa180 \li0 \fi0 And you can get the source code and documentation for {\field{\*\fldinst{HYPERLINK "https://github.com/marionettejs/backbone.marionette"}}{\fldrslt{\ul
 Marionette
 }}}
  too.\par}
@@ -3838,22 +3848,22 @@ end\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 Unlike some more traditional programming languages however, the current iteration of JavaScript (ECMA-262) doesn\u8217't provide developers with the means to import such modules of code in a clean, organized manner. It\u8217's one of the concerns with specifications that haven\u8217't required great thought until more recent years where the need for more organized JavaScript applications became apparent.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 Instead, developers at present are left to fall back on variations of the module or object literal patterns. With many of these, module scripts are strung together in the DOM with namespaces being described by a single global object where it\u8217's still possible to incur naming collisions in your architecture. There\u8217's also no clean way to handle dependency management without some manual effort or third party tools.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 Whilst native solutions to these problems will be arriving in ES Harmony, the good news is that writing modular JavaScript has never been easier and you can start doing it today.\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 In this next part of the book, we\u8217're going to look at how to use AMD modules and Require.js for cleanly wrapping units of code in your application into manageable modules.\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs32 Organizing modules with Require.js and AMD\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 In this next part of the book, we\u8217're going to look at how to use AMD modules and RequireJS for cleanly wrapping units of code in your application into manageable modules.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs32 Organizing modules with RequireJS and AMD\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 In case you haven\u8217't used it before, {\field{\*\fldinst{HYPERLINK "http://requirejs.org"}}{\fldrslt{\ul
-Require.js
+RequireJS
 }}}
- is a popular script loader written by James Burke - a developer who has been quite instrumental in helping shape the AMD module format, which we\u8217'll discuss more shortly. Some of Require.js\u8217's capabilities include helping to load multiple script files, helping define modules with or without dependencies and loading in non-script dependencies such as text files.\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 So, why use Require.js with Backbone? Although Backbone is excellent when it comes to providing a sanitary structure to your applications, there are a few key areas where some additional help could be used:\par}
+ is a popular script loader written by James Burke - a developer who has been quite instrumental in helping shape the AMD module format, which we\u8217'll discuss more shortly. Some of RequireJS\u8217's capabilities include helping to load multiple script files, helping define modules with or without dependencies and loading in non-script dependencies such as text files.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 So, why use RequireJS with Backbone? Although Backbone is excellent when it comes to providing a sanitary structure to your applications, there are a few key areas where some additional help could be used:\par}
 {\pard \ql \f0 \sa0 \li360 \fi-360 1)\tx360\tab Backbone doesn\u8217't endorse a particular approach to modular-development. Although this means it\u8217's quite open-ended for developers to opt for classical patterns like the module-pattern or Object Literals for structuring their apps (which both work fine), it also means developers aren\u8217't sure of what works best when other concerns come into play, such as dependency management.\sa180\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 Require.js is compatible with the AMD (Asynchronous Module Definition) format, a format which was born from a desire to write something better than the \u8216'write lots of script tags with implicit dependencies and manage them manually\u8217' approach to development. In addition to allowing you to clearly declare dependencies, AMD works well in the browser, supports string IDs for dependencies, declaring multiple modules in the same file and gives you easy-to-use tools to avoid polluting the global namespace.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 RequireJS is compatible with the AMD (Asynchronous Module Definition) format, a format which was born from a desire to write something better than the \u8216'write lots of script tags with implicit dependencies and manage them manually\u8217' approach to development. In addition to allowing you to clearly declare dependencies, AMD works well in the browser, supports string IDs for dependencies, declaring multiple modules in the same file and gives you easy-to-use tools to avoid polluting the global namespace.\par}
 {\pard \ql \f0 \sa0 \li360 \fi-360 2)\tx360\tab Let\u8217's discuss dependency management a little more as it can actually be quite challenging to get right if you\u8217're doing it by hand. When we write modules in JavaScript, we ideally want to be able to handle the reuse of code units intelligently and sometimes this will mean pulling in other modules at run-time whilst at other times you may want to do this dynamically to avoid a large pay-load when the user first hits your application.\sa180\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 Think about the GMail web-client for a moment. When users initially load up the page on their first visit, Google can simply hide widgets such as the chat module until a user has indicated (by clicking \u8216'expand\u8217') that they wish to use it. Through dynamic dependency loading, Google could load up the chat module only then, rather than forcing all users to load it when the page first initializes. This can improve performance and load times and can definitely prove useful when building larger applications.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 I\u8217've previously written {\field{\*\fldinst{HYPERLINK "http://addyosmani.com/writing-modular-js"}}{\fldrslt{\ul
 a detailed article
 }}}
  covering both AMD and other module formats and script loaders in case you\u8217'd like to explore this topic further. The takeaway is that although it\u8217's perfectly fine to develop applications without a script loader or clean module format in place, it can be of significant benefit to consider using these tools in your application development.\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs28 Writing AMD modules with Require.js\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs28 Writing AMD modules with RequireJS\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 As discussed above, the overall goal for the AMD format is to provide a solution for modular JavaScript that developers can use today. The two key concepts you need to be aware of when using it with a script-loader are a {\f1 define()} method for facilitating module definition and a {\f1 require()} method for handling dependency loading. {\f1 define()} is used to define named or unnamed modules based on the proposal using the following signature:\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \f1 define(\line
     module_id /*optional*/,\line
@@ -3861,7 +3871,7 @@ a detailed article
     definition function /*function for instantiating the module or object*/\line
 );\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 As you can tell by the inline comments, the {\f1 module_id} is an optional argument which is typically only required when non-AMD concatenation tools are being used (there may be some other edge cases where it\u8217's useful too). When this argument is left out, we call the module \u8216'anonymous\u8217'. When working with anonymous modules, the idea of a module\u8217's identity is DRY, making it trivial to avoid duplication of filenames and code.\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 Back to the define signature, the dependencies argument represents an array of dependencies which are required by the module you are defining and the third argument (\u8216'definition function\u8217') is a function that\u8217's executed to instantiate your module. A barebone module (compatible with Require.js) could be defined using {\f1 define()} as follows:\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Back to the define signature, the dependencies argument represents an array of dependencies which are required by the module you are defining and the third argument (\u8216'definition function\u8217') is a function that\u8217's executed to instantiate your module. A barebone module (compatible with RequireJS) could be defined using {\f1 define()} as follows:\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \f1 // A module ID has been omitted here to make the module anonymous\line
 \line
 define(['foo', 'bar'],\line
@@ -3949,11 +3959,11 @@ require(['foo', 'bar'], function ( foo, bar ) \{\line
   var AppView = Backbone.View.extend(\{\line
   ...\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 Aliasing to the dollar-sign ({\f1 $}), once again makes it very easy to encapsulate any part of an application you wish using AMD.\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs32 Keeping Your Templates External Using Require.js And The Text Plugin\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 Moving your [Underscore/Mustache/Handlebars] templates to external files is actually quite straight-forward. As this application makes use of Require.js, I\u8217'll discuss how to implement external templates using this specific script loader.\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 Require.js has a special plugin called text.js which is used to load in text file dependencies. To use the text plugin, simply follow these simple steps:\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs32 Keeping Your Templates External Using RequireJS And The Text Plugin\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Moving your [Underscore/Mustache/Handlebars] templates to external files is actually quite straight-forward. As this application makes use of RequireJS, I\u8217'll discuss how to implement external templates using this specific script loader.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 RequireJS has a special plugin called text.js which is used to load in text file dependencies. To use the text plugin, simply follow these simple steps:\par}
 {\pard \ql \f0 \sa180 \li360 \fi-360 1.\tx360\tab Download the plugin from http://requirejs.org/docs/download.html#text and place it in either the same directory as your application\u8217's main JS file or a suitable sub-directory.\par}
-{\pard \ql \f0 \sa180 \li360 \fi-360 2.\tx360\tab Next, include the text.js plugin in your initial Require.js configuration options. In the code snippet below, we assume that Require.js is being included in our page prior to this code snippet being executed. Any of the other scripts being loaded are just there for the sake of example.\sa180\par}
+{\pard \ql \f0 \sa180 \li360 \fi-360 2.\tx360\tab Next, include the text.js plugin in your initial RequireJS configuration options. In the code snippet below, we assume that RequireJS is being included in our page prior to this code snippet being executed. Any of the other scripts being loaded are just there for the sake of example.\sa180\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \f1 require.config( \{\line
     paths: \{\line
         'backbone':         'libs/AMDbackbone-0.5.3',\line
@@ -3967,7 +3977,7 @@ require(['foo', 'bar'], function ( foo, bar ) \{\line
     \},\line
     baseUrl: 'app'\line
 \} );\par}
-{\pard \ql \f0 \sa0 \li360 \fi-360 3.\tx360\tab When the {\f1 text!} prefix is used for a dependency, Require.js will automatically load the text plugin and treat the dependency as a text resource. A typical example of this in action may look like..\sa180\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 3.\tx360\tab When the {\f1 text!} prefix is used for a dependency, RequireJS will automatically load the text plugin and treat the dependency as a text resource. A typical example of this in action may look like..\sa180\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \f1 require(['js/app', 'text!templates/mainView.html'],\line
     function(app, mainView)\{\line
         // the contents of the mainView file will be\line
@@ -3984,7 +3994,7 @@ require(['foo', 'bar'], function ( foo, bar ) \{\line
 </script>\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 JS:\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \f1 var compiled_template = _.template( $('#mainViewTemplate').html() );\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 With Require.js and the text plugin however, it\u8217's as simple as saving your template into an external text file (say, {\f1 mainView.html}) and doing the following:\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 With RequireJS and the text plugin however, it\u8217's as simple as saving your template into an external text file (say, {\f1 mainView.html}) and doing the following:\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \f1 require(['js/app', 'text!templates/mainView.html'],\line
     function(app, mainView)\{\line
 \line
@@ -3995,20 +4005,20 @@ require(['foo', 'bar'], function ( foo, bar ) \{\line
 {\pard \ql \f0 \sa180 \li0 \fi0 \f1 collection.someview.$el.html( compiled_template( \{ results: collection.models \} ) );\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 All templating solutions will have their own custom methods for handling template compilation, but if you understand the above, substituting Underscore\u8217's micro-templating for any other solution should be fairly trivial.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 {\b Note:} You may also be interested in looking at {\field{\*\fldinst{HYPERLINK "https://github.com/ZeeAgency/requirejs-tpl"}}{\fldrslt{\ul
-Require.js tpl
+RequireJS tpl
 }}}
 . It\u8217's an AMD-compatible version of the Underscore templating system that also includes support for optimization (pre-compiled templates) which can lead to better performance and no evals. I have yet to use it myself, but it comes as a recommended resource.\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs32 Optimizing Backbone apps for production with the Require.js Optimizer\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs32 Optimizing Backbone apps for production with the RequireJS Optimizer\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 As experienced developers may know, an essential final step when writing both small and large JavaScript web applications is the build process. The majority of non-trivial apps are likely to consist of more than one or two scripts and so optimizing, minimizing and concatenating your scripts prior to pushing them to production will require your users to download a reduced number (if not just one) script file.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 Note: If you haven\u8217't looked at build processes before and this is your first time hearing about them, you might find {\field{\*\fldinst{HYPERLINK "http://addyosmani.com/blog/client-side-build-process/"}}{\fldrslt{\ul
 my post and screencast on this topic
 }}}
  useful.\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 With some other structural JavaScript frameworks, my recommendation would normally be to implicitly use YUI Compressor or Google\u8217's closure compiler tools, but we have a slightly more elegant method available, when it comes to Backbone if you\u8217're using Require.js. Require.js has a command line optimization tool called r.js which has a number of capabilities, including:\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 With some other structural JavaScript frameworks, my recommendation would normally be to implicitly use YUI Compressor or Google\u8217's closure compiler tools, but we have a slightly more elegant method available, when it comes to Backbone if you\u8217're using RequireJS. RequireJS has a command line optimization tool called r.js which has a number of capabilities, including:\par}
 {\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Concatenating specific scripts and minifying them using external tools such as UglifyJS (which is used by default) or Google\u8217's Closure Compiler for optimal browser delivery, whilst preserving the ability to dynamically load modules\par}
 {\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Optimizing CSS and stylesheets by inlining CSS files imported using @import, stripping out comments etc.\par}
 {\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab The ability to run AMD projects in both Node and Rhino (more on this later)\sa180\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 You\u8217'll notice that I mentioned the word \u8216'specific\u8217' in the first bullet point. The Require.js optimizer only concatenates module scripts that have been specified in arrays of string literals passed to top-level (i.e non-local) require and define calls. As clarified by the {\field{\*\fldinst{HYPERLINK "http://requirejs.org/docs/optimization.html"}}{\fldrslt{\ul
+{\pard \ql \f0 \sa180 \li0 \fi0 You\u8217'll notice that I mentioned the word \u8216'specific\u8217' in the first bullet point. The RequireJS optimizer only concatenates module scripts that have been specified in arrays of string literals passed to top-level (i.e non-local) require and define calls. As clarified by the {\field{\*\fldinst{HYPERLINK "http://requirejs.org/docs/optimization.html"}}{\fldrslt{\ul
 optimizer docs
 }}}
  this means that Backbone modules defined like this:\par}
@@ -4019,15 +4029,15 @@ optimizer docs
 {\pard \ql \f0 \sa180 \li0 \fi0 will combine fine, however inline dependencies such as:\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \f1 var models = someCondition ? ['models/ab','models/ac'] : ['models/ba','models/bc'];\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 will be ignored. This is by design as it ensures that dynamic dependency/module loading can still take place even after optimization.\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 Although the Require.js optimizer works fine in both Node and Java environments, it\u8217's strongly recommended to run it under Node as it executes significantly faster there. In my experience, it\u8217's a piece of cake to get setup with either environment, so go for whichever you feel most comfortable with.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Although the RequireJS optimizer works fine in both Node and Java environments, it\u8217's strongly recommended to run it under Node as it executes significantly faster there. In my experience, it\u8217's a piece of cake to get setup with either environment, so go for whichever you feel most comfortable with.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 To get started with r.js, grab it from the {\field{\*\fldinst{HYPERLINK "http://requirejs.org/docs/download.html#rjs"}}{\fldrslt{\ul
-Require.js download page
+RequireJS download page
 }}}
  or {\field{\*\fldinst{HYPERLINK "http://requirejs.org/docs/optimization.html#download"}}{\fldrslt{\ul
 through NPM
 }}}
-. Now, the Require.js optimizer works absolutely fine for single script and CSS files, but for most cases you\u8217'll want to actually optimize an entire Backbone project. You {\i could} do this completely from the command-line, but a cleaner option is using build profiles.\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 Below is an example of a build file taken from the modular jQuery Mobile app referenced later in this book. A {\b build profile} (commonly named {\f1 app.build.js}) informs Require.js to copy all of the content of {\f1 appDir} to a directory defined by {\f1 dir} (in this case {\f1 ../release}). This will apply all of the necessary optimizations inside the release folder. The {\f1 baseUrl} is used to resolve the paths for your modules. It should ideally be relative to {\f1 appDir}.\par}
+. Now, the RequireJS optimizer works absolutely fine for single script and CSS files, but for most cases you\u8217'll want to actually optimize an entire Backbone project. You {\i could} do this completely from the command-line, but a cleaner option is using build profiles.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Below is an example of a build file taken from the modular jQuery Mobile app referenced later in this book. A {\b build profile} (commonly named {\f1 app.build.js}) informs RequireJS to copy all of the content of {\f1 appDir} to a directory defined by {\f1 dir} (in this case {\f1 ../release}). This will apply all of the necessary optimizations inside the release folder. The {\f1 baseUrl} is used to resolve the paths for your modules. It should ideally be relative to {\f1 appDir}.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 Near the bottom of this sample file, you\u8217'll see an array called {\f1 modules}. This is where you specify the module names you wish to have optimized. In this case we\u8217're optimizing the main application called \u8216'app\u8217', which maps to {\f1 appDir/app.js}. If we had set the {\f1 baseUrl} to \u8216'scripts\u8217', it would be mapped to {\f1 appDir/scripts/app.js}.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \f1 (\{\line
     appDir: "./",\line
@@ -4060,13 +4070,13 @@ through NPM
 heavily commented sample file
 }}}
  with all the possible options available.\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs32 Optimize and Build a Backbone.js JavaScript application with Require.JS using Packages\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs32 Optimize and Build a Backbone.js JavaScript application with RequireJS using Packages\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 {\i Contributed by {\field{\*\fldinst{HYPERLINK "https://github.com/pixelhandler"}}{\fldrslt{\ul
 Bill Heaton
 }}}
 }\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 When a JavaScript application is too complex or large to build in a single file, grouping the application\u8217's components into packages allows for script dependencies to download in parallel, and facilitates only loading {\b packaged} and other modular code as the site experience requires the specific set of dependencies.\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 Require.JS, the (JavaScript) module loading library, has an {\field{\*\fldinst{HYPERLINK "http://requirejs.org/docs/optimization.html"}}{\fldrslt{\ul
+{\pard \ql \f0 \sa180 \li0 \fi0 RequireJS, the (JavaScript) module loading library, has an {\field{\*\fldinst{HYPERLINK "http://requirejs.org/docs/optimization.html"}}{\fldrslt{\ul
 optimizer
 }}}
  to build a JavaScript-based application and provides various options. A build profile is the recipe for your build, much like a build.xml file is used to build a project with ANT. The benefit of building with {\b r.js} not only results in speedy script loading with minified code, but also provides a way to package components of your application.\par}
@@ -4088,7 +4098,7 @@ Backbone.js
  using modular code, following the {\field{\*\fldinst{HYPERLINK "https://github.com/amdjs/amdjs-api/wiki/AMD"}}{\fldrslt{\ul
 Asynchronous Module Definition (AMD)
 }}}
- format. AMD and Require.JS provide the structure for writing modular code with dependencies. Backbone.js provides the code organization for developing models, views and collections and also interactions with a RESTful API.\par}
+ format. AMD and RequireJS provide the structure for writing modular code with dependencies. Backbone.js provides the code organization for developing models, views and collections and also interactions with a RESTful API.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 Below is an outline of the applications file organization, followed by the build profile to build modular (or packaged) layers a JavaScript driven application.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \b \fs24 File organization\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 Assume the following directories and file organization, with app.build.js as the build profile (a sibling to both source and release directories). Note that the files in the list below named {\i section} can be any component of the application, e.g. {\i header}, {\i login})\par}
@@ -4292,18 +4302,18 @@ return \{ "branding" : branding, "section", section, "section-b" : section-b \}\
 {\pard \ql \f0 \sa180 \li0 \fi0 However in your {\i models/section-b.js} file you define a dependency using the model.js which returns the models in an object like so\u8230?\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \f1 define([ "models" ], function (models, utils) \{\line
 var section = models.section;\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 Above is the mistake in models.js a dependency was added for models/section-b and in section-b a dependency is defined for model. The new models/section-b.js requires {\i model} and model.js requires {\i models/section-b.js} - a circular dependency. This should result in a load timeout error from require.js, but not tell you about the circular dependency.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Above is the mistake in models.js a dependency was added for models/section-b and in section-b a dependency is defined for model. The new models/section-b.js requires {\i model} and model.js requires {\i models/section-b.js} - a circular dependency. This should result in a load timeout error from RequireJS, but not tell you about the circular dependency.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 For other common mistakes see the {\field{\*\fldinst{HYPERLINK "http://requirejs.org/docs/errors.html"}}{\fldrslt{\ul
 COMMON ERRORS
 }}}
- page on the Require.js site.\par}
+ page on the RequireJS site.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \b \fs24 Executing the Build with r.js\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 If you intalled r.js with Node\u8217's npm (package manager) like so\u8230?\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \f1 > npm install requirejs\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \u8230?you can execute the build on the command line:\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \f1 > r.js -o app.build.js\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs32 Practical: Building a modular Backbone app with AMD & Require.js\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 In this chapter, we\u8217'll look at our first practical Backbone & Require.js project - how to build a modular Todo application. The application will allow us to add new todos, edit new todos and clear todo items that have been marked as completed. For a more advanced practical, see the section on mobile Backbone development.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs32 Practical: Building a modular Backbone app with AMD & RequireJS\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 In this chapter, we\u8217'll look at our first practical Backbone & RequireJS project - how to build a modular Todo application. The application will allow us to add new todos, edit new todos and clear todo items that have been marked as completed. For a more advanced practical, see the section on mobile Backbone development.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 The complete code for the application can can be found in the {\f1 practicals/modular-todo-app} folder of this repo (thanks to Thomas Davis and J\u233?r\u244?me Gravel-Niquet). Alternatively grab a copy of my side-project {\field{\*\fldinst{HYPERLINK "https://github.com/addyosmani/todomvc"}}{\fldrslt{\ul
 TodoMVC
 }}}
@@ -4314,7 +4324,7 @@ backbonetutorials.com
  at some point soon, but for this section I\u8217'll be covering what I consider the core concepts.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \b \fs28 Overview\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 Writing a \u8216'modular\u8217' Backbone application can be a straight-forward process. There are however, some key conceptual differences to be aware of if opting to use AMD as your module format of choice:\par}
-{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab As AMD isn\u8217't a standard native to JavaScript or the browser, it\u8217's necessary to use a script loader (such as Require.js or curl.js) in order to support defining components and modules using this module format. As we\u8217've already reviewed, there are a number of advantages to using the AMD as well as Require.js to assist here.\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab As AMD isn\u8217't a standard native to JavaScript or the browser, it\u8217's necessary to use a script loader (such as RequireJS or curl.js) in order to support defining components and modules using this module format. As we\u8217've already reviewed, there are a number of advantages to using the AMD as well as RequireJS to assist here.\par}
 {\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Models, views, controllers and routers need to be encapsulated {\i using} the AMD-format. This allows each component of our Backbone application to cleanly manage dependencies (e.g collections required by a view) in the same way that AMD allows non-Backbone modules to.\par}
 {\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Non-Backbone components/modules (such as utilities or application helpers) can also be encapsulated using AMD. I encourage you to try developing these modules in such a way that they can both be used and tested independent of your Backbone code as this will increase their ability to be re-used elsewhere.\sa180\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 Now that we\u8217've reviewed the basics, let\u8217's take a look at developing our application. For reference, the structure of our app is as follows:\par}
@@ -4362,7 +4372,7 @@ backbonetutorials.com
 {\pard \ql \f0 \sa180 \li0 \fi0 The rest of the tutorial will now focus on the JavaScript side of the practical.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \b \fs28 Configuration options\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 If you\u8217've read the earlier chapter on AMD, you may have noticed that explicitly needing to define each dependency a Backbone module (view, collection or other module) may require with it can get a little tedious. This can however be improved.\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 In order to simplify referencing common paths the modules in our application may use, we use a Require.js {\field{\*\fldinst{HYPERLINK "http://requirejs.org/docs/api.html#config"}}{\fldrslt{\ul
+{\pard \ql \f0 \sa180 \li0 \fi0 In order to simplify referencing common paths the modules in our application may use, we use a RequireJS {\field{\*\fldinst{HYPERLINK "http://requirejs.org/docs/api.html#config"}}{\fldrslt{\ul
 configuration object
 }}}
 , which is typically defined as a top-level script file. Configuration objects have a number of useful capabilities, the most useful being mode name-mapping. Name-maps are basically a key:value pair, where the key defines the alias you wish to use for a path and the value represents the true location of the path.\par}
@@ -4476,7 +4486,7 @@ RequireJS docs
     \},\line
     ...\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 From a maintenance perspective, there\u8217's nothing logically different in this version of our view, except for how we approach templating.\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 Using the Require.js text plugin (the dependency marked {\f1 text}), we can actually store all of the contents for the template we looked at earlier in an external file (todos.html).\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Using the RequireJS text plugin (the dependency marked {\f1 text}), we can actually store all of the contents for the template we looked at earlier in an external file (todos.html).\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 {\b templates/todos.html}\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \f1 <div class="todo <%= done ? 'done' : '' %>">\line
     <div class="display">\line
@@ -4599,8 +4609,8 @@ RequireJS docs
 online
 }}}
  to learn more. I hope you find it helpful!.\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 {\b Note:} While this first practical doesn\u8217't use a build profile as outlined in the chapter on using the Require.js optimizer, we will be using one in the section on building mobile Backbone applications.\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs32 Decoupling Backbone with the Mediator and Facade patterns\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b Note:} While this first practical doesn\u8217't use a build profile as outlined in the chapter on using the RequireJS optimizer, we will be using one in the section on building mobile Backbone applications.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs32 Decoupling Backbone with the Mediator and Facade Patterns\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 In this section we\u8217'll discuss applying some of the concepts I cover in my article on {\field{\*\fldinst{HYPERLINK "http://addyosmani.com/largescalejavascript"}}{\fldrslt{\ul
 Large-scale JavaScript Application development
 }}}
@@ -4881,6 +4891,746 @@ slides
 here
 }}}
  for more information.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs32 Backbone.Marionette\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\i By Derick Bailey & Addy Osmani}\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 As we\u8217've seen, Backbone provides a great set of building blocks for our JavaScript applications. It gives us the core constructs that are needed to build small to mid-sized apps, organize jQuery DOM events, or create single page apps that support mobile devices and large scale enterprise needs. But Backbone is not a complete framework. It\u8217's a set of building blocks that leaves much of the application design, architecture and scalability to the developer, including memory management, view management and more.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\field{\*\fldinst{HYPERLINK "http://marionettejs.com"}}{\fldrslt{\ul
+Backbone.Marionette
+}}}
+ (or just \u8220"Marionette\u8221") provides many of the features that the non-trivial application developer needs, above what Backbone itself provides. It is a composite application library that aims to simplify the construction of large scale applications. It does this by providing a collection of common design and implementation patterns found in the applications that the creator, {\field{\*\fldinst{HYPERLINK "http://lostechies.com/derickbailey/"}}{\fldrslt{\ul
+Derick Bailey
+}}}
+, and many other {\field{\*\fldinst{HYPERLINK "https://github.com/marionettejs/backbone.marionette/graphs/contributors"}}{\fldrslt{\ul
+contributors
+}}}
+ have been using to build Backbone apps.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Marionette\u8217's key benefits include:\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Scaling applications out with modular, event driven architecture\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Sensible defaults, such as using Underscore templates for view rendering\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Easy to modify to make it work with your application\u8217's specific needs\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Reducing boilerplate for views, with specialized view types\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Build on a modular architecture with an Application and modules that attach to it\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Compose your application\u8217's visuals at runtime, with Region and Layout\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Nested views and layouts within visual regions\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Built-in memory management and zombie killing in views, regions and layouts\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Built-in event clean up with the EventBinder\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Event-driven architecture with the EventAggregator\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Flexible, \u8220"as-needed\u8221" architecture allowing you to pick and choose what you need\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab And much, much more\sa180\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Marionette follows a similar philosophy to Backbone in that it provides a suite of components that can be used independently of each other, or used together to create a significant advantages for us as developers. But it steps above the structural components of Backbone and provides an application layer, with more than a dozen components and building blocks.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Marionette\u8217's components range greatly in the features they provide, but they all work together to create a composite application layer that can both reduce boilerplate code and provide a much needed application structure. It\u8217's core components include:\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\field{\*\fldinst{HYPERLINK "https://github.com/marionettejs/backbone.marionette/blob/master/docs/marionette.application.md"}}{\fldrslt{\ul
+{\b Backbone.Marionette.Application}
+}}}
+: An application object that starts your app via initializers, and more\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\field{\*\fldinst{HYPERLINK "https://github.com/marionettejs/backbone.marionette/blob/master/docs/marionette.application.module.md"}}{\fldrslt{\ul
+{\b Backbone.Marionette.Application.module}
+}}}
+: Create modules and sub-modules within the application\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\field{\*\fldinst{HYPERLINK "https://github.com/marionettejs/backbone.marionette/blob/master/docs/marionette.approuter.md"}}{\fldrslt{\ul
+{\b Backbone.Marionette.AppRouter}
+}}}
+: Reduce your routers to nothing more than configuration\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\field{\*\fldinst{HYPERLINK "https://github.com/marionettejs/backbone.marionette/blob/master/docs/marionette.view.md"}}{\fldrslt{\ul
+{\b Backbone.Marionette.View}
+}}}
+: The base View type that other Marionette views extend from (not intended to be used directly)\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\field{\*\fldinst{HYPERLINK "https://github.com/marionettejs/backbone.marionette/blob/master/docs/marionette.itemview.md"}}{\fldrslt{\ul
+{\b Backbone.Marionette.ItemView}
+}}}
+: A view that renders a single item\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\field{\*\fldinst{HYPERLINK "https://github.com/marionettejs/backbone.marionette/blob/master/docs/marionette.collectionview.md"}}{\fldrslt{\ul
+{\b Backbone.Marionette.CollectionView}
+}}}
+: A view that iterates over a collection, and renders individual {\f1 ItemView} instances for each model\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\field{\*\fldinst{HYPERLINK "https://github.com/marionettejs/backbone.marionette/blob/master/docs/marionette.compositeview.md"}}{\fldrslt{\ul
+{\b Backbone.Marionette.CompositeView}
+}}}
+: A collection view and item view, for rendering leaf-branch/composite model hierarchies\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\field{\*\fldinst{HYPERLINK "https://github.com/marionettejs/backbone.marionette/blob/master/docs/marionette.region.md"}}{\fldrslt{\ul
+{\b Backbone.Marionette.Region}
+}}}
+: Manage visual regions of your application, including display and removal of content\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\field{\*\fldinst{HYPERLINK "https://github.com/marionettejs/backbone.marionette/blob/master/docs/marionette.layout.md"}}{\fldrslt{\ul
+{\b Backbone.Marionette.Layout}
+}}}
+: A view that renders a layout and creates region managers to manage areas within it\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\field{\*\fldinst{HYPERLINK "https://github.com/marionettejs/backbone.marionette/blob/master/docs/marionette.eventaggregator.md"}}{\fldrslt{\ul
+{\b Backbone.Marionette.EventAggregator}
+}}}
+: An extension of Backbone.Events, to be used as an event-driven or pub-sub tool\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\field{\*\fldinst{HYPERLINK "https://github.com/marionettejs/backbone.marionette/blob/master/docs/marionette.eventbinder.md"}}{\fldrslt{\ul
+{\b Backbone.Marionette.EventBinder}
+}}}
+: An event binding manager, to facilitate binding and unbinding of events\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\field{\*\fldinst{HYPERLINK "https://github.com/marionettejs/backbone.marionette/blob/master/docs/marionette.renderer.md"}}{\fldrslt{\ul
+{\b Backbone.Marionette.Renderer}
+}}}
+: Render templates with or without data, in a consistent and common manner\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\field{\*\fldinst{HYPERLINK "https://github.com/marionettejs/backbone.marionette/blob/master/docs/marionette.templatecache.md"}}{\fldrslt{\ul
+{\b Backbone.Marionette.TemplateCache}
+}}}
+: Cache templates that are stored in {\f1 <script>} blocks, for faster subsequent access\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\field{\*\fldinst{HYPERLINK "https://github.com/marionettejs/backbone.marionette/blob/master/docs/marionette.callbacks.md"}}{\fldrslt{\ul
+{\b Backbone.Marionette.Callbacks}
+}}}
+: Manage a collection of callback methods, and execute them as needed\sa180\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 But like Backbone itself, you\u8217're not required to use all of Marionette\u8217's components just because you want to use some of them. You can pick and choose which features you want to use, when. This allows you to work with other Backbone frameworks and plugins very easily. It also means that you are not required to engage in an all-or-nothing migration to begin using Marionette.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs28 Boilerplate Rendering Code\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Consider the code that it typically requires to render a view with Backbone and Underscore template. We need a template to render, which can be placed in the DOM directly, and we need the JavaScript that defines a view to use the template, and populate that template with data from a model.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 <script type="text/html" id="my-view-template">\line
+  <div class="row">\line
+    <label>First Name:</label>\line
+    <span><%= firstName %></span>\line
+  <div>\line
+  <div class="row">\line
+    <label>Last Name:</label>\line
+    <span><%= lastName %></span>\line
+  <div>\line
+  <div class="row">\line
+    <label>Email:</label>\line
+    <span><%= email %></span>\line
+  <div>\line
+</script>\line
+</pre>\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 var MyView = Backbone.View.extend(\{\line
+  template: "#my-view-template",\line
+\line
+  render: function()\{\line
+\line
+    // compile the Underscore.js template\line
+    var template = $("#my-view-template");\line
+    var compiledTemplate = _.template(template);\line
+\line
+    // render the template with the model data\line
+    var data = this.model.toJSON();\line
+    var html = compiledTemplate(data);\line
+\line
+    // populate the view with the rendered html\line
+    this.$el.html(html);\line
+  \}\line
+\});\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Once this is in place, you need to create an instance of your view and pass your model in to it. Then you can take the view\u8217's {\f1 el} and append it to the DOM in order to display the view.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 var myModel = new MyModel(\{\line
+  firstName: "Derick",\line
+  lastName: "Bailey",\line
+  email: "derickbailey@gmail.com"\line
+\});\line
+\line
+var myView = new MyView(\{\line
+  model: myModel\line
+\})\line
+\line
+myView.render();\line
+\line
+$("#content").html(myView.el)\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 This is a standard set up for defining, building, rendering, and displaying a view with Backbone. This is also what we call \u8220"boilerplate code\u8221" - code that is repeated over and over and over again, across every project and every implementation of the same functionality. It gets to be very tedious and repetitious very quickly.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Enter Marionette\u8217's {\f1 ItemView} - a simple way to reduce the boilerplate of defining a view.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs28 Reducing Boilerplate With Marionette.ItemView\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 All of Marionette\u8217's view types - with the exception of {\f1 Marionette.View} - include a built-in {\f1 render} method that handles the core rendering logic for you. By changing the {\f1 MyView} instance from {\f1 Backbone.View} then, we can take advantage of this. Instead of having to provide our own {\f1 render} method for the view, we can let Marionette render it for us. We\u8217'll still use the same Underscore.js template and rendering mechanism, but the implementation of this is hidden behind the scenes for us. Thus, we can reduce the amount of code needed for this view.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 var MyView = Backbone.Marionette.ItemView.extend(\{\line
+  template: "#my-view-template"\line
+\});\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 And that\u8217's it - that\u8217's all you need to get the exact same behaviour as the previous view implementation. Just replace {\f1 Backbone.View.extend} with {\f1 Backbone.Marionette.ItemView.extend}, then get rid of the {\f1 render} method. You can still create the view instance with a {\f1 model}, call the {\f1 render} method on the view instance, and display the view in the DOM the same way that we did before. But the view definition has been reduced to a single line of configuration for the template.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs28 Memory Management\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 In addition to the reduction of code needed to define a view, Marionette includes some advanced memory management in all of it\u8217's views, making the job of cleaning up a view instance and it\u8217's event handlers, easy.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Consider the following view implementation:\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 var ZombieView = Backbone.View.extend(\{\line
+  template: "#my-view-template",\line
+\line
+  initialize: function()\{\line
+\line
+    // bind the model change to re-render this view\line
+    this.model.on("change", this.render, this);\line
+\line
+  \},\line
+\line
+  render: function()\{\line
+\line
+    // This alert is going to demonstrate a problem\line
+    alert("We're rendering the view");\line
+\line
+  \}\line
+\});\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 If we create two instances of this view using the same variable name for both instances, and then change a value in the model, how many times will we see the alert box?\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 var myModel = new MyModel(\{\line
+  firstName: "Jeremy",\line
+  lastName: "Ashkenas",\line
+  email: "jeremy@example.com"\line
+\});\line
+\line
+// create the first view instance\line
+var zombieView = new ZombieView(\{\line
+  model: myModel\line
+\})\line
+\line
+// create a second view instance, re-using\line
+// the same variable name to store it\line
+zombieView = new ZombieView(\{\line
+  model: myModel\line
+\})\line
+\line
+myModel.set("email", "jeremy@gmail.com");\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Since we\u8217're re-using the save {\f1 zombieView} variable for both instances, the first instance of the view will fall out of scope immediately after the second is created. This allows the JavaScript garbage collector to come along and clean it up, which should mean the first view instance is no longer active and no longer going to respond to the model\u8217's \u8220"change\u8221" event.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 But when we run this code, we end up with the alert box showing up twice!\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 The problem is caused by the model event binding in the view\u8217's {\f1 initialize} method. Whenever we pass {\f1 this.render} as the callback method to the model\u8217's {\f1 on} event binding, the model itself is being given a direct reference to the view instance. Since the model is now holding a reference to the view instance, replacing the {\f1 zombieView} variable with a new view instance is not going to let the original view fall out of scope. The model still has a reference, therefore the view is still in scope.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Since the original view is still in scope, and the second view instance is also in scope, changing data on the model will cause both view instances to respond.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Fixing this is easy, though. You just need to call {\f1 off} when the view is done with it\u8217's work and ready to be closed. To do this, add a {\f1 close} method to the view.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 var ZombieView = Backbone.View.extend(\{\line
+  template: "#my-view-template",\line
+\line
+  initialize: function()\{\line
+    // bind the model change to re-render this view\line
+    this.model.on("change", this.render, this);\line
+  \},\line
+\line
+  close: function()\{\line
+    this.model.off("change", this.render, this);\line
+  \},\line
+\line
+  render: function()\{\line
+\line
+    // This alert is going to demonstrate a problem\line
+    alert("We're rendering the view");\line
+\line
+  \}\line
+\});\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Then call {\f1 close} on the first instance when it is no longer needed, and only one view instance will remain alive.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 var myModel = new MyModel(\{\line
+  firstName: "Jeremy",\line
+  lastName: "Ashkenas",\line
+  email: "jeremy@example.com"\line
+\});\line
+\line
+// create the first view instance\line
+var zombieView = new ZombieView(\{\line
+  model: myModel\line
+\})\line
+zombieView.close(); // double-tap the zombie\line
+\line
+// create a second view instance, re-using\line
+// the same variable name to store it\line
+zombieView = new ZombieView(\{\line
+  model: myModel\line
+\})\line
+\line
+myModel.set("email", "jeremy@gmail.com");\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Now we only see once alert box when this code runs.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Rather than having to manually remove these event handlers, though, we can let Marionette do it for us.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 var ZombieView = Backbone.Marionette.ItemView.extend(\{\line
+  template: "#my-view-template",\line
+\line
+  initialize: function()\{\line
+\line
+    // bind the model change to re-render this view\line
+    this.bindTo(this.model, "change", this.render, this);\line
+\line
+  \},\line
+\line
+  render: function()\{\line
+\line
+    // This alert is going to demonstrate a problem\line
+    alert("We're rendering the view");\line
+\line
+  \}\line
+\});\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Notice in this case we are using a method called {\f1 bindTo}. This method comes from Marionette\u8217's {\f1 EventBinder} object, and is added on to all of Marionette\u8217's view types. The {\f1 bindTo} method signature is similar to that of the {\f1 on} method, with the exception of passing the object that triggers the event as the first parameter.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Marionette\u8217's views also provide a {\f1 close} event, in which the event bindings that are set up with the {\f1 bindTo} are automatically removed. This means we no longer need to define a {\f1 close} method directly, and when we use the {\f1 bindTo} method, we know that our events will be removed and our views will not turn in to zombies.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 But how do we automate the call to {\f1 close} on a view, in the real application? When and where do we call that? Enter the {\f1 Marionette.Region} - an object that manages the lifecycle of an individual view.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs28 Region Management\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 After a view is created, it typically needs to be placed in the DOM so that it becomes visible. This is usually done with a jQuery selector and setting the {\f1 html()} of the resulting object:\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 var myModel = new MyModel(\{\line
+  firstName: "Jeremy",\line
+  lastName: "Ashkenas",\line
+  email: "jeremy@gmail.com"\line
+\});\line
+\line
+var myView = new MyView(\{\line
+  model: myModel\line
+\})\line
+\line
+myView.render();\line
+\line
+// show the view in the DOM\line
+$("#content").html(myView.el)\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 This, again, is boilerplate code. We shouldn\u8217't have to manually call {\f1 render} and manually select the DOM elements to show the view. Furthermore, this code doesn\u8217't lend itself to closing any previous view instance that might be attached to the DOM element we want to populate. And we\u8217've seen the danger of zombie views already.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 To solve these problems, Marionette provides a {\f1 Region} object - an object that manages the lifecycle of individual views, displayed in a particular DOM element.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 // create a region instance, telling it which DOM element to manage\line
+var myRegion = new Backbone.Marionette.Region(\{\line
+  el: "#content"\line
+\});\line
+\line
+// show a view in the region\line
+var view1 = new MyView(\{ /* ... */ \});\line
+myRegion.show(view1);\line
+\line
+// somewhere else in the code,\line
+// show a different view\line
+var view2 = new MyView(\{ /* ... */ \});\line
+myRegion.show(view2);\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 There are several things to note, here. First, we\u8217're telling the region what DOM element to manage by specifying an {\f1 el} in the region instance. Second, we\u8217're no longer calling the {\f1 render} method on our views. And lastly, we\u8217're not calling {\f1 close} on our view, either, though this is getting called for us.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 When we use a region to manage the lifecycle of our views, and display the views in the DOM, the region itself handles these concerns. By passing a view instance in to the {\f1 show} method of the region, it will call the render method on the view for us. It will then take the resulting {\f1 el} of the view and populate the DOM element.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 The next time we call the {\f1 show} method of the region, the region remembers that it is currently displaying a view. The region calls the {\f1 close} method on the view, removes it from the DOM, and then proceeds to run the render & display code for the new view that was passed in.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Since the region handles calling {\f1 close} for us, and we\u8217're using the {\f1 bindTo} event binder in our view instance, we no longer have to worry about zombie views in our application.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs28 Marionette Todo app\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Having learned about Marionette\u8217's high-level concepts, let\u8217's explore refactoring the Todo application we created in our first practical to use it. The complete code for this application can be found in Derick\u8217's TodoMVC {\field{\*\fldinst{HYPERLINK "https://github.com/derickbailey/todomvc/tree/master/labs/architecture-examples/backbone_marionette_modules/js"}}{\fldrslt{\ul
+fork
+}}}
+.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Our final implementation will be visually and functionally equivalent to the original app, as seen below.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\cf1 [image: img/marionette_todo0.png]\cf0}\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 First, we define an application object representing our base TodoMVC app. This will contain initialisation code and define the default layout regions for our app.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b TodoMVC.js:}\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 var TodoMVC = new Backbone.Marionette.Application();\line
+\line
+TodoMVC.addRegions(\{\line
+  header : '#header',\line
+  main   : '#main',\line
+  footer : '#footer'\line
+\});\line
+\line
+TodoMVC.on("initialize:after", function()\{\line
+  Backbone.history.start();\line
+\});\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Regions are used to manage the content that\u8217's displayed within specific elements, and the {\f1 addRegions} method on the {\f1 TodoMVC} object is just a shortcut for creating {\f1 Region} objects. We supply a jQuery selector for each region to manage (e.g {\f1 #header}, {\f1 #main} and {\f1 #footer}) and then tell the region to show various Backbone views within that region.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\cf1 [image: img/marionette_todo1.png]\cf0}\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Once the application object has been initialised, we call {\f1 Backbone.history.start()} to route the initial URL.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Next, we define our Layouts. A layout is a specialised type of view that extends from {\f1 Marionette.ItemView} directly. This means its intended to render a single template and may or may not have a model (or {\f1 item}) associated with the template.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 One of the main differences between a Layout and an {\f1 ItemView} is that the layout contains regions. When defining a Layout, we supply it with a {\f1 template} but also the regions that the template contains. After rendering the layout, we can display other views within the layout using the regions that were defined.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 In our TodoMVC Layout module below, we define Layouts for:\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Header: where we can create new Todos\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Footer: where we summarise how many Todos are remaining/have been completed\sa180\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 This captures some of the view logic that was previously in our {\f1 AppView} and {\f1 TodoView}.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Note that Marionette modules (such as the below) offer a simple module system which are used to create privacy and encapsulation in Marionette apps. These certainly don\u8217't have to be used however, and later on in this section we\u8217'll provide links to alternative implementations using RequireJS + AMD instead.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b TodoMVC.Layout.js:}\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 TodoMVC.module("Layout", function(Layout, App, Backbone, Marionette, $, _)\{\line
+\line
+  // Layout Header View\line
+  // ------------------\line
+\line
+  Layout.Header = Backbone.Marionette.ItemView.extend(\{\line
+    template : "#template-header",\line
+\line
+    // UI bindings create cached attributes that\line
+    // point to jQuery selected objects\line
+    ui : \{\line
+      input : '#new-todo'\line
+    \},\line
+\line
+    events : \{\line
+      'keypress #new-todo':   'onInputKeypress'\line
+    \},\line
+\line
+    onInputKeypress : function(evt) \{\line
+      var ENTER_KEY = 13;\line
+      var todoText = this.ui.input.val().trim();\line
+\line
+      if ( evt.which === ENTER_KEY && todoText ) \{\line
+        this.collection.create(\{\line
+          title : todoText\line
+        \});\line
+        this.ui.input.val('');\line
+      \}\line
+    \}\line
+  \});\line
+\line
+  // Layout Footer View\line
+  // ------------------\line
+\line
+  Layout.Footer = Backbone.Marionette.Layout.extend(\{\line
+    template : "#template-footer",\line
+\line
+    // UI bindings create cached attributes that\line
+    // point to jQuery selected objects\line
+    ui : \{\line
+      count   : '#todo-count strong',\line
+      filters : '#filters a'\line
+    \},\line
+\line
+    events : \{\line
+      'click #clear-completed' : 'onClearClick'\line
+    \},\line
+\line
+    initialize : function() \{\line
+      this.bindTo(App.vent, 'todoList:filter', this.updateFilterSelection, this);\line
+      this.bindTo(this.collection, 'all', this.updateCount, this);\line
+    \},\line
+\line
+    onRender : function() \{\line
+      this.updateCount();\line
+    \},\line
+\line
+    updateCount : function() \{\line
+      var count = this.collection.getActive().length;\line
+      this.ui.count.html(count);\line
+\line
+      if (count === 0) \{\line
+        this.$el.parent().hide();\line
+      \} else \{\line
+        this.$el.parent().show();\line
+      \}\line
+    \},\line
+\line
+    updateFilterSelection : function(filter) \{\line
+      this.ui.filters\line
+        .removeClass('selected')\line
+        .filter('[href="#' + filter + '"]')\line
+        .addClass('selected');\line
+    \},\line
+\line
+    onClearClick : function() \{\line
+      var completed = this.collection.getCompleted();\line
+      completed.forEach(function destroy(todo) \{ \line
+        todo.destroy(); \line
+      \});\line
+    \}\line
+  \});\line
+\line
+\});\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Next, we tackle application routing and workflow, such as controlling Layouts in the page which can be shown or hidden.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Marionette uses the concept of an AppRouter to simplify routing. This reduces the boilerplate for handling route events and allows routers to be configured to call methods on an object directly. We configure our AppRouter using {\f1 appRoutes}.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 This replaces the {\f1 '*filter': 'setFilter'} route defined in our original Workspace router, seen below:\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1         var Workspace = Backbone.Router.extend(\{\line
+                routes:\{\line
+                        '*filter': 'setFilter'\line
+                \},\line
+\line
+                setFilter: function( param ) \{\line
+                        // Set the current filter to be used\line
+                        window.app.TodoFilter = param.trim() || '';\line
+\line
+                        // Trigger a collection reset/addAll\line
+                        window.app.Todos.trigger('reset');\line
+                \}\line
+        \});\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 The TodoList Controller, also found in this next code block, handles some of the remaining visibility logic originally found in {\f1 AppView} and {\f1 TodoView}, albeit using very readable Layouts.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b TodoMVC.TodoList.js:}\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 TodoMVC.module("TodoList", function(TodoList, App, Backbone, Marionette, $, _)\{\line
+\line
+  // TodoList Router\line
+  // ---------------\line
+  //\line
+  // Handle routes to show the active vs complete todo items\line
+\line
+  TodoList.Router = Marionette.AppRouter.extend(\{\line
+    appRoutes : \{\line
+      "*filter": "filterItems"\line
+    \}\line
+  \});\line
+\line
+  // TodoList Controller (Mediator)\line
+  // ------------------------------\line
+  //\line
+  // Control the workflow and logic that exists at the application\line
+  // level, above the implementation detail of views and models\line
+\line
+  TodoList.Controller = function()\{\line
+    this.todoList = new App.Todos.TodoList();\line
+  \};\line
+\line
+  _.extend(TodoList.Controller.prototype, \{\line
+\line
+    // Start the app by showing the appropriate views\line
+    // and fetching the list of todo items, if there are any\line
+    start: function()\{\line
+      this.showHeader(this.todoList);\line
+      this.showFooter(this.todoList);\line
+      this.showTodoList(this.todoList);\line
+\line
+      this.todoList.fetch();\line
+    \},\line
+\line
+    showHeader: function(todoList)\{\line
+      var header = new App.Layout.Header(\{\line
+        collection: todoList\line
+      \});\line
+      App.header.show(header);\line
+    \},\line
+\line
+    showFooter: function(todoList)\{\line
+      var footer = new App.Layout.Footer(\{\line
+        collection: todoList\line
+      \});\line
+      App.footer.show(footer);\line
+    \},\line
+\line
+    showTodoList: function(todoList)\{\line
+      App.main.show(new TodoList.Views.ListView(\{\line
+        collection : todoList\line
+      \}));\line
+    \},\line
+\line
+    // Set the filter to show complete or all items\line
+    filterItems: function(filter)\{\line
+      App.vent.trigger("todoList:filter", filter.trim() || "");\line
+    \}\line
+  \});\line
+\line
+  // TodoList Initializer\line
+  // --------------------\line
+  //\line
+  // Get the TodoList up and running by initializing the mediator\line
+  // when the the application is started, pulling in all of the\line
+  // existing Todo items and displaying them.\line
+\line
+  TodoList.addInitializer(function()\{\line
+\line
+    var controller = new TodoList.Controller();\line
+    new TodoList.Router(\{\line
+      controller: controller\line
+    \});\line
+\line
+    controller.start();\line
+\line
+  \});\line
+\line
+\});\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs24 Controllers\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 In this particular app, note that Controllers don\u8217't add a great deal to the overall workflow. In general however, Marionette\u8217's philosophy on routers is that they should be an after-thought in the implementation of applications. Quite often, we\u8217'll see many bad examples of developers abusing Backbone\u8217's routing system by making it the sole controller of the entire application workflow and logic.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 This inevitably leads to mashing every possible combination of code in to the router methods - view creation, model loading, coordinating different parts of the app, etc. Developers such as Derick views this as a violation of the {\field{\*\fldinst{HYPERLINK "http://en.wikipedia.org/wiki/Single_responsibility_principle"}}{\fldrslt{\ul
+single-responsibility principle
+}}}
+ (SRP) and separation of concerns.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Backbone\u8217's router and history exists to deal with a specific aspect of browsers - managing the forward and back buttons. Marionette feels it should be limited to that, with the code that gets executed by the navigation being somewhere else. This allows the application to be used with or without a router. We can call a controller\u8217's \u8220"show\u8221" method from a button click, from an application event handler, or from a router, and we will end up with the same application state no matter how we called that method.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Derick has written extensively about his thoughts on this topic, which you can read more about on his blog:\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\field{\*\fldinst{HYPERLINK "http://lostechies.com/derickbailey/2011/12/27/the-responsibilities-of-the-various-pieces-of-backbone-js/"}}{\fldrslt{\ul
+http://lostechies.com/derickbailey/2011/12/27/the-responsibilities-of-the-various-pieces-of-backbone-js/
+}}}
+\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\field{\*\fldinst{HYPERLINK "http://lostechies.com/derickbailey/2012/01/02/reducing-backbone-routers-to-nothing-more-than-configuration/"}}{\fldrslt{\ul
+http://lostechies.com/derickbailey/2012/01/02/reducing-backbone-routers-to-nothing-more-than-configuration/
+}}}
+\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\field{\*\fldinst{HYPERLINK "http://lostechies.com/derickbailey/2012/02/06/3-stages-of-a-backbone-applications-startup/"}}{\fldrslt{\ul
+http://lostechies.com/derickbailey/2012/02/06/3-stages-of-a-backbone-applications-startup/
+}}}
+\sa180\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs24 CompositeView\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 We then get to defining the actual views for individual Todo items and lists of items in our TodoMVC application. For this, we make use of Marionette\u8217's {\f1 CompositeView}s. The idea behind a CompositeView is that it represents a visualisation of a composite or hierarchical structure of leaves (or nodes) and branches.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Think of these views as being a hierarchy of parent-child models, and recursive by default. For each item in a collection that the composite view is handling the same CompositeView type will be used to render the item. For non-recursive hierarchies, though, we are able to override the item view by defining an {\f1 itemView} attribute.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 For our Todo List Item View, we define it as an ItemView, then our Todo List View is a CompositeView where we override the {\f1 itemView} setting and tell it to use the Todo List item View for each item in the collection.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 TodoMVC.TodoList.Views.js\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 TodoMVC.module("TodoList.Views", function(Views, App, Backbone, Marionette, $, _)\{\line
+\line
+  // Todo List Item View\line
+  // -------------------\line
+  //\line
+  // Display an individual todo item, and respond to changes\line
+  // that are made to the item, including marking completed.\line
+\line
+  Views.ItemView = Marionette.ItemView.extend(\{\line
+    tagName : 'li',\line
+      template : "#template-todoItemView",\line
+\line
+      ui : \{\line
+        edit : '.edit'\line
+      \},\line
+\line
+      events : \{\line
+        'click .destroy' : 'destroy',\line
+        'dblclick label' : 'onEditClick',\line
+        'keypress .edit' : 'onEditKeypress',\line
+        'click .toggle'  : 'toggle'\line
+      \},\line
+\line
+      initialize : function() \{\line
+        this.bindTo(this.model, 'change', this.render, this);\line
+      \},\line
+\line
+      onRender : function() \{\line
+        this.$el.removeClass('active completed');\line
+        if (this.model.get('completed')) this.$el.addClass('completed');\line
+        else this.$el.addClass('active');\line
+      \},\line
+\line
+      destroy : function() \{\line
+        this.model.destroy();\line
+      \},\line
+\line
+      toggle  : function() \{\line
+        this.model.toggle().save();\line
+      \},\line
+\line
+      onEditClick : function() \{\line
+        this.$el.addClass('editing');\line
+        this.ui.edit.focus();\line
+      \},\line
+\line
+      onEditKeypress : function(evt) \{\line
+        var ENTER_KEY = 13;\line
+        var todoText = this.ui.edit.val().trim();\line
+\line
+        if ( evt.which === ENTER_KEY && todoText ) \{\line
+          this.model.set('title', todoText).save();\line
+          this.$el.removeClass('editing');\line
+        \}\line
+      \}\line
+  \});\line
+\line
+  // Item List View\line
+  // --------------\line
+  //\line
+  // Controls the rendering of the list of items, including the\line
+  // filtering of active vs completed items for display.\line
+\line
+  Views.ListView = Backbone.Marionette.CompositeView.extend(\{\line
+    template : "#template-todoListCompositeView",\line
+      itemView : Views.ItemView,\line
+      itemViewContainer : '#todo-list',\line
+\line
+      ui : \{\line
+        toggle : '#toggle-all'\line
+      \},\line
+\line
+      events : \{\line
+        'click #toggle-all' : 'onToggleAllClick'\line
+      \},\line
+\line
+      initialize : function() \{\line
+        this.bindTo(this.collection, 'all', this.update, this);\line
+      \},\line
+\line
+      onRender : function() \{\line
+        this.update();\line
+      \},\line
+\line
+      update : function() \{\line
+        function reduceCompleted(left, right) \{ return left && right.get('completed'); \}\line
+        var allCompleted = this.collection.reduce(reduceCompleted,true);\line
+        this.ui.toggle.prop('checked', allCompleted);\line
+\line
+        if (this.collection.length === 0) \{\line
+          this.$el.parent().hide();\line
+        \} else \{\line
+          this.$el.parent().show();\line
+        \}\line
+      \},\line
+\line
+      onToggleAllClick : function(evt) \{\line
+        var isChecked = evt.currentTarget.checked;\line
+        this.collection.each(function(todo)\{\line
+          todo.save(\{'completed': isChecked\});\line
+        \});\line
+      \}\line
+  \});\line
+\line
+  // Application Event Handlers\line
+  // --------------------------\line
+  //\line
+  // Handler for filtering the list of items by showing and\line
+  // hiding through the use of various CSS classes\line
+\line
+  App.vent.on('todoList:filter',function(filter) \{\line
+    filter = filter || 'all';\line
+    $('#todoapp').attr('class', 'filter-' + filter);\line
+  \});\line
+\line
+\});\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 At the end of the last code block, you will also notice an event handler using {\f1 vent}. This is an event aggregator that allows us to handle {\f1 filterItem} triggers from our TodoList controller.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Finally, we define the model and collection for representing our Todo items. These are semantically not very different from the original versions we used in our first practical and have been re-written to better fit in with Derick\u8217's preferred style of coding.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b Todos.js:}\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 TodoMVC.module("Todos", function(Todos, App, Backbone, Marionette, $, _)\{\line
+\line
+  // Todo Model\line
+  // ----------\line
+\line
+  Todos.Todo = Backbone.Model.extend(\{\line
+    localStorage: new Backbone.LocalStorage('todos-backbone'),\line
+\line
+    defaults: \{\line
+      title     : '',\line
+      completed : false,\line
+      created   : 0\line
+    \},\line
+\line
+    initialize : function() \{\line
+      if (this.isNew()) this.set('created', Date.now());\line
+    \},\line
+\line
+    toggle  : function() \{\line
+      return this.set('completed', !this.isCompleted());\line
+    \},\line
+\line
+    isCompleted: function() \{ \line
+      return this.get('completed'); \line
+    \}\line
+  \});\line
+\line
+  // Todo Collection\line
+  // ---------------\line
+\line
+  Todos.TodoList = Backbone.Collection.extend(\{\line
+    model: Todos.Todo,\line
+\line
+    localStorage: new Backbone.LocalStorage('todos-backbone'),\line
+\line
+    getCompleted: function() \{\line
+      return this.filter(this._isCompleted);\line
+    \},\line
+\line
+    getActive: function() \{\line
+      return this.reject(this._isCompleted);\line
+    \},\line
+\line
+    comparator: function( todo ) \{\line
+      return todo.get('created');\line
+    \},\line
+\line
+    _isCompleted: function(todo)\{\line
+      return todo.isCompleted();\line
+    \}\line
+  \});\line
+\line
+\});\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 We finally kick-start everything off in our application index file, by calling {\f1 start} on our main application object:\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Initialisation:\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1       $(function()\{\line
+        // Start the TodoMVC app (defined in js/TodoMVC.js)\line
+        TodoMVC.start();\line
+      \});\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 And that\u8217's it!\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs28 Is the Marionette implementation of the Todo app more maintainable?\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Derick feels that maintainability largely comes down to modularity, separating responsibilities (SRP and SoC) and other related patterns for keeping concerns from being mixed together. It can however be difficult to simply extract things in to separate modules for the sake of extraction, abstraction, or dividing the concept down in to it\u8217's most finite parts.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 The Single Responsibility Principle (SRP) tells us quite the opposite - that we need to understand the context in which things change. What parts always change together, in {\i this} system? What parts can change independently? Without knowing this, we won\u8217't know what pieces should be broken out in to separate components and modules, vs put together in to the same module or object.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 The way Derick organizes his apps into modules is by creating a breakdown of concepts at each level. A higher level module is a higher level of concern - an aggregation of responsibilities. Each responsibility is broken down in to an expressive API set that is implemented by lower level modules (Dependency Inversion Principle). These are coordinated through a mediator - which he typically refers to as the Controller in a module.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 The way that Derick organizes his files also plays directly into maintainability and he has also written up posts about the importance of keeping a sane application folder structure that I recommend reading:\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\field{\*\fldinst{HYPERLINK "http://lostechies.com/derickbailey/2012/02/02/javascript-file-folder-structures-just-pick-one/"}}{\fldrslt{\ul
+http://lostechies.com/derickbailey/2012/02/02/javascript-file-folder-structures-just-pick-one/
+}}}
+\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\field{\*\fldinst{HYPERLINK "http://hilojs.codeplex.com/discussions/362875#post869640"}}{\fldrslt{\ul
+http://hilojs.codeplex.com/discussions/362875#post869640
+}}}
+\sa180\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs28 Marionette And Flexibility\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Marionette is a flexible framework, much like Backbone itself. It offers a wide variety of tools to help create and organize an application architecture on top of Backbone, but like Backbone itself, it doesn\u8217't dictate that you have to use all of it\u8217's pieces in order to use any of them.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 The flexibility and versatility in Marionette is easiest to understand by examining three variations of TodoMVC that have been created for comparison purposes:\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\field{\*\fldinst{HYPERLINK "https://github.com/jsoverson/todomvc/tree/master/labs/architecture-examples/backbone_marionette"}}{\fldrslt{\ul
+Simple
+}}}
+ - by Jarrod Oversion\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\field{\*\fldinst{HYPERLINK "https://github.com/jsoverson/todomvc/tree/master/labs/dependency-examples/backbone_marionette_require"}}{\fldrslt{\ul
+RequireJS
+}}}
+ - also by Jarrod\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\field{\*\fldinst{HYPERLINK "https://github.com/derickbailey/todomvc/tree/master/labs/architecture-examples/backbone_marionette_modules/js"}}{\fldrslt{\ul
+Marionette modules
+}}}
+ - by Derick Bailey\sa180\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b The simple version}: This version of TodoMVC shows some raw use of Marionette\u8217's various view types, an application object, and the event aggregator. The objects that are created are added directly to the global namespace and are fairly straightforward. This is a great example of how Marionette can be used to augment existing code without having to re-write everything around Marionette.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b The RequireJS version}: Using Marionette with RequireJS helps to create a modularized application architecture - a tremendously important concept in scaling JavaScript applications. RequireJS provides a powerful set of tools that can be leveraged to great advantage, making Marionette even more flexible than it already is.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b The Marionette module version}: RequireJS isn\u8217't the only way to create a modularized application architecture, though. For those that wish to build applications in modules and namespaces, Marionette provides a built-in module and namespacing structure. This example application takes the simple version of the application and re-writes it in to a namespaced application architecture, with an application controller (mediator / workflow object) that brings all of the pieces together.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Marionette certainly provides its share of opinions in how a Backbone application should be architected. The combination of modules, view types, event aggregator, application objects, and more, can be used to create a very powerful and flexible architecture based on these opinions.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 But as you can see, Marionette isn\u8217't a completely rigid, \u8220"my way or the highway\u8221" framework. It provides many elements of an application foundation that can be mixed and matched with other architectural styles, such as AMD or namespacing, or provide simple augmentation to existing projects by reducing boilerplate code for rendering views.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 This flexibility creates a much greater opportunity for Marionette to provide value to you and your projects, as it allows you to scale the use of Marionette with your application\u8217's needs.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs28 And So Much More\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 This is just the tip of the proverbial ice-berg for Marionette, even for the {\f1 ItemView} and {\f1 Region} objects that we\u8217've explored. There is far more functionality, more features, and more flexibility and customizability that can be put to use in both of these objects. Then we have the other dozen or so components that Marionette provides, each with their own set of behaviors built in, customization and extension points, and more.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 To learn more about Marionette, it\u8217's components, the features they provide and how to use them, check out the Marionette documentation, links to the wiki, to the source code, the project core contributors, and much more at {\field{\*\fldinst{HYPERLINK "http://marionettejs.com"}}{\fldrslt{\ul
+http://marionettejs.com
+}}}
+.\par}
+{\pard \ql \f0 \sa0 \li0 \fi0 \u160?\par}
+{\pard \ql \f0 \sa0 \li0 \fi0 \u160?\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \b \fs32 Paginating Backbone.js Requests & Collections\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 Pagination is a ubiquitous problem we often find ourselves needing to solve on the web. Perhaps most predominantly when working with back-end APIs and JavaScript-heavy clients which consume them.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 On this topic, we\u8217're going to go through a set of {\b pagination components} I wrote for Backbone.js, which should hopefully come in useful if you\u8217're working on applications which need to tackle this problem. They\u8217're part of an extension called {\field{\*\fldinst{HYPERLINK "http://github.com/addyosmani/backbone-paginator"}}{\fldrslt{\ul
@@ -4922,9 +5672,11 @@ Diacritic Plugin
 {\pard \ql \f0 \sa180 \li0 \fi0 In this section we\u8217're going to walkthrough actually using the requestPager.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \b \fs24 1. Create a new Paginated collection\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 First, we define a new Paginated collection using {\f1 Backbone.Paginator.requestPager()} as follows:\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 {\f1 javascript var PaginatedCollection = Backbone.Paginator.requestPager.extend(\{} ####2: Set the model for the collection as normal\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 var PaginatedCollection = Backbone.Paginator.requestPager.extend(\{\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs24 2: Set the model for the collection as normal\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 Within our collection, we then (as normal) specify the model to be used with this collection followed by the URL (or base URL) for the service providing our data (e.g the Netflix API).\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 {\f1 javascript         model: model,} ####3. Configure the base URL and the type of the request\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1         model: model,\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs24 3. Configure the base URL and the type of the request\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 We need to set a base URL. The {\f1 type} of the request is {\f1 GET} by default, and the {\f1 dataType} is {\f1 jsonp} in order to enable cross-domain requests.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \f1     paginator_core: \{\line
       // the type of the request (GET by default)\line
@@ -5187,7 +5939,7 @@ $.mobile.changePage( url , \{ transition: effect\}, reverse, changeHash );\par}
 https://github.com/Filirom1/jquery-mobile-backbone-requirejs
 }}}
 .\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs28 Practical: A Backbone, Require.js/AMD app with jQuery Mobile\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs28 Practical: A Backbone, RequireJS/AMD app with jQuery Mobile\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 {\b Note:} The code for this practical can be found in {\f1 practicals/modular-mobile-app}.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \b \fs28 Getting started\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 Once you feel comfortable with the {\field{\*\fldinst{HYPERLINK "http://msdn.microsoft.com/en-us/scriptjunkie/hh377172.aspx"}}{\fldrslt{\ul
@@ -6691,12 +7443,12 @@ test('Also can remove custom events from objects.', function() \{\line
     setup: function() \{\line
         Backbone.localStorageDB = new Store('testTodos');\line
         $('#qunit-fixture').append('<div id="app"></div>');\line
-        this.App = new TodoApp(\{ appendTo: $('#app') \});\line
+        this.App = new TodoApp(\{ appendTo: $('# <app') \});\line
     \},\line
 \line
     teardown: function() \{\line
         this.App.todos.reset();\line
-        $('#app').remove();\line
+        $('# <app').remove();\line
     \}\line
 \});\line
 \line
