@@ -1063,6 +1063,7 @@ collection.chain()
 
 Some of the Backbone-specific methods will return this, which means they can be chained as well:
 
+```javascript
 var collection = new Backbone.Collection();
 
 collection
@@ -1716,7 +1717,7 @@ Basically your classic [CRUD](http://en.wikipedia.org/wiki/Create,_read,_update_
 The first step is to setup the basic application dependencies, which in this case will be: [jQuery](http://jquery.com), [Underscore](http://underscorejs.org), Backbone.js and the [Backbone LocalStorage adapter](https://github.com/jeromegn/Backbone.localStorage). These will be loaded in our main (and only) HTML file, index.html:
 
 
-```
+```html
 
 <!doctype html>
 <html lang="en">
@@ -1724,11 +1725,10 @@ The first step is to setup the basic application dependencies, which in this cas
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <title>Backbone.js • TodoMVC</title>
-  <link rel="stylesheet" href="../../assets/base.css">
+  <link rel="stylesheet" href="assets/base.css">
 </head>
 <body>
-  <script src="../../assets/base.js"></script>
-  <script src="../../assets/jquery.min.js"></script>
+  <script src="js/lib/jquery.min.js"></script>
   <script src="js/lib/underscore-min.js"></script>
   <script src="js/lib/backbone-min.js"></script>
   <script src="js/lib/backbone-localstorage.js"></script>
@@ -1745,12 +1745,14 @@ The first step is to setup the basic application dependencies, which in this cas
 
 To help demonstrate how the various parts of our application can be split up, individual concerns are cleanly organized into folders representing our models, views, collections and routers. An app.js file is used to kick everything off.
 
+Note: If you want to follow along, create directory structure as shown in index.html. Also, you will need [base.css](https://raw.github.com/addyosmani/todomvc/gh-pages/assets/base.css) and [bg.png](https://raw.github.com/addyosmani/todomvc/gh-pages/assets/bg.png), both in assets dir. As mentioned previously you can check out whole application at [TodoMVC.com](http://todomvc.com).
+
 
 ## Application HTML
 
 Now let's take a look at our application's static HTML. We're going to need an `<input>` for creating new todos, a `<ul id="todo-list" />` for listing the actual todos, and a section containing some operations, such as clearing completed todos.
 
-```
+```html
   <section id="todoapp">
     <header id="header">
       <h1>todos</h1>
@@ -1768,6 +1770,7 @@ Now let's take a look at our application's static HTML. We're going to need an `
     <p>Written by <a href="https://github.com/addyosmani">Addy Osmani</a></p>
     <p>Part of <a href="http://todomvc.com">TodoMVC</a></p>
   </div>
+
 ```
 
 We’ll be populating our todo-list and adding a statistics section with details about what items are left to be completed later on.
@@ -1780,7 +1783,9 @@ The `Todo` model is remarkably straightforward. Firstly a todo has two attribute
 
 ```javascript
 
-var app = app || {};
+  // js/models/todo.js
+
+  var app = app || {};
 
   // Todo Model
   // ----------
@@ -1803,6 +1808,7 @@ var app = app || {};
     }
 
   });
+
 ```
 
 We also have a `toggle()` function which allows to set whether a Todo item has been completed.
@@ -1818,6 +1824,10 @@ We've then got some static methods, `completed()` and `remaining()`, which retur
 Finally we have a `nextOrder()` function, that keeps our Todo items in sequential order as well as a `comparator()` used to sort items by their insertion order.
 
 ```javascript
+
+  // js/collections/todos.js
+
+  var app = app || {};
 
   // Todo Collection
   // ---------------
@@ -1861,6 +1871,7 @@ Finally we have a `nextOrder()` function, that keeps our Todo items in sequentia
 
   // Create our global collection of **Todos**.
   app.Todos = new TodoList();
+
 ```
 
 ## Application View
@@ -1872,6 +1883,10 @@ In other words, we're going to have one view `AppView`, which will be in charge 
 To keep thing simple, we'll keep things 'read-only' at the moment, and won't provide any functionality for creating, editing or deleting todos:
 
 ```javascript
+
+  // js/views/app.js
+
+  var app = app || {};
 
   // The Application
   // ---------------
@@ -1939,6 +1954,7 @@ To keep thing simple, we'll keep things 'read-only' at the moment, and won't pro
     }
 
   });
+
 ```
 
 
@@ -1972,7 +1988,11 @@ We can then add in the logic for creating new todos, editing them and filtering 
 
 ```javascript
 
-// The Application
+  // js/views/app.js
+
+  var app = app || {};
+
+  // The Application
   // ---------------
 
   // Our overall **AppView** is the top-level piece of UI.
@@ -2101,34 +2121,15 @@ We can then add in the logic for creating new todos, editing them and filtering 
 
 ```
 
-## Setup
+## Individual Todo View
 
-So now we have two views: `AppView` and `TodoView`. The former needs to get instantiated when the page loads, so some code actually gets run. You can do this simply enough, by using jQuery's `ready()` utility, which will execute a function when the DOM's loaded.
-
-```javascript
-
-var app = app || {};
-var ENTER_KEY = 13;
-
-$(function() {
-
-  // Kick things off by creating the **App**.
-  new app.AppView();
-
-});
-
-```
-
-## Creating new todos
-
-
-It's all very good creating todos from the console, but we can hardly expect our users to do that. Let's hook up the todo creation section to provide a better interface. All the HTML is already there (in index.html); all we have to do is add some event listeners to that section, creating some todos.
-
-<img src="img/todoview.png" width="590px"/>
-
-Let’s look at the `TodoView` view. This will be in charge of individual Todo records, making sure the view updates then the todo does.
+Let’s look at the `TodoView` view, now. This will be in charge of individual Todo records, making sure the view updates when the todo does. To enable enable this interactive behavior we should add some event listeners to the view, that will listen to the events on individual todo represented in html.
 
 ```javascript
+
+  // js/views/todos.js
+
+  var app = app || {};
 
   // Todo Item View
   // --------------
@@ -2156,7 +2157,8 @@ Let’s look at the `TodoView` view. This will be in charge of individual Todo r
       this.model.on( 'change', this.render, this );
     },
 
-    // Re-render the titles of the todo item.
+    // Re-renders the todo item to the current state of the model and
+    // updates the reference to the todo's edit input within the view.
     render: function() {
       this.$el.html( this.template( this.model.toJSON() ) );
       this.input = this.$('.edit');
@@ -2187,8 +2189,8 @@ Let’s look at the `TodoView` view. This will be in charge of individual Todo r
       }
     }
   });
-```
 
+```
 
 
 In the `initialize()` constructor, we're setting up a listener to the todo model’s change event. In other words, when the todo updates, we want to re-render the view to reflect its changes.
@@ -2201,16 +2203,57 @@ Our events hash includes three callbacks:
 * `updateOnEnter()`: checks that the user has hit the return/enter key and executes the close() function.
 * `close()`: This trims the value of the current text in our `<input/>` field, ensuring that we don’t process it further if it contains no text (e.g ‘’). If a valid value has been provided, we save the changes to the current todo model and close editing mode, by removing the corresponding CSS class.
 
+## Setup
+
+So now we have two views: `AppView` and `TodoView`. The former needs to get instantiated when the page loads, so some code actually gets run. You can do this simply enough, by using jQuery's `ready()` utility, which will execute a function when the DOM's loaded.
+
+```javascript
+
+  // js/app.js
+
+  var app = app || {};
+  var ENTER_KEY = 13;
+
+  $(function() {
+
+    // Kick things off by creating the **App**.
+    new app.AppView();
+
+  });
+
+```
 
 ## In action
 
-Now we've gone far enough without checking that things work as they should. Open up index.html and, if everything's going to plan, you shouldn't see any errors in the console. The todo list will be blank (we haven't created any todos yet), and the todo-list won't work, as we haven't yet hooked it up. However, we can create a Todo from the console.
+Now we've gone far enough without checking that things work as they should. 
 
-Type in: `window.app.Todos.create({ title: ‘My first Todo item});` and hit return.
+If you are following along open up index.html and, if everything's going to plan, you shouldn't see any errors in the console. The todo list will be blank (we haven't created any todos yet), and the todo-list won't work through our slick interface, as we haven't yet hooked it up fully. However, we can create a Todo from the console.
+
+Type in: `window.app.Todos.create({ title: 'My first Todo item'});` and hit return.
 
 <img src="img/todoconsole.png" width="700px"/>
 
-Once you've run the above in the console, we should be looking at a brand new todo in the list of todos. Notice that if you refresh the page, the todo still persists using Local Storage.
+Once you've run the above in the console, we should be looking at a brand new todo (logged in console) we've just added in the todos collection. Created todo is saved into Local Storage as well and will be available on page refresh.
+
+`window.app.Todos.create()` used above is collection method (`collection.create(attributes, [options])`) which instantiate new model item of the type passed into the collection definition, in our case `app.Todo`:
+
+```javascript
+
+  var TodoList = Backbone.Collection.extend({
+
+      model: app.Todo // the model type used by collection.create() to instantiate new model in the collection
+      ...
+  )};
+
+```
+
+Run this into console to check it out:
+
+`var secondTodo = window.app.Todos.create({ title: 'My second Todo item'});`
+
+`secondTodo instanceof app.Todo`
+
+<img src="img/todoconsole2.png" width="700px"/>
 
 ## Templates
 
@@ -2218,6 +2261,8 @@ Once you've run the above in the console, we should be looking at a brand new to
 The `#item-template` used in the `TodoView` view needs defining, so let's do that. One way of including templates in the page is by using custom script tags. These don't get evaluated by the browser, which just interprets them as plain text. Underscore micro-templating can then access the templates, rendering pieces of HTML.
 
 ```html
+  <!-- index.html -->
+
   <script type="text/template" id="item-template">
     <div class="view">
       <input class="toggle" type="checkbox" <%= completed ? 'checked' : '' %>>
@@ -2236,6 +2281,8 @@ Now when `_.template( $('#item-template').html() )` is called in the `TodoView` 
 We also need to define #stats-template template we use to display how many items have been completed, as well as allowing the user to clear these items.
 
 ```html
+  <!-- index.html -->
+
   <script type="text/template" id="stats-template">
     <span id="todo-count"><strong><%= remaining %></strong> <%= remaining === 1 ? 'item' : 'items' %> left</span>
     <ul id="filters">
@@ -2258,7 +2305,9 @@ We also need to define #stats-template template we use to display how many items
 
 ## In action
 
-Now refresh index.html to see the fruits of our labour. We should be able to type a todo name, and press return to submit the form, creating a new todo.
+Now refresh index.html and we should be able to see the fruits of our labour. 
+
+The todos added through console earlier should appear in the list populated from the Local Storage. Also, we should be able to type a todo name, and press return to submit the form, creating a new todo.
 
 ![](img/todocompleted.png)
 
@@ -2283,6 +2332,8 @@ One more piece to mention is that we’ve also binded to a visible event to hand
 This tutorial is long enough as is, so we won't go into in-place editing or updating. If you want an example of that, see the [complete source](https://github.com/addyosmani/todomvc/tree/master/architecture-examples/backbone/).
 
 ```javascript
+
+  // js/view/todos.js
 
   // Todo Item View
   // --------------
@@ -2389,9 +2440,12 @@ Finally, we move on to routing, which will allow us to easily bookmark the list 
 
 <img src="img/todorouting.png" width="700px"/>
 
-When the route changes the todo list will be filtered on a model level and the selected class on the filter links will be toggled. When an item is updated while in a filtered state, it will be updated accordingly. E.g. if the filter is active and the item is checked, it will be hidden. The active filter is persisted on reload.
+When the route changes the todo list will be filtered on a model level and the selected class on the filter links will be toggled. When an item is updated while in a filtered state, it will be updated accordingly. 
+E.g. if the filter is active and the item is checked, it will be hidden. The active filter is persisted on reload.
 
 ```javascript
+
+  // js/routers/router.js
 
   // Todo Router
   // ----------
@@ -2413,15 +2467,16 @@ When the route changes the todo list will be filtered on a model level and the s
 
   app.TodoRouter = new Workspace();
   Backbone.history.start();
+
 ```
 
-As we can see in the line  `window.app.Todos.trigger('filter')`, once a string filter has been set, we simply trigger our filter at a collection level to toggle which items are displayed and which of those are hidden.
+As we can see in the line `window.app.Todos.trigger('filter')`, once a string filter has been set, we simply trigger our filter at a collection level to toggle which items are displayed and which of those are hidden.
 
 Finally, we call `Backbone.history.start()` to route the initial URL during page load.
 
 ## Conclusions
 
-We’ve now learned how to build our first complete Backbone.js application. The app can be viewed online at any time and the sources are readily available via [TodoMVC](http://www.todomvc.com).
+We’ve now learned how to build our first complete Backbone.js application. The full app can be viewed online at any time and the sources are readily available via [TodoMVC](http://www.todomvc.com).
 
 Later on in the book, we’ll learn how to further modularize this application using RequireJS, swap out our persistence layer to a database back-end and finally unit test the application with a few different testing frameworks.
 
@@ -2429,7 +2484,7 @@ Later on in the book, we’ll learn how to further modularize this application u
 
 # <a name="backboneboilerplate">Backbone Boilerplate And Grunt-BBB</a>
 
-[Backbone Boilerplate](https://github.com/tbranyen/backbone-boilerplate/) is an excellent set of best practices and utilities for building Backbone.js applications, created by Backbone contributor [Tim Branyen](https://github.com/tbranyen). He organized this boilerplate out of the gotchas, pitfalls and common tasks he ran into over a year of heavily using Backbone to build apps at Bocoup. This includes apps such [StartupDataTrends.com](http://startupdatatrends).
+[Backbone Boilerplate](https://github.com/tbranyen/backbone-boilerplate/) is an excellent set of best practices and utilities for building Backbone.js applications, created by Backbone contributor [Tim Branyen](https://github.com/tbranyen). He organized this boilerplate out of the gotchas, pitfalls and common tasks he ran into over a year of heavily using Backbone to build apps at Bocoup. This includes apps such [StartupDataTrends.com](http://startupdatatrends.com).
 
 With scaffolding and built in build tasks that take care of minification, concatentation, server, template compilation and more, Backbone Boilerplate (and sister project [Grunt-BBB](https://github.com/backbone-boilerplate/grunt-bbb)) are an excellent choice for developers of all levels. I heavily recommend using them as they will give you an enormous start when it comes to getting setup for development. They also have some great inline documentation which is also another excellent time-saver.
 
