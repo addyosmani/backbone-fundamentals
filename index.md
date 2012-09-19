@@ -1910,7 +1910,7 @@ To keep thing simple, we'll keep things 'read-only' at the moment, and won't pro
       this.$footer = this.$('#footer');
       this.$main = this.$('#main');
 
-      window.app.Todos.on( 'add', this.addOne, this );
+      window.app.Todos.on( 'add', this.addAll, this );
       window.app.Todos.on( 'reset', this.addAll, this );
       window.app.Todos.on( 'all', this.render, this );
 
