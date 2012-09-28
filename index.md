@@ -48,6 +48,12 @@ I hope you find this book helpful!
     * [Appending Views](#appendingviews)
     * [Better Model Property Validation](#bettermodelpropvalidation) *
 
+* #### [RESTful Applications With Backbone.js](#restfulapps)
+    * [Building RESTful applications](#restful)
+    * [Apps With Node.js, Express, Mongoose and MongoDB](#stack1)
+    * [Apps with Ruby, Sinatra, Haml and MongoDB](#stack2)
+    * [Paginating Backbone.js Requests & Collections](#pagination) *
+
 * #### [Modular Development](#advanced)
     * [Introduction](#modularjs)
     * [Organizing modules with RequireJS and AMD](#organizingmodules)
@@ -59,12 +65,6 @@ I hope you find this book helpful!
 
 * #### Backbone.js Extensions
     * [Backbone Marionette](#marionette) *
-
-* #### [RESTful Applications With Backbone.js](#restfulapps)
-    * [Building RESTful applications](#restful)
-    * [Apps With Node.js, Express, Mongoose and MongoDB](#stack1)
-    * [Apps with Ruby, Sinatra, Haml and MongoDB](#stack2)
-    * [Paginating Backbone.js Requests & Collections](#pagination) *
 
 * #### [Mobile Applications](#mobileapps)
     * [Backbone & jQuery Mobile](#backbonejquerymobile)
@@ -3508,10 +3508,7 @@ There is a working demo of this in action available [online](http://jsfiddle.net
 
 And you can get the source code and documentation for [Marionette](https://github.com/marionettejs/backbone.marionette) too.
 
-
-
-
-# <a name="bettermodelpropvalidation">Better Model Property Validation</a>
+#### <a name="bettermodelpropvalidation">Better Model Property Validation</a>
 
 As we learned earlier in the book, the `validate` method on a Model is called before `set` and `save`, and is passed the model attributes updated with the values from these methods.
 
