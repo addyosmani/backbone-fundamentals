@@ -689,7 +689,7 @@ Accessing `Model.attributes` directly is generally discouraged. Instead, should 
 
 ```javascript
 var myAttributes = myPhoto.toJSON();
-console.log(JSON.stringify(myattributes));
+console.log(JSON.stringify(myAttributes));
 /* this returns:
  { title: "My awesome photo",
    src:"boston.jpg",
