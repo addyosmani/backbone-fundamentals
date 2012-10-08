@@ -1185,7 +1185,7 @@ var GalleryRouter = Backbone.Router.extend({
     /* define the route and function maps for this router */
     routes: {
         "about" : "showAbout",
-        /*Sample usage: http://unicorns.com/# <about*/
+        /*Sample usage: http://unicorns.com/#about*/
 
         "photos/:id" : "getPhoto",
         /*This is an example of using a ":param" variable which allows us to match
