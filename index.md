@@ -143,12 +143,17 @@ MVC is composed of three core components:
 
 Models manage the data for an application. They are concerned with neither the user-interface nor presentation layers, but instead represent structured data that an application may require. When a model changes (e.g when it is updated), it will typically notify its observers (e.g views, a concept we will cover shortly) that a change has occurred so that they may react accordingly.
 
-To understand models better, let us imagine we have a JavaScript photo gallery application. In a photo gallery, a photo would merit its own model, as it represents a unique kind of domain-specific data. The Photo model may represent attributes such as a caption, image source and additional meta-data. A specific photo would be stored in an instance of a model. Here's an example of a simple Photo model implemented with Backbone.js:
-
-
+To understand models better, let us imagine we have a JavaScript todo application. In a todo app, a todo item would merit its own model, as it represents a unique kind of domain-specific data. The Todo model may represent attributes such as a title and completed. A specific todo would be stored in an instance of a model. Here's an example of a simple Todo model implemented with Backbone.js:
 
 ```javascript
-var Photo = Backbone.Model.extend({
+
+  var Todo = Backbone.Model.extend({
+
+      // Default attributes for the todo
+      defaults: {
+        title: '',
+        completed: false
+      }
 
     // Default attributes for the photo
     defaults: {
@@ -158,38 +163,77 @@ var Photo = Backbone.Model.extend({
       viewed: false
     },
 
-    initialize: function() {
-    }
+  // todo instantiated with default attributes 
+  var firstTodo = new Todo();
 
-});
+  console.log("Todo's default title: " + firstTodo.get('title')); // ""
+  console.log("Todo's default status: " + firstTodo.get('completed')); // false
+
+  firstTodo.set('title', 'Enjoy reading the book');
+  console.log('Title changed: ' + firstTodo.get('title'));
+
+  // new todo instantiated with todo specific data
+  var secondTodo = new Todo({ title: 'Try this code in chrome console'});
+
+  console.log("Second todo title: " + secondTodo.get('title'));
+  console.log("Second todo status: " + secondTodo.get('completed'));
+
 ```
 
 The built-in capabilities of models vary across frameworks, however it's common for them to support validation of attributes, where attributes represent the properties of the model, such as a model identifier. When using models in real-world applications we generally also need a way of persisting models. Persistence allows us to edit and update models with the knowledge that their most recent states will be saved somewhere, for example in a web browser's localStorage data-store or synchronized with a database.
 
-A model may also have multiple views observing it. Imagine our Photo model contained meta-data such as the longitude and latitude where the photo was taken, a list of people present in the photo, and a list of tags. A developer could create a single view that displayed all these attributes, or might create three separate views to display each attribute. The important detail is that the Photo model doesn't care how these views are organized, it simply announces updates to its data as necessary. We'll come back to Views in more detail later.
+A model may also have multiple views observing it. Imagine our Todo model contained meta-data such as the scheduled date, notes, days on which to repeat (if it's something we do on regular basis). A developer could create a single view that displayed all these attributes, or might create three separate views to display each attribute. The important detail is that the Todo model doesn't care how these views are organized, it simply announces updates to its data as necessary. We'll come back to Views in more detail later.
 
 It is not uncommon for modern MVC/MV* frameworks to provide a means to group models together. In Backbone, these groups are called "Collections". Managing models in groups allows us to write application logic based on notifications from the group, should any model it contains change. This avoids the need to manually observe individual model instances.
 
-
-Here's how we might group Photo models into a simplified Backbone Collection:
+Here's how we might group Todo models into a Backbone Collection:
 
 ```javascript
-var PhotoGallery = Backbone.Collection.extend({
 
-    // Reference to this collection's model.
-    model: Photo,
+  var Todo = Backbone.Model.extend({
 
-    // Filter down the list of all photos that have been viewed
-    viewed: function() {
-      return this.filter(function(photo){ return photo.get('viewed'); });
-    },
+      // Default attributes for the todo
+      defaults: {
+        title: '',
+        completed: false
+      }
 
-    // Filter down the list to only photos that have not yet been viewed
-    unviewed: function() {
-      return this.without.apply(this, this.viewed());
-    }
+  });
 
-});
+  var Todos = Backbone.Collection.extend({
+    model: Todo,
+    
+    // For simplicity we'll use localStorage throughout the first part of book.
+    // Save all of the todo items under the `"todos"` namespace.
+    localStorage: new Store('todos-backbone')
+    
+    // When working with REST API on back-end here would be
+    // appropriate to use:
+    // url: "/todos"
+    
+  });
+
+  var firstTodo = new Todo({title:'Read whole book'});
+
+  // pass array of models on collection instantiation
+  var todos = new Todos([firstTodo]);
+  console.log(todos.length);
+
+  // Collection's convenience method used to create 
+  // new model instance within collection itself.
+  todos.create({title:'Try out code examples'});
+  console.log(todos.length);
+
+  var thirdTodo = new Todo({title:'Make something cool'});
+
+  // Adds model to collection
+  todos.add(thirdTodo);
+  console.log(todos.length);
+
+  // Collection keeps models in models 
+  // property which is an array.
+  console.log(todos.models);
+
 ```
 
 If you read older texts on MVC, you may come across a description of models as also managing application 'state'. In JavaScript applications "state" has a specific meaning, typically referring to the current "state" of a view or sub-view on a user's screen at a fixed time. State is a topic which is regularly discussed when looking at Single-page applications, where the concept of state needs to be simulated.
