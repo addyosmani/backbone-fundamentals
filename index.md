@@ -1,4 +1,8 @@
+Search for `TODO:` before committing.
 
+Notes to addy:
+
+- #appendingviews is specific to Marionette and is confusing as it doesn't cover appending views, it covers tree like structures with collections and models. Suggest removing and adding a note in #subviewsnesting about CompositeView
 
 ## Prelude
 
