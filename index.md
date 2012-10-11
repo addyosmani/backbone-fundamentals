@@ -827,7 +827,7 @@ Similar to the previous sections, creating a new view is relatively straight-for
 
 ```javascript
 var PhotoSearch = Backbone.View.extend({
-    el: $('#results'),
+    el: '#results',
     render: function( event ){
         var compiled_template = _.template( $("#results-template").html() );
         this.$el.html( compiled_template(this.model.toJSON()) );
