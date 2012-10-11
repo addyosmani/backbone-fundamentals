@@ -1,3 +1,9 @@
+Search for `TODO:` before committing.
+
+Notes to addy:
+
+- #appendingviews is specific to Marionette and is confusing as it doesn't cover appending views, it covers tree like structures with collections and models. Suggest removing and adding a note in #subviewsnesting about CompositeView
+
 ## Prelude
 
 <img src="img/logo.jpg" style="float:left"/> Welcome to my (in-progress) book about the [Backbone.js](http://documentcloud.github.com/backbone/) framework for structuring JavaScript applications. It's released under a Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported [license](http://creativecommons.org/licenses/by-nc-sa/3.0/) meaning you can both grab a copy of the book for free or help to further [improve](https://github.com/addyosmani/backbone-fundamentals/) it.
@@ -39,7 +45,7 @@ I hope you find this book helpful!
 * #### [Backbone Boilerplate & Grunt BBB](#backboneboilerplate) *
 
 * #### [Common Problems & Solutions](#commonproblems) *
-    * [Sub-Views And Nesting](#subviewsnesting)
+    * [Sub-Views And Nesting](#subviewsnesting) *
     * [Managing Models In Nested Views](#managingmodelsnestedviews)
     * [Views Triggering Other Views](#viewstriggeringotherviews)
     * [Child Views Rendering Parent Views](#childviewsrenderingparents)
@@ -55,10 +61,12 @@ I hope you find this book helpful!
     * [Practical: A Modular App Using AMD & RequireJS](#practicalrequirejs)
     * [Optimize Apps With The RequireJS Optimizer](#optimizingrequirejs)
     * [Optimize Apps With RequireJS Using Packages](#optimizebuild) *
+    * [Route based module loading](#modularrouting) *
     * [Decoupling Backbone With The Mediator And Facade Patterns](#decouplingbackbone)
 
 * #### Backbone.js Extensions
     * [Backbone Marionette](#marionette) *
+    * [Thorax](#thorax) *
 
 * #### [RESTful Applications With Backbone.js](#restfulapps)
     * [Building RESTful applications](#restful)
@@ -3214,14 +3222,37 @@ var InnerView = Backbone.View.extend({
 });
 ```
 
+If multiple views need to be nested at particular locations in a template, a hash of child views indexed by child view cids' should be created. In the template, use a custom HTML attribute named `data-view-cid` to create placeholder elements for each view to embed. Once the template has been rendered and it's output appeneded to the parent view's `$el`, each placeholder can be queried for and replaced with the child view's `el`.
+
+A sample implementation containing a single child view:
+
+```javascript
+
+var OuterView = Backbone.View.extend({
+    initialize: function() {
+        this.children = {};
+        var child = new Backbone.View();
+        this.children[child.cid] = child;
+    },
+
+    render: function() {
+        this.$el.html('<div data-view-cid="' + this.child.cid + '"></div>');        
+        _.each(this.children, function(view, cid) {
+            this.$('[data-view-cid="' + cid + '"]').replaceWith(view.el);
+        }, this);
+    }
+};
+
+```
+
 Generally speaking, more developers opt for the first solution as:
 
 * The majority of their views may already rely on being in the DOM in their render() method
 * When the OuterView is re-rendered, views don't have to be re-initialized where re-initialization has the potential to cause memory leaks and issues with existing bindings
 
+[Marionette](#marionette) and [Thorax](#thorax) provide logic for nesting views, and rendering collections where each item has an associated view. Marionette provides APIs in JavaScript while Thorax provides APIs via Handlebars template helpers.
+
 (Thanks to [Lukas](http://stackoverflow.com/users/299189/lukas)  and [Ian Taylor](http://stackoverflow.com/users/154765/ian-storm-taylor) for these tips).
-
-
 
 #### <a name="managingmodelsnestedviews">What is the best way to manage models in nested Views?</a>
 
@@ -3495,6 +3526,9 @@ For example, if you are working on a blogging application and you remove a view 
 (Thanks to [dira](http://stackoverflow.com/users/906136/dira) for this tip)
 
 #### <a name="appendingviews">What's the best way to combine or append Views to each other?</a>
+
+
+
 
 Let us say you have a Collection, where each item in the Collection could itself be a Collection. You can render each item in the Collection, and indeed can render any items which themselves are Collections. The problem you might have is how to render this structure where the HTML reflects the hierarchical nature of the data structure.
 
@@ -4962,8 +4996,7 @@ Instead, developers at present are left to fall back on variations of the module
 
 Whilst native solutions to these problems will be arriving in ES Harmony, the good news is that writing modular JavaScript has never been easier and you can start doing it today.
 
-In this next part of the book, we're going to look at how to use AMD modules and RequireJS for cleanly wrapping units of code in your application into manageable modules.
-
+In this next part of the book, we're going to look at how to use AMD modules and RequireJS for cleanly wrapping units of code in your application into manageable modules, and an alternate approach using routes to determine when modules are loaded.
 
 ## <a name="organizingmodules">Organizing modules with RequireJS and AMD</a>
 
@@ -5882,9 +5915,117 @@ To see how everything ties together, feel free to grab the source by cloning thi
 **Note:** While this first practical doesn't use a build profile as outlined in the chapter on using the RequireJS optimizer, we will be using one in the section on building mobile Backbone applications.
 
 
+## <a name="modularrouting">Route based module loading</a>
 
+This section will discuss a route based approach to module loading as implemented by [Lumbar](http://lumbarjs.org/). Like RequireJS, Lumbar is also a modular build system, but the pattern it implements for loading routes may be used with any build system.
 
+The specifics of the Lumbar build tool are not discussed in this book. To see a complete Lumbar based project with the loader and build system see [Thorax](http://thoraxjs.org) which provides boilerplate projects for various environments including Lumbar.
 
+### JSON based module configuration
+
+RequireJS defines dependencies per file, while Lumbar defines a list of files for each module in a central JSON configuration file, outputting a single JavaScript file for each defined module. Lumbar requires that each module (except the base module) define a single router and a list of routes. An example file might look like:
+
+     {
+        "modules": {
+            "base": {
+                "scripts": [
+                    "js/lib/underscore.js",
+                    "js/lib/backbone.js",
+                    "etc"
+                ]
+            },
+            "pages": {
+                "scripts": [
+                    "js/routers/pages.js",
+                    "js/views/pages/index.js",
+                    "etc"
+                ],
+                "routes": {
+                    "": "index",
+                    "contact": "contact"
+                }
+            }
+        }
+    }
+
+Every JavaScript file defined in a module will have a `module` object in scope which contains the `name` and `routes` for the module. In `js/routers/pages.js` we could define a Backbone router for our `pages` module like so:
+
+    new (Backbone.Router.extend({
+        routes: module.routes,
+        index: function() {},
+        contact: function() {}
+    }));
+
+### Module loader Router
+
+A little used feature of `Backbone.Router` is it's ability to create multiple routers that listen to the same set of routes. Lumbar uses this feature to create a router that listens to all routes in the application. When a route is matched, this master router checks to see if the needed module is loaded. If the module is already loaded, then the master router takes no action and the router defined by the module will handle the route. If the needed module has not yet been loaded, it will be loaded, then `Backbone.history.loadUrl` will be called. This reloads the route, causes the master router to take no further action and the router defined in the freshly loaded module to respond.
+
+A sample implementation is provided below. The `config` object would need to contain the data from our sample configuration JSON file above, and the `loader` object would need to implement `isLoaded` and `loadModule` methods. Note that Lumbar provides all of these implementations, the examples are provided to create your own implementation.
+
+    // create an object that will be used as the prototype
+    // for our master router
+    var handlers = {
+        routes: {}
+    };
+
+    _.each(config.modules, function(module, moduleName) {
+        if (module.routes) {
+            // generate a loading callback for the module
+            var callbackName = "loader_" moduleName;
+            handlers[callbackName] = function() {
+                if (loader.isLoaded(moduleName)) {
+                    //do nothing if the module is loaded
+                    return;
+                } else {
+                    //the module needs to be loaded
+                    loader.loadModule(moduleName, function() {
+                        //module is loaded, reloading the route
+                        //will trigger callback in the module's
+                        //router
+                        Backbone.history.loadUrl();
+                    });
+                }
+            };
+            // each route in the module should trigger the
+            // loading callback
+            _.each(module.routes, function(methodName, route) {
+                handlers.routes[route] = callbackName;
+            });
+        }
+    });
+
+    // create the master router
+    new Backbone.Router(handlers);
+
+### Using NodeJS to handle pushState
+
+`window.history.pushState` support (serving Backbone routes without a hashtag) requires that the server be aware of what URLs your Backbone application will handle, since the user should be able to enter the app at any of those routes (or hit reload after navigating to a pushState URL).
+
+Another advantage to defining all routes in a single location is that the same JSON configuration file provided above could be loaded by the server, listening to each route. A sample implementation in NodeJS and Express:
+
+    var fs = require('fs'),
+        _ = require('underscore'),
+        express = require('express'),
+        server = express.createServer(),
+        config = fs.readFileSync('path/to/config.json');
+
+    _.each(config.modules, function(module, moduleName) {
+        if (module.routes) {
+            _.each(module.routes, function(methodName, route) {
+                server.get(route, function(req, res) {
+                      res.sendFile('public/index.html');
+                });
+            });
+        }
+    });
+
+This assumes that index.html will be serving out your Backbone application. The `Backbone.History` object can handle the rest of the routing logic as long as a `root` option is specified. A sample configuration for a simple application that lives at the root might look like:
+
+    Backbone.history || (Backbone.history = new Backbone.History());
+    Backbone.history.start({
+      pushState: true,
+      root: '/'
+    });
 
 ## <a name="decouplingbackbone">Decoupling Backbone with the Mediator and Facade Patterns</a>
 
@@ -7431,6 +7572,66 @@ Paginator.clientPager = Backbone.Collection.extend({
  [5]: http://addyosmani.github.com/backbone.paginator/examples/netflix-infinite-paging/index.html
  [6]: http://github.com/addyosmani/backbone.paginator/issues
  [7]: https://github.com/cowboy/grunt
+
+## <a name="thorax">Thorax</a>
+
+*By Ryan Eastridge & Addy Osmani*
+
+
+### view helper
+
+### Creating new View helpers
+
+Note that this differs from `Handlebars.registerHelper`. Registers a helper that will create and append a new `HelperView` instance, with it's `template` attribute set to the value of the captured block. `callback` will recieve any arguments passed to the helper followed by a `HelperView` instance. Named arguments to the helper will be present on `options` attribute of the `HelperView` instance.
+
+A `HelperView` instance differs from a regular view instance in that it has a `parent` attribute which is always set to the declaring view, and a `context` which always returns the value of the `parent`'s context method. The `collection`, `empty` and other built in block view helpers are created with `registerViewHelper`.
+
+A helper that re-rendered a `HelperView` every time an event was triggered on the declaring / parent view could be implemented as:
+
+    Handlebars.registerViewHelper('on', function(eventName, helperView) {
+      // register a handler on the parent view, which will be automatically
+      // unregistered when helperView is destroyed
+      helperView.on(helperView.parent, eventName, function() {
+        helperView.render();
+      });
+    });
+
+An example use of this would be to have a counter that would incriment each time a button was clicked. In Handlebars:
+
+    {{#on "incrimented"}}{{i}}{/on}}
+    {{#button trigger="incrimented"}}Add{{/button}}
+
+And the corresponding view class:
+
+    new Thorax.View({
+        events: {
+            incrimented: function() {
+                ++this.i;
+            }
+        },
+        initialize: function() {
+            this.i = 0;
+        },
+        template: ...
+    });
+
+
+- $.view, $.model, $.collection
+
+
+--------
+
+- registry
+- template helper
+  - straight embed
+  - yield
+- view helper
+- registerViewHelper
+- collection helper
+- layout and view lifecycle
+- bindToRoute
+- mobile
+
 
 
 # <a name="mobileapps">Mobile Applications</a>
@@ -9496,6 +9697,7 @@ That's it for this section on testing applications with QUnit and SinonJS. I enc
 Whilst what we get with Backbone out of the box can be terribly useful, there are some equally beneficial add-ons that can help simplify our development process. These include:
 
 * [Backbone Marionette](https://github.com/derickbailey/backbone.marionette)
+* [Thorax](http://thoraxjs.org)
 * [Backbone Layout Manager](https://github.com/tbranyen/backbone.layoutmanager)
 * [Backbone Boilerplate](https://github.com/backbone-boilerplate/backbone-boilerplate)
 * [Backbone Model Binding](https://github.com/derickbailey/backbone.modelbinding)
