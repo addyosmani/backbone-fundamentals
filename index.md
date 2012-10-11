@@ -1,3 +1,9 @@
+Search for `TODO:` before committing.
+
+Notes to addy:
+
+- #appendingviews is specific to Marionette and is confusing as it doesn't cover appending views, it covers tree like structures with collections and models. Suggest removing and adding a note in #subviewsnesting about CompositeView
+
 ## Prelude
 
 ![](img/logo.jpg) 
@@ -5915,7 +5921,6 @@ The next time we call the `show` method of the region, the region remembers that
 
 Since the region handles calling `close` for us, and we're using the `bindTo` event binder in our view instance, we no longer have to worry about zombie views in our application.
 
-
 ### Marionette Todo app
 
 Having learned about Marionette's high-level concepts, let's explore refactoring the Todo application we created in our first practical to use it. The complete code for this application can be found in Derick's TodoMVC [fork](https://github.com/derickbailey/todomvc/tree/master/labs/architecture-examples/backbone_marionette_modules/js).
@@ -6720,7 +6725,6 @@ To see Thorax in action on a large scale website visit walmart.com on any Androi
 <p>&nbsp;</p>
 
 # Modular Development
-
 
 ## Introduction
 
@@ -8489,6 +8493,66 @@ Paginator.clientPager = Backbone.Collection.extend({
  [5]: http://addyosmani.github.com/backbone.paginator/examples/netflix-infinite-paging/index.html
  [6]: http://github.com/addyosmani/backbone.paginator/issues
  [7]: https://github.com/cowboy/grunt
+
+## <a name="thorax">Thorax</a>
+
+*By Ryan Eastridge & Addy Osmani*
+
+
+### view helper
+
+### Creating new View helpers
+
+Note that this differs from `Handlebars.registerHelper`. Registers a helper that will create and append a new `HelperView` instance, with it's `template` attribute set to the value of the captured block. `callback` will recieve any arguments passed to the helper followed by a `HelperView` instance. Named arguments to the helper will be present on `options` attribute of the `HelperView` instance.
+
+A `HelperView` instance differs from a regular view instance in that it has a `parent` attribute which is always set to the declaring view, and a `context` which always returns the value of the `parent`'s context method. The `collection`, `empty` and other built in block view helpers are created with `registerViewHelper`.
+
+A helper that re-rendered a `HelperView` every time an event was triggered on the declaring / parent view could be implemented as:
+
+    Handlebars.registerViewHelper('on', function(eventName, helperView) {
+      // register a handler on the parent view, which will be automatically
+      // unregistered when helperView is destroyed
+      helperView.on(helperView.parent, eventName, function() {
+        helperView.render();
+      });
+    });
+
+An example use of this would be to have a counter that would incriment each time a button was clicked. In Handlebars:
+
+    {{#on "incrimented"}}{{i}}{/on}}
+    {{#button trigger="incrimented"}}Add{{/button}}
+
+And the corresponding view class:
+
+    new Thorax.View({
+        events: {
+            incrimented: function() {
+                ++this.i;
+            }
+        },
+        initialize: function() {
+            this.i = 0;
+        },
+        template: ...
+    });
+
+
+- $.view, $.model, $.collection
+
+
+--------
+
+- registry
+- template helper
+  - straight embed
+  - yield
+- view helper
+- registerViewHelper
+- collection helper
+- layout and view lifecycle
+- bindToRoute
+- mobile
+
 
 
 # Mobile Applications
