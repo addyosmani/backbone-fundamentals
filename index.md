@@ -866,9 +866,7 @@ There are two ways to attach a DOM element to a view: the element already exists
 If the element already exists in the page, you can set `el` as either a CSS selector that matches the element or a simple reference to the DOM element.
 
 ```javascript
-el: '#footer',
-// OR
-el: document.getElementById( 'footer' )
+el: '#footer'
 ```
 
 If you want to create a new element for your view, set any combination of the following view's properties: `tagName`, `id` and `className`. A new element will be created for you by the framework and a reference to it will be available at the `el` property.
