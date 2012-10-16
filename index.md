@@ -858,9 +858,7 @@ There are two ways to attach a DOM element to a view: the element already exists
 If the element already exists in the page, you can set `el` as either a CSS selector that matches the element or a simple reference to the DOM element.
 
 ```javascript
-el: '#footer',
-// OR
-el: document.getElementById( 'footer' )
+el: '#footer'
 ```
 
 If you want to create a new element for your view, set any combination of the following view's properties: `tagName`, `id` and `className`. A new element will be created for you by the framework and a reference to it will be available at the `el` property.
@@ -2515,7 +2513,7 @@ $ curl -C - -O https://github.com/tbranyen/backbone-boilerplate/zipball/master
 
 ### Grunt-BBB
 
-As Tim covers in the Boilerplate docs, we have to install [Grunt](http://gruntjs.org) if we want to use the build tools and grunt-bbb helpers he recommends.
+As Tim covers in the Boilerplate docs, we have to install [Grunt](http://gruntjs.com) if we want to use the build tools and grunt-bbb helpers he recommends.
 
 Grunt is an excellent Node-based JavaScript build tool by another [Bocoup](http://bocoup.com) developer ([Ben Alman](http://benalman.com)). Think of it as similar to [Ant](http://ant.apache.org/) or [Rake](https://github.com/jimweirich/rake). The grunt-bbb helper is also useful to have as it provides several Backbone-specific utilities for scaffolding out your project, without the need to write boilerplate yourself.
 
