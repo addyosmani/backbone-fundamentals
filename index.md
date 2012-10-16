@@ -2523,7 +2523,7 @@ $ curl -C - -O https://github.com/tbranyen/backbone-boilerplate/zipball/master
 
 ### Grunt-BBB
 
-As Tim covers in the Boilerplate docs, we have to install [Grunt](http://gruntjs.org) if we want to use the build tools and grunt-bbb helpers he recommends.
+As Tim covers in the Boilerplate docs, we have to install [Grunt](http://gruntjs.com) if we want to use the build tools and grunt-bbb helpers he recommends.
 
 Grunt is an excellent Node-based JavaScript build tool by another [Bocoup](http://bocoup.com) developer ([Ben Alman](http://benalman.com)). Think of it as similar to [Ant](http://ant.apache.org/) or [Rake](https://github.com/jimweirich/rake). The grunt-bbb helper is also useful to have as it provides several Backbone-specific utilities for scaffolding out your project, without the need to write boilerplate yourself.
 
