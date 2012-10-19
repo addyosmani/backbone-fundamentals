@@ -2963,7 +2963,7 @@ function(app, Backbone) {
 
   var Views = {};
 
-  Views.Foo = Backbone.View.extend({
+  Views.Bar = Backbone.View.extend({
     template: "foo/bar",
     tagName: "li",
     ...
