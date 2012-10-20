@@ -1732,7 +1732,7 @@ The first step is to setup the basic application dependencies, which in this cas
   <script src="js/lib/backbone-localstorage.js"></script>
   <script src="js/models/todo.js"></script>
   <script src="js/collections/todos.js"></script>
-  <script src="js/views/todos.js"></script>
+  <script src="js/views/todo.js"></script>
   <script src="js/views/app.js"></script>
   <script src="js/routers/router.js"></script>
   <script src="js/app.js"></script>
@@ -2125,7 +2125,7 @@ Let’s look at the `TodoView` view, now. This will be in charge of individual T
 
 ```javascript
 
-  // js/views/todos.js
+  // js/views/todo.js
 
   var app = app || {};
 
@@ -5671,7 +5671,7 @@ Whilst there is nothing wrong with the template itself, once we begin to develop
 
 Let's now take a look at the AMD-version of our view. As discussed earlier, the 'module' is wrapped using AMD's `define()` which allows us to specify the dependencies our view requires. Using the mapped paths to 'jquery' etc. simplifies referencing common dependencies and instances of dependencies are themselves mapped to local variables that we can access (e.g 'jquery' is mapped to `$`).
 
-**views/todos.js**
+**views/todo.js**
 
 ```javascript
 define([
@@ -5819,7 +5819,7 @@ define([
   'underscore',
   'backbone',
   'collections/todos',
-  'views/todos',
+  'views/todo',
   'text!templates/stats.html'
   ], function($, _, Backbone, Todos, TodoView, statsTemplate){
 
