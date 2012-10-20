@@ -3,7 +3,7 @@ define([
   'underscore', 
   'backbone',
   'collections/todos',
-  'views/todos',
+  'views/todo',
   'text!templates/stats.html'
   ], function($, _, Backbone, Todos, TodoView, statsTemplate){
   var AppView = Backbone.View.extend({

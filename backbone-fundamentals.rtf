@@ -1329,7 +1329,7 @@ Backbone LocalStorage adapter
   <script src="js/lib/backbone-localstorage.js"></script>\line
   <script src="js/models/todo.js"></script>\line
   <script src="js/collections/todos.js"></script>\line
-  <script src="js/views/todos.js"></script>\line
+  <script src="js/views/todo.js"></script>\line
   <script src="js/views/app.js"></script>\line
   <script src="js/routers/router.js"></script>\line
   <script src="js/app.js"></script>\line
@@ -4438,7 +4438,7 @@ RequireJS docs
 </script>\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 Whilst there is nothing wrong with the template itself, once we begin to develop larger applications requiring multiple templates, including them all in our markup on page-load can quickly become both unmanageable and come with performance costs. We\u8217'll look at solving this problem in a minute.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 Let\u8217's now take a look at the AMD-version of our view. As discussed earlier, the \u8216'module\u8217' is wrapped using AMD\u8217's {\f1 define()} which allows us to specify the dependencies our view requires. Using the mapped paths to \u8216'jquery\u8217' etc. simplifies referencing common dependencies and instances of dependencies are themselves mapped to local variables that we can access (e.g \u8216'jquery\u8217' is mapped to {\f1 $}).\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 {\b views/todos.js}\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b views/todo.js}\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \f1 define([\line
   'jquery',\line
   'underscore',\line
@@ -4562,7 +4562,7 @@ RequireJS docs
   'underscore',\line
   'backbone',\line
   'collections/todos',\line
-  'views/todos',\line
+  'views/todo',\line
   'text!templates/stats.html'\line
   ], function($, _, Backbone, Todos, TodoView, statsTemplate)\{\line
 \line
