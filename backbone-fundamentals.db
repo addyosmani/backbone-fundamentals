@@ -4921,7 +4921,7 @@ index.html
             todo.js
     .../views
             app.js
-            todos.js
+            todo.js
     .../collections
             todos.js
     .../templates
@@ -5114,7 +5114,7 @@ var TodoView = Backbone.View.extend({
         is mapped to <literal>$</literal>).
       </para>
       <para>
-        <emphasis role="strong">views/todos.js</emphasis>
+        <emphasis role="strong">views/todo.js</emphasis>
       </para>
       <programlisting language="javascript">
 define([
@@ -5295,7 +5295,7 @@ define([
   'underscore', 
   'backbone',
   'collections/todos',
-  'views/todos',
+  'views/todo',
   'text!templates/stats.html'
   ], function($, _, Backbone, Todos, TodoView, statsTemplate){
 
