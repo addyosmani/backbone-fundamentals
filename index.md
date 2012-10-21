@@ -3778,10 +3778,10 @@ var application_root = __dirname,
   mongoose = require('mongoose');
 ```
 
-Next, create a new Express server. `express.createServer()` is a simple way of creating an instance of express.HTTPServer, which we'll be using to pass in our routes.
+Next, create a new Express server. `express()` is a simple way of creating an instance of express.HTTPServer, which we'll be using to pass in our routes.
 
 ```javascript
-var app = express.createServer();
+var app = express();
 ```
 
 After this, connect Mongoose up to a database (in our case, localhost should suffice). Should you require the ability to pass in authentication information, here's a sample containing all of the supported URL parameters: `mongodb://[username:password@]host1[:port1][,host2[:port2],...[,hostN[:portN]]][/[database][?options]]`
