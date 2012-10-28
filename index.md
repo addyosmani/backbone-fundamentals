@@ -1076,7 +1076,8 @@ collection.pluck('name');
 
 ## <a name="thebasics-events" id="thebasics-events">Events</a>
 
-As we've covered, Backbone's objects are designed to be inherited from and every single one of the following objects inherits from `Backbone.Events`:
+
+As we've covered, `Backbone.Events` is mixed into the other Backbone "classes", including:
 
 * Backbone.Model
 * Backbone.Collection
