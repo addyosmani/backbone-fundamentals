@@ -25,9 +25,9 @@ In short, we’re stuck with spaghetti code. Fortunately there are modern JavaSc
 
 These modern frameworks provide developers an easy path to organizing their code using variations of a pattern known as MVC (Model-View-Controller). MVC separates the concerns in an application down into three parts:
 
-* Models represent the domain-specific knowledge and data in an application. Think of this as being a ‘type’ of data you can model — like a User, Photo or Note. Models should notify anyone observing them about their current state (e.g Views).
+* Models represent the domain-specific knowledge and data in an application. Think of this as being a ‘type’ of data you can model — like a User, Photo or Todo note. Models should notify anyone observing them about their current state (e.g Views).
 * Views are typically considered the User-interface in an application (e.g your markup and templates), but don’t have to be. They should know about the existence of Models in order to observe them, but don’t directly communicate with them.
-* Controllers handle the input (e.g clicks, user actions) in an application and Views can be considered as handling the output. When a Controller updates the state of a model (such as editing the caption on a Photo), it doesn’t directly tell the View. This is what the observing nature of the View and Model relationship is for.
+* Controllers handle the input (e.g clicks, user actions) in an application and Views can be considered as handling the output. When a Controller updates the state of a model (such as editing Todo note content), it doesn’t directly tell the View. This is what the observing nature of the View and Model relationship is for.
 
 JavaScript ‘MVC’ frameworks that can help us structure our code don’t always strictly follow the above pattern. Some frameworks will include the responsibility of the Controller in the View (e.g Backbone.js) whilst others add their own opinionated components into the mix as they feel this is more effective.
 
@@ -237,60 +237,58 @@ If you read older texts on MVC, you may come across a description of models as a
 
 Views are a visual representation of models that present a filtered view of their current state. A view typically observes a model and is notified when the model changes, allowing the view to update itself accordingly. Design pattern literature commonly refers to views as 'dumb', given that their knowledge of models and controllers in an application is limited.
 
-Users interact with views, which usually means reading and editing model data. For example, in our photo gallery application example, model viewing might happen in a user interface with a big image, a caption, and a list of tags. Model editing could be done through an "edit" view where a user who has selected a specific photo could edit its caption, tags, or other metadata in a form.
+Users interact with views, which usually means reading and editing model data. For example, in our todo application example, todo model viewing might happen in a user interface in the list of all todo items. Within it each todo is rendered with their title and completed checkbox. Model editing could be done through an "edit" view where a user who has selected a specific todo could edit its title in a form.
 
 In MVC, the actual task of updating the Model falls to Controllers, which we'll be covering shortly.
 
-Let's explore Views a little further using a simple JavaScript example. Below we can see a function that creates a single Photo view, consuming both a model instance and a controller instance.
+Let's explore Views a little further using a simple JavaScript example. Below we can see a function that creates a single Todo view, consuming both a model instance and a controller instance.
 
-We define a ```render()``` utility within our view which is responsible for rendering the contents of the ```photoModel``` using a JavaScript templating engine ([Underscore](http://underscorejs.org 'Underscore.js') templating) and updating the contents of our view, referenced by ```photoEl```.
+We define a ```render()``` utility within our view which is responsible for rendering the contents of the ```todoModel``` using a JavaScript templating engine ([Underscore](http://underscorejs.org "Underscore.js") templating) and updating the contents of our view, referenced by ```todoEl```.
 
-The ```photoModel``` then adds our ```render()``` callback as one of its subscribers, so that through the Observer pattern it can trigger the view to update when the model changes.
+The ```todoModel``` then adds our ```render()``` callback as one of its subscribers, so that through the Observer pattern it can trigger the view to update when the model changes.
 
-You may wonder where user interaction comes into play here. When users click on any elements within the view, it's not the view's responsibility to know what to do next. A Controller makes this decision. In our sample implementation, this is achieved by adding an event listener to ```photoEl``` which will delegate handling the click behavior back to the controller, passing the model information along with it in case it's needed.
+You may wonder where user interaction comes into play here. When users click on any elements within the view, it's not the view's responsibility to know what to do next. A Controller makes this decision. In our sample implementation, this is achieved by adding an event listener to ```todoEl``` which will delegate handling the click behavior back to the controller, passing the model information along with it in case it's needed.
 
 The benefit of this architecture is that each component plays its own separate role in making the application function as needed.
 
-
-
 ```javascript
-var buildPhotoView = function( photoModel, photoController ){
+
+var buildTodoView = function ( todoModel, todoController ) {
 
     var base        = document.createElement('div'),
-        photoEl     = document.createElement('div');
+        todoEl     = document.createElement('div');
 
-     base.appendChild(photoEl);
+     base.appendChild(todoEl);
 
      var render= function(){
         // We use a templating library such as Underscore
         // templating which generates the HTML for our
-        // photo entry
-        photoEl.innerHTML = _.template('photoTemplate', {src: photoModel.getSrc()});
+        // todo entry
+        todoEl.innerHTML = _.template('todoTemplate', { src: todoModel.getSrc() });
      }
 
-     photoModel.addSubscriber( render );
+     todoModel.addSubscriber( render );     
 
-     photoEl.addEventListener('click', function(){
-        photoController.handleEvent('click', photoModel );
+     todoEl.addEventListener('click', function(){
+        todoController.handleEvent('click', todoModel );
      });
 
      var show = function(){
-        photoEl.style.display  = '';
+        todoEl.style.display  = '';
      }
 
      var hide = function(){
-        photoEl.style.display  = 'none';
+        todoEl.style.display  = 'none';
      }
 
-
-     return{
+     return {
         showView: show,
         hideView: hide
      }
 
 }
-```
 
+```
 
 **Templating**
 
@@ -298,32 +296,34 @@ In the context of JavaScript frameworks that support MVC/MV*, it is worth lookin
 
 It has long been considered bad practice (and computationally expensive) to manually create large blocks of HTML markup in-memory through string concatenation. Developers using this technique often find themselves iterating through their data, wrapping it in nested divs and using outdated techniques such as ```document.write``` to inject the 'template' into the DOM. This approach often means keeping scripted markup inline with standard markup, which can quickly become difficult to read and maintain, especially when building large applications.
 
-JavaScript templating libraries (such as Handlebars.js or Mustache) are often used to define templates for views as HTML markup containing template variables. These template blocks can be either stored externally or within script tags with a custom type (e.g 'text/template'). Variables are delimited using a variable syntax (e.g {{name}}). Javascript template libraries typically accept data in JSON, and the grunt work of populating templates with data is taken care of by the framework itself. This has a several benefits, particularly when opting to store templates externally as this can let applications load templates dynamically on an as-needed basis.
+JavaScript templating libraries (such as Handlebars.js or Mustache) are often used to define templates for views as HTML markup containing template variables. These template blocks can be either stored externally or within script tags with a custom type (e.g 'text/template'). Variables are delimited using a variable syntax (e.g {{title}}). Javascript template libraries typically accept data in JSON, and the grunt work of populating templates with data is taken care of by the framework itself. This has a several benefits, particularly when opting to store templates externally as this can let applications load templates dynamically on an as-needed basis.
 
 Let's compare two examples of HTML templates. One is implemented using the popular Handlebars.js library, and the other uses Underscore's 'microtemplates'.
 
 **Handlebars.js:**
 
 ```html
-<li class="photo">
-  <h2>{{caption}}</h2>
-  <img class="source" src="{{src}}"/>
-  <div class="meta-data">
-    {{metadata}}
-  </div>
-</li>
+
+<div class="view">
+  <input class="toggle" type="checkbox" {{#if completed}} "checked" {{/if}}>
+  <label>{{title}}</label>
+  <button class="destroy"></button>
+</div>
+<input class="edit" value="{{title}}">
+
 ```
 
 **Underscore.js Microtemplates:**
 
 ```html
-<li class="photo">
-  <h2><%= caption %></h2>
-  <img class="source" src="<%= src %>"/>
-  <div class="meta-data">
-    <%= metadata %>
-  </div>
-</li>
+
+<div class="view">
+  <input class="toggle" type="checkbox" <%= completed ? 'checked' : '' %>>
+  <label><%= title %></label>
+  <button class="destroy"></button>
+</div>
+<input class="edit" value="<%= title %>">
+
 ```
 
 You may also use double curly brackets (i.e ```{{}}```) (or any other tag you feel comfortable with) in Microtemplates. In the case of curly brackets, this can be done by setting the Underscore ```templateSettings``` attribute as follows:
@@ -336,12 +336,11 @@ _.templateSettings = { interpolate : /\{\{(.+?)\}\}/g };
 
 It is also worth noting that in classical web development, navigating between independent views required the use of a page refresh. In single-page JavaScript applications, however, once data is fetched from a server via Ajax, it can be dynamically rendered in a new view within the same page. Since this doesn't automatically update the URL, the role of navigation thus falls to a "router", which assists in managing application state (e.g allowing users to bookmark a particular view they have navigated to). As routers are however neither a part of MVC nor present in every MVC-like framework, I will not be going into them in greater detail in this section.
 
-
 ### Controllers
 
 Controllers are an intermediary between models and views which are classically responsible for two tasks: they both update the view when the model changes and update the model when the user manipulates the view.
 
-In our photo gallery application, a controller would be responsible for handling changes the user made to the edit view for a particular photo, updating a specific photo model when a user has finished editing.
+In our Todo application, a controller would be responsible for handling changes the user made in the edit view for a particular todo, updating a specific todo model when a user has finished editing.
 
 It's with controllers that most JavaScript MVC frameworks depart from this interpretation of the MVC pattern. The reasons for this vary, but in my opinion, Javascript framework authors likely initially looked at server-side interpretations of MVC (such as Ruby on Rails), realized that that approach didn't translate 1:1 on the client-side, and so re-interpreted the C in MVC to solve their state management problem. This was a clever approach, but it can make it hard for developers coming to MVC for the first time to understand both the classical MVC pattern and the "proper" role of controllers in other non-Javascript frameworks.
 
@@ -357,7 +356,7 @@ In this respect, contrary to what might be mentioned in the official documentati
 
 We now know that controllers are traditionally responsible for updating the view when the model changes (and similarly the model when the user updates the view). Since Backbone doesn't have its **own** explicit controllers, it's useful to review the controller from another MVC framework to appreciate the difference in implementations. Let's take a look at [Spine.js](http://spinejs.com/):
 
-In this example, we're going to have a controller called ```PhotosController``` which will be in charge of individual photos in the application. It will ensure that when the view updates (e.g a user edited the photo meta-data) the corresponding model does too.
+In this example, we're going to have a controller called ```TodoController``` which would be in charge of individual todos in the application. It will ensure that when the view updates (e.g a user edited the todo) the corresponding model does too.
 
 (Note: We won't be delving heavily into Spine.js beyond this example, but it's worth looking at it to learn more about Javascript frameworks in general.)
 
@@ -365,7 +364,7 @@ In this example, we're going to have a controller called ```PhotosController``` 
 ```javascript
 // Controllers in Spine are created by inheriting from Spine.Controller
 
-var PhotosController = Spine.Controller.sub({
+var TodoController = Spine.Controller.sub({
   init: function(){
     this.item.bind('update', this.proxy(this.render));
     this.item.bind('destroy', this.proxy(this.remove));
@@ -386,10 +385,9 @@ var PhotosController = Spine.Controller.sub({
 
 In Spine, controllers are considered the glue for an application, adding and responding to DOM events, rendering templates and ensuring that views and models are kept in sync (which makes sense in the context of what we know to be a controller).
 
-What we're doing in the above example is setting up listeners in the ```update``` and ```destroy``` events using ```render()``` and ```remove()```. When a photo entry gets updated, we re-render the view to reflect the changes to the meta-data. Similarly, if the photo gets deleted from the gallery, we remove it from the view. In case you were wondering about the ```tmpl()``` function in the code snippet: in the ```render()``` function, we're using this to render a JavaScript template called #photoTemplate which simply returns an HTML string used to replace the controller's current element.
+What we're doing in the above example is setting up listeners in the ```update``` and ```destroy``` events using ```render()``` and ```remove()```. When a todo entry gets updated, we re-render the view to reflect the changes to the todo title. Similarly, if the todo gets deleted from todo list, we remove it from the view. In case you were wondering about the ```tmpl()``` function in the code snippet: in the ```render()``` function, we're using this to render a JavaScript template called #todoTemplate which simply returns an HTML string used to replace the controller's current element.
 
 What this provides us with is a very lightweight, simple way to manage changes between the model and the view.
-
 
 **Backbone.js**
 
@@ -397,19 +395,18 @@ Later on in this section we're going to revisit the differences between Backbone
 
 In Backbone, controller logic is shared between Backbone.View and Backbone.Router. Earlier releases of Backbone contained something called Backbone.Controller, but it was renamed to Router to clarify its role.
 
-A Router's main purpose is to translate URL requests into application states. When a user browses to the URL www.example.com/photos/42, a Router could be used to show the photo with that ID, and to define what application behavior should be run in response to that request. Routers *can* contain traditional controller responsibilities, such as binding the events between models and views, or rendering parts of the page. However, Backbone contributor Tim Branyen has pointed out that it's possible to get away without needing Backbone.Router at all for this, so a way to think about it using the Router paradigm is probably:
+A Router's main purpose is to translate URL requests into application states. It does that by mapping URLs to functions. When a user browses to the URL www.example.com/filter/completed, a Router could be used to show just todos which are completed, and to define what application behavior should be run in response to that request. Routers *can* contain traditional controller responsibilities, such as binding the events between models and views, or rendering parts of the page. However, Backbone contributor Tim Branyen has pointed out that it's possible to get away without needing Backbone.Router at all for this, so a way to think about it using the Router paradigm is probably:
 
 ```javascript
-var PhotoRouter = Backbone.Router.extend({
-  routes: { 'photos/:id': 'route' },
+var TodoRouter = Backbone.Router.extend({
+  routes: { "/filter/:name": "setFilter" },
+  setFilter: function (name) { console.log("set filter: " + name); }
+});
 
-  route: function(id) {
-    var item = photoCollection.get(id);
-    var view = new PhotoView({ model: item });
+var router = new TodoRouter();
+  Backbone.history.start();
+});
 
-    something.html( view.render().el );
-  }
-}):
 ```
 
 ## What does MVC give us?
@@ -490,48 +487,47 @@ A response to this could be that the view can also just be a View (as per MVC) b
 
 We've also seen that in Backbone the responsibility of a controller is shared with both the Backbone.View and Backbone.Router and in the following example we can actually see that aspects of that are certainly true.
 
-Here, our Backbone ```PhotoView``` uses the Observer pattern to 'subscribe' to changes to a View's model in the line ```this.model.on('change',...)```. It also handles templating in the ```render()``` method, but unlike some other implementations, user interaction is also handled in the View (see ```events```).
+Here, our Backbone ```TodoView``` uses the Observer pattern to 'subscribe' to changes to a View's model in the line ```this.model.on('change',...)```. It also handles templating in the ```render()``` method, but unlike some other implementations, user interaction is also handled in the View (see ```events```).
 
 
 ```javascript
-var PhotoView = Backbone.View.extend({
+
+  // The DOM element for a todo item...
+  app.TodoView = Backbone.View.extend({
 
     //... is a list tag.
     tagName:  'li',
 
-    // Pass the contents of the photo template through a templating
-    // function, cache it for a single photo
-    template: _.template($('#photo-template').html()),
+    // Pass the contents of the todo template through a templating
+    // function, cache it for a single todo
+    template: _.template( $('#item-template').html() ),
 
     // The DOM events specific to an item.
     events: {
       'click img' : 'toggleViewed'
     },
 
-    // The PhotoView listens for changes to its model, re-rendering. Since there's
-    // a one-to-one correspondence between a **Photo** and a **PhotoView** in this
+    // The TodoView listens for changes to its model, re-rendering. Since there's
+    // a one-to-one correspondence between a **Todo** and a **TodoView** in this
     // app, we set a direct reference on the model for convenience.
-
     initialize: function() {
-      _.bindAll(this, 'render');
-      this.model.on('change', this.render);
-      this.model.on('destroy', this.remove);
+      this.model.on( 'change', this.render, this );
+      this.model.on( 'destroy', this.remove, this );
     },
 
-    // Re-render the photo entry
+    // Re-render the titles of the todo item.
     render: function() {
-      this.$el.html(this.template(this.model.toJSON()));
+      this.$el.html( this.template( this.model.toJSON() ) );
       return this;
     },
+ 
+    // Toggle the `"completed"` state of the model.
+    togglecompleted: function() {
+      this.model.toggle();
+    },
+  });
 
-    // Toggle the `"viewed"` state of the model.
-    toggleViewed: function() {
-      this.model.viewed();
-    }
-
-});
 ```
-
 
 Another (quite different) opinion is that Backbone more closely resembles [Smalltalk-80 MVC](http://martinfowler.com/eaaDev/uiArchs.html#ModelViewController), which we went through earlier.
 
@@ -2222,10 +2218,10 @@ The `#item-template` used in the `TodoView` view needs defining, so let's do tha
   <script type="text/template" id="item-template">
     <div class="view">
       <input class="toggle" type="checkbox" <%= completed ? 'checked' : '' %>>
-      <label><%- title %></label>
+      <label><%= title %></label>
       <button class="destroy"></button>
     </div>
-    <input class="edit" value="<%- title %>">
+    <input class="edit" value="<%= title %>">
   </script>
 ```
 
