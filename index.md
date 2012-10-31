@@ -568,31 +568,24 @@ In this section, you'll learn the essentials of Backbone's models, views, collec
 
 ## Models
 
-Backbone models contain interactive data for an application as well as the logic around this data. For example, we can use a model to represent the concept of a photo object including its attributes like tags, titles and a location.
+Backbone models contain interactive data for an application as well as the logic around this data. For example, we can use a model to represent the concept of a todo item including its attributes like title (todo content) and completed (current state of the todo).
 
 Models can be created by extending `Backbone.Model` as follows:
 
 ```javascript
-var Photo = Backbone.Model.extend({
-    defaults: {
-        src: 'placeholder.jpg',
-        title: 'an image placeholder',
-        coordinates: [0,0]
-    },
-    initialize: function(){
-        this.on('change:src', function(){
-            var src = this.get('src');
-            console.log('Image source updated to ' + src);
-        });
-    },
-    changeSrc: function( source ){
-        this.set({ src: source });
-    }
+var Todo = Backbone.Model.extend({});
+
+// We can then create our own concrete instance of a (Todo) model
+// with no values at all:
+var todo1 = new Todo();
+console.log(todo1);
+
+// or with some arbitrary data:
+var todo2 = new Todo({ 
+  title: 'Check attributes property of the both model instances in the console.', 
+  completed: true
 });
-
-var somePhoto = new Photo({ src: 'test.jpg', title:'testing'});
-somePhoto.changeSrc('magic.jpg'); // which triggers "change:src" and logs an update message to the console.
-
+console.log(todo2);
 ```
 
 #### Initialization
@@ -600,39 +593,103 @@ somePhoto.changeSrc('magic.jpg'); // which triggers "change:src" and logs an upd
 The `initialize()` method is called when a new instance of a model is created. Its use is optional, however you'll see why it's good practice to use it below.
 
 ```javascript
-var Photo = Backbone.Model.extend({
-    initialize: function(){
-        console.log('this model has been initialized');
-    }
+
+var Todo = Backbone.Model.extend({
+  initialize: function(){
+      console.log('This model has been initialized.');
+  }
 });
 
-// We can then create our own instance of a photo as follows:
-var myPhoto = new Photo();
+var myTodo = new Todo();
+
+```
+
+**Default values**
+
+There are times when you want your model to have a set of default values (e.g. in a scenario where a complete set of data isn't provided by the user). This can be set using a property called `defaults` in your model.
+
+```javascript
+
+var Todo = Backbone.Model.extend({
+  // Default todo attribute values
+  defaults: {
+    title: '',
+    completed: false
+  }
+});
+
+// Now we can create our concrete instance of the model 
+// with default values as follows:
+var todo1 = new Todo();
+console.log(todo1);
+
+// Or we could instantiate it with some of the attributes (e.g with custom title):
+var todo2 = new Todo({ 
+  title: 'Check attributes property of the logged models in the console.'
+});
+console.log(todo2);
+
+// Or with all of the (default) attributes:
+var todo3 = new Todo({
+  title: 'This todo is done, so take no action on this one.',
+  completed: true
+});
+console.log(todo3);
+
 ```
 
 #### Getters & Setters
 
 **Model.get()**
 
-`Model.get()` provides easy access to a model's attributes. Attributes which are passed through to the model on instantiation are instantly available for retrieval.
+`Model.get()` provides easy access to a model's attributes. All attributes, regardless if default ones or one passed through to the model on instantiation, are available for retrieval.
 
 ```javascript
-var myPhoto = new Photo({ title: 'My awesome photo',
-                          src:'boston.jpg',
-                          location: 'Boston',
-                          tags:['the big game', 'vacation']}),
+var Todo = Backbone.Model.extend({
+  // Default todo attribute values
+  defaults: {
+    title: '',
+    completed: false
+  }
+});
 
-    title = myPhoto.get('title'), //My awesome photo
-    location = myPhoto.get('location'), //Boston
-    tags = myPhoto.get('tags'), // ['the big game','vacation']
-    photoSrc = myPhoto.get('src'); //boston.jpg
+var todo1 = new Todo();
+console.log(todo1.get('title')); // empty string
+console.log(todo1.get('completed')); // false
+
+var todo2 = new Todo({
+  title: "Retrieved with models get() method.",
+  completed: true
+});
+console.log(todo2.get('title')); // Retrieved with models get() method.
+console.log(todo2.get('completed')); // false
 ```
 
 Alternatively, if you wish to directly access all of the attributes in a model's instance directly, you can achieve this as follows:
 
 ```javascript
-var myAttributes = myPhoto.attributes;
-console.log(myAttributes);
+
+var Todo = Backbone.Model.extend({
+  // Default todo attribute values
+  defaults: {
+    title: '',
+    completed: false
+  }
+});
+
+// Instantiates myTodo instance:
+var myTodo = new Todo({
+  title: "Accessed directly from the model's instance attributes property.",
+  completed: true
+});
+
+// Logs myTodo's model instance attributes property:
+console.log(myTodo.attributes);
+
+// Logs value of the directly accessed title attribute
+// of the myTodo model instance:
+console.log(myTodo.attributes.title);
+
 ```
 
 It is best practice to use `Model.set()` or direct instantiation to set the values of a model's attributes.
@@ -641,59 +698,62 @@ Accessing `Model.attributes` directly is generally discouraged. Instead, should 
 
 
 ```javascript
-var myAttributes = myPhoto.toJSON();
-console.log(JSON.stringify(myAttributes));
-/* this returns:
- { title: 'My awesome photo',
-   src:'boston.jpg',
-   location: 'Boston',
-   tags:['the big game', 'vacation']}
-*/
+var Todo = Backbone.Model.extend({
+  // Default todo attribute values
+  defaults: {
+    title: '',
+    completed: false
+  }
+});
+
+var todo1 = new Todo();
+var todo1Attributes = todo1.toJSON();
+// Following logs: {"title":"","completed":false} 
+console.log(JSON.stringify(todo1Attributes));
+
+var todo2 = new Todo({
+  title: "Try these examples and check results in console.",
+  completed: true
+});
+// logs string: {"title":"Try examples and check results in console.","completed":true} 
+console.log(JSON.stringify(todo2.toJSON()));
 ```
 
 #### Model.set()
 
-`Model.set()` allows us to pass attributes into an instance of our model. Attributes can either be set during initialization or at any time afterwards. It's important to avoid trying to set a Model's attributes directly (for example, `Model.caption = 'A new caption'`). Backbone uses Model.set() to know when to broadcast that a model's data has changed.
+`Model.set()` allows us to pass attributes into an instance of our model. Attributes can either be set during initialization or at any time afterwards. It's important to avoid trying to set a Model's attributes directly (for example, `Model.attributes.title = 'New todo title.'`). Backbone uses Model.set() to know when to broadcast that a model's data has changed.
 
 
 ```javascript
-var Photo = Backbone.Model.extend({
-    initialize: function(){
-        console.log('this model has been initialized');
-    }
+
+var Todo = Backbone.Model.extend({
+  // Default todo attribute values
+  defaults: {
+    title: '',
+    completed: false
+  }
 });
 
 // Setting the value of attributes via instantiation
-var myPhoto = new Photo({ title: 'My awesome photo', location: 'Boston' });
-
-var myPhoto2 = new Photo();
-
-// Setting the value of attributes through Model.set()
-myPhoto2.set({ title:'Vacation in Florida', location: 'Florida' });
-```
-
-**Default values**
-
-There are times when you want your model to have a set of default values (e.g. in a scenario where a complete set of data isn't provided by the user). This can be set using a property called `defaults` in your model.
-
-```javascript
-var Photo = Backbone.Model.extend({
-    defaults: {
-        title: 'Another photo!',
-        tags:  ['untagged'],
-        location: 'home',
-        src: 'placeholder.jpg'
-    },
-    initialize: function(){
-    }
+var myTodo = new Todo({ 
+  title: "Set through instantiation." 
 });
+console.log('Todo title: ' + myTodo.get('title'));
+console.log('Completed: ' + myTodo.get('completed'));
 
-var myPhoto = new Photo({ location: 'Boston',
-                          tags:['the big game', 'vacation']}),
-    title   = myPhoto.get('title'), //Another photo!
-    location = myPhoto.get('location'), //Boston
-    tags = myPhoto.get('tags'), // ['the big game','vacation']
-    photoSrc = myPhoto.get('src'); //placeholder.jpg
+// Set single attribute value at the time through Model.set():
+myTodo.set("title", "Title attribute set through Model.set().");
+console.log('Todo title: ' + myTodo.get('title'));
+console.log('Completed: ' + myTodo.get('completed'));
+
+// Set map of attributes through Model.set():
+myTodo.set({ 
+  title: "Both attributes set through Model.set().",
+  completed: true
+});
+console.log('Todo title: ' + myTodo.get('title'));
+console.log('Completed: ' + myTodo.get('completed'));
+
 ```
 
 **Listening for changes to your model**
@@ -701,39 +761,67 @@ var myPhoto = new Photo({ location: 'Boston',
 Any and all of the attributes in a Backbone model can have listeners bound to them which detect when their values change. Listeners can be added to the `initialize()` function:
 
 ```javascript
-this.on('change', function(){
-    console.log('values for this model have changed');
+
+var Todo = Backbone.Model.extend({
+  // Default todo attribute values
+  defaults: {
+    title: '',
+    completed: false
+  },
+  initialize: function(){
+    console.log('This model has been initialized.');
+    this.on('change', function(){
+        console.log('- Values for this model have changed.');
+    });
+  }
 });
+
+var myTodo = new Todo();
+
+myTodo.set('title', 'On each change of attribute values listener is triggered.');
+console.log('Title has changed: ' + myTodo.get('title'));
+
+myTodo.set('completed', true);
+console.log('Completed has changed: ' + myTodo.get('completed'));
+
+myTodo.set({
+  title: 'Listener is triggered for each change, not for change of the each attribute.',
+  'complete': true
+});
+
 ```
 
-In the following example, we log a message whenever a specific attribute (the title of our Photo model) is altered.
+In the following example, we log a message whenever a specific attribute (the title of our Todo model) is altered.
 
 ```javascript
-var Photo = Backbone.Model.extend({
-    defaults: {
-        title: 'Another photo!',
-        tags:  ['untagged'],
-        location: 'home',
-        src: 'placeholder.jpg'
-    },
-    initialize: function(){
-        console.log('this model has been initialized');
-        this.on('change:title', function(){
-            var title = this.get('title');
-            console.log('My title has been changed to.. ' + title);
-        });
-    },
-
-    setTitle: function(newTitle){
-        this.set({ title: newTitle });
-    }
+var Todo = Backbone.Model.extend({
+  // Default todo attribute values
+  defaults: {
+    title: '',
+    completed: false
+  },
+  initialize: function(){
+    console.log('This model has been initialized.');
+    this.on('change:title', function(){
+        console.log('Title value for this model have changed.');
+    });
+  },
+  setTitle: function(newTitle){
+    this.set({ title: newTitle });
+  }
 });
 
-var myPhoto = new Photo({ title:'Fishing at the lake', src:'fishing.jpg'});
-myPhoto.setTitle('Fishing at sea');
-//logs 'My title has been changed to.. Fishing at sea'
-```
+var myTodo = new Todo();
 
+// Following changes trigger the listener:
+myTodo.set('title', 'Check what\'s logged.');
+myTodo.setTitle('Go fishing on Sunday.');
+
+// But, this change type is not observed, so no listener is triggered:
+myTodo.set('completed', true);
+console.log('Todo set as completed: ' + myTodo.get('completed'));
+
+```
 
 **Validation**
 
@@ -744,27 +832,26 @@ Validation functions can be as simple or complex as necessary. If the attributes
 A basic example for validation can be seen below:
 
 ```javascript
-var Photo = Backbone.Model.extend({
-    validate: function(attribs){
-        if(attribs.src === undefined){
-            return 'Remember to set a source for your image!';
-        }
-    },
-
-    initialize: function(){
-        console.log('this model has been initialized');
-        this.on('error', function(model, error){
-            console.log(error);
-        });
+var Todo = Backbone.Model.extend({
+  validate: function(attribs){
+    if(attribs.title === undefined){
+        return "Remember to set a title for your todo.";
     }
+  },
+
+  initialize: function(){
+    console.log('This model has been initialized.');
+    this.on("error", function(model, error){
+        console.log(error);
+    });
+  }
 });
 
-var myPhoto = new Photo();
-myPhoto.set({ title: 'On the beach' });
-//logs Remember to set a source for your image!
+var myTodo = new Todo();
+myTodo.set('completed', false); // logs: Remember to set a title for your todo.
 ```
 
-**Note**: Backbone passes the `attributes` object by shallow copy to the `validate` function using the Underscore `_.extend` method. This means that it is not possible to change any Number, String or Boolean attribute but it *is* possible to change attributes of objects because they are passed by reference. As shallow copy doesn't copy objects by implicitly copying them, but rather, by reference, one can change the attributes on those objects.
+**Note**: Backbone passes the `attributes` object (attribs param in above example) by shallow copy to the `validate` function using the Underscore `_.extend` method. This means that it is not possible to change any Number, String or Boolean attribute but it *is* possible to change attributes of objects because they are passed by reference. As shallow copy doesn't copy objects by implicitly copying them, but rather, by reference, one can change the attributes on those objects.
 
 An example of this (by @fivetanley) is available [here](http://jsfiddle.net/2NdDY/7/).
 
@@ -1741,7 +1828,7 @@ The `Todo` model is remarkably straightforward. Firstly a todo has two attribute
 
   // Todo Model
   // ----------
-  // Our basic **Todo** model has `title`, `order`, and `completed` attributes.
+  // Our basic **Todo** model has `title` and `completed` attributes.
 
   app.Todo = Backbone.Model.extend({
 
