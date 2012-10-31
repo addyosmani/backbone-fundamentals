@@ -901,7 +901,9 @@ var TodoView = Backbone.View.extend({
 });
 
 var todoView = new TodoView();
-console.log(todoView.el); // reference to a DOM element
+
+// logs reference to a DOM element that cooresponds to the view instance
+console.log(todoView.el);
 
 ```
 
@@ -909,17 +911,11 @@ console.log(todoView.el); // reference to a DOM element
 
 `el` is basically a reference to a DOM element and all views must have one. It allows for all of the contents of a view to be inserted into the DOM at once, which makes for faster rendering because the browser performs the minimum required reflows and repaints.
 
-There are two ways to attach a DOM element to a view: the element already exists in the page or a new element is created for the view and added manually by the developer.
-
-If the element already exists in the page, you can set `el` as either a CSS selector that matches the element.
-
-```javascript
-el: '#footer'
-```
+There are two ways to attach a DOM element to a view: a new element is created for the view and added manually by the developer or the element already exists in the page.
 
 If you want to create a new element for your view, set any combination of the following view's properties: `tagName`, `id` and `className`. A new element will be created for you by the framework and a reference to it will be available at the `el` property. If nothing is specified `el` defaults to `div`.
 
-```
+```javascript
 
 var TodosView = Backbone.View.extend({
   tagName: 'ul', // required, but defaults to 'div' if not set
@@ -934,7 +930,15 @@ console.log(todosView.el);
 
 The above code creates the ```DOMElement``` below but doesn't append it to the DOM.
 
-	<ul id="todos" class="container"></ul>
+```html
+<ul id="todos" class="container"></ul>
+```
+
+If the element already exists in the page, you can set `el` as a CSS selector that matches the element.
+
+```javascript
+el: '#footer'
+```
 
 **Understanding `render()`**
 
@@ -956,7 +960,6 @@ What isn't instantly obvious is that under the bonnet, Backbone uses jQuery's `.
 Collections are sets of Models and are created by extending `Backbone.Collection`.
 
 Normally, when creating a collection you'll also want to pass through a property specifying the model that your collection will contain, as well as any instance properties required.
-
 
 In the following example, we create a PhotoCollection that will contain our Photo models:
 
