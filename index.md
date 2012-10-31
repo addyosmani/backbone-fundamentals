@@ -872,28 +872,43 @@ Views in Backbone don't contain the markup for your application, but rather they
 Similar to the previous sections, creating a new view is relatively straight-forward. To create a new View, simply extend `Backbone.View`. I'll explain this code in detail below:
 
 ```javascript
-var PhotoSearch = Backbone.View.extend({
-    el: '#results',
-    render: function( event ){
-        var compiled_template = _.template( $('#results-template').html() );
-        this.$el.html( compiled_template(this.model.toJSON()) );
-        return this; //recommended as this enables calls to be chained.
-    },
-    events: {
-        'submit #searchForm':  'search',
-        'click .reset': 'reset',
-        'click .advanced': 'switchContext'
-    },
-    search: function( event ){
-        //executed when a form '#searchForm' has been submitted
-    },
-    reset: function( event ){
-        //executed when an element with class "reset" has been clicked.
-    },
-    switchContext: function( event ){
-        //executed when an element with class "advanced" has been clicked.
-    }
+var TodoView = Backbone.View.extend({
+
+  tagName:  'li',
+
+  // Cache the template function for a single item.
+  todoTpl: _.template( $('#item-template').html() ),
+
+  events: {
+    'dblclick label': 'edit',
+    'keypress .edit': 'updateOnEnter',
+    'blur .edit':   'close'
+  },
+
+  // Re-render the titles of the todo item.
+  render: function() {
+    this.$el.html( this.todoTpl( this.model.toJSON() ) );
+    this.input = this.$('.edit');
+    return this;
+  },
+
+  edit: function() {
+    // executed when todo label is double clicked
+  },
+
+  close: function() {
+    // executed when todo loses focus
+  },
+
+  updateOnEnter: function( e ) {
+    // executed on each keypress when in todo edit mode, 
+    // but we'll wait for enter to get in action
+  }
 });
+
+var todoView = new TodoView();
+console.log(todoView.el); // reference to a DOM element
+
 ```
 
 #### What is `el`?
@@ -901,33 +916,37 @@ var PhotoSearch = Backbone.View.extend({
 `el` is basically a reference to a DOM element and all views must have one. It allows for all of the contents of a view to be inserted into the DOM at once, which makes for faster rendering because the browser performs the minimum required reflows and repaints.
 
 There are two ways to attach a DOM element to a view: the element already exists in the page or a new element is created for the view and added manually by the developer.
-If the element already exists in the page, you can set `el` as either a CSS selector that matches the element or a simple reference to the DOM element.
+
+If the element already exists in the page, you can set `el` as either a CSS selector that matches the element.
 
 ```javascript
 el: '#footer'
 ```
 
-If you want to create a new element for your view, set any combination of the following view's properties: `tagName`, `id` and `className`. A new element will be created for you by the framework and a reference to it will be available at the `el` property.
+If you want to create a new element for your view, set any combination of the following view's properties: `tagName`, `id` and `className`. A new element will be created for you by the framework and a reference to it will be available at the `el` property. If nothing is specified `el` defaults to `div`.
 
 ```
-tagName: 'p', // required, but defaults to 'div' if not set
-className: 'container', // optional, you can assign multiple classes to this property like so 'container homepage'
-id: 'header', // optional
+
+var TodosView = Backbone.View.extend({
+  tagName: 'ul', // required, but defaults to 'div' if not set
+  className: 'container', // optional, you can assign multiple classes to this property like so 'container homepage'
+  id: 'todos', // optional
+});
+
+var todosView = new TodosView();
+console.log(todosView.el);
+
 ```
 
 The above code creates the ```DOMElement``` below but doesn't append it to the DOM.
 
-
-	<p id="header" class="container"></p>
-
-
+	<ul id="todos" class="container"></ul>
 
 **Understanding `render()`**
 
 `render()` is an optional function that defines the logic for rendering a template. We'll use Underscore's micro-templating in these examples, but remember you can use other templating frameworks if you prefer.
 
-The `_.template` method in Underscore compiles JavaScript templates into functions which can be evaluated for rendering. In the above view, I'm passing the markup from a template with id `results-template` to `_.template()` to be compiled. Next, I set the html of the `el` DOM element to the output of processing a JSON version of the model associated with the view through the compiled template.
-
+The `_.template` method in Underscore compiles JavaScript templates into functions which can be evaluated for rendering. In the above view, I'm passing the markup from a template with id `item-template` to `_.template()` to be compiled. Next, I set the html of the `el` DOM element to the output of processing a JSON version of the model associated with the view through the compiled template.
 
 Presto! This populates the template, giving you a data-complete set of markup in just a few short lines of code.
 
