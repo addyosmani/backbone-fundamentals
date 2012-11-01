@@ -1435,7 +1435,7 @@ var TodoRouter = Backbone.Router.extend({
         /*
         Note that the id matched in the above route will be passed to this function
         */
-        console.log('You are trying to reach photo ' + id);
+        console.log("You are trying to reach todo " + id);
     },
 
     searchTodos: function(query, page){
