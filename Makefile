@@ -1,34 +1,47 @@
-
 include_dir=build
-pandoc=`which pandoc`
 source=index.md
-title="Developing Backbone.js Applications"
-filename="backbone-fundamentals"
-pdflatex=`which pdflatex`
+title='Developing Backbone.js Applications'
+filename='backbone-fundamentals'
 
-all: pdf html epub rtf
 
-pdf: $(sorce)
-	$(pandoc) -s $(source) -o $(filename).tex -w latex \
-	       	--title-prefix=$(filename)
-	$(pdflatex) $(filename).tex
+all: html epub rtf pdf mobi
 
-html: $(source)
-	$(pandoc) -s $(source) -o index.html -c style.css \
-			--include-in-header=$(include_dir)/head.html \
-	       	--include-before-body=$(include_dir)/author.html \
-	       	--include-before-body=$(include_dir)/share.html \
-		--include-after-body=$(include_dir)/stats.html \
-	       	--title-prefix=$(title)
+html:
+	pandoc -s $(source) -t html5 -o index.html -c style.css \
+		--include-in-header $(include_dir)/head.html \
+		--include-before-body $(include_dir)/author.html \
+		--include-before-body $(include_dir)/share.html \
+		--include-after-body $(include_dir)/stats.html \
+		--title-prefix $(title) \
+		--normalize \
+		--smart
 
-epub: $(source)
-	$(pandoc) -s $(source) -t epub --epub-metadata=$(include_dir)/metadata.xml \
-	       	-o $(filename).epub --epub-stylesheet=epub.css --title-prefix=$(title) \
-		--epub-cover-image=img/cover.jpg
+epub:
+	pandoc -s $(source) --normalize --smart -t epub -o $(filename).epub \
+		--epub-metadata $(include_dir)/metadata.xml \
+		--epub-stylesheet epub.css \
+		--epub-cover-image img/cover.jpg \
+		--title-prefix $(title) \
+		--normalize \
+		--smart
 
-clean: 
-	rm -f $(filename).aux \
-       		$(filename).db \
-	       	$(filename).log \
-		$(filename).out \
-	       	$(filename).tex
+rtf:
+	pandoc -s $(source) -o $(filename).rtf \
+		--title-prefix $(filename) \
+		--normalize \
+		--smart
+
+pdf:
+	# You need `pdflatex`
+	# OS X: http://www.tug.org/mactex/
+	# Then find its path: find /usr/ -name "pdflatex"
+	# Then symlink it: ln -s /path/to/pdflatex /usr/local/bin
+	pandoc -s $(source) -o $(filename).pdf \
+		--title-prefix $(title) \
+		--normalize \
+		--smart
+
+mobi: epub
+	# Download: http://www.amazon.com/gp/feature.html?ie=UTF8&docId=1000765211
+	# Symlink bin: ln -s /path/to/kindlegen /usr/local/bin
+	kindlegen $(filename).epub
