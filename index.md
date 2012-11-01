@@ -7557,7 +7557,7 @@ You can use some variables in your ```View``` to represent the actual state of t
 
 **Diacritic.js**
 
-A plugin for Backbone.Paginator that replaces diacritic characters (`´`, `˝`, `̏`, `˚`,`~` etc.) with characters that match them most closely. This is particularly useful for filtering.
+A plugin for Backbone.Paginator that replaces diacritic characters (ă,ş,ţ etc) with characters that match them most closely. This is particularly useful for filtering.
 
 To enable the plugin, set `this.useDiacriticsPlugin` to true, as can be seen in the example below:
 
