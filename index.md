@@ -1808,6 +1808,9 @@ var PanelAdvanced = Panel.extend({
       console.log(this.foo); // Log: bar
    }
 });
+
+new Panel();
+new PanelAdvanced();
 ```
 
 This isn't the most elegant of solutions because if you have a lot of Views that inherit from Panel, then you'll have to remember to call Panel's initialize from all of them.
@@ -1818,36 +1821,32 @@ So here's an alternative way to define Panel so that your inherited views don't 
 
 ```javascript
 var Panel = function (options) {
+  // put all of Panel's initialization code here
+  console.log('Panel initialized');
+  this.foo = 'bar';
 
-    // put all of Panel's initialization code here
-    console.log('Panel initialized');
-    this.foo = 'bar';
-
-    Backbone.View.apply(this, [options]);
+  Backbone.View.apply(this, [options]);
 };
 
 _.extend(Panel.prototype, Backbone.View.prototype, {
-
-    // put all of Panel's methods here. For example:
-    sayHi: function () {
-        console.log('hello from Panel');
-    }
+  // put all of Panel's methods here. For example:
+  sayHi: function () {
+      console.log('hello from Panel');
+  }
 });
 
 Panel.extend = Backbone.View.extend;
 
-
 // other classes then inherit from Panel like this:
 var PanelAdvanced = Panel.extend({
-
-    initialize: function (options) {
-        console.log('PanelAdvanced initialized');
-        console.log(this.foo);
-    }
+  initialize: function (options) {
+    console.log('PanelAdvanced initialized');
+    console.log(this.foo);
+  }
 });
 
-var PanelAdvanced = new PanelAdvanced(); //Log: Panel initialized, PanelAdvanced initialized, bar
-PanelAdvanced.sayHi(); // Log: hello from Panel
+var PanelAdvanced = new PanelAdvanced(); //Logs: Panel initialized, PanelAdvanced initialized, bar
+PanelAdvanced.sayHi(); // Logs: hello from Panel
 ```
 
 When used appropriately, Backbone's `extend` method can save a great deal of time and effort writing redundant code.
@@ -1891,8 +1890,8 @@ You've probably seen this technique before. A Backbone-specific example might lo
 ```javascript
 var myViews = (function(){
     return {
-        PhotoView: Backbone.View.extend({ .. }),
-        GalleryView: Backbone.View.extend({ .. }),
+        TodoView: Backbone.View.extend({ .. }),
+        TodosView: Backbone.View.extend({ .. }),
         AboutView: Backbone.View.extend({ .. });
         //etc.
     };
@@ -1904,8 +1903,8 @@ Here we can return a set of views, but the same technique could return an entire
 One solution to this problem, as mentioned by Peter Michaux, is to use prefix namespacing. It's a simple concept at heart, but the idea is you select a common prefix name (in this example, `myApplication_`) and then define any methods, variables or other objects after the prefix.
 
 ```javascript
-var myApplication_photoView = Backbone.View.extend({}),
-myApplication_galleryView = Backbone.View.extend({});
+var myApplication_todoView = Backbone.View.extend({}),
+    myApplication_todosView = Backbone.View.extend({});
 ```
 
 This is effective from the perspective of trying to lower the chances of a particular variable existing in the global scope, but remember that a uniquely named object can have the same effect. This aside, the biggest issue with the pattern is that it can result in a large number of global objects once your application starts to grow.
@@ -1921,7 +1920,7 @@ Object Literals have the advantage of not polluting the global namespace but ass
 This example demonstrates two ways you can check to see if a namespace already exists before defining it. I commonly use Option 2.
 
 ```javascript
-/*Doesn't check for existence of myApplication*/
+/* Doesn't check for existence of myApplication */
 var myApplication = {};
 
 /*
@@ -1943,9 +1942,9 @@ var myApplication = {
 One can also opt for adding properties directly to the namespace (such as your views, in the following example):
 
 ```javascript
-var myGalleryViews = myGalleryViews || {};
-myGalleryViews.photoView = Backbone.View.extend({});
-myGalleryViews.galleryView = Backbone.View.extend({});
+var myTodosViews = myTodosViews || {};
+myTodosViews.todoView = Backbone.View.extend({});
+myTodosViews.todosView = Backbone.View.extend({});
 ```
 
 The benefit of this pattern is that you're able to easily encapsulate all of your models, views, routers etc. in a way that clearly separates them and provides a solid foundation for extending your code.
@@ -1955,19 +1954,18 @@ This pattern has a number of benefits. It's often a good idea to decouple the de
 
 ```javascript
 var myConfig = {
-    language: 'english',
-    defaults: {
-        enableGeolocation: true,
-        enableSharing: false,
-        maxPhotos: 20
-    },
-    theme: {
-        skin: 'a',
-        toolbars: {
-            index: 'ui-navigation-toolbar',
-            pages: 'ui-custom-toolbar'
-        }
+  language: 'english',
+  defaults: {
+    enableDelegation: true,
+    maxTodos: 40
+  },
+  theme: {
+    skin: 'a',
+    toolbars: {
+      index: 'ui-navigation-toolbar',
+      pages: 'ui-custom-toolbar'
     }
+  }
 }
 ```
 
@@ -1986,27 +1984,26 @@ YAHOO.util.Dom.getElementsByClassName('test');
 Yahoo's YUI uses the nested object namespacing pattern regularly and even DocumentCloud (the creators of Backbone) use the nested namespacing pattern in their main applications. A sample implementation of nested namespacing with Backbone may look like this:
 
 ```javascript
-var galleryApp =  galleryApp || {};
+var todoApp =  todoApp || {};
 
 // perform similar check for nested children
-galleryApp.routers = galleryApp.routers || {};
-galleryApp.model = galleryApp.model || {};
-galleryApp.model.special = galleryApp.model.special || {};
+todoApp.routers = todoApp.routers || {};
+todoApp.model = todoApp.model || {};
+todoApp.model.special = todoApp.model.special || {};
 
 // routers
-galleryApp.routers.Workspace   = Backbone.Router.extend({});
-galleryApp.routers.PhotoSearch = Backbone.Router.extend({});
+todoApp.routers.Workspace   = Backbone.Router.extend({});
+todoApp.routers.TodoSearch = Backbone.Router.extend({});
 
 // models
-galleryApp.model.Photo   = Backbone.Model.extend({});
-galleryApp.model.Comment = Backbone.Model.extend({});
+todoApp.model.Todo   = Backbone.Model.extend({});
+todoApp.model.Notes = Backbone.Model.extend({});
 
 // special models
-galleryApp.model.special.Admin = Backbone.Model.extend({});
+todoApp.model.special.Admin = Backbone.Model.extend({});
 ```
 
 This is readable, clearly organized, and is a relatively safe way of namespacing your Backbone application. The only real caveat however is that it requires your browser's JavaScript engine to first locate the galleryApp object, then dig down until it gets to the function you're calling. However, developers such as Juriy Zaytsev (kangax) have tested and found the performance differences between single object namespacing vs the 'nested' approach to be quite negligible.
-
 
 **Recommendation**
 
