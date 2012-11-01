@@ -1423,8 +1423,8 @@ ourObject.trigger("dance jump skip", {duration: "15 minutes", action: 'on fire'}
 In Backbone, routers are used to help manage application state and for connecting URLs to application events. This is achieved using hash-tags with URL fragments, or using the browser's pushState and History API. Some examples of routes may be seen below:
 
 ```javascript
-http://unicorns.com/#whatsup
-http://unicorns.com/#search/seasonal-horns/page2
+http://example.com/#about
+http://example.com/#search/seasonal-horns/page2
 ```
 
 Note: An application will usually have at least one route mapping a URL route to a function that determines what happens when a  user reaches that particular route. This relationship is defined as follows:
@@ -1433,65 +1433,64 @@ Note: An application will usually have at least one route mapping a URL route to
 'route' : 'mappedFunction'
 ```
 
-Let us now define our first controller by extending `Backbone.Router`. For the purposes of this guide, we're going to continue pretending we're creating a photo gallery application that requires a GalleryRouter.
+Let us now define our first controller by extending `Backbone.Router`. For the purposes of this guide, we're going to continue pretending we're creating a complex todo application (something like personal organize/planner) that requires a complex TodoRouter.
 
 Note the inline comments in the code example below as they continue the rest of the lesson on routers.
 
 ```javascript
-var GalleryRouter = Backbone.Router.extend({
+var TodoRouter = Backbone.Router.extend({
     /* define the route and function maps for this router */
     routes: {
-        'about' : 'showAbout',
-        /*Sample usage: http://unicorns.com/#about*/
+        "about" : "showAbout",
+        /* Sample usage: http://example.com/#about */
 
-        'photos/:id' : 'getPhoto',
-        /*This is an example of using a ":param" variable which allows us to match
-        any of the components between two URL slashes*/
-        /*Sample usage: http://unicorns.com/#photos/5*/
+        "todo/:id" : "getTodo",
+        /* This is an example of using a ":param" variable which allows us to match
+        any of the components between two URL slashes */
+        /* Sample usage: http://example.com/#todo/5 */
 
-        'search/:query' : 'searchPhotos',
-        /*We can also define multiple routes that are bound to the same map function,
-        in this case searchPhotos(). Note below how we're optionally passing in a
-        reference to a page number if one is supplied*/
-        /*Sample usage: http://unicorns.com/#search/lolcats*/
+        "search/:query" : "searchTodos",
+        /* We can also define multiple routes that are bound to the same map function,
+        in this case searchTodos(). Note below how we're optionally passing in a
+        reference to a page number if one is supplied */
+        /* Sample usage: http://example.com/#search/job */
 
-        'search/:query/p:page' : 'searchPhotos',
-        /*As we can see, URLs may contain as many ":param"s as we wish*/
-        /*Sample usage: http://unicorns.com/#search/lolcats/p1*/
+        "search/:query/p:page" : "searchTodos",
+        /* As we can see, URLs may contain as many ":param"s as we wish */
+        /* Sample usage: http://example.com/#search/job/p1 */
 
-        'photos/:id/download/*imagePath' : 'downloadPhoto',
-        /*This is an example of using a *splat. splats are able to match any number of
+        "todos/:id/download/*documentPath" : "downloadDocument",
+        /* This is an example of using a *splat. splats are able to match any number of
         URL components and can be combined with ":param"s*/
-        /*Sample usage: http://unicorns.com/#photos/5/download/files/lolcat-car.jpg*/
+        /* Sample usage: http://example.com/#todo/5/download/files/Meeting_schedule.doc */
 
-        /*If you wish to use splats for anything beyond default routing, it's probably a good
+        /* If you wish to use splats for anything beyond default routing, it's probably a good
         idea to leave them at the end of a URL otherwise you may need to apply regular
-        expression parsing on your fragment*/
+        expression parsing on your fragment */
 
-        '*other'    : 'defaultRoute'
-        /*This is a default route that also uses a *splat. Consider the
+        "*other"    : "defaultRoute"
+        /* This is a default route that also uses a *splat. Consider the
         default route a wildcard for URLs that are either not matched or where
-        the user has incorrectly typed in a route path manually*/
-        /*Sample usage: http://unicorns.com/# <anything*/
-
+        the user has incorrectly typed in a route path manually */
+        /* Sample usage: http://example.com/# <anything */
     },
 
     showAbout: function(){
     },
 
-    getPhoto: function(id){
+    getTodo: function(id){
         /*
         Note that the id matched in the above route will be passed to this function
         */
         console.log('You are trying to reach photo ' + id);
     },
 
-    searchPhotos: function(query, page){
+    searchTodos: function(query, page){
         var page_number = page || 1;
-        console.log('Page number: ' + page_number + ' of the results for ' + query);
+        console.log("Page number: " + page_number + " of the results for todos containing the word: " + query);
     },
 
-    downloadPhoto: function(id, path){
+    downloadDocument: function(id, path){
     },
 
     defaultRoute: function(other){
@@ -1499,19 +1498,16 @@ var GalleryRouter = Backbone.Router.extend({
     }
 });
 
-/* Now that we have a router setup, remember to instantiate it*/
+/* Now that we have a router setup, remember to instantiate it */
 
-var myGalleryRouter = new GalleryRouter();
+var myTodoRouter = new TodoRouter();
 ```
 
-
 As of Backbone 0.5+, it's possible to opt-in for HTML5 pushState support via `window.history.pushState`. This permits you to define routes such as http://www.scriptjunkie.com/just/an/example. This will be supported with automatic degradation when a user's browser doesn't support pushState. For the purposes of this tutorial, we'll use the hashtag method.
-
 
 #### Is there a limit to the number of routers I should be using?
 
 Andrew de Andrade has pointed out that DocumentCloud themselves usually only use a single router in most of their applications. You're very likely to not require more than one or two routers in your own projects as the majority of your application routing can be kept organized in a single controller without it getting unwieldy.
-
 
 #### Backbone.history
 
@@ -1520,30 +1516,96 @@ Next, we need to initialize `Backbone.history` as it handles `hashchange` events
 The `Backbone.history.start()` method will simply tell Backbone that it's OK to begin monitoring all `hashchange` events as follows:
 
 ```javascript
+var TodoRouter = Backbone.Router.extend({
+  /* define the route and function maps for this router */
+  routes: {
+    "about" : "showAbout",
+    "search/:query" : "searchTodos",
+    "search/:query/p:page" : "searchTodos"
+  },
+
+  showAbout: function(){},
+
+  searchTodos: function(query, page){
+    var page_number = page || 1;
+    console.log("Page number: " + page_number + " of the results for todos containing the word: " + query);
+  }
+});
+
+var myTodoRouter = new TodoRouter();
+
 Backbone.history.start();
-Router.navigate();
+
+// Go to and check console:
+// http://localhost/#search/job/p3 logs: Page number: 3 of the results for todos containing the word: job
+// http://localhost/#search/job logs: Page number: 1 of the results for todos containing the word: job 
+// etc.
 ```
+
+Note: To test last example you should set site for testing in local development environment which is out of scope of this book.
 
 As an aside, if you would like to save application state to the URL at a particular point you can use the `.navigate()` method to achieve this. It simply updates your URL fragment without the need to trigger the `hashchange` event:
 
-
 ```javascript
-/*Lets imagine we would like a specific fragment for when a user zooms into a photo*/
-zoomPhoto: function(factor){
-    this.zoom(factor); //imagine this zooms into the image
-    this.navigate('zoom/' + factor); //updates the fragment for us, but doesn't trigger the route
-}
+/* Lets imagine we would like a specific fragment (edit) once a user opens single todo */
+var TodoRouter = Backbone.Router.extend({
+  routes: {
+    "todo/:id": "viewTodo",
+    "todo/:id/edit": "editTodo"
+    // ... other routes
+  },
+
+  viewTodo: function(id){
+    console.log("View todo requested.");
+    this.navigate("todo/" + id + '/edit'); // updates the fragment for us, but doesn't trigger the route
+  },
+  editTodo: function(id) {
+    console.log("Edit todo openned.");
+  }
+});
+
+var myTodoRouter = new TodoRouter();
+
+Backbone.history.start();
+
+// Go to:
+// http://localhost/#todo/4 url is updated to: http://localhost/#todo/45/edit
+// but editTodo() function is not invoked even though location we end up is mapped to it.
+//
+// logs: View todo requested.
 ```
 
-It is also possible for `Router.navigate()` to trigger the route as well as updating the URL fragment.
+It is also possible for `Router.navigate()` to trigger the route as well as update the URL fragment.
 
 ```javascript
-zoomPhoto: function(factor){
-    this.zoom(factor); //imagine this zooms into the image
-    this.navigate('zoom/' + factor, true); //updates the fragment for us and triggers the route
-}
-```
+var TodoRouter = Backbone.Router.extend({
+  routes: {
+    "todo/:id": "viewTodo",
+    "todo/:id/edit": "editTodo"
+    // ... other routes
+  },
 
+  viewTodo: function(id){
+    console.log("View todo requested.");
+    this.navigate("todo/" + id + '/edit', true); // updates the fragment and triggers the route as well
+  },
+  editTodo: function(id) {
+    console.log("Edit todo openned.");
+  }
+});
+
+var myTodoRouter = new TodoRouter();
+
+Backbone.history.start();
+
+// Go to:
+// http://localhost/#todo/4 url is updated to: http://localhost/#todo/45/edit
+// but this time editTodo() function is invoked.
+// 
+// logs: 
+// View todo requested.
+// Edit todo openned. 
+```
 
 ### Backbone’s Sync API
 
