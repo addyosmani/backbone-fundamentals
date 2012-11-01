@@ -146,22 +146,13 @@ Models manage the data for an application. They are concerned with neither the u
 To understand models better, let us imagine we have a JavaScript todo application. In a todo app, a todo item would merit its own model, as it represents a unique kind of domain-specific data. The Todo model may represent attributes such as a title and completed. A specific todo would be stored in an instance of a model. Here's an example of a simple Todo model implemented with Backbone.js:
 
 ```javascript
-
   var Todo = Backbone.Model.extend({
-
-      // Default attributes for the todo
-      defaults: {
-        title: '',
-        completed: false
-      }
-
-    // Default attributes for the photo
+    // Default attributes for the todo
     defaults: {
-      // Ensure that each photo created has an `src`.
-      src: 'placeholder.jpg',
-      caption: 'A default image',
-      viewed: false
-    },
+      title: '',
+      completed: false
+    }
+  });
 
   // todo instantiated with default attributes 
   var firstTodo = new Todo();
@@ -177,7 +168,6 @@ To understand models better, let us imagine we have a JavaScript todo applicatio
 
   console.log("Second todo title: " + secondTodo.get('title'));
   console.log("Second todo status: " + secondTodo.get('completed'));
-
 ```
 
 The built-in capabilities of models vary across frameworks, however it's common for them to support validation of attributes, where attributes represent the properties of the model, such as a model identifier. When using models in real-world applications we generally also need a way of persisting models. Persistence allows us to edit and update models with the knowledge that their most recent states will be saved somewhere, for example in a web browser's localStorage data-store or synchronized with a database.
@@ -189,15 +179,12 @@ It is not uncommon for modern MVC/MV* frameworks to provide a means to group mod
 Here's how we might group Todo models into a Backbone Collection:
 
 ```javascript
-
   var Todo = Backbone.Model.extend({
-
-      // Default attributes for the todo
-      defaults: {
-        title: '',
-        completed: false
-      }
-
+    // Default attributes for the todo
+    defaults: {
+      title: '',
+      completed: false
+    }
   });
 
   var Todos = Backbone.Collection.extend({
@@ -233,7 +220,6 @@ Here's how we might group Todo models into a Backbone Collection:
   // Collection keeps models in models 
   // property which is an array.
   console.log(todos.models);
-
 ```
 
 If you read older texts on MVC, you may come across a description of models as also managing application 'state'. In JavaScript applications "state" has a specific meaning, typically referring to the current "state" of a view or sub-view on a user's screen at a fixed time. State is a topic which is regularly discussed when looking at Single-page applications, where the concept of state needs to be simulated.
@@ -258,42 +244,38 @@ You may wonder where user interaction comes into play here. When users click on 
 The benefit of this architecture is that each component plays its own separate role in making the application function as needed.
 
 ```javascript
-
 var buildTodoView = function ( todoModel, todoController ) {
+  var base       = document.createElement('div'),
+      todoEl     = document.createElement('div');
 
-    var base        = document.createElement('div'),
-        todoEl     = document.createElement('div');
+  base.appendChild(todoEl);
 
-     base.appendChild(todoEl);
+  var render= function(){
+    // We use a templating library such as Underscore
+    // templating which generates the HTML for our
+    // todo entry
+    todoEl.innerHTML = _.template('todoTemplate', { src: todoModel.getSrc() });
+   }
 
-     var render= function(){
-        // We use a templating library such as Underscore
-        // templating which generates the HTML for our
-        // todo entry
-        todoEl.innerHTML = _.template('todoTemplate', { src: todoModel.getSrc() });
-     }
+  todoModel.addSubscriber( render );     
 
-     todoModel.addSubscriber( render );     
+  todoEl.addEventListener('click', function(){
+    todoController.handleEvent('click', todoModel );
+  });
 
-     todoEl.addEventListener('click', function(){
-        todoController.handleEvent('click', todoModel );
-     });
+  var show = function(){
+    todoEl.style.display  = '';
+  }
 
-     var show = function(){
-        todoEl.style.display  = '';
-     }
+  var hide = function(){
+    todoEl.style.display  = 'none';
+  }
 
-     var hide = function(){
-        todoEl.style.display  = 'none';
-     }
-
-     return {
-        showView: show,
-        hideView: hide
-     }
-
+  return {
+    showView: show,
+    hideView: hide
+  }
 }
-
 ```
 
 **Templating**
@@ -309,27 +291,23 @@ Let's compare two examples of HTML templates. One is implemented using the popul
 **Handlebars.js:**
 
 ```html
-
 <div class="view">
   <input class="toggle" type="checkbox" {{#if completed}} "checked" {{/if}}>
   <label>{{title}}</label>
   <button class="destroy"></button>
 </div>
 <input class="edit" value="{{title}}">
-
 ```
 
 **Underscore.js Microtemplates:**
 
 ```html
-
 <div class="view">
   <input class="toggle" type="checkbox" <%= completed ? 'checked' : '' %>>
   <label><%= title %></label>
   <button class="destroy"></button>
 </div>
 <input class="edit" value="<%= title %>">
-
 ```
 
 You may also use double curly brackets (i.e ```{{}}```) (or any other tag you feel comfortable with) in Microtemplates. In the case of curly brackets, this can be done by setting the Underscore ```templateSettings``` attribute as follows:
@@ -412,7 +390,6 @@ var TodoRouter = Backbone.Router.extend({
 var router = new TodoRouter();
   Backbone.history.start();
 });
-
 ```
 
 ## What does MVC give us?
@@ -497,42 +474,40 @@ Here, our Backbone ```TodoView``` uses the Observer pattern to 'subscribe' to ch
 
 
 ```javascript
+// The DOM element for a todo item...
+app.TodoView = Backbone.View.extend({
 
-  // The DOM element for a todo item...
-  app.TodoView = Backbone.View.extend({
+  //... is a list tag.
+  tagName:  'li',
 
-    //... is a list tag.
-    tagName:  'li',
+  // Pass the contents of the todo template through a templating
+  // function, cache it for a single todo
+  template: _.template( $('#item-template').html() ),
 
-    // Pass the contents of the todo template through a templating
-    // function, cache it for a single todo
-    template: _.template( $('#item-template').html() ),
+  // The DOM events specific to an item.
+  events: {
+    'click .toggle':  'togglecompleted'
+  },
 
-    // The DOM events specific to an item.
-    events: {
-      'click img' : 'toggleViewed'
-    },
+  // The TodoView listens for changes to its model, re-rendering. Since there's
+  // a one-to-one correspondence between a **Todo** and a **TodoView** in this
+  // app, we set a direct reference on the model for convenience.
+  initialize: function() {
+    this.model.on( 'change', this.render, this );
+    this.model.on( 'destroy', this.remove, this );
+  },
 
-    // The TodoView listens for changes to its model, re-rendering. Since there's
-    // a one-to-one correspondence between a **Todo** and a **TodoView** in this
-    // app, we set a direct reference on the model for convenience.
-    initialize: function() {
-      this.model.on( 'change', this.render, this );
-      this.model.on( 'destroy', this.remove, this );
-    },
+  // Re-render the titles of the todo item.
+  render: function() {
+    this.$el.html( this.template( this.model.toJSON() ) );
+    return this;
+  },
 
-    // Re-render the titles of the todo item.
-    render: function() {
-      this.$el.html( this.template( this.model.toJSON() ) );
-      return this;
-    },
- 
-    // Toggle the `"completed"` state of the model.
-    togglecompleted: function() {
-      this.model.toggle();
-    },
-  });
-
+  // Toggle the `"completed"` state of the model.
+  togglecompleted: function() {
+    this.model.toggle();
+  },
+});
 ```
 
 Another (quite different) opinion is that Backbone more closely resembles [Smalltalk-80 MVC](http://martinfowler.com/eaaDev/uiArchs.html#ModelViewController), which we went through earlier.
@@ -599,7 +574,6 @@ console.log(todo2);
 The `initialize()` method is called when a new instance of a model is created. Its use is optional, however you'll see why it's good practice to use it below.
 
 ```javascript
-
 var Todo = Backbone.Model.extend({
   initialize: function(){
       console.log('This model has been initialized.');
@@ -607,7 +581,6 @@ var Todo = Backbone.Model.extend({
 });
 
 var myTodo = new Todo();
-
 ```
 
 **Default values**
@@ -615,7 +588,6 @@ var myTodo = new Todo();
 There are times when you want your model to have a set of default values (e.g. in a scenario where a complete set of data isn't provided by the user). This can be set using a property called `defaults` in your model.
 
 ```javascript
-
 var Todo = Backbone.Model.extend({
   // Default todo attribute values
   defaults: {
@@ -641,7 +613,6 @@ var todo3 = new Todo({
   completed: true
 });
 console.log(todo3);
-
 ```
 
 #### Getters & Setters
@@ -674,7 +645,6 @@ console.log(todo2.get('completed')); // false
 Alternatively, if you wish to directly access all of the attributes in a model's instance directly, you can achieve this as follows:
 
 ```javascript
-
 var Todo = Backbone.Model.extend({
   // Default todo attribute values
   defaults: {
@@ -695,7 +665,6 @@ console.log(myTodo.attributes);
 // Logs value of the directly accessed title attribute
 // of the myTodo model instance:
 console.log(myTodo.attributes.title);
-
 ```
 
 It is best practice to use `Model.set()` or direct instantiation to set the values of a model's attributes.
@@ -731,7 +700,6 @@ console.log(JSON.stringify(todo2.toJSON()));
 
 
 ```javascript
-
 var Todo = Backbone.Model.extend({
   // Default todo attribute values
   defaults: {
@@ -759,7 +727,6 @@ myTodo.set({
 });
 console.log('Todo title: ' + myTodo.get('title'));
 console.log('Completed: ' + myTodo.get('completed'));
-
 ```
 
 **Listening for changes to your model**
@@ -767,7 +734,6 @@ console.log('Completed: ' + myTodo.get('completed'));
 Any and all of the attributes in a Backbone model can have listeners bound to them which detect when their values change. Listeners can be added to the `initialize()` function:
 
 ```javascript
-
 var Todo = Backbone.Model.extend({
   // Default todo attribute values
   defaults: {
@@ -794,7 +760,6 @@ myTodo.set({
   title: 'Listener is triggered for each change, not for change of the each attribute.',
   'complete': true
 });
-
 ```
 
 In the following example, we log a message whenever a specific attribute (the title of our Todo model) is altered.
@@ -826,7 +791,6 @@ myTodo.setTitle('Go fishing on Sunday.');
 // But, this change type is not observed, so no listener is triggered:
 myTodo.set('completed', true);
 console.log('Todo set as completed: ' + myTodo.get('completed'));
-
 ```
 
 **Validation**
@@ -910,7 +874,6 @@ var todoView = new TodoView();
 
 // logs reference to a DOM element that cooresponds to the view instance
 console.log(todoView.el);
-
 ```
 
 #### What is `el`?
@@ -922,7 +885,6 @@ There are two ways to attach a DOM element to a view: a new element is created f
 If you want to create a new element for your view, set any combination of the following view's properties: `tagName`, `id` and `className`. A new element will be created for you by the framework and a reference to it will be available at the `el` property. If nothing is specified `el` defaults to `div`.
 
 ```javascript
-
 var TodosView = Backbone.View.extend({
   tagName: 'ul', // required, but defaults to 'div' if not set
   className: 'container', // optional, you can assign multiple classes to this property like so 'container homepage'
@@ -931,7 +893,6 @@ var TodosView = Backbone.View.extend({
 
 var todosView = new TodosView();
 console.log(todosView.el);
-
 ```
 
 The above code creates the ```DOMElement``` below but doesn't append it to the DOM.
@@ -970,7 +931,6 @@ Normally, when creating a collection you'll also want to pass through a property
 In the following example, we create a TodoCollection that will contain our Todo models:
 
 ```javascript
-
 var Todo = Backbone.Model.extend({
   defaults: {
     title: '',
@@ -993,7 +953,6 @@ console.log("Collection size: " + todos.length);
 // new model instance within collection itself.
 todos.create({title:'Try out code examples', id: 48});
 console.log("Collection size: " + todos.length);
-
 ```
 
 **Getters and Setters**
@@ -1001,14 +960,12 @@ console.log("Collection size: " + todos.length);
 There are a few different ways to retrieve a model from a collection. The most straight-forward is to use `Collection.get()` which accepts a single id as follows:
 
 ```javascript
-
 // extends on previous example
 
 var todo2 = todos.get(2);
 
 // Models, as objects, are passed by reference
 console.log(todo2 === myTodo);
-
 ```
 
 Internally `Backbone.Collection` sets array of models enumerated by their `id` property, if model instances happen to have one. Once `collection.get(id)` is called this array is checked for existence of the model instance with the corresponding `id`.
@@ -1016,7 +973,6 @@ Internally `Backbone.Collection` sets array of models enumerated by their `id` p
 Sometimes you may also want to get a model based on its client id. The client id is a property that Backbone automatically assigns models that have not yet been saved. You can get a model's client id from its `.cid` property.
 
 ```javascript
-
 // extends on previous examples
 
 var todoCid = todos.getByCid(todo2.cid);
@@ -1024,13 +980,11 @@ var todoCid = todos.getByCid(todo2.cid);
 // As mentioned in previous example, 
 // models are passed by reference
 console.log(todo2 === myTodo); 
-
 ```
 
 Backbone Collections don't have setters as such, but do support adding new models via `.add()` and removing models via `.remove()`.
 
 ```javascript
-
 var Todo = Backbone.Model.extend({
   defaults: {
     title: '',
@@ -1058,7 +1012,6 @@ console.log("Collection size: " + todos.length);
 
 todos.remove(c);
 console.log("Collection size: " + todos.length);
-
 ```
 
 **Listening for events**
