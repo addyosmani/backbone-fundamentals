@@ -967,42 +967,98 @@ Collections are sets of Models and are created by extending `Backbone.Collection
 
 Normally, when creating a collection you'll also want to pass through a property specifying the model that your collection will contain, as well as any instance properties required.
 
-In the following example, we create a PhotoCollection that will contain our Photo models:
+In the following example, we create a TodoCollection that will contain our Todo models:
 
 ```javascript
-var PhotoCollection = Backbone.Collection.extend({
-    model: Photo
+
+var Todo = Backbone.Model.extend({
+  defaults: {
+    title: '',
+    completed: false
+  }
 });
+
+var TodosCollection = Backbone.Collection.extend({
+  model: Todo,
+  localStorage: new Store('todos-backbone')  
+});
+
+var myTodo = new Todo({title:'Read the whole book', id: 2});
+
+// pass array of models on collection instantiation
+var todos = new TodosCollection([myTodo]);
+console.log("Collection size: " + todos.length);
+
+// Collection's convenience method used to create 
+// new model instance within collection itself.
+todos.create({title:'Try out code examples', id: 48});
+console.log("Collection size: " + todos.length);
+
 ```
 
 **Getters and Setters**
 
 There are a few different ways to retrieve a model from a collection. The most straight-forward is to use `Collection.get()` which accepts a single id as follows:
 
-
 ```javascript
-var skiingEpicness = PhotoCollection.get(2);
+
+// extends on previous example
+
+var todo2 = todos.get(2);
+
+// Models, as objects, are passed by reference
+console.log(todo2 === myTodo);
+
 ```
+
+Internally `Backbone.Collection` sets array of models enumerated by their `id` property, if model instances happen to have one. Once `collection.get(id)` is called this array is checked for existence of the model instance with the corresponding `id`.
 
 Sometimes you may also want to get a model based on its client id. The client id is a property that Backbone automatically assigns models that have not yet been saved. You can get a model's client id from its `.cid` property.
 
-
 ```javascript
-var mySkiingCrash = PhotoCollection.getByCid(456);
+
+// extends on previous examples
+
+var todoCid = todos.getByCid(todo2.cid);
+
+// As mentioned in previous example, 
+// models are passed by reference
+console.log(todo2 === myTodo); 
+
 ```
 
 Backbone Collections don't have setters as such, but do support adding new models via `.add()` and removing models via `.remove()`.
 
 ```javascript
-var a = new Photo({ title: 'my vacation'}),
-    b = new Photo({ title: 'my holiday'}),
-    c = new Photo({ title: 'my weekend'});
 
-var photoCollection = new PhotoCollection([a,b]);
-photoCollection.add(c);
+var Todo = Backbone.Model.extend({
+  defaults: {
+    title: '',
+    completed: false
+  }
+});
 
-photoCollection.remove([a,b]);
-photoCollection.remove(c);
+var TodosCollection = Backbone.Collection.extend({
+  model: Todo,
+  localStorage: new Store('todos-backbone')  
+});
+
+var a = new Todo({ title: 'Go to Jamaica.'}),
+    b = new Todo({ title: 'Go to China.'}),
+    c = new Todo({ title: 'Go to Disneyland.'});
+
+var todos = new TodosCollection([a,b]);
+console.log("Collection size: " + todos.length);
+
+todos.add(c);
+console.log("Collection size: " + todos.length);
+
+todos.remove([a,b]);
+console.log("Collection size: " + todos.length);
+
+todos.remove(c);
+console.log("Collection size: " + todos.length);
+
 ```
 
 **Listening for events**
@@ -1010,24 +1066,35 @@ photoCollection.remove(c);
 As collections represent a group of items, we're also able to listen for `add` and `remove` events for when new models are added or removed from the collection. Here's an example:
 
 ```javascript
-var PhotoCollection = new Backbone.Collection();
-PhotoCollection.on('add', function(photo) {
-  console.log('I liked ' + photo.get('title') + ' it\'s this one, right? '  + photo.get('src'));
+var TodosCollection = new Backbone.Collection();
+
+TodosCollection.on("add", function(todo) {
+  console.log("I should " + todo.get("title") + '. Have I done it before? '  + (todo.get("completed") ? 'Yeah!': 'Not.' ));
 });
 
-PhotoCollection.add([
-  {title: 'My trip to Bali', src: 'bali-trip.jpg'},
-  {title: 'The flight home', src: 'long-flight-oofta.jpg'},
-  {title: 'Uploading pix', src: 'too-many-pics.jpg'}
+TodosCollection.add([
+  { title: 'go to Jamaica.', completed: false },
+  { title: 'go to China.', completed: false },
+  { title: 'go to Disneyland.', completed: true }
 ]);
 ```
 
 In addition, we're able to bind a `change` event to listen for changes to models in the collection.
 
 ```javascript
-PhotoCollection.on('change:title', function(){
-    console.log('there have been updates made to this collection`s titles');
+var TodosCollection = new Backbone.Collection();
+
+TodosCollection.on("change:title", function(model) {
+    console.log("Changed my mind where should I will, " + model.get('title'));
 });
+
+TodosCollection.add([
+  { title: 'go to Jamaica.', completed: false, id: 3 },
+]);
+
+var myTodo = TodosCollection.get(3);
+
+myTodo.set('title', 'go fishing');
 ```
 
 **Fetching models from the server**
@@ -1036,9 +1103,9 @@ PhotoCollection.on('change:title', function(){
 
 
 ```javascript
-var PhotoCollection = new Backbone.Collection;
-PhotoCollection.url = '/photos';
-PhotoCollection.fetch();
+var TodosCollection = new Backbone.Collection;
+TodosCollection.url = '/todos';
+TodosCollection.fetch();
 ```
 
 During configuration, Backbone sets a variable to denote if extended HTTP methods are supported by the server. Another setting controls if the server understands the correct MIME type for JSON:
@@ -1050,7 +1117,7 @@ Backbone.emulateJSON = false;
 
 The Backbone.sync method that uses these values is actually an integral part of Backbone.js. A jQuery-like ajax method is assumed, so HTTP parameters are organised based on jQuery’s API. Searching through the code for calls to the sync method show it’s used whenever a model is saved, fetched, or deleted (destroyed).
 
-Under the covers, `Backbone.sync` is the function called every time Backbone tries to read or save models to the server. It uses jQuery or Zepto's ajax implementations to make these RESTful requests, however this can be overridden as per your needs. :
+Under the covers, `Backbone.sync` is the function called every time Backbone tries to read or save models to the server. It uses jQuery or Zepto's ajax implementations to make these RESTful requests, however this can be overridden as per your needs.
 
 The sync function may be overriden globally as Backbone.sync, or at a finer-grained level, by adding a sync function to a Backbone collection or to an individual model.
 
@@ -1088,21 +1155,57 @@ Backbone.sync = function(method, model) {
 Rather than adding or removing models individually, you might occasionally wish to update an entire collection at once. ```Collection.reset()``` allows us to replace an entire collection with new models as follows:
 
 ```javascript
-PhotoCollection.reset([
-  {title: 'My trip to Scotland', src: 'scotland-trip.jpg'},
-  {title: 'The flight from Scotland', src: 'long-flight.jpg'},
-  {title: 'Latest snap of Loch Ness', src: 'lochness.jpg'}]);
+var TodosCollection = new Backbone.Collection();
+
+TodosCollection.on("reset", function() {
+  console.log("Collection reseted.");
+});
+
+TodosCollection.add([
+  { title: 'go to Jamaica.', completed: false },
+  { title: 'go to China.', completed: false },
+  { title: 'go to Disneyland.', completed: true }
+]);
+
+console.log('Collection size: ' + TodosCollection.length);
+
+TodosCollection.reset([
+  { title: 'go to Cuba.', completed: false }
+]);
+console.log('Collection size: ' + TodosCollection.length);
 ```
 
-Note that using `Collection.reset()` doesn't fire any `add` or `remove` events. A `reset` event is fired instead.
+Note that using `Collection.reset()` doesn't fire any `add` or `remove` events. A `reset` event is fired instead as shown in example.
 
 ### Underscore utility functions
 
-As Backbone requires Underscore as a hard dependency, we're able to use many of the utilities it has to offer to aid with our application development. Here's an example of how Underscore's `sortBy()` method can be used to sort a collection of photos based on a particular attribute.
+As Backbone requires Underscore as a hard dependency, we're able to use many of the utilities it has to offer to aid with our application development. Here's an example of how Underscore's `forEach` method that can be used for iterating over collection and `sortBy()` method that can be used to sort a collection of todos based on a particular attribute.
 
 ```javascript
-var sortedByAlphabet = PhotoCollection.sortBy(function (photo) {
-    return photo.get('title').toLowerCase();
+var TodosCollection = new Backbone.Collection();
+
+TodosCollection.on("reset", function() {
+  console.log("Collection reseted.");
+});
+
+TodosCollection.add([
+  { title: 'go to Belgium.', completed: false },
+  { title: 'go to China.', completed: false },
+  { title: 'go to Austria.', completed: true }
+]);
+
+TodosCollection.forEach(function(model){
+  console.log(model.get('title'));
+});
+
+var sortedByAlphabet = TodosCollection.sortBy(function (todo) {
+    return todo.get("title").toLowerCase();
+});
+
+console.log("- Now sorted: ");
+
+sortedByAlphabet.forEach(function(model){
+  console.log(model.get('title'));
 });
 ```
 
@@ -1120,12 +1223,13 @@ var collection = new Backbone.Collection([
   { name: 'Rob', age: 55 }
 ]);
 
-collection.chain()
+var filteredNames = collection.chain()
   .filter(function(item) { return item.get('age') > 10; })
   .map(function(item) { return item.get('name'); })
   .value();
 
-// Will return ['Ida', 'Rob']
+console.log(filteredNames); // logs: ['Ida', 'Rob']
+```
 
 Some of the Backbone-specific methods will return this, which means they can be chained as well:
 
@@ -1137,10 +1241,10 @@ collection
     .add({ name: 'Harry', age: 33 })
     .add({ name: 'Steve', age: 41 });
 
-collection.pluck('name');
-// ['John', 'Harry', 'Steve']
-```
+var names = collection.pluck('name');
 
+console.log(names); // logs: ['John', 'Harry', 'Steve']
+```
 
 ## Events
 
@@ -1181,52 +1285,144 @@ If you're familiar with jQuery custom events or the concept of Publish/Subscribe
 The official Backbone.js documentation recommends namespacing event names using colons if you end up using quite a few of these on your page. e.g:
 
 ```javascript
-ourObject.on('dance:tap', ...);
+var ourObject = {};
+
+// Mixin
+_.extend(ourObject, Backbone.Events);
+
+function dancing (msg) { console.log("We started " + msg); }
+
+// Add a namespaced custom events
+ourObject.on("dance:tap", dancing);
+ourObject.on("dance:break", dancing);
+
+// Trigger the custom events.
+ourObject.trigger("dance:tap", "tap dancing. Yeah!");
+ourObject.trigger("dance:break", "break dancing. Yeah!");
+
+// This one triggers nothing as no listener listens for it
+ourObject.trigger("dance", "break dancing. Yeah!");
 ```
 
 A special `all` event is made available in case you would like an event to be triggered when any event occurs (e.g if you would like to screen events in a single location). The `all` event can be used as follows:
 
 
 ```javascript
-ourObject.on('all', function(eventName){
-  console.log('The name of the event passed was ' + eventName);
+var ourObject = {};
+
+// Mixin
+_.extend(ourObject, Backbone.Events);
+
+function dancing (msg) { console.log("We started " + msg); }
+
+ourObject.on("all", function(eventName){
+  console.log("The name of the event passed was " + eventName);
 });
+
+// This time each event will be catched with catch 'all' event listener
+ourObject.trigger("dance:tap", "tap dancing. Yeah!");
+ourObject.trigger("dance:break", "break dancing. Yeah!");
+ourObject.trigger("dance", "break dancing. Yeah!");
 ```
 
 `off` allows us to remove a callback function that has previously been bound from an object. Going back to our Publish/Subscribe comparison, think of it as an `unsubscribe` for custom events.
 
-To remove the `dance` event we previously bound to `myObject`, we would simply do:
-
+To remove the `dance` event we previously bound to `ourObject`, we would simply do:
 
 ```javascript
-myObject.off('dance');
+var ourObject = {};
+
+// Mixin
+_.extend(ourObject, Backbone.Events);
+
+function dancing (msg) { console.log("We  " + msg); }
+
+// Add a namespaced custom events
+ourObject.on("dance:tap", dancing);
+ourObject.on("dance:break", dancing);
+
+// Trigger the custom events. Each will be catched and acted upon.
+ourObject.trigger("dance:tap", "started tap dancing. Yeah!");
+ourObject.trigger("dance:break", "started break dancing. Yeah!");
+
+// Removes event bound to the object
+ourObject.off("dance:tap");
+
+// Trigger the custom events again, but one is logged.
+ourObject.trigger("dance:tap", "stopped tap dancing."); // won't be logged as its not listened for
+ourObject.trigger("dance:break", "break dancing. Yeah!");
 ```
 
-This will remove all callbacks for the `dance` event. If we wish to remove just a callback by a specific name, we can do:
-
+To remove all callbacks for the event we should just pass event name (e.g `move`) to `off()` function of the object event is bound to. If we wish to remove just a callback by a specific name, we can pass callback name as second parameter:
 
 ```javascript
-myObject.off('dance', callbackName);
+var ourObject = {};
+
+// Mixin
+_.extend(ourObject, Backbone.Events);
+
+function dancing (msg) { console.log("We are dancing. " + msg); }
+function jumping (msg) { console.log("We are jumping. " + msg); }
+
+// Add two listeners to the same event
+ourObject.on("move", dancing);
+ourObject.on("move", jumping);
+
+// Trigger the events. Both listeners are called.
+ourObject.trigger("move", "Yeah!");
+
+// Removes specified listener
+ourObject.off("move", dancing);
+
+// Trigger the events again. One listener left.
+ourObject.trigger("move", "Yeah, jump, jump!");
 ```
 
-Finally, `trigger` triggers a callback for a specified event (or a space-separated listof events). e.g:
-
+Finally, `trigger` triggers a callback for a specified event (or a space-separated list of events). e.g:
 
 ```javascript
+var ourObject = {};
+
+// Mixin
+_.extend(ourObject, Backbone.Events);
+
+function doAction (msg) { console.log("We are " + msg); }
+
+// Add event listeners
+ourObject.on("dance", doAction);
+ourObject.on("jump", doAction);
+ourObject.on("skip", doAction);
+
 // Single event
-myObject.trigger('dance');
+ourObject.trigger("dance", 'just dancing.');
 
 // Multiple events
-myObject.trigger('dance jump skip');
+ourObject.trigger("dance jump skip", 'very tired from so much action.');
 ```
 
 It is also possible to pass along additional arguments to each (or all) of these events via a second argument supported by `trigger`. e.g:
 
-
 ```javascript
-myObject.trigger('dance', {duration: '5 minutes'});
-```
+var ourObject = {};
 
+// Mixin
+_.extend(ourObject, Backbone.Events);
+
+function doAction (actionObj) {
+  console.log("We are " + actionObj.action + ' for ' + actionObj.duration ); 
+}
+
+// Add event listeners
+ourObject.on("dance", doAction);
+ourObject.on("jump", doAction);
+ourObject.on("skip", doAction);
+
+// Passing multiple arguments to single event
+ourObject.trigger("dance", {duration: "5 minutes", action: 'dancing'});
+
+// Passing multiple arguments to multiple events
+ourObject.trigger("dance jump skip", {duration: "15 minutes", action: 'on fire'});
+```
 
 ## Routers
 
