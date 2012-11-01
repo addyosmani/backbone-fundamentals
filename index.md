@@ -1737,7 +1737,7 @@ Most development with Backbone is based around inheriting from these objects, an
 
 If this sounds familiar, it's because `extend` is an Underscore.js utility, although Backbone itself does a lot more with this. See below for Underscore's `extend`:
 
-```
+```javascript
 each(slice.call(arguments, 1), function(source) {
   for (var prop in source) {
     obj[prop] = source[prop];
