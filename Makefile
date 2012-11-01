@@ -14,7 +14,8 @@ html:
 		--include-after-body $(include_dir)/stats.html \
 		--title-prefix $(title) \
 		--normalize \
-		--smart
+		--smart \
+		--toc
 
 epub:
 	pandoc -s $(source) --normalize --smart -t epub -o $(filename).epub \
@@ -23,11 +24,12 @@ epub:
 		--epub-cover-image img/cover.jpg \
 		--title-prefix $(title) \
 		--normalize \
-		--smart
+		--smart \
+		--toc
 
 rtf:
 	pandoc -s $(source) -o $(filename).rtf \
-		--title-prefix $(filename) \
+		--title-prefix $(title) \
 		--normalize \
 		--smart
 
@@ -39,7 +41,8 @@ pdf:
 	pandoc -s $(source) -o $(filename).pdf \
 		--title-prefix $(title) \
 		--normalize \
-		--smart
+		--smart \
+		--toc
 
 mobi: epub
 	# Download: http://www.amazon.com/gp/feature.html?ie=UTF8&docId=1000765211
