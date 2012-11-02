@@ -350,7 +350,7 @@ var TodoController = Spine.Controller.sub({
 
   render: function(){
     // Handle templating
-    this.replace($('#photoTemplate').tmpl(this.item));
+    this.replace($('#todo-template').tmpl(this.item));
     return this;
   },
 
