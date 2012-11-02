@@ -25,9 +25,9 @@ In short, we’re stuck with spaghetti code. Fortunately there are modern JavaSc
 
 These modern frameworks provide developers an easy path to organizing their code using variations of a pattern known as MVC (Model-View-Controller). MVC separates the concerns in an application down into three parts:
 
-* Models represent the domain-specific knowledge and data in an application. Think of this as being a ‘type’ of data you can model — like a User, Photo or Note. Models should notify anyone observing them about their current state (e.g Views).
+* Models represent the domain-specific knowledge and data in an application. Think of this as being a ‘type’ of data you can model — like a User, Photo or Todo note. Models should notify anyone observing them about their current state (e.g Views).
 * Views are typically considered the User-interface in an application (e.g your markup and templates), but don’t have to be. They should know about the existence of Models in order to observe them, but don’t directly communicate with them.
-* Controllers handle the input (e.g clicks, user actions) in an application and Views can be considered as handling the output. When a Controller updates the state of a model (such as editing the caption on a Photo), it doesn’t directly tell the View. This is what the observing nature of the View and Model relationship is for.
+* Controllers handle the input (e.g clicks, user actions) in an application and Views can be considered as handling the output. When a Controller updates the state of a model (such as editing Todo note content), it doesn’t directly tell the View. This is what the observing nature of the View and Model relationship is for.
 
 JavaScript ‘MVC’ frameworks that can help us structure our code don’t always strictly follow the above pattern. Some frameworks will include the responsibility of the Controller in the View (e.g Backbone.js) whilst others add their own opinionated components into the mix as they feel this is more effective.
 
@@ -137,53 +137,83 @@ MVC is composed of three core components:
 
 Models manage the data for an application. They are concerned with neither the user-interface nor presentation layers, but instead represent structured data that an application may require. When a model changes (e.g when it is updated), it will typically notify its observers (e.g views, a concept we will cover shortly) that a change has occurred so that they may react accordingly.
 
-To understand models better, let us imagine we have a JavaScript photo gallery application. In a photo gallery, a photo would merit its own model, as it represents a unique kind of domain-specific data. The Photo model may represent attributes such as a caption, image source and additional meta-data. A specific photo would be stored in an instance of a model. Here's an example of a simple Photo model implemented with Backbone.js:
-
-
+To understand models better, let us imagine we have a JavaScript todo application. In a todo app, a todo item would merit its own model, as it represents a unique kind of domain-specific data. The Todo model may represent attributes such as a title and completed. A specific todo would be stored in an instance of a model. Here's an example of a simple Todo model implemented with Backbone.js:
 
 ```javascript
-var Photo = Backbone.Model.extend({
-
-    // Default attributes for the photo
+  var Todo = Backbone.Model.extend({
+    // Default attributes for the todo
     defaults: {
-      // Ensure that each photo created has an `src`.
-      src: 'placeholder.jpg',
-      caption: 'A default image',
-      viewed: false
-    },
-
-    initialize: function() {
+      title: '',
+      completed: false
     }
+  });
 
-});
+  // todo instantiated with default attributes 
+  var firstTodo = new Todo();
+
+  console.log("Todo's default title: " + firstTodo.get('title')); // ""
+  console.log("Todo's default status: " + firstTodo.get('completed')); // false
+
+  firstTodo.set('title', 'Enjoy reading the book');
+  console.log('Title changed: ' + firstTodo.get('title'));
+
+  // new todo instantiated with todo specific data
+  var secondTodo = new Todo({ title: 'Try this code in chrome console'});
+
+  console.log("Second todo title: " + secondTodo.get('title'));
+  console.log("Second todo status: " + secondTodo.get('completed'));
 ```
 
 The built-in capabilities of models vary across frameworks, however it's common for them to support validation of attributes, where attributes represent the properties of the model, such as a model identifier. When using models in real-world applications we generally also need a way of persisting models. Persistence allows us to edit and update models with the knowledge that their most recent states will be saved somewhere, for example in a web browser's localStorage data-store or synchronized with a database.
 
-A model may also have multiple views observing it. Imagine our Photo model contained meta-data such as the longitude and latitude where the photo was taken, a list of people present in the photo, and a list of tags. A developer could create a single view that displayed all these attributes, or might create three separate views to display each attribute. The important detail is that the Photo model doesn't care how these views are organized, it simply announces updates to its data as necessary. We'll come back to Views in more detail later.
+A model may also have multiple views observing it. Imagine our Todo model contained meta-data such as the scheduled date, notes, days on which to repeat (if it's something we do on regular basis). A developer could create a single view that displayed all these attributes, or might create three separate views to display each attribute. The important detail is that the Todo model doesn't care how these views are organized, it simply announces updates to its data as necessary. We'll come back to Views in more detail later.
 
 It is not uncommon for modern MVC/MV* frameworks to provide a means to group models together. In Backbone, these groups are called "Collections". Managing models in groups allows us to write application logic based on notifications from the group, should any model it contains change. This avoids the need to manually observe individual model instances.
 
-
-Here's how we might group Photo models into a simplified Backbone Collection:
+Here's how we might group Todo models into a Backbone Collection:
 
 ```javascript
-var PhotoGallery = Backbone.Collection.extend({
-
-    // Reference to this collection's model.
-    model: Photo,
-
-    // Filter down the list of all photos that have been viewed
-    viewed: function() {
-      return this.filter(function(photo){ return photo.get('viewed'); });
-    },
-
-    // Filter down the list to only photos that have not yet been viewed
-    unviewed: function() {
-      return this.without.apply(this, this.viewed());
+  var Todo = Backbone.Model.extend({
+    // Default attributes for the todo
+    defaults: {
+      title: '',
+      completed: false
     }
+  });
 
-});
+  var Todos = Backbone.Collection.extend({
+    model: Todo,
+    
+    // For simplicity we'll use localStorage throughout the first part of book.
+    // Save all of the todo items under the `"todos"` namespace.
+    localStorage: new Store('todos-backbone')
+    
+    // When working with REST API on back-end here would be
+    // appropriate to use:
+    // url: "/todos"
+    
+  });
+
+  var firstTodo = new Todo({title:'Read whole book'});
+
+  // pass array of models on collection instantiation
+  var todos = new Todos([firstTodo]);
+  console.log(todos.length);
+
+  // Collection's convenience method used to create 
+  // new model instance within collection itself.
+  todos.create({title:'Try out code examples'});
+  console.log(todos.length);
+
+  var thirdTodo = new Todo({title:'Make something cool'});
+
+  // Adds model to collection
+  todos.add(thirdTodo);
+  console.log(todos.length);
+
+  // Collection keeps models in models 
+  // property which is an array.
+  console.log(todos.models);
 ```
 
 If you read older texts on MVC, you may come across a description of models as also managing application 'state'. In JavaScript applications "state" has a specific meaning, typically referring to the current "state" of a view or sub-view on a user's screen at a fixed time. State is a topic which is regularly discussed when looking at Single-page applications, where the concept of state needs to be simulated.
@@ -193,60 +223,54 @@ If you read older texts on MVC, you may come across a description of models as a
 
 Views are a visual representation of models that present a filtered view of their current state. A view typically observes a model and is notified when the model changes, allowing the view to update itself accordingly. Design pattern literature commonly refers to views as 'dumb', given that their knowledge of models and controllers in an application is limited.
 
-Users interact with views, which usually means reading and editing model data. For example, in our photo gallery application example, model viewing might happen in a user interface with a big image, a caption, and a list of tags. Model editing could be done through an "edit" view where a user who has selected a specific photo could edit its caption, tags, or other metadata in a form.
+Users interact with views, which usually means reading and editing model data. For example, in our todo application example, todo model viewing might happen in a user interface in the list of all todo items. Within it each todo is rendered with their title and completed checkbox. Model editing could be done through an "edit" view where a user who has selected a specific todo could edit its title in a form.
 
 In MVC, the actual task of updating the Model falls to Controllers, which we'll be covering shortly.
 
-Let's explore Views a little further using a simple JavaScript example. Below we can see a function that creates a single Photo view, consuming both a model instance and a controller instance.
+Let's explore Views a little further using a simple JavaScript example. Below we can see a function that creates a single Todo view, consuming both a model instance and a controller instance.
 
-We define a ```render()``` utility within our view which is responsible for rendering the contents of the ```photoModel``` using a JavaScript templating engine ([Underscore](http://underscorejs.org 'Underscore.js') templating) and updating the contents of our view, referenced by ```photoEl```.
+We define a ```render()``` utility within our view which is responsible for rendering the contents of the ```todoModel``` using a JavaScript templating engine ([Underscore](http://underscorejs.org "Underscore.js") templating) and updating the contents of our view, referenced by ```todoEl```.
 
-The ```photoModel``` then adds our ```render()``` callback as one of its subscribers, so that through the Observer pattern it can trigger the view to update when the model changes.
+The ```todoModel``` then adds our ```render()``` callback as one of its subscribers, so that through the Observer pattern it can trigger the view to update when the model changes.
 
-You may wonder where user interaction comes into play here. When users click on any elements within the view, it's not the view's responsibility to know what to do next. A Controller makes this decision. In our sample implementation, this is achieved by adding an event listener to ```photoEl``` which will delegate handling the click behavior back to the controller, passing the model information along with it in case it's needed.
+You may wonder where user interaction comes into play here. When users click on any elements within the view, it's not the view's responsibility to know what to do next. A Controller makes this decision. In our sample implementation, this is achieved by adding an event listener to ```todoEl``` which will delegate handling the click behavior back to the controller, passing the model information along with it in case it's needed.
 
 The benefit of this architecture is that each component plays its own separate role in making the application function as needed.
 
-
-
 ```javascript
-var buildPhotoView = function( photoModel, photoController ){
+var buildTodoView = function ( todoModel, todoController ) {
+  var base       = document.createElement('div'),
+      todoEl     = document.createElement('div');
 
-    var base        = document.createElement('div'),
-        photoEl     = document.createElement('div');
+  base.appendChild(todoEl);
 
-     base.appendChild(photoEl);
+  var render= function(){
+    // We use a templating library such as Underscore
+    // templating which generates the HTML for our
+    // todo entry
+    todoEl.innerHTML = _.template('todoTemplate', { src: todoModel.getSrc() });
+   }
 
-     var render= function(){
-        // We use a templating library such as Underscore
-        // templating which generates the HTML for our
-        // photo entry
-        photoEl.innerHTML = _.template('photoTemplate', {src: photoModel.getSrc()});
-     }
+  todoModel.addSubscriber( render );     
 
-     photoModel.addSubscriber( render );
+  todoEl.addEventListener('click', function(){
+    todoController.handleEvent('click', todoModel );
+  });
 
-     photoEl.addEventListener('click', function(){
-        photoController.handleEvent('click', photoModel );
-     });
+  var show = function(){
+    todoEl.style.display  = '';
+  }
 
-     var show = function(){
-        photoEl.style.display  = '';
-     }
+  var hide = function(){
+    todoEl.style.display  = 'none';
+  }
 
-     var hide = function(){
-        photoEl.style.display  = 'none';
-     }
-
-
-     return{
-        showView: show,
-        hideView: hide
-     }
-
+  return {
+    showView: show,
+    hideView: hide
+  }
 }
 ```
-
 
 **Templating**
 
@@ -254,32 +278,30 @@ In the context of JavaScript frameworks that support MVC/MV*, it is worth lookin
 
 It has long been considered bad practice (and computationally expensive) to manually create large blocks of HTML markup in-memory through string concatenation. Developers using this technique often find themselves iterating through their data, wrapping it in nested divs and using outdated techniques such as ```document.write``` to inject the 'template' into the DOM. This approach often means keeping scripted markup inline with standard markup, which can quickly become difficult to read and maintain, especially when building large applications.
 
-JavaScript templating libraries (such as Handlebars.js or Mustache) are often used to define templates for views as HTML markup containing template variables. These template blocks can be either stored externally or within script tags with a custom type (e.g 'text/template'). Variables are delimited using a variable syntax (e.g {{name}}). Javascript template libraries typically accept data in JSON, and the grunt work of populating templates with data is taken care of by the framework itself. This has a several benefits, particularly when opting to store templates externally as this can let applications load templates dynamically on an as-needed basis.
+JavaScript templating libraries (such as Handlebars.js or Mustache) are often used to define templates for views as HTML markup containing template variables. These template blocks can be either stored externally or within script tags with a custom type (e.g 'text/template'). Variables are delimited using a variable syntax (e.g {{title}}). Javascript template libraries typically accept data in JSON, and the grunt work of populating templates with data is taken care of by the framework itself. This has a several benefits, particularly when opting to store templates externally as this can let applications load templates dynamically on an as-needed basis.
 
 Let's compare two examples of HTML templates. One is implemented using the popular Handlebars.js library, and the other uses Underscore's 'microtemplates'.
 
 **Handlebars.js:**
 
 ```html
-<li class="photo">
-  <h2>{{caption}}</h2>
-  <img class="source" src="{{src}}"/>
-  <div class="meta-data">
-    {{metadata}}
-  </div>
-</li>
+<div class="view">
+  <input class="toggle" type="checkbox" {{#if completed}} "checked" {{/if}}>
+  <label>{{title}}</label>
+  <button class="destroy"></button>
+</div>
+<input class="edit" value="{{title}}">
 ```
 
 **Underscore.js Microtemplates:**
 
 ```html
-<li class="photo">
-  <h2><%= caption %></h2>
-  <img class="source" src="<%= src %>"/>
-  <div class="meta-data">
-    <%= metadata %>
-  </div>
-</li>
+<div class="view">
+  <input class="toggle" type="checkbox" <%= completed ? 'checked' : '' %>>
+  <label><%= title %></label>
+  <button class="destroy"></button>
+</div>
+<input class="edit" value="<%= title %>">
 ```
 
 You may also use double curly brackets (i.e ```{{}}```) (or any other tag you feel comfortable with) in Microtemplates. In the case of curly brackets, this can be done by setting the Underscore ```templateSettings``` attribute as follows:
@@ -292,12 +314,11 @@ _.templateSettings = { interpolate : /\{\{(.+?)\}\}/g };
 
 It is also worth noting that in classical web development, navigating between independent views required the use of a page refresh. In single-page JavaScript applications, however, once data is fetched from a server via Ajax, it can be dynamically rendered in a new view within the same page. Since this doesn't automatically update the URL, the role of navigation thus falls to a "router", which assists in managing application state (e.g allowing users to bookmark a particular view they have navigated to). As routers are however neither a part of MVC nor present in every MVC-like framework, I will not be going into them in greater detail in this section.
 
-
 ### Controllers
 
 Controllers are an intermediary between models and views which are classically responsible for two tasks: they both update the view when the model changes and update the model when the user manipulates the view.
 
-In our photo gallery application, a controller would be responsible for handling changes the user made to the edit view for a particular photo, updating a specific photo model when a user has finished editing.
+In our Todo application, a controller would be responsible for handling changes the user made in the edit view for a particular todo, updating a specific todo model when a user has finished editing.
 
 It's with controllers that most JavaScript MVC frameworks depart from this interpretation of the MVC pattern. The reasons for this vary, but in my opinion, Javascript framework authors likely initially looked at server-side interpretations of MVC (such as Ruby on Rails), realized that that approach didn't translate 1:1 on the client-side, and so re-interpreted the C in MVC to solve their state management problem. This was a clever approach, but it can make it hard for developers coming to MVC for the first time to understand both the classical MVC pattern and the "proper" role of controllers in other non-Javascript frameworks.
 
@@ -313,7 +334,7 @@ In this respect, contrary to what might be mentioned in the official documentati
 
 We now know that controllers are traditionally responsible for updating the view when the model changes (and similarly the model when the user updates the view). Since Backbone doesn't have its **own** explicit controllers, it's useful to review the controller from another MVC framework to appreciate the difference in implementations. Let's take a look at [Spine.js](http://spinejs.com/):
 
-In this example, we're going to have a controller called ```PhotosController``` which will be in charge of individual photos in the application. It will ensure that when the view updates (e.g a user edited the photo meta-data) the corresponding model does too.
+In this example, we're going to have a controller called ```TodoController``` which would be in charge of individual todos in the application. It will ensure that when the view updates (e.g a user edited the todo) the corresponding model does too.
 
 (Note: We won't be delving heavily into Spine.js beyond this example, but it's worth looking at it to learn more about Javascript frameworks in general.)
 
@@ -321,7 +342,7 @@ In this example, we're going to have a controller called ```PhotosController``` 
 ```javascript
 // Controllers in Spine are created by inheriting from Spine.Controller
 
-var PhotosController = Spine.Controller.sub({
+var TodoController = Spine.Controller.sub({
   init: function(){
     this.item.bind('update', this.proxy(this.render));
     this.item.bind('destroy', this.proxy(this.remove));
@@ -329,7 +350,7 @@ var PhotosController = Spine.Controller.sub({
 
   render: function(){
     // Handle templating
-    this.replace($('#photoTemplate').tmpl(this.item));
+    this.replace($('#todo-template').tmpl(this.item));
     return this;
   },
 
@@ -342,10 +363,9 @@ var PhotosController = Spine.Controller.sub({
 
 In Spine, controllers are considered the glue for an application, adding and responding to DOM events, rendering templates and ensuring that views and models are kept in sync (which makes sense in the context of what we know to be a controller).
 
-What we're doing in the above example is setting up listeners in the ```update``` and ```destroy``` events using ```render()``` and ```remove()```. When a photo entry gets updated, we re-render the view to reflect the changes to the meta-data. Similarly, if the photo gets deleted from the gallery, we remove it from the view. In case you were wondering about the ```tmpl()``` function in the code snippet: in the ```render()``` function, we're using this to render a JavaScript template called #photoTemplate which simply returns an HTML string used to replace the controller's current element.
+What we're doing in the above example is setting up listeners in the ```update``` and ```destroy``` events using ```render()``` and ```remove()```. When a todo entry gets updated, we re-render the view to reflect the changes to the todo title. Similarly, if the todo gets deleted from todo list, we remove it from the view. In case you were wondering about the ```tmpl()``` function in the code snippet: in the ```render()``` function, we're using this to render a JavaScript template called #todoTemplate which simply returns an HTML string used to replace the controller's current element.
 
 What this provides us with is a very lightweight, simple way to manage changes between the model and the view.
-
 
 **Backbone.js**
 
@@ -353,19 +373,17 @@ Later on in this section we're going to revisit the differences between Backbone
 
 In Backbone, controller logic is shared between Backbone.View and Backbone.Router. Earlier releases of Backbone contained something called Backbone.Controller, but it was renamed to Router to clarify its role.
 
-A Router's main purpose is to translate URL requests into application states. When a user browses to the URL www.example.com/photos/42, a Router could be used to show the photo with that ID, and to define what application behavior should be run in response to that request. Routers *can* contain traditional controller responsibilities, such as binding the events between models and views, or rendering parts of the page. However, Backbone contributor Tim Branyen has pointed out that it's possible to get away without needing Backbone.Router at all for this, so a way to think about it using the Router paradigm is probably:
+A Router's main purpose is to translate URL requests into application states. It does that by mapping URLs to functions. When a user browses to the URL www.example.com/filter/completed, a Router could be used to show just todos which are completed, and to define what application behavior should be run in response to that request. Routers *can* contain traditional controller responsibilities, such as binding the events between models and views, or rendering parts of the page. However, Backbone contributor Tim Branyen has pointed out that it's possible to get away without needing Backbone.Router at all for this, so a way to think about it using the Router paradigm is probably:
 
 ```javascript
-var PhotoRouter = Backbone.Router.extend({
-  routes: { 'photos/:id': 'route' },
+var TodoRouter = Backbone.Router.extend({
+  routes: { "/filter/:name": "setFilter" },
+  setFilter: function (name) { console.log("set filter: " + name); }
+});
 
-  route: function(id) {
-    var item = photoCollection.get(id);
-    var view = new PhotoView({ model: item });
-
-    something.html( view.render().el );
-  }
-}):
+var router = new TodoRouter();
+  Backbone.history.start();
+});
 ```
 
 ## What does MVC give us?
@@ -446,48 +464,45 @@ A response to this could be that the view can also just be a View (as per MVC) b
 
 We've also seen that in Backbone the responsibility of a controller is shared with both the Backbone.View and Backbone.Router and in the following example we can actually see that aspects of that are certainly true.
 
-Here, our Backbone ```PhotoView``` uses the Observer pattern to 'subscribe' to changes to a View's model in the line ```this.model.on('change',...)```. It also handles templating in the ```render()``` method, but unlike some other implementations, user interaction is also handled in the View (see ```events```).
+Here, our Backbone ```TodoView``` uses the Observer pattern to 'subscribe' to changes to a View's model in the line ```this.model.on('change',...)```. It also handles templating in the ```render()``` method, but unlike some other implementations, user interaction is also handled in the View (see ```events```).
 
 
 ```javascript
-var PhotoView = Backbone.View.extend({
+// The DOM element for a todo item...
+app.TodoView = Backbone.View.extend({
 
-    //... is a list tag.
-    tagName:  'li',
+  //... is a list tag.
+  tagName:  'li',
 
-    // Pass the contents of the photo template through a templating
-    // function, cache it for a single photo
-    template: _.template($('#photo-template').html()),
+  // Pass the contents of the todo template through a templating
+  // function, cache it for a single todo
+  template: _.template( $('#item-template').html() ),
 
-    // The DOM events specific to an item.
-    events: {
-      'click img' : 'toggleViewed'
-    },
+  // The DOM events specific to an item.
+  events: {
+    'click .toggle':  'togglecompleted'
+  },
 
-    // The PhotoView listens for changes to its model, re-rendering. Since there's
-    // a one-to-one correspondence between a **Photo** and a **PhotoView** in this
-    // app, we set a direct reference on the model for convenience.
+  // The TodoView listens for changes to its model, re-rendering. Since there's
+  // a one-to-one correspondence between a **Todo** and a **TodoView** in this
+  // app, we set a direct reference on the model for convenience.
+  initialize: function() {
+    this.model.on( 'change', this.render, this );
+    this.model.on( 'destroy', this.remove, this );
+  },
 
-    initialize: function() {
-      _.bindAll(this, 'render');
-      this.model.on('change', this.render);
-      this.model.on('destroy', this.remove);
-    },
+  // Re-render the titles of the todo item.
+  render: function() {
+    this.$el.html( this.template( this.model.toJSON() ) );
+    return this;
+  },
 
-    // Re-render the photo entry
-    render: function() {
-      this.$el.html(this.template(this.model.toJSON()));
-      return this;
-    },
-
-    // Toggle the `"viewed"` state of the model.
-    toggleViewed: function() {
-      this.model.viewed();
-    }
-
+  // Toggle the `"completed"` state of the model.
+  togglecompleted: function() {
+    this.model.toggle();
+  },
 });
 ```
-
 
 Another (quite different) opinion is that Backbone more closely resembles [Smalltalk-80 MVC](http://martinfowler.com/eaaDev/uiArchs.html#ModelViewController), which we went through earlier.
 
@@ -528,31 +543,24 @@ In this section, you'll learn the essentials of Backbone's models, views, collec
 
 ## Models
 
-Backbone models contain interactive data for an application as well as the logic around this data. For example, we can use a model to represent the concept of a photo object including its attributes like tags, titles and a location.
+Backbone models contain interactive data for an application as well as the logic around this data. For example, we can use a model to represent the concept of a todo item including its attributes like title (todo content) and completed (current state of the todo).
 
 Models can be created by extending `Backbone.Model` as follows:
 
 ```javascript
-var Photo = Backbone.Model.extend({
-    defaults: {
-        src: 'placeholder.jpg',
-        title: 'an image placeholder',
-        coordinates: [0,0]
-    },
-    initialize: function(){
-        this.on('change:src', function(){
-            var src = this.get('src');
-            console.log('Image source updated to ' + src);
-        });
-    },
-    changeSrc: function( source ){
-        this.set({ src: source });
-    }
+var Todo = Backbone.Model.extend({});
+
+// We can then create our own concrete instance of a (Todo) model
+// with no values at all:
+var todo1 = new Todo();
+console.log(todo1);
+
+// or with some arbitrary data:
+var todo2 = new Todo({ 
+  title: 'Check attributes property of the both model instances in the console.', 
+  completed: true
 });
-
-var somePhoto = new Photo({ src: 'test.jpg', title:'testing'});
-somePhoto.changeSrc('magic.jpg'); // which triggers "change:src" and logs an update message to the console.
-
+console.log(todo2);
 ```
 
 #### Initialization
@@ -560,39 +568,97 @@ somePhoto.changeSrc('magic.jpg'); // which triggers "change:src" and logs an upd
 The `initialize()` method is called when a new instance of a model is created. Its use is optional, however you'll see why it's good practice to use it below.
 
 ```javascript
-var Photo = Backbone.Model.extend({
-    initialize: function(){
-        console.log('this model has been initialized');
-    }
+var Todo = Backbone.Model.extend({
+  initialize: function(){
+      console.log('This model has been initialized.');
+  }
 });
 
-// We can then create our own instance of a photo as follows:
-var myPhoto = new Photo();
+var myTodo = new Todo();
+```
+
+**Default values**
+
+There are times when you want your model to have a set of default values (e.g. in a scenario where a complete set of data isn't provided by the user). This can be set using a property called `defaults` in your model.
+
+```javascript
+var Todo = Backbone.Model.extend({
+  // Default todo attribute values
+  defaults: {
+    title: '',
+    completed: false
+  }
+});
+
+// Now we can create our concrete instance of the model 
+// with default values as follows:
+var todo1 = new Todo();
+console.log(todo1);
+
+// Or we could instantiate it with some of the attributes (e.g with custom title):
+var todo2 = new Todo({ 
+  title: 'Check attributes property of the logged models in the console.'
+});
+console.log(todo2);
+
+// Or with all of the (default) attributes:
+var todo3 = new Todo({
+  title: 'This todo is done, so take no action on this one.',
+  completed: true
+});
+console.log(todo3);
 ```
 
 #### Getters & Setters
 
 **Model.get()**
 
-`Model.get()` provides easy access to a model's attributes. Attributes which are passed through to the model on instantiation are instantly available for retrieval.
+`Model.get()` provides easy access to a model's attributes. All attributes, regardless if default ones or one passed through to the model on instantiation, are available for retrieval.
 
 ```javascript
-var myPhoto = new Photo({ title: 'My awesome photo',
-                          src:'boston.jpg',
-                          location: 'Boston',
-                          tags:['the big game', 'vacation']}),
+var Todo = Backbone.Model.extend({
+  // Default todo attribute values
+  defaults: {
+    title: '',
+    completed: false
+  }
+});
 
-    title = myPhoto.get('title'), //My awesome photo
-    location = myPhoto.get('location'), //Boston
-    tags = myPhoto.get('tags'), // ['the big game','vacation']
-    photoSrc = myPhoto.get('src'); //boston.jpg
+var todo1 = new Todo();
+console.log(todo1.get('title')); // empty string
+console.log(todo1.get('completed')); // false
+
+var todo2 = new Todo({
+  title: "Retrieved with models get() method.",
+  completed: true
+});
+console.log(todo2.get('title')); // Retrieved with models get() method.
+console.log(todo2.get('completed')); // false
 ```
 
 Alternatively, if you wish to directly access all of the attributes in a model's instance directly, you can achieve this as follows:
 
 ```javascript
-var myAttributes = myPhoto.attributes;
-console.log(myAttributes);
+var Todo = Backbone.Model.extend({
+  // Default todo attribute values
+  defaults: {
+    title: '',
+    completed: false
+  }
+});
+
+// Instantiates myTodo instance:
+var myTodo = new Todo({
+  title: "Accessed directly from the model's instance attributes property.",
+  completed: true
+});
+
+// Logs myTodo's model instance attributes property:
+console.log(myTodo.attributes);
+
+// Logs value of the directly accessed title attribute
+// of the myTodo model instance:
+console.log(myTodo.attributes.title);
 ```
 
 It is best practice to use `Model.set()` or direct instantiation to set the values of a model's attributes.
@@ -601,59 +667,60 @@ Accessing `Model.attributes` directly is generally discouraged. Instead, should 
 
 
 ```javascript
-var myAttributes = myPhoto.toJSON();
-console.log(JSON.stringify(myAttributes));
-/* this returns:
- { title: 'My awesome photo',
-   src:'boston.jpg',
-   location: 'Boston',
-   tags:['the big game', 'vacation']}
-*/
+var Todo = Backbone.Model.extend({
+  // Default todo attribute values
+  defaults: {
+    title: '',
+    completed: false
+  }
+});
+
+var todo1 = new Todo();
+var todo1Attributes = todo1.toJSON();
+// Following logs: {"title":"","completed":false} 
+console.log(JSON.stringify(todo1Attributes));
+
+var todo2 = new Todo({
+  title: "Try these examples and check results in console.",
+  completed: true
+});
+// logs string: {"title":"Try examples and check results in console.","completed":true} 
+console.log(JSON.stringify(todo2.toJSON()));
 ```
 
 #### Model.set()
 
-`Model.set()` allows us to pass attributes into an instance of our model. Attributes can either be set during initialization or at any time afterwards. It's important to avoid trying to set a Model's attributes directly (for example, `Model.caption = 'A new caption'`). Backbone uses Model.set() to know when to broadcast that a model's data has changed.
+`Model.set()` allows us to pass attributes into an instance of our model. Attributes can either be set during initialization or at any time afterwards. It's important to avoid trying to set a Model's attributes directly (for example, `Model.attributes.title = 'New todo title.'`). Backbone uses Model.set() to know when to broadcast that a model's data has changed.
 
 
 ```javascript
-var Photo = Backbone.Model.extend({
-    initialize: function(){
-        console.log('this model has been initialized');
-    }
+var Todo = Backbone.Model.extend({
+  // Default todo attribute values
+  defaults: {
+    title: '',
+    completed: false
+  }
 });
 
 // Setting the value of attributes via instantiation
-var myPhoto = new Photo({ title: 'My awesome photo', location: 'Boston' });
-
-var myPhoto2 = new Photo();
-
-// Setting the value of attributes through Model.set()
-myPhoto2.set({ title:'Vacation in Florida', location: 'Florida' });
-```
-
-**Default values**
-
-There are times when you want your model to have a set of default values (e.g. in a scenario where a complete set of data isn't provided by the user). This can be set using a property called `defaults` in your model.
-
-```javascript
-var Photo = Backbone.Model.extend({
-    defaults: {
-        title: 'Another photo!',
-        tags:  ['untagged'],
-        location: 'home',
-        src: 'placeholder.jpg'
-    },
-    initialize: function(){
-    }
+var myTodo = new Todo({ 
+  title: "Set through instantiation." 
 });
+console.log('Todo title: ' + myTodo.get('title'));
+console.log('Completed: ' + myTodo.get('completed'));
 
-var myPhoto = new Photo({ location: 'Boston',
-                          tags:['the big game', 'vacation']}),
-    title   = myPhoto.get('title'), //Another photo!
-    location = myPhoto.get('location'), //Boston
-    tags = myPhoto.get('tags'), // ['the big game','vacation']
-    photoSrc = myPhoto.get('src'); //placeholder.jpg
+// Set single attribute value at the time through Model.set():
+myTodo.set("title", "Title attribute set through Model.set().");
+console.log('Todo title: ' + myTodo.get('title'));
+console.log('Completed: ' + myTodo.get('completed'));
+
+// Set map of attributes through Model.set():
+myTodo.set({ 
+  title: "Both attributes set through Model.set().",
+  completed: true
+});
+console.log('Todo title: ' + myTodo.get('title'));
+console.log('Completed: ' + myTodo.get('completed'));
 ```
 
 **Listening for changes to your model**
@@ -661,39 +728,64 @@ var myPhoto = new Photo({ location: 'Boston',
 Any and all of the attributes in a Backbone model can have listeners bound to them which detect when their values change. Listeners can be added to the `initialize()` function:
 
 ```javascript
-this.on('change', function(){
-    console.log('values for this model have changed');
+var Todo = Backbone.Model.extend({
+  // Default todo attribute values
+  defaults: {
+    title: '',
+    completed: false
+  },
+  initialize: function(){
+    console.log('This model has been initialized.');
+    this.on('change', function(){
+        console.log('- Values for this model have changed.');
+    });
+  }
+});
+
+var myTodo = new Todo();
+
+myTodo.set('title', 'On each change of attribute values listener is triggered.');
+console.log('Title has changed: ' + myTodo.get('title'));
+
+myTodo.set('completed', true);
+console.log('Completed has changed: ' + myTodo.get('completed'));
+
+myTodo.set({
+  title: 'Listener is triggered for each change, not for change of the each attribute.',
+  'complete': true
 });
 ```
 
-In the following example, we log a message whenever a specific attribute (the title of our Photo model) is altered.
+In the following example, we log a message whenever a specific attribute (the title of our Todo model) is altered.
 
 ```javascript
-var Photo = Backbone.Model.extend({
-    defaults: {
-        title: 'Another photo!',
-        tags:  ['untagged'],
-        location: 'home',
-        src: 'placeholder.jpg'
-    },
-    initialize: function(){
-        console.log('this model has been initialized');
-        this.on('change:title', function(){
-            var title = this.get('title');
-            console.log('My title has been changed to.. ' + title);
-        });
-    },
-
-    setTitle: function(newTitle){
-        this.set({ title: newTitle });
-    }
+var Todo = Backbone.Model.extend({
+  // Default todo attribute values
+  defaults: {
+    title: '',
+    completed: false
+  },
+  initialize: function(){
+    console.log('This model has been initialized.');
+    this.on('change:title', function(){
+        console.log('Title value for this model have changed.');
+    });
+  },
+  setTitle: function(newTitle){
+    this.set({ title: newTitle });
+  }
 });
 
-var myPhoto = new Photo({ title:'Fishing at the lake', src:'fishing.jpg'});
-myPhoto.setTitle('Fishing at sea');
-//logs 'My title has been changed to.. Fishing at sea'
-```
+var myTodo = new Todo();
 
+// Following changes trigger the listener:
+myTodo.set('title', 'Check what\'s logged.');
+myTodo.setTitle('Go fishing on Sunday.');
+
+// But, this change type is not observed, so no listener is triggered:
+myTodo.set('completed', true);
+console.log('Todo set as completed: ' + myTodo.get('completed'));
+```
 
 **Validation**
 
@@ -704,27 +796,26 @@ Validation functions can be as simple or complex as necessary. If the attributes
 A basic example for validation can be seen below:
 
 ```javascript
-var Photo = Backbone.Model.extend({
-    validate: function(attribs){
-        if(attribs.src === undefined){
-            return 'Remember to set a source for your image!';
-        }
-    },
-
-    initialize: function(){
-        console.log('this model has been initialized');
-        this.on('error', function(model, error){
-            console.log(error);
-        });
+var Todo = Backbone.Model.extend({
+  validate: function(attribs){
+    if(attribs.title === undefined){
+        return "Remember to set a title for your todo.";
     }
+  },
+
+  initialize: function(){
+    console.log('This model has been initialized.');
+    this.on("error", function(model, error){
+        console.log(error);
+    });
+  }
 });
 
-var myPhoto = new Photo();
-myPhoto.set({ title: 'On the beach' });
-//logs Remember to set a source for your image!
+var myTodo = new Todo();
+myTodo.set('completed', false); // logs: Remember to set a title for your todo.
 ```
 
-**Note**: Backbone passes the `attributes` object by shallow copy to the `validate` function using the Underscore `_.extend` method. This means that it is not possible to change any Number, String or Boolean attribute but it *is* possible to change attributes of objects because they are passed by reference. As shallow copy doesn't copy objects by implicitly copying them, but rather, by reference, one can change the attributes on those objects.
+**Note**: Backbone passes the `attributes` object (attribs param in above example) by shallow copy to the `validate` function using the Underscore `_.extend` method. This means that it is not possible to change any Number, String or Boolean attribute but it *is* possible to change attributes of objects because they are passed by reference. As shallow copy doesn't copy objects by implicitly copying them, but rather, by reference, one can change the attributes on those objects.
 
 An example of this (by @fivetanley) is available [here](http://jsfiddle.net/2NdDY/7/).
 
@@ -739,62 +830,82 @@ Views in Backbone don't contain the markup for your application, but rather they
 Similar to the previous sections, creating a new view is relatively straight-forward. To create a new View, simply extend `Backbone.View`. I'll explain this code in detail below:
 
 ```javascript
-var PhotoSearch = Backbone.View.extend({
-    el: '#results',
-    render: function( event ){
-        var compiled_template = _.template( $('#results-template').html() );
-        this.$el.html( compiled_template(this.model.toJSON()) );
-        return this; //recommended as this enables calls to be chained.
-    },
-    events: {
-        'submit #searchForm':  'search',
-        'click .reset': 'reset',
-        'click .advanced': 'switchContext'
-    },
-    search: function( event ){
-        //executed when a form '#searchForm' has been submitted
-    },
-    reset: function( event ){
-        //executed when an element with class "reset" has been clicked.
-    },
-    switchContext: function( event ){
-        //executed when an element with class "advanced" has been clicked.
-    }
+var TodoView = Backbone.View.extend({
+
+  tagName:  'li',
+
+  // Cache the template function for a single item.
+  todoTpl: _.template( $('#item-template').html() ),
+
+  events: {
+    'dblclick label': 'edit',
+    'keypress .edit': 'updateOnEnter',
+    'blur .edit':   'close'
+  },
+
+  // Re-render the titles of the todo item.
+  render: function() {
+    this.$el.html( this.todoTpl( this.model.toJSON() ) );
+    this.input = this.$('.edit');
+    return this;
+  },
+
+  edit: function() {
+    // executed when todo label is double clicked
+  },
+
+  close: function() {
+    // executed when todo loses focus
+  },
+
+  updateOnEnter: function( e ) {
+    // executed on each keypress when in todo edit mode, 
+    // but we'll wait for enter to get in action
+  }
 });
+
+var todoView = new TodoView();
+
+// logs reference to a DOM element that cooresponds to the view instance
+console.log(todoView.el);
 ```
 
 #### What is `el`?
 
 `el` is basically a reference to a DOM element and all views must have one. It allows for all of the contents of a view to be inserted into the DOM at once, which makes for faster rendering because the browser performs the minimum required reflows and repaints.
 
-There are two ways to attach a DOM element to a view: the element already exists in the page or a new element is created for the view and added manually by the developer.
-If the element already exists in the page, you can set `el` as either a CSS selector that matches the element or a simple reference to the DOM element.
+There are two ways to attach a DOM element to a view: a new element is created for the view and added manually by the developer or the element already exists in the page.
+
+If you want to create a new element for your view, set any combination of the following view's properties: `tagName`, `id` and `className`. A new element will be created for you by the framework and a reference to it will be available at the `el` property. If nothing is specified `el` defaults to `div`.
+
+```javascript
+var TodosView = Backbone.View.extend({
+  tagName: 'ul', // required, but defaults to 'div' if not set
+  className: 'container', // optional, you can assign multiple classes to this property like so 'container homepage'
+  id: 'todos', // optional
+});
+
+var todosView = new TodosView();
+console.log(todosView.el);
+```
+
+The above code creates the ```DOMElement``` below but doesn't append it to the DOM.
+
+```html
+<ul id="todos" class="container"></ul>
+```
+
+If the element already exists in the page, you can set `el` as a CSS selector that matches the element.
 
 ```javascript
 el: '#footer'
 ```
 
-If you want to create a new element for your view, set any combination of the following view's properties: `tagName`, `id` and `className`. A new element will be created for you by the framework and a reference to it will be available at the `el` property.
-
-```
-tagName: 'p', // required, but defaults to 'div' if not set
-className: 'container', // optional, you can assign multiple classes to this property like so 'container homepage'
-id: 'header', // optional
-```
-
-The above code creates the ```DOMElement``` below but doesn't append it to the DOM.
-
-
-	<p id="header" class="container"></p>
-
-
-
 **Understanding `render()`**
 
 `render()` is an optional function that defines the logic for rendering a template. We'll use Underscore's micro-templating in these examples, but remember you can use other templating frameworks if you prefer.
 
-The `_.template` method in Underscore compiles JavaScript templates into functions which can be evaluated for rendering. In the above view, I'm passing the markup from a template with id `results-template` to `_.template()` to be compiled. Next, I set the html of the `el` DOM element to the output of processing a JSON version of the model associated with the view through the compiled template.
-
+The `_.template` method in Underscore compiles JavaScript templates into functions which can be evaluated for rendering. In the above view, I'm passing the markup from a template with id `item-template` to `_.template()` to be compiled. Next, I set the html of the `el` DOM element to the output of processing a JSON version of the model associated with the view through the compiled template.
 
 Presto! This populates the template, giving you a data-complete set of markup in just a few short lines of code.
 
@@ -811,43 +922,90 @@ Collections are sets of Models and are created by extending `Backbone.Collection
 
 Normally, when creating a collection you'll also want to pass through a property specifying the model that your collection will contain, as well as any instance properties required.
 
-
-In the following example, we create a PhotoCollection that will contain our Photo models:
+In the following example, we create a TodoCollection that will contain our Todo models:
 
 ```javascript
-var PhotoCollection = Backbone.Collection.extend({
-    model: Photo
+var Todo = Backbone.Model.extend({
+  defaults: {
+    title: '',
+    completed: false
+  }
 });
+
+var TodosCollection = Backbone.Collection.extend({
+  model: Todo,
+  localStorage: new Store('todos-backbone')  
+});
+
+var myTodo = new Todo({title:'Read the whole book', id: 2});
+
+// pass array of models on collection instantiation
+var todos = new TodosCollection([myTodo]);
+console.log("Collection size: " + todos.length);
+
+// Collection's convenience method used to create 
+// new model instance within collection itself.
+todos.create({title:'Try out code examples', id: 48});
+console.log("Collection size: " + todos.length);
 ```
 
 **Getters and Setters**
 
 There are a few different ways to retrieve a model from a collection. The most straight-forward is to use `Collection.get()` which accepts a single id as follows:
 
-
 ```javascript
-var skiingEpicness = PhotoCollection.get(2);
+// extends on previous example
+
+var todo2 = todos.get(2);
+
+// Models, as objects, are passed by reference
+console.log(todo2 === myTodo);
 ```
+
+Internally `Backbone.Collection` sets array of models enumerated by their `id` property, if model instances happen to have one. Once `collection.get(id)` is called this array is checked for existence of the model instance with the corresponding `id`.
 
 Sometimes you may also want to get a model based on its client id. The client id is a property that Backbone automatically assigns models that have not yet been saved. You can get a model's client id from its `.cid` property.
 
-
 ```javascript
-var mySkiingCrash = PhotoCollection.getByCid(456);
+// extends on previous examples
+
+var todoCid = todos.getByCid(todo2.cid);
+
+// As mentioned in previous example, 
+// models are passed by reference
+console.log(todo2 === myTodo); 
 ```
 
 Backbone Collections don't have setters as such, but do support adding new models via `.add()` and removing models via `.remove()`.
 
 ```javascript
-var a = new Photo({ title: 'my vacation'}),
-    b = new Photo({ title: 'my holiday'}),
-    c = new Photo({ title: 'my weekend'});
+var Todo = Backbone.Model.extend({
+  defaults: {
+    title: '',
+    completed: false
+  }
+});
 
-var photoCollection = new PhotoCollection([a,b]);
-photoCollection.add(c);
+var TodosCollection = Backbone.Collection.extend({
+  model: Todo,
+  localStorage: new Store('todos-backbone')  
+});
 
-photoCollection.remove([a,b]);
-photoCollection.remove(c);
+var a = new Todo({ title: 'Go to Jamaica.'}),
+    b = new Todo({ title: 'Go to China.'}),
+    c = new Todo({ title: 'Go to Disneyland.'});
+
+var todos = new TodosCollection([a,b]);
+console.log("Collection size: " + todos.length);
+
+todos.add(c);
+console.log("Collection size: " + todos.length);
+
+todos.remove([a,b]);
+console.log("Collection size: " + todos.length);
+
+todos.remove(c);
+console.log("Collection size: " + todos.length);
 ```
 
 **Listening for events**
@@ -855,24 +1013,35 @@ photoCollection.remove(c);
 As collections represent a group of items, we're also able to listen for `add` and `remove` events for when new models are added or removed from the collection. Here's an example:
 
 ```javascript
-var PhotoCollection = new Backbone.Collection();
-PhotoCollection.on('add', function(photo) {
-  console.log('I liked ' + photo.get('title') + ' it\'s this one, right? '  + photo.get('src'));
+var TodosCollection = new Backbone.Collection();
+
+TodosCollection.on("add", function(todo) {
+  console.log("I should " + todo.get("title") + '. Have I done it before? '  + (todo.get("completed") ? 'Yeah!': 'Not.' ));
 });
 
-PhotoCollection.add([
-  {title: 'My trip to Bali', src: 'bali-trip.jpg'},
-  {title: 'The flight home', src: 'long-flight-oofta.jpg'},
-  {title: 'Uploading pix', src: 'too-many-pics.jpg'}
+TodosCollection.add([
+  { title: 'go to Jamaica.', completed: false },
+  { title: 'go to China.', completed: false },
+  { title: 'go to Disneyland.', completed: true }
 ]);
 ```
 
 In addition, we're able to bind a `change` event to listen for changes to models in the collection.
 
 ```javascript
-PhotoCollection.on('change:title', function(){
-    console.log('there have been updates made to this collection`s titles');
+var TodosCollection = new Backbone.Collection();
+
+TodosCollection.on("change:title", function(model) {
+    console.log("Changed my mind where should I will, " + model.get('title'));
 });
+
+TodosCollection.add([
+  { title: 'go to Jamaica.', completed: false, id: 3 },
+]);
+
+var myTodo = TodosCollection.get(3);
+
+myTodo.set('title', 'go fishing');
 ```
 
 **Fetching models from the server**
@@ -881,9 +1050,9 @@ PhotoCollection.on('change:title', function(){
 
 
 ```javascript
-var PhotoCollection = new Backbone.Collection;
-PhotoCollection.url = '/photos';
-PhotoCollection.fetch();
+var TodosCollection = new Backbone.Collection;
+TodosCollection.url = '/todos';
+TodosCollection.fetch();
 ```
 
 During configuration, Backbone sets a variable to denote if extended HTTP methods are supported by the server. Another setting controls if the server understands the correct MIME type for JSON:
@@ -895,7 +1064,7 @@ Backbone.emulateJSON = false;
 
 The Backbone.sync method that uses these values is actually an integral part of Backbone.js. A jQuery-like ajax method is assumed, so HTTP parameters are organised based on jQuery’s API. Searching through the code for calls to the sync method show it’s used whenever a model is saved, fetched, or deleted (destroyed).
 
-Under the covers, `Backbone.sync` is the function called every time Backbone tries to read or save models to the server. It uses jQuery or Zepto's ajax implementations to make these RESTful requests, however this can be overridden as per your needs. :
+Under the covers, `Backbone.sync` is the function called every time Backbone tries to read or save models to the server. It uses jQuery or Zepto's ajax implementations to make these RESTful requests, however this can be overridden as per your needs.
 
 The sync function may be overriden globally as Backbone.sync, or at a finer-grained level, by adding a sync function to a Backbone collection or to an individual model.
 
@@ -933,21 +1102,57 @@ Backbone.sync = function(method, model) {
 Rather than adding or removing models individually, you might occasionally wish to update an entire collection at once. ```Collection.reset()``` allows us to replace an entire collection with new models as follows:
 
 ```javascript
-PhotoCollection.reset([
-  {title: 'My trip to Scotland', src: 'scotland-trip.jpg'},
-  {title: 'The flight from Scotland', src: 'long-flight.jpg'},
-  {title: 'Latest snap of Loch Ness', src: 'lochness.jpg'}]);
+var TodosCollection = new Backbone.Collection();
+
+TodosCollection.on("reset", function() {
+  console.log("Collection reseted.");
+});
+
+TodosCollection.add([
+  { title: 'go to Jamaica.', completed: false },
+  { title: 'go to China.', completed: false },
+  { title: 'go to Disneyland.', completed: true }
+]);
+
+console.log('Collection size: ' + TodosCollection.length);
+
+TodosCollection.reset([
+  { title: 'go to Cuba.', completed: false }
+]);
+console.log('Collection size: ' + TodosCollection.length);
 ```
 
-Note that using `Collection.reset()` doesn't fire any `add` or `remove` events. A `reset` event is fired instead.
+Note that using `Collection.reset()` doesn't fire any `add` or `remove` events. A `reset` event is fired instead as shown in example.
 
 ### Underscore utility functions
 
-As Backbone requires Underscore as a hard dependency, we're able to use many of the utilities it has to offer to aid with our application development. Here's an example of how Underscore's `sortBy()` method can be used to sort a collection of photos based on a particular attribute.
+As Backbone requires Underscore as a hard dependency, we're able to use many of the utilities it has to offer to aid with our application development. Here's an example of how Underscore's `forEach` method that can be used for iterating over collection and `sortBy()` method that can be used to sort a collection of todos based on a particular attribute.
 
 ```javascript
-var sortedByAlphabet = PhotoCollection.sortBy(function (photo) {
-    return photo.get('title').toLowerCase();
+var TodosCollection = new Backbone.Collection();
+
+TodosCollection.on("reset", function() {
+  console.log("Collection reseted.");
+});
+
+TodosCollection.add([
+  { title: 'go to Belgium.', completed: false },
+  { title: 'go to China.', completed: false },
+  { title: 'go to Austria.', completed: true }
+]);
+
+TodosCollection.forEach(function(model){
+  console.log(model.get('title'));
+});
+
+var sortedByAlphabet = TodosCollection.sortBy(function (todo) {
+    return todo.get("title").toLowerCase();
+});
+
+console.log("- Now sorted: ");
+
+sortedByAlphabet.forEach(function(model){
+  console.log(model.get('title'));
 });
 ```
 
@@ -965,12 +1170,13 @@ var collection = new Backbone.Collection([
   { name: 'Rob', age: 55 }
 ]);
 
-collection.chain()
+var filteredNames = collection.chain()
   .filter(function(item) { return item.get('age') > 10; })
   .map(function(item) { return item.get('name'); })
   .value();
 
-// Will return ['Ida', 'Rob']
+console.log(filteredNames); // logs: ['Ida', 'Rob']
+```
 
 Some of the Backbone-specific methods will return this, which means they can be chained as well:
 
@@ -982,10 +1188,10 @@ collection
     .add({ name: 'Harry', age: 33 })
     .add({ name: 'Steve', age: 41 });
 
-collection.pluck('name');
-// ['John', 'Harry', 'Steve']
-```
+var names = collection.pluck('name');
 
+console.log(names); // logs: ['John', 'Harry', 'Steve']
+```
 
 ## Events
 
@@ -1026,60 +1232,152 @@ If you're familiar with jQuery custom events or the concept of Publish/Subscribe
 The official Backbone.js documentation recommends namespacing event names using colons if you end up using quite a few of these on your page. e.g:
 
 ```javascript
-ourObject.on('dance:tap', ...);
+var ourObject = {};
+
+// Mixin
+_.extend(ourObject, Backbone.Events);
+
+function dancing (msg) { console.log("We started " + msg); }
+
+// Add a namespaced custom events
+ourObject.on("dance:tap", dancing);
+ourObject.on("dance:break", dancing);
+
+// Trigger the custom events.
+ourObject.trigger("dance:tap", "tap dancing. Yeah!");
+ourObject.trigger("dance:break", "break dancing. Yeah!");
+
+// This one triggers nothing as no listener listens for it
+ourObject.trigger("dance", "break dancing. Yeah!");
 ```
 
 A special `all` event is made available in case you would like an event to be triggered when any event occurs (e.g if you would like to screen events in a single location). The `all` event can be used as follows:
 
 
 ```javascript
-ourObject.on('all', function(eventName){
-  console.log('The name of the event passed was ' + eventName);
+var ourObject = {};
+
+// Mixin
+_.extend(ourObject, Backbone.Events);
+
+function dancing (msg) { console.log("We started " + msg); }
+
+ourObject.on("all", function(eventName){
+  console.log("The name of the event passed was " + eventName);
 });
+
+// This time each event will be catched with catch 'all' event listener
+ourObject.trigger("dance:tap", "tap dancing. Yeah!");
+ourObject.trigger("dance:break", "break dancing. Yeah!");
+ourObject.trigger("dance", "break dancing. Yeah!");
 ```
 
 `off` allows us to remove a callback function that has previously been bound from an object. Going back to our Publish/Subscribe comparison, think of it as an `unsubscribe` for custom events.
 
-To remove the `dance` event we previously bound to `myObject`, we would simply do:
-
+To remove the `dance` event we previously bound to `ourObject`, we would simply do:
 
 ```javascript
-myObject.off('dance');
+var ourObject = {};
+
+// Mixin
+_.extend(ourObject, Backbone.Events);
+
+function dancing (msg) { console.log("We  " + msg); }
+
+// Add a namespaced custom events
+ourObject.on("dance:tap", dancing);
+ourObject.on("dance:break", dancing);
+
+// Trigger the custom events. Each will be catched and acted upon.
+ourObject.trigger("dance:tap", "started tap dancing. Yeah!");
+ourObject.trigger("dance:break", "started break dancing. Yeah!");
+
+// Removes event bound to the object
+ourObject.off("dance:tap");
+
+// Trigger the custom events again, but one is logged.
+ourObject.trigger("dance:tap", "stopped tap dancing."); // won't be logged as its not listened for
+ourObject.trigger("dance:break", "break dancing. Yeah!");
 ```
 
-This will remove all callbacks for the `dance` event. If we wish to remove just a callback by a specific name, we can do:
-
+To remove all callbacks for the event we should just pass event name (e.g `move`) to `off()` function of the object event is bound to. If we wish to remove just a callback by a specific name, we can pass callback name as second parameter:
 
 ```javascript
-myObject.off('dance', callbackName);
+var ourObject = {};
+
+// Mixin
+_.extend(ourObject, Backbone.Events);
+
+function dancing (msg) { console.log("We are dancing. " + msg); }
+function jumping (msg) { console.log("We are jumping. " + msg); }
+
+// Add two listeners to the same event
+ourObject.on("move", dancing);
+ourObject.on("move", jumping);
+
+// Trigger the events. Both listeners are called.
+ourObject.trigger("move", "Yeah!");
+
+// Removes specified listener
+ourObject.off("move", dancing);
+
+// Trigger the events again. One listener left.
+ourObject.trigger("move", "Yeah, jump, jump!");
 ```
 
-Finally, `trigger` triggers a callback for a specified event (or a space-separated listof events). e.g:
-
+Finally, `trigger` triggers a callback for a specified event (or a space-separated list of events). e.g:
 
 ```javascript
+var ourObject = {};
+
+// Mixin
+_.extend(ourObject, Backbone.Events);
+
+function doAction (msg) { console.log("We are " + msg); }
+
+// Add event listeners
+ourObject.on("dance", doAction);
+ourObject.on("jump", doAction);
+ourObject.on("skip", doAction);
+
 // Single event
-myObject.trigger('dance');
+ourObject.trigger("dance", 'just dancing.');
 
 // Multiple events
-myObject.trigger('dance jump skip');
+ourObject.trigger("dance jump skip", 'very tired from so much action.');
 ```
 
 It is also possible to pass along additional arguments to each (or all) of these events via a second argument supported by `trigger`. e.g:
 
-
 ```javascript
-myObject.trigger('dance', {duration: '5 minutes'});
-```
+var ourObject = {};
 
+// Mixin
+_.extend(ourObject, Backbone.Events);
+
+function doAction (actionObj) {
+  console.log("We are " + actionObj.action + ' for ' + actionObj.duration ); 
+}
+
+// Add event listeners
+ourObject.on("dance", doAction);
+ourObject.on("jump", doAction);
+ourObject.on("skip", doAction);
+
+// Passing multiple arguments to single event
+ourObject.trigger("dance", {duration: "5 minutes", action: 'dancing'});
+
+// Passing multiple arguments to multiple events
+ourObject.trigger("dance jump skip", {duration: "15 minutes", action: 'on fire'});
+```
 
 ## Routers
 
 In Backbone, routers are used to help manage application state and for connecting URLs to application events. This is achieved using hash-tags with URL fragments, or using the browser's pushState and History API. Some examples of routes may be seen below:
 
 ```javascript
-http://unicorns.com/#whatsup
-http://unicorns.com/#search/seasonal-horns/page2
+http://example.com/#about
+http://example.com/#search/seasonal-horns/page2
 ```
 
 Note: An application will usually have at least one route mapping a URL route to a function that determines what happens when a  user reaches that particular route. This relationship is defined as follows:
@@ -1088,65 +1386,64 @@ Note: An application will usually have at least one route mapping a URL route to
 'route' : 'mappedFunction'
 ```
 
-Let us now define our first controller by extending `Backbone.Router`. For the purposes of this guide, we're going to continue pretending we're creating a photo gallery application that requires a GalleryRouter.
+Let us now define our first controller by extending `Backbone.Router`. For the purposes of this guide, we're going to continue pretending we're creating a complex todo application (something like personal organize/planner) that requires a complex TodoRouter.
 
 Note the inline comments in the code example below as they continue the rest of the lesson on routers.
 
 ```javascript
-var GalleryRouter = Backbone.Router.extend({
+var TodoRouter = Backbone.Router.extend({
     /* define the route and function maps for this router */
     routes: {
-        'about' : 'showAbout',
-        /*Sample usage: http://unicorns.com/#about*/
+        "about" : "showAbout",
+        /* Sample usage: http://example.com/#about */
 
-        'photos/:id' : 'getPhoto',
-        /*This is an example of using a ":param" variable which allows us to match
-        any of the components between two URL slashes*/
-        /*Sample usage: http://unicorns.com/#photos/5*/
+        "todo/:id" : "getTodo",
+        /* This is an example of using a ":param" variable which allows us to match
+        any of the components between two URL slashes */
+        /* Sample usage: http://example.com/#todo/5 */
 
-        'search/:query' : 'searchPhotos',
-        /*We can also define multiple routes that are bound to the same map function,
-        in this case searchPhotos(). Note below how we're optionally passing in a
-        reference to a page number if one is supplied*/
-        /*Sample usage: http://unicorns.com/#search/lolcats*/
+        "search/:query" : "searchTodos",
+        /* We can also define multiple routes that are bound to the same map function,
+        in this case searchTodos(). Note below how we're optionally passing in a
+        reference to a page number if one is supplied */
+        /* Sample usage: http://example.com/#search/job */
 
-        'search/:query/p:page' : 'searchPhotos',
-        /*As we can see, URLs may contain as many ":param"s as we wish*/
-        /*Sample usage: http://unicorns.com/#search/lolcats/p1*/
+        "search/:query/p:page" : "searchTodos",
+        /* As we can see, URLs may contain as many ":param"s as we wish */
+        /* Sample usage: http://example.com/#search/job/p1 */
 
-        'photos/:id/download/*imagePath' : 'downloadPhoto',
-        /*This is an example of using a *splat. splats are able to match any number of
+        "todos/:id/download/*documentPath" : "downloadDocument",
+        /* This is an example of using a *splat. splats are able to match any number of
         URL components and can be combined with ":param"s*/
-        /*Sample usage: http://unicorns.com/#photos/5/download/files/lolcat-car.jpg*/
+        /* Sample usage: http://example.com/#todo/5/download/files/Meeting_schedule.doc */
 
-        /*If you wish to use splats for anything beyond default routing, it's probably a good
+        /* If you wish to use splats for anything beyond default routing, it's probably a good
         idea to leave them at the end of a URL otherwise you may need to apply regular
-        expression parsing on your fragment*/
+        expression parsing on your fragment */
 
-        '*other'    : 'defaultRoute'
-        /*This is a default route that also uses a *splat. Consider the
+        "*other"    : "defaultRoute"
+        /* This is a default route that also uses a *splat. Consider the
         default route a wildcard for URLs that are either not matched or where
-        the user has incorrectly typed in a route path manually*/
-        /*Sample usage: http://unicorns.com/# <anything*/
-
+        the user has incorrectly typed in a route path manually */
+        /* Sample usage: http://example.com/# <anything */
     },
 
     showAbout: function(){
     },
 
-    getPhoto: function(id){
+    getTodo: function(id){
         /*
         Note that the id matched in the above route will be passed to this function
         */
-        console.log('You are trying to reach photo ' + id);
+        console.log("You are trying to reach todo " + id);
     },
 
-    searchPhotos: function(query, page){
+    searchTodos: function(query, page){
         var page_number = page || 1;
-        console.log('Page number: ' + page_number + ' of the results for ' + query);
+        console.log("Page number: " + page_number + " of the results for todos containing the word: " + query);
     },
 
-    downloadPhoto: function(id, path){
+    downloadDocument: function(id, path){
     },
 
     defaultRoute: function(other){
@@ -1154,19 +1451,16 @@ var GalleryRouter = Backbone.Router.extend({
     }
 });
 
-/* Now that we have a router setup, remember to instantiate it*/
+/* Now that we have a router setup, remember to instantiate it */
 
-var myGalleryRouter = new GalleryRouter();
+var myTodoRouter = new TodoRouter();
 ```
 
-
 As of Backbone 0.5+, it's possible to opt-in for HTML5 pushState support via `window.history.pushState`. This permits you to define routes such as http://www.scriptjunkie.com/just/an/example. This will be supported with automatic degradation when a user's browser doesn't support pushState. For the purposes of this tutorial, we'll use the hashtag method.
-
 
 #### Is there a limit to the number of routers I should be using?
 
 Andrew de Andrade has pointed out that DocumentCloud themselves usually only use a single router in most of their applications. You're very likely to not require more than one or two routers in your own projects as the majority of your application routing can be kept organized in a single controller without it getting unwieldy.
-
 
 #### Backbone.history
 
@@ -1175,30 +1469,96 @@ Next, we need to initialize `Backbone.history` as it handles `hashchange` events
 The `Backbone.history.start()` method will simply tell Backbone that it's OK to begin monitoring all `hashchange` events as follows:
 
 ```javascript
+var TodoRouter = Backbone.Router.extend({
+  /* define the route and function maps for this router */
+  routes: {
+    "about" : "showAbout",
+    "search/:query" : "searchTodos",
+    "search/:query/p:page" : "searchTodos"
+  },
+
+  showAbout: function(){},
+
+  searchTodos: function(query, page){
+    var page_number = page || 1;
+    console.log("Page number: " + page_number + " of the results for todos containing the word: " + query);
+  }
+});
+
+var myTodoRouter = new TodoRouter();
+
 Backbone.history.start();
-Router.navigate();
+
+// Go to and check console:
+// http://localhost/#search/job/p3 logs: Page number: 3 of the results for todos containing the word: job
+// http://localhost/#search/job logs: Page number: 1 of the results for todos containing the word: job 
+// etc.
 ```
+
+Note: To test last example you should set site for testing in local development environment which is out of scope of this book.
 
 As an aside, if you would like to save application state to the URL at a particular point you can use the `.navigate()` method to achieve this. It simply updates your URL fragment without the need to trigger the `hashchange` event:
 
-
 ```javascript
-/*Lets imagine we would like a specific fragment for when a user zooms into a photo*/
-zoomPhoto: function(factor){
-    this.zoom(factor); //imagine this zooms into the image
-    this.navigate('zoom/' + factor); //updates the fragment for us, but doesn't trigger the route
-}
+/* Lets imagine we would like a specific fragment (edit) once a user opens single todo */
+var TodoRouter = Backbone.Router.extend({
+  routes: {
+    "todo/:id": "viewTodo",
+    "todo/:id/edit": "editTodo"
+    // ... other routes
+  },
+
+  viewTodo: function(id){
+    console.log("View todo requested.");
+    this.navigate("todo/" + id + '/edit'); // updates the fragment for us, but doesn't trigger the route
+  },
+  editTodo: function(id) {
+    console.log("Edit todo openned.");
+  }
+});
+
+var myTodoRouter = new TodoRouter();
+
+Backbone.history.start();
+
+// Go to:
+// http://localhost/#todo/4 url is updated to: http://localhost/#todo/45/edit
+// but editTodo() function is not invoked even though location we end up is mapped to it.
+//
+// logs: View todo requested.
 ```
 
-It is also possible for `Router.navigate()` to trigger the route as well as updating the URL fragment.
+It is also possible for `Router.navigate()` to trigger the route as well as update the URL fragment.
 
 ```javascript
-zoomPhoto: function(factor){
-    this.zoom(factor); //imagine this zooms into the image
-    this.navigate('zoom/' + factor, true); //updates the fragment for us and triggers the route
-}
-```
+var TodoRouter = Backbone.Router.extend({
+  routes: {
+    "todo/:id": "viewTodo",
+    "todo/:id/edit": "editTodo"
+    // ... other routes
+  },
 
+  viewTodo: function(id){
+    console.log("View todo requested.");
+    this.navigate("todo/" + id + '/edit', true); // updates the fragment and triggers the route as well
+  },
+  editTodo: function(id) {
+    console.log("Edit todo openned.");
+  }
+});
+
+var myTodoRouter = new TodoRouter();
+
+Backbone.history.start();
+
+// Go to:
+// http://localhost/#todo/4 url is updated to: http://localhost/#todo/45/edit
+// but this time editTodo() function is invoked.
+// 
+// logs: 
+// View todo requested.
+// Edit todo openned. 
+```
 
 ### Backbone’s Sync API
 
@@ -1330,7 +1690,7 @@ Most development with Backbone is based around inheriting from these objects, an
 
 If this sounds familiar, it's because `extend` is an Underscore.js utility, although Backbone itself does a lot more with this. See below for Underscore's `extend`:
 
-```
+```javascript
 each(slice.call(arguments, 1), function(source) {
   for (var prop in source) {
     obj[prop] = source[prop];
@@ -1395,6 +1755,9 @@ var PanelAdvanced = Panel.extend({
       console.log(this.foo); // Log: bar
    }
 });
+
+new Panel();
+new PanelAdvanced();
 ```
 
 This isn't the most elegant of solutions because if you have a lot of Views that inherit from Panel, then you'll have to remember to call Panel's initialize from all of them.
@@ -1405,36 +1768,32 @@ So here's an alternative way to define Panel so that your inherited views don't 
 
 ```javascript
 var Panel = function (options) {
+  // put all of Panel's initialization code here
+  console.log('Panel initialized');
+  this.foo = 'bar';
 
-    // put all of Panel's initialization code here
-    console.log('Panel initialized');
-    this.foo = 'bar';
-
-    Backbone.View.apply(this, [options]);
+  Backbone.View.apply(this, [options]);
 };
 
 _.extend(Panel.prototype, Backbone.View.prototype, {
-
-    // put all of Panel's methods here. For example:
-    sayHi: function () {
-        console.log('hello from Panel');
-    }
+  // put all of Panel's methods here. For example:
+  sayHi: function () {
+      console.log('hello from Panel');
+  }
 });
 
 Panel.extend = Backbone.View.extend;
 
-
 // other classes then inherit from Panel like this:
 var PanelAdvanced = Panel.extend({
-
-    initialize: function (options) {
-        console.log('PanelAdvanced initialized');
-        console.log(this.foo);
-    }
+  initialize: function (options) {
+    console.log('PanelAdvanced initialized');
+    console.log(this.foo);
+  }
 });
 
-var PanelAdvanced = new PanelAdvanced(); //Log: Panel initialized, PanelAdvanced initialized, bar
-PanelAdvanced.sayHi(); // Log: hello from Panel
+var PanelAdvanced = new PanelAdvanced(); //Logs: Panel initialized, PanelAdvanced initialized, bar
+PanelAdvanced.sayHi(); // Logs: hello from Panel
 ```
 
 When used appropriately, Backbone's `extend` method can save a great deal of time and effort writing redundant code.
@@ -1478,8 +1837,8 @@ You've probably seen this technique before. A Backbone-specific example might lo
 ```javascript
 var myViews = (function(){
     return {
-        PhotoView: Backbone.View.extend({ .. }),
-        GalleryView: Backbone.View.extend({ .. }),
+        TodoView: Backbone.View.extend({ .. }),
+        TodosView: Backbone.View.extend({ .. }),
         AboutView: Backbone.View.extend({ .. });
         //etc.
     };
@@ -1491,8 +1850,8 @@ Here we can return a set of views, but the same technique could return an entire
 One solution to this problem, as mentioned by Peter Michaux, is to use prefix namespacing. It's a simple concept at heart, but the idea is you select a common prefix name (in this example, `myApplication_`) and then define any methods, variables or other objects after the prefix.
 
 ```javascript
-var myApplication_photoView = Backbone.View.extend({}),
-myApplication_galleryView = Backbone.View.extend({});
+var myApplication_todoView = Backbone.View.extend({}),
+    myApplication_todosView = Backbone.View.extend({});
 ```
 
 This is effective from the perspective of trying to lower the chances of a particular variable existing in the global scope, but remember that a uniquely named object can have the same effect. This aside, the biggest issue with the pattern is that it can result in a large number of global objects once your application starts to grow.
@@ -1508,7 +1867,7 @@ Object Literals have the advantage of not polluting the global namespace but ass
 This example demonstrates two ways you can check to see if a namespace already exists before defining it. I commonly use Option 2.
 
 ```javascript
-/*Doesn't check for existence of myApplication*/
+/* Doesn't check for existence of myApplication */
 var myApplication = {};
 
 /*
@@ -1530,9 +1889,9 @@ var myApplication = {
 One can also opt for adding properties directly to the namespace (such as your views, in the following example):
 
 ```javascript
-var myGalleryViews = myGalleryViews || {};
-myGalleryViews.photoView = Backbone.View.extend({});
-myGalleryViews.galleryView = Backbone.View.extend({});
+var myTodosViews = myTodosViews || {};
+myTodosViews.todoView = Backbone.View.extend({});
+myTodosViews.todosView = Backbone.View.extend({});
 ```
 
 The benefit of this pattern is that you're able to easily encapsulate all of your models, views, routers etc. in a way that clearly separates them and provides a solid foundation for extending your code.
@@ -1542,19 +1901,18 @@ This pattern has a number of benefits. It's often a good idea to decouple the de
 
 ```javascript
 var myConfig = {
-    language: 'english',
-    defaults: {
-        enableGeolocation: true,
-        enableSharing: false,
-        maxPhotos: 20
-    },
-    theme: {
-        skin: 'a',
-        toolbars: {
-            index: 'ui-navigation-toolbar',
-            pages: 'ui-custom-toolbar'
-        }
+  language: 'english',
+  defaults: {
+    enableDelegation: true,
+    maxTodos: 40
+  },
+  theme: {
+    skin: 'a',
+    toolbars: {
+      index: 'ui-navigation-toolbar',
+      pages: 'ui-custom-toolbar'
     }
+  }
 }
 ```
 
@@ -1573,27 +1931,26 @@ YAHOO.util.Dom.getElementsByClassName('test');
 Yahoo's YUI uses the nested object namespacing pattern regularly and even DocumentCloud (the creators of Backbone) use the nested namespacing pattern in their main applications. A sample implementation of nested namespacing with Backbone may look like this:
 
 ```javascript
-var galleryApp =  galleryApp || {};
+var todoApp =  todoApp || {};
 
 // perform similar check for nested children
-galleryApp.routers = galleryApp.routers || {};
-galleryApp.model = galleryApp.model || {};
-galleryApp.model.special = galleryApp.model.special || {};
+todoApp.routers = todoApp.routers || {};
+todoApp.model = todoApp.model || {};
+todoApp.model.special = todoApp.model.special || {};
 
 // routers
-galleryApp.routers.Workspace   = Backbone.Router.extend({});
-galleryApp.routers.PhotoSearch = Backbone.Router.extend({});
+todoApp.routers.Workspace   = Backbone.Router.extend({});
+todoApp.routers.TodoSearch = Backbone.Router.extend({});
 
 // models
-galleryApp.model.Photo   = Backbone.Model.extend({});
-galleryApp.model.Comment = Backbone.Model.extend({});
+todoApp.model.Todo   = Backbone.Model.extend({});
+todoApp.model.Notes = Backbone.Model.extend({});
 
 // special models
-galleryApp.model.special.Admin = Backbone.Model.extend({});
+todoApp.model.special.Admin = Backbone.Model.extend({});
 ```
 
 This is readable, clearly organized, and is a relatively safe way of namespacing your Backbone application. The only real caveat however is that it requires your browser's JavaScript engine to first locate the galleryApp object, then dig down until it gets to the function you're calling. However, developers such as Juriy Zaytsev (kangax) have tested and found the performance differences between single object namespacing vs the 'nested' approach to be quite negligible.
-
 
 **Recommendation**
 
@@ -1701,7 +2058,7 @@ The `Todo` model is remarkably straightforward. Firstly a todo has two attribute
 
   // Todo Model
   // ----------
-  // Our basic **Todo** model has `title`, `order`, and `completed` attributes.
+  // Our basic **Todo** model has `title` and `completed` attributes.
 
   app.Todo = Backbone.Model.extend({
 
@@ -2178,10 +2535,10 @@ The `#item-template` used in the `TodoView` view needs defining, so let's do tha
   <script type="text/template" id="item-template">
     <div class="view">
       <input class="toggle" type="checkbox" <%= completed ? 'checked' : '' %>>
-      <label><%- title %></label>
+      <label><%= title %></label>
       <button class="destroy"></button>
     </div>
-    <input class="edit" value="<%- title %>">
+    <input class="edit" value="<%= title %>">
   </script>
 ```
 
