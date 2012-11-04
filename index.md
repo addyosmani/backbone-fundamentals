@@ -3454,7 +3454,7 @@ This tackles a few specific design decisions:
 
 * The order in which you append the sub-elements matters
 * The OuterView doesn't contain the HTML elements to be set in the InnerView(s), meaning that we can still specify tagName in the InnerView
-* render() is called after the InnerView element has been placed into the DOM. This is useful if your InnerViews render() method is sizing itself on the page based on the dimensions of another element. This is a common use case.
+* render() is called after the InnerView element has been placed into the DOM. This is useful if your InnerView's render() method is sizing itself on the page based on the dimensions of another element. This is a common use case.
 
 A second potential solution is this, which may appear cleaner but in reality has a tendency to affect performance:
 
