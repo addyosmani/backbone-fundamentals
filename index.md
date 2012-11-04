@@ -642,7 +642,7 @@ console.log(todo2.get('title')); // Retrieved with models get() method.
 console.log(todo2.get('completed')); // false
 ```
 
-Alternatively, if you wish to directly access all of the attributes in a model's instance directly, you can achieve this as follows:
+Alternatively, if you wish to access all of the attributes in a model's instance directly, you can achieve this as follows:
 
 ```javascript
 var Todo = Backbone.Model.extend({
