@@ -216,7 +216,7 @@ Here's how we might group Todo models into a Backbone Collection:
   console.log(todos.models);
 ```
 
-If you read older texts on MVC, you may come across a description of models as also managing application 'state'. In JavaScript applications "state" has a specific meaning, typically referring to the current "state" of a view or sub-view on a user's screen at a fixed time. State is a topic which is regularly discussed when looking at Single-page applications, where the concept of state needs to be simulated.
+If you read older texts on MVC, you may come across a description of models as also managing application "state". In JavaScript applications state has a specific meaning, typically referring to the current state of a view or sub-view on a user's screen at a fixed time. State is a topic which is regularly discussed when looking at Single-page applications, where the concept of state needs to be simulated.
 
 
 ### Views
@@ -636,7 +636,7 @@ console.log(todo2.get('title')); // Retrieved with models get() method.
 console.log(todo2.get('completed')); // false
 ```
 
-Alternatively, if you wish to directly access all of the attributes in a model's instance directly, you can achieve this as follows:
+Alternatively, if you wish to access all of the attributes in a model's instance directly, you can achieve this as follows:
 
 ```javascript
 var Todo = Backbone.Model.extend({
@@ -663,8 +663,7 @@ console.log(myTodo.attributes.title);
 
 It is best practice to use `Model.set()` or direct instantiation to set the values of a model's attributes.
 
-Accessing `Model.attributes` directly is generally discouraged. Instead, should you need to read or clone data, `Model.toJSON()` is recommended for this purpose. If you would like to access or copy a model's attributes for purposes such as JSON stringification (e.g. for serialization prior to being passed to a view), this can be achieved using Model.toJSON(). Remember that this will return an object and JSON.stringify() should be used to get a string representation of the data:
-
+Accessing `Model.attributes` directly is generally discouraged. If you need to read or clone data for purposes such as JSON stringification (e.g. for serialization prior to being passed to a view), this can be achieved using Model.toJSON(). Remember that this will return an object and JSON.stringify() should be used to get a string representation of the data:
 
 ```javascript
 var Todo = Backbone.Model.extend({
@@ -962,7 +961,7 @@ var todo2 = todos.get(2);
 console.log(todo2 === myTodo);
 ```
 
-Internally `Backbone.Collection` sets array of models enumerated by their `id` property, if model instances happen to have one. Once `collection.get(id)` is called this array is checked for existence of the model instance with the corresponding `id`.
+Internally `Backbone.Collection` sets an array of models enumerated by their `id` property, if model instances happen to have one. Once `collection.get(id)` is called this array is checked for existence of the model instance with the corresponding `id`.
 
 Sometimes you may also want to get a model based on its client id. The client id is a property that Backbone automatically assigns models that have not yet been saved. You can get a model's client id from its `.cid` property.
 
@@ -3454,7 +3453,7 @@ This tackles a few specific design decisions:
 
 * The order in which you append the sub-elements matters
 * The OuterView doesn't contain the HTML elements to be set in the InnerView(s), meaning that we can still specify tagName in the InnerView
-* render() is called after the InnerView element has been placed into the DOM. This is useful if your InnerViews render() method is sizing itself on the page based on the dimensions of another element. This is a common use case.
+* render() is called after the InnerView element has been placed into the DOM. This is useful if your InnerView's render() method is sizing itself on the page based on the dimensions of another element. This is a common use case.
 
 A second potential solution is this, which may appear cleaner but in reality has a tendency to affect performance:
 
