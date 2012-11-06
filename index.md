@@ -1,6 +1,8 @@
 ## Prelude
 
-<img src="img/logo.jpg" style="float:left"/> Welcome to my (in-progress) book about the [Backbone.js](http://documentcloud.github.com/backbone/) framework for structuring JavaScript applications. It's released under a Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported [license](http://creativecommons.org/licenses/by-nc-sa/3.0/) meaning you can both grab a copy of the book for free or help to further [improve](https://github.com/addyosmani/backbone-fundamentals/) it.
+![](img/logo.jpg) 
+
+Welcome to my (in-progress) book about the [Backbone.js](http://documentcloud.github.com/backbone/) framework for structuring JavaScript applications. It's released under a Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported [license](http://creativecommons.org/licenses/by-nc-sa/3.0/) meaning you can both grab a copy of the book for free or help to further [improve](https://github.com/addyosmani/backbone-fundamentals/) it.
 
 I'm very pleased to announce that this book will be out in physical form later in the year via [O'Reilly Media](http://oreilly.com). Readers will have the option of purchasing the latest version in either print or a number of digital formats then or can grab a recent version from this repository.
 
@@ -35,7 +37,7 @@ For this reason we refer to such frameworks as following the MV* pattern, that i
 
 ### What exactly is Backbone.js?
 
-<img src="img/backbonejsorg.png" style="margin:0 auto;" width="700px"/>
+![](img/backbonejsorg.png)
 
 Backbone.js is a lightweight JavaScript framework for adding structure to your client-side code. It makes it easy to manage and decouple concerns in your application, leaving you with code that is more maintainable in the long term.
 
@@ -1965,7 +1967,7 @@ Now that we've journeyed through the fundamentals, let's move on to writing our 
 
 For this chapter, we’re going to learn how to create the Backbone.js Todo app listed on [TodoMVC.com](http://todomvc.com).
 
-<img src="img/todoapp.png" width="700px"/>
+![](img/todoapp.png)
 
 Let's think about what we need from a high level architectural standpoint.
 
@@ -2499,7 +2501,7 @@ If you are following along open up index.html and, if everything's going to plan
 
 Type in: `window.app.Todos.create({ title: 'My first Todo item'});` and hit return.
 
-<img src="img/todoconsole.png" width="700px"/>
+![](img/todoconsole.png)
 
 Once you've run the above in the console, we should be looking at a brand new todo (logged in console) we've just added in the todos collection. Created todo is saved into Local Storage as well and will be available on page refresh.
 
@@ -2521,7 +2523,7 @@ Run this into console to check it out:
 
 `secondTodo instanceof app.Todo`
 
-<img src="img/todoconsole2.png" width="700px"/>
+![](img/todoconsole2.png)
 
 ## Templates
 
@@ -2706,7 +2708,7 @@ Finally, we move on to routing, which will allow us to easily bookmark the list 
 #/completed
 ```
 
-<img src="img/todorouting.png" width="700px"/>
+![](img/todorouting.png)
 
 When the route changes the todo list will be filtered on a model level and the selected class on the filter links will be toggled. When an item is updated while in a filtered state, it will be updated accordingly. 
 E.g. if the filter is active and the item is checked, it will be hidden. The active filter is persisted on reload.
