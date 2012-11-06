@@ -114,6 +114,10 @@ pre code {
     font-size: 11px;
     padding: 0;
 }
+figure img {
+  max-width: 100%;
+}
+
 @media screen and (min-width: 768px) {
     body {
         width: 748px;
