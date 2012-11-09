@@ -644,34 +644,7 @@ console.log(todo2.get('title')); // Retrieved with models get() method.
 console.log(todo2.get('completed')); // false
 ```
 
-Alternatively, if you wish to access all of the attributes in a model's instance directly, you can achieve this as follows:
-
-```javascript
-var Todo = Backbone.Model.extend({
-  // Default todo attribute values
-  defaults: {
-    title: '',
-    completed: false
-  }
-});
-
-// Instantiates myTodo instance:
-var myTodo = new Todo({
-  title: "Accessed directly from the model's instance attributes property.",
-  completed: true
-});
-
-// Logs myTodo's model instance attributes property:
-console.log(myTodo.attributes);
-
-// Logs value of the directly accessed title attribute
-// of the myTodo model instance:
-console.log(myTodo.attributes.title);
-```
-
-It is best practice to use `Model.set()` or direct instantiation to set the values of a model's attributes.
-
-Accessing `Model.attributes` directly is generally discouraged. If you need to read or clone data for purposes such as JSON stringification (e.g. for serialization prior to being passed to a view), this can be achieved using Model.toJSON(). Remember that this will return an object and JSON.stringify() should be used to get a string representation of the data:
+If you need to read or clone all of a model's data attributes use its `toJSON` method. Despite the name it doesn't return a JSON string but a copy of the attributes as an object. ("toJSON" is part of the JSON.stringify specification. Passing an object with a toJSON method makes it stringify the return value of that method instead of the object itself.)
 
 ```javascript
 var Todo = Backbone.Model.extend({
@@ -685,20 +658,19 @@ var Todo = Backbone.Model.extend({
 var todo1 = new Todo();
 var todo1Attributes = todo1.toJSON();
 // Following logs: {"title":"","completed":false} 
-console.log(JSON.stringify(todo1Attributes));
+console.log(todo1Attributes);
 
 var todo2 = new Todo({
   title: "Try these examples and check results in console.",
   completed: true
 });
-// logs string: {"title":"Try examples and check results in console.","completed":true} 
-console.log(JSON.stringify(todo2.toJSON()));
+// logs: {"title":"Try examples and check results in console.","completed":true}
+console.log(todo2.toJSON());
 ```
 
-#### Model.set()
+**Model.set()**
 
-`Model.set()` allows us to pass attributes into an instance of our model. Attributes can either be set during initialization or at any time afterwards. It's important to avoid trying to set a Model's attributes directly (for example, `Model.attributes.title = 'New todo title.'`). Backbone uses Model.set() to know when to broadcast that a model's data has changed.
-
+`Model.set()` allows us to pass attributes into an instance of our model. Attributes can either be set during initialization or at any time afterwards. Backbone uses Model.set() to know when to broadcast that a model's data has changed.
 
 ```javascript
 var Todo = Backbone.Model.extend({
@@ -730,7 +702,11 @@ console.log('Todo title: ' + myTodo.get('title'));
 console.log('Completed: ' + myTodo.get('completed'));
 ```
 
-**Listening for changes to your model**
+**Direct access**
+
+If you really need to access the attributes in a model's instance directly, there is `Model.attributes`. But remember it is best practice to use Model.get(), Model.set() or direct instantiation as explained above.
+
+#### Listening for changes to your model
 
 Any and all of the attributes in a Backbone model can have listeners bound to them which detect when their values change. Listeners can be added to the `initialize()` function:
 
@@ -794,7 +770,7 @@ myTodo.set('completed', true);
 console.log('Todo set as completed: ' + myTodo.get('completed'));
 ```
 
-**Validation**
+#### Validation
 
 Backbone supports model validation through `Model.validate()`, which allows checking the attribute values for a model prior to them being set.
 
