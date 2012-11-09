@@ -1807,6 +1807,36 @@ When used appropriately, Backbone's `extend` method can save a great deal of tim
 
 (Thanks to [Alex Young](http://dailyjs.com), [Derick Bailey](http://stackoverflow.com/users/93448/derick-bailey) and [JohnnyO](http://stackoverflow.com/users/188740/johnnyo) for the heads up about these tips).
 
+#### Backbone-Super
+
+[Backbone-Super](https://github.com/lukasolson/Backbone-Super) by Lukas Olson adds a *_super* method to *Backbone.Model* using [John Resig’s Inheritance script](http://ejohn.org/blog/simple-javascript-inheritance/).
+Rather than using Backbone.Model.prototype.set.call as per the Backbone.js documentation, _super can be called instead:
+
+```javascript
+// This is how we normally do it
+var OldFashionedNote = Backbone.Model.extend({
+  set: function( attributes, options ) {
+    // Call parent's method
+    Backbone.Model.prototype.set.call(this, attributes, options);
+    // some custom code here
+    // ...
+  }
+});
+```
+
+After including this plugin, you can do the same thing with the following syntax:
+
+```javascript
+// This is how we can do it after using the Backbone-super plugin
+var Note = Backbone.Model.extend({
+  set: function(attributes, options) {
+    // Call parent's method
+    this._super(attributes, options);
+    // some custom code here
+    // ...
+  }
+});
+```
 
 ## Namespacing
 
