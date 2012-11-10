@@ -641,7 +641,7 @@ var todo2 = new Todo({
   completed: true
 });
 console.log(todo2.get('title')); // Retrieved with models get() method.
-console.log(todo2.get('completed')); // false
+console.log(todo2.get('completed')); // true
 ```
 
 If you need to read or clone all of a model's data attributes use its `toJSON` method. Despite the name it doesn't return a JSON string but a copy of the attributes as an object. ("toJSON" is part of the JSON.stringify specification. Passing an object with a toJSON method makes it stringify the return value of that method instead of the object itself.)
