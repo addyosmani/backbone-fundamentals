@@ -993,7 +993,7 @@ As collections represent a group of items, we're also able to listen for `add` a
 var TodosCollection = new Backbone.Collection();
 
 TodosCollection.on("add", function(todo) {
-  console.log("I should " + todo.get("title") + '. Have I done it before? '  + (todo.get("completed") ? 'Yeah!': 'Not.' ));
+  console.log("I should " + todo.get("title") + ". Have I done it before? "  + (todo.get("completed") ? 'Yeah!': 'Not.' ));
 });
 
 TodosCollection.add([
@@ -1009,7 +1009,7 @@ In addition, we're able to bind a `change` event to listen for changes to models
 var TodosCollection = new Backbone.Collection();
 
 TodosCollection.on("change:title", function(model) {
-    console.log("Changed my mind where should I will, " + model.get('title'));
+    console.log("Changed my mind where I should go, " + model.get('title'));
 });
 
 TodosCollection.add([
@@ -1068,7 +1068,7 @@ In the above example if we wanted to log an event when `.sync()` was called, we 
 ```javascript
 var id_counter = 1;
 Backbone.sync = function(method, model) {
-  console.log('I've been passed ' + method + ' with ' + JSON.stringify(model));
+  console.log("I've been passed " + method + " with " + JSON.stringify(model));
   if(method === 'create'){ model.set('id', id_counter++); }
 };
 ```
@@ -1392,7 +1392,7 @@ var TodoRouter = Backbone.Router.extend({
         "todos/:id/download/*documentPath" : "downloadDocument",
         /* This is an example of using a *splat. splats are able to match any number of
         URL components and can be combined with ":param"s*/
-        /* Sample usage: http://example.com/#todo/5/download/files/Meeting_schedule.doc */
+        /* Sample usage: http://example.com/#todos/5/download/files/Meeting_schedule.doc */
 
         /* If you wish to use splats for anything beyond default routing, it's probably a good
         idea to leave them at the end of a URL otherwise you may need to apply regular
