@@ -1398,7 +1398,7 @@ var TodoRouter = Backbone.Router.extend({
         "todos/:id/download/*documentPath" : "downloadDocument",
         /* This is an example of using a *splat. splats are able to match any number of
         URL components and can be combined with ":param"s*/
-        /* Sample usage: http://example.com/#todo/5/download/files/Meeting_schedule.doc */
+        /* Sample usage: http://example.com/#todos/5/download/files/Meeting_schedule.doc */
 
         /* If you wish to use splats for anything beyond default routing, it's probably a good
         idea to leave them at the end of a URL otherwise you may need to apply regular
