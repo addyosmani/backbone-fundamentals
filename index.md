@@ -993,7 +993,7 @@ As collections represent a group of items, we're also able to listen for `add` a
 var TodosCollection = new Backbone.Collection();
 
 TodosCollection.on("add", function(todo) {
-  console.log("I should " + todo.get("title") + '. Have I done it before? '  + (todo.get("completed") ? 'Yeah!': 'Not.' ));
+  console.log("I should " + todo.get("title") + ". Have I done it before? "  + (todo.get("completed") ? 'Yeah!': 'Not.' ));
 });
 
 TodosCollection.add([
@@ -1009,7 +1009,7 @@ In addition, we're able to bind a `change` event to listen for changes to models
 var TodosCollection = new Backbone.Collection();
 
 TodosCollection.on("change:title", function(model) {
-    console.log("Changed my mind where should I will, " + model.get('title'));
+    console.log("Changed my mind where I should go, " + model.get('title'));
 });
 
 TodosCollection.add([
