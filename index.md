@@ -48,7 +48,7 @@ Disqus, Walmart, SoundCloud and Foursquare.
 
 ### When Do You Need A JavaScript MV* Framework?
 
-When building a single-page application using JavaScript, whether it involves a complex user interface or is simply trying to reduce the number of HTTP requests required for new Views, you will likely find yourself inventing many of the pieces that make up an MV* framework like Backbone or Ember.
+When building a single-page application using JavaScript, whether it involves a complex user interface or is simply trying to reduce the number of HTTP requests required for new Views, you will likely find yourself inventing many of the pieces that make up an MV* framework like Backbone, or other popular frameworks such as Knockout.js, Ember.js, or Angular.js.
 
 At the outset, it isn’t terribly difficult to write an application framework that offers some opinionated way to avoid spaghetti code, however to say that it is equally as trivial to write something of the standard of Backbone would be a grossly incorrect assumption.
 
@@ -231,14 +231,6 @@ In MVC, the actual task of updating the Model falls to Controllers, which we'll 
 
 Let's explore Views a little further using a simple JavaScript example. Below we can see a function that creates a single Todo view, consuming both a model instance and a controller instance.
 
-We define a ```render()``` utility within our view which is responsible for rendering the contents of the ```todoModel``` using a JavaScript templating engine ([Underscore](http://underscorejs.org "Underscore.js") templating) and updating the contents of our view, referenced by ```todoEl```.
-
-The ```todoModel``` then adds our ```render()``` callback as one of its subscribers, so that through the Observer pattern it can trigger the view to update when the model changes.
-
-You may wonder where user interaction comes into play here. When users click on any elements within the view, it's not the view's responsibility to know what to do next. A Controller makes this decision. In our sample implementation, this is achieved by adding an event listener to ```todoEl``` which will delegate handling the click behavior back to the controller, passing the model information along with it in case it's needed.
-
-The benefit of this architecture is that each component plays its own separate role in making the application function as needed.
-
 ```javascript
 var buildTodoView = function ( todoModel, todoController ) {
   var base       = document.createElement('div'),
@@ -273,6 +265,15 @@ var buildTodoView = function ( todoModel, todoController ) {
   }
 }
 ```
+
+We define a ```render()``` utility within our view which is responsible for rendering the contents of the ```todoModel``` using a JavaScript templating engine ([Underscore](http://underscorejs.org "Underscore.js") templating) and updating the contents of our view, referenced by ```todoEl```.
+
+The ```todoModel``` then adds our ```render()``` callback as one of its subscribers, so that through the Observer pattern it can trigger the view to update when the model changes.
+
+You may wonder where user interaction comes into play here. When users click on any elements within the view, it's not the view's responsibility to know what to do next. A Controller makes this decision. In our sample implementation, this is achieved by adding an event listener to ```todoEl``` which will delegate handling the click behavior back to the controller, passing the model information along with it in case it's needed.
+
+The benefit of this architecture is that each component plays its own separate role in making the application function as needed.
+
 
 **Templating**
 
@@ -384,8 +385,7 @@ var TodoRouter = Backbone.Router.extend({
 });
 
 var router = new TodoRouter();
-  Backbone.history.start();
-});
+Backbone.history.start();
 ```
 
 ## What does MVC give us?
