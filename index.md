@@ -1772,7 +1772,7 @@ var PanelAdvanced = new PanelAdvanced(); //Logs: Panel initialized, PanelAdvance
 PanelAdvanced.sayHi(); // Logs: hello from Panel
 ```
 
-When used appropriately, Backbone's `extend` method can save a great deal of time and effort writing redundant code.
+When used appropriately, Underscore's `extend` method can save a great deal of time and effort writing redundant code.
 
 (Thanks to [Alex Young](http://dailyjs.com), [Derick Bailey](http://stackoverflow.com/users/93448/derick-bailey) and [JohnnyO](http://stackoverflow.com/users/188740/johnnyo) for the heads up about these tips).
 
