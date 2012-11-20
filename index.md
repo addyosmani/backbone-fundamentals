@@ -518,15 +518,14 @@ It *is* however worth understanding where and why these concepts originated, so 
 ### Backbone.js
 
 * Core components: Model, View, Collection, Router. Enforces its own flavor of MV*
-* Good documentation, with more improvements on the way
 * Used by large companies such as SoundCloud and Foursquare to build non-trivial applications
 * Event-driven communication between views and models. As we'll see, it's relatively straight-forward to add event listeners to any attribute in a model, giving developers fine-grained control over what changes in the view
 * Supports data bindings through manual events or a separate Key-value observing (KVO) library
-* Great support for RESTful interfaces out of the box, so models can be easily tied to a backend
+* Support for RESTful interfaces out of the box, so models can be easily tied to a backend
 * Extensive eventing system. It's [trivial](http://lostechies.com/derickbailey/2011/07/19/references-routing-and-the-event-aggregator-coordinating-views-in-backbone-js/) to add support for pub/sub in Backbone
 * Prototypes are instantiated with the ```new``` keyword, which some developers prefer
 * Agnostic about templating frameworks, however Underscore's micro-templating is available by default. Backbone works well with libraries like Handlebars
-* Doesn't support deeply nested models, though there are Backbone plugins such as [this](https://github.com/PaulUithol/Backbone-relational) which can help
+* Doesn't support deeply nested models, though there are Backbone plugins such as [Backbone-relational](https://github.com/PaulUithol/Backbone-relational) which can help
 * Clear and flexible conventions for structuring applications. Backbone doesn't force usage of all of its components and can work with only those needed.
 
 
