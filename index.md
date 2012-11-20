@@ -2239,7 +2239,7 @@ In a nutshell this means we can now refer to this.el in our controller, which po
 
 Now let's take a look at the constructor function. It's binding to several events on the Todo model, such as add, reset and all. Since we're delegating handling of updates and deletes to the `TodoView` view, we don't need to to worry about that here. The two pieces of logic are:
 
-* When a new todo is created, the `add` event will be fired, calling `addAll()`. This iterates over all of the Todos currently in our collection and fires `addOne()` for each item.
+* When a new todo is created, the `add` event will be fired, calling `addAll()`. This iterates over all of the Todos currently in our collection and fires `addOne()` for each item. (This is so wrong it's scary.)
 
 * `addOne()` instantiates the TodoView view, rendering it and appending the resultant element to our Todo list.
 
