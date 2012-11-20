@@ -2298,8 +2298,8 @@ We can then add in the logic for creating new todos, editing them and filtering 
 
       window.app.Todos.on( 'add', this.addAll, this );
       window.app.Todos.on( 'reset', this.addAll, this );
-      window.app.Todos.on('change:completed', this.filterOne, this);
-      window.app.Todos.on('filter', this.filterAll, this);
+      window.app.Todos.on( 'change:completed', this.filterOne, this );
+      window.app.Todos.on( 'filter', this.filterAll, this );
 
       window.app.Todos.on( 'all', this.render, this );
 
@@ -2398,7 +2398,7 @@ We can then add in the logic for creating new todos, editing them and filtering 
 
 ## Individual Todo View
 
-Let’s look at the `TodoView` view, now. This will be in charge of individual Todo records, making sure the view updates when the todo does. To enable enable this interactive behavior we should add some event listeners to the view, that will listen to the events on individual todo represented in html.
+Let’s look at the `TodoView` view, now. This will be in charge of individual Todo records, making sure the view updates when the todo does. To enable this interactive behavior we should add some event listeners to the view, that will listen to the events on individual todo represented in html.
 
 ```javascript
 
@@ -2422,7 +2422,7 @@ Let’s look at the `TodoView` view, now. This will be in charge of individual T
     events: {
       'dblclick label': 'edit',
       'keypress .edit': 'updateOnEnter',
-      'blur .edit':   'close'
+      'blur .edit': 'close'
     },
 
     // The TodoView listens for changes to its model, re-rendering. Since there's
