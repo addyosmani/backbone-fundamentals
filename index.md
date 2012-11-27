@@ -955,7 +955,7 @@ var todoCid = todos.getByCid(todo2.cid);
 
 // As mentioned in previous example, 
 // models are passed by reference
-console.log(todo2 === myTodo); 
+console.log(todoCid === myTodo); 
 ```
 
 Backbone Collections don't have setters as such, but do support adding new models via `.add()` and removing models via `.remove()`.
