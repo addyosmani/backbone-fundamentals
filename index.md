@@ -6180,7 +6180,7 @@ To see how everything ties together, feel free to grab the source by cloning thi
 **Note:** While this first practical doesn't use a build profile as outlined in the chapter on using the RequireJS optimizer, we will be using one in the section on building mobile Backbone applications.
 
 
-## <a name="modularrouting">Route based module loading</a>
+## Route based module loading
 
 This section will discuss a route based approach to module loading as implemented by [Lumbar](http://lumbarjs.org/). Like RequireJS, Lumbar is also a modular build system, but the pattern it implements for loading routes may be used with any build system.
 
