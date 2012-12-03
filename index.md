@@ -18,7 +18,6 @@ I hope you find this book helpful!
 
 
 # Introduction
->>>>>>> 5a694854eb2d55e06511012aefa19d3166cd89e2
 
 When writing a Web application from scratch, it’s easy to feel like we can get by simply by relying on a DOM manipulation library (like jQuery) and a handful of utility plugins. The problem with this is that it doesn’t take long to get lost in a nested pile of jQuery callbacks and DOM elements without any real structure in place for our applications.
 
