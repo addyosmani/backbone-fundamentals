@@ -6227,7 +6227,7 @@ A little used feature of `Backbone.Router` is it's ability to create multiple ro
 
 A sample implementation is provided below. The `config` object would need to contain the data from our sample configuration JSON file above, and the `loader` object would need to implement `isLoaded` and `loadModule` methods. Note that Lumbar provides all of these implementations, the examples are provided to create your own implementation.
 
-    // create an object that will be used as the prototype
+    // Create an object that will be used as the prototype
     // for our master router
     var handlers = {
         routes: {}
@@ -6235,23 +6235,23 @@ A sample implementation is provided below. The `config` object would need to con
 
     _.each(config.modules, function(module, moduleName) {
         if (module.routes) {
-            // generate a loading callback for the module
+            // Generate a loading callback for the module
             var callbackName = "loader_" moduleName;
             handlers[callbackName] = function() {
                 if (loader.isLoaded(moduleName)) {
-                    //do nothing if the module is loaded
+                    // Do nothing if the module is loaded
                     return;
                 } else {
                     //the module needs to be loaded
                     loader.loadModule(moduleName, function() {
-                        //module is loaded, reloading the route
-                        //will trigger callback in the module's
-                        //router
+                        // Module is loaded, reloading the route
+                        // will trigger callback in the module's
+                        // router
                         Backbone.history.loadUrl();
                     });
                 }
             };
-            // each route in the module should trigger the
+            // Each route in the module should trigger the
             // loading callback
             _.each(module.routes, function(methodName, route) {
                 handlers.routes[route] = callbackName;
@@ -6259,7 +6259,7 @@ A sample implementation is provided below. The `config` object would need to con
         }
     });
 
-    // create the master router
+    // Create the master router
     new (Backbone.Router.extend(handlers));
 
 ### Using NodeJS to handle pushState
@@ -6272,7 +6272,7 @@ Another advantage to defining all routes in a single location is that the same J
         _ = require('underscore'),
         express = require('express'),
         server = express.createServer(),
-        config = fs.readFileSync('path/to/config.json');
+        config = JSON.parse(fs.readFileSync('path/to/config.json'));
 
     _.each(config.modules, function(module, moduleName) {
         if (module.routes) {
@@ -10148,6 +10148,7 @@ Whilst what we get with Backbone out of the box can be terribly useful, there ar
 
 * [Backbone Marionette](https://github.com/derickbailey/backbone.marionette)
 * [Thorax](http://walmartlabs.github.com/thorax)
+* [Lumbar](http://walmartlabs.github.com/lumbar)
 * [Backbone Layout Manager](https://github.com/tbranyen/backbone.layoutmanager)
 * [Backbone Boilerplate](https://github.com/backbone-boilerplate/backbone-boilerplate)
 * [Backbone Model Binding](https://github.com/derickbailey/backbone.modelbinding)
