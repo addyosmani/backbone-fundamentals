@@ -950,7 +950,7 @@ var todoCid = todos.getByCid(todo2.cid);
 
 // As mentioned in previous example, 
 // models are passed by reference
-console.log(todo2 === myTodo); 
+console.log(todoCid === myTodo); 
 ```
 
 Backbone Collections don't have setters as such, but do support adding new models via `.add()` and removing models via `.remove()`.
@@ -1957,7 +1957,7 @@ todoApp.model.Notes = Backbone.Model.extend({});
 todoApp.model.special.Admin = Backbone.Model.extend({});
 ```
 
-This is readable, clearly organized, and is a relatively safe way of namespacing your Backbone application. The only real caveat however is that it requires your browser's JavaScript engine to first locate the galleryApp object, then dig down until it gets to the function you're calling. However, developers such as Juriy Zaytsev (kangax) have tested and found the performance differences between single object namespacing vs the 'nested' approach to be quite negligible.
+This is readable, clearly organized, and is a relatively safe way of namespacing your Backbone application. The only real caveat however is that it requires your browser's JavaScript engine to first locate the todoApp object, then dig down until it gets to the function you're calling. However, developers such as Juriy Zaytsev (kangax) have tested and found the performance differences between single object namespacing vs the 'nested' approach to be quite negligible.
 
 **Recommendation**
 
