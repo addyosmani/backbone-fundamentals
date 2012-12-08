@@ -48,7 +48,7 @@ Disqus, Walmart, SoundCloud and Foursquare.
 
 ### When Do You Need A JavaScript MV* Framework?
 
-When building a single-page application using JavaScript, whether it involves a complex user interface or is simply trying to reduce the number of HTTP requests required for new Views, you will likely find yourself inventing many of the pieces that make up an MV* framework like Backbone or Ember.
+When building a single-page application using JavaScript, whether it involves a complex user interface or is simply trying to reduce the number of HTTP requests required for new Views, you will likely find yourself inventing many of the pieces that make up an MV* framework like Backbone, or other popular frameworks such as Knockout.js, Ember.js, or Angular.js.
 
 At the outset, it isn’t terribly difficult to write an application framework that offers some opinionated way to avoid spaghetti code, however to say that it is equally as trivial to write something of the standard of Backbone would be a grossly incorrect assumption.
 
@@ -231,14 +231,6 @@ In MVC, the actual task of updating the Model falls to Controllers, which we'll 
 
 Let's explore Views a little further using a simple JavaScript example. Below we can see a function that creates a single Todo view, consuming both a model instance and a controller instance.
 
-We define a ```render()``` utility within our view which is responsible for rendering the contents of the ```todoModel``` using a JavaScript templating engine ([Underscore](http://underscorejs.org "Underscore.js") templating) and updating the contents of our view, referenced by ```todoEl```.
-
-The ```todoModel``` then adds our ```render()``` callback as one of its subscribers, so that through the Observer pattern it can trigger the view to update when the model changes.
-
-You may wonder where user interaction comes into play here. When users click on any elements within the view, it's not the view's responsibility to know what to do next. A Controller makes this decision. In our sample implementation, this is achieved by adding an event listener to ```todoEl``` which will delegate handling the click behavior back to the controller, passing the model information along with it in case it's needed.
-
-The benefit of this architecture is that each component plays its own separate role in making the application function as needed.
-
 ```javascript
 var buildTodoView = function ( todoModel, todoController ) {
   var base       = document.createElement('div'),
@@ -273,6 +265,15 @@ var buildTodoView = function ( todoModel, todoController ) {
   }
 }
 ```
+
+We define a ```render()``` utility within our view which is responsible for rendering the contents of the ```todoModel``` using a JavaScript templating engine ([Underscore](http://underscorejs.org "Underscore.js") templating) and updating the contents of our view, referenced by ```todoEl```.
+
+The ```todoModel``` then adds our ```render()``` callback as one of its subscribers, so that through the Observer pattern it can trigger the view to update when the model changes.
+
+You may wonder where user interaction comes into play here. When users click on any elements within the view, it's not the view's responsibility to know what to do next. A Controller makes this decision. In our sample implementation, this is achieved by adding an event listener to ```todoEl``` which will delegate handling the click behavior back to the controller, passing the model information along with it in case it's needed.
+
+The benefit of this architecture is that each component plays its own separate role in making the application function as needed.
+
 
 **Templating**
 
@@ -384,8 +385,7 @@ var TodoRouter = Backbone.Router.extend({
 });
 
 var router = new TodoRouter();
-  Backbone.history.start();
-});
+Backbone.history.start();
 ```
 
 ## What does MVC give us?
@@ -518,15 +518,14 @@ It *is* however worth understanding where and why these concepts originated, so 
 ### Backbone.js
 
 * Core components: Model, View, Collection, Router. Enforces its own flavor of MV*
-* Good documentation, with more improvements on the way
 * Used by large companies such as SoundCloud and Foursquare to build non-trivial applications
 * Event-driven communication between views and models. As we'll see, it's relatively straight-forward to add event listeners to any attribute in a model, giving developers fine-grained control over what changes in the view
 * Supports data bindings through manual events or a separate Key-value observing (KVO) library
-* Great support for RESTful interfaces out of the box, so models can be easily tied to a backend
+* Support for RESTful interfaces out of the box, so models can be easily tied to a backend
 * Extensive eventing system. It's [trivial](http://lostechies.com/derickbailey/2011/07/19/references-routing-and-the-event-aggregator-coordinating-views-in-backbone-js/) to add support for pub/sub in Backbone
 * Prototypes are instantiated with the ```new``` keyword, which some developers prefer
 * Agnostic about templating frameworks, however Underscore's micro-templating is available by default. Backbone works well with libraries like Handlebars
-* Doesn't support deeply nested models, though there are Backbone plugins such as [this](https://github.com/PaulUithol/Backbone-relational) which can help
+* Doesn't support deeply nested models, though there are Backbone plugins such as [Backbone-relational](https://github.com/PaulUithol/Backbone-relational) which can help
 * Clear and flexible conventions for structuring applications. Backbone doesn't force usage of all of its components and can work with only those needed.
 
 
@@ -1773,7 +1772,7 @@ var PanelAdvanced = new PanelAdvanced(); //Logs: Panel initialized, PanelAdvance
 PanelAdvanced.sayHi(); // Logs: hello from Panel
 ```
 
-When used appropriately, Backbone's `extend` method can save a great deal of time and effort writing redundant code.
+When used appropriately, Underscore's `extend` method can save a great deal of time and effort writing redundant code.
 
 (Thanks to [Alex Young](http://dailyjs.com), [Derick Bailey](http://stackoverflow.com/users/93448/derick-bailey) and [JohnnyO](http://stackoverflow.com/users/188740/johnnyo) for the heads up about these tips).
 
@@ -2240,7 +2239,7 @@ In a nutshell this means we can now refer to this.el in our controller, which po
 
 Now let's take a look at the constructor function. It's binding to several events on the Todo model, such as add, reset and all. Since we're delegating handling of updates and deletes to the `TodoView` view, we don't need to to worry about that here. The two pieces of logic are:
 
-* When a new todo is created, the `add` event will be fired, calling `addAll()`. This iterates over all of the Todos currently in our collection and fires `addOne()` for each item.
+* When a new todo is created, the `add` event will be fired, calling `addAll()`. This iterates over all of the Todos currently in our collection and fires `addOne()` for each item. (This is so wrong it's scary.)
 
 * `addOne()` instantiates the TodoView view, rendering it and appending the resultant element to our Todo list.
 
@@ -2299,8 +2298,8 @@ We can then add in the logic for creating new todos, editing them and filtering 
 
       window.app.Todos.on( 'add', this.addAll, this );
       window.app.Todos.on( 'reset', this.addAll, this );
-      window.app.Todos.on('change:completed', this.filterOne, this);
-      window.app.Todos.on('filter', this.filterAll, this);
+      window.app.Todos.on( 'change:completed', this.filterOne, this );
+      window.app.Todos.on( 'filter', this.filterAll, this );
 
       window.app.Todos.on( 'all', this.render, this );
 
@@ -2399,7 +2398,7 @@ We can then add in the logic for creating new todos, editing them and filtering 
 
 ## Individual Todo View
 
-Let’s look at the `TodoView` view, now. This will be in charge of individual Todo records, making sure the view updates when the todo does. To enable enable this interactive behavior we should add some event listeners to the view, that will listen to the events on individual todo represented in html.
+Let’s look at the `TodoView` view, now. This will be in charge of individual Todo records, making sure the view updates when the todo does. To enable this interactive behavior we should add some event listeners to the view, that will listen to the events on individual todo represented in html.
 
 ```javascript
 
@@ -2423,7 +2422,7 @@ Let’s look at the `TodoView` view, now. This will be in charge of individual T
     events: {
       'dblclick label': 'edit',
       'keypress .edit': 'updateOnEnter',
-      'blur .edit':   'close'
+      'blur .edit': 'close'
     },
 
     // The TodoView listens for changes to its model, re-rendering. Since there's
