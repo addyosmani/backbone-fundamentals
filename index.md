@@ -250,7 +250,7 @@ var buildTodoView = function ( todoModel, todoController ) {
     // We use a templating library such as Underscore
     // templating which generates the HTML for our
     // todo entry
-    todoEl.innerHTML = _.template('todoTemplate', { src: todoModel.getSrc() });
+    todoEl.innerHTML = _.template( $('#todoTemplate').html(), { src: todoModel.getSrc() });
    }
 
   todoModel.addSubscriber( render );     
