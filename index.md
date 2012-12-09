@@ -1067,7 +1067,7 @@ In the above example if we wanted to log an event when `.sync()` was called, we 
 ```javascript
 var id_counter = 1;
 Backbone.sync = function(method, model) {
-  console.log("I've been passed " + method + " with " + JSON.stringify(model));
+  console.log("I\'ve been passed " + method + " with " + JSON.stringify(model));
   if(method === 'create'){ model.set('id', id_counter++); }
 };
 ```
