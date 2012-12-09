@@ -300,8 +300,6 @@ var View = Cranium.View = function (options) {
 
 _.extend(Cranium.View.prototype, Cranium.Events);
 ```
-
---- TO BE (RE)MOVED
 Users interact with views, which usually means reading and editing model data. For example, in our todo application example, todo model viewing might happen in a user interface in the list of all todo items. Within it each todo is rendered with their title and completed checkbox. Model editing could be done through an "edit" view where a user who has selected a specific todo could edit its title in a form.
 
 We define a ```render()``` utility within our view which is responsible for rendering the contents of the ```Model``` using a JavaScript templating engine (provided by Underscore.js) and updating the contents of our view, referenced by ```el```.
@@ -311,7 +309,6 @@ We then adds our ```render()``` callback as one of ```Model``` subscribers, so t
 You may wonder where user interaction comes into play here. When users click on todo element within the view, it's not the view's responsibility to know what to do next. A Controller makes this decision. In our implementation, this is achieved by adding an event listener to todo element which will delegate handling the click behavior back to the controller, passing the model information along with it in case it's needed.
 
 The benefit of this architecture is that each component plays its own separate role in making the application function as needed.
----
 
 **Templating**
 
@@ -464,6 +461,7 @@ var todoController = new Cranium.Controller({
     this.view.init(this.model);
     return this;
   },
+  // Toggles the value of the todo in the Model
   toggleComplete: function () {
     var completed = todoController.model.get('completed');
     console.log("Todo old 'completed' value?", completed);
@@ -474,7 +472,7 @@ var todoController = new Cranium.Controller({
 });
 
 
-// // Let's kick start things off
+// Let's kick start things off
 todoController.initialize();
 
 todo1.set({ title: "Due to this change Model will notify View and it will re-render"});
