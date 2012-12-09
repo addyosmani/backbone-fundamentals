@@ -2237,7 +2237,7 @@ You can see we've got a couple of things going on, an el (element), a `statsTemp
 
 In a nutshell this means we can now refer to this.el in our controller, which points to the `<section id="todoapp" />` element. As you can see, we're referring to el in the `addOne()` function, appending an element to the list.
 
-Now let's take a look at the constructor function. It's binding to several events on the Todo model, such as add, reset and all. Since we're delegating handling of updates and deletes to the `TodoView` view, we don't need to to worry about that here. The two pieces of logic are:
+Now let's take a look at the constructor function. It's binding to several events on the Todo model, such as add, reset and all. Since we're delegating handling of updates and deletes to the `TodoView` view, we don't need to worry about that here. The two pieces of logic are:
 
 * When a new todo is created, the `add` event will be fired, calling `addAll()`. This iterates over all of the Todos currently in our collection and fires `addOne()` for each item. (This is so wrong it's scary.)
 
