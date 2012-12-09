@@ -153,20 +153,19 @@ As you can imagine, similar flow would be with POST request after we press save 
 
 On sever side Front Controller would invoke default Controller and Action, e.g. Index Controller and its Index action. Within Index Action there would be a call to Articles model and its Articles::getLastEntries(10) method which would return last 10 blog posts. Afterwards, Controller would load blog/index view which would have basic logic for listing last 10 blog posts.
 
-
 Lets see big picture of typical HTTP request lifecycle through the server side MVC once again in the picture below. Server receives request and routes it through Front Controller. Front controller analyze request (URI) and invokes appropriate Action of the appropriate Controller. Within the Action a Model is asked to return and/or save submitted data. Action communicates with the data source (e.g. database or API etc.). In the end, View is loaded by Controller and it executes presentation logic (loops through articles and prints title, content etc.) with provided data.
 
 ![](img/webmvcflow_bacic.png)
 
 Demand for the complex web applications brought us to the point that we needed MVC implemented on the client side to better structure the code and make it easier to maintain and further extend during the application life-cycle. And, of course, JavaScript and browsers create another context which asks for bending or adjustment of the traditional MVC paradigm to it.
 
-## MVC In The Browser
+### MVC In The Browser
 
 Complex JavaScript web application, aka Single Page Application (SPA), "dances" all the time in a user's browser with all data persistence (saving to database on server) work done with Ajax calls in the background, which means, to put it boldly, no full browser refresh happens. Application behavior to be perceived by the users as "dancing" involves a lot of thought and work to be put in. 
 
 Through evolution, trial and error, and a lot of spaghetti and not so spaghetti-like code developers in the end developed on ideas of traditional MVC paradigm and brought the solution for structuring JavaScript code to the landscape of the SPAs through JavaScript MVC frameworks. JavaScript now has a number of MVC frameworks, including Ember.js, JavaScriptMVC, and of course Backbone.js.
 
-### The problem
+**The problem**
 
 Typical page in a SPA consists of smaller ingredients which, when looked at deeper level, represent logical entities, which involve certain data domain that should be represented in a certain way on the page.
 
@@ -174,67 +173,21 @@ Good example is basket in an e-commerce web application which would typically ha
 
 ![](img/wireframe_e_commerce.png)
 
-Basket has its data (the Model) and representation of the data in HTML (the View). On the Model changes the View should be updated and vice versa. Controller is the component that sends update commands both ways, to the View to update itself based on the Model change (e.g. sync with database) and to the Model based on the View changes (e.g. new item dropped into the basket).
+Basket has its data and representation of the data in HTML. This data and associated view in HTML changes over time. We usually used jQuery (or similar library) and whole bunch of ajax calls and callbacks to sync the two. That often produced code that was not so well structured and easy to maintain. Eventually, elegant way to handle it was brought to the client side throught JavaScript MVCs.
 
-It could be concluded that basket should have set of MVC instance just to take care about it. And it's not far from truth. It could be said that each part of the page (could be called widget) in SPA needs separate set of MVC stack to take care of it. Derived from that, it means that typical SPA page consists of the set of MVC stacks with each MVC stack responsible for certain part of the page (for synchronizing its view - DOM, model and controller to manage it). That way code is better structured, decoupled and easier to maintain. 
-
-Structuring those MVC stacks and organizing them to work seamlessly among each another should be taken into account when designing SPAs. We'll address that later on.
-
-Let's see a simple implementation of the MVC and its usage in vanilla JavaScript, to clarify some concepts.
-
-Once invoked the Controller takes over and passes to and/or fetches data from the appropriate Model for the Action in concern. After the Controller receives the data from Model it loads the view, which corresponds to the invoked Action, injects the data into it and returns the response to the user.
-
-For example, let say we have our blog on `www.example.com` and we want to edit an article (with `id=43`) and request `http://www.example.com/article/edit/43`:
-
-On the sever side the Front Controller would analyze the URL and invoke the Article Controller (corresponding to the `/article/` part of the URI) and its Edit Action (corresponding to the `/edit/` part of the URI). Within the Action there would be a call to, let say, the Articles model and its `Articles::getEntry(43)` method (43 corresponding to `/43/` in URI) which would return the blog article data from database for edit. Afterwards, Article Controller would load (`article/edit`) view which would have logic for injecting the article's data into the form for user to edit its content, title and other (meta) data. Once all this is done response is returned to the browser.
-
-As you can imagine, a similar flow is necessary with POST requests after we press a save button in a form. The POST action URI would look like `/article/save/43`. This time the request would go through the same Controller, but the Save Action (due to the `/save/` URI chunk), and invoked Articles Model would save edit article to the database with `Articles::saveEntry(43)` and redirect back to the `/article/edit/43` for further editing.
-
-If the user requested `http://www.example.com/`:
-
-On the server side the Front Controller would invoke default Controller and Action, e.g. Index Controller and its Index action. Within Index Action there would be a call to Articles model and its `Articles::getLastEntries(10)` method which would return last 10 blog posts. Afterwards, the Controller would load blog/index view which would have basic logic for listing last 10 blog posts.
-
-We can see the larger picture of typical HTTP request lifecycle through the server side MVC in the picture below. 
-
-![](img/webmvcflow_bacic.png)
-
-Server receives a request and routes it through a single entry point. At the entry point, the Front Controller analyzes the request and based on it invokes the appropriate Action of the appropriate Controller. This process is called routing. The Action Model is asked to return and/or save submitted data. Model communicates with the data source (e.g. database or API etc.). Once the Model completes its work it returns data to the Controller which then loads the appropriate View. The View executes presentation logic (loops through articles and prints titles, content etc.) withthe supplied data. In the end, the response is returned to the user.
-
-Demand for fast, complex and responsive Ajax powered web applications demanded a lot of this logic to be replicated on the client side. This meant a lot more code had to exist there. Eventually it brought us to the point that we needed MVC (or a similar architecture) implemented on the client side to better structure the code and make it easier to maintain and further extend during the application life-cycle.
-
-And, of course, JavaScript and browsers create another context which require that we bend or adjust the traditional MVC paradigm to fit it.
-
-### MVC In The Browser
-
-In complex JavaScript web applications, aka Single Page Applications (SPA), all application responses (e.g. UI updates) to user inputs are done seemlessly on the client-side. Data fetching and persistence (e.g. saving to database on server) are done with Ajax in the background. For silky, slick and smooth user experiences, the code powering these interacions needs to be well thought out.
-
-Through evolution, trial and error, and a lot of spaghetti and not so spaghetti-like code developers in the end developed on ideas of traditional MVC paradigm and brought the solution for structuring JavaScript code to the landscape of the SPAs through JavaScript MVC frameworks. JavaScript now has a number of MVC frameworks, including Ember.js, JavaScriptMVC, and of course Backbone.js.
-
-**The problem**
-
-A typical page in an SPA consists of smaller ingredients which, when looked at at a deeper level, represent logical entities, which involve specific data domains that should be represented in a particular way on the page.
-
-A good example is basket in an e-commerce web application which would typically have a list of items added to it and presented to the user as box in top right corner of the page (see the picture). 
-
-![](img/wireframe_e_commerce.png)
-
-The basket has its data and representation of the data in HTML. This data and associated view in HTML changes over time. There was a time when we used jQuery (or a similar DOM manipulation library) and a bunch of Ajax calls and callbacks to sync the two. That often produced code that was not so well structured and easy to maintain. Bugs were easy to produce and they are even unavoidable.
-
-Eventually, an elegant way to handle it was brought to the client side throught JavaScript MVC libraries.
-
-Now, data is handled with a Model and its HTML representation with View. So, on Model changes the View is updated and vice versa. The Controller is the component that manages this synchronization. It sends update commands both ways, to the View to update itself based on the Model change (e.g. sync with database) and to the Model based on the View changes (e.g. new item dropped into the basket). This way offers a better separation of concerns and improved code structure is accomplished.
+Now, data is handled with Model and its HTML representation with View. So, on Model changes View is updated and vice versa. Controller is the component that manages this synchronization. It sends update commands both ways, to the View to update itself based on the Model change (e.g. sync with database) and to the Model based on the View changes (e.g. new item dropped into the basket). That way better separation of concerns and code structure is achieved.
 
 ### Simple JavaScript MVC Implementation
 
-Let's see a simple implementation of the MVC pattern and its usage to clarify some concepts - we're going to call our little library Cranium.js. 
+Let's see a simple implementation of the MVC and its usage to clarify some concepts.
 
-To simplify a bit we will rely on [Underscore](http://underscorejs.org "Underscore.js") for inheritance and templating (similar to Backbone).
+To simplify a bit we will rely on [Underscore](http://underscorejs.org "Underscore.js") for inheritance and templating (similar as Backbone).
 
 #### Event System
 
-At the heart of our JavaScript MVC implementation is an `Event` system (object) based on the Publisher-Subscriber Pattern which makes it possible for MVC components to intercommunicate in an elegant, decoupled manner. Subscribers 'listen' out for specific events of interest and react when Publishers broadcast these events.
+At heart of our JavaScript MVC implementation is Event system based on Publisher-Subscriber Pattern which makes possible for MVC components to intercommunicate in an elegant, decoupled manner.
 
-`Event` is inherited by the View and Model components. That way each of them can inform other component that event of the interest to them happened.
+Event is inherited by View and Model component. That way each of them can inform other component that event of the interest to them happened.
 
 ```javascript
 // cranium.js - Cranium.Events
@@ -273,16 +226,15 @@ var Events = Cranium.Events = {
 };
 ```
 
-The Event system makes it possible for:
-
-* for View to notify its subscribers of user interaction, like click or input in a form, to update/re-render its UI etc.
-* for Model once its data has changed to notify its Subscribers to update themselves (e.g. view to re-render to show accurate/updated data) etc­.
+Event system makes possible:
+- for View to notify its subscribers of users interaction, like click or input in form etc., to update/re-render its UI etc..
+- for Model once its data are changed it can notify its listeners to update themselves (e.g. view to re-render to show accurate/updated data) etc­.
 
 #### Models
 
-Models manage the (domain-specific) data for an application. They are concerned with neither the user-interface nor presentation layers, but instead represent structured data that an application may require. When a model changes (e.g when it is updated), it will typically notify its observers (Subscribers) that a change has occurred so that they may react accordingly.
+Models manage the data for an application. They are concerned with neither the user-interface nor presentation layers, but instead represent structured data that an application may require. When a model changes (e.g when it is updated), it will typically notify its observers (a concept we will cover shortly, e.g views) that a change has occurred so that they may react accordingly.
 
-Let's see a simple implementation of the Model:
+Let's see simple implementation of the Model:
 
 ```javascript
 // cranium.js - Cranium.Model
@@ -290,22 +242,17 @@ Let's see a simple implementation of the Model:
 // Attributes represents data, model's properties.
 // These are to be passed at Model instantiation.
 // Also we are creating id for each Model instance 
-// so that it can identify itself (e.g. on chage 
-// announcements)
+// so that it can identify itself on chage 
+// announcements
 var Model = Cranium.Model = function (attributes) {
     this.id = _.uniqueId('model');
-    this.attributes = attributes || {};
+    this.attributes = attributes || {};    
 };
 
-// Getter (accessor) method;
-// returns named data item
-Cranium.Model.prototype.get = function(attrName) {
-    return this.attributes[attrName];
+Cranium.Model.prototype.get = function(attr) {
+    return this.attributes[attr];
 };
-
-// Setter (mutator) method;
-// Set/mix in into model mapped data (e.g.{name: "John"})
-// and publishes the change event
+                 
 Cranium.Model.prototype.set = function(attrs){
     if (_.isObject(attrs)) {
       _.extend(this.attributes, attrs);
@@ -313,22 +260,30 @@ Cranium.Model.prototype.set = function(attrs){
     }
     return this;
 };
-
-// Returns clone of the Models data object 
-// (used for view template rendering)
+            
 Cranium.Model.prototype.toJSON = function(options) {
     return _.clone(this.attributes);
 };
 
-// Helper function that announces changes to the Model
-// and passes the new data
 Cranium.Model.prototype.change = function(attrs){
     this.trigger(this.id + 'update', attrs);
 }; 
 
-// Mix in Event system
 _.extend(Cranium.Model.prototype, Cranium.Events);
 ```
+
+Notes:
+
+* The built-in capabilities of models vary across frameworks, however it's common for them to support validation of attributes, where attributes represent the properties of the model, such as a model identifier.
+
+* When using models in real-world applications we generally also need a way of persisting models. Persistence allows us to edit and update models with the knowledge that their most recent states will be saved somewhere, for example in a web browser's localStorage data-store or synchronized with a database.
+
+* A model may also have single or multiple views observing it. A developer could create a single view that displayed all Model attributes, or might create three separate views to display each attribute. The important detail is that the model doesn't care how these views are organized, it simply announces updates to its data as necessary. It does it through system like the Event System we used in our Cranium Framework.
+
+* It is not uncommon for modern MVC/MV* frameworks to provide a means to group models together. In Backbone, these groups are called "Collections". Managing models in groups allows us to write application logic based on notifications from the group, should any model it contains change. This avoids the need to manually observe individual model instances. We'll see this in action later in the book.
+
+* If you read older texts on MVC, you may come across a description of models as also managing application "state". In JavaScript applications state has a specific meaning, typically referring to the current state of a view or sub-view on a user's screen at a fixed time. State is a topic which is regularly discussed when looking at Single-page applications, where the concept of state needs to be simulated.
+
 
 #### Views
 
@@ -337,36 +292,80 @@ Views are a visual representation of models that present a filtered view of thei
 Let's explore Views a little further using a simple JavaScript example:
 
 ```javascript
-// DOM View
+// DOM View                                    
 var View = Cranium.View = function (options) {
-	// Mix in options object (e.g extending functionallity)
   _.extend(this, options); 
   this.id = _.uniqueId('view');
 };
 
-// Mix in Event system
 _.extend(Cranium.View.prototype, Cranium.Events);
 ```
 
+--- TO BE (RE)MOVED
+Users interact with views, which usually means reading and editing model data. For example, in our todo application example, todo model viewing might happen in a user interface in the list of all todo items. Within it each todo is rendered with their title and completed checkbox. Model editing could be done through an "edit" view where a user who has selected a specific todo could edit its title in a form.
+
+We define a ```render()``` utility within our view which is responsible for rendering the contents of the ```Model``` using a JavaScript templating engine (provided by Underscore.js) and updating the contents of our view, referenced by ```el```.
+
+We then adds our ```render()``` callback as one of ```Model``` subscribers, so that through Event System it can trigger the view to update when the model changes.
+
+You may wonder where user interaction comes into play here. When users click on todo element within the view, it's not the view's responsibility to know what to do next. A Controller makes this decision. In our implementation, this is achieved by adding an event listener to todo element which will delegate handling the click behavior back to the controller, passing the model information along with it in case it's needed.
+
+The benefit of this architecture is that each component plays its own separate role in making the application function as needed.
+---
+
+**Templating**
+
+In the context of JavaScript frameworks that support MVC/MV*, it is worth looking more closely at JavaScript templating and its relationship to Views.
+
+It has long been considered bad practice (and computationally expensive) to manually create large blocks of HTML markup in-memory through string concatenation. Developers using this technique often find themselves iterating through their data, wrapping it in nested divs and using outdated techniques such as ```document.write``` to inject the 'template' into the DOM. This approach often means keeping scripted markup inline with standard markup, which can quickly become difficult to read and maintain, especially when building large applications.
+
+JavaScript templating libraries (such as Handlebars.js or Mustache) are often used to define templates for views as HTML markup containing template variables. These template blocks can be either stored externally or within script tags with a custom type (e.g 'text/template'). Variables are delimited using a variable syntax (e.g {{title}}). Javascript template libraries typically accept data in JSON, and the grunt work of populating templates with data is taken care of by the framework itself. This has a several benefits, particularly when opting to store templates externally as this can let applications load templates dynamically on an as-needed basis.
+
+Let's compare two examples of HTML templates. One is implemented using the popular Handlebars.js library, and the other uses Underscore's 'microtemplates'.
+
+**Handlebars.js:**
+
+```html
+<div class="view">
+  <input class="toggle" type="checkbox" {{#if completed}} "checked" {{/if}}>
+  <label>{{title}}</label>
+  <button class="destroy"></button>
+</div>
+<input class="edit" value="{{title}}">
+```
+
+**Underscore.js Microtemplates:**
+
+```html
+<div class="view">
+  <input class="toggle" type="checkbox" <%= completed ? 'checked' : '' %>>
+  <label><%= title %></label>
+  <button class="destroy"></button>
+</div>
+<input class="edit" value="<%= title %>">
+```
+
+You may also use double curly brackets (i.e ```{{}}```) (or any other tag you feel comfortable with) in Microtemplates. In the case of curly brackets, this can be done by setting the Underscore ```templateSettings``` attribute as follows:
+
+```javascript
+_.templateSettings = { interpolate : /\{\{(.+?)\}\}/g };
+```
+
+**A note on navigation and state**
+
+It is also worth noting that in classical web development, navigating between independent views required the use of a page refresh. In single-page JavaScript applications, however, once data is fetched from a server via Ajax, it can be dynamically rendered in a new view within the same page. Since this doesn't automatically update the URL, the role of navigation thus falls to a "router", which assists in managing application state (e.g allowing users to bookmark a particular view they have navigated to). As routers are however neither a part of MVC nor present in every MVC-like framework, I will not be going into them in greater detail in this section.
+
 #### Controllers
 
-Controllers are an intermediary between models and views which are classically responsible for two tasks: 
-
-* they both update the view when the model changes and 
-* update the model when the user manipulates the view.
 
 ```javascript
 // cranium.js - Cranium.Controller
 
 // Controller tying together a model and view
 var Controller = Cranium.Controller = function(options){
-	// Mix in options object (e.g extending functionallity)
   _.extend(this, options); 
   this.id = _.uniqueId('controller');
   var parts, selector, eventType;
-
-  // Parses Events object passed during the definition of the 
- 	// controller and maps it to the defined method to handle it;
   if(this.events){
     _.each(this.events, function(method, eventName){
       parts = eventName.split('.');
@@ -377,6 +376,14 @@ var Controller = Cranium.Controller = function(options){
   }    
 };
 ```
+
+In our Todo application, a controller would be responsible for handling changes the user made in the edit view for a particular todo, updating a specific todo model when a user has finished editing.
+
+It's with controllers that most JavaScript MVC frameworks depart from this interpretation of the MVC pattern. The reasons for this vary, but in my opinion, Javascript framework authors likely initially looked at server-side interpretations of MVC (such as Ruby on Rails), realized that that approach didn't translate 1:1 on the client-side, and so re-interpreted the C in MVC to solve their state management problem. This was a clever approach, but it can make it hard for developers coming to MVC for the first time to understand both the classical MVC pattern and the "proper" role of controllers in other JavaScript frameworks.
+
+So does Backbone.js have Controllers? Not really. Backbone's Views typically contain "controller" logic, and Routers (discussed below) are used to help manage application state, but neither are true Controllers according to classical MVC.
+
+In this respect, contrary to what might be mentioned in the official documentation or in blog posts, Backbone is not a true MVC framework. It's in fact better to see it a member of the MV* family which approaches architecture in its own way. There is of course nothing wrong with this, but it is important to distinguish between classical MVC and MV* should you be relying on discussions of MVC to help with your Backbone projects.
 
 #### Practical Usage
 
@@ -457,7 +464,6 @@ var todoController = new Cranium.Controller({
     this.view.init(this.model);
     return this;
   },
-  // Toggles the value of the todo in the Model
   toggleComplete: function () {
     var completed = todoController.model.get('completed');
     console.log("Todo old 'completed' value?", completed);
@@ -468,89 +474,12 @@ var todoController = new Cranium.Controller({
 });
 
 
-// Let's kick start things off
+// // Let's kick start things off
 todoController.initialize();
 
 todo1.set({ title: "Due to this change Model will notify View and it will re-render"});
 
 ```
-
-### Imlementation Specifics
-
-#### Notes on Model
-
-* The built-in capabilities of models vary across frameworks, however it's common for them to support validation of attributes, where attributes represent the properties of the model, such as a model identifier.
-
-* When using models in real-world applications we generally also need a way of persisting models. Persistence allows us to edit and update models with the knowledge that their most recent states will be saved somewhere, for example in a web browser's localStorage data-store or synchronized with a database.
-
-* A model may also have single or multiple views observing it. A developer could create a single view that displayed all Model attributes, or might create three separate views to display each attribute. The important detail is that the model doesn't care how these views are organized, it simply announces updates to its data as necessary. It does it through system like the Event System we used in our Cranium Framework.
-
-* It is not uncommon for modern MVC/MV* frameworks to provide a means to group models together. In Backbone, these groups are called "Collections". Managing models in groups allows us to write application logic based on notifications from the group, should any model it contains change. This avoids the need to manually observe individual model instances. We'll see this in action later in the book.
-
-* If you read older texts on MVC, you may come across a description of models as also managing application "state". In JavaScript applications state has a specific meaning, typically referring to the current state of a view or sub-view on a user's screen at a fixed time. State is a topic which is regularly discussed when looking at Single-page applications, where the concept of state needs to be simulated.
-
-#### Notes on View
-
-* Users interact with views, which usually means reading and editing model data. For example, in our todo application example, todo model viewing might happen in a user interface in the list of all todo items. Within it each todo is rendered with their title and completed checkbox. Model editing could be done through an "edit" view where a user who has selected a specific todo could edit its title in a form.
-
-* We define a ```render()``` utility within our view which is responsible for rendering the contents of the ```Model``` using a JavaScript templating engine (provided by Underscore.js) and updating the contents of our view, referenced by ```el```.
-
-* We then add our ```render()``` callback as one of ```Model``` subscribers, so that through Event System it can trigger the view to update when the model changes.
-
-* You may wonder where user interaction comes into play here. When users click on todo element within the view, it's not the view's responsibility to know what to do next. A Controller makes this decision. In our implementation, this is achieved by adding an event listener to todo element which will delegate handling the click behavior back to the controller, passing the model information along with it in case it's needed. The benefit of this architecture is that each component plays its own separate role in making the application function as needed.
-
-**Templating**
-
-In the context of JavaScript frameworks that support MVC/MV*, it is worth looking more closely at JavaScript templating and its relationship to Views.
-
-It has long been considered bad practice (and computationally expensive) to manually create large blocks of HTML markup in-memory through string concatenation. Developers using this technique often find themselves iterating through their data, wrapping it in nested divs and using outdated techniques such as ```document.write``` to inject the 'template' into the DOM. This approach often means keeping scripted markup inline with standard markup, which can quickly become difficult to read and maintain, especially when building large applications.
-
-JavaScript templating libraries (such as Handlebars.js or Mustache) are often used to define templates for views as HTML markup containing template variables. These template blocks can be either stored externally or within script tags with a custom type (e.g 'text/template'). Variables are delimited using a variable syntax (e.g {{title}}). Javascript template libraries typically accept data in JSON, and the grunt work of populating templates with data is taken care of by the framework itself. This has a several benefits, particularly when opting to store templates externally as this can let applications load templates dynamically on an as-needed basis.
-
-Let's compare two examples of HTML templates. One is implemented using the popular Handlebars.js library, and the other uses Underscore's 'microtemplates'.
-
-**Handlebars.js:**
-
-```html
-<div class="view">
-  <input class="toggle" type="checkbox" {{#if completed}} "checked" {{/if}}>
-  <label>{{title}}</label>
-  <button class="destroy"></button>
-</div>
-<input class="edit" value="{{title}}">
-```
-
-**Underscore.js Microtemplates:**
-
-```html
-<div class="view">
-  <input class="toggle" type="checkbox" <%= completed ? 'checked' : '' %>>
-  <label><%= title %></label>
-  <button class="destroy"></button>
-</div>
-<input class="edit" value="<%= title %>">
-```
-
-You may also use double curly brackets (i.e ```{{}}```) (or any other tag you feel comfortable with) in Microtemplates. In the case of curly brackets, this can be done by setting the Underscore ```templateSettings``` attribute as follows:
-
-```javascript
-_.templateSettings = { interpolate : /\{\{(.+?)\}\}/g };
-```
-
-**A note on navigation and state**
-
-It is also worth noting that in classical web development, navigating between independent views required the use of a page refresh. In single-page JavaScript applications, however, once data is fetched from a server via Ajax, it can be dynamically rendered in a new view within the same page. Since this doesn't automatically update the URL, the role of navigation thus falls to a "router", which assists in managing application state (e.g allowing users to bookmark a particular view they have navigated to). As routers are however neither a part of MVC nor present in every MVC-like framework, I will not be going into them in greater detail in this section.
-
-#### Notes on Controller
-
-
-In our Todo application, a controller would be responsible for handling changes the user made in the edit view for a particular todo, updating a specific todo model when a user has finished editing.
-
-It's with controllers that most JavaScript MVC frameworks depart from this interpretation of the MVC pattern. The reasons for this vary, but in my opinion, Javascript framework authors likely initially looked at server-side interpretations of MVC (such as Ruby on Rails), realized that that approach didn't translate 1:1 on the client-side, and so re-interpreted the C in MVC to solve their state management problem. This was a clever approach, but it can make it hard for developers coming to MVC for the first time to understand both the classical MVC pattern and the "proper" role of controllers in other JavaScript frameworks.
-
-So does Backbone.js have Controllers? Not really. Backbone's Views typically contain "controller" logic, and Routers are used to help manage application state, but neither are true Controllers according to classical MVC.
-
-In this respect, contrary to what might be mentioned in the official documentation or in blog posts, Backbone is neither a truly MVC/MVP nor MVVM framework. It's in fact better to see it a member of the MV* family which approaches architecture in its own way. There is of course nothing wrong with this, but it is important to distinguish between classical MVC and MV* should you be relying on discussions of MVC to help with your Backbone projects.
 
 ## What does MVC give us?
 
