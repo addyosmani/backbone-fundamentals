@@ -1725,15 +1725,24 @@ var Panel = Backbone.View.extend({
 });
 
 var PanelAdvanced = Panel.extend({
-   initialize: function(options){
-      this.constructor.__super__.initialize.apply(this, [options])
+    initialize: function(options){
+      Panel.prototype.initialize.call(this, [options])
       console.log('PanelAdvanced initialized');
       console.log(this.foo); // Log: bar
-   }
+    }
+});
+
+// We can also inherit PanelAdvaned if needed
+var PanelAdvancedExtra = PanelAdvanced.extend({
+    initialize: function(options){
+      PanelAdvanced.prototype.initialize.call(this, [options])
+      console.log('PanelAdvancedExtra initialized');
+    }
 });
 
 new Panel();
 new PanelAdvanced();
+new PanelAdvancedExtra();
 ```
 
 This isn't the most elegant of solutions because if you have a lot of Views that inherit from Panel, then you'll have to remember to call Panel's initialize from all of them.
