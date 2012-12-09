@@ -11,19 +11,13 @@ My extended thanks go out to [Jeremy Ashkenas](https://github.com/jashkenas) for
 
 I hope you find this book helpful!
 
-**Notes:**
-
-* Items added or updated in the last month are marked with a * in the outline.
-* Once you're familiar with Backbone.js, you might be interested in checking out [Aura](https://github.com/addyosmani/aura).
-
-
 # Introduction
 
 When writing a Web application from scratch, it’s easy to feel like we can get by simply by relying on a DOM manipulation library (like jQuery) and a handful of utility plugins. The problem with this is that it doesn’t take long to get lost in a nested pile of jQuery callbacks and DOM elements without any real structure in place for our applications.
 
 In short, we’re stuck with spaghetti code. Fortunately there are modern JavaScript frameworks that can assist with bringing structure and organization to our projects, improving how easily maintainable they are in the long-run.
 
-### What Is MVC, Or Rather MV*?
+### What Is MVC?
 
 These modern frameworks provide developers an easy path to organizing their code using variations of a pattern known as MVC (Model-View-Controller). MVC separates the concerns in an application down into three parts:
 
@@ -35,7 +29,7 @@ JavaScript ‘MVC’ frameworks that can help us structure our code don’t alwa
 
 For this reason we refer to such frameworks as following the MV* pattern, that is, you’re likely to have a View and a Model, but more likely to have something else also included.
 
-### What exactly is Backbone.js?
+### What is Backbone.js?
 
 ![](img/backbonejsorg.png)
 
