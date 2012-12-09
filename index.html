@@ -48,13 +48,15 @@ code > span.er { color: #ff0000; font-weight: bold; }
   <p>&nbsp;<br></p>
 </div>
 
+<p><img src="img/oreilly.jpg"/></p>
+
 <a href="http://shop.oreilly.com/product/0636920025344/ReviewSubmit.do?sortby=publicationDate?pageId=0636920025344.IP"><img style="position: absolute; top: 0; right: 0; border: 0;" src="http://addyosmani.github.com/backbone-fundamentals/img/helpful.png" alt="Was this helpful? We'd love you to write a review."></a>
 <nav id="TOC">
 <ul>
 <li><a href="#prelude">Prelude</a></li>
 <li><a href="#introduction">Introduction</a><ul>
-<li><a href="#what-is-mvc-or-rather-mv">What Is MVC, Or Rather MV*?</a></li>
-<li><a href="#what-exactly-is-backbone.js">What exactly is Backbone.js?</a></li>
+<li><a href="#what-is-mvc">What Is MVC?</a></li>
+<li><a href="#what-is-backbone.js">What is Backbone.js?</a></li>
 <li><a href="#when-do-you-need-a-javascript-mv-framework">When Do You Need A JavaScript MV* Framework?</a></li>
 <li><a href="#why-should-you-consider-using-backbone.js">Why should you consider using Backbone.js?</a></li>
 <li><a href="#what-should-you-expect-to-see-in-this-book">What should you expect to see in this book?</a></li>
@@ -87,7 +89,8 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <li><a href="#models-1">Models</a><ul>
 <li><a href="#initialization">Initialization</a></li>
 <li><a href="#getters-setters">Getters &amp; Setters</a></li>
-<li><a href="#model.set">Model.set()</a></li>
+<li><a href="#listening-for-changes-to-your-model">Listening for changes to your model</a></li>
+<li><a href="#validation">Validation</a></li>
 </ul></li>
 <li><a href="#views-1">Views</a><ul>
 <li><a href="#creating-new-views">Creating new views</a></li>
@@ -104,7 +107,9 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <li><a href="#backbones-sync-api">Backbone’s Sync API</a></li>
 <li><a href="#conflict-management">Conflict Management</a></li>
 </ul></li>
-<li><a href="#inheritance-mixins">Inheritance &amp; Mixins</a></li>
+<li><a href="#inheritance-mixins">Inheritance &amp; Mixins</a><ul>
+<li><a href="#backbone-super">Backbone-Super</a></li>
+</ul></li>
 <li><a href="#namespacing">Namespacing</a><ul>
 <li><a href="#what-is-namespacing">What is namespacing?</a></li>
 </ul></li>
@@ -361,15 +366,10 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <p>I’m very pleased to announce that this book will be out in physical form later in the year via <a href="http://oreilly.com">O’Reilly Media</a>. Readers will have the option of purchasing the latest version in either print or a number of digital formats then or can grab a recent version from this repository.</p>
 <p>Corrections to existing material are always welcome and I hope that together we can provide the community with an up-to-date resource that is of help. My extended thanks go out to <a href="https://github.com/jashkenas">Jeremy Ashkenas</a> for creating Backbone.js and <a href="https://github.com/addyosmani/backbone-fundamentals/contributors">these</a> members of the community for their assistance tweaking this project.</p>
 <p>I hope you find this book helpful!</p>
-<p><strong>Notes:</strong></p>
-<ul>
-<li>Items added or updated in the last month are marked with a * in the outline.</li>
-<li>Once you’re familiar with Backbone.js, you might be interested in checking out <a href="https://github.com/addyosmani/aura">Aura</a>.</li>
-</ul>
 <h1 id="introduction"><a href="#TOC">Introduction</a></h1>
 <p>When writing a Web application from scratch, it’s easy to feel like we can get by simply by relying on a DOM manipulation library (like jQuery) and a handful of utility plugins. The problem with this is that it doesn’t take long to get lost in a nested pile of jQuery callbacks and DOM elements without any real structure in place for our applications.</p>
 <p>In short, we’re stuck with spaghetti code. Fortunately there are modern JavaScript frameworks that can assist with bringing structure and organization to our projects, improving how easily maintainable they are in the long-run.</p>
-<h3 id="what-is-mvc-or-rather-mv"><a href="#TOC">What Is MVC, Or Rather MV*?</a></h3>
+<h3 id="what-is-mvc"><a href="#TOC">What Is MVC?</a></h3>
 <p>These modern frameworks provide developers an easy path to organizing their code using variations of a pattern known as MVC (Model-View-Controller). MVC separates the concerns in an application down into three parts:</p>
 <ul>
 <li>Models represent the domain-specific knowledge and data in an application. Think of this as being a <q>type</q> of data you can model — like a User, Photo or Todo note. Models should notify anyone observing them about their current state (e.g Views).</li>
@@ -378,7 +378,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 </ul>
 <p>JavaScript <q>MVC</q> frameworks that can help us structure our code don’t always strictly follow the above pattern. Some frameworks will include the responsibility of the Controller in the View (e.g Backbone.js) whilst others add their own opinionated components into the mix as they feel this is more effective.</p>
 <p>For this reason we refer to such frameworks as following the MV* pattern, that is, you’re likely to have a View and a Model, but more likely to have something else also included.</p>
-<h3 id="what-exactly-is-backbone.js"><a href="#TOC">What exactly is Backbone.js?</a></h3>
+<h3 id="what-is-backbone.js"><a href="#TOC">What is Backbone.js?</a></h3>
 <figure>
 <img src="img/backbonejsorg.png"><figcaption></figcaption>
 </figure>
@@ -386,7 +386,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <p>Developers commonly use frameworks like Backbone.js to create single-page applications or SPAs. To put it simply, these apps enable the browser to react to changes in data on the client-side without the need to completely load up all your markup from the server, meaning no complete page-refreshes are necessary.</p>
 <p>Backbone.js is a mature, popular framework at the time of writing and has both a large development community online as well as a wealth of plugins and extensions available to build upon it. It has been used to create non-trivial applications by companies such as Disqus, Walmart, SoundCloud and Foursquare.</p>
 <h3 id="when-do-you-need-a-javascript-mv-framework"><a href="#TOC">When Do You Need A JavaScript MV* Framework?</a></h3>
-<p>When building a single-page application using JavaScript, whether it involves a complex user interface or is simply trying to reduce the number of HTTP requests required for new Views, you will likely find yourself inventing many of the pieces that make up an MV* framework like Backbone or Ember.</p>
+<p>When building a single-page application using JavaScript, whether it involves a complex user interface or is simply trying to reduce the number of HTTP requests required for new Views, you will likely find yourself inventing many of the pieces that make up an MV* framework, such as Backbone.js.</p>
 <p>At the outset, it isn’t terribly difficult to write an application framework that offers some opinionated way to avoid spaghetti code, however to say that it is equally as trivial to write something of the standard of Backbone would be a grossly incorrect assumption.</p>
 <p>There’s a lot more that goes into structuring an application than tying together a DOM manipulation library, templating and routing. Mature MV* frameworks typically not only include many of the pieces you would find yourself writing, but also include solutions to problems you’ll find yourself running into later on down the road. This is a time-saver that you shouldn’t underestimate the value of.</p>
 <p>So, where will you likely need an MV* framework and where won’t you?</p>
@@ -431,7 +431,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <p>Developers are sometimes surprised when they learn that the Observer pattern (nowadays commonly implemented as a Publish/Subscribe system) was included as a part of MVC’s architecture decades ago. In Smalltalk-80’s MVC, the View and Controller both observe the Model: anytime the Model changes, the Views react. A simple example of this is an application backed by stock market data - for the application to show real-time information, any change to the data in its Models should result in the View being refreshed instantly.</p>
 <p>Martin Fowler has done an excellent job of writing about the <a href="http://martinfowler.com/eaaDev/uiArchs.html">origins</a> of MVC over the years and if you are interested in further historical information about Smalltalk-80’s MVC, I recommend reading his work.</p>
 <h2 id="mvc-as-we-know-it"><a href="#TOC">MVC As We Know It</a></h2>
-<p>We’ve reviewed the 70’s, but let us now return to the here and now. The MVC pattern has been applied to a diverse range of programming languages. For example, the popular Ruby on Rails is an implementation of a web application framework based on MVC for the Ruby language. JavaScript now has a number of MVC frameworks, including Ember.js, JavaScriptMVC, and of course Backbone.js. Given the importance of avoiding <q>spaghetti</q> code, a term which describes code that is very difficult to read or maintain due to its lack of structure, let’s look at what the MVC pattern enables the Javascript developer to do.</p>
+<p>We’ve reviewed the 70’s, but let us now return to the here and now. The MVC pattern has been applied to a diverse range of programming languages. For example, the popular Ruby on Rails is an implementation of a web application framework based on MVC for the Ruby language. JavaScript now has a number of MVC frameworks, including AngularJS - a framework that extends HTML and JavaScript for dynamic content needs and of course Backbone.js. Given the importance of avoiding <q>spaghetti</q> code, a term which describes code that is very difficult to read or maintain due to its lack of structure, let’s look at what the MVC pattern enables the Javascript developer to do.</p>
 <p>MVC is composed of three core components:</p>
 <h3 id="models"><a href="#TOC">Models</a></h3>
 <p>Models manage the data for an application. They are concerned with neither the user-interface nor presentation layers, but instead represent structured data that an application may require. When a model changes (e.g when it is updated), it will typically notify its observers (e.g views, a concept we will cover shortly) that a change has occurred so that they may react accordingly.</p>
@@ -472,15 +472,15 @@ code > span.er { color: #ff0000; font-weight: bold; }
 
   <span class="kw">var</span> Todos = <span class="kw">Backbone.Collection</span>.<span class="fu">extend</span>({
     <span class="dt">model</span>: Todo,
-    
+
     <span class="co">// For simplicity we&#39;ll use localStorage throughout the first part of book.</span>
     <span class="co">// Save all of the todo items under the `&quot;todos&quot;` namespace.</span>
     <span class="dt">localStorage</span>: <span class="kw">new</span> Store(<span class="ch">&#39;todos-backbone&#39;</span>)
-    
+
     <span class="co">// When working with REST API on back-end here would be</span>
     <span class="co">// appropriate to use:</span>
     <span class="co">// url: &quot;/todos&quot;</span>
-    
+
   });
 
   <span class="kw">var</span> firstTodo = <span class="kw">new</span> Todo({<span class="dt">title</span>:<span class="ch">&#39;Read whole book&#39;</span>});
@@ -509,10 +509,6 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <p>Users interact with views, which usually means reading and editing model data. For example, in our todo application example, todo model viewing might happen in a user interface in the list of all todo items. Within it each todo is rendered with their title and completed checkbox. Model editing could be done through an <q>edit</q> view where a user who has selected a specific todo could edit its title in a form.</p>
 <p>In MVC, the actual task of updating the Model falls to Controllers, which we’ll be covering shortly.</p>
 <p>Let’s explore Views a little further using a simple JavaScript example. Below we can see a function that creates a single Todo view, consuming both a model instance and a controller instance.</p>
-<p>We define a <code>render()</code> utility within our view which is responsible for rendering the contents of the <code>todoModel</code> using a JavaScript templating engine (<a href="http://underscorejs.org" title="Underscore.js">Underscore</a> templating) and updating the contents of our view, referenced by <code>todoEl</code>.</p>
-<p>The <code>todoModel</code> then adds our <code>render()</code> callback as one of its subscribers, so that through the Observer pattern it can trigger the view to update when the model changes.</p>
-<p>You may wonder where user interaction comes into play here. When users click on any elements within the view, it’s not the view’s responsibility to know what to do next. A Controller makes this decision. In our sample implementation, this is achieved by adding an event listener to <code>todoEl</code> which will delegate handling the click behavior back to the controller, passing the model information along with it in case it’s needed.</p>
-<p>The benefit of this architecture is that each component plays its own separate role in making the application function as needed.</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> buildTodoView = <span class="kw">function</span> ( todoModel, todoController ) {
   <span class="kw">var</span> base       = <span class="kw">document</span>.<span class="fu">createElement</span>(<span class="ch">&#39;div&#39;</span>),
       todoEl     = <span class="kw">document</span>.<span class="fu">createElement</span>(<span class="ch">&#39;div&#39;</span>);
@@ -523,7 +519,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
     <span class="co">// We use a templating library such as Underscore</span>
     <span class="co">// templating which generates the HTML for our</span>
     <span class="co">// todo entry</span>
-    <span class="kw">todoEl</span>.<span class="fu">innerHTML</span> = <span class="kw">_</span>.<span class="fu">template</span>(<span class="ch">&#39;todoTemplate&#39;</span>, { <span class="dt">src</span>: <span class="kw">todoModel</span>.<span class="fu">getSrc</span>() });
+    <span class="kw">todoEl</span>.<span class="fu">innerHTML</span> = <span class="kw">_</span>.<span class="fu">template</span>( $(<span class="ch">&#39;#todoTemplate&#39;</span>).<span class="fu">html</span>(), { <span class="dt">src</span>: <span class="kw">todoModel</span>.<span class="fu">getSrc</span>() });
    }
 
   <span class="kw">todoModel</span>.<span class="fu">addSubscriber</span>( render );     
@@ -545,6 +541,10 @@ code > span.er { color: #ff0000; font-weight: bold; }
     <span class="dt">hideView</span>: hide
   }
 }</code></pre>
+<p>We define a <code>render()</code> utility within our view which is responsible for rendering the contents of the <code>todoModel</code> using a JavaScript templating engine (<a href="http://underscorejs.org" title="Underscore.js">Underscore</a> templating) and updating the contents of our view, referenced by <code>todoEl</code>.</p>
+<p>The <code>todoModel</code> then adds our <code>render()</code> callback as one of its subscribers, so that through the Observer pattern it can trigger the view to update when the model changes.</p>
+<p>You may wonder where user interaction comes into play here. When users click on any elements within the view, it’s not the view’s responsibility to know what to do next. A Controller makes this decision. In our sample implementation, this is achieved by adding an event listener to <code>todoEl</code> which will delegate handling the click behavior back to the controller, passing the model information along with it in case it’s needed.</p>
+<p>The benefit of this architecture is that each component plays its own separate role in making the application function as needed.</p>
 <p><strong>Templating</strong></p>
 <p>In the context of JavaScript frameworks that support MVC/MV*, it is worth looking more closely at JavaScript templating and its relationship to Views.</p>
 <p>It has long been considered bad practice (and computationally expensive) to manually create large blocks of HTML markup in-memory through string concatenation. Developers using this technique often find themselves iterating through their data, wrapping it in nested divs and using outdated techniques such as <code>document.write</code> to inject the <q>template</q> into the DOM. This approach often means keeping scripted markup inline with standard markup, which can quickly become difficult to read and maintain, especially when building large applications.</p>
@@ -611,8 +611,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 });
 
 <span class="kw">var</span> router = <span class="kw">new</span> TodoRouter();
-  <span class="kw">Backbone.history</span>.<span class="fu">start</span>();
-});</code></pre>
+<span class="kw">Backbone.history</span>.<span class="fu">start</span>();</code></pre>
 <h2 id="what-does-mvc-give-us"><a href="#TOC">What does MVC give us?</a></h2>
 <p>To summarize, the separation of concerns in MVC facilitates modularization of an application’s functionality and enables:</p>
 <ul>
@@ -697,15 +696,14 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <h3 id="backbone.js"><a href="#TOC">Backbone.js</a></h3>
 <ul>
 <li>Core components: Model, View, Collection, Router. Enforces its own flavor of MV*</li>
-<li>Good documentation, with more improvements on the way</li>
 <li>Used by large companies such as SoundCloud and Foursquare to build non-trivial applications</li>
 <li>Event-driven communication between views and models. As we’ll see, it’s relatively straight-forward to add event listeners to any attribute in a model, giving developers fine-grained control over what changes in the view</li>
 <li>Supports data bindings through manual events or a separate Key-value observing (KVO) library</li>
-<li>Great support for RESTful interfaces out of the box, so models can be easily tied to a backend</li>
+<li>Support for RESTful interfaces out of the box, so models can be easily tied to a backend</li>
 <li>Extensive eventing system. It’s <a href="http://lostechies.com/derickbailey/2011/07/19/references-routing-and-the-event-aggregator-coordinating-views-in-backbone-js/">trivial</a> to add support for pub/sub in Backbone</li>
 <li>Prototypes are instantiated with the <code>new</code> keyword, which some developers prefer</li>
 <li>Agnostic about templating frameworks, however Underscore’s micro-templating is available by default. Backbone works well with libraries like Handlebars</li>
-<li>Doesn’t support deeply nested models, though there are Backbone plugins such as <a href="https://github.com/PaulUithol/Backbone-relational">this</a> which can help</li>
+<li>Doesn’t support deeply nested models, though there are Backbone plugins such as <a href="https://github.com/PaulUithol/Backbone-relational">Backbone-relational</a> which can help</li>
 <li>Clear and flexible conventions for structuring applications. Backbone doesn’t force usage of all of its components and can work with only those needed.</li>
 </ul>
 <h1 id="the-internals"><a href="#TOC">The Internals</a></h1>
@@ -789,30 +787,8 @@ code > span.er { color: #ff0000; font-weight: bold; }
   <span class="dt">completed</span>: <span class="kw">true</span>
 });
 <span class="kw">console</span>.<span class="fu">log</span>(<span class="kw">todo2</span>.<span class="fu">get</span>(<span class="ch">&#39;title&#39;</span>)); <span class="co">// Retrieved with models get() method.</span>
-<span class="kw">console</span>.<span class="fu">log</span>(<span class="kw">todo2</span>.<span class="fu">get</span>(<span class="ch">&#39;completed&#39;</span>)); <span class="co">// false</span></code></pre>
-<p>Alternatively, if you wish to access all of the attributes in a model’s instance directly, you can achieve this as follows:</p>
-<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> Todo = <span class="kw">Backbone.Model</span>.<span class="fu">extend</span>({
-  <span class="co">// Default todo attribute values</span>
-  <span class="dt">defaults</span>: {
-    <span class="dt">title</span>: <span class="ch">&#39;&#39;</span>,
-    <span class="dt">completed</span>: <span class="kw">false</span>
-  }
-});
-
-<span class="co">// Instantiates myTodo instance:</span>
-<span class="kw">var</span> myTodo = <span class="kw">new</span> Todo({
-  <span class="dt">title</span>: <span class="st">&quot;Accessed directly from the model&#39;s instance attributes property.&quot;</span>,
-  <span class="dt">completed</span>: <span class="kw">true</span>
-});
-
-<span class="co">// Logs myTodo&#39;s model instance attributes property:</span>
-<span class="kw">console</span>.<span class="fu">log</span>(<span class="kw">myTodo</span>.<span class="fu">attributes</span>);
-
-<span class="co">// Logs value of the directly accessed title attribute</span>
-<span class="co">// of the myTodo model instance:</span>
-<span class="kw">console</span>.<span class="fu">log</span>(<span class="kw">myTodo.attributes</span>.<span class="fu">title</span>);</code></pre>
-<p>It is best practice to use <code>Model.set()</code> or direct instantiation to set the values of a model’s attributes.</p>
-<p>Accessing <code>Model.attributes</code> directly is generally discouraged. If you need to read or clone data for purposes such as JSON stringification (e.g. for serialization prior to being passed to a view), this can be achieved using Model.toJSON(). Remember that this will return an object and JSON.stringify() should be used to get a string representation of the data:</p>
+<span class="kw">console</span>.<span class="fu">log</span>(<span class="kw">todo2</span>.<span class="fu">get</span>(<span class="ch">&#39;completed&#39;</span>)); <span class="co">// true</span></code></pre>
+<p>If you need to read or clone all of a model’s data attributes use its <code>toJSON</code> method. Despite the name it doesn’t return a JSON string but a copy of the attributes as an object. (<q>toJSON</q> is part of the JSON.stringify specification. Passing an object with a toJSON method makes it stringify the return value of that method instead of the object itself.)</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> Todo = <span class="kw">Backbone.Model</span>.<span class="fu">extend</span>({
   <span class="co">// Default todo attribute values</span>
   <span class="dt">defaults</span>: {
@@ -824,16 +800,16 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <span class="kw">var</span> todo1 = <span class="kw">new</span> Todo();
 <span class="kw">var</span> todo1Attributes = <span class="kw">todo1</span>.<span class="fu">toJSON</span>();
 <span class="co">// Following logs: {&quot;title&quot;:&quot;&quot;,&quot;completed&quot;:false} </span>
-<span class="kw">console</span>.<span class="fu">log</span>(<span class="kw">JSON</span>.<span class="fu">stringify</span>(todo1Attributes));
+<span class="kw">console</span>.<span class="fu">log</span>(todo1Attributes);
 
 <span class="kw">var</span> todo2 = <span class="kw">new</span> Todo({
   <span class="dt">title</span>: <span class="st">&quot;Try these examples and check results in console.&quot;</span>,
   <span class="dt">completed</span>: <span class="kw">true</span>
 });
-<span class="co">// logs string: {&quot;title&quot;:&quot;Try examples and check results in console.&quot;,&quot;completed&quot;:true} </span>
-<span class="kw">console</span>.<span class="fu">log</span>(<span class="kw">JSON</span>.<span class="fu">stringify</span>(<span class="kw">todo2</span>.<span class="fu">toJSON</span>()));</code></pre>
-<h4 id="model.set"><a href="#TOC">Model.set()</a></h4>
-<p><code>Model.set()</code> allows us to pass attributes into an instance of our model. Attributes can either be set during initialization or at any time afterwards. It’s important to avoid trying to set a Model’s attributes directly (for example, <code>Model.attributes.title = 'New todo title.'</code>). Backbone uses Model.set() to know when to broadcast that a model’s data has changed.</p>
+<span class="co">// logs: {&quot;title&quot;:&quot;Try examples and check results in console.&quot;,&quot;completed&quot;:true}</span>
+<span class="kw">console</span>.<span class="fu">log</span>(<span class="kw">todo2</span>.<span class="fu">toJSON</span>());</code></pre>
+<p><strong>Model.set()</strong></p>
+<p><code>Model.set()</code> allows us to pass attributes into an instance of our model. Attributes can either be set during initialization or at any time afterwards. Backbone uses Model.set() to know when to broadcast that a model’s data has changed.</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> Todo = <span class="kw">Backbone.Model</span>.<span class="fu">extend</span>({
   <span class="co">// Default todo attribute values</span>
   <span class="dt">defaults</span>: {
@@ -861,7 +837,9 @@ code > span.er { color: #ff0000; font-weight: bold; }
 });
 <span class="kw">console</span>.<span class="fu">log</span>(<span class="ch">&#39;Todo title: &#39;</span> + <span class="kw">myTodo</span>.<span class="fu">get</span>(<span class="ch">&#39;title&#39;</span>));
 <span class="kw">console</span>.<span class="fu">log</span>(<span class="ch">&#39;Completed: &#39;</span> + <span class="kw">myTodo</span>.<span class="fu">get</span>(<span class="ch">&#39;completed&#39;</span>));</code></pre>
-<p><strong>Listening for changes to your model</strong></p>
+<p><strong>Direct access</strong></p>
+<p>If you really need to access the attributes in a model’s instance directly, there is <code>Model.attributes</code>. But remember it is best practice to use Model.get(), Model.set() or direct instantiation as explained above.</p>
+<h4 id="listening-for-changes-to-your-model"><a href="#TOC">Listening for changes to your model</a></h4>
 <p>Any and all of the attributes in a Backbone model can have listeners bound to them which detect when their values change. Listeners can be added to the <code>initialize()</code> function:</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> Todo = <span class="kw">Backbone.Model</span>.<span class="fu">extend</span>({
   <span class="co">// Default todo attribute values</span>
@@ -916,7 +894,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <span class="co">// But, this change type is not observed, so no listener is triggered:</span>
 <span class="kw">myTodo</span>.<span class="fu">set</span>(<span class="ch">&#39;completed&#39;</span>, <span class="kw">true</span>);
 <span class="kw">console</span>.<span class="fu">log</span>(<span class="ch">&#39;Todo set as completed: &#39;</span> + <span class="kw">myTodo</span>.<span class="fu">get</span>(<span class="ch">&#39;completed&#39;</span>));</code></pre>
-<p><strong>Validation</strong></p>
+<h4 id="validation"><a href="#TOC">Validation</a></h4>
 <p>Backbone supports model validation through <code>Model.validate()</code>, which allows checking the attribute values for a model prior to them being set.</p>
 <p>Validation functions can be as simple or complex as necessary. If the attributes provided are valid, nothing should be returned from <code>.validate()</code>. If they are invalid, a custom error can be returned instead.</p>
 <p>A basic example for validation can be seen below:</p>
@@ -1046,7 +1024,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 
 <span class="co">// As mentioned in previous example, </span>
 <span class="co">// models are passed by reference</span>
-<span class="kw">console</span>.<span class="fu">log</span>(todo2 === myTodo); </code></pre>
+<span class="kw">console</span>.<span class="fu">log</span>(todoCid === myTodo); </code></pre>
 <p>Backbone Collections don’t have setters as such, but do support adding new models via <code>.add()</code> and removing models via <code>.remove()</code>.</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> Todo = <span class="kw">Backbone.Model</span>.<span class="fu">extend</span>({
   <span class="dt">defaults</span>: {
@@ -1080,7 +1058,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> TodosCollection = <span class="kw">new</span> <span class="kw">Backbone</span>.<span class="fu">Collection</span>();
 
 <span class="kw">TodosCollection</span>.<span class="fu">on</span>(<span class="st">&quot;add&quot;</span>, <span class="kw">function</span>(todo) {
-  <span class="kw">console</span>.<span class="fu">log</span>(<span class="st">&quot;I should &quot;</span> + <span class="kw">todo</span>.<span class="fu">get</span>(<span class="st">&quot;title&quot;</span>) + <span class="ch">&#39;. Have I done it before? &#39;</span>  + (<span class="kw">todo</span>.<span class="fu">get</span>(<span class="st">&quot;completed&quot;</span>) ? <span class="ch">&#39;Yeah!&#39;</span>: <span class="ch">&#39;Not.&#39;</span> ));
+  <span class="kw">console</span>.<span class="fu">log</span>(<span class="st">&quot;I should &quot;</span> + <span class="kw">todo</span>.<span class="fu">get</span>(<span class="st">&quot;title&quot;</span>) + <span class="st">&quot;. Have I done it before? &quot;</span>  + (<span class="kw">todo</span>.<span class="fu">get</span>(<span class="st">&quot;completed&quot;</span>) ? <span class="ch">&#39;Yeah!&#39;</span>: <span class="ch">&#39;Not.&#39;</span> ));
 });
 
 <span class="kw">TodosCollection</span>.<span class="fu">add</span>([
@@ -1092,7 +1070,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> TodosCollection = <span class="kw">new</span> <span class="kw">Backbone</span>.<span class="fu">Collection</span>();
 
 <span class="kw">TodosCollection</span>.<span class="fu">on</span>(<span class="st">&quot;change:title&quot;</span>, <span class="kw">function</span>(model) {
-    <span class="kw">console</span>.<span class="fu">log</span>(<span class="st">&quot;Changed my mind where should I will, &quot;</span> + <span class="kw">model</span>.<span class="fu">get</span>(<span class="ch">&#39;title&#39;</span>));
+    <span class="kw">console</span>.<span class="fu">log</span>(<span class="st">&quot;Changed my mind where I should go, &quot;</span> + <span class="kw">model</span>.<span class="fu">get</span>(<span class="ch">&#39;title&#39;</span>));
 });
 
 <span class="kw">TodosCollection</span>.<span class="fu">add</span>([
@@ -1126,7 +1104,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <p>In the above example if we wanted to log an event when <code>.sync()</code> was called, we could do this:</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> id_counter = <span class="dv">1</span>;
 <span class="kw">Backbone</span>.<span class="fu">sync</span> = <span class="kw">function</span>(method, model) {
-  <span class="kw">console</span>.<span class="fu">log</span>(<span class="ch">&#39;I&#39;</span>ve been passed <span class="ch">&#39; + method + &#39;</span> <span class="kw">with</span> <span class="ch">&#39; + JSON.stringify(model));</span>
+  <span class="kw">console</span>.<span class="fu">log</span>(<span class="st">&quot;I</span><span class="ch">\&#39;</span><span class="st">ve been passed &quot;</span> + method + <span class="st">&quot; with &quot;</span> + <span class="kw">JSON</span>.<span class="fu">stringify</span>(model));
   <span class="kw">if</span>(method === <span class="ch">&#39;create&#39;</span>){ <span class="kw">model</span>.<span class="fu">set</span>(<span class="ch">&#39;id&#39;</span>, id_counter++); }
 };</code></pre>
 <p><strong>Resetting/Refreshing Collections</strong></p>
@@ -1377,7 +1355,7 @@ collection
         <span class="st">&quot;todos/:id/download/*documentPath&quot;</span> : <span class="st">&quot;downloadDocument&quot;</span>,
         <span class="co">/* This is an example of using a *splat. splats are able to match any number of</span>
 <span class="co">        URL components and can be combined with &quot;:param&quot;s*/</span>
-        <span class="co">/* Sample usage: http://example.com/#todo/5/download/files/Meeting_schedule.doc */</span>
+        <span class="co">/* Sample usage: http://example.com/#todos/5/download/files/Meeting_schedule.doc */</span>
 
         <span class="co">/* If you wish to use splats for anything beyond default routing, it&#39;s probably a good</span>
 <span class="co">        idea to leave them at the end of a URL otherwise you may need to apply regular</span>
@@ -1503,7 +1481,7 @@ collection
 <span class="co">// View todo requested.</span>
 <span class="co">// Edit todo openned. </span></code></pre>
 <h3 id="backbones-sync-api"><a href="#TOC">Backbone’s Sync API</a></h3>
-<p>The Backbone.sync method is intended to be overridden to support other backends. The built-in method is tailed to a certain breed of RESTful JSON APIs – Backbone was originally extracted from a Ruby on Rails application, which uses HTTP methods like PUT the same way.</p>
+<p>The Backbone.sync method is intended to be overridden to support other backends. The built-in method is tailored to a certain breed of RESTful JSON APIs – Backbone was originally extracted from a Ruby on Rails application, which uses HTTP methods like PUT the same way.</p>
 <p>The way this works is the model and collection classes have a sync method that calls Backbone.sync. Both will call this.sync internally when fetching, saving, or deleting items.</p>
 <p>The sync method is called with three parameters:</p>
 <ul>
@@ -1639,15 +1617,24 @@ myView = <span class="kw">new</span> MyView();
 });
 
 <span class="kw">var</span> PanelAdvanced = <span class="kw">Panel</span>.<span class="fu">extend</span>({
-   <span class="dt">initialize</span>: <span class="kw">function</span>(options){
-      <span class="kw">this</span>.<span class="fu">constructor</span>.__<span class="fu">super</span>__.<span class="fu">initialize</span>.<span class="fu">apply</span>(<span class="kw">this</span>, [options])
+    <span class="dt">initialize</span>: <span class="kw">function</span>(options){
+      <span class="kw">Panel.prototype.initialize</span>.<span class="fu">call</span>(<span class="kw">this</span>, [options])
       <span class="kw">console</span>.<span class="fu">log</span>(<span class="ch">&#39;PanelAdvanced initialized&#39;</span>);
       <span class="kw">console</span>.<span class="fu">log</span>(<span class="kw">this</span>.<span class="fu">foo</span>); <span class="co">// Log: bar</span>
-   }
+    }
+});
+
+<span class="co">// We can also inherit PanelAdvaned if needed</span>
+<span class="kw">var</span> PanelAdvancedExtra = <span class="kw">PanelAdvanced</span>.<span class="fu">extend</span>({
+    <span class="dt">initialize</span>: <span class="kw">function</span>(options){
+      <span class="kw">PanelAdvanced.prototype.initialize</span>.<span class="fu">call</span>(<span class="kw">this</span>, [options])
+      <span class="kw">console</span>.<span class="fu">log</span>(<span class="ch">&#39;PanelAdvancedExtra initialized&#39;</span>);
+    }
 });
 
 <span class="kw">new</span> Panel();
-<span class="kw">new</span> PanelAdvanced();</code></pre>
+<span class="kw">new</span> PanelAdvanced();
+<span class="kw">new</span> PanelAdvancedExtra();</code></pre>
 <p>This isn’t the most elegant of solutions because if you have a lot of Views that inherit from Panel, then you’ll have to remember to call Panel’s initialize from all of them.</p>
 <p>It’s worth noting that if Panel doesn’t have an initialize method now but you choose to add it in the future, then you’ll need to go to all of the inherited classes in the future and make sure they call Panel’s initialize.</p>
 <p>So here’s an alternative way to define Panel so that your inherited views don’t need to call Panel’s initialize method:</p>
@@ -1678,8 +1665,29 @@ myView = <span class="kw">new</span> MyView();
 
 <span class="kw">var</span> PanelAdvanced = <span class="kw">new</span> PanelAdvanced(); <span class="co">//Logs: Panel initialized, PanelAdvanced initialized, bar</span>
 <span class="kw">PanelAdvanced</span>.<span class="fu">sayHi</span>(); <span class="co">// Logs: hello from Panel</span></code></pre>
-<p>When used appropriately, Backbone’s <code>extend</code> method can save a great deal of time and effort writing redundant code.</p>
+<p>When used appropriately, Underscore’s <code>extend</code> method can save a great deal of time and effort writing redundant code.</p>
 <p>(Thanks to <a href="http://dailyjs.com">Alex Young</a>, <a href="http://stackoverflow.com/users/93448/derick-bailey">Derick Bailey</a> and <a href="http://stackoverflow.com/users/188740/johnnyo">JohnnyO</a> for the heads up about these tips).</p>
+<h4 id="backbone-super"><a href="#TOC">Backbone-Super</a></h4>
+<p><a href="https://github.com/lukasolson/Backbone-Super">Backbone-Super</a> by Lukas Olson adds a <em>_super</em> method to <em>Backbone.Model</em> using <a href="http://ejohn.org/blog/simple-javascript-inheritance/">John Resig’s Inheritance script</a>. Rather than using Backbone.Model.prototype.set.call as per the Backbone.js documentation, _super can be called instead:</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="co">// This is how we normally do it</span>
+<span class="kw">var</span> OldFashionedNote = <span class="kw">Backbone.Model</span>.<span class="fu">extend</span>({
+  <span class="dt">set</span>: <span class="kw">function</span>( attributes, options ) {
+    <span class="co">// Call parent&#39;s method</span>
+    <span class="kw">Backbone.Model.prototype.set</span>.<span class="fu">call</span>(<span class="kw">this</span>, attributes, options);
+    <span class="co">// some custom code here</span>
+    <span class="co">// ...</span>
+  }
+});</code></pre>
+<p>After including this plugin, you can do the same thing with the following syntax:</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="co">// This is how we can do it after using the Backbone-super plugin</span>
+<span class="kw">var</span> Note = <span class="kw">Backbone.Model</span>.<span class="fu">extend</span>({
+  <span class="dt">set</span>: <span class="kw">function</span>(attributes, options) {
+    <span class="co">// Call parent&#39;s method</span>
+    <span class="kw">this</span>._<span class="fu">super</span>(attributes, options);
+    <span class="co">// some custom code here</span>
+    <span class="co">// ...</span>
+  }
+});</code></pre>
 <h2 id="namespacing"><a href="#TOC">Namespacing</a></h2>
 <p>When learning how to use Backbone, an important and commonly overlooked area by tutorials is namespacing. If you already have experience with namespacing in JavaScript, the following section will provide some advice on how to specifically apply concepts you know to Backbone, however I will also be covering explanations for beginners to ensure everyone is on the same page.</p>
 <h4 id="what-is-namespacing"><a href="#TOC">What is namespacing?</a></h4>
@@ -1780,7 +1788,7 @@ myView = <span class="kw">new</span> MyView();
 
 <span class="co">// special models</span>
 <span class="kw">todoApp.model.special</span>.<span class="fu">Admin</span> = <span class="kw">Backbone.Model</span>.<span class="fu">extend</span>({});</code></pre>
-<p>This is readable, clearly organized, and is a relatively safe way of namespacing your Backbone application. The only real caveat however is that it requires your browser’s JavaScript engine to first locate the galleryApp object, then dig down until it gets to the function you’re calling. However, developers such as Juriy Zaytsev (kangax) have tested and found the performance differences between single object namespacing vs the <q>nested</q> approach to be quite negligible.</p>
+<p>This is readable, clearly organized, and is a relatively safe way of namespacing your Backbone application. The only real caveat however is that it requires your browser’s JavaScript engine to first locate the todoApp object, then dig down until it gets to the function you’re calling. However, developers such as Juriy Zaytsev (kangax) have tested and found the performance differences between single object namespacing vs the <q>nested</q> approach to be quite negligible.</p>
 <p><strong>Recommendation</strong></p>
 <p>Reviewing the namespace patterns above, the option that I prefer when writing Backbone applications is nested object namespacing with the object literal pattern.</p>
 <p>Single global variables may work fine for applications that are relatively trivial. However, larger codebases requiring both namespaces and deep sub-namespaces require a succinct solution that’s both readable and scalable. I feel this pattern achieves both of these objectives and is a good choice for most Backbone development.</p>
@@ -2006,9 +2014,9 @@ myView = <span class="kw">new</span> MyView();
   });</code></pre>
 <p>You can see we’ve got a couple of things going on, an el (element), a <code>statsTemplate</code>, a constructor function and several view specific methods. To the right of the <code>el:</code> key is a DOM element selector for the element with ID <code>todoapp</code>. The value of this is just a string and Backbone will create a reference pointing to the element matching the selector #todoapp, where here it will be the <code>&lt;section id=&quot;todoapp&quot; /&gt;</code> element, which we previously defined in our HTML.</p>
 <p>In a nutshell this means we can now refer to this.el in our controller, which points to the <code>&lt;section id=&quot;todoapp&quot; /&gt;</code> element. As you can see, we’re referring to el in the <code>addOne()</code> function, appending an element to the list.</p>
-<p>Now let’s take a look at the constructor function. It’s binding to several events on the Todo model, such as add, reset and all. Since we’re delegating handling of updates and deletes to the <code>TodoView</code> view, we don’t need to to worry about that here. The two pieces of logic are:</p>
+<p>Now let’s take a look at the constructor function. It’s binding to several events on the Todo model, such as add, reset and all. Since we’re delegating handling of updates and deletes to the <code>TodoView</code> view, we don’t need to worry about that here. The two pieces of logic are:</p>
 <ul>
-<li><p>When a new todo is created, the <code>add</code> event will be fired, calling <code>addAll()</code>. This iterates over all of the Todos currently in our collection and fires <code>addOne()</code> for each item.</p></li>
+<li><p>When a new todo is created, the <code>add</code> event will be fired, calling <code>addAll()</code>. This iterates over all of the Todos currently in our collection and fires <code>addOne()</code> for each item. (This is so wrong it’s scary.)</p></li>
 <li><p><code>addOne()</code> instantiates the TodoView view, rendering it and appending the resultant element to our Todo list.</p></li>
 <li><p>When a <code>reset</code> event is called (i.e. we wish to update the collection in bulk such as when the Todos have been loaded from Local Storage), <code>addAll()</code> is similarly called again.</p></li>
 </ul>
@@ -2059,8 +2067,8 @@ myView = <span class="kw">new</span> MyView();
 
       <span class="kw">window</span>.<span class="fu">app</span>.<span class="fu">Todos</span>.<span class="fu">on</span>( <span class="ch">&#39;add&#39;</span>, <span class="kw">this</span>.<span class="fu">addAll</span>, <span class="kw">this</span> );
       <span class="kw">window</span>.<span class="fu">app</span>.<span class="fu">Todos</span>.<span class="fu">on</span>( <span class="ch">&#39;reset&#39;</span>, <span class="kw">this</span>.<span class="fu">addAll</span>, <span class="kw">this</span> );
-      <span class="kw">window</span>.<span class="fu">app</span>.<span class="fu">Todos</span>.<span class="fu">on</span>(<span class="ch">&#39;change:completed&#39;</span>, <span class="kw">this</span>.<span class="fu">filterOne</span>, <span class="kw">this</span>);
-      <span class="kw">window</span>.<span class="fu">app</span>.<span class="fu">Todos</span>.<span class="fu">on</span>(<span class="ch">&#39;filter&#39;</span>, <span class="kw">this</span>.<span class="fu">filterAll</span>, <span class="kw">this</span>);
+      <span class="kw">window</span>.<span class="fu">app</span>.<span class="fu">Todos</span>.<span class="fu">on</span>( <span class="ch">&#39;change:completed&#39;</span>, <span class="kw">this</span>.<span class="fu">filterOne</span>, <span class="kw">this</span> );
+      <span class="kw">window</span>.<span class="fu">app</span>.<span class="fu">Todos</span>.<span class="fu">on</span>( <span class="ch">&#39;filter&#39;</span>, <span class="kw">this</span>.<span class="fu">filterAll</span>, <span class="kw">this</span> );
 
       <span class="kw">window</span>.<span class="fu">app</span>.<span class="fu">Todos</span>.<span class="fu">on</span>( <span class="ch">&#39;all&#39;</span>, <span class="kw">this</span>.<span class="fu">render</span>, <span class="kw">this</span> );
 
@@ -2155,7 +2163,7 @@ myView = <span class="kw">new</span> MyView();
     }
   });</code></pre>
 <h2 id="individual-todo-view"><a href="#TOC">Individual Todo View</a></h2>
-<p>Let’s look at the <code>TodoView</code> view, now. This will be in charge of individual Todo records, making sure the view updates when the todo does. To enable enable this interactive behavior we should add some event listeners to the view, that will listen to the events on individual todo represented in html.</p>
+<p>Let’s look at the <code>TodoView</code> view, now. This will be in charge of individual Todo records, making sure the view updates when the todo does. To enable this interactive behavior we should add some event listeners to the view, that will listen to the events on individual todo represented in html.</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript">
   <span class="co">// js/views/todo.js</span>
 
@@ -2177,7 +2185,7 @@ myView = <span class="kw">new</span> MyView();
     <span class="dt">events</span>: {
       <span class="ch">&#39;dblclick label&#39;</span>: <span class="ch">&#39;edit&#39;</span>,
       <span class="ch">&#39;keypress .edit&#39;</span>: <span class="ch">&#39;updateOnEnter&#39;</span>,
-      <span class="ch">&#39;blur .edit&#39;</span>:   <span class="ch">&#39;close&#39;</span>
+      <span class="ch">&#39;blur .edit&#39;</span>: <span class="ch">&#39;close&#39;</span>
     },
 
     <span class="co">// The TodoView listens for changes to its model, re-rendering. Since there&#39;s</span>
@@ -5496,7 +5504,7 @@ $(<span class="ch">&#39;#content&#39;</span>).<span class="fu">html</span>(<span
 
   <span class="co">// Layout Footer View</span>
   <span class="co">// ------------------</span>
-  
+
   <span class="kw">Layout</span>.<span class="fu">Footer</span> = <span class="kw">Backbone.Marionette.Layout</span>.<span class="fu">extend</span>({
     <span class="dt">template </span>: <span class="ch">&#39;#template-footer&#39;</span>,
 
@@ -5583,7 +5591,7 @@ $(<span class="ch">&#39;#content&#39;</span>).<span class="fu">html</span>(<span
   <span class="co">//</span>
   <span class="co">// Control the workflow and logic that exists at the application</span>
   <span class="co">// level, above the implementation detail of views and models</span>
-  
+
   <span class="kw">TodoList</span>.<span class="fu">Controller</span> = <span class="kw">function</span>(){
     <span class="kw">this</span>.<span class="fu">todoList</span> = <span class="kw">new</span> <span class="kw">App.Todos</span>.<span class="fu">TodoList</span>();
   };
@@ -5632,7 +5640,7 @@ $(<span class="ch">&#39;#content&#39;</span>).<span class="fu">html</span>(<span
   <span class="co">// Get the TodoList up and running by initializing the mediator</span>
   <span class="co">// when the the application is started, pulling in all of the</span>
   <span class="co">// existing Todo items and displaying them.</span>
-  
+
   <span class="kw">TodoList</span>.<span class="fu">addInitializer</span>(<span class="kw">function</span>(){
 
     <span class="kw">var</span> controller = <span class="kw">new</span> <span class="kw">TodoList</span>.<span class="fu">Controller</span>();
@@ -5769,7 +5777,7 @@ $(<span class="ch">&#39;#content&#39;</span>).<span class="fu">html</span>(<span
   <span class="co">//</span>
   <span class="co">// Handler for filtering the list of items by showing and</span>
   <span class="co">// hiding through the use of various CSS classes</span>
-  
+
   <span class="kw">App.vent</span>.<span class="fu">on</span>(<span class="ch">&#39;todoList:filter&#39;</span>,<span class="kw">function</span>(filter) {
     filter = filter || <span class="ch">&#39;all&#39;</span>;
     $(<span class="ch">&#39;#todoapp&#39;</span>).<span class="fu">attr</span>(<span class="ch">&#39;class&#39;</span>, <span class="ch">&#39;filter-&#39;</span> + filter);
@@ -5783,7 +5791,7 @@ $(<span class="ch">&#39;#content&#39;</span>).<span class="fu">html</span>(<span
 
   <span class="co">// Todo Model</span>
   <span class="co">// ----------</span>
-  
+
   <span class="kw">Todos</span>.<span class="fu">Todo</span> = <span class="kw">Backbone.Model</span>.<span class="fu">extend</span>({
     <span class="dt">localStorage</span>: <span class="kw">new</span> <span class="kw">Backbone</span>.<span class="fu">LocalStorage</span>(<span class="ch">&#39;todos-backbone&#39;</span>),
 
@@ -5874,7 +5882,7 @@ $(<span class="ch">&#39;#content&#39;</span>).<span class="fu">html</span>(<span
 
 <h2 id="paginating-backbone.js-requests-collections"><a href="#TOC">Paginating Backbone.js Requests &amp; Collections</a></h2>
 <p>Pagination is a ubiquitous problem we often find ourselves needing to solve on the web. Perhaps most predominantly when working with back-end APIs and JavaScript-heavy clients which consume them.</p>
-<p>On this topic, we’re going to go through a set of <strong>pagination components</strong> I wrote for Backbone.js, which should hopefully come in useful if you’re working on applications which need to tackle this problem. They’re part of an extension called <a href="http://github.com/addyosmani/backbone-paginator">Backbone.Paginator</a>.</p>
+<p>On this topic, we’re going to go through a set of <strong>pagination components</strong> I wrote for Backbone.js, which should hopefully come in useful if you’re working on applications which need to tackle this problem. They’re part of an extension called <a href="http://github.com/addyosmani/backbone.paginator">Backbone.Paginator</a>.</p>
 <p>When working with a structural framework like Backbone.js, the three types of pagination we are most likely to run into are:</p>
 <p><strong>Requests to a service layer (API)</strong>- e.g query for results containing the term <q>Brendan</q> - if 5,000 results are available only display 20 results per page (leaving us with 250 possible result pages that can be navigated to).</p>
 <p>This problem actually has quite a great deal more to it, such as maintaining persistence of other URL parameters (e.g sort, query, order) which can change based on a user’s search configuration in a UI. One also had to think of a clean way of hooking views up to this pagination so you can easily navigate between pages (e.g First, Last, Next, Previous, 1,2,3), manage the number of results displayed per page and so on.</p>
