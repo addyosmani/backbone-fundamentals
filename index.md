@@ -133,11 +133,54 @@ Martin Fowler has done an excellent job of writing about the [origins](http://ma
 
 ### MVC Applied To The Web
 
-The web heavily relies on the HTTP protocol, which is stateless. This means that there is no constantly open connection between the browser and server. Each request instantiates a new communication channel between the two. Once the request initiator (e.g. a browser) gets a response the connection is closed. This fact creates a completely different context when compared to the one of the operating systems on which many of the original MVC ideas were developed. The MVC implementation has to obey the web context. 
+Web is based on HTTP protocol which is stateless. This means that there is no constantly open connection between browser and server. Each request instantiate new communication channel between the two. Once request initiator (e.g. browser) gets response connection is closed. This fact creates completely different context when compared to the one of the operating systems on which original MVC ideas has developed. The MVC implementation has to obey the web context. MVC web implementation is known as Model 2 as well.
 
-A typical server-side MVC implementation has one MVC stack layered behind the singe point of entry. This single point of entry means that all HTTP requests, e.g. `http://www.example.com` or `http://www.example.com/whichever-page/` etc., are routed, by a server configuration, through one point or, to be bold, one file, e.g. `index.php`.
+Typical server-side MVC implementation has one MVC stack layered behind the singe point of entry. This single point of entry means that all HTTP requests, e.g. http://www.example.com or http://www.example.com/whichever-page/ etc., are routed, by a server configuration, through one point or, to be bold, one file, e.g. index.php.
 
-At that point, there would be an implementation of what we call the Front Controller pattern which, once it receives it, analyzes HTTP requests and decides which class (Controller) and method (Action) are to be invoked as a response to the request. Method is the name for a function and member is name for a variable when part of the class/object.
+At that point, there would be an implementation of Front Controller pattern which, once it receives it, analyzes HTTP request (URI at first place) and based on it decides which class (Controller) and its method (Action) are to be invoked as a response to the request (method is name for function and member is name for a variable when part of the class/object). 
+
+Once invoked Controller takes over and passes to and/or fetches data from appropriate Model for the Action in concern. After Controller receives the data from Model it loads the view, which corresponds to the invoked Action, injects the data into it and returns the response to the user.
+
+For example, let say we have our blog on www.example.com:
+
+* And we want to edit an article (with id=43) and request http://www.example.com/article/edit/43:
+
+On sever side Front Controller would analyze URI and invoke Article Controller (corresponds to /article/ part of the URI) and its Edit Action (corresponds to /edit/ part of the URI). Within the Action there would be a call to, let say, Articles model and its Articles::getEntry(43) method (43 corresponds to /43/ in URI) which would return the blog article data from database for edit. Afterwards, Article Controller would load (article/edit) view which would have logic for injecting the article's data into the form for user to edit its content, title and other (meta) data. Once all is done response is returned to the browser.
+
+As you can imagine, similar flow would be with POST request after we press save button in the loaded form. POST action URI would be like /article/save/43. This time request would go through the same Controller, but Save Action (due to /save/ URI chunk), and invoked Articles Model would save edit article to the database with Articles::saveEntry(43) and redirect back to the /article/edit/43 for further editing.
+
+* And users request: http://www.example.com/
+
+On sever side Front Controller would invoke default Controller and Action, e.g. Index Controller and its Index action. Within Index Action there would be a call to Articles model and its Articles::getLastEntries(10) method which would return last 10 blog posts. Afterwards, Controller would load blog/index view which would have basic logic for listing last 10 blog posts.
+
+
+Lets see big picture of typical HTTP request lifecycle through the server side MVC once again in the picture below. Server receives request and routes it through Front Controller. Front controller analyze request (URI) and invokes appropriate Action of the appropriate Controller. Within the Action a Model is asked to return and/or save submitted data. Action communicates with the data source (e.g. database or API etc.). In the end, View is loaded by Controller and it executes presentation logic (loops through articles and prints title, content etc.) with provided data.
+
+![](img/webmvcflow_bacic.png)
+
+Demand for the complex web applications brought us to the point that we needed MVC implemented on the client side to better structure the code and make it easier to maintain and further extend during the application life-cycle. And, of course, JavaScript and browsers create another context which asks for bending or adjustment of the traditional MVC paradigm to it.
+
+## MVC In The Browser
+
+Complex JavaScript web application, aka Single Page Application (SPA), "dances" all the time in a user's browser with all data persistence (saving to database on server) work done with Ajax calls in the background, which means, to put it boldly, no full browser refresh happens. Application behavior to be perceived by the users as "dancing" involves a lot of thought and work to be put in. 
+
+Through evolution, trial and error, and a lot of spaghetti and not so spaghetti-like code developers in the end developed on ideas of traditional MVC paradigm and brought the solution for structuring JavaScript code to the landscape of the SPAs through JavaScript MVC frameworks. JavaScript now has a number of MVC frameworks, including Ember.js, JavaScriptMVC, and of course Backbone.js.
+
+### The problem
+
+Typical page in a SPA consists of smaller ingredients which, when looked at deeper level, represent logical entities, which involve certain data domain that should be represented in a certain way on the page.
+
+Good example is basket in an e-commerce web application which would typically have list of items added to it, total price etc. and presented to the user as box in top right corner of the page (see the picture). 
+
+![](img/wireframe_e_commerce.png)
+
+Basket has its data (the Model) and representation of the data in HTML (the View). On the Model changes the View should be updated and vice versa. Controller is the component that sends update commands both ways, to the View to update itself based on the Model change (e.g. sync with database) and to the Model based on the View changes (e.g. new item dropped into the basket).
+
+It could be concluded that basket should have set of MVC instance just to take care about it. And it's not far from truth. It could be said that each part of the page (could be called widget) in SPA needs separate set of MVC stack to take care of it. Derived from that, it means that typical SPA page consists of the set of MVC stacks with each MVC stack responsible for certain part of the page (for synchronizing its view - DOM, model and controller to manage it). That way code is better structured, decoupled and easier to maintain. 
+
+Structuring those MVC stacks and organizing them to work seamlessly among each another should be taken into account when designing SPAs. We'll address that later on.
+
+Let's see a simple implementation of the MVC and its usage in vanilla JavaScript, to clarify some concepts.
 
 Once invoked the Controller takes over and passes to and/or fetches data from the appropriate Model for the Action in concern. After the Controller receives the data from Model it loads the view, which corresponds to the invoked Action, injects the data into it and returns the response to the user.
 
