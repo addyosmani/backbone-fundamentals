@@ -6668,15 +6668,15 @@ Consider the code that it typically requires to render a view with Backbone and 
   <div class="row">
     <label>First Name:</label>
     <span><%= firstName %></span>
-  <div>
+  </div>
   <div class="row">
     <label>Last Name:</label>
     <span><%= lastName %></span>
-  <div>
+  </div>
   <div class="row">
     <label>Email:</label>
     <span><%= email %></span>
-  <div>
+  </div>
 </script>
 </pre>
 ```
