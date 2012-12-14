@@ -6555,13 +6555,12 @@ Consider the code that it typically requires to render a view with Backbone and 
 
 ```javascript
 var MyView = Backbone.View.extend({
-  template: '#my-view-template',
+  template: $('#my-view-template').text(),
 
   render: function(){
 
     // compile the Underscore.js template
-    var template = $('#my-view-template');
-    var compiledTemplate = _.template(template);
+    var compiledTemplate = _.template(this.template);
 
     // render the template with the model data
     var data = this.model.toJSON();
