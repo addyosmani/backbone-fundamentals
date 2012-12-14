@@ -57,9 +57,9 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <li><a href="#introduction">Introduction</a><ul>
 <li><a href="#what-is-mvc">What Is MVC?</a></li>
 <li><a href="#what-is-backbone.js">What is Backbone.js?</a></li>
-<li><a href="#when-do-you-need-a-javascript-mv-framework">When Do You Need A JavaScript MV* Framework?</a></li>
-<li><a href="#why-should-you-consider-using-backbone.js">Why should you consider using Backbone.js?</a></li>
-<li><a href="#what-should-you-expect-to-see-in-this-book">What should you expect to see in this book?</a></li>
+<li><a href="#when-do-i-need-a-javascript-mvc-framework">When Do I Need A JavaScript MVC Framework?</a></li>
+<li><a href="#why-consider-backbone.js">Why Consider Backbone.js?</a></li>
+<li><a href="#setting-expectations">Setting Expectations</a></li>
 </ul></li>
 <li><a href="#fundamentals">Fundamentals</a><ul>
 <li><a href="#mvc-mvp-backbone.js">MVC, MVP &amp; Backbone.js</a></li>
@@ -114,7 +114,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <li><a href="#what-is-namespacing">What is namespacing?</a></li>
 </ul></li>
 </ul></li>
-<li><a href="#practical-todos---your-first-backbone.js-app">Practical: Todos - Your First Backbone.js App</a><ul>
+<li><a href="#exercise-1-todos---your-first-backbone.js-app">Exercise 1: Todos - Your First Backbone.js App</a><ul>
 <li><a href="#index">Index</a></li>
 <li><a href="#application-html">Application HTML</a></li>
 <li><a href="#todo-model">Todo model</a></li>
@@ -128,6 +128,25 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <li><a href="#completing-deleting-todos">Completing &amp; deleting todos</a></li>
 <li><a href="#todo-routing">Todo routing</a></li>
 <li><a href="#conclusions">Conclusions</a></li>
+</ul></li>
+<li><a href="#exercise-2-book-library---your-first-restful-backbone.js-app">Exercise 2: Book Library - Your first RESTful Backbone.js app</a><ul>
+<li><a href="#part-1">Part 1</a><ul>
+<li><a href="#setting-up">Setting up</a></li>
+</ul></li>
+<li><a href="#part-2">Part 2</a><ul>
+<li><a href="#adding-models">Adding models</a></li>
+<li><a href="#removing-models">Removing models</a></li>
+<li><a href="#summary-1">Summary</a></li>
+</ul></li>
+<li><a href="#part-2.5">Part 2.5</a><ul>
+<li><a href="#installing-node-modules">Installing node modules</a></li>
+<li><a href="#create-directory-structure">Create directory structure</a></li>
+<li><a href="#create-a-simple-web-server">Create a simple web server</a></li>
+<li><a href="#connect-to-database">Connect to database</a></li>
+</ul></li>
+<li><a href="#part-3">Part 3</a><ul>
+<li><a href="#summary-2">Summary</a></li>
+</ul></li>
 </ul></li>
 <li><a href="#backbone-boilerplate-and-grunt-bbb">Backbone Boilerplate And Grunt-BBB</a><ul>
 <li><a href="#getting-started">Getting Started</a><ul>
@@ -155,64 +174,8 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <li><a href="#whats-the-best-way-to-combine-or-append-views-to-each-other">What’s the best way to combine or append Views to each other?</a></li>
 <li><a href="#better-model-property-validation">Better Model Property Validation</a></li>
 </ul></li>
-<li><a href="#restful-applications">RESTful Applications</a><ul>
-<li><a href="#building-restful-applications-with-backbone">Building RESTful applications with Backbone</a></li>
-<li><a href="#stack-1-building-a-backbone-app-with-node.js-express-mongoose-and-mongodb">Stack 1: Building A Backbone App With Node.js, Express, Mongoose and MongoDB</a><ul>
-<li><a href="#reviewing-the-stack">Reviewing the stack</a></li>
-<li><a href="#practical">Practical</a></li>
-<li><a href="#practical-setup">Practical Setup</a><ul>
-<li><a href="#mongodb">MongoDB</a></li>
-<li><a href="#express-and-mongoose">Express and Mongoose</a></li>
-</ul></li>
-</ul></li>
-</ul></li>
-<li><a href="#building-backbone.js-apps-with-ruby-sinatra-mongodb-and-haml">Building Backbone.js Apps With Ruby, Sinatra, MongoDB and Haml</a><ul>
-<li><a href="#introduction-1">Introduction</a></li>
-<li><a href="#what-is-sinatra">What Is Sinatra?</a></li>
-<li><a href="#getting-started-with-sinatra">Getting Started With Sinatra</a><ul>
-<li><a href="#routes">Routes</a><ul>
-<li><a href="#redirection">Redirection</a></li>
-<li><a href="#halting">Halting</a></li>
-<li><a href="#passing">Passing</a></li>
-</ul></li>
-</ul></li>
-<li><a href="#templating-and-haml">Templating And HAML</a><ul>
-<li><a href="#erb">ERB</a></li>
-<li><a href="#haml">Haml</a></li>
-</ul></li>
-</ul></li>
-<li><a href="#mongodb-ruby-driver">MongoDB Ruby Driver</a><ul>
-<li><a href="#getting-started-1">Getting started</a></li>
-</ul></li>
-<li><a href="#practical-1">Practical</a><ul>
-<li><a href="#installing-the-prerequisites">Installing The Prerequisites</a><ul>
-<li><a href="#ruby">Ruby</a></li>
-<li><a href="#ruby-gems">Ruby Gems</a></li>
-<li><a href="#sinatra">Sinatra</a></li>
-<li><a href="#haml-1">Haml</a></li>
-<li><a href="#mongodb-1">MongoDB</a><ul>
-<li><a href="#data-directories">1.Data directories</a></li>
-<li><a href="#running-and-connecting-to-your-server">2.Running and connecting to your server</a></li>
-</ul></li>
-<li><a href="#mongodb-ruby-driver-1">MongoDB Ruby Driver</a></li>
-</ul></li>
-<li><a href="#tutorial">Tutorial</a><ul>
-<li><a href="#application-files">Application Files</a></li>
-<li><a href="#backbone">Backbone</a><ul>
-<li><a href="#views-2">Views</a></li>
-</ul></li>
-<li><a href="#collections-1">Collections</a></li>
-<li><a href="#model">Model</a></li>
-<li><a href="#rubysinatra">Ruby/Sinatra</a></li>
-<li><a href="#app.rb">app.rb</a></li>
-<li><a href="#hamltemplates">Haml/Templates</a></li>
-<li><a href="#index.haml">index.haml</a></li>
-<li><a href="#todo.haml">todo.haml</a></li>
-</ul></li>
-<li><a href="#conclusions-2">Conclusions</a></li>
-</ul></li>
 <li><a href="#modular-development">Modular Development</a><ul>
-<li><a href="#introduction-2">Introduction</a></li>
+<li><a href="#introduction-1">Introduction</a></li>
 <li><a href="#organizing-modules-with-requirejs-and-amd">Organizing modules with RequireJS and AMD</a><ul>
 <li><a href="#writing-amd-modules-with-requirejs">Writing AMD modules with RequireJS</a><ul>
 <li><a href="#alternate-syntax">Alternate syntax</a></li>
@@ -234,8 +197,8 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <li><a href="#modularizing-our-models-views-and-collections">Modularizing our models, views and collections</a></li>
 </ul></li>
 <li><a href="#decoupling-backbone-with-the-mediator-and-facade-patterns">Decoupling Backbone with the Mediator and Facade Patterns</a><ul>
-<li><a href="#summary-1">Summary</a></li>
-<li><a href="#practical-2">Practical</a></li>
+<li><a href="#summary-3">Summary</a></li>
+<li><a href="#practical">Practical</a></li>
 </ul></li>
 <li><a href="#backbone.marionette">Backbone.Marionette</a><ul>
 <li><a href="#boilerplate-rendering-code">Boilerplate Rendering Code</a></li>
@@ -277,13 +240,13 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <li><a href="#backbone-jquery-mobile">Backbone &amp; jQuery Mobile</a><ul>
 <li><a href="#resolving-the-routing-conflicts">Resolving the routing conflicts</a></li>
 <li><a href="#practical-a-backbone-require.jsamd-app-with-jquery-mobile">Practical: A Backbone, Require.js/AMD app with jQuery Mobile</a></li>
-<li><a href="#getting-started-2">Getting started</a></li>
+<li><a href="#getting-started-1">Getting started</a></li>
 <li><a href="#jquery-mobile-going-beyond-mobile-application-development">jQuery Mobile: Going beyond mobile application development</a></li>
 </ul></li>
 </ul></li>
 <li><a href="#unit-testing">Unit Testing</a><ul>
 <li><a href="#unit-testing-backbone-applications-with-jasmine">Unit Testing Backbone Applications With Jasmine</a></li>
-<li><a href="#introduction-3">Introduction</a></li>
+<li><a href="#introduction-2">Introduction</a></li>
 <li><a href="#jasmine">Jasmine</a></li>
 <li><a href="#suites-specs-spies">Suites, Specs &amp; Spies</a></li>
 <li><a href="#beforeeach-and-aftereach">beforeEach and afterEach()</a></li>
@@ -291,16 +254,16 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <li><a href="#getting-setup">Getting setup</a></li>
 <li><a href="#tdd-with-backbone">TDD With Backbone</a></li>
 <li><a href="#models-2">Models</a></li>
-<li><a href="#collections-2">Collections</a></li>
-<li><a href="#views-3">Views</a></li>
+<li><a href="#collections-1">Collections</a></li>
+<li><a href="#views-2">Views</a></li>
 <li><a href="#initial-setup">Initial setup</a></li>
 <li><a href="#view-rendering">View rendering</a></li>
 <li><a href="#rendering-with-a-templating-system">Rendering with a templating system</a></li>
-<li><a href="#conclusions-3">Conclusions</a></li>
+<li><a href="#conclusions-2">Conclusions</a></li>
 <li><a href="#exercise">Exercise</a></li>
 <li><a href="#further-reading">Further reading</a></li>
 <li><a href="#unit-testing-backbone-applications-with-qunit-and-sinonjs">Unit Testing Backbone Applications With QUnit And SinonJS</a></li>
-<li><a href="#introduction-4">Introduction</a></li>
+<li><a href="#introduction-3">Introduction</a></li>
 </ul></li>
 <li><a href="#qunit">QUnit</a><ul>
 <li><a href="#getting-setup-1">Getting Setup</a><ul>
@@ -343,17 +306,17 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <li><a href="#stubs">Stubs</a></li>
 <li><a href="#mocks">Mocks</a></li>
 </ul></li>
-<li><a href="#practical-3">Practical</a><ul>
+<li><a href="#practical-1">Practical</a><ul>
 <li><a href="#models-3">Models</a></li>
-<li><a href="#collections-3">Collections</a></li>
-<li><a href="#views-4">Views</a></li>
+<li><a href="#collections-2">Collections</a></li>
+<li><a href="#views-3">Views</a></li>
 <li><a href="#event">Event</a></li>
 <li><a href="#app">App</a></li>
 </ul></li>
 <li><a href="#further-reading-resources">Further Reading &amp; Resources</a></li>
 </ul></li>
 <li><a href="#resources">Resources</a></li>
-<li><a href="#conclusions-4">Conclusions</a><ul>
+<li><a href="#conclusions-3">Conclusions</a><ul>
 <li><a href="#notes">Notes</a></li>
 </ul></li>
 </ul>
@@ -385,7 +348,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <p>Backbone.js is a lightweight JavaScript framework for adding structure to your client-side code. It makes it easy to manage and decouple concerns in your application, leaving you with code that is more maintainable in the long term.</p>
 <p>Developers commonly use frameworks like Backbone.js to create single-page applications or SPAs. To put it simply, these apps enable the browser to react to changes in data on the client-side without the need to completely load up all your markup from the server, meaning no complete page-refreshes are necessary.</p>
 <p>Backbone.js is a mature, popular framework at the time of writing and has both a large development community online as well as a wealth of plugins and extensions available to build upon it. It has been used to create non-trivial applications by companies such as Disqus, Walmart, SoundCloud and Foursquare.</p>
-<h3 id="when-do-you-need-a-javascript-mv-framework"><a href="#TOC">When Do You Need A JavaScript MV* Framework?</a></h3>
+<h3 id="when-do-i-need-a-javascript-mvc-framework"><a href="#TOC">When Do I Need A JavaScript MVC Framework?</a></h3>
 <p>When building a single-page application using JavaScript, whether it involves a complex user interface or is simply trying to reduce the number of HTTP requests required for new Views, you will likely find yourself inventing many of the pieces that make up an MV* framework, such as Backbone.js.</p>
 <p>At the outset, it isn’t terribly difficult to write an application framework that offers some opinionated way to avoid spaghetti code, however to say that it is equally as trivial to write something of the standard of Backbone would be a grossly incorrect assumption.</p>
 <p>There’s a lot more that goes into structuring an application than tying together a DOM manipulation library, templating and routing. Mature MV* frameworks typically not only include many of the pieces you would find yourself writing, but also include solutions to problems you’ll find yourself running into later on down the road. This is a time-saver that you shouldn’t underestimate the value of.</p>
@@ -394,7 +357,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <p>These applications typically download a single payload containing all the scripts, stylesheets and markup users need for common tasks and then perform a lot of additional behavior in the background. It’s trivial to switch between reading an email or document to writing one and you don’t need to ask the application to render the whole page again at all.</p>
 <p>If, however, you’re building an application that still relies on the server for most of the heavy-lifting of Views/pages and you’re just using a little JavaScript or jQuery to make things a little more interactive, an MV framework may be overkill. There certainly are complex Web applications where the partial rendering of views can* be coupled with a single-page application effectively, but for everything else, you may find yourself better sticking to a simpler setup.</p>
 <p>Maturity in software (framework) development isn’t simply about how long a framework has been around. It’s about how solid the framework is and more importantly how well it’s evolved to fill its role. Has it become more effective at solving common problems? Does it continue to improve as developers build larger and more complex applications with it?</p>
-<h3 id="why-should-you-consider-using-backbone.js"><a href="#TOC">Why should you consider using Backbone.js?</a></h3>
+<h3 id="why-consider-backbone.js"><a href="#TOC">Why Consider Backbone.js?</a></h3>
 <p>Does the following describe you?:</p>
 <p>&quot;I want something flexible which offers a minimalist solution to separating concerns in my application. It should support a persistence layer and RESTful sync, models, views (with controllers), event-driven communication, templating and routing. It should be imperative, allowing one to update the View when a model changes. I’d like some decisions about the architecture left up to me. Ideally, many large companies have used the solution to build non-trivial applications.</p>
 <p>As I may be building something complex, I’d like there to be an active extension community around the framework that have already tried addressing larger problems (Marionette, Chaplin, Aura, Thorax). Ideally, there are also scaffolding tools (grunt-bbb, brunch) available for the solution.&quot;</p>
@@ -407,7 +370,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <li>Model data, views and routers in a succinct manner</li>
 <li>Provide DOM, model and collection synchronization</li>
 </ul>
-<h3 id="what-should-you-expect-to-see-in-this-book"><a href="#TOC">What should you expect to see in this book?</a></h3>
+<h3 id="setting-expectations"><a href="#TOC">Setting Expectations</a></h3>
 <p>The goal of this book is to create an authoritative and centralized repository of information that can help those developing real-world apps with Backbone. If you come across a section or topic which you think could be improved or expanded on, please feel free to submit a pull-request. It won’t take long and you’ll be helping other developers avoid problems you’ve run into before.</p>
 <p>Topics will include MVC theory and how to build applications using Backbone’s models, views, collections and routers. I’ll also be taking you through advanced topics like modular development with Backbone.js and AMD (via RequireJS), how to build applications using modern software stacks (like Node and Express), how to solve the routing problems with Backbone and jQuery Mobile, tips about scaffolding tools, and a lot more.</p>
 <h1 id="fundamentals"><a href="#TOC">Fundamentals</a></h1>
@@ -1792,7 +1755,7 @@ myView = <span class="kw">new</span> MyView();
 <p><strong>Recommendation</strong></p>
 <p>Reviewing the namespace patterns above, the option that I prefer when writing Backbone applications is nested object namespacing with the object literal pattern.</p>
 <p>Single global variables may work fine for applications that are relatively trivial. However, larger codebases requiring both namespaces and deep sub-namespaces require a succinct solution that’s both readable and scalable. I feel this pattern achieves both of these objectives and is a good choice for most Backbone development.</p>
-<h1 id="practical-todos---your-first-backbone.js-app"><a href="#TOC">Practical: Todos - Your First Backbone.js App</a></h1>
+<h1 id="exercise-1-todos---your-first-backbone.js-app"><a href="#TOC">Exercise 1: Todos - Your First Backbone.js App</a></h1>
 <p>Now that we’ve journeyed through the fundamentals, let’s move on to writing our first Backbone.js app - a Todo List application. Building a Todo List is a great way to learn about Backbone’s conventions. It’s a simple enough app, but contains enough interesting problems to be useful, such as binding, persisting model data, routing and template rendering.</p>
 <p>For this chapter, we’re going to learn how to create the Backbone.js Todo app listed on <a href="http://todomvc.com">TodoMVC.com</a>.</p>
 <figure>
@@ -2446,6 +2409,1022 @@ myView = <span class="kw">new</span> MyView();
 <h2 id="conclusions"><a href="#TOC">Conclusions</a></h2>
 <p>We’ve now learned how to build our first complete Backbone.js application. The full app can be viewed online at any time and the sources are readily available via <a href="http://www.todomvc.com">TodoMVC</a>.</p>
 <p>Later on in the book, we’ll learn how to further modularize this application using RequireJS, swap out our persistence layer to a database back-end and finally unit test the application with a few different testing frameworks.</p>
+<h1 id="exercise-2-book-library---your-first-restful-backbone.js-app"><a href="#TOC">Exercise 2: Book Library - Your first RESTful Backbone.js app</a></h1>
+<p><em>Credits: Björn Ekengren, Addy Osmani</em></p>
+<h2 id="part-1"><a href="#TOC">Part 1</a></h2>
+<p>In this exercise we will build a library application for managing digital books using Backbone.</p>
+<h3 id="setting-up"><a href="#TOC">Setting up</a></h3>
+<p>First we need a simple folder structure for our project. Create the directories css, img and js in your project root folder.</p>
+<p>Download the Backbone, Underscore and jQuery libraries and copy them to your js folder. Save this image to your img folder:</p>
+<figure>
+<img src="http://codebyexample.info/wp-content/uploads/2012/03/placeholder.png"><figcaption></figcaption>
+</figure>
+<p>Create a new file index.html in the root of your project folder and enter this:</p>
+<pre class="sourceCode html"><code class="sourceCode html"><span class="dt">&lt;!DOCTYPE </span>html<span class="dt">&gt;</span>
+<span class="kw">&lt;html</span><span class="ot"> lang=</span><span class="st">&quot;en&quot;</span><span class="kw">&gt;</span>
+<span class="kw">&lt;head&gt;</span>
+    <span class="kw">&lt;meta</span><span class="ot"> charset=</span><span class="st">&quot;UTF-8&quot;</span><span class="kw">/&gt;</span>
+    <span class="kw">&lt;title&gt;</span>Backbone.js Library<span class="kw">&lt;/title&gt;</span>
+    <span class="kw">&lt;link</span><span class="ot"> rel=</span><span class="st">&quot;stylesheet&quot;</span><span class="ot"> href=</span><span class="st">&quot;css/screen.css&quot;</span><span class="kw">&gt;</span>
+<span class="kw">&lt;/head&gt;</span>
+<span class="kw">&lt;body&gt;</span>
+<span class="kw">&lt;div</span><span class="ot"> id=</span><span class="st">&quot;books&quot;</span><span class="kw">&gt;</span>
+    <span class="kw">&lt;div</span><span class="ot"> class=</span><span class="st">&quot;bookContainer&quot;</span><span class="kw">&gt;</span>
+        <span class="kw">&lt;img</span><span class="ot"> src=</span><span class="st">&quot;img/placeholder.png&quot;</span><span class="kw">/&gt;</span>
+        <span class="kw">&lt;ul&gt;</span>
+            <span class="kw">&lt;li&gt;</span>Title<span class="kw">&lt;/li&gt;</span>
+            <span class="kw">&lt;li&gt;</span>Author<span class="kw">&lt;/li&gt;</span>
+            <span class="kw">&lt;li&gt;</span>Release date<span class="kw">&lt;/li&gt;</span>
+            <span class="kw">&lt;li&gt;</span>Keywords<span class="kw">&lt;/li&gt;</span>
+        <span class="kw">&lt;/ul&gt;</span>
+    <span class="kw">&lt;/div&gt;</span>
+<span class="kw">&lt;/div&gt;</span>
+<span class="kw">&lt;script</span><span class="ot"> src=</span><span class="st">&quot;js/jquery-1.7.1.js&quot;</span><span class="kw">&gt;&lt;/script&gt;</span>
+<span class="kw">&lt;script</span><span class="ot"> src=</span><span class="st">&quot;js/underscore.js&quot;</span><span class="kw">&gt;&lt;/script&gt;</span>
+<span class="kw">&lt;script</span><span class="ot"> src=</span><span class="st">&quot;js/backbone.js&quot;</span><span class="kw">&gt;&lt;/script&gt;</span>
+<span class="kw">&lt;script</span><span class="ot"> src=</span><span class="st">&quot;js/app.js&quot;</span><span class="kw">&gt;&lt;/script&gt;</span>
+<span class="kw">&lt;/body&gt;</span>
+<span class="kw">&lt;/html&gt;</span></code></pre>
+<p>open this file in a browser and it should look something like this:</p>
+<figure>
+<img src="http://codebyexample.info/wp-content/uploads/2012/03/Screen-Shot-2012-03-05-at-12.57.08-AM1.png"><figcaption></figcaption>
+</figure>
+<p>Not so awesome. This is not a CSS tutorial, but we need to do some formatting. Create a file screen.css in your css folder and type this:</p>
+<p>```css body { background-color: #eee; }</p>
+<p>.bookContainer { border: 1px solid #aaa; width: 300px; height: 130px; background-color: #fff; float: left; margin: 5px; } .bookContainer img { float: left; margin: 10px; } .bookContainer ul { list-style-type: none; } ``` Now it looks a bit better:</p>
+<figure>
+<img src="http://codebyexample.info/wp-content/uploads/2012/03/Screen-Shot-2012-03-05-at-1.06.15-AM.png"><figcaption></figcaption>
+</figure>
+<p>So this is what we want the final result to look like, but with more books. Go ahead and copy the bookContainer div a couple of times if you would like to see what it looks like. Now we are ready to start developing the actual application. Open up app.js and enter this:</p>
+<pre class="js"><code>(function ($) {
+
+    var Book = Backbone.Model.extend({
+        defaults:{
+            coverImage:&quot;img/placeholder.gif&quot;,
+            title:&quot;Some title&quot;,
+            author:&quot;John Doe&quot;,
+            releaseDate:&quot;2012&quot;,
+            keywords:&quot;JavaScript Programming&quot;
+        }
+    });
+
+})(jQuery);</code></pre>
+<p>This is our model of a book. It contains a defaults property that gives us default values for all the values we want our model to contain. Note that I have wrapped everything in a self executing/invoking function with the argument <q>jQuery</q>. This is standard procedure to prevent polluting the global scope and to avoid any collisions with the $ variable. The model in itself isn’t very useful so we need to pair i with a View. For the view we need a template so open up index.html and create a template from our bookContainer we created earlier:</p>
+<pre class="sourceCode html"><code class="sourceCode html"><span class="dt">&lt;!DOCTYPE </span>html<span class="dt">&gt;</span>
+<span class="kw">&lt;html</span><span class="ot"> lang=</span><span class="st">&quot;en&quot;</span><span class="kw">&gt;</span>
+<span class="kw">&lt;head&gt;</span>
+    <span class="kw">&lt;meta</span><span class="ot"> charset=</span><span class="st">&quot;UTF-8&quot;</span><span class="kw">/&gt;</span>
+    <span class="kw">&lt;title&gt;</span>Backbone.js Library<span class="kw">&lt;/title&gt;</span>
+    <span class="kw">&lt;link</span><span class="ot"> rel=</span><span class="st">&quot;stylesheet&quot;</span><span class="ot"> href=</span><span class="st">&quot;css/screen.css&quot;</span><span class="kw">&gt;</span>
+<span class="kw">&lt;/head&gt;</span>
+<span class="kw">&lt;body&gt;</span>
+<span class="kw">&lt;div</span><span class="ot"> id=</span><span class="st">&quot;books&quot;</span><span class="kw">&gt;</span>
+    <span class="kw">&lt;div</span><span class="ot"> class=</span><span class="st">&quot;bookContainer&quot;</span><span class="kw">&gt;</span>
+        <span class="kw">&lt;img</span><span class="ot"> src=</span><span class="st">&quot;img/placeholder.png&quot;</span><span class="kw">/&gt;</span>
+        <span class="kw">&lt;ul&gt;</span>
+            <span class="kw">&lt;li&gt;</span>Title<span class="kw">&lt;/li&gt;</span>
+            <span class="kw">&lt;li&gt;</span>Author<span class="kw">&lt;/li&gt;</span>
+            <span class="kw">&lt;li&gt;</span>Release date<span class="kw">&lt;/li&gt;</span>
+            <span class="kw">&lt;li&gt;</span>Keywords<span class="kw">&lt;/li&gt;</span>
+        <span class="kw">&lt;/ul&gt;</span>
+    <span class="kw">&lt;/div&gt;</span>
+    <span class="kw">&lt;script</span><span class="ot"> id=</span><span class="st">&quot;bookTemplate&quot;</span><span class="ot"> type=</span><span class="st">&quot;text/template&quot;</span><span class="kw">&gt;</span>
+        &lt;img src=<span class="st">&quot;</span>&lt;%= <span class="st">coverImage</span> %&gt;<span class="st">&quot;</span>/&gt;
+        &lt;ul&gt;
+            &lt;li&gt;&lt;%= title %&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;%= author %&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;%= releaseDate %&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;%= keywords %&gt;&lt;/li&gt;
+        &lt;/ul&gt;
+    <span class="kw">&lt;/script&gt;</span>
+<span class="kw">&lt;/div&gt;</span>
+<span class="kw">&lt;script</span><span class="ot"> src=</span><span class="st">&quot;js/jquery-1.7.1.js&quot;</span><span class="kw">&gt;&lt;/script&gt;</span>
+<span class="kw">&lt;script</span><span class="ot"> src=</span><span class="st">&quot;js/underscore.js&quot;</span><span class="kw">&gt;&lt;/script&gt;</span>
+<span class="kw">&lt;script</span><span class="ot"> src=</span><span class="st">&quot;js/backbone.js&quot;</span><span class="kw">&gt;&lt;/script&gt;</span>
+<span class="kw">&lt;script</span><span class="ot"> src=</span><span class="st">&quot;js/app.js&quot;</span><span class="kw">&gt;&lt;/script&gt;</span>
+<span class="kw">&lt;/body&gt;</span>
+<span class="kw">&lt;/html&gt;</span></code></pre>
+<p>So what’s going on here? Well, I have wrapped the template in a script tag with the type <q>text/template</q>. By doing this the browser will not recognize the type and not render it, but we can still access all the elements in JavaScript. I have removed the surrounding div tag since the templating engine (Underscore) will create that for us. In the various fields I have inserted &lt;%= field %&gt; that Underscore will find and replace with real data. Now that we have our template in place we can go and create the view, so switch over to app.js:</p>
+<pre class="js"><code>(function ($) {
+
+    var Book = Backbone.Model.extend({
+        defaults:{
+            coverImage:&quot;img/placeholder.gif&quot;,
+            title:&quot;Some title&quot;,
+            author:&quot;John Doe&quot;,
+            releaseDate:&quot;2012&quot;,
+            keywords:&quot;JavaScript Programming&quot;
+        }
+    });
+
+    var BookView = Backbone.View.extend({
+        tagName:&quot;div&quot;,
+        className:&quot;bookContainer&quot;,
+        template:$(&quot;#bookTemplate&quot;).html(),
+
+        render:function () {
+            var tmpl = _.template(this.template); //tmpl is a function that takes a JSON object and returns html
+
+            this.$el.html(tmpl(this.model.toJSON())); //this.el is what we defined in tagName. use $el to get access to jQuery html() function
+            return this;
+        }
+    });
+
+})(jQuery);</code></pre>
+<p>So the view works like the model in that we use the extend function and pass it properties. The tagName property defines the container of the view, the className defines the class of the container and template is, well, the template for the view. The render function creates the tmpl function by calling underscores template function with one argument (the template from our index.html). It then calls the <code>tmpl</code> function with our model… wait a minute! What model? Well, this is something that we need to provide as an argument when we call out view constructor. As it looks now our view isn’t connected to any element in out html page either, so let’s take care of that now:</p>
+<pre class="js"><code>(function ($) {
+
+    var Book = Backbone.Model.extend({
+        defaults:{
+            coverImage:&quot;img/placeholder.gif&quot;,
+            title:&quot;Some title&quot;,
+            author:&quot;John Doe&quot;,
+            releaseDate:&quot;2012&quot;,
+            keywords:&quot;JavaScript Programming&quot;
+        }
+    });
+
+    var BookView = Backbone.View.extend({
+        tagName:&quot;div&quot;,
+        className:&quot;bookContainer&quot;,
+        template:$(&quot;#bookTemplate&quot;).html(),
+
+        render:function () {
+            var tmpl = _.template(this.template); //tmpl is a function that takes a JSON object and returns html
+
+            this.$el.html(tmpl(this.model.toJSON())); //this.el is what we defined in tagName. use $el to get access to jQuery html() function
+            return this;
+        }
+    });
+
+    var book = new Book({
+        title:&quot;Some title&quot;,
+        author:&quot;John Doe&quot;,
+        releaseDate:&quot;2012&quot;,
+        keywords:&quot;JavaScript Programming&quot;
+    });
+
+    bookView = new BookView({
+        model: book
+    });
+
+    $(&quot;#books&quot;).html(bookView.render().el);
+
+})(jQuery);</code></pre>
+<p>Here we have created a new Book model by calling the Book constructor and passing an object with our desired properties. The model is then used when creating a BookView. Finally the bookView is rendered and inserted into our page. It should look something like this:</p>
+<figure>
+<img src="http://codebyexample.info/wp-content/uploads/2012/03/Screen-Shot-2012-03-05-at-10.53.34-PM.png"><figcaption></figcaption>
+</figure>
+<p>Looking good, we now have a working Backbone application. Since a library cannot contain just one book, we need to push further. Lets have a look at Collections. Collections contain collections of models. The models must be of the same kind, ie you cannot mix apples and oranges in the same collection. Other than that, collections are quite simple, you just tell them what kind of models they contain like this:</p>
+<pre class="js"><code>var Library = Backbone.Collection.extend({
+    model:Book
+});</code></pre>
+<p>Go ahead and insert the code in app.js. Next stop is a new view for our Library collection. This view is a bit complicated than the earlier BookView:</p>
+<pre class="js"><code>var LibraryView = Backbone.View.extend({
+        el:$(&quot;#books&quot;),
+
+        initialize:function(){
+            this.collection = new Library(books);
+            this.render();
+        },
+
+        render: function(){
+            var that = this;
+            _.each(this.collection.models, function(item){
+                that.renderBook(item);
+            }, this);
+        },
+
+        renderBook:function(item){
+            var bookView = new BookView({
+                model: item
+            });
+            this.$el.append(bookView.render().el);
+        }
+    });</code></pre>
+<p>I added some line numbers to help me explain what is going on. On line 02 I specified the property <q>el</q>. A view can take either a tagName, as we saw in our <code>BookView</code>, or an el. When we use tagName, the view will create the element for us, but we are responsible for inserting it into the page. When we use el we specify an existing element in the page and the view will write directly into the page, into the specified element. In this case we select the div with id=”books”.</p>
+<p>Next on line 04 is the initialize function. This function will be called by Backbone when the view constructor is called. On line 05 in we create a new Library (collection of Book models) and store it in a local property called <q>collection</q>. On line 06 it call its own render function, which means that as soon as we call the <code>LibraryView</code> constructor it will get rendered, so this is a self rendering view. We don’t have to make it self rendered but it is common practice.</p>
+<p>On line 10 in the render function we store a reference to the current object in a variable <q>that</q> and then (on line 11) use the each function of underscore to iterate over all the models (Books) in our collection. The first argument to <q>each</q> is the array that will be iterated over. The second argument is the function that will be applied to each member of the array. The function in our case calls the renderBook function with the current model as argument. We need to use <q>that</q> to get this right since if we would have used <q>this</q> it would have referenced the function itself. The third argument (line 13) is the context that each is executing in.</p>
+<p>On line 16 we define a function <code>renderBook</code> that takes a model (a Book) as argument and uses it to create a <code>BookView</code>. The <code>bookView</code> is then rendered and appended to the view container as specified in our el property (on line 02).</p>
+<p>You may have noticed that on line 05 we called the Library constructor with the argument <q>books</q>. Library is a Backbone collection that expects an array of objects that it can use to create Book models. We haven’t defined the books variable yet so lets go ahead and do that:</p>
+<pre class="js"><code>var books = [{title:&quot;JS the good parts&quot;, author:&quot;John Doe&quot;, releaseDate:&quot;2012&quot;, keywords:&quot;JavaScript Programming&quot;},
+        {title:&quot;CS the better parts&quot;, author:&quot;John Doe&quot;, releaseDate:&quot;2012&quot;, keywords:&quot;CoffeeScript Programming&quot;},
+        {title:&quot;Scala for the impatient&quot;, author:&quot;John Doe&quot;, releaseDate:&quot;2012&quot;, keywords:&quot;Scala Programming&quot;},
+        {title:&quot;American Psyco&quot;, author:&quot;Bret Easton Ellis&quot;, releaseDate:&quot;2012&quot;, keywords:&quot;Novel Splatter&quot;},
+        {title:&quot;Eloquent JavaScript&quot;, author:&quot;John Doe&quot;, releaseDate:&quot;2012&quot;, keywords:&quot;JavaScript Programming&quot;}]</code></pre>
+<p>Now we are almost ready to try out our first version of the Backbone library. Replace this code:</p>
+<pre class="js"><code>    var book = new Book({
+        title:&quot;Some title&quot;,
+        author:&quot;John Doe&quot;,
+        releaseDate:&quot;2012&quot;,
+        keywords:&quot;JavaScript Programming&quot;
+    });
+
+    bookView = new BookView({
+        model: book
+    });
+
+    $(&quot;#books&quot;).html(bookView.render().el);</code></pre>
+<p>with this:</p>
+<p>var <code>libraryView = new LibraryView();</code> If you view index.html in a browser you should see something like this:</p>
+<figure>
+<img src="http://codebyexample.info/wp-content/uploads/2012/03/Screen-Shot-2012-03-06-at-9.58.03-AM.png"><figcaption></figcaption>
+</figure>
+<p>Here is the final app.js:</p>
+<pre class="js"><code>(function ($) {
+    var books = [{title:&quot;JS the good parts&quot;, author:&quot;John Doe&quot;, releaseDate:&quot;2012&quot;, keywords:&quot;JavaScript Programming&quot;},
+        {title:&quot;CS the better parts&quot;, author:&quot;John Doe&quot;, releaseDate:&quot;2012&quot;, keywords:&quot;CoffeeScript Programming&quot;},
+        {title:&quot;Scala for the impatient&quot;, author:&quot;John Doe&quot;, releaseDate:&quot;2012&quot;, keywords:&quot;Scala Programming&quot;},
+        {title:&quot;American Psyco&quot;, author:&quot;Bret Easton Ellis&quot;, releaseDate:&quot;2012&quot;, keywords:&quot;Novel Splatter&quot;},
+        {title:&quot;Eloquent JavaScript&quot;, author:&quot;John Doe&quot;, releaseDate:&quot;2012&quot;, keywords:&quot;JavaScript Programming&quot;}];
+
+    var Book = Backbone.Model.extend({
+        defaults:{
+            coverImage:&quot;img/placeholder.gif&quot;,
+            title:&quot;Some title&quot;,
+            author:&quot;John Doe&quot;,
+            releaseDate:&quot;2012&quot;,
+            keywords:&quot;JavaScript Programming&quot;
+        }
+    });
+
+    var Library = Backbone.Collection.extend({
+       model:Book
+    });
+
+    var BookView = Backbone.View.extend({
+        tagName:&quot;div&quot;,
+        className:&quot;bookContainer&quot;,
+        template:$(&quot;#bookTemplate&quot;).html(),
+
+        render:function () {
+            var tmpl = _.template(this.template); //tmpl is a function that takes a JSON object and returns html
+
+            this.$el.html(tmpl(this.model.toJSON())); //this.el is what we defined in tagName. use $el to get access to jQuery html() function
+            return this;
+        }
+    });
+
+ var LibraryView = Backbone.View.extend({
+        el:$(&quot;#books&quot;),
+
+        initialize:function(){
+            this.collection = new Library(books);
+            this.render();
+        },
+
+        render: function(){
+            var that = this;
+            _.each(this.collection.models, function(item){
+                that.renderBook(item);
+            }, this);
+        },
+
+        renderBook:function(item){
+            var bookView = new BookView({
+                model: item
+            });
+            this.$el.append(bookView.render().el);
+        }
+    });
+
+    var libraryView = new LibraryView();
+
+})(jQuery);</code></pre>
+<p>So lets recap what happens here:</p>
+<ul>
+<li>Line 58: the LibraryView constructor is called</li>
+<li>Line 36: the LibraryView is tied to the books div in our html</li>
+<li>Line 39: the Library constructor is called with the array of book properties from line 02, creating a collection of Book models</li>
+<li>Line 43: The render function iterates over the Book collection and calls renderBook (line 46) for each Book model</li>
+<li>Line 51: renderBook function creates a new BookView from the given Book model</li>
+<li>Line 54: The render function of BookView is called and the result is appended to the books div in out html</li>
+</ul>
+<p>You have now been introduced to the basic components of Backbone Model, View and Collection. In the next part I will continue to develop our Library into something more interactive.</p>
+<p>The code for this tutorial is available <a href="https://dl.dropbox.com/u/70775642/workshop-practical/code.zip">here</a>.</p>
+<h2 id="part-2"><a href="#TOC">Part 2</a></h2>
+<p>In the first part, I covered some Backbone basics of models, views and collections. I recommend reading that before continuing since this tutorial builds on the first part. In this tutorial we are going to look at how we can add and remove models from a collection.</p>
+<h3 id="adding-models"><a href="#TOC">Adding models</a></h3>
+<p>To add a new book we need to have some sort of input form. Go ahead and add one in index.html</p>
+<pre class="sourceCode html"><code class="sourceCode html"><span class="kw">&lt;div</span><span class="ot"> id=</span><span class="st">&quot;books&quot;</span><span class="kw">&gt;&lt;form</span><span class="ot"> id=</span><span class="st">&quot;addBook&quot;</span><span class="ot"> action=</span><span class="st">&quot;#&quot;</span><span class="kw">&gt;</span>
+<span class="kw">&lt;div&gt;&lt;label</span><span class="ot"> for=</span><span class="st">&quot;coverImage&quot;</span><span class="kw">&gt;</span>CoverImage: <span class="kw">&lt;/label&gt;&lt;input</span><span class="ot"> id=</span><span class="st">&quot;coverImage&quot;</span><span class="ot"> type=</span><span class="st">&quot;file&quot;</span> <span class="kw">/&gt;</span>
+ <span class="kw">&lt;label</span><span class="ot"> for=</span><span class="st">&quot;title&quot;</span><span class="kw">&gt;</span>Title: <span class="kw">&lt;/label&gt;&lt;input</span><span class="ot"> id=</span><span class="st">&quot;title&quot;</span><span class="ot"> type=</span><span class="st">&quot;text&quot;</span> <span class="kw">/&gt;</span>
+ <span class="kw">&lt;label</span><span class="ot"> for=</span><span class="st">&quot;author&quot;</span><span class="kw">&gt;</span>Author: <span class="kw">&lt;/label&gt;&lt;input</span><span class="ot"> id=</span><span class="st">&quot;author&quot;</span><span class="ot"> type=</span><span class="st">&quot;text&quot;</span> <span class="kw">/&gt;</span>
+ <span class="kw">&lt;label</span><span class="ot"> for=</span><span class="st">&quot;releaseDate&quot;</span><span class="kw">&gt;</span>Release date: <span class="kw">&lt;/label&gt;&lt;input</span><span class="ot"> id=</span><span class="st">&quot;releaseDate&quot;</span><span class="ot"> type=</span><span class="st">&quot;text&quot;</span> <span class="kw">/&gt;</span>
+ <span class="kw">&lt;label</span><span class="ot"> for=</span><span class="st">&quot;keywords&quot;</span><span class="kw">&gt;</span>Keywords: <span class="kw">&lt;/label&gt;&lt;input</span><span class="ot"> id=</span><span class="st">&quot;keywords&quot;</span><span class="ot"> type=</span><span class="st">&quot;text&quot;</span> <span class="kw">/&gt;</span>
+ <span class="kw">&lt;button</span><span class="ot"> id=</span><span class="st">&quot;add&quot;</span><span class="kw">&gt;</span>Add<span class="kw">&lt;/button&gt;&lt;/div&gt;</span>
+<span class="kw">&lt;/form&gt;&lt;/div&gt;</span></code></pre>
+<p>I made the ids of the inputs match the attributes in our Book model so that we don’t have to remap those later. Add this to screen.css for looks</p>
+<pre class="sourceCode css"><code class="sourceCode css"><span class="fl">#addBook</span> label <span class="kw">{</span>
+    <span class="kw">width:</span><span class="dt">100px</span><span class="kw">;</span>
+    <span class="kw">margin-right:</span><span class="dt">10px</span><span class="kw">;</span>
+    <span class="kw">text-align:</span><span class="dt">right</span><span class="kw">;</span>
+    <span class="kw">line-height:</span><span class="dt">25px</span><span class="kw">;</span>
+<span class="kw">}</span>
+
+<span class="fl">#addBook</span> label, <span class="fl">#addBook</span> input <span class="kw">{</span>
+    <span class="kw">display:</span><span class="dt">block</span><span class="kw">;</span>
+    <span class="kw">margin-bottom:</span><span class="dt">10px</span><span class="kw">;</span>
+    <span class="kw">float:</span><span class="dt">left</span><span class="kw">;</span>
+<span class="kw">}</span>
+
+<span class="fl">#addBook</span> label<span class="ch">[for=</span><span class="st">&quot;title&quot;</span><span class="ch">]</span>, <span class="fl">#addBook</span> label<span class="ch">[for=</span><span class="st">&quot;releaseDate&quot;</span><span class="ch">]</span> <span class="kw">{</span>
+    <span class="kw">clear:</span><span class="dt">both</span><span class="kw">;</span>
+<span class="kw">}</span>
+
+<span class="fl">#addBook</span> button <span class="kw">{</span>
+    <span class="kw">display:</span><span class="dt">block</span><span class="kw">;</span>
+    <span class="kw">margin:</span><span class="dt">5px</span> <span class="dt">20px</span> <span class="dt">10px</span> <span class="dt">10px</span><span class="kw">;</span>
+    <span class="kw">float:</span> <span class="dt">right</span><span class="kw">;</span>
+    <span class="kw">clear:</span> <span class="dt">both</span><span class="kw">;</span>
+<span class="kw">}</span>
+
+<span class="fl">#addBook</span> div <span class="kw">{</span>
+    <span class="kw">width:</span> <span class="dt">550px</span><span class="kw">;</span>
+<span class="kw">}</span>
+
+<span class="fl">#addBook</span> div<span class="dv">:after</span> <span class="kw">{</span>
+    <span class="kw">content:</span><span class="st">&quot;&quot;</span><span class="kw">;</span>
+    <span class="kw">display:</span><span class="dt">block</span><span class="kw">;</span>
+    <span class="kw">height:</span><span class="dt">0</span><span class="kw">;</span>
+    <span class="kw">visibility:</span><span class="dt">hidden</span><span class="kw">;</span>
+    <span class="kw">clear:</span><span class="dt">both</span><span class="kw">;</span>
+    <span class="kw">font-size:</span><span class="dt">0</span><span class="kw">;</span>
+    <span class="kw">line-height:</span><span class="dt">0</span><span class="kw">;</span>
+<span class="kw">}</span></code></pre>
+<p>Now lets create a function that lets us add a book. We put it in our master view (LibraryView) after the render function</p>
+<pre class="js"><code>addBook: function(){
+    var formData = {};
+
+    $(&quot;#addBook&quot;).children(&quot;input&quot;).each(function(i, el){
+        formData[el.id] = $(el).val();
+    });
+
+    books.push(formData);
+
+    this.collection.add(new Book(formData));
+},</code></pre>
+<p>Here I select all the input elements the form and iterate over them using jQuery’s each. Since we used the same names for ids in our form as the keys on our Book model we can simply store them directly in the formData object and the add it to the books array. We then create a new Book model and add it to our collection. Now lets wire this function to the Add button in our form. We do this by adding an event listener in the LibraryView</p>
+<pre class="js"><code>events:{
+    &quot;click #add&quot;:&quot;addBook&quot;
+},</code></pre>
+<p>By default, Backbone will send an event object as parameter to the function. This is useful for us in this case since we want to prevent the form from actually submit and reloading the page. Add a preventDefault to the addBook function</p>
+<pre class="js"><code>addBook: function(e){
+    e.preventDefault();
+
+    var formData = {};
+
+    $(&quot;#addBook&quot;).children(&quot;input&quot;).each(function(i, el){
+        formData[el.id] = $(el).val();
+    });
+
+    books.push(formData);
+
+    this.collection.add(new Book(formData));
+},</code></pre>
+<p>Ok, so this will add a book to our books array and our collection. It will not however be visible, because we have not called the render function of our BookView. When a model is added to a collection, the collection will fire an add event. If we listen to this event we will be able to call our renderBook function. This binding is done in initialize.</p>
+<pre class="js"><code>initialize:function () {
+    this.collection = new Library(books);
+    this.render();
+
+    this.collection.on(&quot;add&quot;, this.renderBook, this);
+},</code></pre>
+<p>Now you should be ready to take the application for a spin.</p>
+<figure>
+<img src="http://codebyexample.info/wp-content/uploads/2012/04/Screen-Shot-2012-04-05-at-1.24.51-AM.png"><figcaption></figcaption>
+</figure>
+<p>As you may notice, if you leave a field blank, it will be blank in the created view as well. This is not what we want, we would like the default values to kick in. To do that we need to add a bit of logic. Also note that the file input for the cover image isn’t working, but that is left as an exercise to the reader.</p>
+<pre class="js"><code>addBook:function (e) {
+    e.preventDefault();
+
+    var formData = {};
+
+    $(&quot;#addBook div&quot;).children(&quot;input&quot;).each(function (i, el) {
+        if ($(el).val() !== &quot;&quot;) {
+            formData[el.id] = $(el).val();
+        }
+    });
+
+    books.push(formData);
+
+    this.collection.add(new Book(formData));
+},</code></pre>
+<p>Here I added (line 7) a check to see if the field value is empty, in which case we do not add it to the model data. While we are at it lets add default values for the other properties of Book</p>
+<pre class="js"><code>var Book = Backbone.Model.extend({
+    defaults:{
+        coverImage:&quot;img/placeholder.png&quot;,
+        title:&quot;No title&quot;,
+        author:&quot;Unknown&quot;,
+        releaseDate:&quot;Unknown&quot;,
+        keywords:&quot;None&quot;
+    }
+});</code></pre>
+<p>Now it has better default behaviour</p>
+<figure>
+<img src="http://codebyexample.info/wp-content/uploads/2012/04/Screen-Shot-2012-04-05-at-11.41.59-AM1.png"><figcaption></figcaption>
+</figure>
+<h3 id="removing-models"><a href="#TOC">Removing models</a></h3>
+<p>Now lets see how to remove Books. We start by adding a delete button to the template in index.html</p>
+<pre class="sourceCode html"><code class="sourceCode html"><span class="kw">&lt;script</span><span class="ot"> id=</span><span class="st">&quot;bookTemplate&quot;</span><span class="ot"> type=</span><span class="st">&quot;text/javascript&quot;</span><span class="kw">&gt;</span><span class="co">// </span>&lt;![<span class="co">CDATA</span>[
+<span class="co">    </span>&lt;<span class="co">img src</span>=&quot;&lt;%=<span class="co"> coverImage </span>%&gt;&quot;/&gt;
+&lt;<span class="co">ul</span>&gt;
+<span class="co">    </span>&lt;<span class="co">li</span>&gt;&lt;%=<span class="co"> title</span>%&gt;&lt;/<span class="co">li</span>&gt;
+
+<span class="co">    </span>&lt;<span class="co">li</span>&gt;&lt;%=<span class="co"> author</span>%&gt;&lt;/<span class="co">li</span>&gt;
+
+<span class="co">    </span>&lt;<span class="co">li</span>&gt;&lt;%=<span class="co"> releaseDate</span>%&gt;&lt;/<span class="co">li</span>&gt;
+
+<span class="co">    </span>&lt;<span class="co">li</span>&gt;&lt;%=<span class="co"> keywords</span>%&gt;&lt;/<span class="co">li</span>&gt;
+
+&lt;/<span class="co">ul</span>&gt;
+
+<span class="co">    </span>&lt;<span class="co">button class</span>=&quot;<span class="co">delete</span>&quot;&gt;<span class="co">Delete</span>&lt;/<span class="co">button</span>&gt;
+<span class="co">// ]]&gt;</span><span class="kw">&lt;/script&gt;</span></code></pre>
+<p>We add some css to it for good looks. Note that I removed the margin of the existing ul rule above to tighten things up a bit.</p>
+<pre class="sourceCode css"><code class="sourceCode css"><span class="fl">.bookContainer</span> ul <span class="kw">{</span>
+    <span class="kw">list-style-type:</span> <span class="dt">none</span><span class="kw">;</span>
+    <span class="kw">margin-bottom:</span> <span class="dt">0</span><span class="kw">;</span>
+<span class="kw">}</span>
+
+<span class="fl">.bookContainer</span> button <span class="kw">{</span>
+    <span class="kw">float:</span><span class="dt">right</span><span class="kw">;</span>
+    <span class="kw">margin:</span> <span class="dt">10px</span><span class="kw">;</span>
+<span class="kw">}</span></code></pre>
+<p>Looks okay!</p>
+<figure>
+<img src="http://codebyexample.info/wp-content/uploads/2012/04/Screen-Shot-2012-04-05-at-11.59.54-AM.png"><figcaption></figcaption>
+</figure>
+<p>Now we need to wire up the button to the logic. This works in the same way as with add. We start by creating a deleteBook function in the BookView</p>
+<pre class="js"><code>var BookView = Backbone.View.extend({
+    tagName:&quot;div&quot;,
+    className:&quot;bookContainer&quot;,
+    template:$(&quot;#bookTemplate&quot;).html(),
+
+    render:function () {
+        var tmpl = _.template(this.template); //tmpl is a function that takes a JSON and returns html
+
+        this.$el.html(tmpl(this.model.toJSON())); //this.el is what we defined in tagName. use $el to get access to jQuery html() function
+        return this;
+    },
+
+    deleteBook:function () {
+        //Delete model
+        this.model.destroy();
+
+        //Delete view
+        this.remove();
+    }
+});</code></pre>
+<p>Then we add en event listener to the delete button</p>
+<pre class="js"><code>var BookView = Backbone.View.extend({
+    tagName:&quot;div&quot;,
+    className:&quot;bookContainer&quot;,
+    template:$(&quot;#bookTemplate&quot;).html(),
+
+    render:function () {
+        var tmpl = _.template(this.template); //tmpl is a function that takes a JSON and returns html
+
+        this.$el.html(tmpl(this.model.toJSON())); //this.el is what we defined in tagName. use $el to get access to jQuery html() function
+        return this;
+    },
+
+    events: {
+        &quot;click .delete&quot;: &quot;deleteBook&quot;
+    },
+
+    deleteBook:function () {
+        //Delete model
+        this.model.destroy();
+
+        //Delete view
+        this.remove();
+    }
+});</code></pre>
+<p>If you try it out now you will see that it seems to work. However we are not yet finished. When we click the delete button the model and view will be deleted, but not the data in our books array. This means that if we were to re-render the LibraryView the deleted books would reappear. The Backbone collection is smart enough to notice when one of its models is deleted and will fire a <q>remove</q> event. This is something we can listen to in our LibraryView and take action. Add a listener in initialize of LibraryView</p>
+<pre class="js"><code>initialize:function () {
+    this.collection = new Library(books);
+    this.render();
+
+    this.collection.on(&quot;add&quot;, this.renderBook, this);
+    this.collection.on(&quot;remove&quot;, this.removeBook, this);
+},</code></pre>
+<p>Here I specified that the removeBook function should be called when the remove event from our collection fires, so lets create this function. Note that the collection provides the removed model as a parameter to the event.</p>
+<pre class="js"><code>
+removeBook: function(removedBook){
+    var removedBookData = removedBook.attributes;
+
+    _.each(removedBookData, function(val, key){
+        if(removedBookData[key] === removedBook.defaults[key]){
+            delete removedBookData[key];
+        }
+    });
+
+    _.each(books, function(book){
+        if(_.isEqual(book, removedBookData)){
+            books.splice(_.indexOf(books, book), 1);
+        }
+    });
+},</code></pre>
+<p>Since the default values was not saved in the books array we need to remove them in order to find an match. We use underscores each function to iterate over the properties of the removed Book model and delete any property that is equal to the default value. Since the underscore each function also is capable of iterating over objects in an array we use it again to iterate over the objects in our books array to find the data of the removed Book. To get a match we use the isEqual function of underscore that performs a deep comparison of objects. Similarly the indexOf can find complex objects, which we use when we remove the book data using splice.</p>
+<h3 id="summary-1"><a href="#TOC">Summary</a></h3>
+<p>In this tutorial we have looked at how to add and remove models from a collection. We also looked at how to wire view, model and collection together using event handlers. We also saw the useful underscore functions each, indexOf and isEqual. If there is enough interest in these tutorials I’ll continue and create more episodes, there are still plenty to cover in Backbone.</p>
+<p>The code for this part is available <a href="https://dl.dropbox.com/u/70775642/workshop-practical/code.zip">here</a>.</p>
+<h2 id="part-2.5"><a href="#TOC">Part 2.5</a></h2>
+<p>In the first two parts of this tutorial series we looked at the basic structure of a Backbone application and how to add and remove models. In the third part we will look at how to synchronize the models with the back end, but in order to do that we need to make a small detour and set up a server with a REST api. That is what we are going to do in this part.Since this is a JavaScript tutorial I will use JavaScript to create the server using node.js. If you are more comfortable in setting up a REST server in another language, this is the API you need to conform to:</p>
+<pre><code>url HTTP Method Operation
+/api/books  GET Get an array of all books
+/api/books/:id  GET Get the book with id of :id
+/api/books  POST  Add a new book and return the book with an id attribute added
+/api/books/:id  PUT Update the book with id of :id
+/api/books/:id  DELETE  Delete the book with id of :id</code></pre>
+<p>The outline for this tutorial looks like this:</p>
+<ul>
+<li>Install node.js, npm and MongoDB</li>
+<li>Install node modules</li>
+<li>Create directory structure</li>
+<li>Create a simple web server</li>
+<li>Connect to the database</li>
+<li>Create the REST API</li>
+<li>Installing node, npm and MongoDB</li>
+</ul>
+<p>Download and install node.js from nodejs.org. The node package manager (npm) will be installed as well.</p>
+<p>Download and install MongoDB from mongodb.org. When installing MongoDB you get instructions on copying a config file in order for MongoDB to run. On OSX it can look something like this:</p>
+<pre><code>sudo cp /usr/local/Cellar/mongodb/2.0.4-x86_64/mongod.conf /usr/local/etc/mongod.conf</code></pre>
+<p>Once it is installed we can go ahead and start it. On my machine I did this:</p>
+<pre><code>mongod run --config /usr/local/Cellar/mongodb/2.0.4-x86_64/mongod.conf</code></pre>
+<h3 id="installing-node-modules"><a href="#TOC">Installing node modules</a></h3>
+<p>Start by creating a new folder for this project. Using a terminal, go to your project folder and run the following commands:</p>
+<pre><code>npm install express@2.5.9
+npm install path
+npm install mongoose</code></pre>
+<p>Note the @2.5.9 on express. The current stable is 3.0.3 and has a different API, but we will be using 2.5.9 for the time being.</p>
+<h3 id="create-directory-structure"><a href="#TOC">Create directory structure</a></h3>
+<p>In your project folder root, create a file server.js – this is where our server code will go. Then create a folder public. Anything within the public folder will be served by the express web server as static content to the client. Now go ahead and copy everything from Part 2 into the public folder. When you are done your folder structure should look something like this:</p>
+<pre><code>node_modules/
+  .bin/
+  express/
+  mongoose/
+  path/
+public/
+  css/
+  img/
+  js/
+  index.html
+server.js
+package.json</code></pre>
+<h3 id="create-a-simple-web-server"><a href="#TOC">Create a simple web server</a></h3>
+<p>Open server.js and enter the following:</p>
+<pre class="js"><code>// Module dependencies.
+var application_root = __dirname,
+    express = require(&quot;express&quot;), //Web framework
+    path = require(&quot;path&quot;), //Utilities for dealing with file paths
+    mongoose = require(&#39;mongoose&#39;); //MongoDB integration
+
+//Create server
+var app = express.createServer();
+
+// Configure server
+app.configure(function () {
+    app.use(express.bodyParser()); //parses request body and populates req.body
+    app.use(express.methodOverride()); //checks req.body for HTTP method overrides
+    app.use(app.router); //perform route lookup based on url and HTTP method
+    app.use(express.static(path.join(application_root, &quot;public&quot;))); //Where to serve static content
+    app.use(express.errorHandler({ dumpExceptions:true, showStack:true })); //Show all errors in development
+});
+
+//Start server
+app.listen(4711, function () {
+    console.log(&quot;Express server listening on port %d in %s mode&quot;, app.address().port, app.settings.env);
+});</code></pre>
+<p>I start off by loading the modules required for this project: Express for creating the HTTP server, Path for dealing with file paths and mongoose for connecting with the database. We the create an express server and configure it using an anonymous function. This is a pretty standard configuration and for our application we don’t actually need the methodOverride part. It is used for issuing PUT and DELETE HTTP requests directly from a form, since forms normally only support GET and POST. Finally I start the server by running the listen function. The port number used, in this case 4711, could be any free port on your system. I simply used 4711 since it is the most random number. We are now ready to run our first server:</p>
+<pre class="js"><code>node server.js</code></pre>
+<p>If you open a browser on localhost:4711 you should see something like this:</p>
+<figure>
+<img src="http://codebyexample.info/wp-content/uploads/2012/04/Screen-Shot-2012-04-05-at-11.59.54-AM1.png"><figcaption></figcaption>
+</figure>
+<p>This is where we left off in Part 2, but we are now running on a server instead of directly from the files. Great job! We can now start defining routes (URLs) that the server should react to. This will be our REST API. Routes are defined by using app followed by one of the HTTP verbs get, put, post and delete, which corresponds to Create, Read, Update and Delete. Let us go back to server.js and define a simple route:</p>
+<pre class="js"><code>// Routes
+app.get(&#39;/api&#39;, function(req, res){
+    res.send(&#39;Library API is running&#39;);
+});</code></pre>
+<p>The get function will take the URL as first parameter and a function as second. The function will be called with request and response objects. Now you can restart node and go to our specified URL:</p>
+<figure>
+<img src="http://codebyexample.info/wp-content/uploads/2012/04/Screen-Shot-2012-04-23-at-10.09.35-AM.png"><figcaption></figcaption>
+</figure>
+<h3 id="connect-to-database"><a href="#TOC">Connect to database</a></h3>
+<p>Fantastic. Now since we want to store our data in MongoDB we need to define a schema. Add this to server.js:</p>
+<pre class="js"><code>//Connect to database
+mongoose.connect(&#39;mongodb://localhost/library_database&#39;);
+
+//Schemas
+var Book = new  mongoose.Schema({
+    title:String,
+    author:String,
+    releaseDate: Date
+});
+
+//Models
+var BookModel = mongoose.model(&#39;Book&#39;, Book);</code></pre>
+<p>As you can see, schema definitions are quite straight forward. They can be more advanced, but this will do for us. I also extracted a model (BookModel) from Mongo. This is what we will be working with. Next up we define a get operation for the rest API that will return all books:</p>
+<pre class="js"><code>//Get a list of all books
+app.get(&#39;/api/books&#39;, function (req, res) {
+    return BookModel.find(function (err, books) {
+        if (!err) {
+            return res.send(books);
+        } else {
+            return console.log(err);
+        }
+    });
+});</code></pre>
+<p>The find function of Model is defined like this: function find (conditions, fields, options, callback) – but since we want a function that return all books we only need the callback parameter. The callback will be called with an error object and an array of found objects. If there was no error we return the array of objects to the client using the send function of the result object, otherwise we log the error to the console.</p>
+<p>To test our API we need to do a little typing in a JavaScript console. Restart node and go to localhost:4711 in your browser. Open up the JavaScript console. If you are using Google Chrome, go to View-&gt;Developer-&gt;JavaScript Console. If you are using Firefox, install Firebug and go to View-&gt;Firebug. If you are on any other browser I’m sure you will find a console somewhere. In the console type the following:</p>
+<pre class="js"><code>jQuery.get(&quot;/api/books/&quot;, function (data, textStatus, jqXHR) {
+    console.log(&quot;Get resposne:&quot;);
+    console.dir(data);
+    console.log(textStatus);
+    console.dir(jqXHR);
+});</code></pre>
+<p>…and press enter and you should get something like this:</p>
+<figure>
+<img src="http://codebyexample.info/wp-content/uploads/2012/04/Screen-Shot-2012-04-29-at-12.50.32-AM.png"><figcaption></figcaption>
+</figure>
+<p>Here I used jQuery to make the call to our REST API, since it was already loaded on the page. The returned array is obviously empty, since we have not put anything into the database yet. Lets go and create a POST route that enables this in server.js:</p>
+<pre class="js"><code>//Insert a new book
+app.post(&#39;/api/books&#39;, function (req, res) {
+    var book = new BookModel({
+        title:req.body.title,
+        author:req.body.author,
+        releaseDate:req.body.releaseDate
+    });
+    book.save(function (err) {
+        if (!err) {
+            return console.log(&#39;created&#39;);
+        } else {
+            return console.log(err);
+        }
+    });
+    return res.send(book);
+});</code></pre>
+<p>We start by creating a new BookModel passing an object with title, author and releaseDate attributes. The data are collected from req.body. This means that anyone calling this operation in the API needs to supply a JSON object containing the title, author and releaseDate attributes. Actually, the caller can omit any or all attributes since we have not made any one mandatory.</p>
+<p>We the call the save function on the BookModel passing in an anonymous function for handling errors in the same way as with the previous get route. Finally we return the saved BookModel. The reason we return the BookModel and not just <q>success</q> or similar string is that when the BookModel is saved it will get an _id attribute from MongoDB, which the client need when updating or deleting a specific book. Lets try it out again, restart node and go back to the console and type:</p>
+<pre class="js"><code>jQuery.post(&quot;/api/books&quot;, {
+  &quot;title&quot;: &quot;JavaScript the good parts&quot;,
+  &quot;author&quot;: &quot;Douglas Crockford&quot;,
+  &quot;releaseDate&quot;: new Date(2008, 4, 1).getTime()
+}, function(data, textStatus, jqXHR) {
+    console.log(&quot;Post response:&quot;); console.dir(data); console.log(textStatus); console.dir(jqXHR);
+});</code></pre>
+<p>..and then</p>
+<pre class="js"><code>jQuery.get(&quot;/api/books/&quot;, function (data, textStatus, jqXHR) {
+    console.log(&quot;Get response:&quot;);
+    console.dir(data);
+    console.log(textStatus);
+    console.dir(jqXHR);</code></pre>
+<p>You should now get an array of size 1 back from our server. You may wonder about this line:</p>
+<pre class="js"><code>&quot;releaseDate&quot;: new Date(2008, 4, 1).getTime()</code></pre>
+<p>MongoDB expects dates in UNIX time format (milliseconds from Jan 1st 1970), so we have to convert dates before posting. The object we get back however, contains a JavaScript Date object. Also note the _id attribute of the returned object.</p>
+<figure>
+<img src="http://codebyexample.info/wp-content/uploads/2012/04/Screen-Shot-2012-04-29-at-1.16.58-AM.png"><figcaption></figcaption>
+</figure>
+<p>Lets move on to creating a get that retrieves a single book in server.js:</p>
+<pre class="js"><code>app.get(&#39;/api/books/:id&#39;, function(req, res){
+    return BookModel.findById(req.params.id, function(err, book){
+        if(!err){
+            return res.send(book);
+        } else {
+            return console.log(err);
+        }
+    });
+});</code></pre>
+<p>Here we use colon notation (:id) to tell express that this part of the route is dynamic. We also use the findById function on BookModel to get a single result. Now you can get a single book by adding its id to the URL like this:</p>
+<pre class="js"><code>jQuery.get(&quot;/api/books/4f95a8cb1baa9b8a1b000006&quot;, function (data, textStatus, jqXHR){
+    console.log(&quot;Get resposne:&quot;);
+    console.dir(data);
+    console.log(textStatus);
+    console.dir(jqXHR);
+});</code></pre>
+<p>Lets create the PUT (update) function next:</p>
+<pre class="js"><code>app.put(&#39;/api/books/:id&#39;, function(req, res){
+    console.log(&#39;Updating book &#39; + req.body.title);
+    return BookModel.findById(req.params.id, function(err, book){
+        book.title = req.body.title;
+        book.author = req.body.author;
+        book.releaseDate = req.body.releaseDate;
+        return book.save(function(err){
+            if(!err){
+                console.log(&#39;book updated&#39;);
+            } else {
+                console.log(err);
+            }
+            return res.send(book);
+        });
+    });
+});</code></pre>
+<p>This is a little larger than previous ones, but should be pretty straight forward – we find a book by id, update its properties, save it and send it back to the client.</p>
+<p>To test this we need to use the more general jQuery ajax function (replace the id with what you got from a GET request):</p>
+<pre class="js"><code>jQuery.ajax({
+  url:&quot;/api/books/4f95a8cb1baa9b8a1b000006&quot;,
+  type:&quot;PUT&quot;,
+  data:{
+    &quot;title&quot;: &quot;JavaScript The good parts&quot;,
+    &quot;author&quot;: &quot;The Legendary Douglas Crockford&quot;,
+    &quot;releaseDate&quot;: new Date(2008, 4, 1).getTime()
+  },
+  success: function(data, textStatus, jqXHR) {
+    console.log(&quot;Post resposne:&quot;); console.dir(data); console.log(textStatus); console.dir(jqXHR);
+  }});
+</code></pre>
+<p>Finally we create the delete route:</p>
+<pre class="js"><code>app.delete(&#39;/api/books/:id&#39;, function(req, res){
+    console.log(&#39;Deleting book with id: &#39; + req.params.id);
+    return BookModel.findById(req.params.id, function(err, book){
+        return book.remove(function(err){
+            if(!err){
+                console.log(&#39;Book removed&#39;);
+                return res.send(&#39;&#39;);
+            } else {
+                console.log(err);
+            }
+        });
+    });
+});</code></pre>
+<p>…and try it out:</p>
+<pre class="js"><code>jQuery.ajax({
+  url:&#39;/api/books/4f95a5251baa9b8a1b000001&#39;,
+  type: &#39;DELETE&#39;,
+  success:function(data, textStatus, jqXHR){
+    console.log(&quot;Post resposne:&quot;);
+    console.dir(data);
+    console.log(textStatus);
+    console.dir(jqXHR);
+  }
+});</code></pre>
+<p>So now our REST API is complete – we have support for all HTTP verbs. What next? Well, until now I have left out the keywords part of our books. This is a bit more complicated since a book could have several keywords and we don’t want to represent them as a string, but rather an array of strings. To do that we need another schema. Add a Keywords schema right above our Book schema:</p>
+<pre class="js"><code>//Schemas
+var Keywords = new mongoose.Schema({
+    keyword: String
+});</code></pre>
+<p>To add a sub schema to an existing schema we use brackets notation like so:</p>
+<pre class="js"><code>var Book = new mongoose.Schema({
+    title:String,
+    author:String,
+    releaseDate:Date,
+    keywords: [Keywords]
+});</code></pre>
+<p>Also update POST and PUT</p>
+<pre class="js"><code>app.post(&#39;/api/books&#39;, function (req, res) {
+    var book = new BookModel({
+        title:req.body.title,
+        author:req.body.author,
+        releaseDate:req.body.releaseDate,
+        keywords: req.body.keywords
+    });
+    book.save(function (err) {
+        if (!err) {
+            return console.log(&#39;created&#39;);
+        } else {
+            return console.log(err);
+        }
+    });
+    return res.send(book);
+});
+
+app.put(&#39;/api/books/:id&#39;, function(req, res){
+    return BookModel.findById(req.params.id, function(err, book){
+        book.title = req.body.title;
+        book.author = req.body.author;
+        book.releaseDate = req.body.releaseDate;
+        book.keywords = req.body.keywords;
+        return book.save(function(err){
+            if(!err){
+                console.log(&#39;book updated&#39;);
+            } else {
+                console.log(err);
+            }
+            return res.send(book);
+        });
+    });
+});</code></pre>
+<p>There we are, that should be all we need, now we can try it out in the console:</p>
+<pre class="js"><code>jQuery.post(&quot;/api/books&quot;, {
+  &quot;title&quot;: &quot;Secrets of the JavaScript Ninja&quot;,
+  &quot;author&quot;: &quot;John Resig&quot;,
+  &quot;releaseDate&quot;: new Date(2008, 3, 12).getTime(),
+  &quot;keywords&quot;:[{
+     &quot;keyword&quot;:&quot;JavaScript&quot;
+   },{
+     &quot;keyword&quot;: &quot;Reference&quot;
+   }]
+}, function(data, textStatus, jqXHR) {
+    console.log(&quot;Post response:&quot;); console.dir(data); console.log(textStatus); console.dir(jqXHR);
+});</code></pre>
+<p>You should now have a fully functional REST server. We will use this in the next part of the tutorial to make our library application persistent.</p>
+<h2 id="part-3"><a href="#TOC">Part 3</a></h2>
+<p>In this part we will cover connecting our Backbone application to to a server through a REST API. This tutorial builds on the first two parts, so I strongly recommend reading those to fully benefit from this part.</p>
+<p>Update: If you for some reason don’t have access to a server you could use the Backbone.Localstorage plugin (you’ll need a browser that supports localstorage though). To do this, download the plugin here, add it in a script tag in the html page after Backbone and initialize it in the collection like this:</p>
+<pre class="js"><code>var Library = Backbone.Collection.extend({
+    localStorage: new Backbone.LocalStorage(&quot;LibraryStorage&quot;),
+    model: Book,
+    url: &#39;/api/books&#39;
+});</code></pre>
+<p>To synchronize a Backbone application to a server we need a server with a REST API that communicates in JSON format. The server I created in part 2.5 will fit our needs, but if you are creating your own server in another language you might want to read through that tutorial to get a grip of the API. Backbone makes use of the sync function in order to persist models with the server. You do not need usually use this function directly, but instead set a url attribute to a collection (or a Model if the Models are not in a collection) informing Backbone where to sync. So lets go ahead and add a url attribute to our Library collection:</p>
+<pre class="js"><code>var Library = Backbone.Collection.extend({
+    model:Book,
+    url:&#39;/api/books&#39;
+});
+</code></pre>
+<p>By this Backbone will assume that the API looks like this:</p>
+<pre><code>url HTTP Method Operation
+/api/books  GET Get an array of all books
+/api/books/:id  GET Get the book with id of :id
+/api/books  POST  Add a new book and return the book with an id attribute added
+/api/books/:id  PUT Update the book with id of :id
+/api/books/:id  DELETE  Delete the book with id of :id
+</code></pre>
+<p>To make our application get the Book models from the server on page load we need to update the LibraryView. It is recommended in the Backbone documentation to insert all models when the page is generated on the server side, rather than fetching them from the client side once the page is loaded. Since this tutorial will try to give you a more complete picture of how to communicate with a server, we will go ahead and ignore that recommendation. Go to the LibraryView declaration in app.js and make the following updates:</p>
+<pre class="js"><code>var LibraryView = Backbone.View.extend({
+    el:$(&quot;#books&quot;),
+
+    initialize:function () {
+        //this.collection = new Library(books);
+        this.collection = new Library();
+        this.collection.fetch();
+        this.render();
+
+        this.collection.on(&quot;add&quot;, this.renderBook, this);
+        this.collection.on(&quot;remove&quot;, this.removeBook, this);
+        this.collection.on(&quot;reset&quot;, this.render, this);
+    },</code></pre>
+<p>Here I have replaced the row where we create a collection from the internal array with this.collection.fetch(). I have also added an listener on the reset event. We need to do this since the fetching of models is asynchronous and happens after the page is rendered. When the fetching is finished, Backbone will fire the reset event, which we listen to and re-render the view. If you reload the page now you should see all books that are stored on the server:</p>
+<figure>
+<img src="http://codebyexample.info/wp-content/uploads/2012/04/Screen-Shot-2012-04-30-at-12.27.32-AM.png"><figcaption></figcaption>
+</figure>
+<p>As you can see the date looks a bit weird, and also the keywords. The date delivered from the server is converted into a JavaScript Date object and when applied to the underscore template it will use the toString() function to display it. There isn’t very good support for formatting dates in JavaScript so we will use the dateFormat jQuery plugin to fix this. Go ahead and download it from here and put it in your js folder. Then go ahead and change index.html like this:</p>
+<pre class="sourceCode html"><code class="sourceCode html">
+<span class="kw">&lt;body&gt;</span>
+<span class="kw">&lt;div</span><span class="ot"> id=</span><span class="st">&quot;books&quot;</span><span class="kw">&gt;</span>
+    <span class="kw">&lt;form</span><span class="ot"> id=</span><span class="st">&quot;addBook&quot;</span><span class="ot"> action=</span><span class="st">&quot;#&quot;</span><span class="kw">&gt;</span>
+        <span class="kw">&lt;div&gt;</span>
+            <span class="kw">&lt;label</span><span class="ot"> for=</span><span class="st">&quot;coverImage&quot;</span><span class="kw">&gt;</span>CoverImage: <span class="kw">&lt;/label&gt;&lt;input</span><span class="ot"> id=</span><span class="st">&quot;coverImage&quot;</span><span class="ot"> type=</span><span class="st">&quot;file&quot;</span><span class="kw">&gt;</span>
+            <span class="kw">&lt;label</span><span class="ot"> for=</span><span class="st">&quot;title&quot;</span><span class="kw">&gt;</span>Title: <span class="kw">&lt;/label&gt;&lt;input</span><span class="ot"> id=</span><span class="st">&quot;title&quot;</span><span class="kw">&gt;</span>
+            <span class="kw">&lt;label</span><span class="ot"> for=</span><span class="st">&quot;author&quot;</span><span class="kw">&gt;</span>Author: <span class="kw">&lt;/label&gt;&lt;input</span><span class="ot"> id=</span><span class="st">&quot;author&quot;</span><span class="kw">&gt;</span>
+            <span class="kw">&lt;label</span><span class="ot"> for=</span><span class="st">&quot;releaseDate&quot;</span><span class="kw">&gt;</span>Release date: <span class="kw">&lt;/label&gt;&lt;input</span><span class="ot"> id=</span><span class="st">&quot;releaseDate&quot;</span><span class="kw">&gt;</span>
+            <span class="kw">&lt;label</span><span class="ot"> for=</span><span class="st">&quot;keywords&quot;</span><span class="kw">&gt;</span>Keywords: <span class="kw">&lt;/label&gt;&lt;input</span><span class="ot"> id=</span><span class="st">&quot;keywords&quot;</span><span class="kw">&gt;</span>
+            <span class="kw">&lt;button</span><span class="ot"> id=</span><span class="st">&quot;add&quot;</span><span class="kw">&gt;</span>Add<span class="kw">&lt;/button&gt;</span>
+        <span class="kw">&lt;/div&gt;</span>
+    <span class="kw">&lt;/form&gt;</span>
+<span class="kw">&lt;/div&gt;</span>
+<span class="kw">&lt;script</span><span class="ot"> id=</span><span class="st">&quot;bookTemplate&quot;</span><span class="ot"> type=</span><span class="st">&quot;text/template&quot;</span><span class="kw">&gt;</span>
+    &lt;img src=<span class="st">&quot;</span>&lt;%= <span class="st">coverImage</span> %&gt;<span class="st">&quot;</span>/&gt;
+    &lt;ul&gt;
+        &lt;li&gt;&lt;%= title%&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;%= author%&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;%= $.<span class="fu">format</span>.<span class="fu">date</span>(<span class="kw">new</span> <span class="kw">Date</span>(releaseDate), <span class="ch">&#39;dd</span>/<span class="ch">MM</span>/<span class="ch">yyyy&#39;</span>) %&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;%= keywords %&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+    &lt;button class=<span class="st">&quot;delete&quot;</span>&gt;Delete&lt;/button&gt;
+<span class="kw">&lt;/script&gt;</span>
+<span class="kw">&lt;script</span><span class="ot"> src=</span><span class="st">&quot;js/jquery-1.7.1.js&quot;</span><span class="kw">&gt;&lt;/script&gt;</span>
+<span class="kw">&lt;script</span><span class="ot"> src=</span><span class="st">&quot;js/jquery.dateFormat-1.0.js&quot;</span><span class="kw">&gt;&lt;/script&gt;</span>
+<span class="kw">&lt;script</span><span class="ot"> src=</span><span class="st">&quot;js/underscore.js&quot;</span><span class="kw">&gt;&lt;/script&gt;</span>
+<span class="kw">&lt;script</span><span class="ot"> src=</span><span class="st">&quot;js/backbone.js&quot;</span><span class="kw">&gt;&lt;/script&gt;</span>
+<span class="kw">&lt;script</span><span class="ot"> src=</span><span class="st">&quot;js/app.js&quot;</span><span class="kw">&gt;&lt;/script&gt;</span>
+<span class="kw">&lt;/body&gt;</span></code></pre>
+<p>So I added the jquery.dateFormat-1.0.js file on row 25 and used dateFormat to print the date in dd/MM/yyyy format on line 19. Now the date on the page should look a bit better. How about the keywords? Since we are receiving the keywords in an array we need to execute some code that generates a string of separated keywords. To do that we can omit the equals letter in the template tag which will let us execute code that doesn’t display anything:</p>
+<pre class="sourceCode html"><code class="sourceCode html"><span class="kw">&lt;script</span><span class="ot"> id=</span><span class="st">&quot;bookTemplate&quot;</span><span class="ot"> type=</span><span class="st">&quot;text/template&quot;</span><span class="kw">&gt;</span>
+    &lt;img src=<span class="st">&quot;</span>&lt;%= <span class="st">coverImage</span> %&gt;<span class="st">&quot;</span>/&gt;
+    &lt;ul&gt;
+        &lt;li&gt;&lt;%= title%&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;%= author%&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;%= $.<span class="fu">format</span>.<span class="fu">date</span>(<span class="kw">new</span> <span class="kw">Date</span>(releaseDate), <span class="ch">&#39;dd</span>/<span class="ch">MM</span>/<span class="ch">yyyy&#39;</span>) %&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;% <span class="kw">_</span>.<span class="fu">each</span>(keywords, <span class="kw">function</span>(keyobj){%&gt; &lt;%= <span class="kw">keyobj</span>.<span class="fu">keyword</span> %&gt;&lt;% }}); %&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+    &lt;button class=<span class="st">&quot;delete&quot;</span>&gt;Delete&lt;/button&gt;
+<span class="kw">&lt;/script&gt;</span></code></pre>
+<p>Here I iterate over the keywords array using the each function and print out every single keyword. Note that I display the keyword using the &lt;%= tag. This will display the keywords with a space between. If you would like to support space characters within a keyword, like for example <q>new age</q> then you could separate them by comma (no sane person would put a comma in a keyword right?). That would lead us to write some more code to remove the comma after the last keyword like this:</p>
+<pre class="sourceCode html"><code class="sourceCode html">       <span class="kw">&lt;li&gt;</span>
+       <span class="er">&lt;</span>% _.each(keywords, function(keyobj, index, list){%&gt;
+        <span class="er">&lt;</span>%= keyobj.keyword %&gt;
+          <span class="er">&lt;</span>% if(index <span class="er">&lt;</span> list.length - 1){ %&gt;
+          <span class="er">&lt;</span>%= &#39;, &#39; %&gt;
+        <span class="er">&lt;</span>% }}); %&gt;
+       <span class="kw">&lt;/li&gt;</span></code></pre>
+<p>Reloading the page again should look quite decent:</p>
+<figure>
+<img src="http://codebyexample.info/wp-content/uploads/2012/04/Screen-Shot-2012-04-30-at-1.02.14-AM.png"><figcaption></figcaption>
+</figure>
+<p>Now go ahead and delete a book and then reload the page: Tadaa! the deleted book is back! Not cool, why is this? This happens because when we get the BookModels from the server they have an _id attribute (notice the underscore), but Backbone expects an id attribute (no underscore). Since no id attribute is present, Backbone sees this model as new and deleting a new model don’t need any synchronization. To fix this we could change the server response, but we are instead going to look at the parse function of Backbone.Model. The parse function lets you edit the server response before it is passed to the Model constructor. Update the Book model like this:</p>
+<pre class="js"><code>var Book = Backbone.Model.extend({
+    defaults:{
+        coverImage:&quot;img/placeholder.png&quot;,
+        title:&quot;No title&quot;,
+        author:&quot;Unknown&quot;,
+        releaseDate:&quot;Unknown&quot;,
+        keywords:&quot;None&quot;
+    },
+    parse:function (response) {
+        console.log(response);
+        response.id = response._id;
+        return response;
+    }
+});</code></pre>
+<p>I simply copy the value of _id to the needed id attribute. If you reload the page you will see that models are actually deleted on the server when you press the delete button.</p>
+<p>Note: A simpler way of making Backbone recognize _id as its unique identifier is to set the idAttribute of the model like this:</p>
+<pre class="js"><code>var Book = Backbone.Model.extend({
+    defaults:{
+        coverImage:&quot;img/placeholder.png&quot;,
+        title:&quot;No title&quot;,
+        author:&quot;Unknown&quot;,
+        releaseDate:&quot;Unknown&quot;,
+        keywords:&quot;None&quot;
+    },
+    idAttribute: &quot;_id&quot;
+});</code></pre>
+<p>If you now try to add a new book using the form you’ll notice that it is the same story as with delete – models wont get persisted on the server. This is because Backbone.Collection.add doesn’t automatically sync, but it is easy to fix. In LibraryView in app.js, change the line reading:</p>
+<pre class="js"><code>this.collection.add(new Book(formData));</code></pre>
+<p>…to:</p>
+<pre class="js"><code>this.collection.create(formData);</code></pre>
+<p>Now newly created books will get persisted. Actually, they probably wont if you enter a date. The server expects a date in UNIX timestamp format (milliseconds since Jan 1, 1970). Also any keywords you enter wont be stored since the server expects an array of objects with the attribute <q>keyword</q>.</p>
+<p>We start with fixing the date issue. We don’t really want the users to enter a date into a specific format manually so we’ll use the standard datepicker from jQuery UI. Go ahead and create a custom jQuery UI download containing datepicker from here . Add the css and js files to index.html:</p>
+<pre class="sourceCode html"><code class="sourceCode html"><span class="kw">&lt;head&gt;</span>
+    <span class="kw">&lt;meta</span><span class="ot"> charset=</span><span class="st">&quot;UTF-8&quot;</span><span class="kw">/&gt;</span>
+    <span class="kw">&lt;title&gt;</span>Backbone.js Web App<span class="kw">&lt;/title&gt;</span>
+    <span class="kw">&lt;link</span><span class="ot"> rel=</span><span class="st">&quot;stylesheet&quot;</span><span class="ot"> href=</span><span class="st">&quot;css/screen.css&quot;</span><span class="kw">&gt;</span>
+    <span class="kw">&lt;link</span><span class="ot"> rel=</span><span class="st">&quot;stylesheet&quot;</span><span class="ot"> href=</span><span class="st">&quot;css/cupertino/jquery-ui-1.8.19.custom.css&quot;</span><span class="kw">&gt;</span>
+<span class="kw">&lt;/head&gt;</span></code></pre>
+<p>and the js file after jQuery:</p>
+<pre class="sourceCode html"><code class="sourceCode html"><span class="kw">&lt;script</span><span class="ot"> src=</span><span class="st">&quot;js/jquery-1.7.1.js&quot;</span><span class="kw">&gt;&lt;/script&gt;</span>
+<span class="kw">&lt;script</span><span class="ot"> src=</span><span class="st">&quot;js/jquery-ui-1.8.19.custom.min.js&quot;</span><span class="kw">&gt;&lt;/script&gt;</span>
+<span class="kw">&lt;script</span><span class="ot"> src=</span><span class="st">&quot;js/jquery.dateFormat-1.0.js&quot;</span><span class="kw">&gt;&lt;/script&gt;</span>
+<span class="kw">&lt;script</span><span class="ot"> src=</span><span class="st">&quot;js/underscore.js&quot;</span><span class="kw">&gt;&lt;/script&gt;</span>
+<span class="kw">&lt;script</span><span class="ot"> src=</span><span class="st">&quot;js/backbone.js&quot;</span><span class="kw">&gt;&lt;/script&gt;</span>
+<span class="kw">&lt;script</span><span class="ot"> src=</span><span class="st">&quot;js/app.js&quot;</span><span class="kw">&gt;&lt;/script&gt;</span></code></pre>
+<p>Now in the beginning of app.js bind datepicker to our releaseDate field:</p>
+<pre class="js"><code>(function ($) {
+    $( &quot;#releaseDate&quot; ).datepicker();
+
+    var books = [
+        {title:&quot;JS the good parts&quot;, author:&quot;John Doe&quot;, releaseDate:&quot;2012&quot;, keywords:&quot;JavaScript Programming&quot;},
+</code></pre>
+<p>You should now be able to pick a date when clicking in the releaseDate field:</p>
+<figure>
+<img src="http://codebyexample.info/wp-content/uploads/2012/04/Screen-Shot-2012-04-30-at-1.34.19-AM.png"><figcaption></figcaption>
+</figure>
+<p>Now go to the addBook function in LibraryView and update it like this:</p>
+<pre class="js"><code>addBook:function (e) {
+    e.preventDefault();
+
+    var formData = {};
+
+    $(&quot;#addBook div&quot;).children(&quot;input&quot;).each(function (i, el) {
+        if ($(el).val() !== &quot;&quot;) {
+            if (el.id === &#39;releaseDate&#39;){
+                formData[el.id] = $(&#39;#releaseDate&#39;).datepicker(&quot;getDate&quot;).getTime();
+            } else {
+                formData[el.id] = $(el).val();
+            }
+        }
+    });
+
+    books.push(formData);
+
+    //this.collection.add(new Book(formData));
+    this.collection.create(formData);
+},</code></pre>
+<p>Here I check if the current element is the releaseDate input field, in which case I use datePicker(<q>getDate</q>) which will give me a Date object and then use the getTime function on that to get the time in milliseconds. While we are at it lets fix the keywords issue as well:</p>
+<pre class="js"><code>addBook:function (e) {
+    e.preventDefault();
+
+    var formData = {};
+
+    $(&quot;#addBook div&quot;).children(&quot;input&quot;).each(function (i, el) {
+        if ($(el).val() !== &quot;&quot;) {
+            if (el.id === &#39;keywords&#39;) {
+                var keywordArray = $(el).val().split(&#39;,&#39;);
+                var keywordObjects = [];
+                for (var j = 0; j &lt; keywordArray.length; j++) {
+                    keywordObjects[j] = {&quot;keyword&quot;:keywordArray[j]};
+                }
+                formData[el.id] = keywordObjects;
+            } else if (el.id === &#39;releaseDate&#39;){
+                formData[el.id] = $(&#39;#releaseDate&#39;).datepicker(&quot;getDate&quot;).getTime();
+            } else {
+                formData[el.id] = $(el).val();
+            }
+        }
+    });
+
+    books.push(formData);
+
+    //this.collection.add(new Book(formData));
+    this.collection.create(formData);
+},</code></pre>
+<p>Here I check if the current element is the keywords input field, in which case I split the string on each comma the create a new array with keyword objects. In other words I assume that keywords are separated by commas, so I better write a comment on that in the form. Now you should be able to add new books with both release date and keywords!</p>
+<figure>
+<img src="http://codebyexample.info/wp-content/uploads/2012/04/Screen-Shot-2012-05-01-at-8.57.51-PM.png"><figcaption></figcaption>
+</figure>
+<h3 id="summary-2"><a href="#TOC">Summary</a></h3>
+<p>In this tutorial we made our application persistent by binding it to a server using a REST API. We also looked at some problems that might occur when serializing and deserializing data and their solutions. We looked at the dateFormat and the datepicker jQuery plugins and how to do some more advanced things in our Underscore templates. The code is available <a href="https://dl.dropbox.com/u/70775642/workshop-practical/code.zip">here</a>.</p>
 <h1 id="backbone-boilerplate-and-grunt-bbb"><a href="#TOC">Backbone Boilerplate And Grunt-BBB</a></h1>
 <p><a href="https://github.com/tbranyen/backbone-boilerplate/">Backbone Boilerplate</a> is an excellent set of best practices and utilities for building Backbone.js applications, created by Backbone contributor <a href="https://github.com/tbranyen">Tim Branyen</a>. He organized this boilerplate out of the gotchas, pitfalls and common tasks he ran into over a year of heavily using Backbone to build apps at Bocoup. This includes apps such <a href="http://startupdatatrends.com">StartupDataTrends.com</a>.</p>
 <p>With scaffolding and built in build tasks that take care of minification, concatentation, server, template compilation and more, Backbone Boilerplate (and sister project <a href="https://github.com/backbone-boilerplate/grunt-bbb">Grunt-BBB</a>) are an excellent choice for developers of all levels. I heavily recommend using them as they will give you an enormous start when it comes to getting setup for development. They also have some great inline documentation which is also another excellent time-saver.</p>
@@ -3431,799 +4410,8 @@ $(<span class="kw">function</span>($) {
 <span class="kw">user</span>.<span class="fu">set</span>({ <span class="ch">&#39;firstname&#39;</span>: <span class="ch">&#39;Greg&#39;</span> }, {<span class="dt">validateAll</span>: <span class="kw">false</span>});</code></pre>
 <p>That’s it!.</p>
 <p>The Backbone.validateAll logic doesn’t override the default Backbone logic by default and so it’s perfectly capable of being used for scenarios where you might care more about field-validation <a href="http://jsperf.com/backbone-validateall">performance</a> as well as those where you don’t. Both solutions presented in this section should work fine however.</p>
-<h1 id="restful-applications"><a href="#TOC">RESTful Applications</a></h1>
-<h2 id="building-restful-applications-with-backbone"><a href="#TOC">Building RESTful applications with Backbone</a></h2>
-<p>In this section of the book, we’re going to take a look at developing RESTful applications using Backbone.js and modern technology stacks. When the data for your back-end is exposed through a purely RESTful API, tasks such as retrieving (GET), creating (POST), updating (PUT) and deleting (DELETE) models are made easy through Backbone’s Model API. This API is so intuitive in fact that switching from storing records in a local data-store (e.g localStorage) to a database/noSQL data-store is a lot simpler than you may think.</p>
-<h2 id="stack-1-building-a-backbone-app-with-node.js-express-mongoose-and-mongodb"><a href="#TOC">Stack 1: Building A Backbone App With Node.js, Express, Mongoose and MongoDB</a></h2>
-<p>The first stack we’ll be looking at is:</p>
-<ul>
-<li><a href="nodejs.org">Node.js</a></li>
-<li><a href="http://expressjs.com/">Express</a></li>
-<li><a href="http://mongoosejs.com/">Mongoose</a></li>
-<li>and <a href="http://www.mongodb.org/">MongoDB</a></li>
-</ul>
-<p>with <a href="http://jade-lang.com/">Jade</a> used optionally as a view/templating engine.</p>
-<h3 id="reviewing-the-stack"><a href="#TOC">Reviewing the stack</a></h3>
-<p>As you may know, node.js is an event-driven platform (built on the <a href="http://code.google.com/apis/v8/design.html">V8</a> runtime), designed for writing fast, scalable network applications. It’s reasonably lightweight, efficient and great for real-time applications that are data-intensive.</p>
-<p>Express is a small web-development framework written with node.js, based on <a href="http://www.sinatrarb.com/">Sinatra</a>. It supports a number of useful features such as intuitive views, robust routing and a focus on high performance.</p>
-<p>Next on the list are MongoDB and Mongoose. MongoDB is an open-source, document-oriented database store designed with scalability and agility in mind. As a <a href="http://en.wikipedia.org/wiki/NoSQL">noSQL</a> database, rather than storing data in tables and rows (something we’re very used to doing with relational databases), with MongoDB we instead store JSON-like documents using dynamic schemas. One of the goals of Mongo is to try bridging the gap between key-value stores (speed, scalability) and <a href="http://en.wikipedia.org/wiki/Relational_database">relational</a> databases (rich functionality).</p>
-<p>Mongoose is a JavaScript library that simplifies how we interact with Mongo. Like Express, it’s designed to work within the node.js environment and tries to solve some of the complexities with asynchronous data storage by offering a more user-friendly API. It also adds chaining features into the mix, allowing for a slightly more expressive way of dealing with our data.</p>
-<p>Jade is a template engine influenced by Haml (which we’ll be looking at later). It’s implemented with JavaScript (and also runs under node). In addition to supporting Express out of the box, it boasts a number of useful features including support for mixins, includes, caching, template inheritance and much more. Whilst abstractions like Jade certainly aren’t for everyone, our practical will cover working both with and without it.</p>
-<h3 id="practical"><a href="#TOC">Practical</a></h3>
-<p>For this practical, we’re going to once again look at extending the popular Backbone Todo application. Rather than relying on localStorage for data persistence, we’re going to switch to storing Todos in a MongoDB document-store instead. The code for this practical can be found in <code>practicals\stacks\option2</code></p>
-<p><strong>app.js</strong></p>
-<p>(See <a href="https://github.com/addyosmani/backbone-boilerplates/blob/master/option2/app.js">here</a> for the source)</p>
-<p>We must first include the node dependencies required by our application. These are Express, Mongoose and Path (a module containing utilities for dealing with file paths).</p>
-<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> application_root = __dirname,
-  express = require(<span class="ch">&#39;express&#39;</span>),
-  path = require(<span class="ch">&#39;path&#39;</span>),
-  mongoose = require(<span class="ch">&#39;mongoose&#39;</span>);</code></pre>
-<p>Next, create a new Express server. <code>express()</code> is a simple way of creating an instance of express.HTTPServer, which we’ll be using to pass in our routes.</p>
-<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> app = express();</code></pre>
-<p>After this, connect Mongoose up to a database (in our case, localhost should suffice). Should you require the ability to pass in authentication information, here’s a sample containing all of the supported URL parameters: <code>mongodb://[username:password@]host1[:port1][,host2[:port2],...[,hostN[:portN]]][/[database][?options]]</code></p>
-<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">mongoose</span>.<span class="fu">connect</span>(<span class="ch">&#39;mongodb://localhost/my_database&#39;</span>);</code></pre>
-<p>A Mongoose model for any Todo item can now be easily defined by passing a schema instance to <code>mongoose.model</code>. In our case the schema covers a Todo item’s <code>text</code> content, its <code>done</code> state and <code>order</code> position in the overall Todo list.</p>
-<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> Todo = <span class="kw">mongoose</span>.<span class="fu">model</span>(<span class="ch">&#39;Todo&#39;</span>, <span class="kw">new</span> <span class="kw">mongoose</span>.<span class="fu">Schema</span>({
-  <span class="dt">text</span>: <span class="kw">String</span>,
-  <span class="dt">done</span>: <span class="kw">Boolean</span>,
-  <span class="dt">order</span>: <span class="fu">Number</span>
-}));</code></pre>
-<p>The <code>configure()</code> methods allows us to setup what we need for the current environment with our Express server. Note that lower down in the configuration are two view/view related lines. The last one explicitly sets the viewing/templating engine to be used as Jade <code>app.set('view engine', 'jade')</code>. We can avoid these if we wish to use plain HTML/JS for our templates instead.</p>
-<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">app</span>.<span class="fu">configure</span>(<span class="kw">function</span>(){
-  <span class="co">// the bodyParser middleware parses JSON request bodies</span>
-  <span class="kw">app</span>.<span class="fu">use</span>(<span class="kw">express</span>.<span class="fu">bodyParser</span>());
-  <span class="kw">app</span>.<span class="fu">use</span>(<span class="kw">express</span>.<span class="fu">methodOverride</span>());
-  <span class="kw">app</span>.<span class="fu">use</span>(<span class="kw">app</span>.<span class="fu">router</span>);
-  <span class="kw">app</span>.<span class="fu">use</span>(<span class="kw">express</span>.<span class="fu">static</span>(<span class="kw">path</span>.<span class="fu">join</span>(application_root, <span class="ch">&#39;public&#39;</span>)));
-  <span class="kw">app</span>.<span class="fu">use</span>(<span class="kw">express</span>.<span class="fu">errorHandler</span>({ <span class="dt">dumpExceptions</span>: <span class="kw">true</span>, <span class="dt">showStack</span>: <span class="kw">true</span> }));
-  <span class="kw">app</span>.<span class="fu">set</span>(<span class="ch">&#39;views&#39;</span>, <span class="kw">path</span>.<span class="fu">join</span>(application_root, <span class="ch">&#39;views&#39;</span>));
-  <span class="kw">app</span>.<span class="fu">set</span>(<span class="ch">&#39;view engine&#39;</span>, <span class="ch">&#39;jade&#39;</span>)
-});</code></pre>
-<p>Should you prefer to switch out Jade for an alternative view engine, this can be done fairly trivially. See the section under <q>Templating</q> here: https://github.com/joyent/node/wiki/modules. For example, to switch to EJS, you would simply write <code>app.set('view engine', 'ejs')</code></p>
-<p>Express makes use of common HTTP verbs (get, put, post etc.) to provide easy to use, expressive routing API based on CRUD (Create, Read, Update and Delete). Below for example, we can define what happens when the browser requests the root <q>/</q>. As a trivial route in this application, it doesn’t do anything particularly exciting, however getters typically read or retrieve data.</p>
-<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">app</span>.<span class="fu">get</span>(<span class="ch">&#39;/&#39;</span>, <span class="kw">function</span>(req, res){
-  <span class="kw">res</span>.<span class="fu">send</span>(<span class="ch">&#39;Hello World&#39;</span>);
-});</code></pre>
-<p>Onto something a little more useful and in our next route, navigating to <q>/todo</q> will actually render our Jade view <q>todo.jade</q>, as seen in the callback. Additional configuration values can be passed as the second parameter, such as the custom title specified below.</p>
-<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">app</span>.<span class="fu">get</span>(<span class="ch">&#39;/todo&#39;</span>, <span class="kw">function</span>(req, res){
-  <span class="kw">res</span>.<span class="fu">render</span>(<span class="ch">&#39;todo&#39;</span>, {<span class="dt">title</span>: <span class="ch">&#39;Our sample application&#39;</span>});
-});</code></pre>
-<p>Next, we can see the first of our <q>/api/</q> routes.</p>
-<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">app</span>.<span class="fu">get</span>(<span class="ch">&#39;/api/todos&#39;</span>, <span class="kw">function</span>(req, res){
-  <span class="kw">return</span> <span class="kw">Todo</span>.<span class="fu">find</span>(<span class="kw">function</span>(err, todos) {
-    <span class="kw">return</span> <span class="kw">res</span>.<span class="fu">send</span>(todos);
-  });
-});</code></pre>
-<p>The callback to our next route supports querying for todos based on a specific ID. The route string itself (once compiled) will be converted from <q>/api/todos/:id</q> to a regular expression. As you might have guessed, this is a hint that routes can also be regular expression literals if we wished to do something more complex.</p>
-<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">app</span>.<span class="fu">get</span>(<span class="ch">&#39;/api/todos/:id&#39;</span>, <span class="kw">function</span>(req, res){
-  <span class="kw">return</span> <span class="kw">Todo</span>.<span class="fu">findById</span>(<span class="kw">req.params</span>.<span class="fu">id</span>, <span class="kw">function</span>(err, todo) {
-    <span class="kw">if</span> (!err) {
-      <span class="kw">return</span> <span class="kw">res</span>.<span class="fu">send</span>(todo);
-    }
-  });
-});</code></pre>
-<p>Similarly, we want to support updating todos based on a specific ID as well. The following allows us to query a todo by ID and then update the values of its three attributes (text, done, order) easily.</p>
-<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">app</span>.<span class="fu">put</span>(<span class="ch">&#39;/api/todos/:id&#39;</span>, <span class="kw">function</span>(req, res){
-  <span class="kw">return</span> <span class="kw">Todo</span>.<span class="fu">findById</span>(<span class="kw">req.params</span>.<span class="fu">id</span>, <span class="kw">function</span>(err, todo) {
-    <span class="kw">todo</span>.<span class="fu">text</span> = <span class="kw">req.body</span>.<span class="fu">text</span>;
-    <span class="kw">todo</span>.<span class="fu">done</span> = <span class="kw">req.body</span>.<span class="fu">done</span>;
-    <span class="kw">todo</span>.<span class="fu">order</span> = <span class="kw">req.body</span>.<span class="fu">order</span>;
-    <span class="kw">return</span> <span class="kw">todo</span>.<span class="fu">save</span>(<span class="kw">function</span>(err) {
-      <span class="kw">if</span> (!err) {
-        <span class="kw">console</span>.<span class="fu">log</span>(<span class="ch">&#39;updated&#39;</span>);
-      }
-      <span class="kw">return</span> <span class="kw">res</span>.<span class="fu">send</span>(todo);
-    });
-  });
-});</code></pre>
-<p>We’ve so far covered requesting todos and updating them, but a core part of the application requires us to insert (or add) new todos to our data-store. Below we can create new <code>Todo</code> models and simply save them.</p>
-<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">app</span>.<span class="fu">post</span>(<span class="ch">&#39;/api/todos&#39;</span>, <span class="kw">function</span>(req, res){
-  <span class="kw">var</span> todo;
-  todo = <span class="kw">new</span> Todo({
-    <span class="dt">text</span>: <span class="kw">req.body</span>.<span class="fu">text</span>,
-    <span class="dt">done</span>: <span class="kw">req.body</span>.<span class="fu">done</span>,
-    <span class="dt">order</span>: <span class="kw">req.body</span>.<span class="fu">order</span>
-  });
-  <span class="kw">todo</span>.<span class="fu">save</span>(<span class="kw">function</span>(err) {
-    <span class="kw">if</span> (!err) {
-      <span class="kw">return</span> <span class="kw">console</span>.<span class="fu">log</span>(<span class="ch">&#39;created&#39;</span>);
-    }
-  });
-  <span class="kw">return</span> <span class="kw">res</span>.<span class="fu">send</span>(todo);
-});</code></pre>
-<p>We of course also want to support deleting todos (e.g if a todo has been <q>cleared</q>, it should be deleted). This also works based on a specific todo ID.</p>
-<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">app</span>.<span class="fu">delete</span>(<span class="ch">&#39;/api/todos/:id&#39;</span>, <span class="kw">function</span>(req, res){
-  <span class="kw">return</span> <span class="kw">Todo</span>.<span class="fu">findById</span>(<span class="kw">req.params</span>.<span class="fu">id</span>, <span class="kw">function</span>(err, todo) {
-    <span class="kw">return</span> <span class="kw">todo</span>.<span class="fu">remove</span>(<span class="kw">function</span>(err) {
-      <span class="kw">if</span> (!err) {
-        <span class="kw">console</span>.<span class="fu">log</span>(<span class="ch">&#39;removed&#39;</span>);
-        <span class="kw">return</span> <span class="kw">res</span>.<span class="fu">send</span>(<span class="ch">&#39;&#39;</span>)
-      }
-    });
-  });
-});</code></pre>
-<p>Finally, this last line is to ensure we’re only listening on the port app.js is running.</p>
-<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">app</span>.<span class="fu">listen</span>(<span class="dv">3000</span>);</code></pre>
-<p><strong>script.js - updating our Backbone.js app</strong></p>
-<p>In the <code>/public/js</code> folder of options 1 (HTML templates) and 2 (Jade) for the practical, you’ll find a version of the Backbone Todo app originally by Jerome Gravel-Niquet. Let’s pay attention to <a href="https://github.com/addyosmani/backbone-boilerplates/blob/master/option2/public/js/script.js">script.js</a>. In order to change the application to work with our new back-end, we’ll need to make some very minor changes to this.</p>
-<p>Reviewing <code>window.TodoList</code> (a Backbone Collection), you’ll notice that it has a property called <code>localStorage</code>, which uses the Backbone <a href="https://github.com/jeromegn/Backbone.localStorage">localStorage</a> adapter in order to facilitate storing data using the browser’s localStorage features.</p>
-<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">window</span>.<span class="fu">TodoList</span> = <span class="kw">Backbone.Collection</span>.<span class="fu">extend</span>({
-
-    <span class="co">// Reference to this collection&#39;s model.</span>
-    <span class="dt">model</span>: Todo,
-
-    <span class="co">// Save all of the todo items under the `todos` namespace.</span>
-    <span class="co">// Typically, this should be a unique name within your application</span>
-    <span class="dt">localStorage</span>: <span class="kw">new</span> Store(<span class="ch">&#39;todos&#39;</span>),</code></pre>
-<p>In order to switch it over to our RESTful backend, we’re going to make use of the <code>url</code> property or function on a collection to reference its location on the server. Models inside of a collection then use <code>url</code> to construct URLs of their own. As all of the CRUD for our RESTful API works on the base route <q>/api/todos</q>, this is the value we set <code>url</code> to.</p>
-<pre class="sourceCode javascript"><code class="sourceCode javascript">    <span class="co">// localStorage: new Store(&#39;todos&#39;),</span>
-    <span class="dt">url</span>: <span class="ch">&#39;/api/todos&#39;</span>,</code></pre>
-<p>This is the only change necessary to our existing Backbone application in order to get things working. Pretty easy, right?</p>
-<p><strong>todo.jade</strong></p>
-<p>The Jade templates for our application cover declarative markup for both the index (layout.jade) of the application and the main Todo container (todo.jade). It also covers the script-tag templates used for rendering each new Todo item that’s added.</p>
-<pre class="sourceCode html"><code class="sourceCode html">// Todo App Interface
-
-#todoapp
-  .title
-    h1 Todos
-  .content
-    #create-todo
-      input#new-todo(placeholder=&quot;What needs to be done?&quot;, type=&quot;text&quot;)
-      span.ui-tooltip-top(style=&quot;display:none;&quot;) Press Enter to save this task
-    #todos
-      ul#todo-list
-    #todo-stats
-
-
-// Templates
-script#item-template(type=&quot;text/template&quot;)
-  <span class="kw">&lt;div</span><span class="ot"> class=</span><span class="st">&quot;todo </span><span class="er">&lt;</span><span class="st">%= done ? &#39;done&#39; : &#39;&#39; %&gt;&quot;</span><span class="kw">&gt;</span>
-  .display
-    <span class="kw">&lt;input</span><span class="ot"> class=</span><span class="st">&quot;check&quot;</span><span class="ot"> type=</span><span class="st">&quot;checkbox&quot;</span> <span class="er">&lt;%</span><span class="ot">=</span> <span class="st">done</span> <span class="st">?</span> <span class="er">&#39;checked</span><span class="ot">=</span><span class="st">&quot;checked&quot;</span><span class="er">&#39;</span><span class="ot"> :</span> <span class="er">&#39;&#39;</span> <span class="er">%</span><span class="kw">&gt;</span> /&gt;
-    .todo-text
-    span#todo-destroy
-  .edit
-    input.todo-input(type=&quot;text&quot;, &quot;value&quot;=&quot;&quot;)
-  <span class="kw">&lt;/div&gt;</span>
-
-script#stats-template(type=&quot;text/template&quot;)
-  <span class="er">&lt;</span>% if (total) { %&gt;
-  span.todo-count
-    span.number <span class="er">&lt;</span>%= remaining %&gt;
-    span.word <span class="er">&lt;</span>%= remaining == 1 ? &#39;item&#39; : &#39;items&#39; %&gt;
-    |  left.
-  <span class="er">&lt;</span>% } %&gt;
-  <span class="er">&lt;</span>% if (done) { %&gt;
-  span.todo-clear
-    a(href=&quot;#&quot;)
-      |  Clear
-      span.number-done <span class="er">&lt;</span>%= done %&gt;
-      |  completed
-      span.word-done <span class="er">&lt;</span>%= done == 1 ? &#39;item&#39; : &#39;items&#39; %&gt;
-  <span class="er">&lt;</span>% } %&gt;</code></pre>
-<p><strong>layout.jade</strong></p>
-<pre class="sourceCode html"><code class="sourceCode html">head
-  meta(charset=&quot;utf-8&quot;)
-  meta(http-equiv=&quot;X-UA-Compatible&quot;, content=&quot;IE=edge,chrome=1&quot;)
-
-  title=title
-  meta(name=&quot;description&quot;, content=&quot;&quot;)
-  meta(name=&quot;author&quot;, content=&quot;&quot;)
-  meta(name=&quot;viewport&quot;, content=&quot;width=device-width,initial-scale=1&quot;)
-
-  // CSS concatenated and minified via ant build script
-  link(rel=&quot;stylesheet&quot;, href=&quot;css/style.css&quot;)
-  // end CSS
-
-  script(src=&quot;js/libs/modernizr-2.0.6.min.js&quot;)
-body
-
-  #container
-    header
-    #main(role=&quot;main&quot;)!=body
-    footer
-  //! end of #container
-
-  script(src=&quot;//ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js&quot;)
-  script
-    window.jQuery || document.write(&#39;<span class="kw">&lt;script</span><span class="ot"> src=</span><span class="st">&quot;js/libs/jquery-1.6.2.min.js&quot;</span><span class="kw">&gt;</span>&lt;\\/script&gt;<span class="ch">&#39;</span>)
-
-  // <span class="ch">scripts</span> <span class="ch">concatenated</span> <span class="ch">and</span> <span class="ch">minified</span> <span class="ch">via</span> <span class="ch">ant</span> <span class="ch">build</span> <span class="ch">script</span>
-  script(src=<span class="st">&quot;js</span>/<span class="st">mylibs</span>/<span class="st">underscore</span>.<span class="st">js&quot;</span>)
-  script(src=<span class="st">&quot;js</span>/<span class="st">mylibs</span>/<span class="st">backbone</span>.<span class="st">js&quot;</span>)
-  script(defer, src=<span class="st">&quot;js</span>/<span class="st">plugins</span>.<span class="st">js&quot;</span>)
-  script(defer, src=<span class="st">&quot;js</span>/<span class="st">script</span>.<span class="st">js&quot;</span>)
-  <span class="co">// end scripts</span>
-
-  <span class="co">// Change UA</span>-<span class="co">XXXXX</span>-<span class="co">X to be your site</span>&#39;<span class="co">s ID</span>
-  script
-    <span class="kw">window</span>._<span class="fu">gaq</span> = [[<span class="ch">&#39;</span>_<span class="ch">setAccount&#39;</span>,<span class="ch">&#39;UAXXXXXXXX1&#39;</span>],[<span class="ch">&#39;</span>_<span class="ch">trackPageview&#39;</span>],[<span class="ch">&#39;</span>_<span class="ch">trackPageLoadTime&#39;</span>]];
-    <span class="kw">Modernizr</span>.<span class="fu">load</span>({<span class="dt">load</span>: (<span class="ch">&#39;https</span>:<span class="ch">&#39;</span> == <span class="kw">location</span>.<span class="fu">protocol</span> ? <span class="ch">&#39;</span>//<span class="ch">ssl&#39;</span> : <span class="ch">&#39;</span>//<span class="ch">www&#39;</span>) + <span class="ch">&#39;</span>.<span class="ch">google</span>-<span class="ch">analytics</span>.<span class="ch">com</span>/<span class="ch">ga</span>.<span class="ch">js&#39;</span>});
-
-  <span class="co">//if lt IE </span>7
-<span class="co">    script</span>(<span class="co">src</span>=&quot;//<span class="co">ajax</span>.<span class="co">googleapis</span>.<span class="co">com</span>/<span class="co">ajax</span>/<span class="co">libs</span>/<span class="co">chrome</span>-<span class="co">frame</span>/1.0.3/<span class="co">CFInstall</span>.<span class="co">min</span>.<span class="co">js</span>&quot;)
-<span class="co">    script</span>
-      <span class="kw">window</span>.<span class="fu">attachEvent</span>(<span class="ch">&#39;onload&#39;</span>,<span class="kw">function</span>(){<span class="kw">CFInstall</span>.<span class="fu">check</span>({<span class="dt">mode</span>:<span class="ch">&#39;overlay&#39;</span>})})
-&lt;/html&gt;</code></pre>
-<p><strong>static.html</strong></p>
-<p>Alternatively, a static version of our index which doesn’t rely on Jade can be put together as follows. See <a href="https://github.com/addyosmani/backbone-boilerplates/blob/master/option1/public/static.html">here</a> for the complete file or below for a sample.</p>
-<pre class="sourceCode html"><code class="sourceCode html"><span class="kw">&lt;div</span><span class="ot"> id=</span><span class="st">&quot;container&quot;</span><span class="kw">&gt;</span>
-    <span class="kw">&lt;div</span><span class="ot"> id=</span><span class="st">&quot;main&quot;</span><span class="ot"> role=</span><span class="st">&quot;main&quot;</span><span class="kw">&gt;</span>
-
-      <span class="co">&lt;!-- Todo App Interface--&gt;</span>
-
-      <span class="kw">&lt;div</span><span class="ot"> id=</span><span class="st">&quot;todoapp&quot;</span><span class="kw">&gt;</span>
-        <span class="kw">&lt;div</span><span class="ot"> class=</span><span class="st">&quot;title&quot;</span><span class="kw">&gt;</span>
-          <span class="kw">&lt;h1&gt;</span>Todos<span class="kw">&lt;/h1&gt;</span>
-        <span class="kw">&lt;/div&gt;</span>
-
-        <span class="kw">&lt;div</span><span class="ot"> class=</span><span class="st">&quot;content&quot;</span><span class="kw">&gt;</span>
-          <span class="kw">&lt;div</span><span class="ot"> id=</span><span class="st">&quot;create-todo&quot;</span><span class="kw">&gt;</span>
-            <span class="kw">&lt;input</span><span class="ot"> id=</span><span class="st">&quot;new-todo&quot;</span><span class="ot"> placeholder=</span><span class="st">&quot;What needs to be done?&quot;</span><span class="ot"> type=</span>
-            <span class="st">&quot;text&quot;</span> <span class="kw">/&gt;&lt;span</span><span class="ot"> style=</span><span class="st">&quot;display:none;&quot;</span><span class="ot"> class=</span><span class="st">&quot;ui-tooltip-top&quot;</span><span class="kw">&gt;</span>Press Enter to
-            save this task<span class="kw">&lt;/span&gt;</span>
-          <span class="kw">&lt;/div&gt;</span>
-
-          <span class="kw">&lt;div</span><span class="ot"> id=</span><span class="st">&quot;todos&quot;</span><span class="kw">&gt;</span>
-            <span class="kw">&lt;ul</span><span class="ot"> id=</span><span class="st">&quot;todo-list&quot;</span><span class="kw">&gt;&lt;/ul&gt;</span>
-          <span class="kw">&lt;/div&gt;</span>
-
-          <span class="kw">&lt;div</span><span class="ot"> id=</span><span class="st">&quot;todo-stats&quot;</span><span class="kw">&gt;&lt;/div&gt;</span>
-        <span class="kw">&lt;/div&gt;</span>
-      <span class="kw">&lt;/div&gt;</span>
-
-
-    <span class="co">&lt;!-- Templates--&gt;</span>
-
-      <span class="kw">&lt;script</span><span class="ot"> id=</span><span class="st">&quot;item-template&quot;</span><span class="ot"> type=</span><span class="st">&quot;text/template&quot;</span><span class="kw">&gt;</span>
-      &lt;div class=<span class="st">&quot;todo</span> &lt;%= <span class="st">done</span> ? &#39;<span class="st">done</span>&#39; : &#39;&#39; %&gt;<span class="st">&quot;</span>&gt;
-      &lt;div class=<span class="st">&quot;display&quot;</span>&gt;&lt;input class=<span class="st">&quot;check&quot;</span> type=<span class="st">&quot;checkbox&quot;</span> &lt;%= done ? <span class="ch">&#39;checked</span>=&quot;<span class="ch">checked</span>&quot;<span class="ch">&#39;</span> : <span class="ch">&#39;&#39;</span> %&gt; /&gt;
-      &lt;div class=<span class="st">&quot;todo</span>-<span class="st">text&quot;</span>&gt;&lt;/div&gt;&lt;span id=<span class="st">&quot;todo</span>-<span class="st">destroy&quot;</span>&gt;&lt;/span&gt;&lt;/div&gt;&lt;div class=<span class="st">&quot;edit&quot;</span>&gt;&lt;input type=<span class="st">&quot;text&quot;</span> value=<span class="st">&quot;&quot;</span> class=<span class="st">&quot;todo</span>-<span class="st">input&quot;</span>/&gt;&lt;/div&gt;&lt;/div&gt;
-      <span class="kw">&lt;/script&gt;</span>
-
-      <span class="kw">&lt;script</span><span class="ot"> id=</span><span class="st">&quot;stats-template&quot;</span><span class="ot"> type=</span><span class="st">&quot;text/template&quot;</span><span class="kw">&gt;</span>
-      &lt;% <span class="kw">if</span> (total) { %&gt;
-      &lt;span class=<span class="st">&quot;todo</span>-<span class="st">count&quot;</span>&gt;&lt;span class=<span class="st">&quot;number&quot;</span>&gt;&lt;%= remaining %&gt; &lt;/span&gt;&lt;span class=<span class="st">&quot;word&quot;</span>&gt;&lt;%= remaining == <span class="dv">1</span> ? <span class="ch">&#39;item&#39;</span> : <span class="ch">&#39;items&#39;</span> %&gt;&lt;/span&gt; <span class="kw">left</span>.
-      &lt;/span&gt;&lt;% } %&gt;
-      &lt;% <span class="kw">if</span> (done) { %&gt;
-      &lt;span class=<span class="st">&quot;todo</span>-<span class="st">clear&quot;</span>&gt;&lt;a href=<span class="st">&quot;</span>#<span class="st">&quot;</span>&gt; Clear
-      &lt;span class=<span class="st">&quot;number</span>-<span class="st">done&quot;</span>&gt;&lt;%= done %&gt;&lt;/span&gt; completed
-      &lt;span class=<span class="st">&quot;word</span>-<span class="st">done&quot;</span>&gt;&lt;%= done == <span class="dv">1</span> ? <span class="ch">&#39;item&#39;</span> : <span class="ch">&#39;items&#39;</span> %&gt;&lt;/span&gt;&lt;/a&gt;&lt;/span&gt;&lt;% } %&gt;
-      <span class="kw">&lt;/script&gt;</span>
-
-    <span class="kw">&lt;/div&gt;</span>
-  <span class="kw">&lt;/div&gt;</span>
-
-  <span class="co">&lt;!--! end of #container--&gt;</span></code></pre>
-<h3 id="practical-setup"><a href="#TOC">Practical Setup</a></h3>
-<p>We’ve now gone through the major points of developing a RESTful backend using Node.js, Express and Mongoose. Next, let’s make sure you can get your environment setup to run the updated Todo app.</p>
-<h4 id="mongodb"><a href="#TOC">MongoDB</a></h4>
-<p>Once you’ve downloaded <a href="http://www.mongodb.org/downloads">MongoDB</a>, you’ll need to complete two steps to get it up and running.</p>
-<p><strong>Data directories</strong></p>
-<p>MongoDB stores data in the bin/data/db folder but won’t actually create this directory for you. Navigate to where you’ve downloaded and extracted MongoDB and run the following from terminal:</p>
-<pre class="sourceCode html"><code class="sourceCode html">sudo mkdir -p /data/db/
-sudo chown `id -u` /data/db</code></pre>
-<p><strong>Running and connecting to your server</strong></p>
-<p>Once this is done, open up two terminal windows.</p>
-<p>In the first, <code>cd</code> to your MongoDB bin directory or type in the complete path to it. You’ll need to start <code>mongod</code>.</p>
-<pre class="sourceCode html"><code class="sourceCode html">$ ./bin/mongod</code></pre>
-<p>Next, in the second terminal, start the <code>mongo</code> shell which will connect up to localhost by default.</p>
-<pre class="sourceCode html"><code class="sourceCode html">$ ./bin/mongo</code></pre>
-<p>That’s it!.</p>
-<h4 id="express-and-mongoose"><a href="#TOC">Express and Mongoose</a></h4>
-<p>Option 1 (HTML) and Option 2 (Jade) of the practical download both come with an install.sh bash script. This allows you to easily install Express, Mongoose, Jade (and optionally MongoDB if you prefer to) through npm (the node package manager).</p>
-<ul>
-<li>Make sure you have Node.js installed. If not, you can grab it <a href="http://nodejs.org/#download">here</a></li>
-<li>Next run <code>$ ./install.sh</code> at the terminal to install the rest of our dependencies. To see the exact contents of the install.sh file, see below:</li>
-</ul>
-<p><strong>install.sh</strong></p>
-<pre class="sourceCode html"><code class="sourceCode html">#!/bin/bash
-npm install express
-npm install mongodb --mongodb:native
-npm install mongoose
-npm install jade</code></pre>
-<ul>
-<li>After you’ve installed all of the dependencies for the stack, we can get to cloning the repo containing our practicals and running them. Start by running the below lines:</li>
-</ul>
-<pre class="sourceCode html"><code class="sourceCode html">git clone git://github.com/addyosmani/backbone-boilerplates.git
-cd option2
-node app.js</code></pre>
-<p>For option1 (without Jade), simply cd into option1 and run <code>node app.js</code> from there.</p>
-<p>Finally, either of the example apps can now be accessed by navigating to:</p>
-<ul>
-<li>Option 1: <code>http://localhost:3000/static.html</code></li>
-<li>Option 2: <code>http://localhost:3000/todo</code></li>
-</ul>
-<p>That’s it! Whilst there’s a lot more than can be done to expand on the concepts covered so far, the base we’re reviewed should be enough to get you up and running with this stack if you wish to use it with Backbone.</p>
-<h1 id="building-backbone.js-apps-with-ruby-sinatra-mongodb-and-haml"><a href="#TOC">Building Backbone.js Apps With Ruby, Sinatra, MongoDB and Haml</a></h1>
-<h2 id="introduction-1"><a href="#TOC">Introduction</a></h2>
-<p>In this chapter we’re going to explore writing Backbone.js applications with a Ruby back-end. To assist with this, we’re going to use <a href="http://www.sinatrarb.com/">Sinatra</a> - a DSL (domain specific language) for rapidly creating web applications in Ruby. Similar to the <a href="https://github.com/addyosmani/backbone-fundamentals/#stack1">section</a> on writing an application with Node.js, our server-side language (Ruby) will be used to power an API whilst Backbone.js will be the client consuming it.</p>
-<h2 id="what-is-sinatra"><a href="#TOC">What Is Sinatra?</a></h2>
-<p>In the past, you’ve likely come across or used <a href="http://rubyonrails.org">Ruby on Rails</a> (RoR) - a popular web application framework for the Ruby programming language that helps organize applications using the MVC pattern. Sinatra is a much smaller, more light-weight alternative to it.</p>
-<p>Whilst a very basic Rails application may require a more strict project structure (such as requiring the use of controllers, views and routing etc.), Sinatra doesn’t require as many of these dependencies, sacrificing the helpers needed to connect to databases, tools to create forms or any of the other utilities Rails comes with out of the box.</p>
-<p>What Sinatra does have is a <strong>minimal</strong> set of features most useful for tying specific URLs and RESTful HTTP actions to blocks of Ruby code and returning this code’s output as a response. Sinatra is particularly useful for getting projects up and running quickly where we don’t have a need for the extra pieces RoR provides.</p>
-<p>For those who are familiar with more Rails, you probably know that it requires a separate routes file to define how an application should be responding to requests. These are then piped into the relevant models and controllers as needed.</p>
-<p>Sinatra takes a more straight-forward approach, providing us with the most simple path to handling routing. By declaring <code>get</code>,<code>post</code>, <code>put</code> or <code>delete</code> actions, we can inform Sinatra to add a new route, which we can then have respond to requests.</p>
-<p>The framework is particularly useful for writing APIs, widgets and small-scale applications that can power the backend of a client-heavy application. As mentioned, we will be using it to power our API.</p>
-<h2 id="getting-started-with-sinatra"><a href="#TOC">Getting Started With Sinatra</a></h2>
-<p>Let’s review how to write and run a very basic Sinatra application. As most programming languages and frameworks typically start with some variation of <q>Hello World</q>, we’ll start with a similar example.</p>
-<p>Note: Before beginning this section, I recommend installing Sinatra on your system. A guide to doing this can be found in the <a href="#preq">prerequisites</a> section lower down in the article.</p>
-<h3 id="routes"><a href="#TOC">Routes</a></h3>
-<p>As mentioned, Sinatra allows us to define new routes using HTTP actions. Semantically, a route follows quite a simple structure:</p>
-<pre class="sourceCode ruby"><code class="sourceCode ruby">&lt;a <span class="dt">HTTP</span> action&gt; &lt;the desired route&gt; <span class="kw">do</span>
-   <span class="co"># some behaviour</span>
-<span class="kw">end</span></code></pre>
-<p>A tiny route that outputs a <q>Hello World</q>-like message when we attempt to <q>get</q> the root could thus be written as follows:</p>
-<pre class="sourceCode ruby"><code class="sourceCode ruby">require <span class="st">&#39;sinatra&#39;</span>
-
-get <span class="st">&#39;/&#39;</span> <span class="kw">do</span>
-   <span class="st">&quot;Hello World! Is it me you&#39;re looking for?&quot;</span>
-<span class="kw">end</span></code></pre>
-<p>To run this snippet, we can can simply save it to a local ’.rb’ file and execute it as follows:</p>
-<pre class="sourceCode ruby"><code class="sourceCode ruby">ruby -rubygems example.rb</code></pre>
-<p>If we now navigated to http://localhost:4567 in our browser we could now see the application running successfully.</p>
-<p>The HTTP verbs we commonly work with when writing RESTful web services are: <code>get</code>, <code>post</code>, <code>delete</code> and <code>put</code>. As we now know, all Sinatra routes are basically HTTP actions (<code>get</code> etc.) that are paired with a URL-matching pattern. We associate a pair of an action and route with code we would like sent back to the browser (executed)if the route is reached. Sinatra doesn’t enforce much in the way of architectural structure, instead relying on simplicity to supporting writing powerful APIs.</p>
-<p>Here’s an example of a skeleton service we could put together supporting four common HTTP actions:</p>
-<pre class="sourceCode ruby"><code class="sourceCode ruby">get <span class="st">&#39;/items&#39;</span> <span class="kw">do</span>
-  <span class="co"># list all items available</span>
-<span class="kw">end</span>
-
-get <span class="st">&#39;/item/:id&#39;</span> <span class="kw">do</span>
-  <span class="co"># get a single item</span>
-<span class="kw">end</span>
-
-post <span class="st">&#39;/item&#39;</span> <span class="kw">do</span>
-  <span class="co"># create a new item</span>
-<span class="kw">end</span>
-
-put <span class="st">&#39;/item/:id&#39;</span> <span class="kw">do</span>
-  <span class="co"># update an existing item</span>
-<span class="kw">end</span>
-
-delete <span class="st">&#39;/item/:id&#39;</span> <span class="kw">do</span>
-  <span class="co"># delete an item</span>
-<span class="kw">end</span></code></pre>
-<p>Sinatra’s routing is both easy for beginners to get started with but is also flexible enough for those wishing to define more complex routes. As you probably noticed in the above example, routes can include named parameters (e.g <code>/item/:id</code>). We can actually access the content of these routes using the <code>params</code> hash as follows:</p>
-<pre class="sourceCode ruby"><code class="sourceCode ruby">get <span class="st">&#39;/item/:id&#39;</span> <span class="kw">do</span>
-  <span class="co"># this matches &quot;GET /item/10&quot; and &quot;GET /item/11&quot;</span>
-  <span class="co"># params[:id] is &quot;10&quot; or &quot;11&quot;</span>
-  <span class="st">&quot;You reached </span><span class="ot">#{</span>params[<span class="st">:id</span>]<span class="ot">}</span><span class="st">&quot;</span>
-<span class="kw">end</span></code></pre>
-<p>Sinatra also supports route matching via splats, wildcards and regular expressions. For more information on this I recommend reading the official <a href="http://www.sinatrarb.com/documentation">docs</a>. Let’s now take a look at handlers.</p>
-<p>Sinatra includes convenient handler methods for tasks such as redirection, halting and passing.</p>
-<h4 id="redirection"><a href="#TOC">Redirection</a></h4>
-<p>A simple route supporting redirection which returns a 302 response can be written as follows:</p>
-<pre class="sourceCode ruby"><code class="sourceCode ruby">get <span class="st">&#39;/items&#39;</span> <span class="kw">do</span>
-      redirect <span class="st">&#39;/items/welcome&#39;</span>
-<span class="kw">end</span></code></pre>
-<p>And if we wish to pass additional parameters such as arguments we can do so like this: redirect <q>http://site.com/</q>, <q>Oops! I think we have a problem!</q></p>
-<h4 id="halting"><a href="#TOC">Halting</a></h4>
-<p>To immediately stop a request (halting) we can use <q>halt</q>. Heres an example of halting a request where we specify the message body:</p>
-<p><code>halt &quot;who goes there!?&quot;</code></p>
-<h4 id="passing"><a href="#TOC">Passing</a></h4>
-<p><q>Passing</q> is the concept of deferring processing of a block to the next matching route. We do this using <code>pass</code>. In the following example if a parameter isnt the username we expect (rick-astley) we simply pass it on:</p>
-<pre class="sourceCode ruby"><code class="sourceCode ruby">get <span class="st">&#39;/members/:username&#39;</span> <span class="kw">do</span>
- pass <span class="kw">unless</span> params[<span class="st">:username</span>] == <span class="st">&#39;rick-astley&#39;</span>
- <span class="st">&#39;Never gonna give you up, never gonna let you down&#39;</span>
-<span class="kw">end</span>
-
-get <span class="st">&#39;/members/*&#39;</span> <span class="kw">do</span>
- <span class="st">&#39;Welcome!&#39;</span>
-<span class="kw">end</span></code></pre>
-<p>There are also handler methods that can assist with sessions (specifically, cookie-based session handling). To use Sinatra’s session handling, first enable it in your application with:</p>
-<pre class="sourceCode ruby"><code class="sourceCode ruby">enable <span class="st">:sessions</span></code></pre>
-<p>You can then use the session handling capabilities as follows:</p>
-<pre class="sourceCode ruby"><code class="sourceCode ruby">get <span class="st">&#39;/items&#39;</span> <span class="kw">do</span>
-  session[<span class="st">&#39;visitCounter&#39;</span>] ||= <span class="dv">0</span>;
-  session[<span class="st">&#39;visitCounter&#39;</span>] += <span class="dv">1</span>;
-  <span class="st">&quot;This page has been accessed </span><span class="ot">#{</span>session[<span class="st">&#39;visitCounter&#39;</span>]<span class="ot">}</span><span class="st"> times&quot;</span>
-<span class="kw">end</span></code></pre>
-<p>Note: By default enable:sessions will store all data in cookies. If this is not desired, you can not call this and instead use some Rack middleware instead. For more on this see <a href="http://www.sinatrarb.com/intro#Using%20Sessions">here</a>.</p>
-<p>This only touches the surface of what can be done using routes and handlers, but is sufficient for us to write the Sinatra-powered API service we require in the practical section of this chapter.</p>
-<h2 id="templating-and-haml"><a href="#TOC">Templating And HAML</a></h2>
-<p>Let’s now discuss templating.Out of the box, we can begin using templates in our Sinatra applications with ERB. ERB is included with Ruby and allows Ruby code to be added to any plain text document for the purpose of generating information or flow control. In the following example using an ERB template, note that views are by default located in the <code>views</code> directory of our application.</p>
-<pre class="sourceCode ruby"><code class="sourceCode ruby">get <span class="st">&#39;/items&#39;</span> <span class="kw">do</span>
-  erb <span class="st">:default</span>
-  <span class="co"># renders views/default.erb</span>
-<span class="kw">end</span></code></pre>
-<p>A useful Sinatra convention worth noting is how layouts are handled. Layouts automatically search for a views/layout template which is rendered before any other views are loaded. With ERB, our views/layout.erb file could look as follows:</p>
-<pre class="sourceCode html"><code class="sourceCode html"><span class="kw">&lt;html&gt;</span>
-  <span class="kw">&lt;head&gt;&lt;/head&gt;</span>
-  <span class="kw">&lt;body&gt;</span>
-    <span class="er">&lt;</span>%= data %&gt;
-  <span class="kw">&lt;/body&gt;</span>
-<span class="kw">&lt;/html&gt;</span></code></pre>
-<p>Haml is a popular alternative to ERB which offers an abstract syntax for writing application templates. It has been said to be:</p>
-<ul>
-<li>Straight-forward to learn</li>
-<li>Very easy to read and use for visually expressing a hierarchy of DOM elements</li>
-<li>Popular with web designers as it builds on top of CSS syntax</li>
-<li>Well documented with a large community backing it</li>
-<li>Almost as fast as ERB</li>
-</ul>
-<p>For the purpose of comparison, below we can see an ERB template compared to its Haml equivalent.</p>
-<h4 id="erb"><a href="#TOC">ERB</a></h4>
-<pre class="sourceCode html"><code class="sourceCode html"><span class="kw">&lt;div</span><span class="ot"> class=</span><span class="st">&quot;todo&quot;</span><span class="ot"> id=</span><span class="st">&quot;content&quot;</span><span class="kw">&gt;</span>
-  <span class="kw">&lt;h2</span><span class="ot"> class=</span><span class="st">&quot;entry_title&quot;</span><span class="kw">&gt;</span><span class="er">&lt;</span>%= h @todo.title %&gt;<span class="kw">&lt;/h2&gt;</span>
-  <span class="kw">&lt;div</span><span class="ot"> class=</span><span class="st">&quot;entry_link&quot;</span><span class="kw">&gt;</span><span class="er">&lt;</span>%= link_to(&#39;link&#39;, @todo.link) %&gt;<span class="kw">&lt;/div&gt;</span>
-<span class="kw">&lt;/div&gt;</span></code></pre>
-<h4 id="haml"><a href="#TOC">Haml</a></h4>
-<pre class="sourceCode html"><code class="sourceCode html">.todo#content
-  %h2.entry_title= @todo.title
-  .entry_link= link_to(&#39;link&#39;, @todo.link)</code></pre>
-<p>One of the first things we notice is that the Haml snippet looks significantly more like CSS than it does traditional markup. It’s much easier to read and we no longer need to be concerned with divs, spans, closing tags or other semantic rules that usually mean more keystrokes. The approach taken to making whitespace a part of the syntax also means it can be much easier to compare changes between multiple documents (especially if you’re doing a diff).</p>
-<p>In the list of Haml features, we briefly mentioned web designers. As developers, we regularly need to communicate and work with designers, but we always have to remember that at the end of the day, they are not programmers. They’re usually more concerned with the look and the feel of an application, but if we want them to write mark-up as a part of the templates or skins they create, Haml is a simpler option that has worked well for teams at a number of companies.</p>
-<pre class="sourceCode ruby"><code class="sourceCode ruby"><span class="ot">%</span>h1 This is some h1 text
-<span class="ot">%</span>h2 This is some h2 text<span class="ot">.</span>
-
-<span class="st">%p Now we have a line containing a single instance variable: @content</span>
-<span class="st">%p= @content</span>
-
-<span class="st">%p Embedding Ruby code in the middle of a line can be done using ==</span><span class="ot">.</span>
-<span class="ot">%</span>p<span class="ot">==</span> <span class="dt">Here</span> is an example: <span class="co">#{@foobar}</span>
-
-<span class="ot">%</span>p We can also add attributes using <span class="ot">{}</span>
-<span class="ot">%</span>p<span class="ot">{</span><span class="st">:style =&gt; &quot;color:green&quot;</span><span class="ot">}</span> <span class="dt">We</span> just made this paragraph green!
-
-<span class="ot">%</span>p You<span class="ot">&#39;</span><span class="st">ll want to apply classes and ids to your DOM, too.</span>
-<span class="st">%p.foo This has the foo class</span>
-<span class="st">%p.bar This has the bar class</span>
-<span class="st">%p#foobar This has the foobar id</span>
-<span class="st">%p.foo#foobar Or you can combine them!</span>
-
-<span class="st">%p Nesting can be done like this</span>
-<span class="st">%p</span>
-<span class="st">  Or even like this</span></code></pre>
-<p>Note: Haml is whitespace sensitive and will not correctly work if it isn’t indented by an even number of spaces. This is due to whitespace being used for nesting in place of the classic HTML markup approach of closing tags.</p>
-<h1 id="mongodb-ruby-driver"><a href="#TOC">MongoDB Ruby Driver</a></h1>
-<h2 id="getting-started-1"><a href="#TOC">Getting started</a></h2>
-<p>Once the MongoDB Ruby driver is installed, we can begin to use it to connect to a Mongo database. To create a connection using localhost, we simply specify the driver as a dependency. Assuming we’re using the default port we can then connect as follows:</p>
-<pre class="sourceCode ruby"><code class="sourceCode ruby">require <span class="st">&#39;mongo&#39;</span>
-
-<span class="co"># where &#39;learning-mongo&#39; is the name of our database:</span>
-db = <span class="dt">Connection</span>.new.db(<span class="st">&#39;learning-mongo&#39;</span>);</code></pre>
-<p>We probably also want to place some data into <q>learning-mongo</q>. It could be as simple as a note, so why don’t we go ahead and begin a notes collection?:</p>
-<p><code>ruby notes = db.collection('notes')</code> Something interesting worth noting is that at this point, we haven’t actually created the database nor the collection we’re referencing above.</p>
-<p>Neither of these items exist in Mongo (just yet) but as we’re working with a new database but they will once we insert some real data.</p>
-<p>A new note could be defined using key/value pairs as follows and then inserted into <q>learning-mongo</q> using <code>collection.insert()</code>:</p>
-<pre class="sourceCode ruby"><code class="sourceCode ruby">our_note = { <span class="st">:text</span> =&gt; <span class="st">&#39;Remember the milk&#39;</span>, <span class="st">:remindInterval</span> =&gt; <span class="st">&#39;weekly&#39;</span>}
-note_id = notes.insert(our_note)</code></pre>
-<p>What is returned from inserting a note into the notes collection is an <code>ObjectId</code> reference for the note from Mongo. This is useful as we can re-use it to locate the same document in our database.</p>
-<pre class="sourceCode ruby"><code class="sourceCode ruby">note = notes.find( <span class="st">:id</span> =&gt; note_id ).first</code></pre>
-<p>This can also be used in conjunction with Mongo’s <code>collection.update()</code> method and <a href="http://www.mongodb.org/display/DOCS/Updating">query</a> operators (i.e <code>$set</code>) to replace fields in an existing document.</p>
-<p>We might update an entire document as follows:</p>
-<pre class="sourceCode ruby"><code class="sourceCode ruby">note = notes.find( <span class="st">:id</span> =&gt; note_id ).first
-note[<span class="st">:text</span>] = <span class="st">&#39;Remember the bread&#39;</span>
-notes.update({ <span class="st">:_id</span> =&gt; note_id }, note)</code></pre>
-<p>or using <code>$set</code>, update an existing document without overwriting the entire object as like this:</p>
-<pre class="sourceCode ruby"><code class="sourceCode ruby">notes.update({ <span class="st">:_id</span> =&gt; note_id }, <span class="st">&#39;$set&#39;</span> =&gt; { <span class="st">:text</span> = &gt; <span class="st">&#39;Remember the bread&#39;</span> })</code></pre>
-<p>Useful to know: Almost each MongoDB document has an _id field as its first attribute. This can normally be of any type, however a special BSON datatype is provided for object ids. It’s a 12-byte binary value that has a high probability of being unique when allocated.</p>
-<p>Note: Whilst we opted for the MongoDB Ruby Driver for this stack, you may also be interested in <strong>DataMapper</strong> - a solution which allows us to use the same API to talk to a number of different datastores. This works well for both relational and non-relational databases and more information is available on the official <a href="http://datamapper.org/why.html">project page</a>. <a href="http://sinatra-book.gittr.com/#datamapper">Sinatra: The Book</a> also contains a brief tutorial on DataMapper for anyone interested in exploring it further.</p>
-<h1 id="practical-1"><a href="#TOC">Practical</a></h1>
-<p>We’re going to use Sinatra in a similar manner to how we used Express in the last chapter. It will power a RESTful API supporting CRUD operations. Together with a MongoDB data store, this will allow us to easily persist data (todo items) whilst ensuring they are stored in a database. If you’ve read the previous chapter or have gone through any of the Todo examples covered so far, you will find this surprisingly straight-forward.</p>
-<p>Remember that the default Todo example included with Backbone.js already persists data, although it does this via a localStorage adapter. Luckily there aren’t a great deal of changes needed to switch over to using our Sinatra-based API. Let’s briefly review the code that will be powering the CRUD operations for this sections practical, as we won’t be starting off with a near-complete base for most of our real world applications.</p>
-<h3 id="installing-the-prerequisites"><a href="#TOC">Installing The Prerequisites</a></h3>
-<h4 id="ruby"><a href="#TOC">Ruby</a></h4>
-<p>If using OSX or Linux, Ruby may be one of a number of open-source packages that come pre-installed and you can skip over to the next paragraph. In case you would like to check if check if you have Ruby installed, open up the terminal prompt and type:</p>
-<p><code>$ ruby -v</code></p>
-<p>The output of this will either be the version of Ruby installed or an error complaining that Ruby wasn’t found.</p>
-<p>Should you need to install Ruby manually (e.g for an operating system such as Windows), you can do so by downloading the latest version from http://www.ruby-lang.org/en/downloads/. Alternatively, <a href="http://beginrescueend.com/rvm/install/">RVM</a> (Ruby Version Manager) is a command-line tool that allows you to easily install and manage multiple ruby environments with ease.</p>
-<h4 id="ruby-gems"><a href="#TOC">Ruby Gems</a></h4>
-<p>Next, we will need to install Ruby Gems. Gems are a standard way to package programs or libraries written in Ruby and with Ruby Gems it’s possible to install additional dependencies for Ruby applications very easily.</p>
-<p>On OSX, Linux or Windows go to <a href="http://rubyforge.org/projects/rubygems">http://rubyforge.org/projects/rubygems</a> and download the latest version of Ruby Gems. Once downloaded, open up a terminal, navigate to the folder where this resides and enter:</p>
-<pre><code>$&gt; tar xzvf rubygems.tgz
-$&gt; cd rubygems
-$&gt; sudo ruby setup.rb</code></pre>
-<p>There will likely be a version number included in your download and you should make sure to include this when tying the above. Finally, a symlink (symbolic link) to tie everything togther should be run as follows:</p>
-<p><code>$ sudo ln -s /usr/bin/gem1.8.17 /usr/bin/gem</code></p>
-<p>To check that Ruby Gems has been correctly installed, type the following into your terminal:</p>
-<pre><code>$ gem -v</code></pre>
-<h4 id="sinatra"><a href="#TOC">Sinatra</a></h4>
-<p>With Ruby Gems setup, we can now easily install Sinatra. For Linux or OSX type this in your terminal:</p>
-<p><code>$ sudo gem install sinatra</code></p>
-<p>and if you’re on Windows, enter the following at a command prompt:</p>
-<p><code>c:\&gt; gem install sinatra</code></p>
-<h4 id="haml-1"><a href="#TOC">Haml</a></h4>
-<p>As with other DSLs and frameworks, Sinatra supports a wide range of different templating engines. <a href="http://www.ruby-doc.org/stdlib/libdoc/erb/rdoc/classes/ERB.html">ERB</a> is the one most often recommended by the Sinatra camp, however as a part of this chapter, we’re going to explore the use of <a href="http://haml.hamptoncatlin.com/">Haml</a> to define our application templates.</p>
-<p>Haml stands for HTML Abstractional Markup Language and is a lightweight markup language abstraction that can be used to describe HTML without the need to use traditional markup language semantics (such as opening and closing tags).</p>
-<p>Installing Haml can be done in just a line using Ruby Gems as follows:</p>
-<p><code>$ gem install haml</code></p>
-<h4 id="mongodb-1"><a href="#TOC">MongoDB</a></h4>
-<p>If you haven’t already downloaded and installed MongoDB from an earlier chapter, please <a href="http://www.mongodb.org/downloads">do so</a> now. With Ruby Gems, Mongo can be installed in just one line:</p>
-<p><code>$ gem install mongodb</code></p>
-<p>We now require two further steps to get everything up and running.</p>
-<h5 id="data-directories"><a href="#TOC">1.Data directories</a></h5>
-<p>MongoDB stores data in the bin/data/db folder but won’t actually create this directory for you. Navigate to where you’ve downloaded and extracted Mongo and run the following from terminal:</p>
-<pre><code>sudo mkdir -p /data/db/
-sudo chown `id -u` /data/db</code></pre>
-<h5 id="running-and-connecting-to-your-server"><a href="#TOC">2.Running and connecting to your server</a></h5>
-<p>Once this is done, open up two terminal windows.</p>
-<p>In the first, cd to your MongoDB bin directory or type in the complete path to it. You’ll need to start mongod.</p>
-<pre><code>$ ./bin/mongod</code></pre>
-<p>Finally, in the second terminal, start the mongo shell which will connect up to localhost by default.</p>
-<pre><code>$ ./bin/mongo</code></pre>
-<h4 id="mongodb-ruby-driver-1"><a href="#TOC">MongoDB Ruby Driver</a></h4>
-<p>As we’ll be using the <a href="https://github.com/mongodb/mongo-ruby-driver">MongoDB Ruby Driver</a>, we’ll also require the following gems:</p>
-<p>The gem for the driver itself:</p>
-<pre><code>$ gem install mongo</code></pre>
-<p>and the driver’s other prerequisite, bson:</p>
-<pre><code>$ gem install bson_ext</code></pre>
-<p>This is basically a collection of extensions used to increase serialization speed.</p>
-<p>That’s it for our prerequisites!.</p>
-<h2 id="tutorial"><a href="#TOC">Tutorial</a></h2>
-<p>To get started, let’s get a local copy of the practical application working on our system.</p>
-<h3 id="application-files"><a href="#TOC">Application Files</a></h3>
-<p>Clone <a href="http://github.com/addyosmani/backbone-fundamentals">this</a> repository and navigate to <code>/practicals/stacks/option3</code>. Now run the following lines at the terminal:</p>
-<pre><code>ruby app.rb</code></pre>
-<p>Finally, navigate to <code>http://localhost:4567/todo</code> to see the application running successfully.</p>
-<p><strong>Note:</strong> The Haml layout files for Option 3 can be found in the /views folder.</p>
-<p>The directory structure for our practical application is as follows:</p>
-<pre><code>--public
-----css
-----img
-----js
------script.js
-----test
---views
-app.rb
-</code></pre>
-<p>The <code>public</code> directory contains the scripts and stylesheets for our application and uses HTML5 Boilerplate as a base. You can find the Models, Views and Collections for this section within <code>public/js/scripts.js</code> (however, this can of course be expanded into sub-directories for each component if desired).</p>
-<p><code>scripts.js</code> contains the following Backbone component definitions:</p>
-<pre><code>--Models
-----Todo
-
---Collections
-----TodoList
-
---Views
----TodoView
----AppView</code></pre>
-<p><code>app.rb</code> is the small Sinatra application that powers our backend API.</p>
-<p>Lastly, the <code>views</code> directory hosts the Haml source files for our application’s index and templates, both of which are compiled to standard HTML markup at runtime.</p>
-<p>These can be viewed along with other note-worthy snippets of code from the application below.</p>
-<h3 id="backbone"><a href="#TOC">Backbone</a></h3>
-<h4 id="views-2"><a href="#TOC">Views</a></h4>
-<p>In our main application view (AppView), we want to load any previously stored Todo items in our Mongo database when the view initializes. This is done below with the line <code>Todos.fetch()</code> in the <code>initialize()</code> method where we also bind to the relevant events on the <code>Todos</code> collection for when items are added or changed.</p>
-<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="co">// Our overall **AppView** is the top-level piece of UI.</span>
-<span class="kw">var</span> AppView = <span class="kw">Backbone.View</span>.<span class="fu">extend</span>({
-
-    <span class="co">// Instead of generating a new element, bind to the existing skeleton of</span>
-    <span class="co">// the App already present in the HTML.</span>
-    <span class="dt">el</span>: $(<span class="ch">&#39;#todoapp&#39;</span>),
-
-    <span class="co">// Our template for the line of statistics at the bottom of the app.</span>
-    <span class="dt">statsTemplate</span>: <span class="kw">_</span>.<span class="fu">template</span>($(<span class="ch">&#39;#stats-template&#39;</span>).<span class="fu">html</span>()),
-
-    <span class="co">// Delegated events for creating new items, and clearing completed ones.</span>
-    <span class="dt">events</span>: {
-      <span class="ch">&#39;keypress #new-todo&#39;</span>:  <span class="ch">&#39;createOnEnter&#39;</span>,
-      <span class="ch">&#39;keyup #new-todo&#39;</span>:     <span class="ch">&#39;showTooltip&#39;</span>,
-      <span class="ch">&#39;click .todo-clear a&#39;</span>: <span class="ch">&#39;clearCompleted&#39;</span>
-    },
-
-    <span class="co">// At initialization</span>
-    <span class="dt">initialize</span>: <span class="kw">function</span>() {
-      <span class="kw">this</span>.<span class="fu">input</span>    = <span class="kw">this</span>.$(<span class="ch">&#39;#new-todo&#39;</span>);
-
-      <span class="kw">Todos</span>.<span class="fu">on</span>(<span class="ch">&#39;add&#39;</span>,   <span class="kw">this</span>.<span class="fu">addOne</span>, <span class="kw">this</span>);
-      <span class="kw">Todos</span>.<span class="fu">on</span>(<span class="ch">&#39;reset&#39;</span>, <span class="kw">this</span>.<span class="fu">addAll</span>, <span class="kw">this</span>);
-      <span class="kw">Todos</span>.<span class="fu">on</span>(<span class="ch">&#39;all&#39;</span>,   <span class="kw">this</span>.<span class="fu">render</span>, <span class="kw">this</span>);
-
-      <span class="kw">Todos</span>.<span class="fu">fetch</span>();
-    },
-
-    <span class="co">// Re-rendering the App just means refreshing the statistics -- the rest</span>
-    <span class="co">// of the app doesn&#39;t change.</span>
-    <span class="dt">render</span>: <span class="kw">function</span>() {
-      <span class="kw">this</span>.$(<span class="ch">&#39;#todo-stats&#39;</span>).<span class="fu">html</span>(<span class="kw">this</span>.<span class="fu">statsTemplate</span>({
-        <span class="dt">total</span>:      <span class="kw">Todos</span>.<span class="fu">length</span>,
-        <span class="dt">done</span>:
- ….</code></pre>
-<h3 id="collections-1"><a href="#TOC">Collections</a></h3>
-<p>In the TodoList collection below, we’ve set the <code>url</code> property to point to <code>/api/todos</code> to reference the collection’s location on the server. When we attempt to access this from our Sinatra-backed API, it should return a list of all the Todo items that have been previously stored in Mongo.</p>
-<p>For the sake of thoroughness, our API will also support returning the data for a specific Todo item via <code>/api/todos/itemID</code>. We’ll take a look at this again when writing the Ruby code powering our backend.</p>
-<pre class="sourceCode javascript"><code class="sourceCode javascript"> <span class="co">// Todo Collection</span>
-
-  <span class="kw">var</span> TodoList = <span class="kw">Backbone.Collection</span>.<span class="fu">extend</span>({
-
-    <span class="co">// Reference to this collection&#39;s model.</span>
-    <span class="dt">model</span>: Todo,
-
-    <span class="co">// Save all of the todo items under the `todos` namespace.</span>
-    <span class="co">// localStorage: new Store(&#39;todos&#39;),</span>
-    <span class="dt">url</span>: <span class="ch">&#39;/api/todos&#39;</span>,
-
-    <span class="co">// Filter down the list of all todo items that are finished.</span>
-    <span class="dt">done</span>: <span class="kw">function</span>() {
-      <span class="kw">return</span> <span class="kw">this</span>.<span class="fu">filter</span>(<span class="kw">function</span>(todo){ <span class="kw">return</span> <span class="kw">todo</span>.<span class="fu">get</span>(<span class="ch">&#39;done&#39;</span>); });
-    },
-
-    <span class="co">// Filter down the list to only todo items that are still not finished.</span>
-    <span class="dt">remaining</span>: <span class="kw">function</span>() {
-      <span class="kw">return</span> <span class="kw">this</span>.<span class="fu">without</span>.<span class="fu">apply</span>(<span class="kw">this</span>, <span class="kw">this</span>.<span class="fu">done</span>());
-    },
-
-    <span class="co">// We keep the Todos in sequential order, despite being saved by unordered</span>
-    <span class="co">// GUID in the database. This generates the next order number for new items.</span>
-    <span class="dt">nextOrder</span>: <span class="kw">function</span>() {
-      <span class="kw">if</span> (!<span class="kw">this</span>.<span class="fu">length</span>) <span class="kw">return</span> <span class="dv">1</span>;
-      <span class="kw">return</span> <span class="kw">this</span>.<span class="fu">last</span>().<span class="fu">get</span>(<span class="ch">&#39;order&#39;</span>) + <span class="dv">1</span>;
-    },
-
-    <span class="co">// Todos are sorted by their original insertion order.</span>
-    <span class="dt">comparator</span>: <span class="kw">function</span>(todo) {
-      <span class="kw">return</span> <span class="kw">todo</span>.<span class="fu">get</span>(<span class="ch">&#39;order&#39;</span>);
-    }
-
-  });</code></pre>
-<h3 id="model"><a href="#TOC">Model</a></h3>
-<p>The model for our Todo application remains largely unchanged from the versions previously covered in this book. It is however worth noting that calling the function <code>model.url()</code> within the below would return the relative URL where a specific Todo item could be located on the server.</p>
-<pre class="sourceCode javascript"><code class="sourceCode javascript">
-  <span class="co">// Our basic **Todo** model has `text`, `order`, and `done` attributes.</span>
-  <span class="kw">var</span> Todo = <span class="kw">Backbone.Model</span>.<span class="fu">extend</span>({
-    <span class="dt">idAttribute</span>: <span class="ch">&#39;_id&#39;</span>,
-
-    <span class="co">// Default attributes for a todo item.</span>
-    <span class="dt">defaults</span>: <span class="kw">function</span>() {
-      <span class="kw">return</span> {
-        <span class="dt">done</span>:  <span class="kw">false</span>,
-        <span class="dt">order</span>: <span class="kw">Todos</span>.<span class="fu">nextOrder</span>()
-      };
-    },
-
-    <span class="co">// Toggle the `done` state of this todo item.</span>
-    <span class="dt">toggle</span>: <span class="kw">function</span>() {
-      <span class="kw">this</span>.<span class="fu">save</span>({<span class="dt">done</span>: !<span class="kw">this</span>.<span class="fu">get</span>(<span class="ch">&#39;done&#39;</span>)});
-    }
-  });</code></pre>
-<h3 id="rubysinatra"><a href="#TOC">Ruby/Sinatra</a></h3>
-<p>Now that we’ve defined our main models, views and collections let’s get the CRUD operations required by our Backbone application supported in our Sinatra API.</p>
-<p>We want to make sure that for any operations changing underlying data (create, update, delete) that our Mongo data store correctly reflects these.</p>
-<h3 id="app.rb"><a href="#TOC">app.rb</a></h3>
-<p>For <code>app.rb</code>, we first define the dependencies required by our application. These include Sinatra, Ruby Gems, the MongoDB Ruby driver and the JSON gem.</p>
-<pre class="sourceCode ruby"><code class="sourceCode ruby">require <span class="st">&#39;rubygems&#39;</span>
-require <span class="st">&#39;sinatra&#39;</span>
-require <span class="st">&#39;mongo&#39;</span>
-require <span class="st">&#39;json&#39;</span></code></pre>
-<p>Next, we create a new connection to Mongo, specifying any custom configuration desired. If running a multi-threaded application, setting the <q>pool_size</q> allows us to specify a maximum pool size and <q>timeout</q> a maximum timeout for waiting for old connections to be released to the pool.</p>
-<pre class="sourceCode ruby"><code class="sourceCode ruby"><span class="dt">DB</span> = <span class="dt">Mongo</span>::<span class="dt">Connection</span>.new.db(<span class="st">&#39;mydb&#39;</span>, <span class="st">:pool_size</span> =&gt; <span class="dv">5</span>, <span class="st">:timeout</span> =&gt; <span class="dv">5</span>)</code></pre>
-<p>Finally we define the routes to be supported by our API. Note that in the first two blocks - one for our application root (<code>/</code>) and the other for our todo items route <code>/todo</code> - we’re using Haml for template rendering.</p>
-<pre class="sourceCode ruby"><code class="sourceCode ruby"><span class="kw">class</span> <span class="dt">TodoApp</span> &lt; <span class="dt">Sinatra</span>::<span class="dt">Base</span>
-
-    get <span class="st">&#39;/&#39;</span> <span class="kw">do</span>
-      haml <span class="st">:index</span>, <span class="st">:attr_wrapper</span> =&gt; <span class="st">&#39;&quot;&#39;</span>, <span class="st">:locals</span> =&gt; {<span class="st">:title</span> =&gt; <span class="st">&#39;hello&#39;</span>}
-    <span class="kw">end</span>
-
-    get <span class="st">&#39;/todo&#39;</span> <span class="kw">do</span>
-      haml <span class="st">:todo</span>, <span class="st">:attr_wrapper</span> =&gt; <span class="st">&#39;&quot;&#39;</span>, <span class="st">:locals</span> =&gt; {<span class="st">:title</span> =&gt; <span class="st">&#39;Our Sinatra Todo app&#39;</span>}
-    <span class="kw">end</span></code></pre>
-<p><code>haml :index</code> instructs Sinatra to use the <code>views/index.haml</code> for the application index, whilst <code>attr_wrapper</code> is simply defining the values to be used for any local variables defined inside the template. This similarly applies Todo items with the template `views/todo.haml’.</p>
-<p>The rest of our routes make use of the <code>params</code> hash and a number of useful helper methods included with the MongoDB Ruby driver. For more details on these, please read the comments I’ve made inline below:</p>
-<pre class="sourceCode ruby"><code class="sourceCode ruby">get <span class="st">&#39;/api/:thing&#39;</span> <span class="kw">do</span>
-  <span class="co"># query a collection :thing, convert the output to an array, map the _id</span>
-  <span class="co"># to a string representation of the object&#39;s _id and finally output to JSON</span>
-  <span class="dt">DB</span>.collection(params[<span class="st">:thing</span>]).find.to_a.map{|t| from_bson_id(t)}.to_json
-<span class="kw">end</span>
-
-get <span class="st">&#39;/api/:thing/:id&#39;</span> <span class="kw">do</span>
-  <span class="co"># get the first document with the id :id in the collection :thing as a single document (rather</span>
-  <span class="co"># than a Cursor, the standard output) using find_one(). Our bson utilities assist with</span>
-  <span class="co"># ID conversion and the final output returned is also JSON</span>
-  from_bson_id(<span class="dt">DB</span>.collection(params[<span class="st">:thing</span>]).find_one(to_bson_id(params[<span class="st">:id</span>]))).to_json
-<span class="kw">end</span>
-
-post <span class="st">&#39;/api/:thing&#39;</span> <span class="kw">do</span>
-  <span class="co"># parse the post body of the content being posted, convert to a string, insert into</span>
-  <span class="co"># the collection #thing and return the ObjectId as a string for reference</span>
-  oid = <span class="dt">DB</span>.collection(params[<span class="st">:thing</span>]).insert(<span class="dt">JSON</span>.parse(request.body.read.to_s))
-  <span class="st">&quot;{\&quot;_id\&quot;: \&quot;</span><span class="ot">#{</span>oid.to_s<span class="ot">}</span><span class="st">\&quot;}&quot;</span>
-<span class="kw">end</span>
-
-delete <span class="st">&#39;/api/:thing/:id&#39;</span> <span class="kw">do</span>
-  <span class="co"># remove the item with id :id from the collection :thing, based on the bson</span>
-  <span class="co"># representation of the object id</span>
-  <span class="dt">DB</span>.collection(params[<span class="st">:thing</span>]).remove(<span class="st">&#39;_id&#39;</span> =&gt; to_bson_id(params[<span class="st">:id</span>]))
-<span class="kw">end</span>
-
-put <span class="st">&#39;/api/:thing/:id&#39;</span> <span class="kw">do</span>
-  <span class="co"># collection.update() when used with $set (as covered earlier) allows us to set single values</span>
-  <span class="co"># in this case, the put request body is converted to a string, rejecting keys with the name &#39;_id&#39; for security purposes</span>
-  <span class="dt">DB</span>.collection(params[<span class="st">:thing</span>]).update({<span class="st">&#39;_id&#39;</span> =&gt; to_bson_id(params[<span class="st">:id</span>])}, {<span class="st">&#39;$set&#39;</span> =&gt; <span class="dt">JSON</span>.parse(request.body.read.to_s).reject{|k,v| k == <span class="st">&#39;_id&#39;</span>}})
-<span class="kw">end</span>
-
-<span class="co"># utilities for generating/converting MongoDB ObjectIds</span>
-<span class="kw">def</span> to_bson_id(id) <span class="dt">BSON</span>::<span class="dt">ObjectId</span>.from_string(id) <span class="kw">end</span>
-<span class="kw">def</span> from_bson_id(obj) obj.merge({<span class="st">&#39;_id&#39;</span> =&gt; obj[<span class="st">&#39;_id&#39;</span>].to_s}) <span class="kw">end</span>
-
-<span class="kw">end</span></code></pre>
-<p>That’s it. The above is extremely lean for an entire API, but does allow us to read and write data to support the functionality required by our client-side application.</p>
-<p>For more on what MongoDB and the MongoDB Ruby driver are capable of, please do feel free to read their documentation for more information.</p>
-<p>If you’re a developer wishing to take this example further, why not try to add some additional capabilities to the service:</p>
-<ul>
-<li>Validation: improved validation of data in the API. What more could be done to ensure data sanitization?</li>
-<li>Search: search or filter down Todo items based on a set of keywords or within a certain date range</li>
-<li>Pagination: only return the Nth number of Todo items or items from a start and end-point</li>
-</ul>
-<h3 id="hamltemplates"><a href="#TOC">Haml/Templates</a></h3>
-<p>Finally, we move on to the Haml files that define our application index (layout.haml) and the template for a specific Todo item (todo.haml). Both of these are largely self-explanatory, but it’s useful to see the differences between the Jade approach we reviewed in the last chapter vs. using Haml for this implementation.</p>
-<p>Note: In our Haml snippets below, the forward slash character is used to indicate a comment. When this character is placed at the beginning of a line, it wraps all of the text after it into a HTML comment. e.g</p>
-<p><code>/ These are templates</code></p>
-<p>compiles to:</p>
-<p><code>&lt;!-- These are templates --&gt;</code></p>
-<h3 id="index.haml"><a href="#TOC">index.haml</a></h3>
-<pre class="sourceCode html"><code class="sourceCode html">%head
-  %meta{&#39;charset&#39; =&gt; &#39;utf-8&#39;}/
-  %title=title
-  %meta{&#39;name&#39; =&gt; &#39;description&#39;, &#39;content&#39; =&gt; &#39;&#39;}/
-  %meta{&#39;name&#39; =&gt; &#39;author&#39;, &#39;content&#39; =&gt; &#39;&#39;}/
-  %meta{&#39;name&#39; =&gt; &#39;viewport&#39;, &#39;content&#39; =&gt; &#39;width=device-width,initial-scale=1&#39;}/
-
-  / CSS concatenated and minified via ant build script
-  %link{&#39;rel&#39; =&gt; &#39;stylesheet&#39;, &#39;href&#39; =&gt; &#39;css/style.css&#39;}/
-  / end CSS
-
-  %script{&#39;src&#39; =&gt; &#39;js/libs/modernizr.min.js&#39;}
-%body
-  %div#container
-    %header
-    %div#main
-      = yield
-    %footer
-  /! end of #container
-
-  %script{&#39;src&#39; =&gt; &#39;http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js&#39;}
-
-  / scripts concatenated and minified via ant build script
-  %script{&#39;src&#39; =&gt; &#39;js/mylibs/underscore.js&#39;}
-  %script{&#39;src&#39; =&gt; &#39;js/mylibs/backbone.js&#39;}
-  %script{&#39;defer&#39; =&gt; true, &#39;src&#39; =&gt; &#39;js/plugins.js&#39;}
-  %script{&#39;defer&#39; =&gt; true, &#39;src&#39; =&gt; &#39;js/script.js&#39;}
-  / end scripts</code></pre>
-<h3 id="todo.haml"><a href="#TOC">todo.haml</a></h3>
-<pre class="sourceCode html"><code class="sourceCode html">%div#todoapp
-  %div.title
-    %h1
-      Todos
-      %div.content
-        %div#create-todo
-          %input#new-todo{&quot;placeholder&quot; =&gt; &quot;What needs to be done?&quot;, &quot;type&quot; =&gt; &quot;text&quot;}/
-          %span.ui-tooltip-top{&quot;style&quot; =&gt; &quot;display:none;&quot;} Press Enter to save this task
-        %div#todos
-          %ul#todo-list
-        %div#todo-stats
-
-/ Templates
-
-%script#item-template{&quot;type&quot; =&gt; &quot;text/template&quot;}
-  <span class="kw">&lt;div</span><span class="ot"> class=</span><span class="st">&quot;todo </span><span class="er">&lt;</span><span class="st">%= done ? &#39;done&#39; : &#39;&#39; %&gt;&quot;</span><span class="kw">&gt;</span>
-  %div.display
-    <span class="kw">&lt;input</span><span class="ot"> class=</span><span class="st">&quot;check&quot;</span><span class="ot"> type=</span><span class="st">&quot;checkbox&quot;</span> <span class="er">&lt;%</span><span class="ot">=</span> <span class="st">done</span> <span class="st">?</span> <span class="er">&#39;checked</span><span class="ot">=</span><span class="st">&quot;checked&quot;</span><span class="er">&#39;</span><span class="ot"> :</span> <span class="er">&#39;&#39;</span> <span class="er">%</span><span class="kw">&gt;</span> /&gt;
-    %div.todo-text
-    %span#todo-destroy
-  %div.edit
-    %input.todo-input{&quot;type&quot; =&gt; &quot;text&quot;, &quot;value&quot; =&gt;&quot;&quot;}/
-  <span class="kw">&lt;/div&gt;</span>
-
-%script#stats-template{&quot;type&quot; =&gt; &quot;text/template&quot;}
-  <span class="er">&lt;</span>% if (total) { %&gt;
-  %span.todo-count
-    %span.number <span class="er">&lt;</span>%= remaining %&gt;
-    %span.word <span class="er">&lt;</span>%= remaining == 1 ? &#39;item&#39; : &#39;items&#39; %&gt;
-    left.
-  <span class="er">&lt;</span>% } %&gt;
-  <span class="er">&lt;</span>% if (done) { %&gt;
-  %span.todo-clear
-    %a{&quot;href&quot; =&gt; &quot;#&quot;}
-      Clear
-      %span.number-done <span class="er">&lt;</span>%= done %&gt;
-      completed
-      %span.word-done <span class="er">&lt;</span>%= done == 1 ? &#39;item&#39; : &#39;items&#39; %&gt;
-  <span class="er">&lt;</span>% } %&gt;</code></pre>
-<h2 id="conclusions-2"><a href="#TOC">Conclusions</a></h2>
-<p>In this chapter, we looked at creating a Backbone application backed by an API powered by Ruby, Sinatra, Haml, MongoDB and the MongoDB driver. I personally found developing APIs with Sinatra a relatively painless experience and one which I felt was on-par with the effort required for the Node/Express implementation of the same application.</p>
-<p>This section is by no means the most comprehensive guide on building complex apps using all of the items in this particular stack. I do however hope it was an introduction sufficient enough to help you decide on what stack to try out for your next project.</p>
 <h1 id="modular-development"><a href="#TOC">Modular Development</a></h1>
-<h2 id="introduction-2"><a href="#TOC">Introduction</a></h2>
+<h2 id="introduction-1"><a href="#TOC">Introduction</a></h2>
 <p>When we say an application is modular, we generally mean it’s composed of a set of highly decoupled, distinct pieces of functionality stored in modules. As you probably know, loose coupling facilitates easier maintainability of apps by removing dependencies where possible. When this is implemented efficiently, its quite easy to see how changes to one part of a system may affect another.</p>
 <p>Unlike some more traditional programming languages however, the current iteration of JavaScript (ECMA-262) doesn’t provide developers with the means to import such modules of code in a clean, organized manner. It’s one of the concerns with specifications that haven’t required great thought until more recent years where the need for more organized JavaScript applications became apparent.</p>
 <p>Instead, developers at present are left to fall back on variations of the module or object literal patterns. With many of these, module scripts are strung together in the DOM with namespaces being described by a single global object where it’s still possible to incur naming collisions in your architecture. There’s also no clean way to handle dependency management without some manual effort or third party tools.</p>
@@ -4934,7 +5122,7 @@ require([<span class="ch">&#39;views/app&#39;</span>], <span class="kw">function
 <h2 id="decoupling-backbone-with-the-mediator-and-facade-patterns"><a href="#TOC">Decoupling Backbone with the Mediator and Facade Patterns</a></h2>
 <p>In this section we’ll discuss applying some of the concepts I cover in my article on <a href="http://addyosmani.com/largescalejavascript">Large-scale JavaScript Application development</a> to Backbone.</p>
 <p><em>After, you may be interested in taking a look At <a href="http://github.com/addyosmani/aura">Aura</a> - my popular widget-based Backbone.js extension framework based on many of the concepts we will be covering in this section.</em></p>
-<h3 id="summary-1"><a href="#TOC">Summary</a></h3>
+<h3 id="summary-3"><a href="#TOC">Summary</a></h3>
 <p>At a high-level, one architecture that works for such applications is something which is:</p>
 <ul>
 <li><strong>Highly decoupled</strong>: encouraging modules to only publish and subscribe to events of interest rather than directly communicating with each other. This helps us to build applications who’s units of code aren’t highly tied (coupled) together and can thus be reused more easily.</li>
@@ -4954,7 +5142,7 @@ require([<span class="ch">&#39;views/app&#39;</span>], <span class="kw">function
 <li><strong>Mediator</strong>: The mediator has a varying role depending on just how you wish to implement it. In my article, I mention using it as a module manager with the ability to start and stop modules at will, however when it comes to Backbone, I feel that simplifying it down to the role of a central <q>controller</q> that provides pub/sub capabilities should suffice. One can of course go all out in terms of building a module system that supports module starting, stopping, pausing etc, however the scope of this is outside of this chapter.</li>
 <li><strong>Facade</strong>: This acts as a secure middle-layer that both abstracts an application core (Mediator) and relays messages from the modules back to the Mediator so they don’t touch it directly. The Facade also performs the duty of application security guard; it checks event notifications from modules against a configuration (permissions.js, which we will look at later) to ensure requests from modules are only processed if they are permitted to execute the behavior passed.</li>
 </ul>
-<h3 id="practical-2"><a href="#TOC">Practical</a></h3>
+<h3 id="practical"><a href="#TOC">Practical</a></h3>
 <p>For the practical section of this chapter, we’ll be extending the well-known Backbone Todo application using the three patterns mentioned above.</p>
 <p>The application is broken down into AMD modules that cover everything from Backbone models through to application-level modules. The views publish events of interest to the rest of the application and modules can then subscribe to these event notifications.</p>
 <p>All subscriptions from modules go through a facade (or sandbox). What this does is check against the subscriber name and the <q>channel/notification</q> it’s attempting to subscribe to. If a channel <em>doesn’t</em> have permissions to be subscribed to (something established through permissions.js), the subscription isn’t permitted.</p>
@@ -6176,7 +6364,7 @@ $.<span class="fu">mobile</span>.<span class="fu">changePage</span>( url , { <sp
 <p><strong>Note:</strong> For some parallel work being done to explore how well the jQuery Mobile Router plugin works with Backbone, you may be interested in checking out <a href="https://github.com/Filirom1/jquery-mobile-backbone-requirejs">https://github.com/Filirom1/jquery-mobile-backbone-requirejs</a>.</p>
 <h3 id="practical-a-backbone-require.jsamd-app-with-jquery-mobile"><a href="#TOC">Practical: A Backbone, Require.js/AMD app with jQuery Mobile</a></h3>
 <p><strong>Note:</strong> The code for this practical can be found in <code>practicals/modular-mobile-app</code>.</p>
-<h3 id="getting-started-2"><a href="#TOC">Getting started</a></h3>
+<h3 id="getting-started-1"><a href="#TOC">Getting started</a></h3>
 <p>Once you feel comfortable with the <a href="http://msdn.microsoft.com/en-us/scriptjunkie/hh377172.aspx">Backbone fundamentals</a> and you’ve put together a rough wireframe of the app you may wish to build, start to think about your application architecture. Ideally, you’ll want to logically separate concerns so that it’s as easy as possible to maintain the app in the future.</p>
 <p><strong>Namespacing</strong></p>
 <p>For this application, I opted for the nested namespacing pattern. Implemented correctly, this enables you to clearly identify if items being referenced in your app are views, other modules and so on. This initial structure is a sane place to also include application defaults (unless you prefer maintaining those in a separate file).</p>
@@ -6220,7 +6408,7 @@ $.<span class="fu">mobile</span>.<span class="fu">changePage</span>( url , { <sp
 <p>The takeaway here is just to remember that if you’re not (already) going through the hassle of conditional script/style loading based on screen-resolution (using matchMedia.js etc), there are simpler approaches that can be taken to cross-device component theming.</p>
 <h1 id="unit-testing"><a href="#TOC">Unit Testing</a></h1>
 <h2 id="unit-testing-backbone-applications-with-jasmine"><a href="#TOC">Unit Testing Backbone Applications With Jasmine</a></h2>
-<h2 id="introduction-3"><a href="#TOC">Introduction</a></h2>
+<h2 id="introduction-2"><a href="#TOC">Introduction</a></h2>
 <p>One definition of unit testing is the process of taking the smallest piece of testable code in an application, isolating it from the remainder of your codebase and determining if it behaves exactly as expected. In this section, we’ll be taking a look at how to unit test Backbone applications using a popular JavaScript testing framework called <a href="http://pivotal.github.com/jasmine/">Jasmine</a> from Pivotal Labs.</p>
 <p>For an application to be considered <q>well</q>-tested, distinct functionality should ideally have its own separate unit tests where it’s tested against the different conditions you expect it to work under. All tests must pass before functionality is considered <q>complete</q>. This allows developers to both modify a unit of code and its dependencies with a level of confidence about whether these changes have caused any breakage.</p>
 <p>As a basic example of unit testing is where a developer may wish to assert whether passing specific values through to a sum function results in the correct output being returned. For an example more relevant to this book, we may wish to assert whether a user adding a new Todo item to a list correctly adds a Model of a specific type to a Todos Collection.</p>
@@ -6505,7 +6693,7 @@ it(<span class="ch">&#39;should contain a text value if not the default value&#3
     }
 
 });</code></pre>
-<h2 id="collections-2"><a href="#TOC">Collections</a></h2>
+<h2 id="collections-1"><a href="#TOC">Collections</a></h2>
 <p>We now need to define specs to tests a Backbone collection of Todo models (a TodoList). Collections are responsible for a number of list tasks including managing order and filtering.</p>
 <p>A few specific specs that come to mind when working with collections are:</p>
 <ul>
@@ -6572,7 +6760,7 @@ it(<span class="ch">&#39;should contain a text value if not the default value&#3
         }
 
     });</code></pre>
-<h2 id="views-3"><a href="#TOC">Views</a></h2>
+<h2 id="views-2"><a href="#TOC">Views</a></h2>
 <p>Before we take a look at testing Backbone views, let’s briefly review a jQuery plugin that can assist with writing Jasmine specs for them.</p>
 <p><strong>The Jasmine jQuery Plugin</strong></p>
 <p>As we know our Todo application will be using jQuery for DOM manipulation, there’s a useful jQuery plugin called <a href="https://github.com/velesin/jasmine-jquery">jasmine-jquery</a> we can use to help simplify BDD testing rendered elements that our views may produce.</p>
@@ -6814,7 +7002,7 @@ expect(<span class="ch">&#39;click&#39;</span>).<span class="fu">toHaveBeenTrigg
   });
 });</code></pre>
 <p>This will now also pass without any issues. Remember that jasmine-jquery also supports loading external fixtures into your specs easily using its build in <code>loadFixtures()</code> and <code>readFixtures()</code> methods. For more information, consider reading the official jasmine-jquery <a href="https://github.com/velesin/jasmine-jquery">docs</a>.</p>
-<h2 id="conclusions-3"><a href="#TOC">Conclusions</a></h2>
+<h2 id="conclusions-2"><a href="#TOC">Conclusions</a></h2>
 <p>We have now covered how to write Jasmine tests for models, views and collections with Backbone.js. Whilst testing routing can at times be desirable, some developers feel it can be more optimal to leave this to third-party tools such as Selenium, so do keep this in mind.</p>
 <p>James Newbery was kind enough to help me with writing the Views section above and his articles on <a href="http://tinnedfruit.com/2011/04/26/testing-backbone-apps-with-jasmine-sinon-3.html">Testing Backbone Apps With SinonJS</a> were of great inspiration (you’ll actually find some Handlebars examples of the view specs in part 3 of his article). If you would like to learn more about writing spies and mocks for Backbone using <a href="http://sinonjs.org">SinonJS</a> as well as how to test Backbone routers, do consider reading his series.</p>
 <h2 id="exercise"><a href="#TOC">Exercise</a></h2>
@@ -6825,7 +7013,7 @@ expect(<span class="ch">&#39;click&#39;</span>).<span class="fu">toHaveBeenTrigg
 <li><a href="http://japhr.blogspot.com/2011/12/phantomjs-and-backbonejs-and-requirejs.html">Backbone, PhantomJS and Jasmine</a></li>
 </ul>
 <h2 id="unit-testing-backbone-applications-with-qunit-and-sinonjs"><a href="#TOC">Unit Testing Backbone Applications With QUnit And SinonJS</a></h2>
-<h2 id="introduction-4"><a href="#TOC">Introduction</a></h2>
+<h2 id="introduction-3"><a href="#TOC">Introduction</a></h2>
 <p>QUnit is a powerful JavaScript test suite written by jQuery team member <a href="http://bassistance.de/">Jörn Zaefferer</a> and used by many large open-source projects (such as jQuery and Backbone.js) to test their code. It’s both capable of testing standard JavaScript code in the browser as well as code on the server-side (where environments supported include Rhino, V8 and SpiderMonkey). This makes it a robust solution for a large number of use-cases.</p>
 <p>Quite a few Backbone.js contributors feel that QUnit is a better introductory framework for testing if you don’t wish to start off with Jasmine and BDD right away. As we’ll see later on in this chapter, QUnit can also be combined with third-party solutions such as SinonJS to produce an even more powerful testing solution supporting spies and mocks, which some say is preferable over Jasmine.</p>
 <p>My personal recommendation is that it’s worth comparing both frameworks and opting for the solution that you feel the most comfortable with.</p>
@@ -7324,7 +7512,7 @@ test(<span class="ch">&#39;should find a model by id&#39;</span>, <span class="k
     <span class="kw">mock</span>.<span class="fu">verify</span>();
     ok( <span class="kw">spy</span>.<span class="fu">calledOnce</span> );
 });</code></pre>
-<h2 id="practical-3"><a href="#TOC">Practical</a></h2>
+<h2 id="practical-1"><a href="#TOC">Practical</a></h2>
 <p>We can now begin writing test specs for our Todo application, which are listed and separated by component (e.g Models, Collections etc.). It’s useful to pay attention to the name of the test, the logic being tested and most importantly the assertions being made as this will give you some insight into how what we’ve learned can be applied to a complete application.</p>
 <p>To get the most out of this section, I recommend looking at the QUnit Koans included in the <code>practicals\qunit-koans</code> folder - this is a port of the Backbone.js Jasmine Koans over to QUnit that I converted for this post.</p>
 <p><em>In case you haven’t had a chance to try out one of the Koans kits as yet, they are a set of unit tests using a specific testing framework that both demonstrate how a set of specs for an application may be written, but also leave some tests unfilled so that you can complete them as an exercise.</em></p>
@@ -7393,7 +7581,7 @@ test(<span class="ch">&#39;Can contain custom validation rules, and will trigger
     equal( <span class="kw">errorCallback</span>.<span class="fu">getCall</span>(<span class="dv">0</span>).<span class="fu">args</span>[<span class="dv">1</span>], <span class="ch">&#39;Todo.done must be a boolean value.&#39;</span> );
 
 });</code></pre>
-<h3 id="collections-3"><a href="#TOC">Collections</a></h3>
+<h3 id="collections-2"><a href="#TOC">Collections</a></h3>
 <p>For our collection we’ll want to test that:</p>
 <ul>
 <li>New model instances can be added as both objects and arrays</li>
@@ -7445,7 +7633,7 @@ test(<span class="ch">&#39;Fires custom named events when the models change.&#39
 
     ok( <span class="kw">removeModelCallback</span>.<span class="fu">called</span> );
 });</code></pre>
-<h3 id="views-4"><a href="#TOC">Views</a></h3>
+<h3 id="views-3"><a href="#TOC">Views</a></h3>
 <p>For our views we want to ensure:</p>
 <ul>
 <li>They are being correctly tied to a DOM element when created</li>
@@ -7684,7 +7872,7 @@ test( <span class="ch">&#39;Should bind Collection events to View creation.&#39;
 <li><a href="https://github.com/n-time/backbone.validations">Backbone Validations - HTML5 inspired validations</a></li>
 </ul>
 <p>In time, there will be tutorials in the book covering some of these resources but until then, please feel free to check them out.</p>
-<h1 id="conclusions-4"><a href="#TOC">Conclusions</a></h1>
+<h1 id="conclusions-3"><a href="#TOC">Conclusions</a></h1>
 <p>That’s it for <q>Developing Backbone.js Applications</q>. I hope you found this book both useful, enlightening and a good start for your journey into exploring Backbone.js.</p>
 <p>If there are other topics or areas of this book you feel could be expanded further, please feel free to let me know, or better yet, send a pull request upstream. I’m always interested in making this title as comprehensive as possible.</p>
 <p>Until next time, the very best of luck with the rest of your journey!</p>
