@@ -5925,7 +5925,7 @@ If you intalled r.js with Node's npm (package manager) like so...
     > r.js -o app.build.js
 
 
-## Practical: Building a modular Backbone app with AMD & RequireJS
+## Exercise: Building a modular Backbone app with AMD & RequireJS
 
 In this chapter, we'll look at our first practical Backbone & RequireJS project - how to build a modular Todo application. The application will allow us to add new todos, edit new todos and clear todo items that have been marked as completed. For a more advanced practical, see the section on mobile Backbone development.
 
@@ -6318,7 +6318,7 @@ Their specific roles in this architecture can be found below.
 * **Facade**: This acts as a secure middle-layer that both abstracts an application core (Mediator) and relays messages from the modules back to the Mediator so they don't touch it directly. The Facade also performs the duty of application security guard; it checks event notifications from modules against a configuration (permissions.js, which we will look at later) to ensure requests from modules are only processed if they are permitted to execute the behavior passed.
 
 
-### Practical
+### Exercise
 
 For the practical section of this chapter, we'll be extending the well-known Backbone Todo application using the three patterns mentioned above.
 
@@ -7875,9 +7875,9 @@ In the above sample, `url` can refer to a URL or a hash identifier to navigate t
 **Note:** For some parallel work being done to explore how well the jQuery Mobile Router plugin works with Backbone, you may be interested in checking out [https://github.com/Filirom1/jquery-mobile-backbone-requirejs](https://github.com/Filirom1/jquery-mobile-backbone-requirejs).
 
 
-### Practical: A Backbone, Require.js/AMD app with jQuery Mobile
+### Exercise: A Backbone, Require.js/AMD app with jQuery Mobile
 
-**Note:** The code for this practical can be found in `practicals/modular-mobile-app`.
+**Note:** The code for this exercise can be found in `practicals/modular-mobile-app`.
 
 ### Getting started
 
@@ -9508,7 +9508,7 @@ test('should call all subscribers when exceptions', function () {
 
 
 
-## Practical
+## Exercise
 
 We can now begin writing test specs for our Todo application, which are listed and separated by component (e.g Models, Collections etc.). It's useful to pay attention to the name of the test, the logic being tested and most importantly the assertions being made as this will give you some insight into how what we've learned can be applied to a complete application.
 
