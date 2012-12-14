@@ -5435,25 +5435,24 @@ require([<span class="ch">&#39;views/app&#39;</span>], <span class="kw">function
   &lt;div class=&quot;row&quot;&gt;
     &lt;label&gt;First Name:&lt;/label&gt;
     &lt;span&gt;&lt;%= firstName %&gt;&lt;/span&gt;
-  &lt;div&gt;
+  &lt;/div&gt;
   &lt;div class=&quot;row&quot;&gt;
     &lt;label&gt;Last Name:&lt;/label&gt;
     &lt;span&gt;&lt;%= lastName %&gt;&lt;/span&gt;
-  &lt;div&gt;
+  &lt;/div&gt;
   &lt;div class=&quot;row&quot;&gt;
     &lt;label&gt;Email:&lt;/label&gt;
     &lt;span&gt;&lt;%= email %&gt;&lt;/span&gt;
-  &lt;div&gt;
+  &lt;/div&gt;
 &lt;/script&gt;
 &lt;/pre&gt;</code></pre>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> MyView = <span class="kw">Backbone.View</span>.<span class="fu">extend</span>({
-  <span class="dt">template</span>: <span class="ch">&#39;#my-view-template&#39;</span>,
+  <span class="dt">template</span>: $(<span class="ch">&#39;#my-view-template&#39;</span>).<span class="fu">html</span>(),
 
   <span class="dt">render</span>: <span class="kw">function</span>(){
 
     <span class="co">// compile the Underscore.js template</span>
-    <span class="kw">var</span> template = $(<span class="ch">&#39;#my-view-template&#39;</span>);
-    <span class="kw">var</span> compiledTemplate = <span class="kw">_</span>.<span class="fu">template</span>(template);
+    <span class="kw">var</span> compiledTemplate = <span class="kw">_</span>.<span class="fu">template</span>(<span class="kw">this</span>.<span class="fu">template</span>);
 
     <span class="co">// render the template with the model data</span>
     <span class="kw">var</span> data = <span class="kw">this</span>.<span class="fu">model</span>.<span class="fu">toJSON</span>();
