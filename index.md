@@ -6323,7 +6323,7 @@ To see how everything ties together, feel free to grab the source by cloning thi
 
 ## Route based module loading
 
-This section will discuss a route based approach to module loading as implemented by [Lumbar](http://lumbarjs.org/). Like RequireJS, Lumbar is also a modular build system, but the pattern it implements for loading routes may be used with any build system.
+This section will discuss a route based approach to module loading as implemented in [Lumbar](http://walmartlabs.github.com/lumbar) by Kevin Decker. Like RequireJS, Lumbar is also a modular build system, but the pattern it implements for loading routes may be used with any build system.
 
 The specifics of the Lumbar build tool are not discussed in this book. To see a complete Lumbar based project with the loader and build system see [Thorax](http://walmartlabs.github.com/thorax) which provides boilerplate projects for various environments including Lumbar.
 
@@ -8223,6 +8223,48 @@ A common anti-pattern in Backbone applications is to assign a `className` to a s
 
   }
 ```
+
+### Thorax Resources
+
+No Backbone related tutorial would be complete without a todo application. A [Thorax implementation of TodoMVC](http://todomvc.com/labs/architecture-examples/thorax/) is available, in addition to this far simpler example composed of this single handlebars template:
+
+```handlebars
+  {{#collection todos tag="ul"}}
+    <li{{#if done}} class="done"{{/if}}>
+      <input type="checkbox" name="done"{{#if done}} checked="checked"{{/if}}>
+      <span>{{item}}</span>
+    </li>
+  {{/collection}}
+  <form>
+    <input type="text">
+    <input type="submit" value="Add">
+  </form>
+```
+
+and the corresponding JavaScript:
+
+```javascript
+  var todosView = Thorax.View({
+      todos: new Thorax.Collection(),
+      events: {
+          'change input[type="checkbox"]': function(event) {
+              var target = $(event.target);
+              target.model().set({done: !!target.attr('checked')});
+          },
+          'submit form': function(event) {
+              event.preventDefault();
+              var input = this.$('input[type="text"]');
+              this.todos.add({item: input.val()});
+              input.val('');
+          }
+      },
+      template: '...'
+  });
+  todosView.render();
+  $('body').append(todosView.el);
+```
+
+To see Thorax in action on a large scale website visit walmart.com on any Android or iOS device. For a complete list of resources visit the [Thorax website](http://walmartlabs.github.com/thorax).
 
 # Mobile Applications
 
