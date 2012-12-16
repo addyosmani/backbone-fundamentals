@@ -3492,14 +3492,37 @@ var InnerView = Backbone.View.extend({
 });
 ```
 
+If multiple views need to be nested at particular locations in a template, a hash of child views indexed by child view cids' should be created. In the template, use a custom HTML attribute named `data-view-cid` to create placeholder elements for each view to embed. Once the template has been rendered and it's output appeneded to the parent view's `$el`, each placeholder can be queried for and replaced with the child view's `el`.
+
+A sample implementation containing a single child view:
+
+```javascript
+
+var OuterView = Backbone.View.extend({
+    initialize: function() {
+        this.children = {};
+        var child = new Backbone.View();
+        this.children[child.cid] = child;
+    },
+
+    render: function() {
+        this.$el.html('<div data-view-cid="' + this.child.cid + '"></div>');        
+        _.each(this.children, function(view, cid) {
+            this.$('[data-view-cid="' + cid + '"]').replaceWith(view.el);
+        }, this);
+    }
+};
+
+```
+
 Generally speaking, more developers opt for the first solution as:
 
 * The majority of their views may already rely on being in the DOM in their render() method
 * When the OuterView is re-rendered, views don't have to be re-initialized where re-initialization has the potential to cause memory leaks and issues with existing bindings
 
+[Marionette](#marionette) and [Thorax](#thorax) provide logic for nesting views, and rendering collections where each item has an associated view. Marionette provides APIs in JavaScript while Thorax provides APIs via Handlebars template helpers.
+
 (Thanks to [Lukas](http://stackoverflow.com/users/299189/lukas)  and [Ian Taylor](http://stackoverflow.com/users/154765/ian-storm-taylor) for these tips).
-
-
 
 #### What is the best way to manage models in nested Views?
 
@@ -3773,6 +3796,9 @@ For example, if you are working on a blogging application and you remove a view 
 (Thanks to [dira](http://stackoverflow.com/users/906136/dira) for this tip)
 
 #### What's the best way to combine or append Views to each other?
+
+
+
 
 Let us say you have a Collection, where each item in the Collection could itself be a Collection. You can render each item in the Collection, and indeed can render any items which themselves are Collections. The problem you might have is how to render this structure where the HTML reflects the hierarchical nature of the data structure.
 
@@ -5237,8 +5263,7 @@ Instead, developers at present are left to fall back on variations of the module
 
 Whilst native solutions to these problems will be arriving in ES Harmony, the good news is that writing modular JavaScript has never been easier and you can start doing it today.
 
-In this next part of the book, we're going to look at how to use AMD modules and RequireJS for cleanly wrapping units of code in your application into manageable modules.
-
+In this next part of the book, we're going to look at how to use AMD modules and RequireJS for cleanly wrapping units of code in your application into manageable modules, and an alternate approach using routes to determine when modules are loaded.
 
 ## Organizing modules with RequireJS and AMD
 
@@ -6157,9 +6182,117 @@ To see how everything ties together, feel free to grab the source by cloning thi
 **Note:** While this first practical doesn't use a build profile as outlined in the chapter on using the RequireJS optimizer, we will be using one in the section on building mobile Backbone applications.
 
 
+## Route based module loading
 
+This section will discuss a route based approach to module loading as implemented in [Lumbar](http://walmartlabs.github.com/lumbar) by Kevin Decker. Like RequireJS, Lumbar is also a modular build system, but the pattern it implements for loading routes may be used with any build system.
 
+The specifics of the Lumbar build tool are not discussed in this book. To see a complete Lumbar based project with the loader and build system see [Thorax](http://walmartlabs.github.com/thorax) which provides boilerplate projects for various environments including Lumbar.
 
+### JSON based module configuration
+
+RequireJS defines dependencies per file, while Lumbar defines a list of files for each module in a central JSON configuration file, outputting a single JavaScript file for each defined module. Lumbar requires that each module (except the base module) define a single router and a list of routes. An example file might look like:
+
+     {
+        "modules": {
+            "base": {
+                "scripts": [
+                    "js/lib/underscore.js",
+                    "js/lib/backbone.js",
+                    "etc"
+                ]
+            },
+            "pages": {
+                "scripts": [
+                    "js/routers/pages.js",
+                    "js/views/pages/index.js",
+                    "etc"
+                ],
+                "routes": {
+                    "": "index",
+                    "contact": "contact"
+                }
+            }
+        }
+    }
+
+Every JavaScript file defined in a module will have a `module` object in scope which contains the `name` and `routes` for the module. In `js/routers/pages.js` we could define a Backbone router for our `pages` module like so:
+
+    new (Backbone.Router.extend({
+        routes: module.routes,
+        index: function() {},
+        contact: function() {}
+    }));
+
+### Module loader Router
+
+A little used feature of `Backbone.Router` is it's ability to create multiple routers that listen to the same set of routes. Lumbar uses this feature to create a router that listens to all routes in the application. When a route is matched, this master router checks to see if the needed module is loaded. If the module is already loaded, then the master router takes no action and the router defined by the module will handle the route. If the needed module has not yet been loaded, it will be loaded, then `Backbone.history.loadUrl` will be called. This reloads the route, causes the master router to take no further action and the router defined in the freshly loaded module to respond.
+
+A sample implementation is provided below. The `config` object would need to contain the data from our sample configuration JSON file above, and the `loader` object would need to implement `isLoaded` and `loadModule` methods. Note that Lumbar provides all of these implementations, the examples are provided to create your own implementation.
+
+    // Create an object that will be used as the prototype
+    // for our master router
+    var handlers = {
+        routes: {}
+    };
+
+    _.each(config.modules, function(module, moduleName) {
+        if (module.routes) {
+            // Generate a loading callback for the module
+            var callbackName = "loader_" moduleName;
+            handlers[callbackName] = function() {
+                if (loader.isLoaded(moduleName)) {
+                    // Do nothing if the module is loaded
+                    return;
+                } else {
+                    //the module needs to be loaded
+                    loader.loadModule(moduleName, function() {
+                        // Module is loaded, reloading the route
+                        // will trigger callback in the module's
+                        // router
+                        Backbone.history.loadUrl();
+                    });
+                }
+            };
+            // Each route in the module should trigger the
+            // loading callback
+            _.each(module.routes, function(methodName, route) {
+                handlers.routes[route] = callbackName;
+            });
+        }
+    });
+
+    // Create the master router
+    new (Backbone.Router.extend(handlers));
+
+### Using NodeJS to handle pushState
+
+`window.history.pushState` support (serving Backbone routes without a hashtag) requires that the server be aware of what URLs your Backbone application will handle, since the user should be able to enter the app at any of those routes (or hit reload after navigating to a pushState URL).
+
+Another advantage to defining all routes in a single location is that the same JSON configuration file provided above could be loaded by the server, listening to each route. A sample implementation in NodeJS and Express:
+
+    var fs = require('fs'),
+        _ = require('underscore'),
+        express = require('express'),
+        server = express.createServer(),
+        config = JSON.parse(fs.readFileSync('path/to/config.json'));
+
+    _.each(config.modules, function(module, moduleName) {
+        if (module.routes) {
+            _.each(module.routes, function(methodName, route) {
+                server.get(route, function(req, res) {
+                      res.sendFile('public/index.html');
+                });
+            });
+        }
+    });
+
+This assumes that index.html will be serving out your Backbone application. The `Backbone.History` object can handle the rest of the routing logic as long as a `root` option is specified. A sample configuration for a simple application that lives at the root might look like:
+
+    Backbone.history || (Backbone.history = new Backbone.History());
+    Backbone.history.start({
+      pushState: true,
+      root: '/'
+    });
 
 ## Decoupling Backbone with the Mediator and Facade Patterns
 
@@ -7707,6 +7840,293 @@ Paginator.clientPager = Backbone.Collection.extend({
  [6]: http://github.com/addyosmani/backbone.paginator/issues
  [7]: https://github.com/cowboy/grunt
 
+## Thorax
+
+*By Ryan Eastridge & Addy Osmani*
+
+Part of Backbone's appeal is that it provides structure but is generally un-opionated, in particular when it comes to views. Thorax makes an opinionated decision to use Handlebars as it's templating solution. Some of the patterns found in Marionette are found in Thorax as well. Marionette exposes most of these patterns as JavaScript APIs while in Thorax they are often exposed as template helpers. This chapter assumes the reader has knowledge of Handlebars. 
+
+Thorax was created by Ryan Eastridge and Kevin Decker to create Walmart's mobile web application. This chapter is limited to Thorax's templating features and patterns implemented in Thorax that you can utilize in your application regardless of wether you choose to adopt Thorax. To learn more about other features implemented in Thorax and to download boilerplate projects visit the [Thorax website](http://walmartlabs.github.com/thorax).
+
+### Hello World
+
+`Thorax.View` differs from `Backbone.View` in that there is no `options` object. All arguments passed to the constructor become properties of the view, which in turn become available to the `template`:
+
+```javascript
+    var view = new Thorax.View({
+        greeting: 'Hello',
+        template: '{{greeting}} World!'
+    });
+    view.render();
+    $('body').append(view.el);
+```
+
+ In most examples in this chapter a `template` property will be specified. In larger projects including the boilerplate projects provided on the Thorax website a `name` property would instead be used and a `template` of the same file name in your project would automatically be assigned to the view.
+
+ If a `model` is set on a view, it's attributes also become available to the template:
+
+    var view = new Thorax.View({
+        model: new Thorax.Model({key: 'value'}),
+        template: '{{key}}'
+    });
+
+### Embedding child views
+
+The view helper allows you to embed other views within a view. Child views can be specified as properties of the view:
+
+```javascript
+    var parent = new Thorax.View({
+        child: new Thorax.View(...),
+        template: '{{view child}}'
+    });
+```
+
+Or the name of a child view to initialize (and any optional properties to pass). In this case the child view must have previously been created with `extend` and a `name` property:
+
+```javascript
+    var ChildView = Thorax.View.extend({
+        name: 'child',
+        template: ...
+    });
+  
+    var parent = new Thorax.View({
+        template: '{{view "child" key="value"}}'
+    });
+```
+
+The view helper may also be used as a block helper, in which case the block will be assigned as the `template` property of the child view:
+
+```handlebars
+    {{#view child}}
+        child will have this block
+        set as it's template property
+    {{/view}}
+```
+
+Handlebars is a string based, while `Backbone.View` instances have a DOM `el`. Since we are mixing metaphors, the embedding of views works via a placeholder mechanism where the `view` helper in this case adds the view passed to the helper to a hash of `children`, then injects placeholder HTML into the template such as:
+
+```html
+    <div data-view-placeholder-cid="view2"></div>
+```
+
+Then once the parent view is rendered, we walk the DOM in search of all the placeholders we created, replacing them with the child views' `el`s:
+
+```javascript
+    this.$el.find('[data-view-placeholder-cid]').forEach(function(el) {
+        var cid = el.getAttribute('data-view-placeholder-cid'),
+            view = this.children[cid];
+        view.render();
+        $(el).replaceWith(view.el);
+    }, this);
+```
+
+### View helpers
+
+One of the most useful constructs in Thorax is `Handlebars.registerViewHelper` (which differs from `Handlebars.registerHelper`). This method will register a new block helper that will create and embed a `HelperView` instance with it's `template` set to the captured block. A `HelperView` instance is different from that of a regular child view in that it's context will be that of the parent's in the template. Like other child views it will have a `parent` property set to that of the declaring view. Many of the built in helpers in Thorax including the `collection` helper are created in this manner.
+
+A simple example would be an `on` helper that re-rendered the generated `HelperView` instance each time an event was triggered on the declaring / parent view:
+
+    Handlebars.registerViewHelper('on', function(eventName, helperView) {
+        helperView.parent.on(eventName, function() {
+            helperView.render();
+        });
+    });
+
+An example use of this would be to have a counter that would incriment each time a button was clicked. This example makes use of the `button` helper in Thorax which simply makes a button that calls a method when clicked:
+
+```handlebars
+    {{#on "incrimented"}}{{i}}{/on}}
+    {{#button trigger="incrimented"}}Add{{/button}}
+```
+
+And the corresponding view class:
+
+```javascript
+    new Thorax.View({
+        events: {
+            incrimented: function() {
+                ++this.i;
+            }
+        },
+        initialize: function() {
+            this.i = 0;
+        },
+        template: ...
+    });
+```
+
+### collection helper
+
+The `collection` helper creates and embeds a `CollectionView` instance, creating a view for each item in a collection, updating when items are added, removed or changed in the collection. The simplest usage of the helper would look like:
+
+```handlebars
+    {{#collection kittens}}
+      <li>{{name}}</li>
+    {{/collection}}
+```
+
+And the corresponding view:
+
+```javascript
+    new Thorax.View({
+      kittens: new Thorax.Collection(...),
+      template: ...
+    });
+```
+
+The block in this case will be assigned as the `template` for each item view created, and the context will be the `attributes` of the given model. This helper accepts options that can be arbitrary HTML attributes, a `tag` option to specify the type of tag containing the collection, or any of the following:
+
+- `item-template` - A template to display for each model. If a block is specified it will become the item-template
+- `item-view` - A view class to use when each item view is created
+- `empty-template` - A template to display when the collection is empty. If an inverse / else block is specified it will become the empty-template
+- `empty-view` - A view to display when the collection is empty
+
+Options and blocks can be used in combination, in this case creating a `KittenView` class with a `template` set to the captured block for each kitten in the collection:
+
+```handlebars
+    {{#collection kittens item-view="KittenView" tag="ul"}}
+      <li>{{name}}</li>
+    {{else}}
+      <li>No kittens!</li>
+    {{/collection}}
+```
+
+Note that multiple collections can be used per view, and collections can be nested. This is useful when there are models that contain collections that contain models that contain...
+
+```handlebars
+    {{#collection kittens}}
+      <h2>{{name}}</h2>
+      <p>Kills:</p>
+      {{#collection miceKilled tag="ul"}}
+        <li>{{name}}</li>
+      {{/collection}}
+    {{/collection}}
+```
+
+### Custom HTML data attributes
+
+Thorax makes heavy use of custom data attributes to operate. While some make sense only within the context of Thorax, several are quite useful to have in any Backbone project for writing other functions against, or for general debugging. In order to add some to your views in non Thorax projects, override the `setElement` method in your base view class:
+
+```javascript
+  MyApplication.View = Backbone.View.extend({
+    setElement: function() {
+        var response = Backbone.View.prototype.setElement.apply(this, arguments);
+        this.name && this.$el.attr('data-view-name', this.name);
+        this.$el.attr('data-view-cid', this.cid);
+        this.collection && this.$el.attr('data-collection-cid', this.collection.cid);
+        this.model && this.$el.attr('data-model-cid', this.model.cid);
+        return response;
+    }
+  });
+```
+
+In addition making your application more immediately comprehensible in the inspector, it's now possible to extend jQuery / Zepto with functions to lookup the closest view, model or collection to a given element. In order to make it work save references to each view created in your base view class by overriding the `_configure` method:
+
+```javascript
+    MyApplication.View = Backbone.View.extend({
+        _configure: function() {
+            Backbone.View.prototype._configure.apply(this, arguments);
+            Thorax._viewsIndexedByCid[this.cid] = cid;
+        },
+        dispose: function() {
+            Backbone.View.prototype.dispose.apply(this, arguments);
+            delete Thorax._viewsIndexedByCid[this.cid];
+        }
+    });
+```
+
+Then we can extend jQuery / Zepto:
+
+```javascript
+    $.fn.view = function() {
+        var el = $(this).closest('[data-view-cid]');
+        return el && Thorax._viewsIndexedByCid[el.attr('data-view-cid')];
+    };
+
+    $.fn.model = function(view) {
+        var $this = $(this),
+            modelElement = $this.closest('[data-model-cid]'),
+            modelCid = modelElement && modelElement.attr('[data-model-cid]');
+        if (modelCid) {
+            var view = $this.view();
+            return view && view.model;
+        }
+        return false;
+    };
+```
+
+Now instead of storing references to models randomly throughout your application to lookup when a given DOM event occurs you can use `$(element).model()`. In Thorax, this can particularly useful in conjunction with the `collection` helper which generates a view class (with a `model` property) for each `model` in the collection. An example template:
+
+```handlebars
+    {{#collection kittens tag="ul"}}
+      <li>{{name}}</li>
+    {{/collection}}
+```
+
+And the corresponding view class:
+
+```javascript
+    Thorax.View.extend({
+      events: {
+        'click li': function(event) {
+          var kitten = $(event.target).model();
+          console.log('Clicked on ' + kitten.get('name'));
+        }
+      },
+      kittens: new Thorax.Collection(...),
+      template: ...
+    });  
+```
+
+A common anti-pattern in Backbone applications is to assign a `className` to a single view class. Consider using the `data-view-name` attribute as a CSS selector instead, saving CSS classes for things that will be used multiple times: 
+
+```css
+  [data-view-name="child"] {
+
+  }
+```
+
+### Thorax Resources
+
+No Backbone related tutorial would be complete without a todo application. A [Thorax implementation of TodoMVC](http://todomvc.com/labs/architecture-examples/thorax/) is available, in addition to this far simpler example composed of this single handlebars template:
+
+```handlebars
+  {{#collection todos tag="ul"}}
+    <li{{#if done}} class="done"{{/if}}>
+      <input type="checkbox" name="done"{{#if done}} checked="checked"{{/if}}>
+      <span>{{item}}</span>
+    </li>
+  {{/collection}}
+  <form>
+    <input type="text">
+    <input type="submit" value="Add">
+  </form>
+```
+
+and the corresponding JavaScript:
+
+```javascript
+  var todosView = Thorax.View({
+      todos: new Thorax.Collection(),
+      events: {
+          'change input[type="checkbox"]': function(event) {
+              var target = $(event.target);
+              target.model().set({done: !!target.attr('checked')});
+          },
+          'submit form': function(event) {
+              event.preventDefault();
+              var input = this.$('input[type="text"]');
+              this.todos.add({item: input.val()});
+              input.val('');
+          }
+      },
+      template: '...'
+  });
+  todosView.render();
+  $('body').append(todosView.el);
+```
+
+To see Thorax in action on a large scale website visit walmart.com on any Android or iOS device. For a complete list of resources visit the [Thorax website](http://walmartlabs.github.com/thorax).
 
 # Mobile Applications
 
@@ -9771,6 +10191,8 @@ That's it for this section on testing applications with QUnit and SinonJS. I enc
 Whilst what we get with Backbone out of the box can be terribly useful, there are some equally beneficial add-ons that can help simplify our development process. These include:
 
 * [Backbone Marionette](https://github.com/derickbailey/backbone.marionette)
+* [Thorax](http://walmartlabs.github.com/thorax)
+* [Lumbar](http://walmartlabs.github.com/lumbar)
 * [Backbone Layout Manager](https://github.com/tbranyen/backbone.layoutmanager)
 * [Backbone Boilerplate](https://github.com/backbone-boilerplate/backbone-boilerplate)
 * [Backbone Model Binding](https://github.com/derickbailey/backbone.modelbinding)
