@@ -190,7 +190,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <li><a href="#common-pitfall-when-organizing-code-in-modules">Common Pitfall when organizing code in modules</a></li>
 <li><a href="#executing-the-build-with-r.js">Executing the Build with r.js</a></li>
 </ul></li>
-<li><a href="#practical-building-a-modular-backbone-app-with-amd-requirejs">Practical: Building a modular Backbone app with AMD &amp; RequireJS</a><ul>
+<li><a href="#exercise-building-a-modular-backbone-app-with-amd-requirejs">Exercise: Building a modular Backbone app with AMD &amp; RequireJS</a><ul>
 <li><a href="#overview">Overview</a></li>
 <li><a href="#markup">Markup</a></li>
 <li><a href="#configuration-options">Configuration options</a></li>
@@ -198,7 +198,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 </ul></li>
 <li><a href="#decoupling-backbone-with-the-mediator-and-facade-patterns">Decoupling Backbone with the Mediator and Facade Patterns</a><ul>
 <li><a href="#summary-3">Summary</a></li>
-<li><a href="#practical">Practical</a></li>
+<li><a href="#exercise">Exercise</a></li>
 </ul></li>
 <li><a href="#backbone.marionette">Backbone.Marionette</a><ul>
 <li><a href="#boilerplate-rendering-code">Boilerplate Rendering Code</a></li>
@@ -239,7 +239,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <li><a href="#mobile-applications">Mobile Applications</a><ul>
 <li><a href="#backbone-jquery-mobile">Backbone &amp; jQuery Mobile</a><ul>
 <li><a href="#resolving-the-routing-conflicts">Resolving the routing conflicts</a></li>
-<li><a href="#practical-a-backbone-require.jsamd-app-with-jquery-mobile">Practical: A Backbone, Require.js/AMD app with jQuery Mobile</a></li>
+<li><a href="#exercise-a-backbone-require.jsamd-app-with-jquery-mobile">Exercise: A Backbone, Require.js/AMD app with jQuery Mobile</a></li>
 <li><a href="#getting-started-1">Getting started</a></li>
 <li><a href="#jquery-mobile-going-beyond-mobile-application-development">jQuery Mobile: Going beyond mobile application development</a></li>
 </ul></li>
@@ -260,7 +260,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <li><a href="#view-rendering">View rendering</a></li>
 <li><a href="#rendering-with-a-templating-system">Rendering with a templating system</a></li>
 <li><a href="#conclusions-2">Conclusions</a></li>
-<li><a href="#exercise">Exercise</a></li>
+<li><a href="#exercise-1">Exercise</a></li>
 <li><a href="#further-reading">Further reading</a></li>
 <li><a href="#unit-testing-backbone-applications-with-qunit-and-sinonjs">Unit Testing Backbone Applications With QUnit And SinonJS</a></li>
 <li><a href="#introduction-3">Introduction</a></li>
@@ -306,7 +306,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <li><a href="#stubs">Stubs</a></li>
 <li><a href="#mocks">Mocks</a></li>
 </ul></li>
-<li><a href="#practical-1">Practical</a><ul>
+<li><a href="#exercise-2">Exercise</a><ul>
 <li><a href="#models-3">Models</a></li>
 <li><a href="#collections-2">Collections</a></li>
 <li><a href="#views-3">Views</a></li>
@@ -4817,7 +4817,7 @@ var section = models.section;</code></pre>
 <pre><code>&gt; npm install requirejs</code></pre>
 <p>…you can execute the build on the command line:</p>
 <pre><code>&gt; r.js -o app.build.js</code></pre>
-<h2 id="practical-building-a-modular-backbone-app-with-amd-requirejs"><a href="#TOC">Practical: Building a modular Backbone app with AMD &amp; RequireJS</a></h2>
+<h2 id="exercise-building-a-modular-backbone-app-with-amd-requirejs"><a href="#TOC">Exercise: Building a modular Backbone app with AMD &amp; RequireJS</a></h2>
 <p>In this chapter, we’ll look at our first practical Backbone &amp; RequireJS project - how to build a modular Todo application. The application will allow us to add new todos, edit new todos and clear todo items that have been marked as completed. For a more advanced practical, see the section on mobile Backbone development.</p>
 <p>The complete code for the application can can be found in the <code>practicals/modular-todo-app</code> folder of this repo (thanks to Thomas Davis and Jérôme Gravel-Niquet). Alternatively grab a copy of my side-project <a href="https://github.com/addyosmani/todomvc">TodoMVC</a> which contains the sources to both AMD and non-AMD versions.</p>
 <p><strong>Note:</strong> Thomas may be covering a practical on this exercise in more detail on <a href="http://backbonetutorials.com">backbonetutorials.com</a> at some point soon, but for this section I’ll be covering what I consider the core concepts.</p>
@@ -5125,7 +5125,7 @@ require([<span class="ch">&#39;views/app&#39;</span>], <span class="kw">function
 <li><strong>Mediator</strong>: The mediator has a varying role depending on just how you wish to implement it. In my article, I mention using it as a module manager with the ability to start and stop modules at will, however when it comes to Backbone, I feel that simplifying it down to the role of a central <q>controller</q> that provides pub/sub capabilities should suffice. One can of course go all out in terms of building a module system that supports module starting, stopping, pausing etc, however the scope of this is outside of this chapter.</li>
 <li><strong>Facade</strong>: This acts as a secure middle-layer that both abstracts an application core (Mediator) and relays messages from the modules back to the Mediator so they don’t touch it directly. The Facade also performs the duty of application security guard; it checks event notifications from modules against a configuration (permissions.js, which we will look at later) to ensure requests from modules are only processed if they are permitted to execute the behavior passed.</li>
 </ul>
-<h3 id="practical"><a href="#TOC">Practical</a></h3>
+<h3 id="exercise"><a href="#TOC">Exercise</a></h3>
 <p>For the practical section of this chapter, we’ll be extending the well-known Backbone Todo application using the three patterns mentioned above.</p>
 <p>The application is broken down into AMD modules that cover everything from Backbone models through to application-level modules. The views publish events of interest to the rest of the application and modules can then subscribe to these event notifications.</p>
 <p>All subscriptions from modules go through a facade (or sandbox). What this does is check against the subscriber name and the <q>channel/notification</q> it’s attempting to subscribe to. If a channel <em>doesn’t</em> have permissions to be subscribed to (something established through permissions.js), the subscription isn’t permitted.</p>
@@ -6344,8 +6344,8 @@ $(<span class="ch">&#39;#content&#39;</span>).<span class="fu">html</span>(<span
 $.<span class="fu">mobile</span>.<span class="fu">changePage</span>( url , { <span class="dt">transition</span>: effect}, reverse, changeHash );</code></pre>
 <p>In the above sample, <code>url</code> can refer to a URL or a hash identifier to navigate to, <code>effect</code> is simply the transition effect to animate the page in with and the final two parameters decide the direction for the transition (<code>reverse</code>) and whether or not the hash in the address bar should be updated (<code>changeHash</code>). With respect to the latter, I typically set this to false to avoid managing two sources for hash updates, but feel free to set this to true if you’re comfortable doing so.</p>
 <p><strong>Note:</strong> For some parallel work being done to explore how well the jQuery Mobile Router plugin works with Backbone, you may be interested in checking out <a href="https://github.com/Filirom1/jquery-mobile-backbone-requirejs">https://github.com/Filirom1/jquery-mobile-backbone-requirejs</a>.</p>
-<h3 id="practical-a-backbone-require.jsamd-app-with-jquery-mobile"><a href="#TOC">Practical: A Backbone, Require.js/AMD app with jQuery Mobile</a></h3>
-<p><strong>Note:</strong> The code for this practical can be found in <code>practicals/modular-mobile-app</code>.</p>
+<h3 id="exercise-a-backbone-require.jsamd-app-with-jquery-mobile"><a href="#TOC">Exercise: A Backbone, Require.js/AMD app with jQuery Mobile</a></h3>
+<p><strong>Note:</strong> The code for this exercise can be found in <code>practicals/modular-mobile-app</code>.</p>
 <h3 id="getting-started-1"><a href="#TOC">Getting started</a></h3>
 <p>Once you feel comfortable with the <a href="http://msdn.microsoft.com/en-us/scriptjunkie/hh377172.aspx">Backbone fundamentals</a> and you’ve put together a rough wireframe of the app you may wish to build, start to think about your application architecture. Ideally, you’ll want to logically separate concerns so that it’s as easy as possible to maintain the app in the future.</p>
 <p><strong>Namespacing</strong></p>
@@ -6987,7 +6987,7 @@ expect(<span class="ch">&#39;click&#39;</span>).<span class="fu">toHaveBeenTrigg
 <h2 id="conclusions-2"><a href="#TOC">Conclusions</a></h2>
 <p>We have now covered how to write Jasmine tests for models, views and collections with Backbone.js. Whilst testing routing can at times be desirable, some developers feel it can be more optimal to leave this to third-party tools such as Selenium, so do keep this in mind.</p>
 <p>James Newbery was kind enough to help me with writing the Views section above and his articles on <a href="http://tinnedfruit.com/2011/04/26/testing-backbone-apps-with-jasmine-sinon-3.html">Testing Backbone Apps With SinonJS</a> were of great inspiration (you’ll actually find some Handlebars examples of the view specs in part 3 of his article). If you would like to learn more about writing spies and mocks for Backbone using <a href="http://sinonjs.org">SinonJS</a> as well as how to test Backbone routers, do consider reading his series.</p>
-<h2 id="exercise"><a href="#TOC">Exercise</a></h2>
+<h2 id="exercise-1"><a href="#TOC">Exercise</a></h2>
 <p>As an exercise, I recommend now trying the Jasmine Koans in <code>practicals\jasmine-joans</code> and trying to fix some of the purposefully failing tests it has to offer. This is an excellent way of not just learning how Jasmine specs and suites work, but working through the examples (without peeking back) will also put your Backbone skills to test too.</p>
 <h2 id="further-reading"><a href="#TOC">Further reading</a></h2>
 <ul>
@@ -7494,7 +7494,7 @@ test(<span class="ch">&#39;should find a model by id&#39;</span>, <span class="k
     <span class="kw">mock</span>.<span class="fu">verify</span>();
     ok( <span class="kw">spy</span>.<span class="fu">calledOnce</span> );
 });</code></pre>
-<h2 id="practical-1"><a href="#TOC">Practical</a></h2>
+<h2 id="exercise-2"><a href="#TOC">Exercise</a></h2>
 <p>We can now begin writing test specs for our Todo application, which are listed and separated by component (e.g Models, Collections etc.). It’s useful to pay attention to the name of the test, the logic being tested and most importantly the assertions being made as this will give you some insight into how what we’ve learned can be applied to a complete application.</p>
 <p>To get the most out of this section, I recommend looking at the QUnit Koans included in the <code>practicals\qunit-koans</code> folder - this is a port of the Backbone.js Jasmine Koans over to QUnit that I converted for this post.</p>
 <p><em>In case you haven’t had a chance to try out one of the Koans kits as yet, they are a set of unit tests using a specific testing framework that both demonstrate how a set of specs for an application may be written, but also leave some tests unfilled so that you can complete them as an exercise.</em></p>
