@@ -196,6 +196,11 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <li><a href="#configuration-options">Configuration options</a></li>
 <li><a href="#modularizing-our-models-views-and-collections">Modularizing our models, views and collections</a></li>
 </ul></li>
+<li><a href="#route-based-module-loading">Route based module loading</a><ul>
+<li><a href="#json-based-module-configuration">JSON based module configuration</a></li>
+<li><a href="#module-loader-router">Module loader Router</a></li>
+<li><a href="#using-nodejs-to-handle-pushstate">Using NodeJS to handle pushState</a></li>
+</ul></li>
 <li><a href="#decoupling-backbone-with-the-mediator-and-facade-patterns">Decoupling Backbone with the Mediator and Facade Patterns</a><ul>
 <li><a href="#summary-3">Summary</a></li>
 <li><a href="#exercise">Exercise</a></li>
@@ -235,6 +240,14 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <li><a href="#implementation-notes">Implementation notes:</a></li>
 </ul></li>
 <li><a href="#plugins">Plugins</a></li>
+<li><a href="#thorax">Thorax</a><ul>
+<li><a href="#hello-world">Hello World</a></li>
+<li><a href="#embedding-child-views">Embedding child views</a></li>
+<li><a href="#view-helpers">View helpers</a></li>
+<li><a href="#collection-helper">collection helper</a></li>
+<li><a href="#custom-html-data-attributes">Custom HTML data attributes</a></li>
+<li><a href="#thorax-resources">Thorax Resources</a></li>
+</ul></li>
 </ul></li>
 <li><a href="#mobile-applications">Mobile Applications</a><ul>
 <li><a href="#backbone-jquery-mobile">Backbone &amp; jQuery Mobile</a><ul>
@@ -534,14 +547,14 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <h3 id="controllers"><a href="#TOC">Controllers</a></h3>
 <p>Controllers are an intermediary between models and views which are classically responsible for two tasks: they both update the view when the model changes and update the model when the user manipulates the view.</p>
 <p>In our Todo application, a controller would be responsible for handling changes the user made in the edit view for a particular todo, updating a specific todo model when a user has finished editing.</p>
-<p>It’s with controllers that most JavaScript MVC frameworks depart from this interpretation of the MVC pattern. The reasons for this vary, but in my opinion, Javascript framework authors likely initially looked at server-side interpretations of MVC (such as Ruby on Rails), realized that that approach didn’t translate 1:1 on the client-side, and so re-interpreted the C in MVC to solve their state management problem. This was a clever approach, but it can make it hard for developers coming to MVC for the first time to understand both the classical MVC pattern and the <q>proper</q> role of controllers in other non-Javascript frameworks.</p>
+<p>It’s with controllers that most JavaScript MVC frameworks depart from this interpretation of the MVC pattern. The reasons for this vary, but in my opinion, Javascript framework authors likely initially looked at server-side interpretations of MVC (such as Ruby on Rails), realized that that approach didn’t translate 1:1 on the client-side, and so re-interpreted the C in MVC to solve their state management problem. This was a clever approach, but it can make it hard for developers coming to MVC for the first time to understand both the classical MVC pattern and the <q>proper</q> role of controllers in other JavaScript frameworks.</p>
 <p>So does Backbone.js have Controllers? Not really. Backbone’s Views typically contain <q>controller</q> logic, and Routers (discussed below) are used to help manage application state, but neither are true Controllers according to classical MVC.</p>
 <p>In this respect, contrary to what might be mentioned in the official documentation or in blog posts, Backbone is neither a truly MVC/MVP nor MVVM framework. It’s in fact better to see it a member of the MV* family which approaches architecture in its own way. There is of course nothing wrong with this, but it is important to distinguish between classical MVC and MV* should you be relying on discussions of MVC to help with your Backbone projects.</p>
 <h3 id="controllers-in-spine.js-vs-backbone.js"><a href="#TOC">Controllers in Spine.js vs Backbone.js</a></h3>
 <p><strong>Spine.js</strong></p>
 <p>We now know that controllers are traditionally responsible for updating the view when the model changes (and similarly the model when the user updates the view). Since Backbone doesn’t have its <strong>own</strong> explicit controllers, it’s useful to review the controller from another MVC framework to appreciate the difference in implementations. Let’s take a look at <a href="http://spinejs.com/">Spine.js</a>:</p>
 <p>In this example, we’re going to have a controller called <code>TodoController</code> which would be in charge of individual todos in the application. It will ensure that when the view updates (e.g a user edited the todo) the corresponding model does too.</p>
-<p>(Note: We won’t be delving heavily into Spine.js beyond this example, but it’s worth looking at it to learn more about Javascript frameworks in general.)</p>
+<p>(Note: We won’t be delving heavily into Spine.js beyond this example, but it’s worth looking at it to learn more about JavaScript frameworks in general.)</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="co">// Controllers in Spine are created by inheriting from Spine.Controller</span>
 
 <span class="kw">var</span> TodoController = <span class="kw">Spine.Controller</span>.<span class="fu">sub</span>({
@@ -4010,11 +4023,29 @@ Initialized from template &quot;module&quot;.</code></pre>
         <span class="kw">this</span>.$<span class="fu">el</span>.<span class="fu">html</span>(template);
     }
 });</code></pre>
+<p>If multiple views need to be nested at particular locations in a template, a hash of child views indexed by child view cids’ should be created. In the template, use a custom HTML attribute named <code>data-view-cid</code> to create placeholder elements for each view to embed. Once the template has been rendered and it’s output appeneded to the parent view’s <code>$el</code>, each placeholder can be queried for and replaced with the child view’s <code>el</code>.</p>
+<p>A sample implementation containing a single child view:</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript">
+<span class="kw">var</span> OuterView = <span class="kw">Backbone.View</span>.<span class="fu">extend</span>({
+    <span class="dt">initialize</span>: <span class="kw">function</span>() {
+        <span class="kw">this</span>.<span class="fu">children</span> = {};
+        <span class="kw">var</span> child = <span class="kw">new</span> <span class="kw">Backbone</span>.<span class="fu">View</span>();
+        <span class="kw">this</span>.<span class="fu">children</span>[<span class="kw">child</span>.<span class="fu">cid</span>] = child;
+    },
+
+    <span class="dt">render</span>: <span class="kw">function</span>() {
+        <span class="kw">this</span>.$<span class="fu">el</span>.<span class="fu">html</span>(<span class="ch">&#39;&lt;div data-view-cid=&quot;&#39;</span> + <span class="kw">this</span>.<span class="fu">child</span>.<span class="fu">cid</span> + <span class="ch">&#39;&quot;&gt;&lt;/div&gt;&#39;</span>);        
+        <span class="kw">_</span>.<span class="fu">each</span>(<span class="kw">this</span>.<span class="fu">children</span>, <span class="kw">function</span>(view, cid) {
+            <span class="kw">this</span>.$(<span class="ch">&#39;[data-view-cid=&quot;&#39;</span> + cid + <span class="ch">&#39;&quot;]&#39;</span>).<span class="fu">replaceWith</span>(<span class="kw">view</span>.<span class="fu">el</span>);
+        }, <span class="kw">this</span>);
+    }
+};</code></pre>
 <p>Generally speaking, more developers opt for the first solution as:</p>
 <ul>
 <li>The majority of their views may already rely on being in the DOM in their render() method</li>
 <li>When the OuterView is re-rendered, views don’t have to be re-initialized where re-initialization has the potential to cause memory leaks and issues with existing bindings</li>
 </ul>
+<p><a href="#marionette">Marionette</a> and <a href="#thorax">Thorax</a> provide logic for nesting views, and rendering collections where each item has an associated view. Marionette provides APIs in JavaScript while Thorax provides APIs via Handlebars template helpers.</p>
 <p>(Thanks to <a href="http://stackoverflow.com/users/299189/lukas">Lukas</a> and <a href="http://stackoverflow.com/users/154765/ian-storm-taylor">Ian Taylor</a> for these tips).</p>
 <h4 id="what-is-the-best-way-to-manage-models-in-nested-views"><a href="#TOC">What is the best way to manage models in nested Views?</a></h4>
 <p>In order to reach attributes on related models in a nested setup, the models involved need to have some prior knowledge about which models this refers to. Backbone.js doesn’t implicitly handle relations or nesting, meaning it’s up to us to ensure models have a knowledge of each other.</p>
@@ -4416,7 +4447,7 @@ $(<span class="kw">function</span>($) {
 <p>Unlike some more traditional programming languages however, the current iteration of JavaScript (ECMA-262) doesn’t provide developers with the means to import such modules of code in a clean, organized manner. It’s one of the concerns with specifications that haven’t required great thought until more recent years where the need for more organized JavaScript applications became apparent.</p>
 <p>Instead, developers at present are left to fall back on variations of the module or object literal patterns. With many of these, module scripts are strung together in the DOM with namespaces being described by a single global object where it’s still possible to incur naming collisions in your architecture. There’s also no clean way to handle dependency management without some manual effort or third party tools.</p>
 <p>Whilst native solutions to these problems will be arriving in ES Harmony, the good news is that writing modular JavaScript has never been easier and you can start doing it today.</p>
-<p>In this next part of the book, we’re going to look at how to use AMD modules and RequireJS for cleanly wrapping units of code in your application into manageable modules.</p>
+<p>In this next part of the book, we’re going to look at how to use AMD modules and RequireJS for cleanly wrapping units of code in your application into manageable modules, and an alternate approach using routes to determine when modules are loaded.</p>
 <h2 id="organizing-modules-with-requirejs-and-amd"><a href="#TOC">Organizing modules with RequireJS and AMD</a></h2>
 <p>In case you haven’t used it before, <a href="http://requirejs.org">RequireJS</a> is a popular script loader written by James Burke - a developer who has been quite instrumental in helping shape the AMD module format, which we’ll discuss more shortly. Some of RequireJS’s capabilities include helping to load multiple script files, helping define modules with or without dependencies and loading in non-script dependencies such as text files.</p>
 <p>So, why use RequireJS with Backbone? Although Backbone is excellent when it comes to providing a sanitary structure to your applications, there are a few key areas where some additional help could be used:</p>
@@ -5119,6 +5150,100 @@ require([<span class="ch">&#39;views/app&#39;</span>], <span class="kw">function
 <p>The rest of the source for the Todo app mainly consists of code for handling user and application events, but that rounds up most of the core concepts for this practical.</p>
 <p>To see how everything ties together, feel free to grab the source by cloning this repo or browse it <a href="https://github.com/addyosmani/backbone-fundamentals/tree/master/practicals/modular-todo-app">online</a> to learn more. I hope you find it helpful!.</p>
 <p><strong>Note:</strong> While this first practical doesn’t use a build profile as outlined in the chapter on using the RequireJS optimizer, we will be using one in the section on building mobile Backbone applications.</p>
+<h2 id="route-based-module-loading"><a href="#TOC">Route based module loading</a></h2>
+<p>This section will discuss a route based approach to module loading as implemented in <a href="http://walmartlabs.github.com/lumbar">Lumbar</a> by Kevin Decker. Like RequireJS, Lumbar is also a modular build system, but the pattern it implements for loading routes may be used with any build system.</p>
+<p>The specifics of the Lumbar build tool are not discussed in this book. To see a complete Lumbar based project with the loader and build system see <a href="http://walmartlabs.github.com/thorax">Thorax</a> which provides boilerplate projects for various environments including Lumbar.</p>
+<h3 id="json-based-module-configuration"><a href="#TOC">JSON based module configuration</a></h3>
+<p>RequireJS defines dependencies per file, while Lumbar defines a list of files for each module in a central JSON configuration file, outputting a single JavaScript file for each defined module. Lumbar requires that each module (except the base module) define a single router and a list of routes. An example file might look like:</p>
+<pre><code> {
+    &quot;modules&quot;: {
+        &quot;base&quot;: {
+            &quot;scripts&quot;: [
+                &quot;js/lib/underscore.js&quot;,
+                &quot;js/lib/backbone.js&quot;,
+                &quot;etc&quot;
+            ]
+        },
+        &quot;pages&quot;: {
+            &quot;scripts&quot;: [
+                &quot;js/routers/pages.js&quot;,
+                &quot;js/views/pages/index.js&quot;,
+                &quot;etc&quot;
+            ],
+            &quot;routes&quot;: {
+                &quot;&quot;: &quot;index&quot;,
+                &quot;contact&quot;: &quot;contact&quot;
+            }
+        }
+    }
+}</code></pre>
+<p>Every JavaScript file defined in a module will have a <code>module</code> object in scope which contains the <code>name</code> and <code>routes</code> for the module. In <code>js/routers/pages.js</code> we could define a Backbone router for our <code>pages</code> module like so:</p>
+<pre><code>new (Backbone.Router.extend({
+    routes: module.routes,
+    index: function() {},
+    contact: function() {}
+}));</code></pre>
+<h3 id="module-loader-router"><a href="#TOC">Module loader Router</a></h3>
+<p>A little used feature of <code>Backbone.Router</code> is it’s ability to create multiple routers that listen to the same set of routes. Lumbar uses this feature to create a router that listens to all routes in the application. When a route is matched, this master router checks to see if the needed module is loaded. If the module is already loaded, then the master router takes no action and the router defined by the module will handle the route. If the needed module has not yet been loaded, it will be loaded, then <code>Backbone.history.loadUrl</code> will be called. This reloads the route, causes the master router to take no further action and the router defined in the freshly loaded module to respond.</p>
+<p>A sample implementation is provided below. The <code>config</code> object would need to contain the data from our sample configuration JSON file above, and the <code>loader</code> object would need to implement <code>isLoaded</code> and <code>loadModule</code> methods. Note that Lumbar provides all of these implementations, the examples are provided to create your own implementation.</p>
+<pre><code>// Create an object that will be used as the prototype
+// for our master router
+var handlers = {
+    routes: {}
+};
+
+_.each(config.modules, function(module, moduleName) {
+    if (module.routes) {
+        // Generate a loading callback for the module
+        var callbackName = &quot;loader_&quot; moduleName;
+        handlers[callbackName] = function() {
+            if (loader.isLoaded(moduleName)) {
+                // Do nothing if the module is loaded
+                return;
+            } else {
+                //the module needs to be loaded
+                loader.loadModule(moduleName, function() {
+                    // Module is loaded, reloading the route
+                    // will trigger callback in the module&#39;s
+                    // router
+                    Backbone.history.loadUrl();
+                });
+            }
+        };
+        // Each route in the module should trigger the
+        // loading callback
+        _.each(module.routes, function(methodName, route) {
+            handlers.routes[route] = callbackName;
+        });
+    }
+});
+
+// Create the master router
+new (Backbone.Router.extend(handlers));</code></pre>
+<h3 id="using-nodejs-to-handle-pushstate"><a href="#TOC">Using NodeJS to handle pushState</a></h3>
+<p><code>window.history.pushState</code> support (serving Backbone routes without a hashtag) requires that the server be aware of what URLs your Backbone application will handle, since the user should be able to enter the app at any of those routes (or hit reload after navigating to a pushState URL).</p>
+<p>Another advantage to defining all routes in a single location is that the same JSON configuration file provided above could be loaded by the server, listening to each route. A sample implementation in NodeJS and Express:</p>
+<pre><code>var fs = require(&#39;fs&#39;),
+    _ = require(&#39;underscore&#39;),
+    express = require(&#39;express&#39;),
+    server = express.createServer(),
+    config = JSON.parse(fs.readFileSync(&#39;path/to/config.json&#39;));
+
+_.each(config.modules, function(module, moduleName) {
+    if (module.routes) {
+        _.each(module.routes, function(methodName, route) {
+            server.get(route, function(req, res) {
+                  res.sendFile(&#39;public/index.html&#39;);
+            });
+        });
+    }
+});</code></pre>
+<p>This assumes that index.html will be serving out your Backbone application. The <code>Backbone.History</code> object can handle the rest of the routing logic as long as a <code>root</code> option is specified. A sample configuration for a simple application that lives at the root might look like:</p>
+<pre><code>Backbone.history || (Backbone.history = new Backbone.History());
+Backbone.history.start({
+  pushState: true,
+  root: &#39;/&#39;
+});</code></pre>
 <h2 id="decoupling-backbone-with-the-mediator-and-facade-patterns"><a href="#TOC">Decoupling Backbone with the Mediator and Facade Patterns</a></h2>
 <p>In this section we’ll discuss applying some of the concepts I cover in my article on <a href="http://addyosmani.com/largescalejavascript">Large-scale JavaScript Application development</a> to Backbone.</p>
 <p><em>After, you may be interested in taking a look At <a href="http://github.com/addyosmani/aura">Aura</a> - my popular widget-based Backbone.js extension framework based on many of the concepts we will be covering in this section.</em></p>
@@ -5129,7 +5254,7 @@ require([<span class="ch">&#39;views/app&#39;</span>], <span class="kw">function
 <li><strong>Supports module-level security</strong>: whereby modules are only able to execute behavior they’ve been permitted to. Application security is an area which is often overlooked in JavaScript applications, but can be quite easily implemented in a flexible manner.</li>
 <li><strong>Supports failover</strong>: allowing an application continuing to function even if particular modules fail. The typical example I give of this is the GMail chat widget. Imagine being able to build applications in a way that if one widget on the page fails (e.g chat), the rest of your application (mail) can continue to function without being affected.</li>
 </ul>
-<p>This is an architecture which has been implemented by a number of different companies in the past, including Yahoo! (for their modularized homepage - which Nicholas Zakas has <a href="http://www.youtube.com/watch?v=vXjVFPosQHw">spoken</a> about) and AOL for some of our upcoming projects.</p>
+<p>This is an architecture which has been implemented by a number of different companies in the past, including Yahoo! (for their modularized homepage.</p>
 <p>The three design patterns that make this architecture possible are the:</p>
 <ul>
 <li><strong>Module pattern</strong>: used for encapsulating unique blocks of code, where functions and variables can be kept either public or private. (<q>private</q> in the simulation of privacy sense, as of course don’t have true privacy in JavaScript)</li>
@@ -6341,6 +6466,197 @@ $(<span class="ch">&#39;#content&#39;</span>).<span class="fu">html</span>(<span
     <span class="dt">initialize</span>: <span class="kw">function</span>(){
       <span class="kw">this</span>.<span class="fu">useDiacriticsPlugin</span> = <span class="kw">true</span>; <span class="co">// use diacritics plugin if available</span>
     ...</code></pre>
+<h2 id="thorax"><a href="#TOC">Thorax</a></h2>
+<p><em>By Ryan Eastridge &amp; Addy Osmani</em></p>
+<p>Part of Backbone’s appeal is that it provides structure but is generally un-opionated, in particular when it comes to views. Thorax makes an opinionated decision to use Handlebars as it’s templating solution. Some of the patterns found in Marionette are found in Thorax as well. Marionette exposes most of these patterns as JavaScript APIs while in Thorax they are often exposed as template helpers. This chapter assumes the reader has knowledge of Handlebars.</p>
+<p>Thorax was created by Ryan Eastridge and Kevin Decker to create Walmart’s mobile web application. This chapter is limited to Thorax’s templating features and patterns implemented in Thorax that you can utilize in your application regardless of wether you choose to adopt Thorax. To learn more about other features implemented in Thorax and to download boilerplate projects visit the <a href="http://walmartlabs.github.com/thorax">Thorax website</a>.</p>
+<h3 id="hello-world"><a href="#TOC">Hello World</a></h3>
+<p><code>Thorax.View</code> differs from <code>Backbone.View</code> in that there is no <code>options</code> object. All arguments passed to the constructor become properties of the view, which in turn become available to the <code>template</code>:</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript">    <span class="kw">var</span> view = <span class="kw">new</span> <span class="kw">Thorax</span>.<span class="fu">View</span>({
+        <span class="dt">greeting</span>: <span class="ch">&#39;Hello&#39;</span>,
+        <span class="dt">template</span>: <span class="ch">&#39;{{greeting}} World!&#39;</span>
+    });
+    <span class="kw">view</span>.<span class="fu">render</span>();
+    $(<span class="ch">&#39;body&#39;</span>).<span class="fu">append</span>(<span class="kw">view</span>.<span class="fu">el</span>);</code></pre>
+<p>In most examples in this chapter a <code>template</code> property will be specified. In larger projects including the boilerplate projects provided on the Thorax website a <code>name</code> property would instead be used and a <code>template</code> of the same file name in your project would automatically be assigned to the view.</p>
+<p>If a <code>model</code> is set on a view, it’s attributes also become available to the template:</p>
+<pre><code>var view = new Thorax.View({
+    model: new Thorax.Model({key: &#39;value&#39;}),
+    template: &#39;{{key}}&#39;
+});</code></pre>
+<h3 id="embedding-child-views"><a href="#TOC">Embedding child views</a></h3>
+<p>The view helper allows you to embed other views within a view. Child views can be specified as properties of the view:</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript">    <span class="kw">var</span> parent = <span class="kw">new</span> <span class="kw">Thorax</span>.<span class="fu">View</span>({
+        <span class="dt">child</span>: <span class="kw">new</span> <span class="kw">Thorax</span>.<span class="fu">View</span>(...),
+        <span class="dt">template</span>: <span class="ch">&#39;{{view child}}&#39;</span>
+    });</code></pre>
+<p>Or the name of a child view to initialize (and any optional properties to pass). In this case the child view must have previously been created with <code>extend</code> and a <code>name</code> property:</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript">    <span class="kw">var</span> ChildView = <span class="kw">Thorax.View</span>.<span class="fu">extend</span>({
+        <span class="dt">name</span>: <span class="ch">&#39;child&#39;</span>,
+        <span class="dt">template</span>: ...
+    });
+
+    <span class="kw">var</span> parent = <span class="kw">new</span> <span class="kw">Thorax</span>.<span class="fu">View</span>({
+        <span class="dt">template</span>: <span class="ch">&#39;{{view &quot;child&quot; key=&quot;value&quot;}}&#39;</span>
+    });</code></pre>
+<p>The view helper may also be used as a block helper, in which case the block will be assigned as the <code>template</code> property of the child view:</p>
+<pre class="handlebars"><code>    {{#view child}}
+        child will have this block
+        set as it&#39;s template property
+    {{/view}}</code></pre>
+<p>Handlebars is a string based, while <code>Backbone.View</code> instances have a DOM <code>el</code>. Since we are mixing metaphors, the embedding of views works via a placeholder mechanism where the <code>view</code> helper in this case adds the view passed to the helper to a hash of <code>children</code>, then injects placeholder HTML into the template such as:</p>
+<pre class="sourceCode html"><code class="sourceCode html">    <span class="kw">&lt;div</span><span class="ot"> data-view-placeholder-cid=</span><span class="st">&quot;view2&quot;</span><span class="kw">&gt;&lt;/div&gt;</span></code></pre>
+<p>Then once the parent view is rendered, we walk the DOM in search of all the placeholders we created, replacing them with the child views’ <code>el</code>s:</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript">    <span class="kw">this</span>.$<span class="fu">el</span>.<span class="fu">find</span>(<span class="ch">&#39;[data-view-placeholder-cid]&#39;</span>).<span class="fu">forEach</span>(<span class="kw">function</span>(el) {
+        <span class="kw">var</span> cid = <span class="kw">el</span>.<span class="fu">getAttribute</span>(<span class="ch">&#39;data-view-placeholder-cid&#39;</span>),
+            view = <span class="kw">this</span>.<span class="fu">children</span>[cid];
+        <span class="kw">view</span>.<span class="fu">render</span>();
+        $(el).<span class="fu">replaceWith</span>(<span class="kw">view</span>.<span class="fu">el</span>);
+    }, <span class="kw">this</span>);</code></pre>
+<h3 id="view-helpers"><a href="#TOC">View helpers</a></h3>
+<p>One of the most useful constructs in Thorax is <code>Handlebars.registerViewHelper</code> (which differs from <code>Handlebars.registerHelper</code>). This method will register a new block helper that will create and embed a <code>HelperView</code> instance with it’s <code>template</code> set to the captured block. A <code>HelperView</code> instance is different from that of a regular child view in that it’s context will be that of the parent’s in the template. Like other child views it will have a <code>parent</code> property set to that of the declaring view. Many of the built in helpers in Thorax including the <code>collection</code> helper are created in this manner.</p>
+<p>A simple example would be an <code>on</code> helper that re-rendered the generated <code>HelperView</code> instance each time an event was triggered on the declaring / parent view:</p>
+<pre><code>Handlebars.registerViewHelper(&#39;on&#39;, function(eventName, helperView) {
+    helperView.parent.on(eventName, function() {
+        helperView.render();
+    });
+});</code></pre>
+<p>An example use of this would be to have a counter that would incriment each time a button was clicked. This example makes use of the <code>button</code> helper in Thorax which simply makes a button that calls a method when clicked:</p>
+<pre class="handlebars"><code>    {{#on &quot;incrimented&quot;}}{{i}}{/on}}
+    {{#button trigger=&quot;incrimented&quot;}}Add{{/button}}</code></pre>
+<p>And the corresponding view class:</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript">    <span class="kw">new</span> <span class="kw">Thorax</span>.<span class="fu">View</span>({
+        <span class="dt">events</span>: {
+            <span class="dt">incrimented</span>: <span class="kw">function</span>() {
+                ++<span class="kw">this</span>.<span class="fu">i</span>;
+            }
+        },
+        <span class="dt">initialize</span>: <span class="kw">function</span>() {
+            <span class="kw">this</span>.<span class="fu">i</span> = <span class="dv">0</span>;
+        },
+        <span class="dt">template</span>: ...
+    });</code></pre>
+<h3 id="collection-helper"><a href="#TOC">collection helper</a></h3>
+<p>The <code>collection</code> helper creates and embeds a <code>CollectionView</code> instance, creating a view for each item in a collection, updating when items are added, removed or changed in the collection. The simplest usage of the helper would look like:</p>
+<pre class="handlebars"><code>    {{#collection kittens}}
+      &lt;li&gt;{{name}}&lt;/li&gt;
+    {{/collection}}</code></pre>
+<p>And the corresponding view:</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript">    <span class="kw">new</span> <span class="kw">Thorax</span>.<span class="fu">View</span>({
+      <span class="dt">kittens</span>: <span class="kw">new</span> <span class="kw">Thorax</span>.<span class="fu">Collection</span>(...),
+      <span class="dt">template</span>: ...
+    });</code></pre>
+<p>The block in this case will be assigned as the <code>template</code> for each item view created, and the context will be the <code>attributes</code> of the given model. This helper accepts options that can be arbitrary HTML attributes, a <code>tag</code> option to specify the type of tag containing the collection, or any of the following:</p>
+<ul>
+<li><code>item-template</code> - A template to display for each model. If a block is specified it will become the item-template</li>
+<li><code>item-view</code> - A view class to use when each item view is created</li>
+<li><code>empty-template</code> - A template to display when the collection is empty. If an inverse / else block is specified it will become the empty-template</li>
+<li><code>empty-view</code> - A view to display when the collection is empty</li>
+</ul>
+<p>Options and blocks can be used in combination, in this case creating a <code>KittenView</code> class with a <code>template</code> set to the captured block for each kitten in the collection:</p>
+<pre class="handlebars"><code>    {{#collection kittens item-view=&quot;KittenView&quot; tag=&quot;ul&quot;}}
+      &lt;li&gt;{{name}}&lt;/li&gt;
+    {{else}}
+      &lt;li&gt;No kittens!&lt;/li&gt;
+    {{/collection}}</code></pre>
+<p>Note that multiple collections can be used per view, and collections can be nested. This is useful when there are models that contain collections that contain models that contain…</p>
+<pre class="handlebars"><code>    {{#collection kittens}}
+      &lt;h2&gt;{{name}}&lt;/h2&gt;
+      &lt;p&gt;Kills:&lt;/p&gt;
+      {{#collection miceKilled tag=&quot;ul&quot;}}
+        &lt;li&gt;{{name}}&lt;/li&gt;
+      {{/collection}}
+    {{/collection}}</code></pre>
+<h3 id="custom-html-data-attributes"><a href="#TOC">Custom HTML data attributes</a></h3>
+<p>Thorax makes heavy use of custom data attributes to operate. While some make sense only within the context of Thorax, several are quite useful to have in any Backbone project for writing other functions against, or for general debugging. In order to add some to your views in non Thorax projects, override the <code>setElement</code> method in your base view class:</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript">  <span class="kw">MyApplication</span>.<span class="fu">View</span> = <span class="kw">Backbone.View</span>.<span class="fu">extend</span>({
+    <span class="dt">setElement</span>: <span class="kw">function</span>() {
+        <span class="kw">var</span> response = <span class="kw">Backbone.View.prototype.setElement</span>.<span class="fu">apply</span>(<span class="kw">this</span>, arguments);
+        <span class="kw">this</span>.<span class="fu">name</span> &amp;&amp; <span class="kw">this</span>.$<span class="fu">el</span>.<span class="fu">attr</span>(<span class="ch">&#39;data-view-name&#39;</span>, <span class="kw">this</span>.<span class="fu">name</span>);
+        <span class="kw">this</span>.$<span class="fu">el</span>.<span class="fu">attr</span>(<span class="ch">&#39;data-view-cid&#39;</span>, <span class="kw">this</span>.<span class="fu">cid</span>);
+        <span class="kw">this</span>.<span class="fu">collection</span> &amp;&amp; <span class="kw">this</span>.$<span class="fu">el</span>.<span class="fu">attr</span>(<span class="ch">&#39;data-collection-cid&#39;</span>, <span class="kw">this</span>.<span class="fu">collection</span>.<span class="fu">cid</span>);
+        <span class="kw">this</span>.<span class="fu">model</span> &amp;&amp; <span class="kw">this</span>.$<span class="fu">el</span>.<span class="fu">attr</span>(<span class="ch">&#39;data-model-cid&#39;</span>, <span class="kw">this</span>.<span class="fu">model</span>.<span class="fu">cid</span>);
+        <span class="kw">return</span> response;
+    }
+  });</code></pre>
+<p>In addition making your application more immediately comprehensible in the inspector, it’s now possible to extend jQuery / Zepto with functions to lookup the closest view, model or collection to a given element. In order to make it work save references to each view created in your base view class by overriding the <code>_configure</code> method:</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript">    <span class="kw">MyApplication</span>.<span class="fu">View</span> = <span class="kw">Backbone.View</span>.<span class="fu">extend</span>({
+        <span class="dt">_configure</span>: <span class="kw">function</span>() {
+            <span class="kw">Backbone.View.prototype._configure</span>.<span class="fu">apply</span>(<span class="kw">this</span>, arguments);
+            <span class="kw">Thorax</span>._<span class="fu">viewsIndexedByCid</span>[<span class="kw">this</span>.<span class="fu">cid</span>] = cid;
+        },
+        <span class="dt">dispose</span>: <span class="kw">function</span>() {
+            <span class="kw">Backbone.View.prototype.dispose</span>.<span class="fu">apply</span>(<span class="kw">this</span>, arguments);
+            <span class="kw">delete</span> <span class="kw">Thorax</span>._<span class="fu">viewsIndexedByCid</span>[<span class="kw">this</span>.<span class="fu">cid</span>];
+        }
+    });</code></pre>
+<p>Then we can extend jQuery / Zepto:</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript">    $.<span class="fu">fn</span>.<span class="fu">view</span> = <span class="kw">function</span>() {
+        <span class="kw">var</span> el = $(<span class="kw">this</span>).<span class="fu">closest</span>(<span class="ch">&#39;[data-view-cid]&#39;</span>);
+        <span class="kw">return</span> el &amp;&amp; <span class="kw">Thorax</span>._<span class="fu">viewsIndexedByCid</span>[<span class="kw">el</span>.<span class="fu">attr</span>(<span class="ch">&#39;data-view-cid&#39;</span>)];
+    };
+
+    $.<span class="fu">fn</span>.<span class="fu">model</span> = <span class="kw">function</span>(view) {
+        <span class="kw">var</span> $this = $(<span class="kw">this</span>),
+            modelElement = $<span class="kw">this</span>.<span class="fu">closest</span>(<span class="ch">&#39;[data-model-cid]&#39;</span>),
+            modelCid = modelElement &amp;&amp; <span class="kw">modelElement</span>.<span class="fu">attr</span>(<span class="ch">&#39;[data-model-cid]&#39;</span>);
+        <span class="kw">if</span> (modelCid) {
+            <span class="kw">var</span> view = $<span class="kw">this</span>.<span class="fu">view</span>();
+            <span class="kw">return</span> view &amp;&amp; <span class="kw">view</span>.<span class="fu">model</span>;
+        }
+        <span class="kw">return</span> <span class="kw">false</span>;
+    };</code></pre>
+<p>Now instead of storing references to models randomly throughout your application to lookup when a given DOM event occurs you can use <code>$(element).model()</code>. In Thorax, this can particularly useful in conjunction with the <code>collection</code> helper which generates a view class (with a <code>model</code> property) for each <code>model</code> in the collection. An example template:</p>
+<pre class="handlebars"><code>    {{#collection kittens tag=&quot;ul&quot;}}
+      &lt;li&gt;{{name}}&lt;/li&gt;
+    {{/collection}}</code></pre>
+<p>And the corresponding view class:</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript">    <span class="kw">Thorax.View</span>.<span class="fu">extend</span>({
+      <span class="dt">events</span>: {
+        <span class="ch">&#39;click li&#39;</span>: <span class="kw">function</span>(event) {
+          <span class="kw">var</span> kitten = $(<span class="kw">event</span>.<span class="fu">target</span>).<span class="fu">model</span>();
+          <span class="kw">console</span>.<span class="fu">log</span>(<span class="ch">&#39;Clicked on &#39;</span> + <span class="kw">kitten</span>.<span class="fu">get</span>(<span class="ch">&#39;name&#39;</span>));
+        }
+      },
+      <span class="dt">kittens</span>: <span class="kw">new</span> <span class="kw">Thorax</span>.<span class="fu">Collection</span>(...),
+      <span class="dt">template</span>: ...
+    });  </code></pre>
+<p>A common anti-pattern in Backbone applications is to assign a <code>className</code> to a single view class. Consider using the <code>data-view-name</code> attribute as a CSS selector instead, saving CSS classes for things that will be used multiple times:</p>
+<pre class="sourceCode css"><code class="sourceCode css">  <span class="ch">[data-view-name=</span><span class="st">&quot;child&quot;</span><span class="ch">]</span> <span class="kw">{</span>
+
+  <span class="kw">}</span></code></pre>
+<h3 id="thorax-resources"><a href="#TOC">Thorax Resources</a></h3>
+<p>No Backbone related tutorial would be complete without a todo application. A <a href="http://todomvc.com/labs/architecture-examples/thorax/">Thorax implementation of TodoMVC</a> is available, in addition to this far simpler example composed of this single handlebars template:</p>
+<pre class="handlebars"><code>  {{#collection todos tag=&quot;ul&quot;}}
+    &lt;li{{#if done}} class=&quot;done&quot;{{/if}}&gt;
+      &lt;input type=&quot;checkbox&quot; name=&quot;done&quot;{{#if done}} checked=&quot;checked&quot;{{/if}}&gt;
+      &lt;span&gt;{{item}}&lt;/span&gt;
+    &lt;/li&gt;
+  {{/collection}}
+  &lt;form&gt;
+    &lt;input type=&quot;text&quot;&gt;
+    &lt;input type=&quot;submit&quot; value=&quot;Add&quot;&gt;
+  &lt;/form&gt;</code></pre>
+<p>and the corresponding JavaScript:</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript">  <span class="kw">var</span> todosView = <span class="kw">Thorax</span>.<span class="fu">View</span>({
+      <span class="dt">todos</span>: <span class="kw">new</span> <span class="kw">Thorax</span>.<span class="fu">Collection</span>(),
+      <span class="dt">events</span>: {
+          <span class="ch">&#39;change input[type=&quot;checkbox&quot;]&#39;</span>: <span class="kw">function</span>(event) {
+              <span class="kw">var</span> target = $(<span class="kw">event</span>.<span class="fu">target</span>);
+              <span class="kw">target</span>.<span class="fu">model</span>().<span class="fu">set</span>({<span class="dt">done</span>: !!<span class="kw">target</span>.<span class="fu">attr</span>(<span class="ch">&#39;checked&#39;</span>)});
+          },
+          <span class="ch">&#39;submit form&#39;</span>: <span class="kw">function</span>(event) {
+              <span class="kw">event</span>.<span class="fu">preventDefault</span>();
+              <span class="kw">var</span> input = <span class="kw">this</span>.$(<span class="ch">&#39;input[type=&quot;text&quot;]&#39;</span>);
+              <span class="kw">this</span>.<span class="fu">todos</span>.<span class="fu">add</span>({<span class="dt">item</span>: <span class="kw">input</span>.<span class="fu">val</span>()});
+              <span class="kw">input</span>.<span class="fu">val</span>(<span class="ch">&#39;&#39;</span>);
+          }
+      },
+      <span class="dt">template</span>: <span class="ch">&#39;...&#39;</span>
+  });
+  <span class="kw">todosView</span>.<span class="fu">render</span>();
+  $(<span class="ch">&#39;body&#39;</span>).<span class="fu">append</span>(<span class="kw">todosView</span>.<span class="fu">el</span>);</code></pre>
+<p>To see Thorax in action on a large scale website visit walmart.com on any Android or iOS device. For a complete list of resources visit the <a href="http://walmartlabs.github.com/thorax">Thorax website</a>.</p>
 <h1 id="mobile-applications"><a href="#TOC">Mobile Applications</a></h1>
 <h2 id="backbone-jquery-mobile"><a href="#TOC">Backbone &amp; jQuery Mobile</a></h2>
 <h3 id="resolving-the-routing-conflicts"><a href="#TOC">Resolving the routing conflicts</a></h3>
@@ -7863,6 +8179,8 @@ test( <span class="ch">&#39;Should bind Collection events to View creation.&#39;
 <p>Whilst what we get with Backbone out of the box can be terribly useful, there are some equally beneficial add-ons that can help simplify our development process. These include:</p>
 <ul>
 <li><a href="https://github.com/derickbailey/backbone.marionette">Backbone Marionette</a></li>
+<li><a href="http://walmartlabs.github.com/thorax">Thorax</a></li>
+<li><a href="http://walmartlabs.github.com/lumbar">Lumbar</a></li>
 <li><a href="https://github.com/tbranyen/backbone.layoutmanager">Backbone Layout Manager</a></li>
 <li><a href="https://github.com/backbone-boilerplate/backbone-boilerplate">Backbone Boilerplate</a></li>
 <li><a href="https://github.com/derickbailey/backbone.modelbinding">Backbone Model Binding</a></li>

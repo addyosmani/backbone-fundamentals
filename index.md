@@ -6447,7 +6447,7 @@ At a high-level, one architecture that works for such applications is something 
 * **Supports module-level security**: whereby modules are only able to execute behavior they've been permitted to. Application security is an area which is often overlooked in JavaScript applications, but can be quite easily implemented in a flexible manner.
 * **Supports failover**: allowing an application continuing to function even if particular modules fail. The typical example I give of this is the GMail chat widget. Imagine being able to build applications in a way that if one widget on the page fails (e.g chat), the rest of your application (mail) can continue to function without being affected.
 
-This is an architecture which has been implemented by a number of different companies in the past, including Yahoo! (for their modularized homepage - which Nicholas Zakas has [spoken](http://www.youtube.com/watch?v=vXjVFPosQHw) about) and AOL for some of our upcoming projects.
+This is an architecture which has been implemented by a number of different companies in the past, including Yahoo! (for their modularized homepage.
 
 The three design patterns that make this architecture possible are the:
 
