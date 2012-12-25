@@ -939,7 +939,7 @@ Sometimes you may also want to get a model based on its client id. The client id
 ```javascript
 // extends on previous examples
 
-var todoCid = todos.getByCid(todo2.cid);
+var todoCid = todos.get(todo2.cid);
 
 // As mentioned in previous example, 
 // models are passed by reference
