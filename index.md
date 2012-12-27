@@ -321,7 +321,7 @@ It's with controllers that most JavaScript MVC frameworks depart from this inter
 
 So does Backbone.js have Controllers? Not really. Backbone's Views typically contain "controller" logic, and Routers (discussed below) are used to help manage application state, but neither are true Controllers according to classical MVC.
 
-In this respect, contrary to what might be mentioned in the official documentation or in blog posts, Backbone is neither a truly MVC/MVP nor MVVM framework. It's in fact better to see it a member of the MV* family which approaches architecture in its own way. There is of course nothing wrong with this, but it is important to distinguish between classical MVC and MV* should you be relying on discussions of MVC to help with your Backbone projects.
+In this respect, contrary to what might be mentioned in the official documentation or in blog posts, Backbone is not a true MVC framework. It's in fact better to see it a member of the MV* family which approaches architecture in its own way. There is of course nothing wrong with this, but it is important to distinguish between classical MVC and MV* should you be relying on discussions of MVC to help with your Backbone projects.
 
 
 ### Controllers in Spine.js vs Backbone.js
@@ -533,6 +533,7 @@ In this section, you'll learn the essentials of Backbone's models, views, collec
 * Collections
 * Routers
 * Views
+* Dependencies
 * Namespacing
 
 
@@ -1809,6 +1810,104 @@ var Note = Backbone.Model.extend({
   }
 });
 ```
+
+## Dependencies
+
+## Dependencies
+
+The official Backbone.js [documentation](http://backbonejs.org/) states:
+
+>Backbone's only hard dependency is Underscore.js ( > 1.3.1). For RESTful persistence, history support via Backbone.Router and DOM manipulation with Backbone.View, include json2.js, and either jQuery ( > 1.4.2) or Zepto.
+
+*[Lo-dash](https://github.com/bestiejs/lodash), a fork of Underscore containing performance enhancements is also compatible with Backbone.*
+
+What this translates to is that if you require working with anything beyond models, you will need to include a DOM manipulation library such as jQuery or Zepto. Underscore is primarily used for it's utility methods (which Backbone relies upon heaviy) and json2.js for legacy browser JSON support if Backbone.sync is used.
+
+### DOM Manipulation
+
+Although most developers won't need it, Backbone does support setting a custom DOM library to be used instead of these options. From the source:
+
+```
+// Set the JavaScript library that will be used for DOM manipulation and
+// Ajax calls (a.k.a. the `$` variable). By default Backbone will use: jQuery,
+// Zepto, or Ender; but the `setDomLibrary()` method lets you inject an
+// alternate JavaScript library (or a mock library for testing your views
+// outside of a browser).
+
+Backbone.setDomLibrary = function(lib) {
+  $ = lib;
+};
+```
+
+Calling this method will allow you to use any custom DOM-manipulation library. e.g:
+
+```
+Backbone.setDomLibrary(aCustomLibrary);
+```
+
+### Utilities
+
+Underscore.js is heavily used in Backbone behind the scenes for everything from object extension through to event binding. As the entire library is generally included, we get free access to a number of useful utilities we can use on Collections such as filtering `_.filter()`, sorting `_.sortBy()`, mapping `_.map()` and so on. 
+
+From the source:
+
+```
+// Underscore methods that we want to implement on the Collection.
+var methods = ['forEach', 'each', 'map', 'reduce', 'reduceRight', 'find',
+    'detect', 'filter', 'select', 'reject', 'every', 'all', 'some', 'any',
+    'include', 'contains', 'invoke', 'max', 'min', 'sortBy', 'sortedIndex',
+    'toArray', 'size', 'first', 'initial', 'rest', 'last', 'without', 'indexOf',
+    'shuffle', 'lastIndexOf', 'isEmpty', 'groupBy'];
+
+// Mix in each Underscore method as a proxy to Collection#models.
+  _.each(methods, function(method) {
+    Collection.prototype[method] = function() {
+      return _[method].apply(_, [this.models].concat(_.toArray(arguments)));
+    };
+ ```
+    
+However, for a complete linked list of methods supported, see the [official documentation](http://backbonejs.org/#Collection-Underscore-Methods).
+
+### RESTFul persistence
+
+Models and collections in Backbone can be "sync"ed with the server using the `fetch`, `save` and `destroy` methods. All of these methods delegate back to the `Backbone.sync` function, which actually wraps jQuery/Zepto's `$.ajax` function, calling GET, POST and DELETE for the respective persistence methods on Backbone models. 
+
+From the the source for `Backbone.sync`:
+
+```
+var methodMap = {
+    'create': 'POST',
+    'update': 'PUT',
+    'delete': 'DELETE',
+    'read':   'GET'
+  };
+  
+Backbone.sync = function(method, model, options) {
+    var type = methodMap[method];
+    options || (options = {});
+    // ... Followed by lots of Backbone.js configuration, then..
+   return $.ajax(_.extend(params, options));
+```
+
+### Routing
+
+Calls to `Backbone.History.start` rely on jQuery/Zepto binding `popState` or `hashchange` event listeners back to the window object. 
+
+From the source for `Backbone.history.start`:
+
+```
+// Depending on whether we're using pushState or hashes, and whether 'onhashchange' is 
+// supported, determine how we check the URL state.
+if (this._hasPushState) {
+        $(window).bind('popstate', this.checkUrl);
+      } else if (this._wantsHashChange && ('onhashchange' in window) && !oldIE) {
+        $(window).bind('hashchange', this.checkUrl);
+      ...
+```
+
+`Backbone.History.stop` similarly uses your DOM manipulation library to unbind these event listeners.
+
+
 
 ## Namespacing
 
