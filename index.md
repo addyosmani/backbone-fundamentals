@@ -1813,8 +1813,6 @@ var Note = Backbone.Model.extend({
 
 ## Dependencies
 
-## Dependencies
-
 The official Backbone.js [documentation](http://backbonejs.org/) states:
 
 >Backbone's only hard dependency is Underscore.js ( > 1.3.1). For RESTful persistence, history support via Backbone.Router and DOM manipulation with Backbone.View, include json2.js, and either jQuery ( > 1.4.2) or Zepto.
