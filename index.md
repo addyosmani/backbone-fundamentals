@@ -2110,6 +2110,8 @@ The first step is to setup the basic application dependencies, which in this cas
   <script src="js/lib/backbone-min.js"></script>
   <script src="js/lib/backbone-localstorage.js"></script>
   <script src="js/models/todo.js"></script>
+  <script type="text/template" id="item-template"></script>
+  <script type="text/template" id="stats-template"></script>
   <script src="js/collections/todos.js"></script>
   <script src="js/views/todo.js"></script>
   <script src="js/views/app.js"></script>
