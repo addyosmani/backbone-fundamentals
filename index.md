@@ -10413,8 +10413,18 @@ That's it for this section on testing applications with QUnit and SinonJS. I enc
 
 # Resources
 
+## Books &amp; Courses
 
-Whilst what we get with Backbone out of the box can be terribly useful, there are some equally beneficial add-ons that can help simplify our development process. These include:
+* [PeepCodes Backbone.js Basics](https://peepcode.com/products/backbone-js)
+* [CodeScrools Anatomy Of Backbone](http://www.codeschool.com/courses/anatomy-of-backbonejs)
+* [Recipies With Backbone](http://recipeswithbackbone.com/)
+* [Backbone Patterns](http://ricostacruz.com/backbone-patterns/)
+* [Backbone On Rails](https://learn.thoughtbot.com/products/1-backbone-js-on-rails)
+* [MVC In JavaScript With Backbone](https://github.com/Integralist/Blog-Posts/blob/master/MVC%20in%20JavaScript%20with%20Backbone.md)
+* [Backbone Tutorials](http://backbonetutorials.com/)
+* [Derick Baileys Resources For Learning Backbone](http://lostechies.com/derickbailey/2011/09/13/resources-for-and-how-i-learned-backbone-js/)
+
+## Extensions/Libraries
 
 * [Backbone Marionette](https://github.com/derickbailey/backbone.marionette)
 * [Thorax](http://walmartlabs.github.com/thorax)
@@ -10425,8 +10435,6 @@ Whilst what we get with Backbone out of the box can be terribly useful, there ar
 * [Backbone Relational - for model relationships](https://github.com/PaulUithol/Backbone-relational)
 * [Backbone CouchDB](https://github.com/janmonschke/backbone-couchdb)
 * [Backbone Validations - HTML5 inspired validations](https://github.com/n-time/backbone.validations)
-
-In time, there will be tutorials in the book covering some of these resources but until then, please feel free to check them out.
 
 
 # Conclusions
@@ -10444,5 +10452,5 @@ I would like to thank the Backbone.js, Stack Overflow, DailyJS (Alex Young) and 
 
 
 ---
-Where relevant, copyright Addy Osmani, 2012.
+Where relevant, copyright Addy Osmani, 2012-2013.
 
