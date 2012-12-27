@@ -10420,8 +10420,8 @@ That's it for this section on testing applications with QUnit and SinonJS. I enc
 
 ## Books &amp; Courses
 
-* [PeepCodes Backbone.js Basics](https://peepcode.com/products/backbone-js)
-* [CodeScrools Anatomy Of Backbone](http://www.codeschool.com/courses/anatomy-of-backbonejs)
+* [PeepCode: Backbone.js Basics](https://peepcode.com/products/backbone-js)
+* [CodeSchool: Anatomy Of Backbone](http://www.codeschool.com/courses/anatomy-of-backbonejs)
 * [Recipies With Backbone](http://recipeswithbackbone.com/)
 * [Backbone Patterns](http://ricostacruz.com/backbone-patterns/)
 * [Backbone On Rails](https://learn.thoughtbot.com/products/1-backbone-js-on-rails)
