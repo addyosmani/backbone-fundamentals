@@ -609,7 +609,7 @@ console.log(todo3);
 
 **Model.get()**
 
-`Model.get()` provides easy access to a model's attributes. All attributes, regardless if default ones or one passed through to the model on instantiation, are available for retrieval.
+`Model.get()` provides easy access to a model's attributes. All attributes, regardless if default ones were passed through to the model on instantiation, are available for retrieval.
 
 ```javascript
 var Todo = Backbone.Model.extend({
