@@ -1384,7 +1384,7 @@ var TodoRouter = Backbone.Router.extend({
         /* Sample usage: http://example.com/#search/job/p1 */
 
         "todos/:id/download/*documentPath" : "downloadDocument",
-        /* This is an example of using a *splat. splats are able to match any number of
+        /* This is an example of using a *splat. Splats are able to match any number of
         URL components and can be combined with ":param"s*/
         /* Sample usage: http://example.com/#todos/5/download/files/Meeting_schedule.doc */
 
