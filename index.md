@@ -1357,7 +1357,7 @@ Note: An application will usually have at least one route mapping a URL route to
 'route' : 'mappedFunction'
 ```
 
-Let us now define our first controller by extending `Backbone.Router`. For the purposes of this guide, we're going to continue pretending we're creating a complex todo application (something like personal organize/planner) that requires a complex TodoRouter.
+Let us now define our first router by extending `Backbone.Router`. For the purposes of this guide, we're going to continue pretending we're creating a complex todo application (something like personal organize/planner) that requires a complex TodoRouter.
 
 Note the inline comments in the code example below as they continue the rest of the lesson on routers.
 
@@ -1431,7 +1431,7 @@ As of Backbone 0.5+, it's possible to opt-in for HTML5 pushState support via `wi
 
 #### Is there a limit to the number of routers I should be using?
 
-Andrew de Andrade has pointed out that DocumentCloud themselves usually only use a single router in most of their applications. You're very likely to not require more than one or two routers in your own projects as the majority of your application routing can be kept organized in a single controller without it getting unwieldy.
+Andrew de Andrade has pointed out that DocumentCloud themselves usually only use a single router in most of their applications. You're very likely to not require more than one or two routers in your own projects as the majority of your application routing can be kept organized in a single router without it getting unwieldy.
 
 #### Backbone.history
 
