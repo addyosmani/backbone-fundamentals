@@ -141,25 +141,25 @@ For example, let say we have our blog on www.example.com:
 
 * And we want to edit an article (with id=43) and request http://www.example.com/article/edit/43:
 
-On sever side Front Controller would analyze URI and invoke Article Controller (corresponds to /article/ part of the URI) and its Edit Action (corresponds to /edit/ part of the URI). Within the Action there would be a call to, let say, Articles model and its Articles::getEntry(43) method (43 corresponds to /43/ in URI) which would return the blog article data from database for edit. Afterwards, Article Controller would load (article/edit) view which would have logic for injecting the article's data into the form for user to edit its content, title and other (meta) data. Once all this is done response is returned to the browser.
+On sever side Front Controller would analyze the URL and invoke Article Controller (corresponding to /article/ part of the URI) and its Edit Action (corresponding to /edit/ part of the URI). Within the Action there would be a call to, let say, Articles model and its Articles::getEntry(43) method (43 corresponding to /43/ in URI) which would return the blog article data from database for edit. Afterwards, Article Controller would load (article/edit) view which would have logic for injecting the article's data into the form for user to edit its content, title and other (meta) data. Once all this is done response is returned to the browser.
 
 As you can imagine, similar flow would be with POST request after we press save button in the loaded form. POST action URI would be like /article/save/43. This time request would go through the same Controller, but Save Action (due to /save/ URI chunk), and invoked Articles Model would save edit article to the database with Articles::saveEntry(43) and redirect back to the /article/edit/43 for further editing.
 
 * And users request: http://www.example.com/
 
-On sever side Front Controller would invoke default Controller and Action, e.g. Index Controller and its Index action. Within Index Action there would be a call to Articles model and its Articles::getLastEntries(10) method which would return last 10 blog posts. Afterwards, Controller would load blog/index view which would have basic logic for listing last 10 blog posts.
+On the server side Front Controller would invoke default Controller and Action, e.g. Index Controller and its Index action. Within Index Action there would be a call to Articles model and its Articles::getLastEntries(10) method which would return last 10 blog posts. Afterwards, Controller would load blog/index view which would have basic logic for listing last 10 blog posts.
 
 Let's see once again the big picture of typical HTTP request lifecycle through the server side MVC in the picture below. Server receives request and routes it through (single) entry point. At the entry point, the Front Controller analyze request and based on it invokes appropriate Action of the appropriate Controller. This process is called the routing. Within the Action Model is asked to return and/or save submitted data. Model communicates with the data source (e.g. database or API etc.). Once Model finish its work it returns data to the Controller which then loads appropriate View. The View executes presentation logic (loops through articles and prints title, content etc.) with provided data. In the end response is returned to the user.
 
 ![](img/webmvcflow_bacic.png)
 
-Demand for the complex, fast, responsive Ajax powered web applications demanded a lot of this logic to be replicated on the client side. This meant a lot more code in there. Eventually it brought us to the point that we needed MVC implemented on the client side to better structure the code and make it easier to maintain and further extend during the application life-cycle.
+Demand for complex, fast, responsive Ajax powered web applications demanded a lot of this logic to be replicated on the client side. This meant a lot more code in there. Eventually it brought us to the point that we needed MVC implemented on the client side to better structure the code and make it easier to maintain and further extend during the application life-cycle.
 
 And, of course, JavaScript and browsers create another context which asks for bending or adjustment of the traditional MVC paradigm to it.
 
 ### MVC In The Browser
 
-Complex JavaScript web application, aka Single Page Application (SPA), "dances" all the time in a users browsers with all data persistence (saving to database on server) work done with Ajax calls in the background, which means, to put it boldly, no full browser refresh ever happens. Application behavior to be perceived by the users as "dancing" involves a lot of thought and work to be put in. 
+In complex JavaScript web application, aka Single Page Application (SPA), all application responses (e.g. UI updates) to user inputs are done seemlessly on the client-side. Data fetching and persistence (e.g. saving to database on server) work is done with Ajax in the background. For great, slick and smooth, user experience code powering these interacions needs to bee well thought out.
 
 Through evolution, trial and error, and a lot of spaghetti and not so spaghetti-like code developers in the end developed on ideas of traditional MVC paradigm and brought the solution for structuring JavaScript code to the landscape of the SPAs through JavaScript MVC frameworks. JavaScript now has a number of MVC frameworks, including Ember.js, JavaScriptMVC, and of course Backbone.js.
 
