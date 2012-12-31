@@ -1393,7 +1393,7 @@ ourObject.trigger("dance:break", "started break dancing. Yeah!");
 ourObject.off("dance:tap");
 
 // Trigger the custom events again, but one is logged.
-ourObject.trigger("dance:tap", "stopped tap dancing."); // won't be logged as its not listened for
+ourObject.trigger("dance:tap", "stopped tap dancing."); // won't be logged as it's not listened for
 ourObject.trigger("dance:break", "break dancing. Yeah!");
 ```
 
