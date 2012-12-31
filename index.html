@@ -460,15 +460,15 @@ code > span.er { color: #ff0000; font-weight: bold; }
 
   <span class="kw">var</span> Todos = <span class="kw">Backbone.Collection</span>.<span class="fu">extend</span>({
     <span class="dt">model</span>: Todo,
-
+    
     <span class="co">// For simplicity we&#39;ll use localStorage throughout the first part of book.</span>
     <span class="co">// Save all of the todo items under the `&quot;todos&quot;` namespace.</span>
     <span class="dt">localStorage</span>: <span class="kw">new</span> Store(<span class="ch">&#39;todos-backbone&#39;</span>)
-
+    
     <span class="co">// When working with REST API on back-end here would be</span>
     <span class="co">// appropriate to use:</span>
     <span class="co">// url: &quot;/todos&quot;</span>
-
+    
   });
 
   <span class="kw">var</span> firstTodo = <span class="kw">new</span> Todo({<span class="dt">title</span>:<span class="ch">&#39;Read whole book&#39;</span>});
@@ -1251,7 +1251,7 @@ collection
 <span class="kw">ourObject</span>.<span class="fu">off</span>(<span class="st">&quot;dance:tap&quot;</span>);
 
 <span class="co">// Trigger the custom events again, but one is logged.</span>
-<span class="kw">ourObject</span>.<span class="fu">trigger</span>(<span class="st">&quot;dance:tap&quot;</span>, <span class="st">&quot;stopped tap dancing.&quot;</span>); <span class="co">// won&#39;t be logged as its not listened for</span>
+<span class="kw">ourObject</span>.<span class="fu">trigger</span>(<span class="st">&quot;dance:tap&quot;</span>, <span class="st">&quot;stopped tap dancing.&quot;</span>); <span class="co">// won&#39;t be logged as it&#39;s not listened for</span>
 <span class="kw">ourObject</span>.<span class="fu">trigger</span>(<span class="st">&quot;dance:break&quot;</span>, <span class="st">&quot;break dancing. Yeah!&quot;</span>);</code></pre>
 <p>To remove all callbacks for the event we should just pass event name (e.g <code>move</code>) to <code>off()</code> function of the object event is bound to. If we wish to remove just a callback by a specific name, we can pass callback name as second parameter:</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> ourObject = {};
@@ -1318,7 +1318,7 @@ collection
 <span class="dt">http</span>:<span class="co">//example.com/#search/seasonal-horns/page2</span></code></pre>
 <p>Note: An application will usually have at least one route mapping a URL route to a function that determines what happens when a user reaches that particular route. This relationship is defined as follows:</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="ch">&#39;route&#39;</span> : <span class="ch">&#39;mappedFunction&#39;</span></code></pre>
-<p>Let us now define our first controller by extending <code>Backbone.Router</code>. For the purposes of this guide, we’re going to continue pretending we’re creating a complex todo application (something like personal organize/planner) that requires a complex TodoRouter.</p>
+<p>Let us now define our first router by extending <code>Backbone.Router</code>. For the purposes of this guide, we’re going to continue pretending we’re creating a complex todo application (something like personal organize/planner) that requires a complex TodoRouter.</p>
 <p>Note the inline comments in the code example below as they continue the rest of the lesson on routers.</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> TodoRouter = <span class="kw">Backbone.Router</span>.<span class="fu">extend</span>({
     <span class="co">/* define the route and function maps for this router */</span>
@@ -1342,7 +1342,7 @@ collection
         <span class="co">/* Sample usage: http://example.com/#search/job/p1 */</span>
 
         <span class="st">&quot;todos/:id/download/*documentPath&quot;</span> : <span class="st">&quot;downloadDocument&quot;</span>,
-        <span class="co">/* This is an example of using a *splat. splats are able to match any number of</span>
+        <span class="co">/* This is an example of using a *splat. Splats are able to match any number of</span>
 <span class="co">        URL components and can be combined with &quot;:param&quot;s*/</span>
         <span class="co">/* Sample usage: http://example.com/#todos/5/download/files/Meeting_schedule.doc */</span>
 
@@ -1385,7 +1385,7 @@ collection
 <span class="kw">var</span> myTodoRouter = <span class="kw">new</span> TodoRouter();</code></pre>
 <p>As of Backbone 0.5+, it’s possible to opt-in for HTML5 pushState support via <code>window.history.pushState</code>. This permits you to define routes such as http://www.scriptjunkie.com/just/an/example. This will be supported with automatic degradation when a user’s browser doesn’t support pushState. For the purposes of this tutorial, we’ll use the hashtag method.</p>
 <h4 id="is-there-a-limit-to-the-number-of-routers-i-should-be-using"><a href="#TOC">Is there a limit to the number of routers I should be using?</a></h4>
-<p>Andrew de Andrade has pointed out that DocumentCloud themselves usually only use a single router in most of their applications. You’re very likely to not require more than one or two routers in your own projects as the majority of your application routing can be kept organized in a single controller without it getting unwieldy.</p>
+<p>Andrew de Andrade has pointed out that DocumentCloud themselves usually only use a single router in most of their applications. You’re very likely to not require more than one or two routers in your own projects as the majority of your application routing can be kept organized in a single router without it getting unwieldy.</p>
 <h4 id="backbone.history"><a href="#TOC">Backbone.history</a></h4>
 <p>Next, we need to initialize <code>Backbone.history</code> as it handles <code>hashchange</code> events in our application. This will automatically handle routes that have been defined and trigger callbacks when they’ve been accessed.</p>
 <p>The <code>Backbone.history.start()</code> method will simply tell Backbone that it’s OK to begin monitoring all <code>hashchange</code> events as follows:</p>
@@ -1712,7 +1712,7 @@ Backbone.setDomLibrary = function(lib) {
     &#39;delete&#39;: &#39;DELETE&#39;,
     &#39;read&#39;:   &#39;GET&#39;
   };
-
+  
 Backbone.sync = function(method, model, options) {
     var type = methodMap[method];
     options || (options = {});
@@ -2801,28 +2801,28 @@ if (this._hasPushState) {
     <span class="kw">text-align:</span><span class="dt">right</span><span class="kw">;</span>
     <span class="kw">line-height:</span><span class="dt">25px</span><span class="kw">;</span>
 <span class="kw">}</span>
-
+ 
 <span class="fl">#addBook</span> label, <span class="fl">#addBook</span> input <span class="kw">{</span>
     <span class="kw">display:</span><span class="dt">block</span><span class="kw">;</span>
     <span class="kw">margin-bottom:</span><span class="dt">10px</span><span class="kw">;</span>
     <span class="kw">float:</span><span class="dt">left</span><span class="kw">;</span>
 <span class="kw">}</span>
-
+ 
 <span class="fl">#addBook</span> label<span class="ch">[for=</span><span class="st">&quot;title&quot;</span><span class="ch">]</span>, <span class="fl">#addBook</span> label<span class="ch">[for=</span><span class="st">&quot;releaseDate&quot;</span><span class="ch">]</span> <span class="kw">{</span>
     <span class="kw">clear:</span><span class="dt">both</span><span class="kw">;</span>
 <span class="kw">}</span>
-
+ 
 <span class="fl">#addBook</span> button <span class="kw">{</span>
     <span class="kw">display:</span><span class="dt">block</span><span class="kw">;</span>
     <span class="kw">margin:</span><span class="dt">5px</span> <span class="dt">20px</span> <span class="dt">10px</span> <span class="dt">10px</span><span class="kw">;</span>
     <span class="kw">float:</span> <span class="dt">right</span><span class="kw">;</span>
     <span class="kw">clear:</span> <span class="dt">both</span><span class="kw">;</span>
 <span class="kw">}</span>
-
+ 
 <span class="fl">#addBook</span> div <span class="kw">{</span>
     <span class="kw">width:</span> <span class="dt">550px</span><span class="kw">;</span>
 <span class="kw">}</span>
-
+ 
 <span class="fl">#addBook</span> div<span class="dv">:after</span> <span class="kw">{</span>
     <span class="kw">content:</span><span class="st">&quot;&quot;</span><span class="kw">;</span>
     <span class="kw">display:</span><span class="dt">block</span><span class="kw">;</span>
@@ -2835,13 +2835,13 @@ if (this._hasPushState) {
 <p>Now lets create a function that lets us add a book. We put it in our master view (LibraryView) after the render function</p>
 <pre class="js"><code>addBook: function(){
     var formData = {};
-
+ 
     $(&quot;#addBook&quot;).children(&quot;input&quot;).each(function(i, el){
         formData[el.id] = $(el).val();
     });
-
+ 
     books.push(formData);
-
+ 
     this.collection.add(new Book(formData));
 },</code></pre>
 <p>Here I select all the input elements the form and iterate over them using jQuery’s each. Since we used the same names for ids in our form as the keys on our Book model we can simply store them directly in the formData object and the add it to the books array. We then create a new Book model and add it to our collection. Now lets wire this function to the Add button in our form. We do this by adding an event listener in the LibraryView</p>
@@ -2851,22 +2851,22 @@ if (this._hasPushState) {
 <p>By default, Backbone will send an event object as parameter to the function. This is useful for us in this case since we want to prevent the form from actually submit and reloading the page. Add a preventDefault to the addBook function</p>
 <pre class="js"><code>addBook: function(e){
     e.preventDefault();
-
+ 
     var formData = {};
-
+ 
     $(&quot;#addBook&quot;).children(&quot;input&quot;).each(function(i, el){
         formData[el.id] = $(el).val();
     });
-
+ 
     books.push(formData);
-
+ 
     this.collection.add(new Book(formData));
 },</code></pre>
 <p>Ok, so this will add a book to our books array and our collection. It will not however be visible, because we have not called the render function of our BookView. When a model is added to a collection, the collection will fire an add event. If we listen to this event we will be able to call our renderBook function. This binding is done in initialize.</p>
 <pre class="js"><code>initialize:function () {
     this.collection = new Library(books);
     this.render();
-
+ 
     this.collection.on(&quot;add&quot;, this.renderBook, this);
 },</code></pre>
 <p>Now you should be ready to take the application for a spin.</p>
@@ -2876,17 +2876,17 @@ if (this._hasPushState) {
 <p>As you may notice, if you leave a field blank, it will be blank in the created view as well. This is not what we want, we would like the default values to kick in. To do that we need to add a bit of logic. Also note that the file input for the cover image isn’t working, but that is left as an exercise to the reader.</p>
 <pre class="js"><code>addBook:function (e) {
     e.preventDefault();
-
+ 
     var formData = {};
-
+ 
     $(&quot;#addBook div&quot;).children(&quot;input&quot;).each(function (i, el) {
         if ($(el).val() !== &quot;&quot;) {
             formData[el.id] = $(el).val();
         }
     });
-
+ 
     books.push(formData);
-
+ 
     this.collection.add(new Book(formData));
 },</code></pre>
 <p>Here I added (line 7) a check to see if the field value is empty, in which case we do not add it to the model data. While we are at it lets add default values for the other properties of Book</p>
@@ -2909,23 +2909,23 @@ if (this._hasPushState) {
 <span class="co">    </span>&lt;<span class="co">img src</span>=&quot;&lt;%=<span class="co"> coverImage </span>%&gt;&quot;/&gt;
 &lt;<span class="co">ul</span>&gt;
 <span class="co">    </span>&lt;<span class="co">li</span>&gt;&lt;%=<span class="co"> title</span>%&gt;&lt;/<span class="co">li</span>&gt;
-
-<span class="co">    </span>&lt;<span class="co">li</span>&gt;&lt;%=<span class="co"> author</span>%&gt;&lt;/<span class="co">li</span>&gt;
-
-<span class="co">    </span>&lt;<span class="co">li</span>&gt;&lt;%=<span class="co"> releaseDate</span>%&gt;&lt;/<span class="co">li</span>&gt;
-
-<span class="co">    </span>&lt;<span class="co">li</span>&gt;&lt;%=<span class="co"> keywords</span>%&gt;&lt;/<span class="co">li</span>&gt;
-
-&lt;/<span class="co">ul</span>&gt;
-
-<span class="co">    </span>&lt;<span class="co">button class</span>=&quot;<span class="co">delete</span>&quot;&gt;<span class="co">Delete</span>&lt;/<span class="co">button</span>&gt;
+<span class="co"> </span>
+    &lt;li&gt;&lt;%= author%&gt;&lt;/li&gt;
+ 
+    &lt;li&gt;&lt;%= releaseDate%&gt;&lt;/li&gt;
+ 
+    &lt;li&gt;&lt;%= keywords%&gt;&lt;/li&gt;
+ 
+&lt;/ul&gt;
+ 
+    &lt;button class=<span class="st">&quot;delete&quot;</span>&gt;Delete&lt;/button&gt;
 <span class="co">// ]]&gt;</span><span class="kw">&lt;/script&gt;</span></code></pre>
 <p>We add some css to it for good looks. Note that I removed the margin of the existing ul rule above to tighten things up a bit.</p>
 <pre class="sourceCode css"><code class="sourceCode css"><span class="fl">.bookContainer</span> ul <span class="kw">{</span>
     <span class="kw">list-style-type:</span> <span class="dt">none</span><span class="kw">;</span>
     <span class="kw">margin-bottom:</span> <span class="dt">0</span><span class="kw">;</span>
 <span class="kw">}</span>
-
+ 
 <span class="fl">.bookContainer</span> button <span class="kw">{</span>
     <span class="kw">float:</span><span class="dt">right</span><span class="kw">;</span>
     <span class="kw">margin:</span> <span class="dt">10px</span><span class="kw">;</span>
@@ -2939,18 +2939,18 @@ if (this._hasPushState) {
     tagName:&quot;div&quot;,
     className:&quot;bookContainer&quot;,
     template:$(&quot;#bookTemplate&quot;).html(),
-
+ 
     render:function () {
         var tmpl = _.template(this.template); //tmpl is a function that takes a JSON and returns html
-
+ 
         this.$el.html(tmpl(this.model.toJSON())); //this.el is what we defined in tagName. use $el to get access to jQuery html() function
         return this;
     },
-
+ 
     deleteBook:function () {
         //Delete model
         this.model.destroy();
-
+ 
         //Delete view
         this.remove();
     }
@@ -2960,22 +2960,22 @@ if (this._hasPushState) {
     tagName:&quot;div&quot;,
     className:&quot;bookContainer&quot;,
     template:$(&quot;#bookTemplate&quot;).html(),
-
+ 
     render:function () {
         var tmpl = _.template(this.template); //tmpl is a function that takes a JSON and returns html
-
+ 
         this.$el.html(tmpl(this.model.toJSON())); //this.el is what we defined in tagName. use $el to get access to jQuery html() function
         return this;
     },
-
+ 
     events: {
         &quot;click .delete&quot;: &quot;deleteBook&quot;
     },
-
+ 
     deleteBook:function () {
         //Delete model
         this.model.destroy();
-
+ 
         //Delete view
         this.remove();
     }
@@ -2984,7 +2984,7 @@ if (this._hasPushState) {
 <pre class="js"><code>initialize:function () {
     this.collection = new Library(books);
     this.render();
-
+ 
     this.collection.on(&quot;add&quot;, this.renderBook, this);
     this.collection.on(&quot;remove&quot;, this.removeBook, this);
 },</code></pre>
@@ -2992,13 +2992,13 @@ if (this._hasPushState) {
 <pre class="js"><code>
 removeBook: function(removedBook){
     var removedBookData = removedBook.attributes;
-
+ 
     _.each(removedBookData, function(val, key){
         if(removedBookData[key] === removedBook.defaults[key]){
             delete removedBookData[key];
         }
     });
-
+ 
     _.each(books, function(book){
         if(_.isEqual(book, removedBookData)){
             books.splice(_.indexOf(books, book), 1);
@@ -3059,10 +3059,10 @@ var application_root = __dirname,
     express = require(&quot;express&quot;), //Web framework
     path = require(&quot;path&quot;), //Utilities for dealing with file paths
     mongoose = require(&#39;mongoose&#39;); //MongoDB integration
-
+ 
 //Create server
 var app = express.createServer();
-
+ 
 // Configure server
 app.configure(function () {
     app.use(express.bodyParser()); //parses request body and populates req.body
@@ -3071,7 +3071,7 @@ app.configure(function () {
     app.use(express.static(path.join(application_root, &quot;public&quot;))); //Where to serve static content
     app.use(express.errorHandler({ dumpExceptions:true, showStack:true })); //Show all errors in development
 });
-
+ 
 //Start server
 app.listen(4711, function () {
     console.log(&quot;Express server listening on port %d in %s mode&quot;, app.address().port, app.settings.env);
@@ -3095,14 +3095,14 @@ app.get(&#39;/api&#39;, function(req, res){
 <p>Fantastic. Now since we want to store our data in MongoDB we need to define a schema. Add this to server.js:</p>
 <pre class="js"><code>//Connect to database
 mongoose.connect(&#39;mongodb://localhost/library_database&#39;);
-
+ 
 //Schemas
 var Book = new  mongoose.Schema({
     title:String,
     author:String,
     releaseDate: Date
 });
-
+ 
 //Models
 var BookModel = mongoose.model(&#39;Book&#39;, Book);</code></pre>
 <p>As you can see, schema definitions are quite straight forward. They can be more advanced, but this will do for us. I also extracted a model (BookModel) from Mongo. This is what we will be working with. Next up we define a get operation for the rest API that will return all books:</p>
@@ -3213,7 +3213,7 @@ app.post(&#39;/api/books&#39;, function (req, res) {
   success: function(data, textStatus, jqXHR) {
     console.log(&quot;Post resposne:&quot;); console.dir(data); console.log(textStatus); console.dir(jqXHR);
   }});
-</code></pre>
+  </code></pre>
 <p>Finally we create the delete route:</p>
 <pre class="js"><code>app.delete(&#39;/api/books/:id&#39;, function(req, res){
     console.log(&#39;Deleting book with id: &#39; + req.params.id);
@@ -3268,7 +3268,7 @@ var Keywords = new mongoose.Schema({
     });
     return res.send(book);
 });
-
+ 
 app.put(&#39;/api/books/:id&#39;, function(req, res){
     return BookModel.findById(req.params.id, function(err, book){
         book.title = req.body.title;
@@ -3324,13 +3324,13 @@ app.put(&#39;/api/books/:id&#39;, function(req, res){
 <p>To make our application get the Book models from the server on page load we need to update the LibraryView. It is recommended in the Backbone documentation to insert all models when the page is generated on the server side, rather than fetching them from the client side once the page is loaded. Since this tutorial will try to give you a more complete picture of how to communicate with a server, we will go ahead and ignore that recommendation. Go to the LibraryView declaration in app.js and make the following updates:</p>
 <pre class="js"><code>var LibraryView = Backbone.View.extend({
     el:$(&quot;#books&quot;),
-
+ 
     initialize:function () {
         //this.collection = new Library(books);
         this.collection = new Library();
         this.collection.fetch();
         this.render();
-
+ 
         this.collection.on(&quot;add&quot;, this.renderBook, this);
         this.collection.on(&quot;remove&quot;, this.removeBook, this);
         this.collection.on(&quot;reset&quot;, this.render, this);
@@ -3442,7 +3442,7 @@ app.put(&#39;/api/books/:id&#39;, function(req, res){
 <p>Now in the beginning of app.js bind datepicker to our releaseDate field:</p>
 <pre class="js"><code>(function ($) {
     $( &quot;#releaseDate&quot; ).datepicker();
-
+ 
     var books = [
         {title:&quot;JS the good parts&quot;, author:&quot;John Doe&quot;, releaseDate:&quot;2012&quot;, keywords:&quot;JavaScript Programming&quot;},
 </code></pre>
@@ -3453,9 +3453,9 @@ app.put(&#39;/api/books/:id&#39;, function(req, res){
 <p>Now go to the addBook function in LibraryView and update it like this:</p>
 <pre class="js"><code>addBook:function (e) {
     e.preventDefault();
-
+ 
     var formData = {};
-
+ 
     $(&quot;#addBook div&quot;).children(&quot;input&quot;).each(function (i, el) {
         if ($(el).val() !== &quot;&quot;) {
             if (el.id === &#39;releaseDate&#39;){
@@ -3465,18 +3465,18 @@ app.put(&#39;/api/books/:id&#39;, function(req, res){
             }
         }
     });
-
+ 
     books.push(formData);
-
+ 
     //this.collection.add(new Book(formData));
     this.collection.create(formData);
 },</code></pre>
 <p>Here I check if the current element is the releaseDate input field, in which case I use datePicker(<q>getDate</q>) which will give me a Date object and then use the getTime function on that to get the time in milliseconds. While we are at it lets fix the keywords issue as well:</p>
 <pre class="js"><code>addBook:function (e) {
     e.preventDefault();
-
+ 
     var formData = {};
-
+ 
     $(&quot;#addBook div&quot;).children(&quot;input&quot;).each(function (i, el) {
         if ($(el).val() !== &quot;&quot;) {
             if (el.id === &#39;keywords&#39;) {
@@ -3493,9 +3493,9 @@ app.put(&#39;/api/books/:id&#39;, function(req, res){
             }
         }
     });
-
+ 
     books.push(formData);
-
+ 
     //this.collection.add(new Book(formData));
     this.collection.create(formData);
 },</code></pre>
@@ -4792,7 +4792,7 @@ $(<span class="ch">&#39;#content&#39;</span>).<span class="fu">html</span>(<span
 
   <span class="co">// Layout Footer View</span>
   <span class="co">// ------------------</span>
-
+  
   <span class="kw">Layout</span>.<span class="fu">Footer</span> = <span class="kw">Backbone.Marionette.Layout</span>.<span class="fu">extend</span>({
     <span class="dt">template </span>: <span class="ch">&#39;#template-footer&#39;</span>,
 
@@ -4879,7 +4879,7 @@ $(<span class="ch">&#39;#content&#39;</span>).<span class="fu">html</span>(<span
   <span class="co">//</span>
   <span class="co">// Control the workflow and logic that exists at the application</span>
   <span class="co">// level, above the implementation detail of views and models</span>
-
+  
   <span class="kw">TodoList</span>.<span class="fu">Controller</span> = <span class="kw">function</span>(){
     <span class="kw">this</span>.<span class="fu">todoList</span> = <span class="kw">new</span> <span class="kw">App.Todos</span>.<span class="fu">TodoList</span>();
   };
@@ -4928,7 +4928,7 @@ $(<span class="ch">&#39;#content&#39;</span>).<span class="fu">html</span>(<span
   <span class="co">// Get the TodoList up and running by initializing the mediator</span>
   <span class="co">// when the the application is started, pulling in all of the</span>
   <span class="co">// existing Todo items and displaying them.</span>
-
+  
   <span class="kw">TodoList</span>.<span class="fu">addInitializer</span>(<span class="kw">function</span>(){
 
     <span class="kw">var</span> controller = <span class="kw">new</span> <span class="kw">TodoList</span>.<span class="fu">Controller</span>();
@@ -5065,7 +5065,7 @@ $(<span class="ch">&#39;#content&#39;</span>).<span class="fu">html</span>(<span
   <span class="co">//</span>
   <span class="co">// Handler for filtering the list of items by showing and</span>
   <span class="co">// hiding through the use of various CSS classes</span>
-
+  
   <span class="kw">App.vent</span>.<span class="fu">on</span>(<span class="ch">&#39;todoList:filter&#39;</span>,<span class="kw">function</span>(filter) {
     filter = filter || <span class="ch">&#39;all&#39;</span>;
     $(<span class="ch">&#39;#todoapp&#39;</span>).<span class="fu">attr</span>(<span class="ch">&#39;class&#39;</span>, <span class="ch">&#39;filter-&#39;</span> + filter);
@@ -5079,7 +5079,7 @@ $(<span class="ch">&#39;#content&#39;</span>).<span class="fu">html</span>(<span
 
   <span class="co">// Todo Model</span>
   <span class="co">// ----------</span>
-
+  
   <span class="kw">Todos</span>.<span class="fu">Todo</span> = <span class="kw">Backbone.Model</span>.<span class="fu">extend</span>({
     <span class="dt">localStorage</span>: <span class="kw">new</span> <span class="kw">Backbone</span>.<span class="fu">LocalStorage</span>(<span class="ch">&#39;todos-backbone&#39;</span>),
 
@@ -5199,7 +5199,7 @@ $(<span class="ch">&#39;#content&#39;</span>).<span class="fu">html</span>(<span
         <span class="dt">name</span>: <span class="ch">&#39;child&#39;</span>,
         <span class="dt">template</span>: ...
     });
-
+  
     <span class="kw">var</span> parent = <span class="kw">new</span> <span class="kw">Thorax</span>.<span class="fu">View</span>({
         <span class="dt">template</span>: <span class="ch">&#39;{{view &quot;child&quot; key=&quot;value&quot;}}&#39;</span>
     });</code></pre>
