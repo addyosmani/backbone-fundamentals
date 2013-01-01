@@ -1204,11 +1204,11 @@ collection
 
 <span class="kw">function</span> dancing (msg) { <span class="kw">console</span>.<span class="fu">log</span>(<span class="st">&quot;We started &quot;</span> + msg); }
 
-<span class="co">// Add a namespaced custom events</span>
+<span class="co">// Add namespaced custom events</span>
 <span class="kw">ourObject</span>.<span class="fu">on</span>(<span class="st">&quot;dance:tap&quot;</span>, dancing);
 <span class="kw">ourObject</span>.<span class="fu">on</span>(<span class="st">&quot;dance:break&quot;</span>, dancing);
 
-<span class="co">// Trigger the custom events.</span>
+<span class="co">// Trigger the custom events</span>
 <span class="kw">ourObject</span>.<span class="fu">trigger</span>(<span class="st">&quot;dance:tap&quot;</span>, <span class="st">&quot;tap dancing. Yeah!&quot;</span>);
 <span class="kw">ourObject</span>.<span class="fu">trigger</span>(<span class="st">&quot;dance:break&quot;</span>, <span class="st">&quot;break dancing. Yeah!&quot;</span>);
 
@@ -1226,11 +1226,11 @@ collection
   <span class="kw">console</span>.<span class="fu">log</span>(<span class="st">&quot;The name of the event passed was &quot;</span> + eventName);
 });
 
-<span class="co">// This time each event will be catched with catch &#39;all&#39; event listener</span>
+<span class="co">// This time each event will be catched with a catch &#39;all&#39; event listener</span>
 <span class="kw">ourObject</span>.<span class="fu">trigger</span>(<span class="st">&quot;dance:tap&quot;</span>, <span class="st">&quot;tap dancing. Yeah!&quot;</span>);
 <span class="kw">ourObject</span>.<span class="fu">trigger</span>(<span class="st">&quot;dance:break&quot;</span>, <span class="st">&quot;break dancing. Yeah!&quot;</span>);
 <span class="kw">ourObject</span>.<span class="fu">trigger</span>(<span class="st">&quot;dance&quot;</span>, <span class="st">&quot;break dancing. Yeah!&quot;</span>);</code></pre>
-<p><code>off</code> allows us to remove a callback function that has previously been bound from an object. Going back to our Publish/Subscribe comparison, think of it as an <code>unsubscribe</code> for custom events.</p>
+<p><code>off</code> allows us to remove a callback function that has previously been bound to an object. Going back to our Publish/Subscribe comparison, think of it as an <code>unsubscribe</code> for custom events.</p>
 <p>To remove the <code>dance</code> event we previously bound to <code>ourObject</code>, we would simply do:</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> ourObject = {};
 
@@ -1239,7 +1239,7 @@ collection
 
 <span class="kw">function</span> dancing (msg) { <span class="kw">console</span>.<span class="fu">log</span>(<span class="st">&quot;We  &quot;</span> + msg); }
 
-<span class="co">// Add a namespaced custom events</span>
+<span class="co">// Add namespaced custom events</span>
 <span class="kw">ourObject</span>.<span class="fu">on</span>(<span class="st">&quot;dance:tap&quot;</span>, dancing);
 <span class="kw">ourObject</span>.<span class="fu">on</span>(<span class="st">&quot;dance:break&quot;</span>, dancing);
 
@@ -1253,7 +1253,7 @@ collection
 <span class="co">// Trigger the custom events again, but one is logged.</span>
 <span class="kw">ourObject</span>.<span class="fu">trigger</span>(<span class="st">&quot;dance:tap&quot;</span>, <span class="st">&quot;stopped tap dancing.&quot;</span>); <span class="co">// won&#39;t be logged as it&#39;s not listened for</span>
 <span class="kw">ourObject</span>.<span class="fu">trigger</span>(<span class="st">&quot;dance:break&quot;</span>, <span class="st">&quot;break dancing. Yeah!&quot;</span>);</code></pre>
-<p>To remove all callbacks for the event we should just pass event name (e.g <code>move</code>) to <code>off()</code> function of the object event is bound to. If we wish to remove just a callback by a specific name, we can pass callback name as second parameter:</p>
+<p>To remove all callbacks for the event, we pass an event name (e.g <code>move</code>) to the <code>off()</code> method on the object the event is bound to. If we wish to remove just a callback by a specific name, we can pass the callback name as second parameter:</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> ourObject = {};
 
 <span class="co">// Mixin</span>

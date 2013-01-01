@@ -1210,11 +1210,11 @@ _.extend(ourObject, Backbone.Events);
 
 function dancing (msg) { console.log("We started " + msg); }
 
-// Add a namespaced custom events
+// Add namespaced custom events
 ourObject.on("dance:tap", dancing);
 ourObject.on("dance:break", dancing);
 
-// Trigger the custom events.
+// Trigger the custom events
 ourObject.trigger("dance:tap", "tap dancing. Yeah!");
 ourObject.trigger("dance:break", "break dancing. Yeah!");
 
@@ -1237,13 +1237,13 @@ ourObject.on("all", function(eventName){
   console.log("The name of the event passed was " + eventName);
 });
 
-// This time each event will be catched with catch 'all' event listener
+// This time each event will be catched with a catch 'all' event listener
 ourObject.trigger("dance:tap", "tap dancing. Yeah!");
 ourObject.trigger("dance:break", "break dancing. Yeah!");
 ourObject.trigger("dance", "break dancing. Yeah!");
 ```
 
-`off` allows us to remove a callback function that has previously been bound from an object. Going back to our Publish/Subscribe comparison, think of it as an `unsubscribe` for custom events.
+`off` allows us to remove a callback function that has previously been bound to an object. Going back to our Publish/Subscribe comparison, think of it as an `unsubscribe` for custom events.
 
 To remove the `dance` event we previously bound to `ourObject`, we would simply do:
 
@@ -1255,7 +1255,7 @@ _.extend(ourObject, Backbone.Events);
 
 function dancing (msg) { console.log("We  " + msg); }
 
-// Add a namespaced custom events
+// Add namespaced custom events
 ourObject.on("dance:tap", dancing);
 ourObject.on("dance:break", dancing);
 
@@ -1271,7 +1271,7 @@ ourObject.trigger("dance:tap", "stopped tap dancing."); // won't be logged as it
 ourObject.trigger("dance:break", "break dancing. Yeah!");
 ```
 
-To remove all callbacks for the event we should just pass event name (e.g `move`) to `off()` function of the object event is bound to. If we wish to remove just a callback by a specific name, we can pass callback name as second parameter:
+To remove all callbacks for the event, we pass an event name (e.g `move`) to the `off()` method on the object the event is bound to. If we wish to remove just a callback by a specific name, we can pass the callback name as second parameter:
 
 ```javascript
 var ourObject = {};
