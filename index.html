@@ -1599,26 +1599,26 @@ myView = <span class="kw">new</span> MyView();
 });</code></pre>
 <p>However, if you have an <code>initialize()</code> method in Panel, then it won’t be called if you also have an <code>initialize()</code> method in PanelAdvanced, so you would have to call Panel’s initialize method explicitly:</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> Panel = <span class="kw">Backbone.View</span>.<span class="fu">extend</span>({
-   <span class="dt">initialize</span>: <span class="kw">function</span>(options){
-      <span class="kw">console</span>.<span class="fu">log</span>(<span class="ch">&#39;Panel initialized&#39;</span>);
-      <span class="kw">this</span>.<span class="fu">foo</span> = <span class="ch">&#39;bar&#39;</span>;
-   }
+  <span class="dt">initialize</span>: <span class="kw">function</span>(options){
+    <span class="kw">console</span>.<span class="fu">log</span>(<span class="ch">&#39;Panel initialized&#39;</span>);
+    <span class="kw">this</span>.<span class="fu">foo</span> = <span class="ch">&#39;bar&#39;</span>;
+  }
 });
 
 <span class="kw">var</span> PanelAdvanced = <span class="kw">Panel</span>.<span class="fu">extend</span>({
-    <span class="dt">initialize</span>: <span class="kw">function</span>(options){
-      <span class="kw">Panel.prototype.initialize</span>.<span class="fu">call</span>(<span class="kw">this</span>, [options])
-      <span class="kw">console</span>.<span class="fu">log</span>(<span class="ch">&#39;PanelAdvanced initialized&#39;</span>);
-      <span class="kw">console</span>.<span class="fu">log</span>(<span class="kw">this</span>.<span class="fu">foo</span>); <span class="co">// Log: bar</span>
-    }
+  <span class="dt">initialize</span>: <span class="kw">function</span>(options){
+    <span class="kw">Panel.prototype.initialize</span>.<span class="fu">call</span>(<span class="kw">this</span>, [options])
+    <span class="kw">console</span>.<span class="fu">log</span>(<span class="ch">&#39;PanelAdvanced initialized&#39;</span>);
+    <span class="kw">console</span>.<span class="fu">log</span>(<span class="kw">this</span>.<span class="fu">foo</span>); <span class="co">// Log: bar</span>
+  }
 });
 
 <span class="co">// We can also inherit PanelAdvaned if needed</span>
 <span class="kw">var</span> PanelAdvancedExtra = <span class="kw">PanelAdvanced</span>.<span class="fu">extend</span>({
-    <span class="dt">initialize</span>: <span class="kw">function</span>(options){
-      <span class="kw">PanelAdvanced.prototype.initialize</span>.<span class="fu">call</span>(<span class="kw">this</span>, [options])
-      <span class="kw">console</span>.<span class="fu">log</span>(<span class="ch">&#39;PanelAdvancedExtra initialized&#39;</span>);
-    }
+  <span class="dt">initialize</span>: <span class="kw">function</span>(options){
+    <span class="kw">PanelAdvanced.prototype.initialize</span>.<span class="fu">call</span>(<span class="kw">this</span>, [options])
+    <span class="kw">console</span>.<span class="fu">log</span>(<span class="ch">&#39;PanelAdvancedExtra initialized&#39;</span>);
+  }
 });
 
 <span class="kw">new</span> Panel();

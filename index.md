@@ -1713,26 +1713,26 @@ However, if you have an `initialize()` method in Panel, then it won't be called 
 
 ```javascript
 var Panel = Backbone.View.extend({
-   initialize: function(options){
-      console.log('Panel initialized');
-      this.foo = 'bar';
-   }
+  initialize: function(options){
+    console.log('Panel initialized');
+    this.foo = 'bar';
+  }
 });
 
 var PanelAdvanced = Panel.extend({
-    initialize: function(options){
-      Panel.prototype.initialize.call(this, [options])
-      console.log('PanelAdvanced initialized');
-      console.log(this.foo); // Log: bar
-    }
+  initialize: function(options){
+    Panel.prototype.initialize.call(this, [options])
+    console.log('PanelAdvanced initialized');
+    console.log(this.foo); // Log: bar
+  }
 });
 
 // We can also inherit PanelAdvaned if needed
 var PanelAdvancedExtra = PanelAdvanced.extend({
-    initialize: function(options){
-      PanelAdvanced.prototype.initialize.call(this, [options])
-      console.log('PanelAdvancedExtra initialized');
-    }
+  initialize: function(options){
+    PanelAdvanced.prototype.initialize.call(this, [options])
+    console.log('PanelAdvancedExtra initialized');
+  }
 });
 
 new Panel();
