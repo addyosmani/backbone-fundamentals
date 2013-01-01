@@ -1684,10 +1684,10 @@ Underscore’s extend method is called twice to add the static and instance meth
 For example:
 
 ```javascript
- var MyMixin = {
+var MyMixin = {
   foo: 'bar',
   sayFoo: function(){alert(this.foo);}
-}
+};
 
 var MyView = Backbone.View.extend({
  // ...

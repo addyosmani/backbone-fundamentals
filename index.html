@@ -1578,10 +1578,10 @@ collection
 </ul>
 <p><code>extend</code> can be used for a great deal more and developers who are fans of mixins will like that it can be used for this too. You can define functionality on any custom object, and then quite literally copy &amp; paste all of the methods and attributes from that object to a Backbone one:</p>
 <p>For example:</p>
-<pre class="sourceCode javascript"><code class="sourceCode javascript"> <span class="kw">var</span> MyMixin = {
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> MyMixin = {
   <span class="dt">foo</span>: <span class="ch">&#39;bar&#39;</span>,
   <span class="dt">sayFoo</span>: <span class="kw">function</span>(){alert(<span class="kw">this</span>.<span class="fu">foo</span>);}
-}
+};
 
 <span class="kw">var</span> MyView = <span class="kw">Backbone.View</span>.<span class="fu">extend</span>({
  <span class="co">// ...</span>
