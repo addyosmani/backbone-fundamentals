@@ -1385,7 +1385,7 @@ collection
 <span class="kw">var</span> myTodoRouter = <span class="kw">new</span> TodoRouter();</code></pre>
 <p>As of Backbone 0.5+, it’s possible to opt-in for HTML5 pushState support via <code>window.history.pushState</code>. This permits you to define routes such as http://www.scriptjunkie.com/just/an/example. This will be supported with automatic degradation when a user’s browser doesn’t support pushState. For the purposes of this tutorial, we’ll use the hashtag method.</p>
 <h4 id="is-there-a-limit-to-the-number-of-routers-i-should-be-using"><a href="#TOC">Is there a limit to the number of routers I should be using?</a></h4>
-<p>Andrew de Andrade has pointed out that DocumentCloud themselves usually only use a single router in most of their applications. You’re very likely to not require more than one or two routers in your own projects as the majority of your application routing can be kept organized in a single router without it getting unwieldy.</p>
+<p>Andrew de Andrade has pointed out that DocumentCloud, the creators of Backbone, usually only use a single router in most of their applications. You’re very likely to not require more than one or two routers in your own projects; the majority of your application routing can be kept organized in a single router without it getting unwieldy.</p>
 <h4 id="backbone.history"><a href="#TOC">Backbone.history</a></h4>
 <p>Next, we need to initialize <code>Backbone.history</code> as it handles <code>hashchange</code> events in our application. This will automatically handle routes that have been defined and trigger callbacks when they’ve been accessed.</p>
 <p>The <code>Backbone.history.start()</code> method will simply tell Backbone that it’s OK to begin monitoring all <code>hashchange</code> events as follows:</p>
@@ -1413,9 +1413,9 @@ collection
 <span class="co">// http://localhost/#search/job/p3 logs: Page number: 3 of the results for todos containing the word: job</span>
 <span class="co">// http://localhost/#search/job logs: Page number: 1 of the results for todos containing the word: job </span>
 <span class="co">// etc.</span></code></pre>
-<p>Note: To test last example you should set site for testing in local development environment which is out of scope of this book.</p>
+<p>Note: To test the last example, you’ll need to create local development enviroment and test project, instructions for which are beyond the scope of what this book seeks to outline.</p>
 <p>As an aside, if you would like to save application state to the URL at a particular point you can use the <code>.navigate()</code> method to achieve this. It simply updates your URL fragment without the need to trigger the <code>hashchange</code> event:</p>
-<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="co">/* Lets imagine we would like a specific fragment (edit) once a user opens single todo */</span>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="co">/* Lets imagine we would like a specific fragment (edit) once a user opens a single todo */</span>
 <span class="kw">var</span> TodoRouter = <span class="kw">Backbone.Router</span>.<span class="fu">extend</span>({
   <span class="dt">routes</span>: {
     <span class="st">&quot;todo/:id&quot;</span>: <span class="st">&quot;viewTodo&quot;</span>,
@@ -1437,7 +1437,7 @@ collection
 <span class="kw">Backbone.history</span>.<span class="fu">start</span>();
 
 <span class="co">// Go to:</span>
-<span class="co">// http://localhost/#todo/4 url is updated to: http://localhost/#todo/45/edit</span>
+<span class="co">// http://localhost/#todo/4 URL is updated to: http://localhost/#todo/45/edit</span>
 <span class="co">// but editTodo() function is not invoked even though location we end up is mapped to it.</span>
 <span class="co">//</span>
 <span class="co">// logs: View todo requested.</span></code></pre>
@@ -1471,7 +1471,7 @@ collection
 <span class="co">// Edit todo openned. </span></code></pre>
 <h3 id="backbones-sync-api"><a href="#TOC">Backbone’s Sync API</a></h3>
 <p>The Backbone.sync method is intended to be overridden to support other backends. The built-in method is tailored to a certain breed of RESTful JSON APIs – Backbone was originally extracted from a Ruby on Rails application, which uses HTTP methods like PUT the same way.</p>
-<p>The way this works is the model and collection classes have a sync method that calls Backbone.sync. Both will call this.sync internally when fetching, saving, or deleting items.</p>
+<p>This works via the model and collection classes’ sync method, which calls Backbone.sync. Both will call this.sync internally when fetching, saving, or deleting items.</p>
 <p>The sync method is called with three parameters:</p>
 <ul>
 <li>method: One of create, update, delete, read</li>
@@ -1529,7 +1529,7 @@ collection
 <li>Backbone Caching Sync</li>
 </ul>
 <h3 id="conflict-management"><a href="#TOC">Conflict Management</a></h3>
-<p>Like most client-side projects, Backbone.js wraps everything in an immediately-invoked function expression:</p>
+<p>Like most client-side projects, Backbone’s code is wrapped in an immediately-invoked function expression:</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript">(<span class="kw">function</span>(){
   <span class="co">// Backbone.js</span>
 }).<span class="fu">call</span>(<span class="kw">this</span>);</code></pre>
