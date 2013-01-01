@@ -1431,7 +1431,7 @@ As of Backbone 0.5+, it's possible to opt-in for HTML5 pushState support via `wi
 
 #### Is there a limit to the number of routers I should be using?
 
-Andrew de Andrade has pointed out that DocumentCloud themselves usually only use a single router in most of their applications. You're very likely to not require more than one or two routers in your own projects as the majority of your application routing can be kept organized in a single router without it getting unwieldy.
+Andrew de Andrade has pointed out that DocumentCloud, the creators of Backbone, usually only use a single router in most of their applications. You're very likely to not require more than one or two routers in your own projects; the majority of your application routing can be kept organized in a single router without it getting unwieldy.
 
 #### Backbone.history
 
@@ -1466,12 +1466,12 @@ Backbone.history.start();
 // etc.
 ```
 
-Note: To test last example you should set site for testing in local development environment which is out of scope of this book.
+Note: To test the last example, you'll need to create local development enviroment and test project, instructions for which are beyond the scope of what this book seeks to outline.
 
 As an aside, if you would like to save application state to the URL at a particular point you can use the `.navigate()` method to achieve this. It simply updates your URL fragment without the need to trigger the `hashchange` event:
 
 ```javascript
-/* Lets imagine we would like a specific fragment (edit) once a user opens single todo */
+/* Lets imagine we would like a specific fragment (edit) once a user opens a single todo */
 var TodoRouter = Backbone.Router.extend({
   routes: {
     "todo/:id": "viewTodo",
@@ -1493,7 +1493,7 @@ var myTodoRouter = new TodoRouter();
 Backbone.history.start();
 
 // Go to:
-// http://localhost/#todo/4 url is updated to: http://localhost/#todo/45/edit
+// http://localhost/#todo/4 URL is updated to: http://localhost/#todo/45/edit
 // but editTodo() function is not invoked even though location we end up is mapped to it.
 //
 // logs: View todo requested.
@@ -1535,7 +1535,7 @@ Backbone.history.start();
 
 The Backbone.sync method is intended to be overridden to support other backends. The built-in method is tailored to a certain breed of RESTful JSON APIs – Backbone was originally extracted from a Ruby on Rails application, which uses HTTP methods like PUT the same way.
 
-The way this works is the model and collection classes have a sync method that calls Backbone.sync. Both will call this.sync internally when fetching, saving, or deleting items.
+This works via the model and collection classes' sync method, which calls Backbone.sync. Both will call this.sync internally when fetching, saving, or deleting items.
 
 The sync method is called with three parameters:
 
@@ -1600,7 +1600,7 @@ There are quite a few sync implementations out there:
 
 ### Conflict Management
 
-Like most client-side projects, Backbone.js wraps everything in an immediately-invoked function expression:
+Like most client-side projects, Backbone's code is wrapped in an immediately-invoked function expression:
 
 ```javascript
 (function(){
