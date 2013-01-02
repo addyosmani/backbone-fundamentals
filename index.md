@@ -1523,7 +1523,7 @@ var myTodoRouter = new TodoRouter();
 Backbone.history.start();
 
 // Go to:
-// http://localhost/#todo/4 url is updated to: http://localhost/#todo/45/edit
+// http://localhost/#todo/4 url is updated to: http://localhost/#todo/4/edit
 // but this time editTodo() function is invoked.
 // 
 // logs: 
