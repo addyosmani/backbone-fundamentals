@@ -1862,8 +1862,8 @@ var methods = ['forEach', 'each', 'map', 'reduce', 'reduceRight', 'find',
     Collection.prototype[method] = function() {
       return _[method].apply(_, [this.models].concat(_.toArray(arguments)));
     };
- ```
-    
+```
+
 However, for a complete linked list of methods supported, see the [official documentation](http://backbonejs.org/#Collection-Underscore-Methods).
 
 ### RESTFul persistence
