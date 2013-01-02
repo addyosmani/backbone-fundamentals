@@ -1210,11 +1210,11 @@ _.extend(ourObject, Backbone.Events);
 
 function dancing (msg) { console.log("We started " + msg); }
 
-// Add namespaced custom events
+// Add a namespaced custom events
 ourObject.on("dance:tap", dancing);
 ourObject.on("dance:break", dancing);
 
-// Trigger the custom events
+// Trigger the custom events.
 ourObject.trigger("dance:tap", "tap dancing. Yeah!");
 ourObject.trigger("dance:break", "break dancing. Yeah!");
 
@@ -1237,13 +1237,13 @@ ourObject.on("all", function(eventName){
   console.log("The name of the event passed was " + eventName);
 });
 
-// This time each event will be catched with a catch 'all' event listener
+// This time each event will be catched with catch 'all' event listener
 ourObject.trigger("dance:tap", "tap dancing. Yeah!");
 ourObject.trigger("dance:break", "break dancing. Yeah!");
 ourObject.trigger("dance", "break dancing. Yeah!");
 ```
 
-`off` allows us to remove a callback function that has previously been bound to an object. Going back to our Publish/Subscribe comparison, think of it as an `unsubscribe` for custom events.
+`off` allows us to remove a callback function that has previously been bound from an object. Going back to our Publish/Subscribe comparison, think of it as an `unsubscribe` for custom events.
 
 To remove the `dance` event we previously bound to `ourObject`, we would simply do:
 
@@ -1255,7 +1255,7 @@ _.extend(ourObject, Backbone.Events);
 
 function dancing (msg) { console.log("We  " + msg); }
 
-// Add namespaced custom events
+// Add a namespaced custom events
 ourObject.on("dance:tap", dancing);
 ourObject.on("dance:break", dancing);
 
@@ -1267,11 +1267,11 @@ ourObject.trigger("dance:break", "started break dancing. Yeah!");
 ourObject.off("dance:tap");
 
 // Trigger the custom events again, but one is logged.
-ourObject.trigger("dance:tap", "stopped tap dancing."); // won't be logged as it's not listened for
+ourObject.trigger("dance:tap", "stopped tap dancing."); // won't be logged as its not listened for
 ourObject.trigger("dance:break", "break dancing. Yeah!");
 ```
 
-To remove all callbacks for the event, we pass an event name (e.g `move`) to the `off()` method on the object the event is bound to. If we wish to remove just a callback by a specific name, we can pass the callback name as second parameter:
+To remove all callbacks for the event we should just pass event name (e.g `move`) to `off()` function of the object event is bound to. If we wish to remove just a callback by a specific name, we can pass callback name as second parameter:
 
 ```javascript
 var ourObject = {};
@@ -1431,7 +1431,7 @@ As of Backbone 0.5+, it's possible to opt-in for HTML5 pushState support via `wi
 
 #### Is there a limit to the number of routers I should be using?
 
-Andrew de Andrade has pointed out that DocumentCloud, the creators of Backbone, usually only use a single router in most of their applications. You're very likely to not require more than one or two routers in your own projects; the majority of your application routing can be kept organized in a single router without it getting unwieldy.
+Andrew de Andrade has pointed out that DocumentCloud themselves usually only use a single router in most of their applications. You're very likely to not require more than one or two routers in your own projects as the majority of your application routing can be kept organized in a single router without it getting unwieldy.
 
 #### Backbone.history
 
@@ -1466,12 +1466,12 @@ Backbone.history.start();
 // etc.
 ```
 
-Note: To test the last example, you'll need to create local development enviroment and test project, instructions for which are beyond the scope of what this book seeks to outline.
+Note: To test last example you should set site for testing in local development environment which is out of scope of this book.
 
 As an aside, if you would like to save application state to the URL at a particular point you can use the `.navigate()` method to achieve this. It simply updates your URL fragment without the need to trigger the `hashchange` event:
 
 ```javascript
-/* Lets imagine we would like a specific fragment (edit) once a user opens a single todo */
+/* Lets imagine we would like a specific fragment (edit) once a user opens single todo */
 var TodoRouter = Backbone.Router.extend({
   routes: {
     "todo/:id": "viewTodo",
@@ -1493,7 +1493,7 @@ var myTodoRouter = new TodoRouter();
 Backbone.history.start();
 
 // Go to:
-// http://localhost/#todo/4 URL is updated to: http://localhost/#todo/45/edit
+// http://localhost/#todo/4 url is updated to: http://localhost/#todo/4/edit
 // but editTodo() function is not invoked even though location we end up is mapped to it.
 //
 // logs: View todo requested.
@@ -1535,7 +1535,7 @@ Backbone.history.start();
 
 The Backbone.sync method is intended to be overridden to support other backends. The built-in method is tailored to a certain breed of RESTful JSON APIs – Backbone was originally extracted from a Ruby on Rails application, which uses HTTP methods like PUT the same way.
 
-This works via the model and collection classes' sync method, which calls Backbone.sync. Both will call this.sync internally when fetching, saving, or deleting items.
+The way this works is the model and collection classes have a sync method that calls Backbone.sync. Both will call this.sync internally when fetching, saving, or deleting items.
 
 The sync method is called with three parameters:
 
@@ -1600,7 +1600,7 @@ There are quite a few sync implementations out there:
 
 ### Conflict Management
 
-Like most client-side projects, Backbone's code is wrapped in an immediately-invoked function expression:
+Like most client-side projects, Backbone.js wraps everything in an immediately-invoked function expression:
 
 ```javascript
 (function(){
@@ -1684,10 +1684,10 @@ Underscore’s extend method is called twice to add the static and instance meth
 For example:
 
 ```javascript
-var MyMixin = {
+ var MyMixin = {
   foo: 'bar',
   sayFoo: function(){alert(this.foo);}
-};
+}
 
 var MyView = Backbone.View.extend({
  // ...
@@ -1695,7 +1695,7 @@ var MyView = Backbone.View.extend({
 
 _.extend(MyView.prototype, MyMixin);
 
-var myView = new MyView();
+myView = new MyView();
 myView.sayFoo(); //=> 'bar'
 ```
 
@@ -1713,26 +1713,26 @@ However, if you have an `initialize()` method in Panel, then it won't be called 
 
 ```javascript
 var Panel = Backbone.View.extend({
-  initialize: function(options){
-    console.log('Panel initialized');
-    this.foo = 'bar';
-  }
+   initialize: function(options){
+      console.log('Panel initialized');
+      this.foo = 'bar';
+   }
 });
 
 var PanelAdvanced = Panel.extend({
-  initialize: function(options){
-    Panel.prototype.initialize.call(this, [options])
-    console.log('PanelAdvanced initialized');
-    console.log(this.foo); // Log: bar
-  }
+    initialize: function(options){
+      Panel.prototype.initialize.call(this, [options])
+      console.log('PanelAdvanced initialized');
+      console.log(this.foo); // Log: bar
+    }
 });
 
 // We can also inherit PanelAdvaned if needed
 var PanelAdvancedExtra = PanelAdvanced.extend({
-  initialize: function(options){
-    PanelAdvanced.prototype.initialize.call(this, [options])
-    console.log('PanelAdvancedExtra initialized');
-  }
+    initialize: function(options){
+      PanelAdvanced.prototype.initialize.call(this, [options])
+      console.log('PanelAdvancedExtra initialized');
+    }
 });
 
 new Panel();
@@ -1772,8 +1772,8 @@ var PanelAdvanced = Panel.extend({
   }
 });
 
-var panelAdvanced = new PanelAdvanced(); //Logs: Panel initialized, PanelAdvanced initialized, bar
-panelAdvanced.sayHi(); // Logs: hello from Panel
+var PanelAdvanced = new PanelAdvanced(); //Logs: Panel initialized, PanelAdvanced initialized, bar
+PanelAdvanced.sayHi(); // Logs: hello from Panel
 ```
 
 When used appropriately, Underscore's `extend` method can save a great deal of time and effort writing redundant code.
@@ -1862,8 +1862,8 @@ var methods = ['forEach', 'each', 'map', 'reduce', 'reduceRight', 'find',
     Collection.prototype[method] = function() {
       return _[method].apply(_, [this.models].concat(_.toArray(arguments)));
     };
-```
-
+ ```
+    
 However, for a complete linked list of methods supported, see the [official documentation](http://backbonejs.org/#Collection-Underscore-Methods).
 
 ### RESTFul persistence
@@ -2255,7 +2255,7 @@ Finally we have a `nextOrder()` function, that keeps our Todo items in sequentia
 
 So let's look at the core of the application's logic, the views. Since each todo has a fair bit of logic associated with it, such as edit in place, we're going to use the element controller pattern - a pattern which consists of two views, one that controls a collection of items, and the other deals with each individual item.
 
-In other words, we're going to have one view `AppView`, which will be in charge of creating new todos, and rendering the initial todo list. Then we'll have another view called TodoView instances of which will be associated with an individual Todo record. Todo instances will be in charge of editing, updating and destroying their associated todo.
+In other words, we're going to have one view `AppView`, which will be in charge creating new todos, and rendering the initial todo list. Then we'll have another view called TodoView instances of which will be associated with an individual Todo record. Todo instances will be in charge of editing, updating and destroying their associated todo.
 
 To keep thing simple, we'll keep things 'read-only' at the moment, and won't provide any functionality for creating, editing or deleting todos:
 
@@ -2944,7 +2944,7 @@ So this is what we want the final result to look like, but with more books. Go a
 
     var Book = Backbone.Model.extend({
         defaults:{
-            coverImage:"img/placeholder.png",
+            coverImage:"img/placeholder.gif",
             title:"Some title",
             author:"John Doe",
             releaseDate:"2012",
@@ -3001,7 +3001,7 @@ So what’s going on here? Well, I have wrapped the template in a script tag wit
 
     var Book = Backbone.Model.extend({
         defaults:{
-            coverImage:"img/placeholder.png",
+            coverImage:"img/placeholder.gif",
             title:"Some title",
             author:"John Doe",
             releaseDate:"2012",
@@ -3032,7 +3032,7 @@ So the view works like the model in that we use the extend function and pass it 
 
     var Book = Backbone.Model.extend({
         defaults:{
-            coverImage:"img/placeholder.png",
+            coverImage:"img/placeholder.gif",
             title:"Some title",
             author:"John Doe",
             releaseDate:"2012",
@@ -3163,7 +3163,7 @@ Here is the final app.js:
 
     var Book = Backbone.Model.extend({
         defaults:{
-            coverImage:"img/placeholder.png",
+            coverImage:"img/placeholder.gif",
             title:"Some title",
             author:"John Doe",
             releaseDate:"2012",
