@@ -157,7 +157,7 @@ As you can imagine, similar flow would be with POST request after we press save 
 
 On the server side Front Controller would invoke default Controller and Action, e.g. Index Controller and its Index action. Within Index Action there would be a call to Articles model and its Articles::getLastEntries(10) method which would return last 10 blog posts. Afterwards, Controller would load blog/index view which would have basic logic for listing last 10 blog posts.
 
-Let's see once again the big picture of typical HTTP request lifecycle through the server side MVC in the picture below. Server receives request and routes it through (single) entry point. At the entry point, the Front Controller analyze request and based on it invokes appropriate Action of the appropriate Controller. This process is called the routing. Within the Action Model is asked to return and/or save submitted data. Model communicates with the data source (e.g. database or API etc.). Once Model finish its work it returns data to the Controller which then loads appropriate View. The View executes presentation logic (loops through articles and prints title, content etc.) with provided data. In the end response is returned to the user.
+Lets see big picture of typical HTTP request lifecycle through the server side MVC in the picture below. Server receives request and routes it through (single) entry point. At the entry point, the Front Controller analyze request and based on it invokes appropriate Action of the appropriate Controller. This process is called the routing. Within the Action Model is asked to return and/or save submitted data. Model communicates with the data source (e.g. database or API etc.). Once Model finish its work it returns data to the Controller which then loads appropriate View. The View executes presentation logic (loops through articles and prints title, content etc.) with provided data. In the end response is returned to the user.
 
 ![](img/webmvcflow_bacic.png)
 
@@ -181,7 +181,7 @@ Good example is basket in an e-commerce web application which would typically ha
 
 Basket has its data and representation of the data in HTML. This data and associated view in HTML changes over time. We usually used jQuery (or similar library) and whole bunch of ajax calls and callbacks to sync the two. That often produced code that was not so well structured and easy to maintain. Bugs were easy to produce and they are even unavoidable.
 
-Eventually, elegant way to handle it was brought to the client side throught JavaScript MVCs.
+Eventually, an elegant way to handle it was brought to the client side throught JavaScript MVCs.
 
 Now, data is handled with Model and its HTML representation with View. So, on Model changes View is updated and vice versa. Controller is the component that manages this synchronization. It sends update commands both ways, to the View to update itself based on the Model change (e.g. sync with database) and to the Model based on the View changes (e.g. new item dropped into the basket). That way better separation of concerns and code structure is achieved.
 
