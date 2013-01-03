@@ -159,7 +159,7 @@ And, of course, JavaScript and browsers create another context which asks for be
 
 ### MVC In The Browser
 
-In complex JavaScript web application, aka Single Page Application (SPA), all application responses (e.g. UI updates) to user inputs are done seemlessly on the client-side. Data fetching and persistence (e.g. saving to database on server) work is done with Ajax in the background. For great, slick and smooth, user experience code powering these interacions needs to bee well thought out.
+In complex JavaScript web applications, aka Single Page Applications (SPA), all application responses (e.g. UI updates) to user inputs are done seemlessly on the client-side. Data fetching and persistence (e.g. saving to database on server) work is done with Ajax in the background. For great, slick and smooth, user experience code powering these interacions needs to be well thought out.
 
 Through evolution, trial and error, and a lot of spaghetti and not so spaghetti-like code developers in the end developed on ideas of traditional MVC paradigm and brought the solution for structuring JavaScript code to the landscape of the SPAs through JavaScript MVC frameworks. JavaScript now has a number of MVC frameworks, including Ember.js, JavaScriptMVC, and of course Backbone.js.
 
