@@ -2944,7 +2944,7 @@ So this is what we want the final result to look like, but with more books. Go a
 
     var Book = Backbone.Model.extend({
         defaults:{
-            coverImage:"img/placeholder.gif",
+            coverImage:"img/placeholder.png",
             title:"Some title",
             author:"John Doe",
             releaseDate:"2012",
@@ -3001,7 +3001,7 @@ So what’s going on here? Well, I have wrapped the template in a script tag wit
 
     var Book = Backbone.Model.extend({
         defaults:{
-            coverImage:"img/placeholder.gif",
+            coverImage:"img/placeholder.png",
             title:"Some title",
             author:"John Doe",
             releaseDate:"2012",
@@ -3032,7 +3032,7 @@ So the view works like the model in that we use the extend function and pass it 
 
     var Book = Backbone.Model.extend({
         defaults:{
-            coverImage:"img/placeholder.gif",
+            coverImage:"img/placeholder.png",
             title:"Some title",
             author:"John Doe",
             releaseDate:"2012",
@@ -3163,7 +3163,7 @@ Here is the final app.js:
 
     var Book = Backbone.Model.extend({
         defaults:{
-            coverImage:"img/placeholder.gif",
+            coverImage:"img/placeholder.png",
             title:"Some title",
             author:"John Doe",
             releaseDate:"2012",
