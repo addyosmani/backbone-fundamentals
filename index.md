@@ -6604,19 +6604,38 @@ In this next part of the book, we're going to look at how to use AMD modules and
 
 ## Organizing modules with RequireJS and AMD
 
-In case you haven't used it before, [RequireJS](http://requirejs.org) is a popular script loader written by James Burke - a developer who has been quite instrumental in helping shape the AMD module format, which we'll discuss more shortly. Some of RequireJS's capabilities include helping to load multiple script files, helping define modules with or without dependencies and loading in non-script dependencies such as text files.
 
-So, why use RequireJS with Backbone? Although Backbone is excellent when it comes to providing a sanitary structure to your applications, there are a few key areas where some additional help could be used:
+[RequireJS](http://requirejs.org) is a popular script loader written by James Burke - a developer who has been quite instrumental in helping shape the AMD module format, which we'll discuss more shortly. Some of RequireJS's capabilities include helping to load multiple script files, helping define modules with or without dependencies and loading in non-script dependencies such as text files.
 
-1) Backbone doesn't endorse a particular approach to modular-development. Although this means it's quite open-ended for developers to opt for classical patterns like the module-pattern or Object Literals for structuring their apps (which both work fine), it also means developers aren't sure of what works best when other concerns come into play, such as dependency management.
+### Maintainability problems with multiple script files
 
-RequireJS is compatible with the AMD (Asynchronous Module Definition) format, a format which was born from a desire to write something better than the 'write lots of script tags with implicit dependencies and manage them manually' approach to development. In addition to allowing you to clearly declare dependencies, AMD works well in the browser, supports string IDs for dependencies, declaring multiple modules in the same file and gives you easy-to-use tools to avoid polluting the global namespace.
+You might be thinking that there is little benefit to RequrieJS. After all, you can simply load in your JavaScript files through multiple `<script>` tags, which is very straightforward. However, doing it that way has a lot of drawbacks, namely the HTTP overhead.
 
-2) Let's discuss dependency management a little more as it can actually be quite challenging to get right if you're doing it by hand. When we write modules in JavaScript, we ideally want to be able to handle the reuse of code units intelligently and sometimes this will mean pulling in other modules at run-time whilst at other times you may want to do this dynamically to avoid a large pay-load when the user first hits your application.
+Everytime the browser loads in a file you've referenced in a `<script>` tag, it makes a HTTP request to load the file's contents. It has to make a new HTTP request for each file you want to load, which causes problems.
 
-Think about the GMail web-client for a moment. When users initially load up the page on their first visit, Google can simply hide widgets such as the chat module until a user has indicated (by clicking 'expand') that they wish to use it. Through dynamic dependency loading, Google could load up the chat module only then, rather than forcing all users to load it when the page first initializes. This can improve performance and load times and can definitely prove useful when building larger applications.
+- Browsers are limited in how many parallel requests they can make, so often it's slow to load multiple files, as it can only do a certain number at a time. This number depends on the user's settings and browser, but is usually around 4-8. When working on Backbone applications it's good to split your app into multiple JS files, so it's easy to hit that limit quickly. This can be negated by minifying your code into one file as part of a build process, but does not help with the next point.
+- When a script is loaded it is done so synchronously. This means that while it's being loaded, the browser cannot continue rendering the page.
 
-I've previously written [a detailed article](http://addyosmani.com/writing-modular-js) covering both AMD and other module formats and script loaders in case you'd like to explore this topic further. The takeaway is that although it's perfectly fine to develop applications without a script loader or clean module format in place, it can be of significant benefit to consider using these tools in your application development.
+What tools like RequireJS do is load in scripts asynchronously. This means we have to adjust our code slightly, you can't just swap out `<script>` elements for a small piece of RequireJS code, but the benefits are very worthwhile.
+
+- Loading in the scripts asychrnously means they are non-blocking. The browser can continue to render the rest of the page as the scripts are being loaded, speeding up the initial load time.
+- We can load modules in more intelligently, having more control over when they are loaded; along with making sure modules that have dependencies are loaded in the right order so all dependencies are met.
+
+### Need for better dependency management
+
+Dependency management is a challenging subject, in particular when writing JavaScript in the browser. The closest thing we have to dependency management by default is simply making sure we order our `<script>` tags such that code that depends on code in another file is loaded after. This is not a good approach. As I've already discussed, loading multiple files in that way is bad for performance; needing them to be loaded in a certain order is very brittle.
+
+Being able to load different code in only when needed is something RequireJS is very good at. Rather than load all our JavaScript code in at run-time, often a better approach is to dynamically load modules at run-time, only when that code is required. This avoids loading all the code in when the user first hits your application, consequently speeding up the initial load times.
+
+Think about the GMail web-client for a moment. When users initially load up the page on their first visit, Google can simply hide widgets such as the chat module until a user has indicated (by clicking 'expand') that they wish to use it. Through dynamic dependency loading, Google could load up the chat module only then, rather than forcing all users to load it when the page first initializes. This can improve performance and load times and can definitely prove useful when building larger applications. As the codebase for an application grows this becomes even more important.
+
+The important thing to note here is that while it's absolutely fine to develop applications without a script loader, there are significant benefits to utilising tools like RequireJS in your application.
+
+### Asynchrous Module Definition (AMD)
+
+RequireJS implements the [AMD Specification](https://github.com/amdjs/amdjs-api/wiki/AMD) which defines a method for writing modular code and managing dependencies. The RequireJS website also has a section [documenting the reasons behind implementing AMD](http://requirejs.org/docs/whyamd.html):
+
+> The AMD format comes from wanting a module format that was better than today's "write a bunch of script tags with implicit dependencies that you have to manually order" and something that was easy to use directly in the browser. Something with good debugging characteristics that did not require server-specific tooling to get started.
 
 ### Writing AMD modules with RequireJS
 
@@ -6654,6 +6673,13 @@ define(['foo', 'bar'],
         return myModule;
 });
 ```
+
+  define(["foo", "bar"], function( foo, bar ) {
+    var myModule = {
+      // implement the module
+    };
+    return myModule;
+  });
 
 #### Alternate syntax
 There is also a [sugared version](http://requirejs.org/docs/whyamd.html#sugar) of `define()` available that allows you to declare your dependencies as local variables using `require()`. This will feel familiar to anyone who's used node, and can be easier to add or remove dependencies.
@@ -6695,6 +6721,15 @@ require(['foo', 'bar'], function ( foo, bar ) {
         foo.doSomething();
 });
 ```
+
+
+Addy's post on [Writing Modular JS](http://addyosmani.com/writing-modular-js/) covers the AMD specification in much more detail. Defining and using modules will be covered in this book shortly when we look at more structured examples of using RequireJS.
+
+
+TODO:
+RequireJS & Examples (e.g define/require/shim)
+Require + Backbone/Backbone Boilerplate
+R.js optimiser (and node module?)
 
 
 **Wrapping modules, views and other components with AMD**
