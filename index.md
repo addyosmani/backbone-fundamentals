@@ -1816,7 +1816,7 @@ The above isn’t quite the same as ES5’s `Object.create`, as it’s actually 
 For example:
 
 ```javascript
- var MyMixin = {
+var MyMixin = {
   foo: 'bar',
   sayFoo: function(){alert(this.foo);}
 }
@@ -1827,7 +1827,7 @@ var MyView = Backbone.View.extend({
 
 _.extend(MyView.prototype, MyMixin);
 
-myView = new MyView();
+var myView = new MyView();
 myView.sayFoo(); //=> 'bar'
 ```
 
@@ -1904,8 +1904,8 @@ var PanelAdvanced = Panel.extend({
   }
 });
 
-var PanelAdvanced = new PanelAdvanced(); //Logs: Panel initialized, PanelAdvanced initialized, bar
-PanelAdvanced.sayHi(); // Logs: hello from Panel
+var panelAdvanced = new PanelAdvanced(); //Logs: Panel initialized, PanelAdvanced initialized, bar
+panelAdvanced.sayHi(); // Logs: hello from Panel
 ```
 
 When used appropriately, Underscore's `extend` method can save a great deal of time and effort writing redundant code.
