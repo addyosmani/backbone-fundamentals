@@ -3390,21 +3390,17 @@ Now it has better default behaviour
 Now lets see how to remove Books. We start by adding a delete button to the template in index.html
 
 ```html
-<script id="bookTemplate" type="text/javascript">// <![CDATA[
+<script id="bookTemplate" type="text/template">
     <img src="<%= coverImage %>"/>
-<ul>
-    <li><%= title%></li>
- 
-    <li><%= author%></li>
- 
-    <li><%= releaseDate%></li>
- 
-    <li><%= keywords%></li>
- 
-</ul>
- 
+    <ul>
+        <li><%= title %></li>
+        <li><%= author %></li>
+        <li><%= releaseDate %></li>
+        <li><%= keywords %></li>
+    </ul>
+
     <button class="delete">Delete</button>
-// ]]></script>
+</script>
 ```
 
 We add some css to it for good looks. Note that I removed the margin of the existing ul rule above to tighten things up a bit.
