@@ -2934,7 +2934,7 @@ This tutorial is long enough as is, so we won't go into in-place editing or upda
 
 Finally, we move on to routing, which will allow us to easily bookmark the list of items that are active as well as those which have been completed. We’ll be supporting the following routes:
 
-```javascript
+```
 #/ (all - default)
 #/active
 #/completed
