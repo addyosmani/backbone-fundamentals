@@ -3181,7 +3181,7 @@ So the view works like the model in that we use the extend function and pass it 
     });
 
     bookView = new BookView({
-        model: book
+        model:book
     });
 
     $("#books").html(bookView.render().el);
@@ -3213,7 +3213,7 @@ var LibraryView = Backbone.View.extend({
         this.render();
     },
 
-    render: function(){
+    render:function(){
         var that = this;
         _.each(this.collection.models, function(item){
             that.renderBook(item);
@@ -3222,7 +3222,7 @@ var LibraryView = Backbone.View.extend({
 
     renderBook:function(item){
         var bookView = new BookView({
-            model: item
+            model:item
         });
         this.$el.append(bookView.render().el);
     }
@@ -3241,34 +3241,24 @@ You may have noticed that on line 05 we called the Library constructor with the 
 
 ```javascript
 var books = [{title:"JS the good parts", author:"John Doe", releaseDate:"2012", keywords:"JavaScript Programming"},
-        {title:"CS the better parts", author:"John Doe", releaseDate:"2012", keywords:"CoffeeScript Programming"},
-        {title:"Scala for the impatient", author:"John Doe", releaseDate:"2012", keywords:"Scala Programming"},
-        {title:"American Psyco", author:"Bret Easton Ellis", releaseDate:"2012", keywords:"Novel Splatter"},
-        {title:"Eloquent JavaScript", author:"John Doe", releaseDate:"2012", keywords:"JavaScript Programming"}]
+    {title:"CS the better parts", author:"John Doe", releaseDate:"2012", keywords:"CoffeeScript Programming"},
+    {title:"Scala for the impatient", author:"John Doe", releaseDate:"2012", keywords:"Scala Programming"},
+    {title:"American Psyco", author:"Bret Easton Ellis", releaseDate:"2012", keywords:"Novel Splatter"},
+    {title:"Eloquent JavaScript", author:"John Doe", releaseDate:"2012", keywords:"JavaScript Programming"}];
 ```
 
 Now we are almost ready to try out our first version of the Backbone library. Replace this code:
 
-<<<<<<< HEAD
-```js
+```javascript
 var book = new Book({
     title:"Some title",
     author:"John Doe",
     releaseDate:"2012",
     keywords:"JavaScript Programming"
 });
-=======
-```javascript
-    var book = new Book({
-        title:"Some title",
-        author:"John Doe",
-        releaseDate:"2012",
-        keywords:"JavaScript Programming"
-    });
->>>>>>> daf7303... Fix code block markup.
 
 bookView = new BookView({
-    model: book
+    model:book
 });
 
 $("#books").html(bookView.render().el);
@@ -3329,7 +3319,7 @@ Here is the final app.js:
             this.render();
         },
 
-        render: function(){
+        render:function(){
             var that = this;
             _.each(this.collection.models, function(item){
                 that.renderBook(item);
@@ -3338,7 +3328,7 @@ Here is the final app.js:
 
         renderBook:function(item){
             var bookView = new BookView({
-                model: item
+                model:item
             });
             this.$el.append(bookView.render().el);
         }
@@ -3371,14 +3361,18 @@ In the first part, I covered some Backbone basics of models, views and collectio
 To add a new book we need to have some sort of input form. Go ahead and add one in index.html
 
 ```html
-<div id="books"><form id="addBook" action="#">
-<div><label for="coverImage">CoverImage: </label><input id="coverImage" type="file" />
- <label for="title">Title: </label><input id="title" type="text" />
- <label for="author">Author: </label><input id="author" type="text" />
- <label for="releaseDate">Release date: </label><input id="releaseDate" type="text" />
- <label for="keywords">Keywords: </label><input id="keywords" type="text" />
- <button id="add">Add</button></div>
-</form></div>
+<div id="books">
+    <form id="addBook" action="#">
+        <div>
+            <label for="coverImage">CoverImage: </label><input id="coverImage" type="file" />
+            <label for="title">Title: </label><input id="title" type="text" />
+            <label for="author">Author: </label><input id="author" type="text" />
+            <label for="releaseDate">Release date: </label><input id="releaseDate" type="text" />
+            <label for="keywords">Keywords: </label><input id="keywords" type="text" />
+            <button id="add">Add</button>
+        </div>
+    </form>
+</div>
 ```
 
 I made the ids of the inputs match the attributes in our Book model so that we don’t have to remap those later. Add this to screen.css for looks
@@ -3404,12 +3398,12 @@ I made the ids of the inputs match the attributes in our Book model so that we d
 #addBook button {
     display:block;
     margin:5px 20px 10px 10px;
-    float: right;
-    clear: both;
+    float:right;
+    clear:both;
 }
  
 #addBook div {
-    width: 550px;
+    width:550px;
 }
  
 #addBook div:after {
@@ -3426,7 +3420,7 @@ I made the ids of the inputs match the attributes in our Book model so that we d
 Now lets create a function that lets us add a book. We put it in our master view (LibraryView) after the render function
 
 ```javascript
-addBook: function(){
+addBook:function(){
     var formData = {};
  
     $("#addBook").children("input").each(function(i, el){
@@ -3450,7 +3444,7 @@ events:{
 By default, Backbone will send an event object as parameter to the function. This is useful for us in this case since we want to prevent the form from actually submit and reloading the page. Add a preventDefault to the addBook function
 
 ```javascript
-addBook: function(e){
+addBook:function(e){
     e.preventDefault();
  
     var formData = {};
@@ -3524,7 +3518,7 @@ Now lets see how to remove Books. We start by adding a delete button to the temp
 
 ```html
 <script id="bookTemplate" type="text/template">
-    <img src="<%= coverImage %>"/>
+    <img src="<%= coverImage %>" />
     <ul>
         <li><%= title %></li>
         <li><%= author %></li>
@@ -3540,13 +3534,13 @@ We add some css to it for good looks. Note that I removed the margin of the exis
 
 ```css
 .bookContainer ul {
-    list-style-type: none;
-    margin-bottom: 0;
+    list-style-type:none;
+    margin-bottom:0;
 }
  
 .bookContainer button {
     float:right;
-    margin: 10px;
+    margin:10px;
 }
 ```
 
@@ -3595,7 +3589,7 @@ var BookView = Backbone.View.extend({
     },
  
     events: {
-        "click .delete": "deleteBook"
+        "click .delete":"deleteBook"
     },
  
     deleteBook:function () {
@@ -3623,8 +3617,7 @@ initialize:function () {
 Here I specified that the removeBook function should be called when the remove event from our collection fires, so lets create this function. Note that the collection provides the removed model as a parameter to the event.
 
 ```javascript
-
-removeBook: function(removedBook){
+removeBook:function(removedBook){
     var removedBookData = removedBook.attributes;
  
     _.each(removedBookData, function(val, key){
@@ -3849,11 +3842,14 @@ We then call the save function on the BookModel passing in an anonymous function
 
 ```javascript
 jQuery.post("/api/books", {
-  "title": "JavaScript the good parts",
-  "author": "Douglas Crockford",
-  "releaseDate": new Date(2008, 4, 1).getTime()
+  "title":"JavaScript the good parts",
+  "author":"Douglas Crockford",
+  "releaseDate":new Date(2008, 4, 1).getTime()
 }, function(data, textStatus, jqXHR) {
-    console.log("Post response:"); console.dir(data); console.log(textStatus); console.dir(jqXHR);
+    console.log("Post response:"); 
+    console.dir(data); 
+    console.log(textStatus); 
+    console.dir(jqXHR);
 });
 ```
 
@@ -3871,7 +3867,7 @@ jQuery.get("/api/books/", function (data, textStatus, jqXHR) {
 You should now get an array of size 1 back from our server. You may wonder about this line:
 
 ```javascript
-"releaseDate": new Date(2008, 4, 1).getTime()
+"releaseDate":new Date(2008, 4, 1).getTime()
 ```
 
 MongoDB expects dates in UNIX time format (milliseconds from Jan 1st 1970), so we have to convert dates before posting. The object we get back however, contains a JavaScript Date object. Also note the _id attribute of the returned object.
@@ -3934,14 +3930,17 @@ jQuery.ajax({
   url:"/api/books/4f95a8cb1baa9b8a1b000006",
   type:"PUT",
   data:{
-    "title": "JavaScript The good parts",
-    "author": "The Legendary Douglas Crockford",
-    "releaseDate": new Date(2008, 4, 1).getTime()
+    "title":"JavaScript The good parts",
+    "author":"The Legendary Douglas Crockford",
+    "releaseDate":new Date(2008, 4, 1).getTime()
   },
   success: function(data, textStatus, jqXHR) {
-    console.log("Post resposne:"); console.dir(data); console.log(textStatus); console.dir(jqXHR);
-  }});
-  
+    console.log("Post resposne:"); 
+    console.dir(data); 
+    console.log(textStatus); 
+    console.dir(jqXHR);
+  }
+});
 ```
 
 Finally we create the delete route:
@@ -3967,7 +3966,7 @@ app.delete('/api/books/:id', function(req, res){
 ```javascript
 jQuery.ajax({
   url:'/api/books/4f95a5251baa9b8a1b000001',
-  type: 'DELETE',
+  type:'DELETE',
   success:function(data, textStatus, jqXHR){
     console.log("Post resposne:");
     console.dir(data);
@@ -3982,7 +3981,7 @@ So now our REST API is complete – we have support for all HTTP verbs. What nex
 ```javascript
 //Schemas
 var Keywords = new mongoose.Schema({
-    keyword: String
+    keyword:String
 });
 ```
 
@@ -3993,7 +3992,7 @@ var Book = new mongoose.Schema({
     title:String,
     author:String,
     releaseDate:Date,
-    keywords: [Keywords]
+    keywords:[Keywords]
 });
 ```
 
@@ -4005,7 +4004,7 @@ app.post('/api/books', function (req, res) {
         title:req.body.title,
         author:req.body.author,
         releaseDate:req.body.releaseDate,
-        keywords: req.body.keywords
+        keywords:req.body.keywords
     });
     book.save(function (err) {
         if (!err) {
@@ -4039,16 +4038,19 @@ There we are, that should be all we need, now we can try it out in the console:
 
 ```javascript
 jQuery.post("/api/books", {
-  "title": "Secrets of the JavaScript Ninja",
-  "author": "John Resig",
-  "releaseDate": new Date(2008, 3, 12).getTime(),
+  "title":"Secrets of the JavaScript Ninja",
+  "author":"John Resig",
+  "releaseDate":new Date(2008, 3, 12).getTime(),
   "keywords":[{
      "keyword":"JavaScript"
    },{
-     "keyword": "Reference"
+     "keyword":"Reference"
    }]
 }, function(data, textStatus, jqXHR) {
-    console.log("Post response:"); console.dir(data); console.log(textStatus); console.dir(jqXHR);
+    console.log("Post response:"); 
+    console.dir(data); 
+    console.log(textStatus); 
+    console.dir(jqXHR);
 });
 ```
 
@@ -4063,9 +4065,9 @@ Update: If you for some reason don’t have access to a server you could use the
 
 ```javascript
 var Library = Backbone.Collection.extend({
-    localStorage: new Backbone.LocalStorage("LibraryStorage"),
-    model: Book,
-    url: '/api/books'
+    localStorage:new Backbone.LocalStorage("LibraryStorage"),
+    model:Book,
+    url:'/api/books'
 });
 ```
 
@@ -4094,19 +4096,16 @@ url HTTP Method Operation
 To make our application get the Book models from the server on page load we need to update the LibraryView. It is recommended in the Backbone documentation to insert all models when the page is generated on the server side, rather than fetching them from the client side once the page is loaded. Since this tutorial will try to give you a more complete picture of how to communicate with a server, we will go ahead and ignore that recommendation. Go to the LibraryView declaration in app.js and make the following updates:
 
 ```javascript
-var LibraryView = Backbone.View.extend({
-    el:$("#books"),
+initialize:function () {
+    //this.collection = new Library(books);
+    this.collection = new Library();
+    this.collection.fetch();
+    this.render();
 
-    initialize:function () {
-        //this.collection = new Library(books);
-        this.collection = new Library();
-        this.collection.fetch();
-        this.render();
-
-        this.collection.on("add", this.renderBook, this);
-        this.collection.on("remove", this.removeBook, this);
-        this.collection.on("reset", this.render, this);
-    },
+    this.collection.on("add", this.renderBook, this);
+    this.collection.on("remove", this.removeBook, this);
+    this.collection.on("reset", this.render, this);
+},
 ```
 
 Here I have replaced the row where we create a collection from the internal array with `this.collection.fetch()`. I have also added a listener on the reset event. We need to do this since the fetching of models is asynchronous and happens after the page is rendered. When the fetching is finished, Backbone will fire the reset event, which we listen to and re-render the view. If you reload the page now you should see all books that are stored on the server:
@@ -4117,7 +4116,6 @@ Here I have replaced the row where we create a collection from the internal arra
 As you can see the date and keywords looks a bit weird. The date delivered from the server is converted into a JavaScript Date object and when applied to the underscore template it will use the toString() function to display it. There isn’t very good support for formatting dates in JavaScript so we will use the dateFormat jQuery plugin to fix this. Go ahead and download it from here and put it in your js folder. Then go ahead and change  index.html like this:
 
 ```html
-
 <body>
 <div id="books">
     <form id="addBook" action="#">
@@ -4167,13 +4165,14 @@ So I added the jquery.dateFormat-1.0.js file on row 25 and used dateFormat to pr
 Here I iterate over the keywords array using the each function and print out every single keyword. Note that I display the keyword using the <%= tag. This will display the keywords with a space between. If you would like to support space characters within a keyword, like for example “new age” then you could separate them by comma (no sane person would put a comma in a keyword right?). That would lead us to write some more code to remove the comma after the last keyword like this:
 
 ```html
-       <li>
-       <% _.each(keywords, function(keyobj, index, list){%>
+<li>
+    <% _.each(keywords, function(keyobj, index, list){ %>
         <%= keyobj.keyword %>
-          <% if(index < list.length - 1){ %>
-          <%= ', ' %>
-        <% }}); %>
-       </li>
+        <% if(index < list.length - 1){ %>
+            <%= ', ' %>
+        <% } %>
+    <% }); %>
+</li>
 ```
 
 Reloading the page again should look quite decent:
@@ -4212,7 +4211,7 @@ var Book = Backbone.Model.extend({
         releaseDate:"Unknown",
         keywords:"None"
     },
-    idAttribute: "_id"
+    idAttribute:"_id"
 });
 ```
 
@@ -4256,7 +4255,7 @@ Now in the beginning of app.js bind datepicker to our releaseDate field:
 
 ```javascript
 (function ($) {
-    $( "#releaseDate" ).datepicker();
+    $("#releaseDate").datepicker();
  
     var books = [
         {title:"JS the good parts", author:"John Doe", releaseDate:"2012", keywords:"JavaScript Programming"},
