@@ -3086,27 +3086,27 @@ Go ahead and insert the code in app.js. Next stop is a new view for our Library 
 
 ```js
 var LibraryView = Backbone.View.extend({
-        el:$("#books"),
+    el:$("#books"),
 
-        initialize:function(){
-            this.collection = new Library(books);
-            this.render();
-        },
+    initialize:function(){
+        this.collection = new Library(books);
+        this.render();
+    },
 
-        render: function(){
-            var that = this;
-            _.each(this.collection.models, function(item){
-                that.renderBook(item);
-            }, this);
-        },
+    render: function(){
+        var that = this;
+        _.each(this.collection.models, function(item){
+            that.renderBook(item);
+        }, this);
+    },
 
-        renderBook:function(item){
-            var bookView = new BookView({
-                model: item
-            });
-            this.$el.append(bookView.render().el);
-        }
-    });
+    renderBook:function(item){
+        var bookView = new BookView({
+            model: item
+        });
+        this.$el.append(bookView.render().el);
+    }
+});
 ```
 
 I added some line numbers to help me explain what is going on. On line 02 I specified the property “el”. A view can take either a tagName, as we saw in our `BookView`, or an el. When we use tagName, the view will create the element for us, but we are responsible for inserting it into the page. When we use el we specify an existing element in the page and the view will write directly into the page, into the specified element. In this case we select the div with id=”books”.
@@ -3130,18 +3130,18 @@ var books = [{title:"JS the good parts", author:"John Doe", releaseDate:"2012", 
 Now we are almost ready to try out our first version of the Backbone library. Replace this code:
 
 ```js
-    var book = new Book({
-        title:"Some title",
-        author:"John Doe",
-        releaseDate:"2012",
-        keywords:"JavaScript Programming"
-    });
+var book = new Book({
+    title:"Some title",
+    author:"John Doe",
+    releaseDate:"2012",
+    keywords:"JavaScript Programming"
+});
 
-    bookView = new BookView({
-        model: book
-    });
+bookView = new BookView({
+    model: book
+});
 
-    $("#books").html(bookView.render().el);
+$("#books").html(bookView.render().el);
 ```
 
 with this:
@@ -3522,7 +3522,7 @@ The code for this part is available [here](https://dl.dropbox.com/u/70775642/wor
 
 ##Part 2.5
 
-In the first two parts of this tutorial series we looked at the basic structure of a Backbone application and how to add and remove models. In the third part we will look at how to synchronize the models with the back end, but in order to do that we need to make a small detour and set up a server with a REST api. That is what we are going to do in this part.Since this is a JavaScript tutorial I will use JavaScript to create the server using node.js. If you are more comfortable in setting up a REST server in another language, this is the API you need to conform to:
+In the first two parts of this tutorial series we looked at the basic structure of a Backbone application and how to add and remove models. In the third part we will look at how to synchronize the models with the back end, but in order to do that we need to make a small detour and set up a server with a REST api. That is what we are going to do in this part. Since this is a JavaScript tutorial I will use JavaScript to create the server using node.js. If you are more comfortable in setting up a REST server in another language, this is the API you need to conform to:
 
 ```
 url HTTP Method Operation
@@ -3617,7 +3617,7 @@ app.listen(4711, function () {
 });
 ```
 
-I start off by loading the modules required for this project: Express for creating the HTTP server, Path for dealing with file paths and mongoose for connecting with the database. We the create an express server and configure it using an anonymous function. This is a pretty standard configuration and for our application we don’t actually need the methodOverride part. It is used for issuing PUT and DELETE HTTP requests directly from a form, since forms normally only support GET and POST. Finally I start the server by running the listen function. The port number used, in this case 4711, could be any free port on your system. I simply used 4711 since it is the most random number. We are now ready to run our first server:
+I start off by loading the modules required for this project: Express for creating the HTTP server, Path for dealing with file paths and mongoose for connecting with the database. We then create an express server and configure it using an anonymous function. This is a pretty standard configuration and for our application we don’t actually need the methodOverride part. It is used for issuing PUT and DELETE HTTP requests directly from a form, since forms normally only support GET and POST. Finally I start the server by running the listen function. The port number used, in this case 4711, could be any free port on your system. I simply used 4711 since it is the most random number. We are now ready to run our first server:
 
 ```js
 node server.js
@@ -3648,14 +3648,14 @@ Fantastic. Now since we want to store our data in MongoDB we need to define a sc
 ```js
 //Connect to database
 mongoose.connect('mongodb://localhost/library_database');
- 
+
 //Schemas
-var Book = new  mongoose.Schema({
+var Book = new mongoose.Schema({
     title:String,
     author:String,
-    releaseDate: Date
+    releaseDate:Date
 });
- 
+
 //Models
 var BookModel = mongoose.model('Book', Book);
 ```
@@ -3716,7 +3716,7 @@ app.post('/api/books', function (req, res) {
 
 We start by creating a new BookModel passing an object with title, author and releaseDate attributes. The data are collected from req.body. This means that anyone calling this operation in the API needs to supply a JSON object containing the title, author and releaseDate attributes. Actually, the caller can omit any or all attributes since we have not made any one mandatory. 
 
-We the call the save function on the BookModel passing in an anonymous function for handling errors in the same way as with the previous get route. Finally we return the saved BookModel. The reason we return the BookModel and not just “success” or similar string is that when the BookModel is saved it will get an _id attribute from MongoDB, which the client need when updating or deleting a specific book. Lets try it out again, restart node and go back to the console and type:
+We then call the save function on the BookModel passing in an anonymous function for handling errors in the same way as with the previous get route. Finally we return the saved BookModel. The reason we return the BookModel and not just “success” or similar string is that when the BookModel is saved it will get an _id attribute from MongoDB, which the client need when updating or deleting a specific book. Lets try it out again, restart node and go back to the console and type:
 
 ```js
 jQuery.post("/api/books", {
@@ -3736,6 +3736,7 @@ jQuery.get("/api/books/", function (data, textStatus, jqXHR) {
     console.dir(data);
     console.log(textStatus);
     console.dir(jqXHR);
+});
 ```
 
 You should now get an array of size 1 back from our server. You may wonder about this line:
