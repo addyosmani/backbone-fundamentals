@@ -6835,9 +6835,39 @@ require(['foo', 'bar'], function ( foo, bar ) {
 
 Addy's post on [Writing Modular JS](http://addyosmani.com/writing-modular-js/) covers the AMD specification in much more detail. Defining and using modules will be covered in this book shortly when we look at more structured examples of using RequireJS.
 
+### Getting Started with RequireJS
+Before using RequireJS and Backbone we will first set up a very basic RequireJS project to demonstrate how it works. The first thing to do is to [Download RequireJS](http://requirejs.org/docs/download.html#requirejs). When you load in the RequireJS script in your HTML file, you need to also tell it where your main JavaScript file exists. Typically this will be called something like "app.js", and is the main entry point for your application. You do this by passing in a `data-main` attribute:
+
+```html
+<script data-main="app.js" src="lib/require.js"></script>
+```
+
+Now, RequireJS will automatically load in `app.js` for you.
+
+#### RequireJS Configuration
+
+In your main JavaScript file that you pass into RequireJS through the `data-main` attribute, you can configure RequireJS. This is done by calling `require.config`, and passing in an object:
+
+```javascript
+require.config({
+  baseUrl: "/another/path",
+  paths: {
+    "some": "some/v1.0"
+  },
+  waitSeconds: 15
+});
+```
+
+It's worth noting that not all the configuration options are discussed here. The [RequireJS documentation](http://requirejs.org/docs/api.html#config) covers them all.
+
+
+#### RequireJS Shims
+To use a library with RequireJS, ideally that library should come with AMD support. That is, it uses the `define` method to define the library as a module. However, some libraries - including Backbone and one of its dependencies, Underscore - don't do this. Fortunately RequireJS comes with a way to bypass this.
+
+If you'd like to read more about general RequireJS usage, the [RequireJS API docs](http://requirejs.org/docs/api.html) are incredibly thorough and easy to read.
+
 
 TODO:
-RequireJS & Examples (e.g define/require/shim)
 Require + Backbone/Backbone Boilerplate
 R.js optimiser (and node module?)
 
