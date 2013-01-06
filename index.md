@@ -1611,7 +1611,7 @@ var myTodoRouter = new TodoRouter();
 Backbone.history.start();
 
 // Go to:
-// http://localhost/#todo/4 url is updated to: http://localhost/#todo/45/edit
+// http://localhost/#todo/4 url is updated to: http://localhost/#todo/4/edit
 // but editTodo() function is not invoked even though location we end up is mapped to it.
 //
 // logs: View todo requested.
@@ -1641,7 +1641,7 @@ var myTodoRouter = new TodoRouter();
 Backbone.history.start();
 
 // Go to:
-// http://localhost/#todo/4 url is updated to: http://localhost/#todo/45/edit
+// http://localhost/#todo/4 url is updated to: http://localhost/#todo/4/edit
 // but this time editTodo() function is invoked.
 // 
 // logs: 
@@ -1802,7 +1802,7 @@ Underscore’s extend method is called twice to add the static and instance meth
 For example:
 
 ```javascript
- var MyMixin = {
+var MyMixin = {
   foo: 'bar',
   sayFoo: function(){alert(this.foo);}
 }
@@ -1813,7 +1813,7 @@ var MyView = Backbone.View.extend({
 
 _.extend(MyView.prototype, MyMixin);
 
-myView = new MyView();
+var myView = new MyView();
 myView.sayFoo(); //=> 'bar'
 ```
 
@@ -1890,8 +1890,8 @@ var PanelAdvanced = Panel.extend({
   }
 });
 
-var PanelAdvanced = new PanelAdvanced(); //Logs: Panel initialized, PanelAdvanced initialized, bar
-PanelAdvanced.sayHi(); // Logs: hello from Panel
+var panelAdvanced = new PanelAdvanced(); //Logs: Panel initialized, PanelAdvanced initialized, bar
+panelAdvanced.sayHi(); // Logs: hello from Panel
 ```
 
 When used appropriately, Underscore's `extend` method can save a great deal of time and effort writing redundant code.
@@ -1980,8 +1980,8 @@ var methods = ['forEach', 'each', 'map', 'reduce', 'reduceRight', 'find',
     Collection.prototype[method] = function() {
       return _[method].apply(_, [this.models].concat(_.toArray(arguments)));
     };
- ```
-    
+```
+
 However, for a complete linked list of methods supported, see the [official documentation](http://backbonejs.org/#Collection-Underscore-Methods).
 
 ### RESTFul persistence
@@ -2373,7 +2373,7 @@ Finally we have a `nextOrder()` function, that keeps our Todo items in sequentia
 
 So let's look at the core of the application's logic, the views. Since each todo has a fair bit of logic associated with it, such as edit in place, we're going to use the element controller pattern - a pattern which consists of two views, one that controls a collection of items, and the other deals with each individual item.
 
-In other words, we're going to have one view `AppView`, which will be in charge creating new todos, and rendering the initial todo list. Then we'll have another view called TodoView instances of which will be associated with an individual Todo record. Todo instances will be in charge of editing, updating and destroying their associated todo.
+In other words, we're going to have one view `AppView`, which will be in charge of creating new todos, and rendering the initial todo list. Then we'll have another view called TodoView instances of which will be associated with an individual Todo record. Todo instances will be in charge of editing, updating and destroying their associated todo.
 
 To keep thing simple, we'll keep things 'read-only' at the moment, and won't provide any functionality for creating, editing or deleting todos:
 
@@ -3062,7 +3062,7 @@ So this is what we want the final result to look like, but with more books. Go a
 
     var Book = Backbone.Model.extend({
         defaults:{
-            coverImage:"img/placeholder.gif",
+            coverImage:"img/placeholder.png",
             title:"Some title",
             author:"John Doe",
             releaseDate:"2012",
@@ -3119,7 +3119,7 @@ So what’s going on here? Well, I have wrapped the template in a script tag wit
 
     var Book = Backbone.Model.extend({
         defaults:{
-            coverImage:"img/placeholder.gif",
+            coverImage:"img/placeholder.png",
             title:"Some title",
             author:"John Doe",
             releaseDate:"2012",
@@ -3150,7 +3150,7 @@ So the view works like the model in that we use the extend function and pass it 
 
     var Book = Backbone.Model.extend({
         defaults:{
-            coverImage:"img/placeholder.gif",
+            coverImage:"img/placeholder.png",
             title:"Some title",
             author:"John Doe",
             releaseDate:"2012",
@@ -3281,7 +3281,7 @@ Here is the final app.js:
 
     var Book = Backbone.Model.extend({
         defaults:{
-            coverImage:"img/placeholder.gif",
+            coverImage:"img/placeholder.png",
             title:"Some title",
             author:"John Doe",
             releaseDate:"2012",
