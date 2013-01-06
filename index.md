@@ -6786,13 +6786,6 @@ define(['foo', 'bar'],
 });
 ```
 
-  define(["foo", "bar"], function( foo, bar ) {
-    var myModule = {
-      // implement the module
-    };
-    return myModule;
-  });
-
 #### Alternate syntax
 There is also a [sugared version](http://requirejs.org/docs/whyamd.html#sugar) of `define()` available that allows you to declare your dependencies as local variables using `require()`. This will feel familiar to anyone who's used node, and can be easier to add or remove dependencies.
 Here is the previous snippet using the alternate syntax:
@@ -6806,17 +6799,17 @@ define(function(require){
     var foo = require('foo'),
         bar = require('bar');
 
-        // return a value that defines the module export
-        // (i.e the functionality we want to expose for consumption)
+    // return a value that defines the module export
+    // (i.e the functionality we want to expose for consumption)
 
-        // create your module here
-        var myModule = {
-            doStuff:function(){
-                console.log('Yay! Stuff');
-            }
+    // create your module here
+    var myModule = {
+        doStuff:function(){
+            console.log('Yay! Stuff');
         }
+    }
 
-        return myModule;
+    return myModule;
 });
 ```
 
