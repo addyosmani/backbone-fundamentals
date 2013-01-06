@@ -1793,7 +1793,7 @@ The above isn’t quite the same as ES5’s `Object.create`, as it’s actually 
 * The instance methods are checked to see if there’s a constructor property. If so, the class’s constructor is used, otherwise the parent’s constructor is used (i.e., Backbone.Model)
 * Underscore’s extend method is called to add the parent class’s methods to the new child class
 * The `prototype` property of a blank constructor function is assigned with the parent’s prototype, and a new instance of this is set to the child’s `prototype` property
-Underscore’s extend method is called twice to add the static and instance methods to the child class
+* Underscore’s extend method is called twice to add the static and instance methods to the child class
 * The child’s prototype’s constructor and a `__super__` property are assigned
 * This pattern is also used for classes in CoffeeScript, so Backbone classes are compatible with CoffeeScript classes.
 
@@ -1906,7 +1906,7 @@ Rather than using Backbone.Model.prototype.set.call as per the Backbone.js docum
 ```javascript
 // This is how we normally do it
 var OldFashionedNote = Backbone.Model.extend({
-  set: function( attributes, options ) {
+  set: function(attributes, options) {
     // Call parent's method
     Backbone.Model.prototype.set.call(this, attributes, options);
     // some custom code here
@@ -2459,27 +2459,21 @@ In a nutshell this means we can now refer to this.el in our controller, which po
 
 Now let's take a look at the constructor function. It's binding to several events on the Todo model, such as add, reset and all. Since we're delegating handling of updates and deletes to the `TodoView` view, we don't need to worry about that here. The two pieces of logic are:
 
-* When a new todo is created, the `add` event will be fired, calling `addAll()`. This iterates over all of the Todos currently in our collection and fires `addOne()` for each item. (This is so wrong it's scary.)
+* When a new todo is created, the `add` event will be fired, calling `addOne()` which instantiates the TodoView view, rendering it and appending the resultant element to our Todo list.
 
-* `addOne()` instantiates the TodoView view, rendering it and appending the resultant element to our Todo list.
-
-* When a `reset` event is called (i.e. we wish to update the collection in bulk such as when the Todos have been loaded from Local Storage), `addAll()` is similarly called again.
+* When a `reset` event is called (i.e. we wish to update the collection in bulk such as when the Todos have been loaded from Local Storage), `addAll()` is called, which iterates over all of the Todos currently in our collection and fires `addOne()` for each item.
 
 We can then add in the logic for creating new todos, editing them and filtering them based on whether they are complete.
 
 * events: We define an events hash containing declarative callbacks for our DOM events.
-  * `createOnEnter()`: When a user hits return inside the `<input/>` field, this creates a  new Todo item and resets the main `<input/>` field value to prepare it for the next   entry.
-  * `clearCompleted()`: Removes the items in the todo list that have been marked as   completed
-  * `toggleAllComplete()`: Allows a user to set all of the items in the todo list to  completed.
+  * `createOnEnter()`: Creates a new Todo model which persists in localStorage when a user hits return inside the `<input/>` field and resets the main `<input/>` field value to prepare it for the next entry. This creates the model via newAttributes(), which is an object literal composed of the title, order and completed state of the new item being added.
+  * `clearCompleted()`: Removes the items in the todo list that have been marked as completed.
+  * `toggleAllComplete()`: Allows a user to set all of the items in the todo list to completed.
   * `initialize()`:
-    We bind a callback for a change:completed event, letting us know a change has     been made as well to an existing todo item
-    We also bind a callback for a filter event, which works a little similar to     addOne() and addAll(). It’s responsibility is to toggle what todo items are     visible based on the filter currently selected in the UI (all, completed or     remaining) through filterOne() and filterAll().
+    We bind a callback for a change:completed event, letting us know a change has been made as well to an existing todo item.
+    We also bind a callback for a filter event, which works a little similar to addOne() and addAll(). It’s responsibility is to toggle what todo items are visible based on the filter currently selected in the UI (all, completed or remaining) through filterOne() and filterAll().
   * `render()`:
-    We add some conditional CSS styling based on the filter currently selected so     that the route that has been selected is highlighted
-  * `createOnEnter()`:
-    Creates a new Todo model which persists in localStorage when a user hits    return. This creates the model via newAttributes(), which is an object    literal composed of the title, order and completed state of the new item    being added.
-  * `clearCompleted()`:
-    Clears all the todo items that have been marked as complete
+    We add some conditional CSS styling based on the filter currently selected so that the route that has been selected is highlighted.
 
 ```javascript
 
@@ -2516,7 +2510,7 @@ We can then add in the logic for creating new todos, editing them and filtering 
       this.$footer = this.$('#footer');
       this.$main = this.$('#main');
 
-      window.app.Todos.on( 'add', this.addAll, this );
+      window.app.Todos.on( 'add', this.addOne, this );
       window.app.Todos.on( 'reset', this.addAll, this );
       window.app.Todos.on( 'change:completed', this.filterOne, this );
       window.app.Todos.on( 'filter', this.filterAll, this );
