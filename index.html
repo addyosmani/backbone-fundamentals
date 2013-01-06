@@ -367,10 +367,14 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <p>Corrections to existing material are always welcome and I hope that together we can provide the community with an up-to-date resource that is of help. My extended thanks go out to <a href="https://github.com/jashkenas">Jeremy Ashkenas</a> for creating Backbone.js and <a href="https://github.com/addyosmani/backbone-fundamentals/contributors">these</a> members of the community for their assistance tweaking this project.</p>
 <p>I hope you find this book helpful!</p>
 <h1 id="introduction"><a href="#TOC">Introduction</a></h1>
-<p>When writing a web application from scratch, it’s easy to feel like we can get by simply by relying on a DOM manipulation library (like jQuery) and a handful of utility plugins. The problem with this is that it doesn’t take long to get lost in a nested pile of jQuery callbacks and DOM elements without any real structure in place for our applications.</p>
-<p>In short, we’re stuck with spaghetti code. Fortunately there are modern JavaScript frameworks and libraries that can assist with bringing structure and organization to our projects, improving how easily maintainable they are in the long-run.</p>
+<p>Frank Lloyd Wright once said <q>You can’t make an architect. You can however open the doors and windows toward the light as you see it</q>. In this book, I hope to shed some light on how to improve the structure of your web applications, opening doors to what will hopefully be more maintainable, readable applications in your future.</p>
+<p>The goal of all architecture is to build something well - in our case, to craft code that is enduring and delights both ourselves and the developers who will maintain our code long after we are gone. We all want our architecture to be simple, yet beautiful.</p>
+<p>When writing a web application from scratch it can be easy to feel like we can get by simply relying on a DOM manipulation library (such as jQuery) and a handful of plugins. The challenge with this approach is that it doesn’t take long to get lost in a nested pile of callbacks and DOM elements without any real structure in place.</p>
+<p>In short, you can end up with a pile of spaghetti code - code that is disorganized and difficult to follow. This type of code has no simple panacea, short of a rewrite that may end up costing both time and money to alleviate. Fortunately, there are ways to avoid this problem.</p>
+<p>Modern JavaScript MVC frameworks and libraries can assist with bringing structure and organization to our projects, improving how maintainable they are from the start. They build on the trials and tribulations of developers who have had to work around similar callback chaos as you have, providing solutions to many common problems by default.</p>
+<p>With that, in &quot;Developing Backbone.js Applications:, I and a number of other experienced authors will take you through a journey of learning how to improve your application structure using one such MVC library - Backbone.js.</p>
 <h3 id="what-is-mvc"><a href="#TOC">What Is MVC?</a></h3>
-<p>These modern tools provide developers an easy path to organizing their code using variations of a pattern known as MVC (Model-View-Controller). MVC separates the concerns in an application down into three parts:</p>
+<p>The modern JavaScript frameworks I mentioned a moment ago provide developers an easy path to organizing their code using variations of a pattern known as MVC (Model-View-Controller). MVC separates the concerns in an application down into three parts:</p>
 <ul>
 <li>Models represent the domain-specific knowledge and data in an application. Think of this as being a <q>type</q> of data you can model — like a User, Photo or Todo note. Models should notify anyone observing them about their current state (e.g Views).</li>
 <li>Views are typically considered the User-interface in an application (e.g your markup and templates), but don’t have to be. They should know about the existence of Models in order to observe them, but don’t directly communicate with them.</li>
@@ -409,7 +413,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 </ul>
 <h3 id="setting-expectations"><a href="#TOC">Setting Expectations</a></h3>
 <p>The goal of this book is to create an authoritative and centralized repository of information that can help those developing real-world apps with Backbone. If you come across a section or topic which you think could be improved or expanded on, please feel free to submit a pull-request. It won’t take long and you’ll be helping other developers avoid problems you’ve run into before.</p>
-<p>Topics will include MVC theory and how to build applications using Backbone’s models, views, collections and routers. I’ll also be taking you through advanced topics like modular development with Backbone.js and AMD (via RequireJS), how to build applications using modern software stacks (like Node and Express), how to solve the routing problems with Backbone and jQuery Mobile, tips about scaffolding tools, and a lot more.</p>
+<p>Topics will include MVC theory and how to build applications using Backbone’s models, views, collections and routers. I’ll also be taking you through advanced topics like modular development with Backbone.js and AMD (via RequireJS), solutions to common problems like nested views, how to solve the routing problems with Backbone and jQuery Mobile and a lot more.</p>
 <h1 id="fundamentals"><a href="#TOC">Fundamentals</a></h1>
 <p>In this section, we’re going to explore how frameworks like Backbone.js fit in the world of JavaScript application architecture. Classically, developers creating desktop and server-class applications have had a wealth of design patterns available for them to lean on, but it’s only been in the past few years that such patterns have come to client-side development.</p>
 <p>Before exploring any JavaScript frameworks that assist in structuring applications, it can be useful to gain a basic understanding of architectural design patterns.</p>
@@ -1691,7 +1695,8 @@ collection
 <ul>
 <li>The instance methods are checked to see if there’s a constructor property. If so, the class’s constructor is used, otherwise the parent’s constructor is used (i.e., Backbone.Model)</li>
 <li>Underscore’s extend method is called to add the parent class’s methods to the new child class</li>
-<li>The <code>prototype</code> property of a blank constructor function is assigned with the parent’s prototype, and a new instance of this is set to the child’s <code>prototype</code> property Underscore’s extend method is called twice to add the static and instance methods to the child class</li>
+<li>The <code>prototype</code> property of a blank constructor function is assigned with the parent’s prototype, and a new instance of this is set to the child’s <code>prototype</code> property</li>
+<li>Underscore’s extend method is called twice to add the static and instance methods to the child class</li>
 <li>The child’s prototype’s constructor and a <code>__super__</code> property are assigned</li>
 <li>This pattern is also used for classes in CoffeeScript, so Backbone classes are compatible with CoffeeScript classes.</li>
 </ul>
@@ -1779,7 +1784,7 @@ collection
 <p><a href="https://github.com/lukasolson/Backbone-Super">Backbone-Super</a> by Lukas Olson adds a <em>_super</em> method to <em>Backbone.Model</em> using <a href="http://ejohn.org/blog/simple-javascript-inheritance/">John Resig’s Inheritance script</a>. Rather than using Backbone.Model.prototype.set.call as per the Backbone.js documentation, _super can be called instead:</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="co">// This is how we normally do it</span>
 <span class="kw">var</span> OldFashionedNote = <span class="kw">Backbone.Model</span>.<span class="fu">extend</span>({
-  <span class="dt">set</span>: <span class="kw">function</span>( attributes, options ) {
+  <span class="dt">set</span>: <span class="kw">function</span>(attributes, options) {
     <span class="co">// Call parent&#39;s method</span>
     <span class="kw">Backbone.Model.prototype.set</span>.<span class="fu">call</span>(<span class="kw">this</span>, attributes, options);
     <span class="co">// some custom code here</span>
@@ -2188,20 +2193,17 @@ if (this._hasPushState) {
 <p>In a nutshell this means we can now refer to this.el in our controller, which points to the <code>&lt;section id=&quot;todoapp&quot; /&gt;</code> element. As you can see, we’re referring to el in the <code>addOne()</code> function, appending an element to the list.</p>
 <p>Now let’s take a look at the constructor function. It’s binding to several events on the Todo model, such as add, reset and all. Since we’re delegating handling of updates and deletes to the <code>TodoView</code> view, we don’t need to worry about that here. The two pieces of logic are:</p>
 <ul>
-<li><p>When a new todo is created, the <code>add</code> event will be fired, calling <code>addAll()</code>. This iterates over all of the Todos currently in our collection and fires <code>addOne()</code> for each item. (This is so wrong it’s scary.)</p></li>
-<li><p><code>addOne()</code> instantiates the TodoView view, rendering it and appending the resultant element to our Todo list.</p></li>
-<li><p>When a <code>reset</code> event is called (i.e. we wish to update the collection in bulk such as when the Todos have been loaded from Local Storage), <code>addAll()</code> is similarly called again.</p></li>
+<li><p>When a new todo is created, the <code>add</code> event will be fired, calling <code>addOne()</code> which instantiates the TodoView view, rendering it and appending the resultant element to our Todo list.</p></li>
+<li><p>When a <code>reset</code> event is called (i.e. we wish to update the collection in bulk such as when the Todos have been loaded from Local Storage), <code>addAll()</code> is called, which iterates over all of the Todos currently in our collection and fires <code>addOne()</code> for each item.</p></li>
 </ul>
 <p>We can then add in the logic for creating new todos, editing them and filtering them based on whether they are complete.</p>
 <ul>
 <li>events: We define an events hash containing declarative callbacks for our DOM events.</li>
-<li><code>createOnEnter()</code>: When a user hits return inside the <code>&lt;input/&gt;</code> field, this creates a new Todo item and resets the main <code>&lt;input/&gt;</code> field value to prepare it for the next entry.</li>
-<li><code>clearCompleted()</code>: Removes the items in the todo list that have been marked as completed</li>
+<li><code>createOnEnter()</code>: Creates a new Todo model which persists in localStorage when a user hits return inside the <code>&lt;input/&gt;</code> field and resets the main <code>&lt;input/&gt;</code> field value to prepare it for the next entry. This creates the model via newAttributes(), which is an object literal composed of the title, order and completed state of the new item being added.</li>
+<li><code>clearCompleted()</code>: Removes the items in the todo list that have been marked as completed.</li>
 <li><code>toggleAllComplete()</code>: Allows a user to set all of the items in the todo list to completed.</li>
-<li><code>initialize()</code>: We bind a callback for a change:completed event, letting us know a change has been made as well to an existing todo item We also bind a callback for a filter event, which works a little similar to addOne() and addAll(). It’s responsibility is to toggle what todo items are visible based on the filter currently selected in the UI (all, completed or remaining) through filterOne() and filterAll().</li>
-<li><code>render()</code>: We add some conditional CSS styling based on the filter currently selected so that the route that has been selected is highlighted</li>
-<li><code>createOnEnter()</code>: Creates a new Todo model which persists in localStorage when a user hits return. This creates the model via newAttributes(), which is an object literal composed of the title, order and completed state of the new item being added.</li>
-<li><code>clearCompleted()</code>: Clears all the todo items that have been marked as complete</li>
+<li><code>initialize()</code>: We bind a callback for a change:completed event, letting us know a change has been made as well to an existing todo item. We also bind a callback for a filter event, which works a little similar to addOne() and addAll(). It’s responsibility is to toggle what todo items are visible based on the filter currently selected in the UI (all, completed or remaining) through filterOne() and filterAll().</li>
+<li><code>render()</code>: We add some conditional CSS styling based on the filter currently selected so that the route that has been selected is highlighted.</li>
 </ul>
 <pre class="sourceCode javascript"><code class="sourceCode javascript">
   <span class="co">// js/views/app.js</span>
@@ -2237,7 +2239,7 @@ if (this._hasPushState) {
       <span class="kw">this</span>.$<span class="fu">footer</span> = <span class="kw">this</span>.$(<span class="ch">&#39;#footer&#39;</span>);
       <span class="kw">this</span>.$<span class="fu">main</span> = <span class="kw">this</span>.$(<span class="ch">&#39;#main&#39;</span>);
 
-      <span class="kw">window</span>.<span class="fu">app</span>.<span class="fu">Todos</span>.<span class="fu">on</span>( <span class="ch">&#39;add&#39;</span>, <span class="kw">this</span>.<span class="fu">addAll</span>, <span class="kw">this</span> );
+      <span class="kw">window</span>.<span class="fu">app</span>.<span class="fu">Todos</span>.<span class="fu">on</span>( <span class="ch">&#39;add&#39;</span>, <span class="kw">this</span>.<span class="fu">addOne</span>, <span class="kw">this</span> );
       <span class="kw">window</span>.<span class="fu">app</span>.<span class="fu">Todos</span>.<span class="fu">on</span>( <span class="ch">&#39;reset&#39;</span>, <span class="kw">this</span>.<span class="fu">addAll</span>, <span class="kw">this</span> );
       <span class="kw">window</span>.<span class="fu">app</span>.<span class="fu">Todos</span>.<span class="fu">on</span>( <span class="ch">&#39;change:completed&#39;</span>, <span class="kw">this</span>.<span class="fu">filterOne</span>, <span class="kw">this</span> );
       <span class="kw">window</span>.<span class="fu">app</span>.<span class="fu">Todos</span>.<span class="fu">on</span>( <span class="ch">&#39;filter&#39;</span>, <span class="kw">this</span>.<span class="fu">filterAll</span>, <span class="kw">this</span> );
