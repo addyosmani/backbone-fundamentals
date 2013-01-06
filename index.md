@@ -1,8 +1,4 @@
-Search for `TODO:` before committing.
 
-Notes to addy:
-
-- #appendingviews is specific to Marionette and is confusing as it doesn't cover appending views, it covers tree like structures with collections and models. Suggest removing and adding a note in #subviewsnesting about CompositeView
 
 ## Prelude
 
@@ -137,65 +133,65 @@ Martin Fowler has done an excellent job of writing about the [origins](http://ma
 
 ### MVC Applied To The Web
 
-Web is based on HTTP protocol which is stateless. This means that there is no constantly open connection between browser and server. Each request instantiate new communication channel between the two. Once request initiator (e.g. browser) gets response connection is closed. This fact creates completely different context when compared to the one of the operating systems on which original MVC ideas has developed. The MVC implementation has to obey the web context. MVC web implementation is known as Model 2 as well.
+The web heavily relies on the HTTP protocol, which is stateless. This means that there is no constantly open connection between the browser and server. Each request instantiates a new communication channel between the two. Once the request initiator (e.g. a browser) gets a response the connection is closed. This fact creates a completely different context when compared to the one of the operating systems on which many of the original MVC ideas were developed. The MVC implementation has to obey the web context. 
 
-Typical server-side MVC implementation has one MVC stack layered behind the singe point of entry. This single point of entry means that all HTTP requests, e.g. http://www.example.com or http://www.example.com/whichever-page/ etc., are routed, by a server configuration, through one point or, to be bold, one file, e.g. index.php.
+A typical server-side MVC implementation has one MVC stack layered behind the singe point of entry. This single point of entry means that all HTTP requests, e.g. `http://www.example.com` or `http://www.example.com/whichever-page/` etc., are routed, by a server configuration, through one point or, to be bold, one file, e.g. `index.php`.
 
-At that point, there would be an implementation of Front Controller pattern which, once it receives it, analyzes HTTP request (URI at first place) and based on it decides which class (Controller) and its method (Action) are to be invoked as a response to the request (method is name for function and member is name for a variable when part of the class/object). 
+At that point, there would be an implementation of what we call the Front Controller pattern which, once it receives it, analyzes HTTP requests and decides which class (Controller) and method (Action) are to be invoked as a response to the request. Method is the name for a function and member is name for a variable when part of the class/object.
 
-Once invoked Controller takes over and passes to and/or fetches data from appropriate Model for the Action in concern. After Controller receives the data from Model it loads the view, which corresponds to the invoked Action, injects the data into it and returns the response to the user.
+Once invoked the Controller takes over and passes to and/or fetches data from the appropriate Model for the Action in concern. After the Controller receives the data from Model it loads the view, which corresponds to the invoked Action, injects the data into it and returns the response to the user.
 
-For example, let say we have our blog on www.example.com:
+For example, let say we have our blog on `www.example.com` and we want to edit an article (with `id=43`) and request `http://www.example.com/article/edit/43`:
 
-* And we want to edit an article (with id=43) and request http://www.example.com/article/edit/43:
+On the sever side the Front Controller would analyze the URL and invoke the Article Controller (corresponding to the `/article/` part of the URI) and its Edit Action (corresponding to the `/edit/` part of the URI). Within the Action there would be a call to, let say, the Articles model and its `Articles::getEntry(43)` method (43 corresponding to `/43/` in URI) which would return the blog article data from database for edit. Afterwards, Article Controller would load (`article/edit`) view which would have logic for injecting the article's data into the form for user to edit its content, title and other (meta) data. Once all this is done response is returned to the browser.
 
-On sever side Front Controller would analyze the URL and invoke Article Controller (corresponding to /article/ part of the URI) and its Edit Action (corresponding to /edit/ part of the URI). Within the Action there would be a call to, let say, Articles model and its Articles::getEntry(43) method (43 corresponding to /43/ in URI) which would return the blog article data from database for edit. Afterwards, Article Controller would load (article/edit) view which would have logic for injecting the article's data into the form for user to edit its content, title and other (meta) data. Once all this is done response is returned to the browser.
+As you can imagine, a similar flow is necessary with POST requests after we press a save button in a form. The POST action URI would look like `/article/save/43`. This time the request would go through the same Controller, but the Save Action (due to the `/save/` URI chunk), and invoked Articles Model would save edit article to the database with `Articles::saveEntry(43)` and redirect back to the `/article/edit/43` for further editing.
 
-As you can imagine, similar flow would be with POST request after we press save button in the loaded form. POST action URI would be like /article/save/43. This time request would go through the same Controller, but Save Action (due to /save/ URI chunk), and invoked Articles Model would save edit article to the database with Articles::saveEntry(43) and redirect back to the /article/edit/43 for further editing.
+If the user requested `http://www.example.com/`:
 
-* And users request: http://www.example.com/
+On the server side the Front Controller would invoke default Controller and Action, e.g. Index Controller and its Index action. Within Index Action there would be a call to Articles model and its `Articles::getLastEntries(10)` method which would return last 10 blog posts. Afterwards, the Controller would load blog/index view which would have basic logic for listing last 10 blog posts.
 
-On the server side Front Controller would invoke default Controller and Action, e.g. Index Controller and its Index action. Within Index Action there would be a call to Articles model and its Articles::getLastEntries(10) method which would return last 10 blog posts. Afterwards, Controller would load blog/index view which would have basic logic for listing last 10 blog posts.
-
-Lets see big picture of typical HTTP request lifecycle through the server side MVC in the picture below. Server receives request and routes it through (single) entry point. At the entry point, the Front Controller analyze request and based on it invokes appropriate Action of the appropriate Controller. This process is called the routing. Within the Action Model is asked to return and/or save submitted data. Model communicates with the data source (e.g. database or API etc.). Once Model finish its work it returns data to the Controller which then loads appropriate View. The View executes presentation logic (loops through articles and prints title, content etc.) with provided data. In the end response is returned to the user.
+We can see the larger picture of typical HTTP request lifecycle through the server side MVC in the picture below. 
 
 ![](img/webmvcflow_bacic.png)
 
-Demand for complex, fast, responsive Ajax powered web applications demanded a lot of this logic to be replicated on the client side. This meant a lot more code in there. Eventually it brought us to the point that we needed MVC implemented on the client side to better structure the code and make it easier to maintain and further extend during the application life-cycle.
+Server receives a request and routes it through a single entry point. At the entry point, the Front Controller analyzes the request and based on it invokes the appropriate Action of the appropriate Controller. This process is called routing. The Action Model is asked to return and/or save submitted data. Model communicates with the data source (e.g. database or API etc.). Once the Model completes its work it returns data to the Controller which then loads the appropriate View. The View executes presentation logic (loops through articles and prints titles, content etc.) withthe supplied data. In the end, the response is returned to the user.
 
-And, of course, JavaScript and browsers create another context which asks for bending or adjustment of the traditional MVC paradigm to it.
+Demand for fast, complex and responsive Ajax powered web applications demanded a lot of this logic to be replicated on the client side. This meant a lot more code had to exist there. Eventually it brought us to the point that we needed MVC (or a similar architecture) implemented on the client side to better structure the code and make it easier to maintain and further extend during the application life-cycle.
+
+And, of course, JavaScript and browsers create another context which require that we bend or adjust the traditional MVC paradigm to fit it.
 
 ### MVC In The Browser
 
-In complex JavaScript web applications, aka Single Page Applications (SPA), all application responses (e.g. UI updates) to user inputs are done seemlessly on the client-side. Data fetching and persistence (e.g. saving to database on server) work is done with Ajax in the background. For great, slick and smooth, user experience code powering these interacions needs to be well thought out.
+In complex JavaScript web applications, aka Single Page Applications (SPA), all application responses (e.g. UI updates) to user inputs are done seemlessly on the client-side. Data fetching and persistence (e.g. saving to database on server) are done with Ajax in the background. For silky, slick and smooth user experiences, the code powering these interacions needs to be well thought out.
 
 Through evolution, trial and error, and a lot of spaghetti and not so spaghetti-like code developers in the end developed on ideas of traditional MVC paradigm and brought the solution for structuring JavaScript code to the landscape of the SPAs through JavaScript MVC frameworks. JavaScript now has a number of MVC frameworks, including Ember.js, JavaScriptMVC, and of course Backbone.js.
 
 **The problem**
 
-Typical page in a SPA consists of smaller ingredients which, when looked at deeper level, represent logical entities, which involve certain data domain that should be represented in a certain way on the page.
+A typical page in an SPA consists of smaller ingredients which, when looked at at a deeper level, represent logical entities, which involve specific data domains that should be represented in a particular way on the page.
 
-Good example is basket in an e-commerce web application which would typically have list of items added to it, total price etc. and presented to the user as box in top right corner of the page (see the picture). 
+A good example is basket in an e-commerce web application which would typically have a list of items added to it and presented to the user as box in top right corner of the page (see the picture). 
 
 ![](img/wireframe_e_commerce.png)
 
-Basket has its data and representation of the data in HTML. This data and associated view in HTML changes over time. We usually used jQuery (or similar library) and whole bunch of ajax calls and callbacks to sync the two. That often produced code that was not so well structured and easy to maintain. Bugs were easy to produce and they are even unavoidable.
+The basket has its data and representation of the data in HTML. This data and associated view in HTML changes over time. There was a time when we used jQuery (or a similar DOM manipulation library) and a bunch of Ajax calls and callbacks to sync the two. That often produced code that was not so well structured and easy to maintain. Bugs were easy to produce and they are even unavoidable.
 
-Eventually, an elegant way to handle it was brought to the client side throught JavaScript MVCs.
+Eventually, an elegant way to handle it was brought to the client side throught JavaScript MVC libraries.
 
-Now, data is handled with Model and its HTML representation with View. So, on Model changes View is updated and vice versa. Controller is the component that manages this synchronization. It sends update commands both ways, to the View to update itself based on the Model change (e.g. sync with database) and to the Model based on the View changes (e.g. new item dropped into the basket). That way better separation of concerns and code structure is achieved.
+Now, data is handled with a Model and its HTML representation with View. So, on Model changes the View is updated and vice versa. The Controller is the component that manages this synchronization. It sends update commands both ways, to the View to update itself based on the Model change (e.g. sync with database) and to the Model based on the View changes (e.g. new item dropped into the basket). This way offers a better separation of concerns and improved code structure is accomplished.
 
 ### Simple JavaScript MVC Implementation
 
-Let's see a simple implementation of the MVC and its usage to clarify some concepts.
+Let's see a simple implementation of the MVC pattern and its usage to clarify some concepts - we're going to call our little library Cranium.js. 
 
-To simplify a bit we will rely on [Underscore](http://underscorejs.org "Underscore.js") for inheritance and templating (similar as Backbone).
+To simplify a bit we will rely on [Underscore](http://underscorejs.org "Underscore.js") for inheritance and templating (similar to Backbone).
 
 #### Event System
 
-At heart of our JavaScript MVC implementation is Event system based on Publisher-Subscriber Pattern which makes possible for MVC components to intercommunicate in an elegant, decoupled manner.
+At the heart of our JavaScript MVC implementation is an `Event` system (object) based on the Publisher-Subscriber Pattern which makes it possible for MVC components to intercommunicate in an elegant, decoupled manner. Subscribers 'listen' out for specific events of interest and react when Publishers broadcast these events.
 
-Event is inherited by View and Model component. That way each of them can inform other component that event of the interest to them happened.
+`Event` is inherited by the View and Model components. That way each of them can inform other component that event of the interest to them happened.
 
 ```javascript
 // cranium.js - Cranium.Events
@@ -234,16 +230,16 @@ var Events = Cranium.Events = {
 };
 ```
 
-Event system makes possible:
+The Event system makes it possible for:
 
-* for View to notify its subscribers of users interaction, like click or input in form etc., to update/re-render its UI etc.
-* for Model once its data are changed it can notify its listeners to update themselves (e.g. view to re-render to show accurate/updated data) etc­.
+* for View to notify its subscribers of user interaction, like click or input in a form, to update/re-render its UI etc.
+* for Model once its data has changed to notify its Subscribers to update themselves (e.g. view to re-render to show accurate/updated data) etc­.
 
 #### Models
 
-Models manage the data for an application. They are concerned with neither the user-interface nor presentation layers, but instead represent structured data that an application may require. When a model changes (e.g when it is updated), it will typically notify its observers (a concept we will cover shortly, e.g views) that a change has occurred so that they may react accordingly.
+Models manage the (domain-specific) data for an application. They are concerned with neither the user-interface nor presentation layers, but instead represent structured data that an application may require. When a model changes (e.g when it is updated), it will typically notify its observers (Subscribers) that a change has occurred so that they may react accordingly.
 
-Let's see simple implementation of the Model:
+Let's see a simple implementation of the Model:
 
 ```javascript
 // cranium.js - Cranium.Model
@@ -452,15 +448,13 @@ todo1.set({ title: "Due to this change Model will notify View and it will re-ren
 
 #### Notes on View
 
-Users interact with views, which usually means reading and editing model data. For example, in our todo application example, todo model viewing might happen in a user interface in the list of all todo items. Within it each todo is rendered with their title and completed checkbox. Model editing could be done through an "edit" view where a user who has selected a specific todo could edit its title in a form.
+* Users interact with views, which usually means reading and editing model data. For example, in our todo application example, todo model viewing might happen in a user interface in the list of all todo items. Within it each todo is rendered with their title and completed checkbox. Model editing could be done through an "edit" view where a user who has selected a specific todo could edit its title in a form.
 
-We define a ```render()``` utility within our view which is responsible for rendering the contents of the ```Model``` using a JavaScript templating engine (provided by Underscore.js) and updating the contents of our view, referenced by ```el```.
+* We define a ```render()``` utility within our view which is responsible for rendering the contents of the ```Model``` using a JavaScript templating engine (provided by Underscore.js) and updating the contents of our view, referenced by ```el```.
 
-We then adds our ```render()``` callback as one of ```Model``` subscribers, so that through Event System it can trigger the view to update when the model changes.
+* We then add our ```render()``` callback as one of ```Model``` subscribers, so that through Event System it can trigger the view to update when the model changes.
 
-You may wonder where user interaction comes into play here. When users click on todo element within the view, it's not the view's responsibility to know what to do next. A Controller makes this decision. In our implementation, this is achieved by adding an event listener to todo element which will delegate handling the click behavior back to the controller, passing the model information along with it in case it's needed.
-
-The benefit of this architecture is that each component plays its own separate role in making the application function as needed.
+* You may wonder where user interaction comes into play here. When users click on todo element within the view, it's not the view's responsibility to know what to do next. A Controller makes this decision. In our implementation, this is achieved by adding an event listener to todo element which will delegate handling the click behavior back to the controller, passing the model information along with it in case it's needed. The benefit of this architecture is that each component plays its own separate role in making the application function as needed.
 
 **Templating**
 
@@ -511,7 +505,7 @@ In our Todo application, a controller would be responsible for handling changes 
 
 It's with controllers that most JavaScript MVC frameworks depart from this interpretation of the MVC pattern. The reasons for this vary, but in my opinion, Javascript framework authors likely initially looked at server-side interpretations of MVC (such as Ruby on Rails), realized that that approach didn't translate 1:1 on the client-side, and so re-interpreted the C in MVC to solve their state management problem. This was a clever approach, but it can make it hard for developers coming to MVC for the first time to understand both the classical MVC pattern and the "proper" role of controllers in other JavaScript frameworks.
 
-So does Backbone.js have Controllers? Not really. Backbone's Views typically contain "controller" logic, and Routers (discussed below) are used to help manage application state, but neither are true Controllers according to classical MVC.
+So does Backbone.js have Controllers? Not really. Backbone's Views typically contain "controller" logic, and Routers are used to help manage application state, but neither are true Controllers according to classical MVC.
 
 In this respect, contrary to what might be mentioned in the official documentation or in blog posts, Backbone is neither a truly MVC/MVP nor MVVM framework. It's in fact better to see it a member of the MV* family which approaches architecture in its own way. There is of course nothing wrong with this, but it is important to distinguish between classical MVC and MV* should you be relying on discussions of MVC to help with your Backbone projects.
 
