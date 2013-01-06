@@ -6726,7 +6726,7 @@ In this next part of the book, we're going to look at how to use AMD modules and
 
 ### Maintainability problems with multiple script files
 
-You might be thinking that there is little benefit to RequrieJS. After all, you can simply load in your JavaScript files through multiple `<script>` tags, which is very straightforward. However, doing it that way has a lot of drawbacks, namely the HTTP overhead.
+You might be thinking that there is little benefit to RequireJS. After all, you can simply load in your JavaScript files through multiple `<script>` tags, which is very straightforward. However, doing it that way has a lot of drawbacks, namely the HTTP overhead.
 
 Everytime the browser loads in a file you've referenced in a `<script>` tag, it makes a HTTP request to load the file's contents. It has to make a new HTTP request for each file you want to load, which causes problems.
 
