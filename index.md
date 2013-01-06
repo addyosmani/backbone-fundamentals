@@ -3264,7 +3264,7 @@ Now we are almost ready to try out our first version of the Backbone library. Re
 
 with this:
 
-var `libraryView = new LibraryView();`
+`var libraryView = new LibraryView();`
 If you view index.html in a browser you should see something like this:
 
 ![](http://codebyexample.info/wp-content/uploads/2012/03/Screen-Shot-2012-03-06-at-9.58.03-AM.png)
