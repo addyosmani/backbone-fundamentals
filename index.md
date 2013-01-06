@@ -6845,19 +6845,53 @@ In your main JavaScript file that you pass into RequireJS through the `data-main
 
 ```javascript
 require.config({
-  baseUrl: "/another/path",
-  paths: {
-    "some": "some/v1.0"
-  },
-  waitSeconds: 15
+    // your configuration key/values here
 });
 ```
 
-It's worth noting that not all the configuration options are discussed here. The [RequireJS documentation](http://requirejs.org/docs/api.html#config) covers them all.
+// Note to Addy: Any partiular config settings (other than shims, see below) specifically worth mentioning here?
+
+The main reason you'd want to configure RequireJS is for shims, which is used to allow RequireJS to work with libraries that don't use `define()` in the code, but expose themselves globally. We'll cover this shortly. To see other configuration options available to you, I recommend checking out the [RequireJS documentation](http://requirejs.org/docs/api.html#config).
 
 
-#### RequireJS Shims
+##### RequireJS Shims
 To use a library with RequireJS, ideally that library should come with AMD support. That is, it uses the `define` method to define the library as a module. However, some libraries - including Backbone and one of its dependencies, Underscore - don't do this. Fortunately RequireJS comes with a way to bypass this.
+
+To demonstrate this, first let's shim Underscore, and then we'll shim Backbone too. Shims are very simple to implement:
+
+```javascript
+require.config({
+    shim: {
+        'underscore': {
+          exports: '_'
+        }
+    }
+});
+```
+
+The important line there is `exports: '_'`. That tells RequireJS that whenever we require `'underscore'`, it would return the global `_` object, as that's where Underscore exports itself too, it adds the `_` property to the global object. Now when we require Underscore, RequireJS will return that `_` property. Now we can set up a shim for Backbone too:
+
+```javascript
+require.config({
+    shim: {
+        'underscore': {
+          exports: '_'
+        },
+        'backbone': {
+            deps: ['underscore', 'jquery'],
+            exports: 'Backbone'
+        }
+    }
+});
+```
+
+Again, that configuration tells RequireJS to return the global `Backbone` property that Backbone exports, but also this time you'll notice that Backbone's dependencies are defined. This means whenever this:
+
+```javascript
+require( 'backbone', function( Backbone ) {...} );
+```
+
+Is run, it will first make sure the dependencies are met, and then pass the global `Backbone` object into the callback function. You don't need to do this with every library, only the ones that don't support AMD. For example, jQuery does support it, as of jQuery 1.7.
 
 If you'd like to read more about general RequireJS usage, the [RequireJS API docs](http://requirejs.org/docs/api.html) are incredibly thorough and easy to read.
 
