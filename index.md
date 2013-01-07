@@ -3927,7 +3927,7 @@ You should now have a fully functional REST server. We will use this in the next
 
 ##Part 3
 
-In this part we will cover connecting our Backbone application to to a server through a REST API. This tutorial builds on the first two parts, so I strongly recommend reading those to fully benefit from this part.
+In this part we will cover connecting our Backbone application to a server through a REST API. This tutorial builds on the first two parts, so I strongly recommend reading those to fully benefit from this part.
 
 
 Update: If you for some reason don’t have access to a server you could use the Backbone.Localstorage plugin (you’ll need a browser that supports localstorage though). To do this, download the plugin here, add it in a script tag in the html page after Backbone and initialize it in the collection like this:
@@ -3967,25 +3967,25 @@ To make our application get the Book models from the server on page load we need
 ```js
 var LibraryView = Backbone.View.extend({
     el:$("#books"),
- 
+
     initialize:function () {
         //this.collection = new Library(books);
         this.collection = new Library();
         this.collection.fetch();
         this.render();
- 
+
         this.collection.on("add", this.renderBook, this);
         this.collection.on("remove", this.removeBook, this);
         this.collection.on("reset", this.render, this);
     },
 ```
 
-Here I have replaced the row where we create a collection from the internal array with this.collection.fetch(). I have also added an listener on the reset event. We need to do this since the fetching of models is asynchronous and happens after the page is rendered. When the fetching is finished, Backbone will fire the reset event, which we listen to and re-render the view. If you reload the page now you should see all books that are stored on the server:
+Here I have replaced the row where we create a collection from the internal array with `this.collection.fetch()`. I have also added a listener on the reset event. We need to do this since the fetching of models is asynchronous and happens after the page is rendered. When the fetching is finished, Backbone will fire the reset event, which we listen to and re-render the view. If you reload the page now you should see all books that are stored on the server:
 
 ![](http://codebyexample.info/wp-content/uploads/2012/04/Screen-Shot-2012-04-30-at-12.27.32-AM.png)
 
 
-As you can see the date looks a bit weird, and also the keywords. The date delivered from the server is converted into a JavaScript Date object and when applied to the underscore template it will use the toString() function to display it. There isn’t very good support for formatting dates in JavaScript so we will use the dateFormat jQuery plugin to fix this. Go ahead and download it from here and put it in your js folder. Then go ahead and change  index.html like this:
+As you can see the date and keywords looks a bit weird. The date delivered from the server is converted into a JavaScript Date object and when applied to the underscore template it will use the toString() function to display it. There isn’t very good support for formatting dates in JavaScript so we will use the dateFormat jQuery plugin to fix this. Go ahead and download it from here and put it in your js folder. Then go ahead and change  index.html like this:
 
 ```html
 
@@ -4029,7 +4029,7 @@ So I added the jquery.dateFormat-1.0.js file on row 25 and used dateFormat to pr
         <li><%= title%></li>
         <li><%= author%></li>
         <li><%= $.format.date(new Date(releaseDate), 'dd/MM/yyyy') %></li>
-        <li><% _.each(keywords, function(keyobj){%> <%= keyobj.keyword %><% }}); %></li>
+        <li><% _.each(keywords, function(keyobj){%> <%= keyobj.keyword %><% }); %></li>
     </ul>
     <button class="delete">Delete</button>
 </script>
@@ -4101,7 +4101,7 @@ this.collection.create(formData);
 
 Now newly created books will get persisted. Actually, they probably wont if you enter a date. The server expects a date in UNIX timestamp format (milliseconds since Jan 1, 1970). Also any keywords you enter wont be stored since the server expects an array of objects with the attribute ‘keyword’. 
 
-We start with fixing the date issue. We don’t really want the users to enter a date into a specific format manually so we’ll use the standard datepicker from jQuery UI. Go ahead and create a custom jQuery UI download containing datepicker from here . Add the css and js files to index.html:
+We start with fixing the date issue. We don’t really want the users to enter a date into a specific format manually so we’ll use the standard datepicker from jQuery UI. Go ahead and create a custom jQuery UI download containing datepicker from here. Add the css and js files to index.html:
 
 ```html
 <head>
@@ -4195,7 +4195,7 @@ addBook:function (e) {
 },
 ```
 
-Here I check if the current element is the keywords input field, in which case I split the string on each comma the create a new array with keyword objects. In other words I assume that keywords are separated by commas, so I better write a comment on that in the form. Now you should be able to add new books with both release date and keywords!
+Here I check if the current element is the keywords input field, in which case I split the string on each comma and then create a new array with keyword objects. In other words I assume that keywords are separated by commas, so I better write a comment on that in the form. Now you should be able to add new books with both release date and keywords!
 
 ![](http://codebyexample.info/wp-content/uploads/2012/04/Screen-Shot-2012-05-01-at-8.57.51-PM.png)
 
