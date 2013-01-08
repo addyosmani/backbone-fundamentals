@@ -6719,6 +6719,8 @@ In this next part of the book, we're going to look at how to use AMD modules and
 
 ## Organizing modules with RequireJS and AMD
 
+*Partly Contributed by [Jack Franklin](https://github.com/jackfranklin)*
+
 
 [RequireJS](http://requirejs.org) is a popular script loader written by James Burke - a developer who has been quite instrumental in helping shape the AMD module format, which we'll discuss more shortly. Some of RequireJS's capabilities include helping to load multiple script files, helping define modules with or without dependencies and loading in non-script dependencies such as text files.
 
@@ -6901,9 +6903,6 @@ If you'd like to read more about general RequireJS usage, the [RequireJS API doc
 
 ### Require.js and Backbone Examples
 
-TODO:
-R.js optimiser (and node module?)
-
 Now that we've taken a look at how to define AMD modules, let's review how to go about wrapping components like views and collections so that they can also be easily loaded as dependencies for any parts of your application that require them. At it's simplest, a Backbone model may just require Backbone and Underscore.js. These are dependencies, so we can define those when defining the new modules. Note that the following examples presume you have configured RequireJS to shim Backbone and Underscore, as discussed previously.
 
 #### Wrapping modules, views and other components with AMD
@@ -6963,29 +6962,22 @@ RequireJS has a special plugin called text.js which is used to load in text file
 
 1. Download the plugin from http://requirejs.org/docs/download.html#text and place it in either the same directory as your application's main JS file or a suitable sub-directory.
 
-2. Next, include the text.js plugin in your initial RequireJS configuration options. In the code snippet below, we assume that RequireJS is being included in our page prior to this code snippet being executed. Any of the other scripts being loaded are just there for the sake of example.
+2. Next, include the text.js plugin in your initial RequireJS configuration options. In the code snippet below, we assume that RequireJS is being included in our page prior to this code snippet being executed.
 
 ```javascript
 require.config( {
     paths: {
-        'backbone':         'libs/AMDbackbone-0.5.3',
-        'underscore':       'libs/underscore-1.2.2',
-        'text':             'libs/require/text',
-        'jquery':           'libs/jQuery-1.7.1',
-        'json2':            'libs/json2',
-        'datepicker':       'libs/jQuery.ui.datepicker',
-        'datepickermobile': 'libs/jquery.ui.datepicker.mobile',
-        'jquerymobile':     'libs/jquery.mobile-1.0'
+        'text': 'libs/require/text',
     },
     baseUrl: 'app'
 } );
 ```
 
-3. When the `text!` prefix is used for a dependency, RequireJS will automatically load the text plugin and treat the dependency as a text resource. A typical example of this in action may look like..
+3. When the `text!` prefix is used for a dependency, RequireJS will automatically load the text plugin and treat the dependency as a text resource. A typical example of this in action may look like:
 
 ```javascript
 require(['js/app', 'text!templates/mainView.html'],
-    function(app, mainView){
+    function( app, mainView ) {
         // the contents of the mainView file will be
         // loaded into mainView for usage.
     }
@@ -6998,11 +6990,13 @@ With Underscore.js's micro-templating (and jQuery) this would typically be:
 
 HTML:
 
-	<script type="text/template" id="mainViewTemplate">
-	    <% _.each( person, function( person_item ){ %>
-	        <li><%= person_item.get('name') %></li>
-	    <% }); %>
-	</script>
+```html
+<script type="text/template" id="mainViewTemplate">
+    <% _.each( person, function( person_item ){ %>
+        <li><%= person_item.get('name') %></li>
+    <% }); %>
+</script>
+```
 
 
 JS:
@@ -7016,7 +7010,6 @@ With RequireJS and the text plugin however, it's as simple as saving your templa
 ```javascript
 require(['js/app', 'text!templates/mainView.html'],
     function(app, mainView){
-
         var compiled_template = _.template( mainView );
     }
 );
@@ -7034,13 +7027,13 @@ All templating solutions will have their own custom methods for handling templat
 **Note:** You may also be interested in looking at [RequireJS tpl](https://github.com/ZeeAgency/requirejs-tpl). It's an AMD-compatible version of the Underscore templating system that also includes support for optimization (pre-compiled templates) which can lead to better performance and no evals. I have yet to use it myself, but it comes as a recommended resource.
 
 
-## Optimizing Backbone apps for production with the RequireJS Optimizer
+### Optimizing Backbone apps for production with the RequireJS Optimizer
 
 As experienced developers may know, an essential final step when writing both small and large JavaScript web applications is the build process.  The majority of non-trivial apps are likely to consist of more than one or two scripts and so optimizing, minimizing and concatenating your scripts prior to pushing them to production will require your users to download a reduced number (if not just one) script file.
 
-Note: If you haven't looked at build processes before and this is your first time hearing about them, you might find [my post and screencast on this topic](http://addyosmani.com/blog/client-side-build-process/) useful.
+If this is your first time looking at build scripts, [Addy Osmani's screencast on build scripts](http://addyosmani.com/blog/client-side-build-process/) may be useful.
 
-With some other structural JavaScript frameworks, my recommendation would normally be to implicitly use YUI Compressor or Google's closure compiler tools, but we have a slightly more elegant method available, when it comes to Backbone if you're using RequireJS. RequireJS has a command line optimization tool called r.js which has a number of capabilities, including:
+Another benefit to using RequireJS is its command line optimization tool, R.js. This has a number of capabilities, including:
 
 * Concatenating specific scripts and minifying them using external tools such as UglifyJS (which is used by default) or Google's Closure Compiler for optimal browser delivery, whilst preserving the ability to dynamically load modules
 * Optimizing CSS and stylesheets by inlining CSS files imported using @import, stripping out comments etc.
