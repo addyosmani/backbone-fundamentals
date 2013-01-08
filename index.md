@@ -1,6 +1,6 @@
 ## Prelude
 
-![](img/logo.jpg) 
+![](img/logo.jpg)
 
 Welcome to my (in-progress) book about the [Backbone.js](http://documentcloud.github.com/backbone/) library for structuring JavaScript applications. It's released under a Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported [license](http://creativecommons.org/licenses/by-nc-sa/3.0/) meaning you can both grab a copy of the book for free or help to further [improve](https://github.com/addyosmani/backbone-fundamentals/) it.
 
@@ -6796,14 +6796,16 @@ Is run, it will first make sure the dependencies are met, and then pass the glob
 If you'd like to read more about general RequireJS usage, the [RequireJS API docs](http://requirejs.org/docs/api.html) are incredibly thorough and easy to read.
 
 
+### Require.js and Backbone Examples
+
 TODO:
-Require + Backbone/Backbone Boilerplate
 R.js optimiser (and node module?)
 
+Now that we've taken a look at how to define AMD modules, let's review how to go about wrapping components like views and collections so that they can also be easily loaded as dependencies for any parts of your application that require them. At it's simplest, a Backbone model may just require Backbone and Underscore.js. These are dependencies, so we can define those when defining the new modules. Note that the following examples presume you have configured RequireJS to shim Backbone and Underscore, as discussed previously.
 
-**Wrapping modules, views and other components with AMD**
+#### Wrapping modules, views and other components with AMD
 
-Now that we've taken a look at how to define AMD modules, let's review how to go about wrapping components like views and collections so that they can also be easily loaded as dependencies for any parts of your application that require them. At it's simplest, a Backbone model may just require Backbone and Underscore.js. These are considered its dependencies and so, to write an AMD model module, we would simply do this:
+For example, here is how a model is defined.
 
 ```javascript
 define(['underscore', 'backbone'], function(_, Backbone) {
@@ -6845,8 +6847,12 @@ define([
 
 Aliasing to the dollar-sign (`$`), once again makes it very easy to encapsulate any part of an application you wish using AMD.
 
+Doing it this way makes it easy to organise your Backbone application as you like. It's recommended to separate modules into folders. For example, individual folders for models, collections, views and so on. RequireJS doesn't care about what folder structure you use; as long as you use the correct path when using `require`, it will happily pull in the file.
 
-## Keeping Your Templates External Using RequireJS And The Text Plugin
+If you'd like to take a look at how others do it, [Pete Hawkins' Backbone Stack repository](https://github.com/phawk/Backbone-Stack) is a good example of structuring a Backbone application, using RequireJS. Greg Franko has also written [an overview of how he uses Backbone and Require](http://gregfranko.com/blog/using-backbone-dot-js-with-require-dot-js/), and [Jeremy Kahn's post](http://jeremyckahn.github.com/blog/2012/08/18/keeping-it-sane-backbone-views-and-require-dot-js/) neatly describes his approach.
+
+
+### Keeping Your Templates External Using RequireJS And The Text Plugin
 
 Moving your [Underscore/Mustache/Handlebars] templates to external files is actually quite straight-forward. As this application makes use of RequireJS, I'll discuss how to implement external templates using this specific script loader.
 
