@@ -1,3 +1,4 @@
+
 ## Prelude
 
 ![](img/logo.jpg)
@@ -6281,7 +6282,7 @@ Marionette is a flexible framework, much like Backbone itself. It offers a wide 
 
 The flexibility and versatility in Marionette is easiest to understand by examining three variations of TodoMVC that have been created for comparison purposes:
 
-* [Simple](https://github.com/jsoverson/todomvc/tree/master/labs/architecture-examples/backbone_marionette) - by Jarrod Oversion
+* [Simple](https://github.com/jsoverson/todomvc/tree/master/labs/architecture-examples/backbone_marionette) - by Jarrod Overson
 * [RequireJS](https://github.com/jsoverson/todomvc/tree/master/labs/dependency-examples/backbone_marionette_require) - also by Jarrod
 * [Marionette modules](https://github.com/derickbailey/todomvc/tree/master/labs/architecture-examples/backbone_marionette_modules/js) - by Derick Bailey
 
