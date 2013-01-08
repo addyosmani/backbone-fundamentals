@@ -6846,7 +6846,7 @@ Now, RequireJS will automatically load in `app.js` for you.
 
 #### RequireJS Configuration
 
-In your main JavaScript file that you pass into RequireJS through the `data-main` attribute, you can configure RequireJS. This is done by calling `require.config`, and passing in an object:
+In your main JavaScript file that you pass in through the `data-main` attribute, you can configure RequireJS. This is done by calling `require.config`, and passing in an object:
 
 ```javascript
 require.config({
