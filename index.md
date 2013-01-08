@@ -6748,6 +6748,9 @@ In your main JavaScript file that you pass in through the `data-main` attribute,
 ```javascript
 require.config({
     // your configuration key/values here
+    baseUrl: "app", // generally the same directory as the script used in a data-main attribute for the top level script
+    paths: {}, // set up custom paths to libraries, or paths to RequireJS plugins
+    shim: {}, // used for setting up all Shims (see below for more detail)
 });
 ```
 
