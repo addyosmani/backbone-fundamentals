@@ -15,13 +15,21 @@ I hope you find this book helpful!
 
 # Introduction
 
-When writing a web application from scratch, it’s easy to feel like we can get by simply by relying on a DOM manipulation library (like jQuery) and a handful of utility plugins. The problem with this is that it doesn’t take long to get lost in a nested pile of jQuery callbacks and DOM elements without any real structure in place for our applications.
+Frank Lloyd Wright once said “You can’t make an architect. You can however open the doors and windows toward the light as you see it”. In this book, I hope to shed some light on how to improve the structure of your web applications, opening doors to what will hopefully be more maintainable, readable applications in your future.
 
-In short, we’re stuck with spaghetti code. Fortunately there are modern JavaScript frameworks and libraries that can assist with bringing structure and organization to our projects, improving how easily maintainable they are in the long-run.
+The goal of all architecture is to build something well - in our case, to craft code that is enduring and delights both ourselves and the developers who will maintain our code long after we are gone. We all want our architecture to be simple, yet beautiful.
+
+When writing a web application from scratch it can be easy to feel like we can get by simply relying on a DOM manipulation library (such as jQuery) and a handful of plugins. The challenge with this approach is that it doesn’t take long to get lost in a nested pile of callbacks and DOM elements without any real structure in place.
+
+In short, you can end up with a pile of spaghetti code - code that is disorganized and difficult to follow. This type of code has no simple panacea, short of a rewrite that may end up costing both time and money to alleviate. Fortunately, there are ways to avoid this problem.
+
+Modern JavaScript MVC frameworks and libraries can assist with bringing structure and organization to our projects, improving how maintainable they are from the start. They build on the trials and tribulations of developers who have had to work around similar callback chaos as you have, providing solutions to many common problems by default.
+
+With that, in "Developing Backbone.js Applications:, I and a number of other experienced authors will take you through a journey of learning how to improve your application structure using one such MVC library - Backbone.js.
 
 ### What Is MVC?
 
-These modern tools provide developers an easy path to organizing their code using variations of a pattern known as MVC (Model-View-Controller). MVC separates the concerns in an application down into three parts:
+The modern JavaScript frameworks I mentioned a moment ago provide developers an easy path to organizing their code using variations of a pattern known as MVC (Model-View-Controller). MVC separates the concerns in an application down into three parts:
 
 * Models represent the domain-specific knowledge and data in an application. Think of this as being a ‘type’ of data you can model — like a User, Photo or Todo note. Models should notify anyone observing them about their current state (e.g Views).
 * Views are typically considered the User-interface in an application (e.g your markup and templates), but don’t have to be. They should know about the existence of Models in order to observe them, but don’t directly communicate with them.
@@ -85,12 +93,12 @@ Backbone's main benefits, regardless of your target platform or device, include 
 
 The goal of this book is to create an authoritative and centralized repository of information that can help those developing real-world apps with Backbone. If you come across a section or topic which you think could be improved or expanded on, please feel free to submit a pull-request. It won't take long and you'll be helping other developers avoid problems you've run into before.
 
-Topics will include MVC theory and how to build applications using Backbone's models, views, collections and routers. I'll also be taking you through advanced topics like modular development with Backbone.js and AMD (via RequireJS), how to build applications using modern software stacks (like Node and Express), how to solve the routing problems with Backbone and jQuery Mobile, tips about scaffolding tools, and a lot more.
+Topics will include MVC theory and how to build applications using Backbone's models, views, collections and routers. I'll also be taking you through advanced topics like modular development with Backbone.js and AMD (via RequireJS), solutions to common problems like nested views, how to solve the routing problems with Backbone and jQuery Mobile and a lot more.
 
 
 # Fundamentals
 
-In this section, we're going to explore how frameworks like Backbone.js fit in the world of JavaScript application architecture. Classically, developers creating desktop and server-class applications have had a wealth of design patterns available for them to lean on, but it's only been in the past few years that such patterns have come to client-side development.
+In this first chapter, we're going to explore how frameworks like Backbone.js fit in the world of JavaScript application architecture. Classically, developers creating desktop and server-class applications have had a wealth of design patterns available for them to lean on, but it's only been in the past few years that such patterns have come to client-side development.
 
 Before exploring any JavaScript frameworks that assist in structuring applications, it can be useful to gain a basic understanding of architectural design patterns.
 
@@ -1793,7 +1801,7 @@ The above isn’t quite the same as ES5’s `Object.create`, as it’s actually 
 * The instance methods are checked to see if there’s a constructor property. If so, the class’s constructor is used, otherwise the parent’s constructor is used (i.e., Backbone.Model)
 * Underscore’s extend method is called to add the parent class’s methods to the new child class
 * The `prototype` property of a blank constructor function is assigned with the parent’s prototype, and a new instance of this is set to the child’s `prototype` property
-Underscore’s extend method is called twice to add the static and instance methods to the child class
+* Underscore’s extend method is called twice to add the static and instance methods to the child class
 * The child’s prototype’s constructor and a `__super__` property are assigned
 * This pattern is also used for classes in CoffeeScript, so Backbone classes are compatible with CoffeeScript classes.
 
@@ -1906,7 +1914,7 @@ Rather than using Backbone.Model.prototype.set.call as per the Backbone.js docum
 ```javascript
 // This is how we normally do it
 var OldFashionedNote = Backbone.Model.extend({
-  set: function( attributes, options ) {
+  set: function(attributes, options) {
     // Call parent's method
     Backbone.Model.prototype.set.call(this, attributes, options);
     // some custom code here
@@ -2459,27 +2467,21 @@ In a nutshell this means we can now refer to this.el in our controller, which po
 
 Now let's take a look at the constructor function. It's binding to several events on the Todo model, such as add, reset and all. Since we're delegating handling of updates and deletes to the `TodoView` view, we don't need to worry about that here. The two pieces of logic are:
 
-* When a new todo is created, the `add` event will be fired, calling `addAll()`. This iterates over all of the Todos currently in our collection and fires `addOne()` for each item. (This is so wrong it's scary.)
+* When a new todo is created, the `add` event will be fired, calling `addOne()` which instantiates the TodoView view, rendering it and appending the resultant element to our Todo list.
 
-* `addOne()` instantiates the TodoView view, rendering it and appending the resultant element to our Todo list.
-
-* When a `reset` event is called (i.e. we wish to update the collection in bulk such as when the Todos have been loaded from Local Storage), `addAll()` is similarly called again.
+* When a `reset` event is called (i.e. we wish to update the collection in bulk such as when the Todos have been loaded from Local Storage), `addAll()` is called, which iterates over all of the Todos currently in our collection and fires `addOne()` for each item.
 
 We can then add in the logic for creating new todos, editing them and filtering them based on whether they are complete.
 
 * events: We define an events hash containing declarative callbacks for our DOM events.
-  * `createOnEnter()`: When a user hits return inside the `<input/>` field, this creates a  new Todo item and resets the main `<input/>` field value to prepare it for the next   entry.
-  * `clearCompleted()`: Removes the items in the todo list that have been marked as   completed
-  * `toggleAllComplete()`: Allows a user to set all of the items in the todo list to  completed.
+  * `createOnEnter()`: Creates a new Todo model which persists in localStorage when a user hits return inside the `<input/>` field and resets the main `<input/>` field value to prepare it for the next entry. This creates the model via newAttributes(), which is an object literal composed of the title, order and completed state of the new item being added.
+  * `clearCompleted()`: Removes the items in the todo list that have been marked as completed.
+  * `toggleAllComplete()`: Allows a user to set all of the items in the todo list to completed.
   * `initialize()`:
-    We bind a callback for a change:completed event, letting us know a change has     been made as well to an existing todo item
-    We also bind a callback for a filter event, which works a little similar to     addOne() and addAll(). It’s responsibility is to toggle what todo items are     visible based on the filter currently selected in the UI (all, completed or     remaining) through filterOne() and filterAll().
+    We bind a callback for a change:completed event, letting us know a change has been made as well to an existing todo item.
+    We also bind a callback for a filter event, which works a little similar to addOne() and addAll(). It’s responsibility is to toggle what todo items are visible based on the filter currently selected in the UI (all, completed or remaining) through filterOne() and filterAll().
   * `render()`:
-    We add some conditional CSS styling based on the filter currently selected so     that the route that has been selected is highlighted
-  * `createOnEnter()`:
-    Creates a new Todo model which persists in localStorage when a user hits    return. This creates the model via newAttributes(), which is an object    literal composed of the title, order and completed state of the new item    being added.
-  * `clearCompleted()`:
-    Clears all the todo items that have been marked as complete
+    We add some conditional CSS styling based on the filter currently selected so that the route that has been selected is highlighted.
 
 ```javascript
 
@@ -2516,7 +2518,7 @@ We can then add in the logic for creating new todos, editing them and filtering 
       this.$footer = this.$('#footer');
       this.$main = this.$('#main');
 
-      window.app.Todos.on( 'add', this.addAll, this );
+      window.app.Todos.on( 'add', this.addOne, this );
       window.app.Todos.on( 'reset', this.addAll, this );
       window.app.Todos.on( 'change:completed', this.filterOne, this );
       window.app.Todos.on( 'filter', this.filterAll, this );
@@ -3204,27 +3206,27 @@ Go ahead and insert the code in app.js. Next stop is a new view for our Library 
 
 ```js
 var LibraryView = Backbone.View.extend({
-        el:$("#books"),
+    el:$("#books"),
 
-        initialize:function(){
-            this.collection = new Library(books);
-            this.render();
-        },
+    initialize:function(){
+        this.collection = new Library(books);
+        this.render();
+    },
 
-        render: function(){
-            var that = this;
-            _.each(this.collection.models, function(item){
-                that.renderBook(item);
-            }, this);
-        },
+    render: function(){
+        var that = this;
+        _.each(this.collection.models, function(item){
+            that.renderBook(item);
+        }, this);
+    },
 
-        renderBook:function(item){
-            var bookView = new BookView({
-                model: item
-            });
-            this.$el.append(bookView.render().el);
-        }
-    });
+    renderBook:function(item){
+        var bookView = new BookView({
+            model: item
+        });
+        this.$el.append(bookView.render().el);
+    }
+});
 ```
 
 I added some line numbers to help me explain what is going on. On line 02 I specified the property “el”. A view can take either a tagName, as we saw in our `BookView`, or an el. When we use tagName, the view will create the element for us, but we are responsible for inserting it into the page. When we use el we specify an existing element in the page and the view will write directly into the page, into the specified element. In this case we select the div with id=”books”.
@@ -3248,18 +3250,18 @@ var books = [{title:"JS the good parts", author:"John Doe", releaseDate:"2012", 
 Now we are almost ready to try out our first version of the Backbone library. Replace this code:
 
 ```js
-    var book = new Book({
-        title:"Some title",
-        author:"John Doe",
-        releaseDate:"2012",
-        keywords:"JavaScript Programming"
-    });
+var book = new Book({
+    title:"Some title",
+    author:"John Doe",
+    releaseDate:"2012",
+    keywords:"JavaScript Programming"
+});
 
-    bookView = new BookView({
-        model: book
-    });
+bookView = new BookView({
+    model: book
+});
 
-    $("#books").html(bookView.render().el);
+$("#books").html(bookView.render().el);
 ```
 
 with this:
@@ -3636,7 +3638,7 @@ The code for this part is available [here](https://dl.dropbox.com/u/70775642/wor
 
 ##Part 2.5
 
-In the first two parts of this tutorial series we looked at the basic structure of a Backbone application and how to add and remove models. In the third part we will look at how to synchronize the models with the back end, but in order to do that we need to make a small detour and set up a server with a REST api. That is what we are going to do in this part.Since this is a JavaScript tutorial I will use JavaScript to create the server using node.js. If you are more comfortable in setting up a REST server in another language, this is the API you need to conform to:
+In the first two parts of this tutorial series we looked at the basic structure of a Backbone application and how to add and remove models. In the third part we will look at how to synchronize the models with the back end, but in order to do that we need to make a small detour and set up a server with a REST api. That is what we are going to do in this part. Since this is a JavaScript tutorial I will use JavaScript to create the server using node.js. If you are more comfortable in setting up a REST server in another language, this is the API you need to conform to:
 
 ```
 url HTTP Method Operation
@@ -3731,7 +3733,7 @@ app.listen(4711, function () {
 });
 ```
 
-I start off by loading the modules required for this project: Express for creating the HTTP server, Path for dealing with file paths and mongoose for connecting with the database. We the create an express server and configure it using an anonymous function. This is a pretty standard configuration and for our application we don’t actually need the methodOverride part. It is used for issuing PUT and DELETE HTTP requests directly from a form, since forms normally only support GET and POST. Finally I start the server by running the listen function. The port number used, in this case 4711, could be any free port on your system. I simply used 4711 since it is the most random number. We are now ready to run our first server:
+I start off by loading the modules required for this project: Express for creating the HTTP server, Path for dealing with file paths and mongoose for connecting with the database. We then create an express server and configure it using an anonymous function. This is a pretty standard configuration and for our application we don’t actually need the methodOverride part. It is used for issuing PUT and DELETE HTTP requests directly from a form, since forms normally only support GET and POST. Finally I start the server by running the listen function. The port number used, in this case 4711, could be any free port on your system. I simply used 4711 since it is the most random number. We are now ready to run our first server:
 
 ```js
 node server.js
@@ -3762,14 +3764,14 @@ Fantastic. Now since we want to store our data in MongoDB we need to define a sc
 ```js
 //Connect to database
 mongoose.connect('mongodb://localhost/library_database');
- 
+
 //Schemas
-var Book = new  mongoose.Schema({
+var Book = new mongoose.Schema({
     title:String,
     author:String,
-    releaseDate: Date
+    releaseDate:Date
 });
- 
+
 //Models
 var BookModel = mongoose.model('Book', Book);
 ```
@@ -3830,7 +3832,7 @@ app.post('/api/books', function (req, res) {
 
 We start by creating a new BookModel passing an object with title, author and releaseDate attributes. The data are collected from req.body. This means that anyone calling this operation in the API needs to supply a JSON object containing the title, author and releaseDate attributes. Actually, the caller can omit any or all attributes since we have not made any one mandatory. 
 
-We the call the save function on the BookModel passing in an anonymous function for handling errors in the same way as with the previous get route. Finally we return the saved BookModel. The reason we return the BookModel and not just “success” or similar string is that when the BookModel is saved it will get an _id attribute from MongoDB, which the client need when updating or deleting a specific book. Lets try it out again, restart node and go back to the console and type:
+We then call the save function on the BookModel passing in an anonymous function for handling errors in the same way as with the previous get route. Finally we return the saved BookModel. The reason we return the BookModel and not just “success” or similar string is that when the BookModel is saved it will get an _id attribute from MongoDB, which the client need when updating or deleting a specific book. Lets try it out again, restart node and go back to the console and type:
 
 ```js
 jQuery.post("/api/books", {
@@ -3850,6 +3852,7 @@ jQuery.get("/api/books/", function (data, textStatus, jqXHR) {
     console.dir(data);
     console.log(textStatus);
     console.dir(jqXHR);
+});
 ```
 
 You should now get an array of size 1 back from our server. You may wonder about this line:
@@ -6414,7 +6417,7 @@ To learn more about Marionette, it's components, the features they provide and h
 
 *By Ryan Eastridge & Addy Osmani*
 
-Part of Backbone's appeal is that it provides structure but is generally un-opionated, in particular when it comes to views. Thorax makes an opinionated decision to use Handlebars as it's templating solution. Some of the patterns found in Marionette are found in Thorax as well. Marionette exposes most of these patterns as JavaScript APIs while in Thorax they are often exposed as template helpers. This chapter assumes the reader has knowledge of Handlebars. 
+Part of Backbone's appeal is that it provides structure but is generally un-opinionated, in particular when it comes to views. Thorax makes an opinionated decision to use Handlebars as it's templating solution. Some of the patterns found in Marionette are found in Thorax as well. Marionette exposes most of these patterns as JavaScript APIs while in Thorax they are often exposed as template helpers. This chapter assumes the reader has knowledge of Handlebars. 
 
 Thorax was created by Ryan Eastridge and Kevin Decker to create Walmart's mobile web application. This chapter is limited to Thorax's templating features and patterns implemented in Thorax that you can utilize in your application regardless of wether you choose to adopt Thorax. To learn more about other features implemented in Thorax and to download boilerplate projects visit the [Thorax website](http://walmartlabs.github.com/thorax).
 
