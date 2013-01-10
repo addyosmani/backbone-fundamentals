@@ -435,7 +435,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <p>Developers are sometimes surprised when they learn that the Observer pattern (nowadays commonly implemented as a Publish/Subscribe system) was included as a part of MVC’s architecture decades ago. In Smalltalk-80’s MVC, the View and Controller both observe the Model: anytime the Model changes, the Views react. A simple example of this is an application backed by stock market data - for the application to show real-time information, any change to the data in its Models should result in the View being refreshed instantly.</p>
 <p>Martin Fowler has done an excellent job of writing about the <a href="http://martinfowler.com/eaaDev/uiArchs.html">origins</a> of MVC over the years and if you are interested in further historical information about Smalltalk-80’s MVC, I recommend reading his work.</p>
 <h3 id="mvc-applied-to-the-web"><a href="#TOC">MVC Applied To The Web</a></h3>
-<p>The web heavily relies on the HTTP protocol, which is stateless. This means that there is no constantly open connection between the browser and server. Each request instantiates a new communication channel between the two. Once the request initiator (e.g. a browser) gets a response the connection is closed. This fact creates a completely different context when compared to the one of the operating systems on which many of the original MVC ideas were developed. The MVC implementation has to obey the web context.</p>
+<p>The web heavily relies on the HTTP protocol, which is stateless. This means that there is no constantly open connection between the browser and server. Each request instantiates a new communication channel between the two. Once the request initiator (e.g. a browser) gets a response the connection is closed. This fact creates a completely different context when compared to the one of the operating systems on which many of the original MVC ideas were developed. The MVC implementation has to obey the web context.</p>
 <p>A typical server-side MVC implementation has one MVC stack layered behind the singe point of entry. This single point of entry means that all HTTP requests, e.g. <code>http://www.example.com</code> or <code>http://www.example.com/whichever-page/</code> etc., are routed, by a server configuration, through one point or, to be bold, one file, e.g. <code>index.php</code>.</p>
 <p>At that point, there would be an implementation of what we call the Front Controller pattern which, once it receives it, analyzes HTTP requests and decides which class (Controller) and method (Action) are to be invoked as a response to the request. Method is the name for a function and member is name for a variable when part of the class/object.</p>
 <p>Once invoked the Controller takes over and passes to and/or fetches data from the appropriate Model for the Action in concern. After the Controller receives the data from Model it loads the view, which corresponds to the invoked Action, injects the data into it and returns the response to the user.</p>
@@ -443,16 +443,16 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <p>On the sever side the Front Controller would analyze the URL and invoke the Article Controller (corresponding to the <code>/article/</code> part of the URI) and its Edit Action (corresponding to the <code>/edit/</code> part of the URI). Within the Action there would be a call to, let say, the Articles model and its <code>Articles::getEntry(43)</code> method (43 corresponding to <code>/43/</code> in URI) which would return the blog article data from database for edit. Afterwards, Article Controller would load (<code>article/edit</code>) view which would have logic for injecting the article’s data into the form for user to edit its content, title and other (meta) data. Once all this is done response is returned to the browser.</p>
 <p>As you can imagine, a similar flow is necessary with POST requests after we press a save button in a form. The POST action URI would look like <code>/article/save/43</code>. This time the request would go through the same Controller, but the Save Action (due to the <code>/save/</code> URI chunk), and invoked Articles Model would save edit article to the database with <code>Articles::saveEntry(43)</code> and redirect back to the <code>/article/edit/43</code> for further editing.</p>
 <p>If the user requested <code>http://www.example.com/</code>:</p>
-<p>On the server side the Front Controller would invoke default Controller and Action, e.g. Index Controller and its Index action. Within Index Action there would be a call to Articles model and its <code>Articles::getLastEntries(10)</code> method which would return last 10 blog posts. Afterwards, the Controller would load blog/index view which would have basic logic for listing last 10 blog posts.</p>
+<p>On the server side the Front Controller would invoke default Controller and Action, e.g. Index Controller and its Index action. Within Index Action there would be a call to Articles model and its <code>Articles::getLastEntries(10)</code> method which would return last 10 blog posts. Afterwards, the Controller would load blog/index view which would have basic logic for listing last 10 blog posts.</p>
 <p>We can see the larger picture of typical HTTP request lifecycle through the server side MVC in the picture below.</p>
 <figure>
 <img src="img/webmvcflow_bacic.png"><figcaption></figcaption>
 </figure>
-<p>Server receives a request and routes it through a single entry point. At the entry point, the Front Controller analyzes the request and based on it invokes the appropriate Action of the appropriate Controller. This process is called routing. The Action Model is asked to return and/or save submitted data. Model communicates with the data source (e.g. database or API etc.). Once the Model completes its work it returns data to the Controller which then loads the appropriate View. The View executes presentation logic (loops through articles and prints titles, content etc.) withthe supplied data. In the end, the response is returned to the user.</p>
+<p>Server receives a request and routes it through a single entry point. At the entry point, the Front Controller analyzes the request and based on it invokes the appropriate Action of the appropriate Controller. This process is called routing. The Action Model is asked to return and/or save submitted data. Model communicates with the data source (e.g. database or API etc.). Once the Model completes its work it returns data to the Controller which then loads the appropriate View. The View executes presentation logic (loops through articles and prints titles, content etc.) withthe supplied data. In the end, the response is returned to the user.</p>
 <p>Demand for fast, complex and responsive Ajax powered web applications demanded a lot of this logic to be replicated on the client side. This meant a lot more code had to exist there. Eventually it brought us to the point that we needed MVC (or a similar architecture) implemented on the client side to better structure the code and make it easier to maintain and further extend during the application life-cycle.</p>
 <p>And, of course, JavaScript and browsers create another context which require that we bend or adjust the traditional MVC paradigm to fit it.</p>
 <h3 id="mvc-in-the-browser"><a href="#TOC">MVC In The Browser</a></h3>
-<p>In complex JavaScript web applications, aka Single Page Applications (SPA), all application responses (e.g. UI updates) to user inputs are done seemlessly on the client-side. Data fetching and persistence (e.g. saving to database on server) are done with Ajax in the background. For silky, slick and smooth user experiences, the code powering these interacions needs to be well thought out.</p>
+<p>In complex JavaScript web applications, aka Single Page Applications (SPA), all application responses (e.g. UI updates) to user inputs are done seemlessly on the client-side. Data fetching and persistence (e.g. saving to database on server) are done with Ajax in the background. For silky, slick and smooth user experiences, the code powering these interacions needs to be well thought out.</p>
 <p>Through evolution, trial and error, and a lot of spaghetti and not so spaghetti-like code developers in the end developed on ideas of traditional MVC paradigm and brought the solution for structuring JavaScript code to the landscape of the SPAs through JavaScript MVC frameworks. JavaScript now has a number of MVC frameworks, including Ember.js, JavaScriptMVC, and of course Backbone.js.</p>
 <p><strong>The problem</strong></p>
 <p>A typical page in an SPA consists of smaller ingredients which, when looked at at a deeper level, represent logical entities, which involve specific data domains that should be represented in a particular way on the page.</p>
@@ -462,7 +462,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 </figure>
 <p>The basket has its data and representation of the data in HTML. This data and associated view in HTML changes over time. There was a time when we used jQuery (or a similar DOM manipulation library) and a bunch of Ajax calls and callbacks to sync the two. That often produced code that was not so well structured and easy to maintain. Bugs were easy to produce and they are even unavoidable.</p>
 <p>Eventually, an elegant way to handle it was brought to the client side throught JavaScript MVC libraries.</p>
-<p>Now, data is handled with a Model and its HTML representation with View. So, on Model changes the View is updated and vice versa. The Controller is the component that manages this synchronization. It sends update commands both ways, to the View to update itself based on the Model change (e.g. sync with database) and to the Model based on the View changes (e.g. new item dropped into the basket). This way offers a better separation of concerns and improved code structure is accomplished.</p>
+<p>Now, data is handled with a Model and its HTML representation with View. So, on Model changes the View is updated and vice versa. The Controller is the component that manages this synchronization. It sends update commands both ways, to the View to update itself based on the Model change (e.g. sync with database) and to the Model based on the View changes (e.g. new item dropped into the basket). This way offers a better separation of concerns and improved code structure is accomplished.</p>
 <h3 id="simple-javascript-mvc-implementation"><a href="#TOC">Simple JavaScript MVC Implementation</a></h3>
 <p>Let’s see a simple implementation of the MVC pattern and its usage to clarify some concepts - we’re going to call our little library Cranium.js.</p>
 <p>To simplify a bit we will rely on <a href="http://underscorejs.org" title="Underscore.js">Underscore</a> for inheritance and templating (similar to Backbone).</p>
@@ -506,7 +506,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <p>The Event system makes it possible for:</p>
 <ul>
 <li>for View to notify its subscribers of user interaction, like click or input in a form, to update/re-render its UI etc.</li>
-<li>for Model once its data has changed to notify its Subscribers to update themselves (e.g. view to re-render to show accurate/updated data) etc­.</li>
+<li>for Model once its data has changed to notify its Subscribers to update themselves (e.g. view to re-render to show accurate/updated data) etc­.</li>
 </ul>
 <h4 id="models"><a href="#TOC">Models</a></h4>
 <p>Models manage the (domain-specific) data for an application. They are concerned with neither the user-interface nor presentation layers, but instead represent structured data that an application may require. When a model changes (e.g when it is updated), it will typically notify its observers (Subscribers) that a change has occurred so that they may react accordingly.</p>
@@ -609,7 +609,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
         &lt;input id=<span class="st">&quot;todo</span>_<span class="st">complete&quot;</span> type=<span class="st">&quot;checkbox&quot;</span> &lt;%= completed %&gt;&gt;
         &lt;%= title %&gt;
     &lt;/div&gt;
-    <span class="kw">&lt;/script&gt;</span>​
+    <span class="kw">&lt;/script&gt;</span>?
     <span class="kw">&lt;script</span><span class="ot"> src=</span><span class="st">&quot;underscore-min.js&quot;</span><span class="kw">&gt;&lt;/script&gt;</span>
   <span class="kw">&lt;script</span><span class="ot"> src=</span><span class="st">&quot;cranium.js&quot;</span><span class="kw">&gt;&lt;/script&gt;</span>
   <span class="kw">&lt;script</span><span class="ot"> src=</span><span class="st">&quot;example.js&quot;</span><span class="kw">&gt;&lt;/script&gt;</span>
@@ -853,7 +853,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 
 <span class="kw">var</span> myTodo = <span class="kw">new</span> Todo();</code></pre>
 <p><strong>Default values</strong></p>
-<p>There are times when you want your model to have a set of default values (e.g. in a scenario where a complete set of data isn’t provided by the user). This can be set using a property called <code>defaults</code> in your model.</p>
+<p>There are times when you want your model to have a set of default values (e.g. in a scenario where a complete set of data isn’t provided by the user). This can be set using a property called <code>defaults</code> in your model.</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> Todo = <span class="kw">Backbone.Model</span>.<span class="fu">extend</span>({
   <span class="co">// Default todo attribute values</span>
   <span class="dt">defaults</span>: {
@@ -1030,7 +1030,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <p><strong>Note</strong>: Backbone passes the <code>attributes</code> object (attribs param in above example) by shallow copy to the <code>validate</code> function using the Underscore <code>_.extend</code> method. This means that it is not possible to change any Number, String or Boolean attribute but it <em>is</em> possible to change attributes of objects because they are passed by reference. As shallow copy doesn’t copy objects by implicitly copying them, but rather, by reference, one can change the attributes on those objects.</p>
 <p>An example of this (by @fivetanley) is available <a href="http://jsfiddle.net/2NdDY/7/">here</a>.</p>
 <h2 id="views-1"><a href="#TOC">Views</a></h2>
-<p>Views in Backbone don’t contain the markup for your application, but rather they are there to support models by defining the logic for how they should be represented to the user. This is usually achieved using JavaScript templating (e.g. Mustache, jQuery-tmpl, etc.). A view’s <code>render()</code> function can be bound to a model’s <code>change()</code> event, allowing the view to always be up to date without requiring a full page refresh.</p>
+<p>Views in Backbone don’t contain the markup for your application, but rather they are there to support models by defining the logic for how they should be represented to the user. This is usually achieved using JavaScript templating (e.g. Mustache, jQuery-tmpl, etc.). A view’s <code>render()</code> function can be bound to a model’s <code>change()</code> event, allowing the view to always be up to date without requiring a full page refresh.</p>
 <h4 id="creating-new-views"><a href="#TOC">Creating new views</a></h4>
 <p>Similar to the previous sections, creating a new view is relatively straight-forward. To create a new View, simply extend <code>Backbone.View</code>. I’ll explain this code in detail below:</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> TodoView = <span class="kw">Backbone.View</span>.<span class="fu">extend</span>({
@@ -1940,7 +1940,7 @@ if (this._hasPushState) {
     }
   }
 }</code></pre>
-<p>Note that there are really only minor syntactical differences between the Object Literal pattern and a standard JSON data set. If for any reason you wish to use JSON for storing your configurations instead (e.g. for simpler storage when sending to the back-end), feel free to.</p>
+<p>Note that there are really only minor syntactical differences between the Object Literal pattern and a standard JSON data set. If for any reason you wish to use JSON for storing your configurations instead (e.g. for simpler storage when sending to the back-end), feel free to.</p>
 <p>For more on the Object Literal pattern, I recommend reading Rebecca Murphey’s <a href="http://rmurphey.com/blog/2009/10/15/using-objects-to-organize-your-code">excellent article on the topic</a>.</p>
 <p><strong>Nested namespacing</strong></p>
 <p>An extension of the Object Literal pattern is nested namespacing. It’s another common pattern used that offers a lower risk of collision due to the fact that even if a top-level namespace already exists, it’s unlikely the same nested children do. For example, Yahoo’s YUI uses the nested object namespacing pattern extensively:</p>
@@ -2194,7 +2194,7 @@ if (this._hasPushState) {
 <p>Now let’s take a look at the constructor function. It’s binding to several events on the Todo model, such as add, reset and all. Since we’re delegating handling of updates and deletes to the <code>TodoView</code> view, we don’t need to worry about that here. The two pieces of logic are:</p>
 <ul>
 <li><p>When a new todo is created, the <code>add</code> event will be fired, calling <code>addOne()</code> which instantiates the TodoView view, rendering it and appending the resultant element to our Todo list.</p></li>
-<li><p>When a <code>reset</code> event is called (i.e. we wish to update the collection in bulk such as when the Todos have been loaded from Local Storage), <code>addAll()</code> is called, which iterates over all of the Todos currently in our collection and fires <code>addOne()</code> for each item.</p></li>
+<li><p>When a <code>reset</code> event is called (i.e. we wish to update the collection in bulk such as when the Todos have been loaded from Local Storage), <code>addAll()</code> is called, which iterates over all of the Todos currently in our collection and fires <code>addOne()</code> for each item.</p></li>
 </ul>
 <p>We can then add in the logic for creating new todos, editing them and filtering them based on whether they are complete.</p>
 <ul>
@@ -3246,7 +3246,7 @@ app.get(&#39;/api/books&#39;, function (req, res) {
 <p>The find function of Model is defined like this: function find (conditions, fields, options, callback) – but since we want a function that return all books we only need the callback parameter. The callback will be called with an error object and an array of found objects. If there was no error we return the array of objects to the client using the send function of the result object, otherwise we log the error to the console.</p>
 <p>To test our API we need to do a little typing in a JavaScript console. Restart node and go to localhost:4711 in your browser. Open up the JavaScript console. If you are using Google Chrome, go to View-&gt;Developer-&gt;JavaScript Console. If you are using Firefox, install Firebug and go to View-&gt;Firebug. If you are on any other browser I’m sure you will find a console somewhere. In the console type the following:</p>
 <pre class="js"><code>jQuery.get(&quot;/api/books/&quot;, function (data, textStatus, jqXHR) {
-    console.log(&quot;Get resposne:&quot;);
+    console.log(&quot;Get response:&quot;);
     console.dir(data);
     console.log(textStatus);
     console.dir(jqXHR);
@@ -3305,7 +3305,7 @@ app.post(&#39;/api/books&#39;, function (req, res) {
 });</code></pre>
 <p>Here we use colon notation (:id) to tell express that this part of the route is dynamic. We also use the findById function on BookModel to get a single result. Now you can get a single book by adding its id to the URL like this:</p>
 <pre class="js"><code>jQuery.get(&quot;/api/books/4f95a8cb1baa9b8a1b000006&quot;, function (data, textStatus, jqXHR){
-    console.log(&quot;Get resposne:&quot;);
+    console.log(&quot;Get response:&quot;);
     console.dir(data);
     console.log(textStatus);
     console.dir(jqXHR);
@@ -3338,7 +3338,7 @@ app.post(&#39;/api/books&#39;, function (req, res) {
     &quot;releaseDate&quot;: new Date(2008, 4, 1).getTime()
   },
   success: function(data, textStatus, jqXHR) {
-    console.log(&quot;Post resposne:&quot;); console.dir(data); console.log(textStatus); console.dir(jqXHR);
+    console.log(&quot;Post response:&quot;); console.dir(data); console.log(textStatus); console.dir(jqXHR);
   }});
 </code></pre>
 <p>Finally we create the delete route:</p>
@@ -3360,7 +3360,7 @@ app.post(&#39;/api/books&#39;, function (req, res) {
   url:&#39;/api/books/4f95a5251baa9b8a1b000001&#39;,
   type: &#39;DELETE&#39;,
   success:function(data, textStatus, jqXHR){
-    console.log(&quot;Post resposne:&quot;);
+    console.log(&quot;Post response:&quot;);
     console.dir(data);
     console.log(textStatus);
     console.dir(jqXHR);
@@ -4104,7 +4104,7 @@ Initialized from template &quot;module&quot;.</code></pre>
 <p>For more about Grunt-BBB, remember to take a look at the official project <a href="https://github.com/backbone-boilerplate/grunt-bbb">repository</a>. There is also a related <a href="https://dl.dropbox.com/u/79007/talks/Modern_Web_Applications/slides/index.html">slide-deck</a> available for those interested in reading more.</p>
 <h2 id="related-tools-projects"><a href="#TOC">Related Tools &amp; Projects</a></h2>
 <p>As we’ve seen, scaffolding tools can assist in expediting how quickly you can begin a new application by creating the basic files required for a project automatically. If you appreciate such tools, I’m happy to also recommend checking out <a href="http://yeoman.io">Yeoman</a> (one of my upcoming projects) and <a href="https://github.com/brunch/brunch">Brunch</a>.</p>
-<p>Brunch works very well with Backbone, Underscore, jQuery and CoffeeScript and is even used by companies such as Red Bull and Jim Beam. You may have to update any third party dependencies (e.g. latest jQuery or Zepto) when using it, but other than that it should be fairly stable to use right out of the box.</p>
+<p>Brunch works very well with Backbone, Underscore, jQuery and CoffeeScript and is even used by companies such as Red Bull and Jim Beam. You may have to update any third party dependencies (e.g. latest jQuery or Zepto) when using it, but other than that it should be fairly stable to use right out of the box.</p>
 <p>Brunch can be installed via the nodejs package manager and is easy to get started with. If you happen to use Vim or Textmate as your editor of choice, you’ll be happy to know that there are Brunch bundles available for both.</p>
 <h1 id="common-problems-solutions"><a href="#TOC">Common Problems &amp; Solutions</a></h1>
 <p>In this section, we will review a number of common problems developers often experience once they’ve started to work on relatively non-trivial projects using Backbone.js, as well as present potential solutions.</p>
@@ -5289,10 +5289,10 @@ $(<span class="ch">&#39;#content&#39;</span>).<span class="fu">html</span>(<span
 <p>This is just the tip of the proverbial ice-berg for Marionette, even for the <code>ItemView</code> and <code>Region</code> objects that we’ve explored. There is far more functionality, more features, and more flexibility and customizability that can be put to use in both of these objects. Then we have the other dozen or so components that Marionette provides, each with their own set of behaviors built in, customization and extension points, and more.</p>
 <p>To learn more about Marionette, it’s components, the features they provide and how to use them, check out the Marionette documentation, links to the wiki, to the source code, the project core contributors, and much more at <a href="http://marionettejs.com">http://marionettejs.com</a>.</p>
 <p>
- 
+ 
 </p>
 <p>
- 
+ 
 </p>
 
 
@@ -5489,10 +5489,10 @@ $(<span class="ch">&#39;#content&#39;</span>).<span class="fu">html</span>(<span
   $(<span class="ch">&#39;body&#39;</span>).<span class="fu">append</span>(<span class="kw">todosView</span>.<span class="fu">el</span>);</code></pre>
 To see Thorax in action on a large scale website visit walmart.com on any Android or iOS device. For a complete list of resources visit the <a href="http://walmartlabs.github.com/thorax">Thorax website</a>.
 <p>
- 
+ 
 </p>
 <p>
- 
+ 
 </p>
 
 <h1 id="modular-development"><a href="#TOC">Modular Development</a></h1>
@@ -5795,7 +5795,7 @@ require([<span class="ch">&#39;foo&#39;</span>, <span class="ch">&#39;bar&#39;</
     `-- views.js</code></pre>
 <h4 id="build-profile-to-optimize-modular-dependencies-with-code-organized-in-packages"><a href="#TOC">Build profile to optimize modular dependencies with code organized in packages</a></h4>
 <p>The build profile can be organized to <a href="http://requirejs.org/docs/faq-optimization.html#priority" title="optimize modular dependencies in packages">divide parallel downloads for various sections of the application</a>.</p>
-<p>This strategy demonstrated builds common or site-wide groups of (core) <em>models</em>, <em>views</em>, collections which are extended from a base.js constructor which extends the appropriate backbone method, e.g. Backbone.Model. The <em>packages</em> directory organizes code by section / responsibility, e.g. cart, checkout, etc. Notice that within the example <em>header</em> package the directory structure is similar to the app root directory file structure. A <em>package</em> (of modularized code) has dependencies from the common libraries in your application and also has specific code for the packages execution alone; other packages should not require another packages dependencies. A <em>utils</em> directory has shims, helpers, and common library code to support the application. A <em>syncs</em> directory to define persistence with your RESTful api and/or localStorage. The <em>vendor</em> libraries folder will not be built, there is no need to do so, you may decide to use a CDN (then set these paths to : <em><a href="http://requirejs.org/docs/optimization.html#empty" title="empty:">empty:</a></em>). And finally a <em>test</em> directory for <a href="http://pivotal.github.com/jasmine/" title="Jasmine is a behavior-driven development framework for testing your JavaScript code">Jasmine</a> unit test specs, which may be ignored in the build as well if you choose.</p>
+<p>This strategy demonstrated builds common or site-wide groups of (core) <em>models</em>, <em>views</em>, collections which are extended from a base.js constructor which extends the appropriate backbone method, e.g. Backbone.Model. The <em>packages</em> directory organizes code by section / responsibility, e.g. cart, checkout, etc. Notice that within the example <em>header</em> package the directory structure is similar to the app root directory file structure. A <em>package</em> (of modularized code) has dependencies from the common libraries in your application and also has specific code for the packages execution alone; other packages should not require another packages dependencies. A <em>utils</em> directory has shims, helpers, and common library code to support the application. A <em>syncs</em> directory to define persistence with your RESTful api and/or localStorage. The <em>vendor</em> libraries folder will not be built, there is no need to do so, you may decide to use a CDN (then set these paths to : <em><a href="http://requirejs.org/docs/optimization.html#empty" title="empty:">empty:</a></em>). And finally a <em>test</em> directory for <a href="http://pivotal.github.com/jasmine/" title="Jasmine is a behavior-driven development framework for testing your JavaScript code">Jasmine</a> unit test specs, which may be ignored in the build as well if you choose.</p>
 <p>Also notice the there are .js files named the same as the directories, these are the files listed in the paths. these are strategic to group sets of files to build, examples follow the build profile below.</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript">({
     <span class="dt">appDir</span>: <span class="ch">&#39;./app-src&#39;</span>,
@@ -6836,7 +6836,7 @@ Backbone.history.start({
 <p><code>endRecord</code> - The posicion of the last record shown in the current page (eg 41 to 50 from 2000 records) (Only available in <code>clientPager</code>)</p>
 <h3 id="plugins"><a href="#TOC">Plugins</a></h3>
 <p><strong>Diacritic.js</strong></p>
-<p>A plugin for Backbone.Paginator that replaces diacritic characters (ă,ş,ţ etc) with characters that match them most closely. This is particularly useful for filtering.</p>
+<p>A plugin for Backbone.Paginator that replaces diacritic characters (a,s,t etc) with characters that match them most closely. This is particularly useful for filtering.</p>
 <p>To enable the plugin, set <code>this.useDiacriticsPlugin</code> to true, as can be seen in the example below:</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">Paginator</span>.<span class="fu">clientPager</span> = <span class="kw">Backbone.Collection</span>.<span class="fu">extend</span>({
 
@@ -7246,7 +7246,7 @@ it(<span class="ch">&#39;should contain a text value if not the default value&#3
 <ul>
 <li>Making sure we can add new Todo models as both objects and arrays</li>
 <li>Attribute testing to make sure attributes such as the base URL of the collection are values we expect</li>
-<li>Purposefully adding items with a status of <code>done:true</code> and checking against how many items the collection thinks have been completed vs. those that are remaining</li>
+<li>Purposefully adding items with a status of <code>done:true</code> and checking against how many items the collection thinks have been completed vs. those that are remaining</li>
 </ul>
 <p>In this section we’re going to cover the first two of these with the third left as an extended exercise I recommend trying out.</p>
 <p>Testing Todo models can be added to a collection as objects or arrays is relatively trivial. First, we initialize a new TodoList collection and check to make sure its length (i.e the number of Todo models it contains) is 0. Next, we add new Todos, both as objects and arrays, checking the length property of the collection at each stage to ensure the overall count is what we expect:</p>
