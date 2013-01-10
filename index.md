@@ -122,6 +122,39 @@ Developers are sometimes surprised when they learn that the Observer pattern (no
 
 Martin Fowler has done an excellent job of writing about the [origins](http://martinfowler.com/eaaDev/uiArchs.html) of MVC over the years and if you are interested in further historical information about Smalltalk-80's MVC, I recommend reading his work.
 
+### MVC Applied To The Web
+
+The web heavily relies on the HTTP protocol, which is stateless. This means that there is no constantly open connection between the browser and server. Each request instantiates a new communication channel between the two. Once the request initiator (e.g. a browser) gets a response the connection is closed. This fact creates a completely different context when compared to the one of the operating systems on which many of the original MVC ideas were developed. The MVC implementation has to obey the web context. 
+
+A typical server-side MVC implementation has one MVC stack layered behind the singe point of entry. This single point of entry means that all HTTP requests, e.g. `http://www.example.com` or `http://www.example.com/whichever-page/` etc., are routed, by a server configuration, through one point or, to be bold, one file, e.g. `index.php`.
+
+At that point, there would be an implementation of what we call the Front Controller pattern which, once it receives it, analyzes HTTP requests and decides which class (Controller) and method (Action) are to be invoked as a response to the request. Method is the name for a function and member is name for a variable when part of the class/object.
+
+Once invoked the Controller takes over and passes to and/or fetches data from the appropriate Model for the Action in concern. After the Controller receives the data from Model it loads the view, which corresponds to the invoked Action, injects the data into it and returns the response to the user.
+
+For example, let say we have our blog on `www.example.com` and we want to edit an article (with `id=43`) and request `http://www.example.com/article/edit/43`:
+
+On the sever side the Front Controller would analyze the URL and invoke the Article Controller (corresponding to the `/article/` part of the URI) and its Edit Action (corresponding to the `/edit/` part of the URI). Within the Action there would be a call to, let say, the Articles model and its `Articles::getEntry(43)` method (43 corresponding to `/43/` in URI) which would return the blog article data from database for edit. Afterwards, Article Controller would load (`article/edit`) view which would have logic for injecting the article's data into the form for user to edit its content, title and other (meta) data. Once all this is done response is returned to the browser.
+
+As you can imagine, a similar flow is necessary with POST requests after we press a save button in a form. The POST action URI would look like `/article/save/43`. This time the request would go through the same Controller, but the Save Action (due to the `/save/` URI chunk), and invoked Articles Model would save edit article to the database with `Articles::saveEntry(43)` and redirect back to the `/article/edit/43` for further editing.
+
+If the user requested `http://www.example.com/`:
+
+On the server side the Front Controller would invoke default Controller and Action, e.g. Index Controller and its Index action. Within Index Action there would be a call to Articles model and its `Articles::getLastEntries(10)` method which would return last 10 blog posts. Afterwards, the Controller would load blog/index view which would have basic logic for listing last 10 blog posts.
+
+We can see the larger picture of typical HTTP request lifecycle through the server side MVC in the picture below. 
+
+![](img/webmvcflow_bacic.png)
+
+Server receives a request and routes it through a single entry point. At the entry point, the Front Controller analyzes the request and based on it invokes the appropriate Action of the appropriate Controller. This process is called routing. The Action Model is asked to return and/or save submitted data. Model communicates with the data source (e.g. database or API etc.). Once the Model completes its work it returns data to the Controller which then loads the appropriate View. The View executes presentation logic (loops through articles and prints titles, content etc.) with the supplied data. In the end, the response is returned to the user.
+
+Demand for fast, complex and responsive Ajax powered web applications demanded a lot of this logic to be replicated on the client side. This meant a lot more code had to exist there. Eventually it brought us to the point that we needed MVC (or a similar architecture) implemented on the client side to better structure the code and make it easier to maintain and further extend during the application life-cycle.
+
+And, of course, JavaScript and browsers create another context which require that we bend or adjust the traditional MVC paradigm to fit it.
+
+### MVC In The Browser
+
+In complex JavaScript web applications, aka Single Page Applications (SPA), all application responses (e.g. UI updates) to user inputs are done seemlessly on the client-side. Data fetching and persistence (e.g. saving to database on server) are done with Ajax in the background. For silky, slick and smooth user experiences, the code powering these interacions needs to be well thought out.
 
 
 ## MVC As We Know It

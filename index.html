@@ -418,17 +418,64 @@ code > span.er { color: #ff0000; font-weight: bold; }
 </ul>
 <p>Developers are sometimes surprised when they learn that the Observer pattern (nowadays commonly implemented as a Publish/Subscribe system) was included as a part of MVC’s architecture decades ago. In Smalltalk-80’s MVC, the View and Controller both observe the Model: anytime the Model changes, the Views react. A simple example of this is an application backed by stock market data - for the application to show real-time information, any change to the data in its Models should result in the View being refreshed instantly.</p>
 <p>Martin Fowler has done an excellent job of writing about the <a href="http://martinfowler.com/eaaDev/uiArchs.html">origins</a> of MVC over the years and if you are interested in further historical information about Smalltalk-80’s MVC, I recommend reading his work.</p>
-<h2 id="mvc-as-we-know-it"><a href="#TOC">MVC As We Know It</a></h2>
-<p>We’ve reviewed the 70’s, but let us now return to the here and now. The MVC pattern has been applied to a diverse range of programming languages. For example, the popular Ruby on Rails is an implementation of a web application framework based on MVC for the Ruby language. JavaScript now has a number of MVC frameworks, including AngularJS - a framework that extends HTML and JavaScript for dynamic content needs and of course Backbone.js. Given the importance of avoiding <q>spaghetti</q> code, a term which describes code that is very difficult to read or maintain due to its lack of structure, let’s look at what the MVC pattern enables the Javascript developer to do.</p>
-<p>MVC is composed of three core components:</p>
-<h3 id="models"><a href="#TOC">Models</a></h3>
-<p>Models manage the data for an application. They are concerned with neither the user-interface nor presentation layers, but instead represent structured data that an application may require. When a model changes (e.g when it is updated), it will typically notify its observers (e.g views, a concept we will cover shortly) that a change has occurred so that they may react accordingly.</p>
-<p>To understand models better, let us imagine we have a JavaScript todo application. In a todo app, a todo item would merit its own model, as it represents a unique kind of domain-specific data. The Todo model may represent attributes such as a title and completed. A specific todo would be stored in an instance of a model. Here’s an example of a simple Todo model implemented with Backbone.js:</p>
-<pre class="sourceCode javascript"><code class="sourceCode javascript">  <span class="kw">var</span> Todo = <span class="kw">Backbone.Model</span>.<span class="fu">extend</span>({
-    <span class="co">// Default attributes for the todo</span>
-    <span class="dt">defaults</span>: {
-      <span class="dt">title</span>: <span class="ch">&#39;&#39;</span>,
-      <span class="dt">completed</span>: <span class="kw">false</span>
+<h3 id="mvc-applied-to-the-web"><a href="#TOC">MVC Applied To The Web</a></h3>
+<p>The web heavily relies on the HTTP protocol, which is stateless. This means that there is no constantly open connection between the browser and server. Each request instantiates a new communication channel between the two. Once the request initiator (e.g. a browser) gets a response the connection is closed. This fact creates a completely different context when compared to the one of the operating systems on which many of the original MVC ideas were developed. The MVC implementation has to obey the web context.</p>
+<p>A typical server-side MVC implementation has one MVC stack layered behind the singe point of entry. This single point of entry means that all HTTP requests, e.g. <code>http://www.example.com</code> or <code>http://www.example.com/whichever-page/</code> etc., are routed, by a server configuration, through one point or, to be bold, one file, e.g. <code>index.php</code>.</p>
+<p>At that point, there would be an implementation of what we call the Front Controller pattern which, once it receives it, analyzes HTTP requests and decides which class (Controller) and method (Action) are to be invoked as a response to the request. Method is the name for a function and member is name for a variable when part of the class/object.</p>
+<p>Once invoked the Controller takes over and passes to and/or fetches data from the appropriate Model for the Action in concern. After the Controller receives the data from Model it loads the view, which corresponds to the invoked Action, injects the data into it and returns the response to the user.</p>
+<p>For example, let say we have our blog on <code>www.example.com</code> and we want to edit an article (with <code>id=43</code>) and request <code>http://www.example.com/article/edit/43</code>:</p>
+<p>On the sever side the Front Controller would analyze the URL and invoke the Article Controller (corresponding to the <code>/article/</code> part of the URI) and its Edit Action (corresponding to the <code>/edit/</code> part of the URI). Within the Action there would be a call to, let say, the Articles model and its <code>Articles::getEntry(43)</code> method (43 corresponding to <code>/43/</code> in URI) which would return the blog article data from database for edit. Afterwards, Article Controller would load (<code>article/edit</code>) view which would have logic for injecting the article’s data into the form for user to edit its content, title and other (meta) data. Once all this is done response is returned to the browser.</p>
+<p>As you can imagine, a similar flow is necessary with POST requests after we press a save button in a form. The POST action URI would look like <code>/article/save/43</code>. This time the request would go through the same Controller, but the Save Action (due to the <code>/save/</code> URI chunk), and invoked Articles Model would save edit article to the database with <code>Articles::saveEntry(43)</code> and redirect back to the <code>/article/edit/43</code> for further editing.</p>
+<p>If the user requested <code>http://www.example.com/</code>:</p>
+<p>On the server side the Front Controller would invoke default Controller and Action, e.g. Index Controller and its Index action. Within Index Action there would be a call to Articles model and its <code>Articles::getLastEntries(10)</code> method which would return last 10 blog posts. Afterwards, the Controller would load blog/index view which would have basic logic for listing last 10 blog posts.</p>
+<p>We can see the larger picture of typical HTTP request lifecycle through the server side MVC in the picture below.</p>
+<figure>
+<img src="img/webmvcflow_bacic.png"><figcaption></figcaption>
+</figure>
+<p>Server receives a request and routes it through a single entry point. At the entry point, the Front Controller analyzes the request and based on it invokes the appropriate Action of the appropriate Controller. This process is called routing. The Action Model is asked to return and/or save submitted data. Model communicates with the data source (e.g. database or API etc.). Once the Model completes its work it returns data to the Controller which then loads the appropriate View. The View executes presentation logic (loops through articles and prints titles, content etc.) with the supplied data. In the end, the response is returned to the user.</p>
+<p>Demand for fast, complex and responsive Ajax powered web applications demanded a lot of this logic to be replicated on the client side. This meant a lot more code had to exist there. Eventually it brought us to the point that we needed MVC (or a similar architecture) implemented on the client side to better structure the code and make it easier to maintain and further extend during the application life-cycle.</p>
+<p>And, of course, JavaScript and browsers create another context which require that we bend or adjust the traditional MVC paradigm to fit it.</p>
+<h3 id="mvc-in-the-browser"><a href="#TOC">MVC In The Browser</a></h3>
+<p>In complex JavaScript web applications, aka Single Page Applications (SPA), all application responses (e.g. UI updates) to user inputs are done seemlessly on the client-side. Data fetching and persistence (e.g. saving to database on server) are done with Ajax in the background. For silky, slick and smooth user experiences, the code powering these interacions needs to be well thought out.</p>
+<p>Through evolution, trial and error, and a lot of spaghetti and not so spaghetti-like code developers in the end developed on ideas of traditional MVC paradigm and brought the solution for structuring JavaScript code to the landscape of the SPAs through JavaScript MVC frameworks. JavaScript now has a number of MVC frameworks, including Ember.js, JavaScriptMVC, and of course Backbone.js.</p>
+<p><strong>The problem</strong></p>
+<p>A typical page in an SPA consists of smaller ingredients which, when looked at at a deeper level, represent logical entities, which involve specific data domains that should be represented in a particular way on the page.</p>
+<p>A good example is basket in an e-commerce web application which would typically have a list of items added to it and presented to the user as box in top right corner of the page (see the picture).</p>
+<figure>
+<img src="img/wireframe_e_commerce.png"><figcaption></figcaption>
+</figure>
+<p>The basket has its data and representation of the data in HTML. This data and associated view in HTML changes over time. There was a time when we used jQuery (or a similar DOM manipulation library) and a bunch of Ajax calls and callbacks to sync the two. That often produced code that was not so well structured and easy to maintain. Bugs were easy to produce and they are even unavoidable.</p>
+<p>Eventually, an elegant way to handle it was brought to the client side throught JavaScript MVC libraries.</p>
+<p>Now, data is handled with a Model and its HTML representation with View. So, on Model changes the View is updated and vice versa. The Controller is the component that manages this synchronization. It sends update commands both ways, to the View to update itself based on the Model change (e.g. sync with database) and to the Model based on the View changes (e.g. new item dropped into the basket). This way offers a better separation of concerns and improved code structure is accomplished.</p>
+<h3 id="simple-javascript-mvc-implementation"><a href="#TOC">Simple JavaScript MVC Implementation</a></h3>
+<p>Let’s see a simple implementation of the MVC pattern and its usage to clarify some concepts - we’re going to call our little library Cranium.js.</p>
+<p>To simplify a bit we will rely on <a href="http://underscorejs.org" title="Underscore.js">Underscore</a> for inheritance and templating (similar to Backbone).</p>
+<h4 id="event-system"><a href="#TOC">Event System</a></h4>
+<p>At the heart of our JavaScript MVC implementation is an <code>Event</code> system (object) based on the Publisher-Subscriber Pattern which makes it possible for MVC components to intercommunicate in an elegant, decoupled manner. Subscribers <q>listen</q> out for specific events of interest and react when Publishers broadcast these events.</p>
+<p><code>Event</code> is inherited by the View and Model components. That way each of them can inform other component that event of the interest to them happened.</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="co">// cranium.js - Cranium.Events</span>
+
+<span class="kw">var</span> Cranium = Cranium || {};
+
+<span class="co">// Set DOM selection utility</span>
+<span class="kw">var</span> $ = <span class="kw">document</span>.<span class="fu">querySelector</span>.<span class="fu">bind</span>(<span class="kw">document</span>) || <span class="kw">this</span>.<span class="fu">jQuery</span> || <span class="kw">this</span>.<span class="fu">Zepto</span>;
+
+<span class="co">// Mix in to any object in order to provide it with custom events.</span>
+<span class="kw">var</span> Events = <span class="kw">Cranium</span>.<span class="fu">Events</span> = {
+  <span class="co">// Keeps list of events and associated listeners</span>
+  <span class="dt">channels</span>: {},
+
+  <span class="co">// Counter</span>
+  <span class="dt">eventNumber</span>: <span class="dv">0</span>,
+
+  <span class="co">// Announce events and passes data to the listeners;</span>
+  <span class="dt">trigger</span>: <span class="kw">function</span> (events, data) {
+    <span class="kw">for</span> (<span class="kw">var</span> topic <span class="kw">in</span> <span class="kw">Cranium.Events</span>.<span class="fu">channels</span>){
+      <span class="kw">if</span> (<span class="kw">Cranium.Events.channels</span>.<span class="fu">hasOwnProperty</span>(topic)) {
+        <span class="kw">if</span> (<span class="kw">topic</span>.<span class="fu">split</span>(<span class="st">&quot;-&quot;</span>)[<span class="dv">0</span>] == events){
+          <span class="kw">Cranium.Events</span>.<span class="fu">channels</span>[topic](data) !== <span class="kw">false</span> || <span class="kw">delete</span> <span class="kw">Cranium.Events</span>.<span class="fu">channels</span>[topic];
+        }
+      }
     }
   });
 
