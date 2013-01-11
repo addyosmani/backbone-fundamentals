@@ -1,4 +1,3 @@
-
 ## Prelude
 
 ![](img/logo.jpg)
@@ -255,7 +254,29 @@ Views are a visual representation of models that present a filtered view of thei
 
 Users interact with views, which usually means reading and editing model data. For example, in our todo application example, todo model viewing might happen in a user interface in the list of all todo items. Within it each todo is rendered with their title and completed checkbox. Model editing could be done through an "edit" view where a user who has selected a specific todo could edit its title in a form.
 
-In MVC, the actual task of updating the Model falls to Controllers, which we'll be covering shortly.
+```html
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title></title>
+  <meta name="description" content="">
+</head>
+<body>
+<div id="todo">
+</div>
+	<script type="text/template" class="todo-template">
+    <div>
+	    <input id="todo_complete" type="checkbox" <%= completed %>>
+	    <%= title %>
+    </div>
+	</script>?
+	<script src="underscore-min.js"></script>
+  <script src="cranium.js"></script>
+  <script src="example.js"></script>
+</body>
+</html>
+```
 
 Let's explore Views a little further using a simple JavaScript example. Below we can see a function that creates a single Todo view, consuming both a model instance and a controller instance.
 
@@ -2744,7 +2765,7 @@ This tutorial is long enough as is, so we won't go into in-place editing or upda
 
 ```javascript
 
-  // js/view/todos.js
+  // js/view/todo.js
 
   // Todo Item View
   // --------------
@@ -3717,7 +3738,7 @@ To test our API we need to do a little typing in a JavaScript console. Restart n
 
 ```javascript
 jQuery.get("/api/books/", function (data, textStatus, jqXHR) {
-    console.log("Get resposne:");
+    console.log("Get response:");
     console.dir(data);
     console.log(textStatus);
     console.dir(jqXHR);
@@ -3807,7 +3828,7 @@ Here we use colon notation (:id) to tell express that this part of the route is 
 
 ```javascript
 jQuery.get("/api/books/4f95a8cb1baa9b8a1b000006", function (data, textStatus, jqXHR){
-    console.log("Get resposne:");
+    console.log("Get response:");
     console.dir(data);
     console.log(textStatus);
     console.dir(jqXHR);
@@ -3849,7 +3870,7 @@ jQuery.ajax({
     "releaseDate":new Date(2008, 4, 1).getTime()
   },
   success: function(data, textStatus, jqXHR) {
-    console.log("Post resposne:"); 
+    console.log("Post response:"); 
     console.dir(data); 
     console.log(textStatus); 
     console.dir(jqXHR);
@@ -3882,7 +3903,7 @@ jQuery.ajax({
   url:'/api/books/4f95a5251baa9b8a1b000001',
   type:'DELETE',
   success:function(data, textStatus, jqXHR){
-    console.log("Post resposne:");
+    console.log("Post response:");
     console.dir(data);
     console.log(textStatus);
     console.dir(jqXHR);
@@ -8482,7 +8503,7 @@ You can use some variables in your ```View``` to represent the actual state of t
 
 **Diacritic.js**
 
-A plugin for Backbone.Paginator that replaces diacritic characters (ă,ş,ţ etc) with characters that match them most closely. This is particularly useful for filtering.
+A plugin for Backbone.Paginator that replaces diacritic characters (a,s,t etc) with characters that match them most closely. This is particularly useful for filtering.
 
 To enable the plugin, set `this.useDiacriticsPlugin` to true, as can be seen in the example below:
 
