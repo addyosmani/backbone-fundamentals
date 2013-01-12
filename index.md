@@ -2161,7 +2161,7 @@ The first step is to setup the basic application dependencies, which in this cas
   <script src="js/lib/jquery.min.js"></script>
   <script src="js/lib/underscore-min.js"></script>
   <script src="js/lib/backbone-min.js"></script>
-  <script src="js/lib/backbone-localstorage.js"></script>
+  <script src="js/lib/backbone.localStorage.js"></script>
   <script src="js/models/todo.js"></script>
   <script type="text/template" id="item-template"></script>
   <script type="text/template" id="stats-template"></script>
@@ -2761,7 +2761,7 @@ That's all there is to it. Since we're binding to the change event, whenever the
 
 One more piece to mention is that we’ve also binded to a visible event to handle the visibility state of the todo item. This is used in conjunction with the filtering in our routes and collections so that we only display an item if its completed state falls in line with the current filter.
 
-This tutorial is long enough as is, so we won't go into in-place editing or updating. If you want an example of that, see the [complete source](https://github.com/addyosmani/todomvc/tree/master/architecture-examples/backbone/).
+This tutorial is long enough as is, so we won't go into in-place editing or updating. If you want an example of that, see the [complete source](https://github.com/addyosmani/todomvc/tree/gh-pages/architecture-examples/backbone).
 
 ```javascript
 
