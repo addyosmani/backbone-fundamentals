@@ -7881,7 +7881,7 @@ test( <span class="ch">&#39;1 passed as an argument&#39;</span>, <span class="dv
 });</code></pre>
 <p>We can also use <code>this.spy()</code> to spy on existing functions (like jQuery’s <code>$.ajax</code>) in the example below. When spying on a function which already exists, the function behaves normally but we get access to data about its calls which can be very useful for testing purposes.</p>
 <h4 id="spying-on-existing-functions"><a href="#TOC">Spying On Existing Functions:</a></h4>
-<pre class="sourceCode javascript"><code class="sourceCode javascript">test( <span class="ch">&#39;should inspect jQuery.getJSON&#39;</span>s usage of <span class="kw">jQuery</span>.<span class="fu">ajax</span>&#39;, <span class="kw">function</span> () {
+<pre class="sourceCode javascript"><code class="sourceCode javascript">test( <span class="ch">&#39;should inspect the jQuery.getJSON usage of jQuery.ajax&#39;</span>, <span class="kw">function</span> () {
     <span class="kw">this</span>.<span class="fu">spy</span>( jQuery, <span class="ch">&#39;ajax&#39;</span> );
 
     <span class="kw">jQuery</span>.<span class="fu">getJSON</span>( <span class="ch">&#39;/todos/completed&#39;</span> );
@@ -7890,7 +7890,7 @@ test( <span class="ch">&#39;1 passed as an argument&#39;</span>, <span class="dv
     equals( <span class="kw">jQuery.ajax</span>.<span class="fu">getCall</span>(<span class="dv">0</span>).<span class="fu">args</span>[<span class="dv">0</span>].<span class="fu">url</span>, <span class="ch">&#39;/todos/completed&#39;</span> );
     equals( <span class="kw">jQuery.ajax</span>.<span class="fu">getCall</span>(<span class="dv">0</span>).<span class="fu">args</span>[<span class="dv">0</span>].<span class="fu">dataType</span>, <span class="ch">&#39;json&#39;</span> );
 });</code></pre>
-<p>SinonJS comes with a rich spy interface which allows us to test whether a spy was called with a specific argument, if it was called a specific number of times and test against the values of arguments. A complete list of features supported in the interface can be found here (http://sinonjs.org/docs/), but let’s take a look at some examples demonstrating some of the most commonly used ones:</p>
+<p>SinonJS comes with a rich spy interface which allows us to test whether a spy was called with a specific argument, if it was called a specific number of times and test against the values of arguments. A complete list of features supported in the interface can be found on <a href="http://sinonjs.org/docs/">SinonJS.org</a>, but let’s take a look at some examples demonstrating some of the most commonly used ones:</p>
 <h4 id="matching-arguments-test-a-spy-was-called-with-a-specific-set-of-arguments"><a href="#TOC">Matching arguments: test a spy was called with a specific set of arguments:</a></h4>
 <pre class="sourceCode javascript"><code class="sourceCode javascript">test( <span class="ch">&#39;Should call a subscriber with standard matching&#39;</span>: <span class="kw">function</span> () {
     <span class="kw">var</span> spy = <span class="kw">sinon</span>.<span class="fu">spy</span>();

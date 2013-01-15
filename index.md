@@ -9916,7 +9916,7 @@ We can also use ```this.spy()``` to spy on existing functions (like jQuery's ```
 
 #### Spying On Existing Functions:
 ```javascript
-test( 'should inspect jQuery.getJSON's usage of jQuery.ajax', function () {
+test( 'should inspect the jQuery.getJSON usage of jQuery.ajax', function () {
     this.spy( jQuery, 'ajax' );
 
     jQuery.getJSON( '/todos/completed' );
@@ -9927,7 +9927,7 @@ test( 'should inspect jQuery.getJSON's usage of jQuery.ajax', function () {
 });
 ```
 
-SinonJS comes with a rich spy interface which allows us to test whether a spy was called with a specific argument, if it was called a specific number of times and test against the values of arguments. A complete list of features supported in the interface can be found here (http://sinonjs.org/docs/), but let's take a look at some examples demonstrating some of the most commonly used ones:
+SinonJS comes with a rich spy interface which allows us to test whether a spy was called with a specific argument, if it was called a specific number of times and test against the values of arguments. A complete list of features supported in the interface can be found on [SinonJS.org](http://sinonjs.org/docs/), but let's take a look at some examples demonstrating some of the most commonly used ones:
 
 
 #### Matching arguments: test a spy was called with a specific set of arguments:
