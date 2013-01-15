@@ -9939,7 +9939,7 @@ Using ```this.spy()``` without any arguments creates an anonymous spy. This is c
 ```javascript
 test('should call all subscribers for a message exactly once', function () {
     var message = getUniqueString();
-    var spy = this.spy();
+    var spy1 = this.spy();
 
     PubSub.subscribe( message, spy );
     PubSub.publishSync( message, 'Hello World' );
