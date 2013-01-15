@@ -1812,7 +1812,7 @@ For example:
 var MyMixin = {
   foo: 'bar',
   sayFoo: function(){alert(this.foo);}
-}
+};
 
 var MyView = Backbone.View.extend({
  // ...
