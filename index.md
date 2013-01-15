@@ -22,9 +22,9 @@ When writing a web application from scratch it can be easy to feel like we can g
 
 In short, you can end up with a pile of spaghetti code - code that is disorganized and difficult to follow. This type of code has no simple panacea, short of a rewrite that may end up costing both time and money to alleviate. Fortunately, there are ways to avoid this problem.
 
-Modern JavaScript MVC frameworks and libraries can assist with bringing structure and organization to our projects, improving how maintainable they are from the start. They build on the trials and tribulations of developers who have had to work around similar callback chaos as you have, providing solutions to many common problems by default.
+Modern JavaScript frameworks and libraries can assist with bringing structure and organization to our projects, improving how maintainable they are from the start. They build on the trials and tribulations of developers who have had to work around similar callback chaos as you have, providing solutions to many common problems by default.
 
-With that, in "Developing Backbone.js Applications:, I and a number of other experienced authors will take you through a journey of learning how to improve your application structure using one such MVC library - Backbone.js.
+With that, in "Developing Backbone.js Applications:, I and a number of other experienced authors will take you through a journey of learning how to improve your application structure using one such library - Backbone.js.
 
 ### What Is MVC?
 
@@ -10547,7 +10547,7 @@ I would like to thank the Backbone.js, Stack Overflow, DailyJS (Alex Young) and 
 
 ## MVP
 
-Model-view-presenter (MVP) is a derivative of the MVC design pattern which focuses on improving presentation logic. It originated at a company named [Taligent](http://en.wikipedia.org/wiki/Taligent) in the early 1990s while they were working on a model for a C++ CommonPoint environment. Whilst both MVC and MVP target the separation of concerns across multiple components, there are some fundamental differences between them.
+Model-View-Presenter (MVP) is a derivative of the MVC design pattern which focuses on improving presentation logic. It originated at a company named [Taligent](http://en.wikipedia.org/wiki/Taligent) in the early 1990s while they were working on a model for a C++ CommonPoint environment. Whilst both MVC and MVP target the separation of concerns across multiple components, there are some fundamental differences between them.
 
 For the purposes of this summary we will focus on the version of MVP most suitable for web-based architectures.
 
@@ -10564,7 +10564,7 @@ The benefit of this change from MVC is that it increases the testability of your
 Although a common implementation of a [Passive View](http://martinfowler.com/eaaDev/PassiveScreen.html) is for the view to implement an interface, there are variations on it, including the use of events which can decouple the View from the Presenter a little more. As we don't have the interface construct in JavaScript, we're using it more and more as a protocol than an explicit interface here. It's technically still an API and it's probably fair for us to refer to it as an interface from that perspective.
 
 
-There is also a [Supervising Controller](http://martinfowler.com/eaaDev/SupervisingPresenter.html) variation of MVP, which is closer to the MVC and [MVVM](http://en.wikipedia.org/wiki/Model_View_ViewModel) patterns as it provides data-binding from the Model directly from the View. Key-value observing (KVO) plugins (such as Derick Bailey's Backbone.ModelBinding plugin) introduce this idea of a Supervising Controller to Backbone.
+There is also a [Supervising Controller](http://martinfowler.com/eaaDev/SupervisingPresenter.html) variation of MVP, which is closer to the MVC and [MVVM - Model-View-ViewModel](http://en.wikipedia.org/wiki/Model_View_ViewModel) patterns as it provides data-binding from the Model directly from the View. Key-value observing (KVO) plugins (such as Derick Bailey's Backbone.ModelBinding plugin) introduce this idea of a Supervising Controller to Backbone.
 
 
 ## MVP or MVC?
