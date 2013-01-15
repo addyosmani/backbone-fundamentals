@@ -1,7 +1,7 @@
 
 ## Prelude
 
-![](img/logo.jpg) 
+![](img/logo.jpg)
 
 Welcome to my (in-progress) book about the [Backbone.js](http://documentcloud.github.com/backbone/) library for structuring JavaScript applications. It's released under a Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported [license](http://creativecommons.org/licenses/by-nc-sa/3.0/) meaning you can both grab a copy of the book for free or help to further [improve](https://github.com/addyosmani/backbone-fundamentals/) it.
 
@@ -132,7 +132,7 @@ Martin Fowler has done an excellent job of writing about the [origins](http://ma
 
 ### MVC Applied To The Web
 
-The web heavily relies on the HTTP protocol, which is stateless. This means that there is no constantly open connection between the browser and server. Each request instantiates a new communication channel between the two. Once the request initiator (e.g. a browser) gets a response the connection is closed. This fact creates a completely different context when compared to the one of the operating systems on which many of the original MVC ideas were developed. The MVC implementation has to obey the web context. 
+The web heavily relies on the HTTP protocol, which is stateless. This means that there is no constantly open connection between the browser and server. Each request instantiates a new communication channel between the two. Once the request initiator (e.g. a browser) gets a response the connection is closed. This fact creates a completely different context when compared to the one of the operating systems on which many of the original MVC ideas were developed. The MVC implementation has to obey the web context.
 
 A typical server-side MVC implementation has one MVC stack layered behind the singe point of entry. This single point of entry means that all HTTP requests, e.g. `http://www.example.com` or `http://www.example.com/whichever-page/` etc., are routed, by a server configuration, through one point or, to be bold, one file, e.g. `index.php`.
 
@@ -150,7 +150,7 @@ If the user requested `http://www.example.com/`:
 
 On the server side the Front Controller would invoke default Controller and Action, e.g. Index Controller and its Index action. Within Index Action there would be a call to Articles model and its `Articles::getLastEntries(10)` method which would return last 10 blog posts. Afterwards, the Controller would load blog/index view which would have basic logic for listing last 10 blog posts.
 
-We can see the larger picture of typical HTTP request lifecycle through the server side MVC in the picture below. 
+We can see the larger picture of typical HTTP request lifecycle through the server side MVC in the picture below.
 
 ![](img/webmvcflow_bacic.png)
 
@@ -170,7 +170,7 @@ Through evolution, trial and error, and a lot of spaghetti and not so spaghetti-
 
 A typical page in an SPA consists of smaller ingredients which, when looked at at a deeper level, represent logical entities, which involve specific data domains that should be represented in a particular way on the page.
 
-A good example is basket in an e-commerce web application which would typically have a list of items added to it and presented to the user as box in top right corner of the page (see the picture). 
+A good example is basket in an e-commerce web application which would typically have a list of items added to it and presented to the user as box in top right corner of the page (see the picture).
 
 ![](img/wireframe_e_commerce.png)
 
@@ -182,7 +182,7 @@ Now, data is handled with a Model and its HTML representation with View. So, on 
 
 ### Simple JavaScript MVC Implementation
 
-Let's see a simple implementation of the MVC pattern and its usage to clarify some concepts - we're going to call our little library Cranium.js. 
+Let's see a simple implementation of the MVC pattern and its usage to clarify some concepts - we're going to call our little library Cranium.js.
 
 To simplify a bit we will rely on [Underscore](http://underscorejs.org "Underscore.js") for inheritance and templating (similar to Backbone).
 
@@ -225,7 +225,7 @@ var Events = Cranium.Events = {
   // Unregisters an event type and its listener
   off: function(topic) {
     delete Cranium.Events.channels[topic];
-  }            
+  }
 };
 ```
 
@@ -245,8 +245,8 @@ Let's see a simple implementation of the Model:
 
 // Attributes represents data, model's properties.
 // These are to be passed at Model instantiation.
-// Also we are creating id for each Model instance 
-// so that it can identify itself (e.g. on chage 
+// Also we are creating id for each Model instance
+// so that it can identify itself (e.g. on chage
 // announcements)
 var Model = Cranium.Model = function (attributes) {
     this.id = _.uniqueId('model');
@@ -270,7 +270,7 @@ Cranium.Model.prototype.set = function(attrs){
     return this;
 };
 
-// Returns clone of the Models data object 
+// Returns clone of the Models data object
 // (used for view template rendering)
 Cranium.Model.prototype.toJSON = function(options) {
     return _.clone(this.attributes);
@@ -280,7 +280,7 @@ Cranium.Model.prototype.toJSON = function(options) {
 // and passes the new data
 Cranium.Model.prototype.change = function(attrs){
     this.trigger(this.id + 'update', attrs);
-}; 
+};
 
 // Mix in Event system
 _.extend(Cranium.Model.prototype, Cranium.Events);
@@ -296,7 +296,7 @@ Let's explore Views a little further using a simple JavaScript example:
 // DOM View
 var View = Cranium.View = function (options) {
 	// Mix in options object (e.g extending functionallity)
-  _.extend(this, options); 
+  _.extend(this, options);
   this.id = _.uniqueId('view');
 };
 
@@ -306,9 +306,9 @@ _.extend(Cranium.View.prototype, Cranium.Events);
 
 #### Controllers
 
-Controllers are an intermediary between models and views which are classically responsible for two tasks: 
+Controllers are an intermediary between models and views which are classically responsible for two tasks:
 
-* they both update the view when the model changes and 
+* they both update the view when the model changes and
 * update the model when the user manipulates the view.
 
 ```javascript
@@ -317,11 +317,11 @@ Controllers are an intermediary between models and views which are classically r
 // Controller tying together a model and view
 var Controller = Cranium.Controller = function(options){
 	// Mix in options object (e.g extending functionallity)
-  _.extend(this, options); 
+  _.extend(this, options);
   this.id = _.uniqueId('controller');
   var parts, selector, eventType;
 
-  // Parses Events object passed during the definition of the 
+  // Parses Events object passed during the definition of the
  	// controller and maps it to the defined method to handle it;
   if(this.events){
     _.each(this.events, function(method, eventName){
@@ -330,7 +330,7 @@ var Controller = Cranium.Controller = function(options){
       eventType = parts[1];
       $(selector)['on' + eventType] = this[method];
     }.bind(this));
-  }    
+  }
 };
 ```
 
@@ -403,7 +403,7 @@ var todoController = new Cranium.Controller({
 
   // and the view to observe this model
   view:  todoView,
-  
+
   events: {
     "#todo.click" : "toggleComplete"
   },
@@ -677,8 +677,8 @@ var todo1 = new Todo();
 console.log(todo1);
 
 // or with some arbitrary data:
-var todo2 = new Todo({ 
-  title: 'Check attributes property of the both model instances in the console.', 
+var todo2 = new Todo({
+  title: 'Check attributes property of the both model instances in the console.',
   completed: true
 });
 console.log(todo2);
@@ -711,13 +711,13 @@ var Todo = Backbone.Model.extend({
   }
 });
 
-// Now we can create our concrete instance of the model 
+// Now we can create our concrete instance of the model
 // with default values as follows:
 var todo1 = new Todo();
 console.log(todo1);
 
 // Or we could instantiate it with some of the attributes (e.g with custom title):
-var todo2 = new Todo({ 
+var todo2 = new Todo({
   title: 'Check attributes property of the logged models in the console.'
 });
 console.log(todo2);
@@ -770,7 +770,7 @@ var Todo = Backbone.Model.extend({
 
 var todo1 = new Todo();
 var todo1Attributes = todo1.toJSON();
-// Following logs: {"title":"","completed":false} 
+// Following logs: {"title":"","completed":false}
 console.log(todo1Attributes);
 
 var todo2 = new Todo({
@@ -795,8 +795,8 @@ var Todo = Backbone.Model.extend({
 });
 
 // Setting the value of attributes via instantiation
-var myTodo = new Todo({ 
-  title: "Set through instantiation." 
+var myTodo = new Todo({
+  title: "Set through instantiation."
 });
 console.log('Todo title: ' + myTodo.get('title'));
 console.log('Completed: ' + myTodo.get('completed'));
@@ -807,7 +807,7 @@ console.log('Todo title: ' + myTodo.get('title'));
 console.log('Completed: ' + myTodo.get('completed'));
 
 // Set map of attributes through Model.set():
-myTodo.set({ 
+myTodo.set({
   title: "Both attributes set through Model.set().",
   completed: true
 });
@@ -955,7 +955,7 @@ var TodoView = Backbone.View.extend({
   },
 
   updateOnEnter: function( e ) {
-    // executed on each keypress when in todo edit mode, 
+    // executed on each keypress when in todo edit mode,
     // but we'll wait for enter to get in action
   }
 });
@@ -1030,7 +1030,7 @@ var Todo = Backbone.Model.extend({
 
 var TodosCollection = Backbone.Collection.extend({
   model: Todo,
-  localStorage: new Store('todos-backbone')  
+  localStorage: new Store('todos-backbone')
 });
 
 var myTodo = new Todo({title:'Read the whole book', id: 2});
@@ -1039,7 +1039,7 @@ var myTodo = new Todo({title:'Read the whole book', id: 2});
 var todos = new TodosCollection([myTodo]);
 console.log("Collection size: " + todos.length);
 
-// Collection's convenience method used to create 
+// Collection's convenience method used to create
 // new model instance within collection itself.
 todos.create({title:'Try out code examples', id: 48});
 console.log("Collection size: " + todos.length);
@@ -1067,9 +1067,9 @@ Sometimes you may also want to get a model based on its client id. The client id
 
 var todoCid = todos.get(todo2.cid);
 
-// As mentioned in previous example, 
+// As mentioned in previous example,
 // models are passed by reference
-console.log(todoCid === myTodo); 
+console.log(todoCid === myTodo);
 ```
 
 Backbone Collections don't have setters as such, but do support adding new models via `.add()` and removing models via `.remove()`.
@@ -1084,7 +1084,7 @@ var Todo = Backbone.Model.extend({
 
 var TodosCollection = Backbone.Collection.extend({
   model: Todo,
-  localStorage: new Store('todos-backbone')  
+  localStorage: new Store('todos-backbone')
 });
 
 var a = new Todo({ title: 'Go to Jamaica.'}),
@@ -1452,7 +1452,7 @@ var ourObject = {};
 _.extend(ourObject, Backbone.Events);
 
 function doAction (actionObj) {
-  console.log("We are " + actionObj.action + ' for ' + actionObj.duration ); 
+  console.log("We are " + actionObj.action + ' for ' + actionObj.duration );
 }
 
 // Add event listeners
@@ -1587,7 +1587,7 @@ Backbone.history.start();
 
 // Go to and check console:
 // http://localhost/#search/job/p3 logs: Page number: 3 of the results for todos containing the word: job
-// http://localhost/#search/job logs: Page number: 1 of the results for todos containing the word: job 
+// http://localhost/#search/job logs: Page number: 1 of the results for todos containing the word: job
 // etc.
 ```
 
@@ -1650,10 +1650,10 @@ Backbone.history.start();
 // Go to:
 // http://localhost/#todo/4 url is updated to: http://localhost/#todo/4/edit
 // but this time editTodo() function is invoked.
-// 
-// logs: 
+//
+// logs:
 // View todo requested.
-// Edit todo openned. 
+// Edit todo openned.
 ```
 
 ### Backbone’s Sync API
@@ -1970,7 +1970,7 @@ Backbone.setDomLibrary(aCustomLibrary);
 
 ### Utilities
 
-Underscore.js is heavily used in Backbone behind the scenes for everything from object extension through to event binding. As the entire library is generally included, we get free access to a number of useful utilities we can use on Collections such as filtering `_.filter()`, sorting `_.sortBy()`, mapping `_.map()` and so on. 
+Underscore.js is heavily used in Backbone behind the scenes for everything from object extension through to event binding. As the entire library is generally included, we get free access to a number of useful utilities we can use on Collections such as filtering `_.filter()`, sorting `_.sortBy()`, mapping `_.map()` and so on.
 
 From the source:
 
@@ -1993,7 +1993,7 @@ However, for a complete linked list of methods supported, see the [official docu
 
 ### RESTFul persistence
 
-Models and collections in Backbone can be "sync"ed with the server using the `fetch`, `save` and `destroy` methods. All of these methods delegate back to the `Backbone.sync` function, which actually wraps jQuery/Zepto's `$.ajax` function, calling GET, POST and DELETE for the respective persistence methods on Backbone models. 
+Models and collections in Backbone can be "sync"ed with the server using the `fetch`, `save` and `destroy` methods. All of these methods delegate back to the `Backbone.sync` function, which actually wraps jQuery/Zepto's `$.ajax` function, calling GET, POST and DELETE for the respective persistence methods on Backbone models.
 
 From the the source for `Backbone.sync`:
 
@@ -2004,7 +2004,7 @@ var methodMap = {
     'delete': 'DELETE',
     'read':   'GET'
   };
-  
+
 Backbone.sync = function(method, model, options) {
     var type = methodMap[method];
     options || (options = {});
@@ -2014,12 +2014,12 @@ Backbone.sync = function(method, model, options) {
 
 ### Routing
 
-Calls to `Backbone.History.start` rely on jQuery/Zepto binding `popState` or `hashchange` event listeners back to the window object. 
+Calls to `Backbone.History.start` rely on jQuery/Zepto binding `popState` or `hashchange` event listeners back to the window object.
 
 From the source for `Backbone.history.start`:
 
 ```
-// Depending on whether we're using pushState or hashes, and whether 'onhashchange' is 
+// Depending on whether we're using pushState or hashes, and whether 'onhashchange' is
 // supported, determine how we check the URL state.
 if (this._hasPushState) {
         $(window).bind('popstate', this.checkUrl);
@@ -2721,7 +2721,7 @@ So now we have two views: `AppView` and `TodoView`. The former needs to get inst
 
 ## In action
 
-Now we've gone far enough without checking that things work as they should. 
+Now we've gone far enough without checking that things work as they should.
 
 If you are following along open up index.html and, if everything's going to plan, you shouldn't see any errors in the console. The todo list will be blank (we haven't created any todos yet), and the todo-list won't work through our slick interface, as we haven't yet hooked it up fully. However, we can create a Todo from the console.
 
@@ -2801,7 +2801,7 @@ We also need to define #stats-template template we use to display how many items
 
 ## In action
 
-Now refresh index.html and we should be able to see the fruits of our labour. 
+Now refresh index.html and we should be able to see the fruits of our labour.
 
 The todos added through console earlier should appear in the list populated from the Local Storage. Also, we should be able to type a todo name, and press return to submit the form, creating a new todo.
 
@@ -2936,7 +2936,7 @@ Finally, we move on to routing, which will allow us to easily bookmark the list 
 
 ![](img/todorouting.png)
 
-When the route changes the todo list will be filtered on a model level and the selected class on the filter links will be toggled. When an item is updated while in a filtered state, it will be updated accordingly. 
+When the route changes the todo list will be filtered on a model level and the selected class on the filter links will be toggled. When an item is updated while in a filtered state, it will be updated accordingly.
 E.g. if the filter is active and the item is checked, it will be hidden. The active filter is persisted on reload.
 
 ```javascript
@@ -3384,28 +3384,28 @@ I made the ids of the inputs match the attributes in our Book model so that we d
     text-align:right;
     line-height:25px;
 }
- 
+
 #addBook label, #addBook input {
     display:block;
     margin-bottom:10px;
     float:left;
 }
- 
+
 #addBook label[for="title"], #addBook label[for="releaseDate"] {
     clear:both;
 }
- 
+
 #addBook button {
     display:block;
     margin:5px 20px 10px 10px;
     float:right;
     clear:both;
 }
- 
+
 #addBook div {
     width:550px;
 }
- 
+
 #addBook div:after {
     content:"";
     display:block;
@@ -3422,13 +3422,13 @@ Now lets create a function that lets us add a book. We put it in our master view
 ```javascript
 addBook:function(){
     var formData = {};
- 
+
     $("#addBook").children("input").each(function(i, el){
         formData[el.id] = $(el).val();
     });
- 
+
     books.push(formData);
- 
+
     this.collection.add(new Book(formData));
 },
 ```
@@ -3446,15 +3446,15 @@ By default, Backbone will send an event object as parameter to the function. Thi
 ```javascript
 addBook:function(e){
     e.preventDefault();
- 
+
     var formData = {};
- 
+
     $("#addBook").children("input").each(function(i, el){
         formData[el.id] = $(el).val();
     });
- 
+
     books.push(formData);
- 
+
     this.collection.add(new Book(formData));
 },
 ```
@@ -3465,7 +3465,7 @@ Ok, so this will add a book to our books array and our collection. It will not h
 initialize:function () {
     this.collection = new Library(books);
     this.render();
- 
+
     this.collection.on("add", this.renderBook, this);
 },
 ```
@@ -3479,17 +3479,17 @@ As you may notice, if you leave a field blank, it will be blank in the created v
 ```javascript
 addBook:function (e) {
     e.preventDefault();
- 
+
     var formData = {};
- 
+
     $("#addBook div").children("input").each(function (i, el) {
         if ($(el).val() !== "") {
             formData[el.id] = $(el).val();
         }
     });
- 
+
     books.push(formData);
- 
+
     this.collection.add(new Book(formData));
 },
 ```
@@ -3537,7 +3537,7 @@ We add some css to it for good looks. Note that I removed the margin of the exis
     list-style-type:none;
     margin-bottom:0;
 }
- 
+
 .bookContainer button {
     float:right;
     margin:10px;
@@ -3555,18 +3555,18 @@ var BookView = Backbone.View.extend({
     tagName:"div",
     className:"bookContainer",
     template:$("#bookTemplate").html(),
- 
+
     render:function () {
         var tmpl = _.template(this.template); //tmpl is a function that takes a JSON and returns html
- 
+
         this.$el.html(tmpl(this.model.toJSON())); //this.el is what we defined in tagName. use $el to get access to jQuery html() function
         return this;
     },
- 
+
     deleteBook:function () {
         //Delete model
         this.model.destroy();
- 
+
         //Delete view
         this.remove();
     }
@@ -3580,22 +3580,22 @@ var BookView = Backbone.View.extend({
     tagName:"div",
     className:"bookContainer",
     template:$("#bookTemplate").html(),
- 
+
     render:function () {
         var tmpl = _.template(this.template); //tmpl is a function that takes a JSON and returns html
- 
+
         this.$el.html(tmpl(this.model.toJSON())); //this.el is what we defined in tagName. use $el to get access to jQuery html() function
         return this;
     },
- 
+
     events: {
         "click .delete":"deleteBook"
     },
- 
+
     deleteBook:function () {
         //Delete model
         this.model.destroy();
- 
+
         //Delete view
         this.remove();
     }
@@ -3608,7 +3608,7 @@ If you try it out now you will see that it seems to work. However we are not yet
 initialize:function () {
     this.collection = new Library(books);
     this.render();
- 
+
     this.collection.on("add", this.renderBook, this);
     this.collection.on("remove", this.removeBook, this);
 },
@@ -3619,13 +3619,13 @@ Here I specified that the removeBook function should be called when the remove e
 ```javascript
 removeBook:function(removedBook){
     var removedBookData = removedBook.attributes;
- 
+
     _.each(removedBookData, function(val, key){
         if(removedBookData[key] === removedBook.defaults[key]){
             delete removedBookData[key];
         }
     });
- 
+
     _.each(books, function(book){
         if(_.isEqual(book, removedBookData)){
             books.splice(_.indexOf(books, book), 1);
@@ -3719,10 +3719,10 @@ var application_root = __dirname,
     express = require("express"), //Web framework
     path = require("path"), //Utilities for dealing with file paths
     mongoose = require('mongoose'); //MongoDB integration
- 
+
 //Create server
 var app = express.createServer();
- 
+
 // Configure server
 app.configure(function () {
     app.use(express.bodyParser()); //parses request body and populates req.body
@@ -3731,7 +3731,7 @@ app.configure(function () {
     app.use(express.static(path.join(application_root, "public"))); //Where to serve static content
     app.use(express.errorHandler({ dumpExceptions:true, showStack:true })); //Show all errors in development
 });
- 
+
 //Start server
 app.listen(4711, function () {
     console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
@@ -3835,7 +3835,7 @@ app.post('/api/books', function (req, res) {
 });
 ```
 
-We start by creating a new BookModel passing an object with title, author and releaseDate attributes. The data are collected from req.body. This means that anyone calling this operation in the API needs to supply a JSON object containing the title, author and releaseDate attributes. Actually, the caller can omit any or all attributes since we have not made any one mandatory. 
+We start by creating a new BookModel passing an object with title, author and releaseDate attributes. The data are collected from req.body. This means that anyone calling this operation in the API needs to supply a JSON object containing the title, author and releaseDate attributes. Actually, the caller can omit any or all attributes since we have not made any one mandatory.
 
 We then call the save function on the BookModel passing in an anonymous function for handling errors in the same way as with the previous get route. Finally we return the saved BookModel. The reason we return the BookModel and not just “success” or similar string is that when the BookModel is saved it will get an _id attribute from MongoDB, which the client needs when updating or deleting a specific book. Lets try it out again, restart node and go back to the console and type:
 
@@ -3845,9 +3845,9 @@ jQuery.post("/api/books", {
   "author":"Douglas Crockford",
   "releaseDate":new Date(2008, 4, 1).getTime()
 }, function(data, textStatus, jqXHR) {
-    console.log("Post response:"); 
-    console.dir(data); 
-    console.log(textStatus); 
+    console.log("Post response:");
+    console.dir(data);
+    console.log(textStatus);
     console.dir(jqXHR);
 });
 ```
@@ -3934,9 +3934,9 @@ jQuery.ajax({
     "releaseDate":new Date(2008, 4, 1).getTime()
   },
   success: function(data, textStatus, jqXHR) {
-    console.log("Post resposne:"); 
-    console.dir(data); 
-    console.log(textStatus); 
+    console.log("Post resposne:");
+    console.dir(data);
+    console.log(textStatus);
     console.dir(jqXHR);
   }
 });
@@ -4014,7 +4014,7 @@ app.post('/api/books', function (req, res) {
     });
     return res.send(book);
 });
- 
+
 app.put('/api/books/:id', function(req, res){
     return BookModel.findById(req.params.id, function(err, book){
         book.title = req.body.title;
@@ -4046,9 +4046,9 @@ jQuery.post("/api/books", {
      "keyword":"Reference"
    }]
 }, function(data, textStatus, jqXHR) {
-    console.log("Post response:"); 
-    console.dir(data); 
-    console.log(textStatus); 
+    console.log("Post response:");
+    console.dir(data);
+    console.log(textStatus);
     console.dir(jqXHR);
 });
 ```
@@ -4224,7 +4224,7 @@ this.collection.add(new Book(formData));
 this.collection.create(formData);
 ```
 
-Now newly created books will get persisted. Actually, they probably wont if you enter a date. The server expects a date in UNIX timestamp format (milliseconds since Jan 1, 1970). Also any keywords you enter wont be stored since the server expects an array of objects with the attribute ‘keyword’. 
+Now newly created books will get persisted. Actually, they probably wont if you enter a date. The server expects a date in UNIX timestamp format (milliseconds since Jan 1, 1970). Also any keywords you enter wont be stored since the server expects an array of objects with the attribute ‘keyword’.
 
 We start with fixing the date issue. We don’t really want the users to enter a date into a specific format manually so we’ll use the standard datepicker from jQuery UI. Go ahead and create a custom jQuery UI download containing datepicker from [here](http://jqueryui.com/download/). Add the css and js files to index.html:
 
@@ -4253,12 +4253,12 @@ Now in the beginning of app.js bind datepicker to our releaseDate field:
 ```javascript
 (function ($) {
     $("#releaseDate").datepicker();
- 
+
     var books = [
         {title:"JS the good parts", author:"John Doe", releaseDate:"2012", keywords:"JavaScript Programming"},
 
 ```
-        
+
 You should now be able to pick a date when clicking in the releaseDate field:
 
 ![](http://codebyexample.info/wp-content/uploads/2012/04/Screen-Shot-2012-04-30-at-1.34.19-AM.png)
@@ -4268,9 +4268,9 @@ Now go to the addBook function in LibraryView and update it like this:
 ```javascript
 addBook:function (e) {
     e.preventDefault();
- 
+
     var formData = {};
- 
+
     $("#addBook div").children("input").each(function (i, el) {
         if ($(el).val() !== "") {
             if (el.id === 'releaseDate'){
@@ -4280,9 +4280,9 @@ addBook:function (e) {
             }
         }
     });
- 
+
     books.push(formData);
- 
+
     //this.collection.add(new Book(formData));
     this.collection.create(formData);
 },
@@ -4293,9 +4293,9 @@ Here I check if the current element is the releaseDate input field, in which cas
 ```javascript
 addBook:function (e) {
     e.preventDefault();
- 
+
     var formData = {};
- 
+
     $("#addBook div").children("input").each(function (i, el) {
         if ($(el).val() !== "") {
             if (el.id === 'keywords') {
@@ -4312,9 +4312,9 @@ addBook:function (e) {
             }
         }
     });
- 
+
     books.push(formData);
- 
+
     //this.collection.add(new Book(formData));
     this.collection.create(formData);
 },
@@ -5075,7 +5075,7 @@ var OuterView = Backbone.View.extend({
     },
 
     render: function() {
-        this.$el.html('<div data-view-cid="' + this.child.cid + '"></div>');        
+        this.$el.html('<div data-view-cid="' + this.child.cid + '"></div>');
         _.each(this.children, function(view, cid) {
             this.$('[data-view-cid="' + cid + '"]').replaceWith(view.el);
         }, this);
@@ -5611,7 +5611,7 @@ The Backbone.validateAll logic doesn't override the default Backbone logic by de
 
 As we've seen, Backbone provides a great set of building blocks for our JavaScript applications. It gives us the core constructs that are needed to build small to mid-sized apps, organize jQuery DOM events, or create single page apps that support mobile devices and large scale enterprise needs. But Backbone is not a complete framework. It's a set of building blocks that leaves much of the application design, architecture and scalability to the developer, including memory management, view management and more.
 
-[Backbone.Marionette](http://marionettejs.com) (or just "Marionette") provides many of the features that the non-trivial application developer needs, above what Backbone itself provides. It is a composite application library that aims to simplify the construction of large scale applications. It does this by providing a collection of common design and implementation patterns found in the applications that the creator, [Derick Bailey](http://lostechies.com/derickbailey/), and many other [contributors](https://github.com/marionettejs/backbone.marionette/graphs/contributors) have been using to build Backbone apps. 
+[Backbone.Marionette](http://marionettejs.com) (or just "Marionette") provides many of the features that the non-trivial application developer needs, above what Backbone itself provides. It is a composite application library that aims to simplify the construction of large scale applications. It does this by providing a collection of common design and implementation patterns found in the applications that the creator, [Derick Bailey](http://lostechies.com/derickbailey/), and many other [contributors](https://github.com/marionettejs/backbone.marionette/graphs/contributors) have been using to build Backbone apps.
 
 Marionette's key benefits include:
 
@@ -5628,7 +5628,7 @@ Marionette's key benefits include:
 * Flexible, "as-needed" architecture allowing you to pick and choose what you need
 * And much, much more
 
-Marionette follows a similar philosophy to Backbone in that it provides a suite of components that can be used independently of each other, or used together to create a significant advantages for us as developers. But it steps above the structural components of Backbone and provides an application layer, with more than a dozen components and building blocks. 
+Marionette follows a similar philosophy to Backbone in that it provides a suite of components that can be used independently of each other, or used together to create a significant advantages for us as developers. But it steps above the structural components of Backbone and provides an application layer, with more than a dozen components and building blocks.
 
 Marionette's components range greatly in the features they provide, but they all work together to create a composite application layer that can both reduce boilerplate code and provide a much needed application structure. Its core components include:
 
@@ -5750,7 +5750,7 @@ var ZombieView = Backbone.View.extend({
 });
 ```
 
-If we create two instances of this view using the same variable name for both instances, and then change a value in the model, how many times will we see the alert box? 
+If we create two instances of this view using the same variable name for both instances, and then change a value in the model, how many times will we see the alert box?
 
 ```javascript
 var myModel = new MyModel({
@@ -5777,7 +5777,7 @@ Since we're re-using the save `zombieView` variable for both instances, the firs
 
 But when we run this code, we end up with the alert box showing up twice!
 
-The problem is caused by the model event binding in the view's `initialize` method. Whenever we pass `this.render` as the callback method to the model's `on` event binding, the model itself is being given a direct reference to the view instance. Since the model is now holding a reference to the view instance, replacing the `zombieView` variable with a new view instance is not going to let the original view fall out of scope. The model still has a reference, therefore the view is still in scope. 
+The problem is caused by the model event binding in the view's `initialize` method. Whenever we pass `this.render` as the callback method to the model's `on` event binding, the model itself is being given a direct reference to the view instance. Since the model is now holding a reference to the view instance, replacing the `zombieView` variable with a new view instance is not going to let the original view fall out of scope. The model still has a reference, therefore the view is still in scope.
 
 Since the original view is still in scope, and the second view instance is also in scope, changing data on the model will cause both view instances to respond.
 
@@ -5829,7 +5829,7 @@ zombieView = new ZombieView({
 myModel.set('email', 'jeremy@gmail.com');
 ```
 
-Now we only see once alert box when this code runs. 
+Now we only see once alert box when this code runs.
 
 Rather than having to manually remove these event handlers, though, we can let Marionette do it for us.
 
@@ -5853,7 +5853,7 @@ var ZombieView = Backbone.Marionette.ItemView.extend({
 });
 ```
 
-Notice in this case we are using a method called `bindTo`. This method comes from Marionette's `EventBinder` object, and is added on to all of Marionette's view types. The `bindTo` method signature is similar to that of the `on` method, with the exception of passing the object that triggers the event as the first parameter. 
+Notice in this case we are using a method called `bindTo`. This method comes from Marionette's `EventBinder` object, and is added on to all of Marionette's view types. The `bindTo` method signature is similar to that of the `on` method, with the exception of passing the object that triggers the event as the first parameter.
 
 Marionette's views also provide a `close` event, in which the event bindings that are set up with the `bindTo` are automatically removed. This means we no longer need to define a `close` method directly, and when we use the `bindTo` method, we know that our events will be removed and our views will not turn in to zombies.
 
@@ -5900,9 +5900,9 @@ var view2 = new MyView({ /* ... */ });
 myRegion.show(view2);
 ```
 
-There are several things to note, here. First, we're telling the region what DOM element to manage by specifying an `el` in the region instance. Second, we're no longer calling the `render` method on our views. And lastly, we're not calling `close` on our view, either, though this is getting called for us. 
+There are several things to note, here. First, we're telling the region what DOM element to manage by specifying an `el` in the region instance. Second, we're no longer calling the `render` method on our views. And lastly, we're not calling `close` on our view, either, though this is getting called for us.
 
-When we use a region to manage the lifecycle of our views, and display the views in the DOM, the region itself handles these concerns. By passing a view instance in to the `show` method of the region, it will call the render method on the view for us. It will then take the resulting `el` of the view and populate the DOM element. 
+When we use a region to manage the lifecycle of our views, and display the views in the DOM, the region itself handles these concerns. By passing a view instance in to the `show` method of the region, it will call the render method on the view for us. It will then take the resulting `el` of the view and populate the DOM element.
 
 The next time we call the `show` method of the region, the region remembers that it is currently displaying a view. The region calls the `close` method on the view, removes it from the DOM, and then proceeds to run the render & display code for the new view that was passed in.
 
@@ -5910,13 +5910,13 @@ Since the region handles calling `close` for us, and we're using the `bindTo` ev
 
 ### Marionette Todo app
 
-Having learned about Marionette's high-level concepts, let's explore refactoring the Todo application we created in our first practical to use it. The complete code for this application can be found in Derick's TodoMVC [fork](https://github.com/derickbailey/todomvc/tree/master/labs/architecture-examples/backbone_marionette_modules/js).
+Having learned about Marionette's high-level concepts, let's explore refactoring the Todo application we created in our first practical to use it. The complete code for this application can be found in Derick's TodoMVC [fork](https://github.com/derickbailey/todomvc/tree/marionette/labs/architecture-examples/backbone_marionette/js).
 
 Our final implementation will be visually and functionally equivalent to the original app, as seen below.
 
 ![](img/marionette_todo0.png)
 
-First, we define an application object representing our base TodoMVC app. This will contain initialisation code and define the default layout regions for our app. 
+First, we define an application object representing our base TodoMVC app. This will contain initialisation code and define the default layout regions for our app.
 
 **TodoMVC.js:**
 
@@ -5990,7 +5990,7 @@ TodoMVC.module('Layout', function(Layout, App, Backbone, Marionette, $, _){
 
   // Layout Footer View
   // ------------------
-  
+
   Layout.Footer = Backbone.Marionette.Layout.extend({
     template : '#template-footer',
 
@@ -6034,8 +6034,8 @@ TodoMVC.module('Layout', function(Layout, App, Backbone, Marionette, $, _){
 
     onClearClick : function() {
       var completed = this.collection.getCompleted();
-      completed.forEach(function destroy(todo) { 
-        todo.destroy(); 
+      completed.forEach(function destroy(todo) {
+        todo.destroy();
       });
     }
   });
@@ -6044,9 +6044,9 @@ TodoMVC.module('Layout', function(Layout, App, Backbone, Marionette, $, _){
 
 ```
 
-Next, we tackle application routing and workflow, such as controlling Layouts in the page which can be shown or hidden. 
+Next, we tackle application routing and workflow, such as controlling Layouts in the page which can be shown or hidden.
 
-Marionette uses the concept of an AppRouter to simplify routing. This reduces the boilerplate for handling route events and allows routers to be configured to call methods on an object directly. We configure our AppRouter using `appRoutes`.  
+Marionette uses the concept of an AppRouter to simplify routing. This reduces the boilerplate for handling route events and allows routers to be configured to call methods on an object directly. We configure our AppRouter using `appRoutes`.
 
 This replaces the `'*filter': 'setFilter'` route defined in our original Workspace router, seen below:
 
@@ -6089,7 +6089,7 @@ TodoMVC.module('TodoList', function(TodoList, App, Backbone, Marionette, $, _){
   //
   // Control the workflow and logic that exists at the application
   // level, above the implementation detail of views and models
-  
+
   TodoList.Controller = function(){
     this.todoList = new App.Todos.TodoList();
   };
@@ -6138,7 +6138,7 @@ TodoMVC.module('TodoList', function(TodoList, App, Backbone, Marionette, $, _){
   // Get the TodoList up and running by initializing the mediator
   // when the the application is started, pulling in all of the
   // existing Todo items and displaying them.
-  
+
   TodoList.addInitializer(function(){
 
     var controller = new TodoList.Controller();
@@ -6156,9 +6156,9 @@ TodoMVC.module('TodoList', function(TodoList, App, Backbone, Marionette, $, _){
 
 ####Controllers
 
-In this particular app, note that Controllers don't add a great deal to the overall workflow. In general however, Marionette's philosophy on routers is that they should be an after-thought in the implementation of applications. Quite often, we'll see many bad examples of developers abusing Backbone's routing system by making it the sole controller of the entire application workflow and logic. 
+In this particular app, note that Controllers don't add a great deal to the overall workflow. In general however, Marionette's philosophy on routers is that they should be an after-thought in the implementation of applications. Quite often, we'll see many bad examples of developers abusing Backbone's routing system by making it the sole controller of the entire application workflow and logic.
 
-This inevitably leads to mashing every possible combination of code in to the router methods - view creation, model loading, coordinating different parts of the app, etc. Developers such as Derick views this as a violation of the [single-responsibility principle](http://en.wikipedia.org/wiki/Single_responsibility_principle) (SRP) and separation of concerns. 
+This inevitably leads to mashing every possible combination of code in to the router methods - view creation, model loading, coordinating different parts of the app, etc. Developers such as Derick views this as a violation of the [single-responsibility principle](http://en.wikipedia.org/wiki/Single_responsibility_principle) (SRP) and separation of concerns.
 
 Backbone's router and history exists to deal with a specific aspect of browsers - managing the forward and back buttons. Marionette feels it should be limited to that, with the code that gets executed by the navigation being somewhere else. This allows the application to be used with or without a router. We can call a controller's "show" method from a button click, from an application event handler, or from a router, and we will end up with the same application state no matter how we called that method.
 
@@ -6170,11 +6170,11 @@ Derick has written extensively about his thoughts on this topic, which you can r
 
 #### CompositeView
 
-We then get to defining the actual views for individual Todo items and lists of items in our TodoMVC application. For this, we make use of Marionette's `CompositeView`s. The idea behind a CompositeView is that it represents a visualisation of a composite or hierarchical structure of leaves (or nodes) and branches. 
+We then get to defining the actual views for individual Todo items and lists of items in our TodoMVC application. For this, we make use of Marionette's `CompositeView`s. The idea behind a CompositeView is that it represents a visualisation of a composite or hierarchical structure of leaves (or nodes) and branches.
 
 Think of these views as being a hierarchy of parent-child models, and recursive by default. For each item in a collection that the composite view is handling the same CompositeView type will be used to render the item. For non-recursive hierarchies, though, we are able to override the item view by defining an `itemView` attribute.
 
-For our Todo List Item View, we define it as an ItemView, then our Todo List View is a CompositeView where we override the `itemView` setting and tell it to use the Todo List item View for each item in the collection. 
+For our Todo List Item View, we define it as an ItemView, then our Todo List View is a CompositeView where we override the `itemView` setting and tell it to use the Todo List item View for each item in the collection.
 
 TodoMVC.TodoList.Views.js
 
@@ -6288,7 +6288,7 @@ TodoMVC.module('TodoList.Views', function(Views, App, Backbone, Marionette, $, _
   //
   // Handler for filtering the list of items by showing and
   // hiding through the use of various CSS classes
-  
+
   App.vent.on('todoList:filter',function(filter) {
     filter = filter || 'all';
     $('#todoapp').attr('class', 'filter-' + filter);
@@ -6309,7 +6309,7 @@ TodoMVC.module('Todos', function(Todos, App, Backbone, Marionette, $, _){
 
   // Todo Model
   // ----------
-  
+
   Todos.Todo = Backbone.Model.extend({
     localStorage: new Backbone.LocalStorage('todos-backbone'),
 
@@ -6327,8 +6327,8 @@ TodoMVC.module('Todos', function(Todos, App, Backbone, Marionette, $, _){
       return this.set('completed', !this.isCompleted());
     },
 
-    isCompleted: function() { 
-      return this.get('completed'); 
+    isCompleted: function() {
+      return this.get('completed');
     }
   });
 
@@ -6376,11 +6376,11 @@ And that's it!
 
 ### Is the Marionette implementation of the Todo app more maintainable?
 
-Derick feels that maintainability largely comes down to modularity, separating responsibilities (SRP and SoC) and other related patterns for keeping concerns from being mixed together. It can however be difficult to simply extract things in to separate modules for the sake of extraction, abstraction, or dividing the concept down in to it's most finite parts. 
+Derick feels that maintainability largely comes down to modularity, separating responsibilities (SRP and SoC) and other related patterns for keeping concerns from being mixed together. It can however be difficult to simply extract things in to separate modules for the sake of extraction, abstraction, or dividing the concept down in to it's most finite parts.
 
-The Single Responsibility Principle (SRP) tells us quite the opposite - that we need to understand the context in which things change. What parts always change together, in _this_ system? What parts can change independently? Without knowing this, we won't know what pieces should be broken out in to separate components and modules, vs put together in to the same module or object. 
+The Single Responsibility Principle (SRP) tells us quite the opposite - that we need to understand the context in which things change. What parts always change together, in _this_ system? What parts can change independently? Without knowing this, we won't know what pieces should be broken out in to separate components and modules, vs put together in to the same module or object.
 
-The way Derick organizes his apps into modules is by creating a breakdown of concepts at each level. A higher level module is a higher level of concern - an aggregation of responsibilities. Each responsibility is broken down in to an expressive API set that is implemented by lower level modules (Dependency Inversion Principle). These are coordinated through a mediator - which he typically refers to as the Controller in a module. 
+The way Derick organizes his apps into modules is by creating a breakdown of concepts at each level. A higher level module is a higher level of concern - an aggregation of responsibilities. Each responsibility is broken down in to an expressive API set that is implemented by lower level modules (Dependency Inversion Principle). These are coordinated through a mediator - which he typically refers to as the Controller in a module.
 
 The way that Derick organizes his files also plays directly into maintainability and he has also written up posts about the importance of keeping a sane application folder structure that I recommend reading:
 
@@ -6389,13 +6389,13 @@ The way that Derick organizes his files also plays directly into maintainability
 
 ### Marionette And Flexibility
 
-Marionette is a flexible framework, much like Backbone itself. It offers a wide variety of tools to help create and organize an application architecture on top of Backbone, but like Backbone itself, it doesn't dictate that you have to use all of it's pieces in order to use any of them. 
+Marionette is a flexible framework, much like Backbone itself. It offers a wide variety of tools to help create and organize an application architecture on top of Backbone, but like Backbone itself, it doesn't dictate that you have to use all of it's pieces in order to use any of them.
 
 The flexibility and versatility in Marionette is easiest to understand by examining three variations of TodoMVC that have been created for comparison purposes:
 
 * [Simple](https://github.com/jsoverson/todomvc/tree/master/labs/architecture-examples/backbone_marionette) - by Jarrod Overson
 * [RequireJS](https://github.com/jsoverson/todomvc/tree/master/labs/dependency-examples/backbone_marionette_require) - also by Jarrod
-* [Marionette modules](https://github.com/derickbailey/todomvc/tree/master/labs/architecture-examples/backbone_marionette_modules/js) - by Derick Bailey
+* [Marionette modules](https://github.com/derickbailey/todomvc/tree/marionette/labs/architecture-examples/backbone_marionette/js) - by Derick Bailey
 
 **The simple version**: This version of TodoMVC shows some raw use of Marionette's various view types, an application object, and the event aggregator. The objects that are created are added directly to the global namespace and are fairly straightforward. This is a great example of how Marionette can be used to augment existing code without having to re-write everything around Marionette.
 
@@ -6403,17 +6403,17 @@ The flexibility and versatility in Marionette is easiest to understand by examin
 
 **The Marionette module version**: RequireJS isn't the only way to create a modularized application architecture, though. For those that wish to build applications in modules and namespaces, Marionette provides a built-in module and namespacing structure. This example application takes the simple version of the application and re-writes it in to a namespaced application architecture, with an application controller (mediator / workflow object) that brings all of the pieces together.
 
-Marionette certainly provides its share of opinions in how a Backbone application should be architected. The combination of modules, view types, event aggregator, application objects, and more, can be used to create a very powerful and flexible architecture based on these opinions. 
+Marionette certainly provides its share of opinions in how a Backbone application should be architected. The combination of modules, view types, event aggregator, application objects, and more, can be used to create a very powerful and flexible architecture based on these opinions.
 
-But as you can see, Marionette isn't a completely rigid, "my way or the highway" framework. It provides many elements of an application foundation that can be mixed and matched with other architectural styles, such as AMD or namespacing, or provide simple augmentation to existing projects by reducing boilerplate code for rendering views. 
+But as you can see, Marionette isn't a completely rigid, "my way or the highway" framework. It provides many elements of an application foundation that can be mixed and matched with other architectural styles, such as AMD or namespacing, or provide simple augmentation to existing projects by reducing boilerplate code for rendering views.
 
 This flexibility creates a much greater opportunity for Marionette to provide value to you and your projects, as it allows you to scale the use of Marionette with your application's needs.
 
 ### And So Much More
 
-This is just the tip of the proverbial ice-berg for Marionette, even for the `ItemView` and `Region` objects that we've explored. There is far more functionality, more features, and more flexibility and customizability that can be put to use in both of these objects. Then we have the other dozen or so components that Marionette provides, each with their own set of behaviors built in, customization and extension points, and more. 
+This is just the tip of the proverbial ice-berg for Marionette, even for the `ItemView` and `Region` objects that we've explored. There is far more functionality, more features, and more flexibility and customizability that can be put to use in both of these objects. Then we have the other dozen or so components that Marionette provides, each with their own set of behaviors built in, customization and extension points, and more.
 
-To learn more about Marionette, it's components, the features they provide and how to use them, check out the Marionette documentation, links to the wiki, to the source code, the project core contributors, and much more at [http://marionettejs.com](http://marionettejs.com). 
+To learn more about Marionette, it's components, the features they provide and how to use them, check out the Marionette documentation, links to the wiki, to the source code, the project core contributors, and much more at [http://marionettejs.com](http://marionettejs.com).
 
 
 <p>&nbsp;</p>
@@ -6425,7 +6425,7 @@ To learn more about Marionette, it's components, the features they provide and h
 
 *By Ryan Eastridge & Addy Osmani*
 
-Part of Backbone's appeal is that it provides structure but is generally un-opinionated, in particular when it comes to views. Thorax makes an opinionated decision to use Handlebars as it's templating solution. Some of the patterns found in Marionette are found in Thorax as well. Marionette exposes most of these patterns as JavaScript APIs while in Thorax they are often exposed as template helpers. This chapter assumes the reader has knowledge of Handlebars. 
+Part of Backbone's appeal is that it provides structure but is generally un-opinionated, in particular when it comes to views. Thorax makes an opinionated decision to use Handlebars as it's templating solution. Some of the patterns found in Marionette are found in Thorax as well. Marionette exposes most of these patterns as JavaScript APIs while in Thorax they are often exposed as template helpers. This chapter assumes the reader has knowledge of Handlebars.
 
 Thorax was created by Ryan Eastridge and Kevin Decker to create Walmart's mobile web application. This chapter is limited to Thorax's templating features and patterns implemented in Thorax that you can utilize in your application regardless of wether you choose to adopt Thorax. To learn more about other features implemented in Thorax and to download boilerplate projects visit the [Thorax website](http://walmartlabs.github.com/thorax).
 
@@ -6469,7 +6469,7 @@ Or the name of a child view to initialize (and any optional properties to pass).
         name: 'child',
         template: ...
     });
-  
+
     var parent = new Thorax.View({
         template: '{{view "child" key="value"}}'
     });
@@ -6656,10 +6656,10 @@ And the corresponding view class:
       },
       kittens: new Thorax.Collection(...),
       template: ...
-    });  
+    });
 ```
 
-A common anti-pattern in Backbone applications is to assign a `className` to a single view class. Consider using the `data-view-name` attribute as a CSS selector instead, saving CSS classes for things that will be used multiple times: 
+A common anti-pattern in Backbone applications is to assign a `className` to a single view class. Consider using the `data-view-name` attribute as a CSS selector instead, saving CSS classes for things that will be used multiple times:
 
 ```css
   [data-view-name="child"] {
