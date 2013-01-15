@@ -356,7 +356,7 @@ Users interact with views, which usually means reading and editing model data. F
 	    <input id="todo_complete" type="checkbox" <%= completed %>>
 	    <%= title %>
     </div>
-	</script>?
+	</script>
 	<script src="underscore-min.js"></script>
   <script src="cranium.js"></script>
   <script src="example.js"></script>
@@ -8469,7 +8469,7 @@ You can use some variables in your ```View``` to represent the actual state of t
 
 **Diacritic.js**
 
-A plugin for Backbone.Paginator that replaces diacritic characters (a,s,t etc) with characters that match them most closely. This is particularly useful for filtering.
+A plugin for Backbone.Paginator that replaces diacritic characters (ă,ş,ţ etc) with characters that match them most closely. This is particularly useful for filtering.
 
 To enable the plugin, set `this.useDiacriticsPlugin` to true, as can be seen in the example below:
 
