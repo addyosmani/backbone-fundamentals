@@ -7872,7 +7872,7 @@ test( <span class="ch">&#39;1 passed as an argument&#39;</span>, <span class="dv
 <h4 id="basic-spies"><a href="#TOC">Basic Spies:</a></h4>
 <pre class="sourceCode javascript"><code class="sourceCode javascript">test(<span class="ch">&#39;should call all subscribers for a message exactly once&#39;</span>, <span class="kw">function</span> () {
     <span class="kw">var</span> message = getUniqueString();
-    <span class="kw">var</span> spy = <span class="kw">this</span>.<span class="fu">spy</span>();
+    <span class="kw">var</span> spy1 = <span class="kw">this</span>.<span class="fu">spy</span>();
 
     <span class="kw">PubSub</span>.<span class="fu">subscribe</span>( message, spy );
     <span class="kw">PubSub</span>.<span class="fu">publishSync</span>( message, <span class="ch">&#39;Hello World&#39;</span> );
