@@ -103,9 +103,7 @@ Before exploring any JavaScript frameworks that assist in structuring applicatio
 
 ### MVC & Backbone.js
 
-Design patterns are proven solutions to common development problems and can help guide is in adding more organization and structure to our applications.
-
-Patterns are useful because they're a set of practices that build upon the collective experience of skilled developers who have repeatedly solved similar problems. Although developers 10 or 20 years ago may not have been using the same programming languages when implementing patterns in their projects, there are many lessons we can learn from their efforts.
+Design patterns are proven solutions to common development problems and can help guide us in adding more organization and structure to our applications. Patterns are also of great use as they reflect a set of practices which build upon the collective experience of skilled developers who have repeatedly solved similar problems. 
 
 In this section, we're going to explore the MVC (Model-View-Controller) pattern and how it applies to Backbone.js.
 

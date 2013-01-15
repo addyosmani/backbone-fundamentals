@@ -62,7 +62,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <li><a href="#setting-expectations">Setting Expectations</a></li>
 </ul></li>
 <li><a href="#fundamentals">Fundamentals</a><ul>
-<li><a href="#mvc-mvp-backbone.js">MVC, MVP &amp; Backbone.js</a></li>
+<li><a href="#mvc-backbone.js">MVC &amp; Backbone.js</a></li>
 <li><a href="#mvc">MVC</a><ul>
 <li><a href="#smalltalk-80-mvc">Smalltalk-80 MVC</a></li>
 <li><a href="#mvc-applied-to-the-web">MVC Applied To The Web</a></li>
@@ -83,12 +83,8 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <li><a href="#what-does-mvc-give-us">What does MVC give us?</a><ul>
 <li><a href="#delving-deeper">Delving deeper</a></li>
 <li><a href="#summary">Summary</a></li>
+<li><a href="#further-reading">Further reading</a></li>
 </ul></li>
-<li><a href="#mvp">MVP</a><ul>
-<li><a href="#models-views-presenters">Models, Views &amp; Presenters</a></li>
-</ul></li>
-<li><a href="#mvp-or-mvc">MVP or MVC?</a></li>
-<li><a href="#mvc-mvp-and-backbone.js">MVC, MVP and Backbone.js</a></li>
 <li><a href="#fast-facts">Fast facts</a><ul>
 <li><a href="#backbone.js">Backbone.js</a></li>
 </ul></li>
@@ -295,7 +291,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <li><a href="#rendering-with-a-templating-system">Rendering with a templating system</a></li>
 <li><a href="#conclusions-2">Conclusions</a></li>
 <li><a href="#exercise-1">Exercise</a></li>
-<li><a href="#further-reading">Further reading</a></li>
+<li><a href="#further-reading-1">Further reading</a></li>
 <li><a href="#unit-testing-backbone-applications-with-qunit-and-sinonjs">Unit Testing Backbone Applications With QUnit And SinonJS</a></li>
 <li><a href="#introduction-3">Introduction</a></li>
 </ul></li>
@@ -355,6 +351,13 @@ code > span.er { color: #ff0000; font-weight: bold; }
 </ul></li>
 <li><a href="#conclusions-3">Conclusions</a><ul>
 <li><a href="#notes">Notes</a></li>
+</ul></li>
+<li><a href="#appendix">Appendix</a><ul>
+<li><a href="#mvp">MVP</a><ul>
+<li><a href="#models-views-presenters">Models, Views &amp; Presenters</a></li>
+</ul></li>
+<li><a href="#mvp-or-mvc">MVP or MVC?</a></li>
+<li><a href="#mvc-mvp-and-backbone.js">MVC, MVP and Backbone.js</a></li>
 </ul></li>
 </ul>
 </nav>
@@ -417,12 +420,11 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <h1 id="fundamentals"><a href="#TOC">Fundamentals</a></h1>
 <p>In this first chapter, we’re going to explore how frameworks like Backbone.js fit in the world of JavaScript application architecture. Classically, developers creating desktop and server-class applications have had a wealth of design patterns available for them to lean on, but it’s only been in the past few years that such patterns have come to client-side development.</p>
 <p>Before exploring any JavaScript frameworks that assist in structuring applications, it can be useful to gain a basic understanding of architectural design patterns.</p>
-<h3 id="mvc-mvp-backbone.js"><a href="#TOC">MVC, MVP &amp; Backbone.js</a></h3>
-<p>Design patterns are proven solutions to common development problems and can suggest structural approaches to help guide developers in adding some organization to their applications.</p>
-<p>Patterns are useful because they’re a set of practices that build upon the collective experience of skilled developers who have repeatedly solved similar problems. Although developers 10 or 20 years ago may not have been using the same programming languages when implementing patterns in their projects, there are many lessons we can learn from their efforts.</p>
-<p>In this section, we’re going to review two popular patterns - MVC and MVP. We’ll be exploring in greater detail how Backbone.js implements these patterns shortly to better appreciate where it fits in.</p>
+<h3 id="mvc-backbone.js"><a href="#TOC">MVC &amp; Backbone.js</a></h3>
+<p>Design patterns are proven solutions to common development problems and can help guide us in adding more organization and structure to our applications. Patterns are also of great use as they reflect a set of practices which build upon the collective experience of skilled developers who have repeatedly solved similar problems.</p>
+<p>In this section, we’re going to explore the MVC (Model-View-Controller) pattern and how it applies to Backbone.js.</p>
 <h2 id="mvc"><a href="#TOC">MVC</a></h2>
-<p>MVC (Model-View-Controller) is an architectural design pattern that encourages improved application organization through a separation of concerns. It enforces the isolation of business data (Models) from user interfaces (Views), with a third component (Controllers) traditionally managing logic, user-input and the coordination of models and views. The pattern was originally designed by <a href="http://en.wikipedia.org/wiki/Trygve_Reenskaug">Trygve Reenskaug</a> while working on Smalltalk-80 (1979), where it was initially called Model-View-Controller-Editor. MVC was described in depth in <a href="http://www.amazon.co.uk/Design-patterns-elements-reusable-object-oriented/dp/0201633612"><q>Design Patterns: Elements of Reusable Object-Oriented Software</q></a> (The <q>GoF</q> or <q>Gang of Four</q> book) in 1994, which played a role in popularizing its use.</p>
+<p>MVC is an architectural design pattern that encourages improved application organization through a separation of concerns. It enforces the isolation of business data (Models) from user interfaces (Views), with a third component (Controllers) traditionally managing logic, user-input and the coordination of models and views. The pattern was originally designed by <a href="http://en.wikipedia.org/wiki/Trygve_Reenskaug">Trygve Reenskaug</a> while working on Smalltalk-80 (1979), where it was initially called Model-View-Controller-Editor. MVC was described in depth in <a href="http://www.amazon.co.uk/Design-patterns-elements-reusable-object-oriented/dp/0201633612"><q>Design Patterns: Elements of Reusable Object-Oriented Software</q></a> (The <q>GoF</q> or <q>Gang of Four</q> book) in 1994, which played a role in popularizing its use.</p>
 <h3 id="smalltalk-80-mvc"><a href="#TOC">Smalltalk-80 MVC</a></h3>
 <p>It’s important to understand what the original MVC pattern was aiming to solve as it has changed quite heavily since the days of its origin. Back in the 70’s, graphical user-interfaces were few and far between. An approach known as <a href="http://martinfowler.com/eaaDev/uiArchs.html">Separated Presentation</a> began to be used as a means to make a clear division between domain objects which modeled concepts in the real world (e.g a photo, a person) and the presentation objects which were rendered to the user’s screen.</p>
 <p>The Smalltalk-80 implementation of MVC took this concept further and had an objective of separating out the application logic from the user interface. The idea was that decoupling these parts of the application would also allow the reuse of models for other interfaces in the application. There are some interesting points worth noting about Smalltalk-80’s MVC architecture:</p>
@@ -654,7 +656,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 
   <span class="co">// and the view to observe this model</span>
   <span class="dt">view</span>:  todoView,
-
+  
   <span class="dt">events</span>: {
     <span class="st">&quot;#todo.click&quot;</span> : <span class="st">&quot;toggleComplete&quot;</span>
   },
@@ -722,7 +724,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <p>In our Todo application, a controller would be responsible for handling changes the user made in the edit view for a particular todo, updating a specific todo model when a user has finished editing.</p>
 <p>It’s with controllers that most JavaScript MVC frameworks depart from this interpretation of the MVC pattern. The reasons for this vary, but in my opinion, Javascript framework authors likely initially looked at server-side interpretations of MVC (such as Ruby on Rails), realized that that approach didn’t translate 1:1 on the client-side, and so re-interpreted the C in MVC to solve their state management problem. This was a clever approach, but it can make it hard for developers coming to MVC for the first time to understand both the classical MVC pattern and the <q>proper</q> role of controllers in other JavaScript frameworks.</p>
 <p>So does Backbone.js have Controllers? Not really. Backbone’s Views typically contain <q>controller</q> logic, and Routers are used to help manage application state, but neither are true Controllers according to classical MVC.</p>
-<p>In this respect, contrary to what might be mentioned in the official documentation or in blog posts, Backbone is neither a truly MVC/MVP nor MVVM framework. It’s in fact better to see it a member of the MV* family which approaches architecture in its own way. There is of course nothing wrong with this, but it is important to distinguish between classical MVC and MV* should you be relying on discussions of MVC to help with your Backbone projects.</p>
+<p>In this respect, contrary to what might be mentioned in the official documentation or in blog posts, Backbone isn’t truly an MVC framework. It’s in fact better to see it a member of the MV* family which approaches architecture in its own way. There is of course nothing wrong with this, but it is important to distinguish between classical MVC and MV* should you be relying on discussions of MVC to help with your Backbone projects.</p>
 <h2 id="what-does-mvc-give-us"><a href="#TOC">What does MVC give us?</a></h2>
 <p>To summarize, the separation of concerns in MVC facilitates modularization of an application’s functionality and enables:</p>
 <ul>
@@ -739,70 +741,8 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <h3 id="summary"><a href="#TOC">Summary</a></h3>
 <p>Having reviewed the classical MVC pattern, you should now understand how it allows developers to cleanly separate concerns in an application. You should also now appreciate how JavaScript MVC frameworks may differ in their interpretation of MVC, and how they share some of the fundamental concepts of the original pattern.</p>
 <p>When reviewing a new JavaScript MVC/MV* framework, remember - it can be useful to step back and consider how it’s opted to approach Models, Views, Controllers or other alternatives, as this can better help you grok how the framework expects to be used.</p>
-<h2 id="mvp"><a href="#TOC">MVP</a></h2>
-<p>Model-view-presenter (MVP) is a derivative of the MVC design pattern which focuses on improving presentation logic. It originated at a company named <a href="http://en.wikipedia.org/wiki/Taligent">Taligent</a> in the early 1990s while they were working on a model for a C++ CommonPoint environment. Whilst both MVC and MVP target the separation of concerns across multiple components, there are some fundamental differences between them.</p>
-<p>For the purposes of this summary we will focus on the version of MVP most suitable for web-based architectures.</p>
-<h3 id="models-views-presenters"><a href="#TOC">Models, Views &amp; Presenters</a></h3>
-<p>The P in MVP stands for presenter. It’s a component which contains the user-interface business logic for the view. Unlike MVC, invocations from the view are delegated to the presenter, which are decoupled from the view and instead talk to it through an interface. This allows for all kinds of useful things such as being able to mock views in unit tests.</p>
-<p>The most common implementation of MVP is one which uses a Passive View (a view which is for all intents and purposes <q>dumb</q>), containing little to no logic. MVP models are almost identical to MVC models and handle application data. The presenter acts as a mediator which talks to both the view and model, however both of these are isolated from each other. They effectively bind models to views, a responsibility held by Controllers in MVC. Presenters are at the heart of the MVP pattern and as you can guess, incorporate the presentation logic behind views.</p>
-<p>Solicited by a view, presenters perform any work to do with user requests and pass data back to them. In this respect, they retrieve data, manipulate it and determine how the data should be displayed in the view. In some implementations, the presenter also interacts with a service layer to persist data (models). Models may trigger events but it’s the presenter’s role to subscribe to them so that it can update the view. In this passive architecture, we have no concept of direct data binding. Views expose setters which presenters can use to set data.</p>
-<p>The benefit of this change from MVC is that it increases the testability of your application and provides a more clean separation between the view and the model. This isn’t however without its costs as the lack of data binding support in the pattern can often mean having to take care of this task separately.</p>
-<p>Although a common implementation of a <a href="http://martinfowler.com/eaaDev/PassiveScreen.html">Passive View</a> is for the view to implement an interface, there are variations on it, including the use of events which can decouple the View from the Presenter a little more. As we don’t have the interface construct in JavaScript, we’re using it more and more a protocol than an explicit interface here. It’s technically still an API and it’s probably fair for us to refer to it as an interface from that perspective.</p>
-<p>There is also a <a href="http://martinfowler.com/eaaDev/SupervisingPresenter.html">Supervising Controller</a> variation of MVP, which is closer to the MVC and <a href="http://en.wikipedia.org/wiki/Model_View_ViewModel">MVVM</a> patterns as it provides data-binding from the Model directly from the View. Key-value observing (KVO) plugins (such as Derick Bailey’s Backbone.ModelBinding plugin) introduce this idea of a Supervising Controller to Backbone.</p>
-<h2 id="mvp-or-mvc"><a href="#TOC">MVP or MVC?</a></h2>
-<p>MVP is generally used most often in enterprise-level applications where it’s necessary to reuse as much presentation logic as possible. Applications with very complex views and a great deal of user interaction may find that MVC doesn’t quite fit the bill here as solving this problem may mean heavily relying on multiple controllers. In MVP, all of this complex logic can be encapsulated in a presenter, which can simplify maintenance greatly.</p>
-<p>As MVP views are defined through an interface and the interface is technically the only point of contact between the system and the view (other than a presenter), this pattern also allows developers to write presentation logic without needing to wait for designers to produce layouts and graphics for the application.</p>
-<p>Depending on the implementation, MVP may be more easy to automatically unit test than MVC. The reason often cited for this is that the presenter can be used as a complete mock of the user-interface and so it can be unit tested independent of other components. In my experience this really depends on the languages you are implementing MVP in (there’s quite a difference between opting for MVP for a JavaScript project over one for say, ASP.NET).</p>
-<p>At the end of the day, the underlying concerns you may have with MVC will likely hold true for MVP given that the differences between them are mainly semantic. As long as you are cleanly separating concerns into models, views and controllers (or presenters) you should be achieving most of the same benefits regardless of the pattern you opt for.</p>
-<h2 id="mvc-mvp-and-backbone.js"><a href="#TOC">MVC, MVP and Backbone.js</a></h2>
-<p>There are very few, if any architectural JavaScript frameworks that claim to implement the MVC or MVP patterns in their classical form as many JavaScript developers don’t view MVC and MVP as being mutually exclusive (we are actually more likely to see MVP strictly implemented when looking at web frameworks such as ASP.NET or GWT). This is because it’s possible to have additional presenter/view logic in your application and yet still consider it a flavor of MVC.</p>
-<p>Backbone contributor <a href="http://ireneros.com/">Irene Ros</a> subscribes to this way of thinking as when she separates Backbone views out into their own distinct components, she needs something to actually assemble them for her. This could either be a controller route (such as a <code>Backbone.Router</code>, covered later in the book) or a callback in response to data being fetched.</p>
-<p>That said, some developers do however feel that Backbone.js better fits the description of MVP than it does MVC . Their view is that:</p>
-<ul>
-<li>The presenter in MVP better describes the <code>Backbone.View</code> (the layer between View templates and the data bound to it) than a controller does</li>
-<li>The model fits <code>Backbone.Model</code> (it isn’t that different from the classical MVC <q>Model</q>)</li>
-<li>The views best represent templates (e.g Handlebars/Mustache markup templates)</li>
-</ul>
-<p>A response to this could be that the view can also just be a View (as per MVC) because Backbone is flexible enough to let it be used for multiple purposes. The V in MVC and the P in MVP can both be accomplished by <code>Backbone.View</code> because they’re able to achieve two purposes: both rendering atomic components and assembling those components rendered by other views.</p>
-<p>We’ve also seen that in Backbone the responsibility of a controller is shared with both the Backbone.View and Backbone.Router and in the following example we can actually see that aspects of that are certainly true.</p>
-<p>Here, our Backbone <code>TodoView</code> uses the Observer pattern to <q>subscribe</q> to changes to a View’s model in the line <code>this.model.on('change',...)</code>. It also handles templating in the <code>render()</code> method, but unlike some other implementations, user interaction is also handled in the View (see <code>events</code>).</p>
-<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="co">// The DOM element for a todo item...</span>
-<span class="kw">app</span>.<span class="fu">TodoView</span> = <span class="kw">Backbone.View</span>.<span class="fu">extend</span>({
-
-  <span class="co">//... is a list tag.</span>
-  <span class="dt">tagName</span>:  <span class="ch">&#39;li&#39;</span>,
-
-  <span class="co">// Pass the contents of the todo template through a templating</span>
-  <span class="co">// function, cache it for a single todo</span>
-  <span class="dt">template</span>: <span class="kw">_</span>.<span class="fu">template</span>( $(<span class="ch">&#39;#item-template&#39;</span>).<span class="fu">html</span>() ),
-
-  <span class="co">// The DOM events specific to an item.</span>
-  <span class="dt">events</span>: {
-    <span class="ch">&#39;click .toggle&#39;</span>:  <span class="ch">&#39;togglecompleted&#39;</span>
-  },
-
-  <span class="co">// The TodoView listens for changes to its model, re-rendering. Since there&#39;s</span>
-  <span class="co">// a one-to-one correspondence between a **Todo** and a **TodoView** in this</span>
-  <span class="co">// app, we set a direct reference on the model for convenience.</span>
-  <span class="dt">initialize</span>: <span class="kw">function</span>() {
-    <span class="kw">this</span>.<span class="fu">model</span>.<span class="fu">on</span>( <span class="ch">&#39;change&#39;</span>, <span class="kw">this</span>.<span class="fu">render</span>, <span class="kw">this</span> );
-    <span class="kw">this</span>.<span class="fu">model</span>.<span class="fu">on</span>( <span class="ch">&#39;destroy&#39;</span>, <span class="kw">this</span>.<span class="fu">remove</span>, <span class="kw">this</span> );
-  },
-
-  <span class="co">// Re-render the titles of the todo item.</span>
-  <span class="dt">render</span>: <span class="kw">function</span>() {
-    <span class="kw">this</span>.$<span class="fu">el</span>.<span class="fu">html</span>( <span class="kw">this</span>.<span class="fu">template</span>( <span class="kw">this</span>.<span class="fu">model</span>.<span class="fu">toJSON</span>() ) );
-    <span class="kw">return</span> <span class="kw">this</span>;
-  },
-
-  <span class="co">// Toggle the `&quot;completed&quot;` state of the model.</span>
-  <span class="dt">togglecompleted</span>: <span class="kw">function</span>() {
-    <span class="kw">this</span>.<span class="fu">model</span>.<span class="fu">toggle</span>();
-  },
-});</code></pre>
-<p>Another (quite different) opinion is that Backbone more closely resembles <a href="http://martinfowler.com/eaaDev/uiArchs.html#ModelViewController">Smalltalk-80 MVC</a>, which we went through earlier.</p>
-<p>As regular Backbone user Derick Bailey has <a href="http://lostechies.com/derickbailey/2011/12/23/backbone-js-is-not-an-mvc-framework/">written</a>, it’s ultimately best not to force Backbone to fit any specific design patterns. Design patterns should be considered flexible guides to how applications may be structured and in this respect, Backbone doesn’t fit either MVC nor MVP perfectly. Instead, it borrows some of the best concepts from multiple architectural patterns and creates a flexible framework that just works well. Call it <strong>the Backbone way</strong>, MV* or whatever helps reference its flavor of application architecture.</p>
-<p>It <em>is</em> however worth understanding where and why these concepts originated, so I hope that my explanations of MVC and MVP have been of help. Most structural JavaScript frameworks will adopt their own take on classical patterns, either intentionally or by accident, but the important thing is that they help us develop applications which are organized, clean and can be easily maintained.</p>
+<h3 id="further-reading"><a href="#TOC">Further reading</a></h3>
+<p>If you are interested in learning more about the variation of MVC which Backbone.js is better categorized under, please see the MVP (Model-View-Presenter) section in the appendix.</p>
 <h2 id="fast-facts"><a href="#TOC">Fast facts</a></h2>
 <h3 id="backbone.js"><a href="#TOC">Backbone.js</a></h3>
 <ul>
@@ -881,7 +821,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <span class="kw">console</span>.<span class="fu">log</span>(todo3);</code></pre>
 <h4 id="getters-setters"><a href="#TOC">Getters &amp; Setters</a></h4>
 <p><strong>Model.get()</strong></p>
-<p><code>Model.get()</code> provides easy access to a model’s attributes. All attributes, regardless if default ones or one passed through to the model on instantiation, are available for retrieval.</p>
+<p><code>Model.get()</code> provides easy access to a model’s attributes. All attributes, regardless if default ones were passed through to the model on instantiation, are available for retrieval.</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> Todo = <span class="kw">Backbone.Model</span>.<span class="fu">extend</span>({
   <span class="co">// Default todo attribute values</span>
   <span class="dt">defaults</span>: {
@@ -1327,11 +1267,11 @@ collection
 
 <span class="kw">function</span> dancing (msg) { <span class="kw">console</span>.<span class="fu">log</span>(<span class="st">&quot;We started &quot;</span> + msg); }
 
-<span class="co">// Add a namespaced custom events</span>
+<span class="co">// Add namespaced custom events</span>
 <span class="kw">ourObject</span>.<span class="fu">on</span>(<span class="st">&quot;dance:tap&quot;</span>, dancing);
 <span class="kw">ourObject</span>.<span class="fu">on</span>(<span class="st">&quot;dance:break&quot;</span>, dancing);
 
-<span class="co">// Trigger the custom events.</span>
+<span class="co">// Trigger the custom events</span>
 <span class="kw">ourObject</span>.<span class="fu">trigger</span>(<span class="st">&quot;dance:tap&quot;</span>, <span class="st">&quot;tap dancing. Yeah!&quot;</span>);
 <span class="kw">ourObject</span>.<span class="fu">trigger</span>(<span class="st">&quot;dance:break&quot;</span>, <span class="st">&quot;break dancing. Yeah!&quot;</span>);
 
@@ -1349,11 +1289,11 @@ collection
   <span class="kw">console</span>.<span class="fu">log</span>(<span class="st">&quot;The name of the event passed was &quot;</span> + eventName);
 });
 
-<span class="co">// This time each event will be catched with catch &#39;all&#39; event listener</span>
+<span class="co">// This time each event will be catched with a catch &#39;all&#39; event listener</span>
 <span class="kw">ourObject</span>.<span class="fu">trigger</span>(<span class="st">&quot;dance:tap&quot;</span>, <span class="st">&quot;tap dancing. Yeah!&quot;</span>);
 <span class="kw">ourObject</span>.<span class="fu">trigger</span>(<span class="st">&quot;dance:break&quot;</span>, <span class="st">&quot;break dancing. Yeah!&quot;</span>);
 <span class="kw">ourObject</span>.<span class="fu">trigger</span>(<span class="st">&quot;dance&quot;</span>, <span class="st">&quot;break dancing. Yeah!&quot;</span>);</code></pre>
-<p><code>off</code> allows us to remove a callback function that has previously been bound from an object. Going back to our Publish/Subscribe comparison, think of it as an <code>unsubscribe</code> for custom events.</p>
+<p><code>off</code> allows us to remove a callback function that has previously been bound to an object. Going back to our Publish/Subscribe comparison, think of it as an <code>unsubscribe</code> for custom events.</p>
 <p>To remove the <code>dance</code> event we previously bound to <code>ourObject</code>, we would simply do:</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> ourObject = {};
 
@@ -1374,9 +1314,9 @@ collection
 <span class="kw">ourObject</span>.<span class="fu">off</span>(<span class="st">&quot;dance:tap&quot;</span>);
 
 <span class="co">// Trigger the custom events again, but one is logged.</span>
-<span class="kw">ourObject</span>.<span class="fu">trigger</span>(<span class="st">&quot;dance:tap&quot;</span>, <span class="st">&quot;stopped tap dancing.&quot;</span>); <span class="co">// won&#39;t be logged as its not listened for</span>
+<span class="kw">ourObject</span>.<span class="fu">trigger</span>(<span class="st">&quot;dance:tap&quot;</span>, <span class="st">&quot;stopped tap dancing.&quot;</span>); <span class="co">// won&#39;t be logged as it&#39;s not listened for</span>
 <span class="kw">ourObject</span>.<span class="fu">trigger</span>(<span class="st">&quot;dance:break&quot;</span>, <span class="st">&quot;break dancing. Yeah!&quot;</span>);</code></pre>
-<p>To remove all callbacks for the event we should just pass event name (e.g <code>move</code>) to <code>off()</code> function of the object event is bound to. If we wish to remove just a callback by a specific name, we can pass callback name as second parameter:</p>
+<p>To remove all callbacks for the event we pass an event name (e.g <code>move</code>) to <code>off()</code> method on the object the event is bound to. If we wish to remove just a callback by a specific name, we can pass the callback name as second parameter:</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> ourObject = {};
 
 <span class="co">// Mixin</span>
@@ -1508,7 +1448,7 @@ collection
 <span class="kw">var</span> myTodoRouter = <span class="kw">new</span> TodoRouter();</code></pre>
 <p>As of Backbone 0.5+, it’s possible to opt-in for HTML5 pushState support via <code>window.history.pushState</code>. This permits you to define routes such as http://www.scriptjunkie.com/just/an/example. This will be supported with automatic degradation when a user’s browser doesn’t support pushState. For the purposes of this tutorial, we’ll use the hashtag method.</p>
 <h4 id="is-there-a-limit-to-the-number-of-routers-i-should-be-using"><a href="#TOC">Is there a limit to the number of routers I should be using?</a></h4>
-<p>Andrew de Andrade has pointed out that DocumentCloud themselves usually only use a single router in most of their applications. You’re very likely to not require more than one or two routers in your own projects as the majority of your application routing can be kept organized in a single router without it getting unwieldy.</p>
+<p>Andrew de Andrade has pointed out that DocumentCloud, the creators of Backbone, usually only use a single router in most of their applications. You’re very likely to not require more than one or two routers in your own projects; the majority of your application routing can be kept organized in a single router without it getting unwieldy.</p>
 <h4 id="backbone.history"><a href="#TOC">Backbone.history</a></h4>
 <p>Next, we need to initialize <code>Backbone.history</code> as it handles <code>hashchange</code> events in our application. This will automatically handle routes that have been defined and trigger callbacks when they’ve been accessed.</p>
 <p>The <code>Backbone.history.start()</code> method will simply tell Backbone that it’s OK to begin monitoring all <code>hashchange</code> events as follows:</p>
@@ -1536,9 +1476,9 @@ collection
 <span class="co">// http://localhost/#search/job/p3 logs: Page number: 3 of the results for todos containing the word: job</span>
 <span class="co">// http://localhost/#search/job logs: Page number: 1 of the results for todos containing the word: job </span>
 <span class="co">// etc.</span></code></pre>
-<p>Note: To test last example you should set site for testing in local development environment which is out of scope of this book.</p>
+<p>Note: To test the last example, you’ll need to create a local development environment and test project, instructions for which are beyond the scope of what this book seeks to outline.</p>
 <p>As an aside, if you would like to save application state to the URL at a particular point you can use the <code>.navigate()</code> method to achieve this. It simply updates your URL fragment without the need to trigger the <code>hashchange</code> event:</p>
-<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="co">/* Lets imagine we would like a specific fragment (edit) once a user opens single todo */</span>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="co">// Let&#39;s imagine we would like a specific fragment (edit) once a user opens a single todo</span>
 <span class="kw">var</span> TodoRouter = <span class="kw">Backbone.Router</span>.<span class="fu">extend</span>({
   <span class="dt">routes</span>: {
     <span class="st">&quot;todo/:id&quot;</span>: <span class="st">&quot;viewTodo&quot;</span>,
@@ -1560,7 +1500,7 @@ collection
 <span class="kw">Backbone.history</span>.<span class="fu">start</span>();
 
 <span class="co">// Go to:</span>
-<span class="co">// http://localhost/#todo/4 url is updated to: http://localhost/#todo/4/edit</span>
+<span class="co">// http://localhost/#todo/4 URL is updated to: http://localhost/#todo/4/edit</span>
 <span class="co">// but editTodo() function is not invoked even though location we end up is mapped to it.</span>
 <span class="co">//</span>
 <span class="co">// logs: View todo requested.</span></code></pre>
@@ -1594,7 +1534,7 @@ collection
 <span class="co">// Edit todo openned. </span></code></pre>
 <h3 id="backbones-sync-api"><a href="#TOC">Backbone’s Sync API</a></h3>
 <p>The Backbone.sync method is intended to be overridden to support other backends. The built-in method is tailored to a certain breed of RESTful JSON APIs – Backbone was originally extracted from a Ruby on Rails application, which uses HTTP methods like PUT the same way.</p>
-<p>The way this works is the model and collection classes have a sync method that calls Backbone.sync. Both will call this.sync internally when fetching, saving, or deleting items.</p>
+<p>This works via the model and collection classes’ sync method, which calls Backbone.sync. Both will call this.sync internally when fetching, saving, or deleting items.</p>
 <p>The sync method is called with three parameters:</p>
 <ul>
 <li>method: One of create, update, delete, read</li>
@@ -1652,7 +1592,7 @@ collection
 <li>Backbone Caching Sync</li>
 </ul>
 <h3 id="conflict-management"><a href="#TOC">Conflict Management</a></h3>
-<p>Like most client-side projects, Backbone.js wraps everything in an immediately-invoked function expression:</p>
+<p>Like most client-side projects, Backbone’s code is wrapped in an immediately-invoked function expression:</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript">(<span class="kw">function</span>(){
   <span class="co">// Backbone.js</span>
 }).<span class="fu">call</span>(<span class="kw">this</span>);</code></pre>
@@ -1705,7 +1645,7 @@ collection
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> MyMixin = {
   <span class="dt">foo</span>: <span class="ch">&#39;bar&#39;</span>,
   <span class="dt">sayFoo</span>: <span class="kw">function</span>(){alert(<span class="kw">this</span>.<span class="fu">foo</span>);}
-}
+};
 
 <span class="kw">var</span> MyView = <span class="kw">Backbone.View</span>.<span class="fu">extend</span>({
  <span class="co">// ...</span>
@@ -1723,26 +1663,26 @@ collection
 });</code></pre>
 <p>However, if you have an <code>initialize()</code> method in Panel, then it won’t be called if you also have an <code>initialize()</code> method in PanelAdvanced, so you would have to call Panel’s initialize method explicitly:</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> Panel = <span class="kw">Backbone.View</span>.<span class="fu">extend</span>({
-   <span class="dt">initialize</span>: <span class="kw">function</span>(options){
-      <span class="kw">console</span>.<span class="fu">log</span>(<span class="ch">&#39;Panel initialized&#39;</span>);
-      <span class="kw">this</span>.<span class="fu">foo</span> = <span class="ch">&#39;bar&#39;</span>;
-   }
+  <span class="dt">initialize</span>: <span class="kw">function</span>(options){
+    <span class="kw">console</span>.<span class="fu">log</span>(<span class="ch">&#39;Panel initialized&#39;</span>);
+    <span class="kw">this</span>.<span class="fu">foo</span> = <span class="ch">&#39;bar&#39;</span>;
+  }
 });
 
 <span class="kw">var</span> PanelAdvanced = <span class="kw">Panel</span>.<span class="fu">extend</span>({
-    <span class="dt">initialize</span>: <span class="kw">function</span>(options){
-      <span class="kw">Panel.prototype.initialize</span>.<span class="fu">call</span>(<span class="kw">this</span>, [options])
-      <span class="kw">console</span>.<span class="fu">log</span>(<span class="ch">&#39;PanelAdvanced initialized&#39;</span>);
-      <span class="kw">console</span>.<span class="fu">log</span>(<span class="kw">this</span>.<span class="fu">foo</span>); <span class="co">// Log: bar</span>
-    }
+  <span class="dt">initialize</span>: <span class="kw">function</span>(options){
+    <span class="kw">Panel.prototype.initialize</span>.<span class="fu">call</span>(<span class="kw">this</span>, [options]);
+    <span class="kw">console</span>.<span class="fu">log</span>(<span class="ch">&#39;PanelAdvanced initialized&#39;</span>);
+    <span class="kw">console</span>.<span class="fu">log</span>(<span class="kw">this</span>.<span class="fu">foo</span>); <span class="co">// Log: bar</span>
+  }
 });
 
 <span class="co">// We can also inherit PanelAdvaned if needed</span>
 <span class="kw">var</span> PanelAdvancedExtra = <span class="kw">PanelAdvanced</span>.<span class="fu">extend</span>({
-    <span class="dt">initialize</span>: <span class="kw">function</span>(options){
-      <span class="kw">PanelAdvanced.prototype.initialize</span>.<span class="fu">call</span>(<span class="kw">this</span>, [options])
-      <span class="kw">console</span>.<span class="fu">log</span>(<span class="ch">&#39;PanelAdvancedExtra initialized&#39;</span>);
-    }
+  <span class="dt">initialize</span>: <span class="kw">function</span>(options){
+    <span class="kw">PanelAdvanced.prototype.initialize</span>.<span class="fu">call</span>(<span class="kw">this</span>, [options]);
+    <span class="kw">console</span>.<span class="fu">log</span>(<span class="ch">&#39;PanelAdvancedExtra initialized&#39;</span>);
+  }
 });
 
 <span class="kw">new</span> Panel();
@@ -1762,7 +1702,7 @@ collection
 <span class="kw">_</span>.<span class="fu">extend</span>(<span class="kw">Panel</span>.<span class="fu">prototype</span>, <span class="kw">Backbone.View</span>.<span class="fu">prototype</span>, {
   <span class="co">// put all of Panel&#39;s methods here. For example:</span>
   <span class="dt">sayHi</span>: <span class="kw">function</span> () {
-      <span class="kw">console</span>.<span class="fu">log</span>(<span class="ch">&#39;hello from Panel&#39;</span>);
+    <span class="kw">console</span>.<span class="fu">log</span>(<span class="ch">&#39;hello from Panel&#39;</span>);
   }
 });
 
@@ -1846,7 +1786,7 @@ var methods = [&#39;forEach&#39;, &#39;each&#39;, &#39;map&#39;, &#39;reduce&#39
     &#39;delete&#39;: &#39;DELETE&#39;,
     &#39;read&#39;:   &#39;GET&#39;
   };
-
+  
 Backbone.sync = function(method, model, options) {
     var type = methodMap[method];
     options || (options = {});
@@ -2000,7 +1940,7 @@ if (this._hasPushState) {
   <span class="kw">&lt;script</span><span class="ot"> src=</span><span class="st">&quot;js/lib/jquery.min.js&quot;</span><span class="kw">&gt;&lt;/script&gt;</span>
   <span class="kw">&lt;script</span><span class="ot"> src=</span><span class="st">&quot;js/lib/underscore-min.js&quot;</span><span class="kw">&gt;&lt;/script&gt;</span>
   <span class="kw">&lt;script</span><span class="ot"> src=</span><span class="st">&quot;js/lib/backbone-min.js&quot;</span><span class="kw">&gt;&lt;/script&gt;</span>
-  <span class="kw">&lt;script</span><span class="ot"> src=</span><span class="st">&quot;js/lib/backbone-localstorage.js&quot;</span><span class="kw">&gt;&lt;/script&gt;</span>
+  <span class="kw">&lt;script</span><span class="ot"> src=</span><span class="st">&quot;js/lib/backbone.localStorage.js&quot;</span><span class="kw">&gt;&lt;/script&gt;</span>
   <span class="kw">&lt;script</span><span class="ot"> src=</span><span class="st">&quot;js/models/todo.js&quot;</span><span class="kw">&gt;&lt;/script&gt;</span>
   <span class="kw">&lt;script</span><span class="ot"> type=</span><span class="st">&quot;text/template&quot;</span><span class="ot"> id=</span><span class="st">&quot;item-template&quot;</span><span class="kw">&gt;&lt;/script&gt;</span>
   <span class="kw">&lt;script</span><span class="ot"> type=</span><span class="st">&quot;text/template&quot;</span><span class="ot"> id=</span><span class="st">&quot;stats-template&quot;</span><span class="kw">&gt;&lt;/script&gt;</span>
@@ -2491,7 +2431,7 @@ if (this._hasPushState) {
 <p>The checkbox’s togglecompleted event invokes the toggle() function, which toggles the todos’s completed status, then resaving the todo - very straightforward! The button’s click event invokes <code>clear()</code>, which will simply destroy the todo.</p>
 <p>That’s all there is to it. Since we’re binding to the change event, whenever the todo changes the view will automatically be re-rendered, checking or un-checking the checkbox as appropriate. Similarly, when the todo is destroyed, the model’s <code>destroy()</code> function will be called, removing the todo from the view as we’re binding to the destroy event too.</p>
 <p>One more piece to mention is that we’ve also binded to a visible event to handle the visibility state of the todo item. This is used in conjunction with the filtering in our routes and collections so that we only display an item if its completed state falls in line with the current filter.</p>
-<p>This tutorial is long enough as is, so we won’t go into in-place editing or updating. If you want an example of that, see the <a href="https://github.com/addyosmani/todomvc/tree/master/architecture-examples/backbone/">complete source</a>.</p>
+<p>This tutorial is long enough as is, so we won’t go into in-place editing or updating. If you want an example of that, see the <a href="https://github.com/addyosmani/todomvc/tree/gh-pages/architecture-examples/backbone">complete source</a>.</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript">
   <span class="co">// js/view/todos.js</span>
 
@@ -2661,26 +2601,44 @@ if (this._hasPushState) {
 <img src="http://codebyexample.info/wp-content/uploads/2012/03/Screen-Shot-2012-03-05-at-12.57.08-AM1.png"><figcaption></figcaption>
 </figure>
 <p>Not so awesome. This is not a CSS tutorial, but we need to do some formatting. Create a file screen.css in your css folder and type this:</p>
-<p>```css body { background-color: #eee; }</p>
-<p>.bookContainer { border: 1px solid #aaa; width: 300px; height: 130px; background-color: #fff; float: left; margin: 5px; } .bookContainer img { float: left; margin: 10px; } .bookContainer ul { list-style-type: none; } ``` Now it looks a bit better:</p>
+<pre class="sourceCode css"><code class="sourceCode css">body <span class="kw">{</span>
+    <span class="kw">background-color:</span> <span class="dt">#eee</span><span class="kw">;</span>
+<span class="kw">}</span>
+
+<span class="fl">.bookContainer</span> <span class="kw">{</span>
+    <span class="kw">border:</span> <span class="dt">1px</span> <span class="dt">solid</span> <span class="dt">#aaa</span><span class="kw">;</span>
+    <span class="kw">width:</span> <span class="dt">300px</span><span class="kw">;</span>
+    <span class="kw">height:</span> <span class="dt">130px</span><span class="kw">;</span>
+    <span class="kw">background-color:</span> <span class="dt">#fff</span><span class="kw">;</span>
+    <span class="kw">float:</span> <span class="dt">left</span><span class="kw">;</span>
+    <span class="kw">margin:</span> <span class="dt">5px</span><span class="kw">;</span>
+<span class="kw">}</span>
+<span class="fl">.bookContainer</span> img <span class="kw">{</span>
+    <span class="kw">float:</span> <span class="dt">left</span><span class="kw">;</span>
+    <span class="kw">margin:</span> <span class="dt">10px</span><span class="kw">;</span>
+<span class="kw">}</span>
+<span class="fl">.bookContainer</span> ul <span class="kw">{</span>
+    <span class="kw">list-style-type:</span> <span class="dt">none</span><span class="kw">;</span>
+<span class="kw">}</span></code></pre>
+<p>Now it looks a bit better:</p>
 <figure>
 <img src="http://codebyexample.info/wp-content/uploads/2012/03/Screen-Shot-2012-03-05-at-1.06.15-AM.png"><figcaption></figcaption>
 </figure>
 <p>So this is what we want the final result to look like, but with more books. Go ahead and copy the bookContainer div a couple of times if you would like to see what it looks like. Now we are ready to start developing the actual application. Open up app.js and enter this:</p>
-<pre class="js"><code>(function ($) {
+<pre class="sourceCode javascript"><code class="sourceCode javascript">(<span class="kw">function</span> ($) {
 
-    var Book = Backbone.Model.extend({
-        defaults:{
-            coverImage:&quot;img/placeholder.png&quot;,
-            title:&quot;Some title&quot;,
-            author:&quot;John Doe&quot;,
-            releaseDate:&quot;2012&quot;,
-            keywords:&quot;JavaScript Programming&quot;
+    <span class="kw">var</span> Book = <span class="kw">Backbone.Model</span>.<span class="fu">extend</span>({
+        <span class="dt">defaults</span>:{
+            <span class="dt">coverImage</span>:<span class="st">&quot;img/placeholder.png&quot;</span>,
+            <span class="dt">title</span>:<span class="st">&quot;Some title&quot;</span>,
+            <span class="dt">author</span>:<span class="st">&quot;John Doe&quot;</span>,
+            <span class="dt">releaseDate</span>:<span class="st">&quot;2012&quot;</span>,
+            <span class="dt">keywords</span>:<span class="st">&quot;JavaScript Programming&quot;</span>
         }
     });
 
 })(jQuery);</code></pre>
-<p>This is our model of a book. It contains a defaults property that gives us default values for all the values we want our model to contain. Note that I have wrapped everything in a self executing/invoking function with the argument <q>jQuery</q>. This is standard procedure to prevent polluting the global scope and to avoid any collisions with the $ variable. The model in itself isn’t very useful so we need to pair i with a View. For the view we need a template so open up index.html and create a template from our bookContainer we created earlier:</p>
+<p>This is our model of a book. It contains a defaults property that gives us default values for all the values we want our model to contain. Note that I have wrapped everything in a self executing/invoking function with the argument <q>jQuery</q>. This is standard procedure to prevent polluting the global scope and to avoid any collisions with the $ variable. The model itself isn’t very useful so we need to pair it with a View. For the view we need a template so open up index.html and create a template from our bookContainer we created earlier:</p>
 <pre class="sourceCode html"><code class="sourceCode html"><span class="dt">&lt;!DOCTYPE </span>html<span class="dt">&gt;</span>
 <span class="kw">&lt;html</span><span class="ot"> lang=</span><span class="st">&quot;en&quot;</span><span class="kw">&gt;</span>
 <span class="kw">&lt;head&gt;</span>
@@ -2716,190 +2674,191 @@ if (this._hasPushState) {
 <span class="kw">&lt;/body&gt;</span>
 <span class="kw">&lt;/html&gt;</span></code></pre>
 <p>So what’s going on here? Well, I have wrapped the template in a script tag with the type <q>text/template</q>. By doing this the browser will not recognize the type and not render it, but we can still access all the elements in JavaScript. I have removed the surrounding div tag since the templating engine (Underscore) will create that for us. In the various fields I have inserted &lt;%= field %&gt; that Underscore will find and replace with real data. Now that we have our template in place we can go and create the view, so switch over to app.js:</p>
-<pre class="js"><code>(function ($) {
+<pre class="sourceCode javascript"><code class="sourceCode javascript">(<span class="kw">function</span> ($) {
 
-    var Book = Backbone.Model.extend({
-        defaults:{
-            coverImage:&quot;img/placeholder.png&quot;,
-            title:&quot;Some title&quot;,
-            author:&quot;John Doe&quot;,
-            releaseDate:&quot;2012&quot;,
-            keywords:&quot;JavaScript Programming&quot;
+    <span class="kw">var</span> Book = <span class="kw">Backbone.Model</span>.<span class="fu">extend</span>({
+        <span class="dt">defaults</span>:{
+            <span class="dt">coverImage</span>:<span class="st">&quot;img/placeholder.png&quot;</span>,
+            <span class="dt">title</span>:<span class="st">&quot;Some title&quot;</span>,
+            <span class="dt">author</span>:<span class="st">&quot;John Doe&quot;</span>,
+            <span class="dt">releaseDate</span>:<span class="st">&quot;2012&quot;</span>,
+            <span class="dt">keywords</span>:<span class="st">&quot;JavaScript Programming&quot;</span>
         }
     });
 
-    var BookView = Backbone.View.extend({
-        tagName:&quot;div&quot;,
-        className:&quot;bookContainer&quot;,
-        template:$(&quot;#bookTemplate&quot;).html(),
+    <span class="kw">var</span> BookView = <span class="kw">Backbone.View</span>.<span class="fu">extend</span>({
+        <span class="dt">tagName</span>:<span class="st">&quot;div&quot;</span>,
+        <span class="dt">className</span>:<span class="st">&quot;bookContainer&quot;</span>,
+        <span class="dt">template</span>:$(<span class="st">&quot;#bookTemplate&quot;</span>).<span class="fu">html</span>(),
 
-        render:function () {
-            var tmpl = _.template(this.template); //tmpl is a function that takes a JSON object and returns html
+        <span class="dt">render</span>:<span class="kw">function</span> () {
+            <span class="kw">var</span> tmpl = <span class="kw">_</span>.<span class="fu">template</span>(<span class="kw">this</span>.<span class="fu">template</span>); <span class="co">//tmpl is a function that takes a JSON object and returns html</span>
 
-            this.$el.html(tmpl(this.model.toJSON())); //this.el is what we defined in tagName. use $el to get access to jQuery html() function
-            return this;
+            <span class="kw">this</span>.$<span class="fu">el</span>.<span class="fu">html</span>(tmpl(<span class="kw">this</span>.<span class="fu">model</span>.<span class="fu">toJSON</span>())); <span class="co">//this.el is what we defined in tagName. use $el to get access to jQuery html() function</span>
+            <span class="kw">return</span> <span class="kw">this</span>;
         }
     });
 
 })(jQuery);</code></pre>
-<p>So the view works like the model in that we use the extend function and pass it properties. The tagName property defines the container of the view, the className defines the class of the container and template is, well, the template for the view. The render function creates the tmpl function by calling underscores template function with one argument (the template from our index.html). It then calls the <code>tmpl</code> function with our model… wait a minute! What model? Well, this is something that we need to provide as an argument when we call out view constructor. As it looks now our view isn’t connected to any element in out html page either, so let’s take care of that now:</p>
-<pre class="js"><code>(function ($) {
+<p>So the view works like the model in that we use the extend function and pass it properties. The tagName property defines the container of the view, the className defines the class of the container and template is, well, the template for the view. The render function creates the tmpl function by calling underscores template function with one argument (the template from our index.html). It then calls the <code>tmpl</code> function with our model… wait a minute! What model? Well, this is something that we need to provide as an argument when we call our view constructor. As it looks now our view isn’t connected to any element in our html page either, so let’s take care of that now:</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript">(<span class="kw">function</span> ($) {
 
-    var Book = Backbone.Model.extend({
-        defaults:{
-            coverImage:&quot;img/placeholder.png&quot;,
-            title:&quot;Some title&quot;,
-            author:&quot;John Doe&quot;,
-            releaseDate:&quot;2012&quot;,
-            keywords:&quot;JavaScript Programming&quot;
+    <span class="kw">var</span> Book = <span class="kw">Backbone.Model</span>.<span class="fu">extend</span>({
+        <span class="dt">defaults</span>:{
+            <span class="dt">coverImage</span>:<span class="st">&quot;img/placeholder.png&quot;</span>,
+            <span class="dt">title</span>:<span class="st">&quot;Some title&quot;</span>,
+            <span class="dt">author</span>:<span class="st">&quot;John Doe&quot;</span>,
+            <span class="dt">releaseDate</span>:<span class="st">&quot;2012&quot;</span>,
+            <span class="dt">keywords</span>:<span class="st">&quot;JavaScript Programming&quot;</span>
         }
     });
 
-    var BookView = Backbone.View.extend({
-        tagName:&quot;div&quot;,
-        className:&quot;bookContainer&quot;,
-        template:$(&quot;#bookTemplate&quot;).html(),
+    <span class="kw">var</span> BookView = <span class="kw">Backbone.View</span>.<span class="fu">extend</span>({
+        <span class="dt">tagName</span>:<span class="st">&quot;div&quot;</span>,
+        <span class="dt">className</span>:<span class="st">&quot;bookContainer&quot;</span>,
+        <span class="dt">template</span>:$(<span class="st">&quot;#bookTemplate&quot;</span>).<span class="fu">html</span>(),
 
-        render:function () {
-            var tmpl = _.template(this.template); //tmpl is a function that takes a JSON object and returns html
+        <span class="dt">render</span>:<span class="kw">function</span> () {
+            <span class="kw">var</span> tmpl = <span class="kw">_</span>.<span class="fu">template</span>(<span class="kw">this</span>.<span class="fu">template</span>); <span class="co">//tmpl is a function that takes a JSON object and returns html</span>
 
-            this.$el.html(tmpl(this.model.toJSON())); //this.el is what we defined in tagName. use $el to get access to jQuery html() function
-            return this;
+            <span class="kw">this</span>.$<span class="fu">el</span>.<span class="fu">html</span>(tmpl(<span class="kw">this</span>.<span class="fu">model</span>.<span class="fu">toJSON</span>())); <span class="co">//this.el is what we defined in tagName. use $el to get access to jQuery html() function</span>
+            <span class="kw">return</span> <span class="kw">this</span>;
         }
     });
 
-    var book = new Book({
-        title:&quot;Some title&quot;,
-        author:&quot;John Doe&quot;,
-        releaseDate:&quot;2012&quot;,
-        keywords:&quot;JavaScript Programming&quot;
+    <span class="kw">var</span> book = <span class="kw">new</span> Book({
+        <span class="dt">title</span>:<span class="st">&quot;Some title&quot;</span>,
+        <span class="dt">author</span>:<span class="st">&quot;John Doe&quot;</span>,
+        <span class="dt">releaseDate</span>:<span class="st">&quot;2012&quot;</span>,
+        <span class="dt">keywords</span>:<span class="st">&quot;JavaScript Programming&quot;</span>
     });
 
-    bookView = new BookView({
-        model: book
+    bookView = <span class="kw">new</span> BookView({
+        <span class="dt">model</span>:book
     });
 
-    $(&quot;#books&quot;).html(bookView.render().el);
+    $(<span class="st">&quot;#books&quot;</span>).<span class="fu">html</span>(<span class="kw">bookView</span>.<span class="fu">render</span>().<span class="fu">el</span>);
 
 })(jQuery);</code></pre>
 <p>Here we have created a new Book model by calling the Book constructor and passing an object with our desired properties. The model is then used when creating a BookView. Finally the bookView is rendered and inserted into our page. It should look something like this:</p>
 <figure>
 <img src="http://codebyexample.info/wp-content/uploads/2012/03/Screen-Shot-2012-03-05-at-10.53.34-PM.png"><figcaption></figcaption>
 </figure>
-<p>Looking good, we now have a working Backbone application. Since a library cannot contain just one book, we need to push further. Lets have a look at Collections. Collections contain collections of models. The models must be of the same kind, ie you cannot mix apples and oranges in the same collection. Other than that, collections are quite simple, you just tell them what kind of models they contain like this:</p>
-<pre class="js"><code>var Library = Backbone.Collection.extend({
-    model:Book
+<p>Looking good, we now have a working Backbone application. Since a library cannot contain just one book, we need to push further. Lets have a look at Collections. Collections contain collections of models. The models must be of the same kind, i.e. you cannot mix apples and oranges in the same collection. Other than that, collections are quite simple, you just tell them what kind of models they contain like this:</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> Library = <span class="kw">Backbone.Collection</span>.<span class="fu">extend</span>({
+    <span class="dt">model</span>:Book
 });</code></pre>
-<p>Go ahead and insert the code in app.js. Next stop is a new view for our Library collection. This view is a bit complicated than the earlier BookView:</p>
-<pre class="js"><code>var LibraryView = Backbone.View.extend({
-        el:$(&quot;#books&quot;),
+<p>Go ahead and insert the code in app.js. Next stop is a new view for our Library collection. This view is a bit more complicated than the earlier BookView:</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> LibraryView = <span class="kw">Backbone.View</span>.<span class="fu">extend</span>({
+    <span class="dt">el</span>:$(<span class="st">&quot;#books&quot;</span>),
 
-        initialize:function(){
-            this.collection = new Library(books);
-            this.render();
-        },
+    <span class="dt">initialize</span>:<span class="kw">function</span>(){
+        <span class="kw">this</span>.<span class="fu">collection</span> = <span class="kw">new</span> Library(books);
+        <span class="kw">this</span>.<span class="fu">render</span>();
+    },
 
-        render: function(){
-            var that = this;
-            _.each(this.collection.models, function(item){
-                that.renderBook(item);
-            }, this);
-        },
+    <span class="dt">render</span>:<span class="kw">function</span>(){
+        <span class="kw">var</span> that = <span class="kw">this</span>;
+        <span class="kw">_</span>.<span class="fu">each</span>(<span class="kw">this</span>.<span class="fu">collection</span>.<span class="fu">models</span>, <span class="kw">function</span>(item){
+            <span class="kw">that</span>.<span class="fu">renderBook</span>(item);
+        }, <span class="kw">this</span>);
+    },
 
-        renderBook:function(item){
-            var bookView = new BookView({
-                model: item
-            });
-            this.$el.append(bookView.render().el);
-        }
-    });</code></pre>
+    <span class="dt">renderBook</span>:<span class="kw">function</span>(item){
+        <span class="kw">var</span> bookView = <span class="kw">new</span> BookView({
+            <span class="dt">model</span>:item
+        });
+        <span class="kw">this</span>.$<span class="fu">el</span>.<span class="fu">append</span>(<span class="kw">bookView</span>.<span class="fu">render</span>().<span class="fu">el</span>);
+    }
+});</code></pre>
 <p>I added some line numbers to help me explain what is going on. On line 02 I specified the property <q>el</q>. A view can take either a tagName, as we saw in our <code>BookView</code>, or an el. When we use tagName, the view will create the element for us, but we are responsible for inserting it into the page. When we use el we specify an existing element in the page and the view will write directly into the page, into the specified element. In this case we select the div with id=”books”.</p>
-<p>Next on line 04 is the initialize function. This function will be called by Backbone when the view constructor is called. On line 05 in we create a new Library (collection of Book models) and store it in a local property called <q>collection</q>. On line 06 it call its own render function, which means that as soon as we call the <code>LibraryView</code> constructor it will get rendered, so this is a self rendering view. We don’t have to make it self rendered but it is common practice.</p>
+<p>Next on line 04 is the initialize function. This function will be called by Backbone when the view constructor is called. On line 05 in we create a new Library (collection of Book models) and store it in a local property called <q>collection</q>. On line 06 it calls its own render function, which means that as soon as we call the <code>LibraryView</code> constructor it will get rendered, so this is a self rendering view. We don’t have to make it self rendered but it is common practice.</p>
 <p>On line 10 in the render function we store a reference to the current object in a variable <q>that</q> and then (on line 11) use the each function of underscore to iterate over all the models (Books) in our collection. The first argument to <q>each</q> is the array that will be iterated over. The second argument is the function that will be applied to each member of the array. The function in our case calls the renderBook function with the current model as argument. We need to use <q>that</q> to get this right since if we would have used <q>this</q> it would have referenced the function itself. The third argument (line 13) is the context that each is executing in.</p>
 <p>On line 16 we define a function <code>renderBook</code> that takes a model (a Book) as argument and uses it to create a <code>BookView</code>. The <code>bookView</code> is then rendered and appended to the view container as specified in our el property (on line 02).</p>
 <p>You may have noticed that on line 05 we called the Library constructor with the argument <q>books</q>. Library is a Backbone collection that expects an array of objects that it can use to create Book models. We haven’t defined the books variable yet so lets go ahead and do that:</p>
-<pre class="js"><code>var books = [{title:&quot;JS the good parts&quot;, author:&quot;John Doe&quot;, releaseDate:&quot;2012&quot;, keywords:&quot;JavaScript Programming&quot;},
-        {title:&quot;CS the better parts&quot;, author:&quot;John Doe&quot;, releaseDate:&quot;2012&quot;, keywords:&quot;CoffeeScript Programming&quot;},
-        {title:&quot;Scala for the impatient&quot;, author:&quot;John Doe&quot;, releaseDate:&quot;2012&quot;, keywords:&quot;Scala Programming&quot;},
-        {title:&quot;American Psyco&quot;, author:&quot;Bret Easton Ellis&quot;, releaseDate:&quot;2012&quot;, keywords:&quot;Novel Splatter&quot;},
-        {title:&quot;Eloquent JavaScript&quot;, author:&quot;John Doe&quot;, releaseDate:&quot;2012&quot;, keywords:&quot;JavaScript Programming&quot;}]</code></pre>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> books = [{<span class="dt">title</span>:<span class="st">&quot;JS the good parts&quot;</span>, <span class="dt">author</span>:<span class="st">&quot;John Doe&quot;</span>, <span class="dt">releaseDate</span>:<span class="st">&quot;2012&quot;</span>, <span class="dt">keywords</span>:<span class="st">&quot;JavaScript Programming&quot;</span>},
+    {<span class="dt">title</span>:<span class="st">&quot;CS the better parts&quot;</span>, <span class="dt">author</span>:<span class="st">&quot;John Doe&quot;</span>, <span class="dt">releaseDate</span>:<span class="st">&quot;2012&quot;</span>, <span class="dt">keywords</span>:<span class="st">&quot;CoffeeScript Programming&quot;</span>},
+    {<span class="dt">title</span>:<span class="st">&quot;Scala for the impatient&quot;</span>, <span class="dt">author</span>:<span class="st">&quot;John Doe&quot;</span>, <span class="dt">releaseDate</span>:<span class="st">&quot;2012&quot;</span>, <span class="dt">keywords</span>:<span class="st">&quot;Scala Programming&quot;</span>},
+    {<span class="dt">title</span>:<span class="st">&quot;American Psyco&quot;</span>, <span class="dt">author</span>:<span class="st">&quot;Bret Easton Ellis&quot;</span>, <span class="dt">releaseDate</span>:<span class="st">&quot;2012&quot;</span>, <span class="dt">keywords</span>:<span class="st">&quot;Novel Splatter&quot;</span>},
+    {<span class="dt">title</span>:<span class="st">&quot;Eloquent JavaScript&quot;</span>, <span class="dt">author</span>:<span class="st">&quot;John Doe&quot;</span>, <span class="dt">releaseDate</span>:<span class="st">&quot;2012&quot;</span>, <span class="dt">keywords</span>:<span class="st">&quot;JavaScript Programming&quot;</span>}];</code></pre>
 <p>Now we are almost ready to try out our first version of the Backbone library. Replace this code:</p>
-<pre class="js"><code>    var book = new Book({
-        title:&quot;Some title&quot;,
-        author:&quot;John Doe&quot;,
-        releaseDate:&quot;2012&quot;,
-        keywords:&quot;JavaScript Programming&quot;
-    });
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> book = <span class="kw">new</span> Book({
+    <span class="dt">title</span>:<span class="st">&quot;Some title&quot;</span>,
+    <span class="dt">author</span>:<span class="st">&quot;John Doe&quot;</span>,
+    <span class="dt">releaseDate</span>:<span class="st">&quot;2012&quot;</span>,
+    <span class="dt">keywords</span>:<span class="st">&quot;JavaScript Programming&quot;</span>
+});
 
-    bookView = new BookView({
-        model: book
-    });
+bookView = <span class="kw">new</span> BookView({
+    <span class="dt">model</span>:book
+});
 
-    $(&quot;#books&quot;).html(bookView.render().el);</code></pre>
+$(<span class="st">&quot;#books&quot;</span>).<span class="fu">html</span>(<span class="kw">bookView</span>.<span class="fu">render</span>().<span class="fu">el</span>);</code></pre>
 <p>with this:</p>
-<p><code>var libraryView = new LibraryView();</code> If you view index.html in a browser you should see something like this:</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> libraryView = <span class="kw">new</span> LibraryView();</code></pre>
+<p>If you view index.html in a browser you should see something like this:</p>
 <figure>
 <img src="http://codebyexample.info/wp-content/uploads/2012/03/Screen-Shot-2012-03-06-at-9.58.03-AM.png"><figcaption></figcaption>
 </figure>
 <p>Here is the final app.js:</p>
-<pre class="js"><code>(function ($) {
-    var books = [{title:&quot;JS the good parts&quot;, author:&quot;John Doe&quot;, releaseDate:&quot;2012&quot;, keywords:&quot;JavaScript Programming&quot;},
-        {title:&quot;CS the better parts&quot;, author:&quot;John Doe&quot;, releaseDate:&quot;2012&quot;, keywords:&quot;CoffeeScript Programming&quot;},
-        {title:&quot;Scala for the impatient&quot;, author:&quot;John Doe&quot;, releaseDate:&quot;2012&quot;, keywords:&quot;Scala Programming&quot;},
-        {title:&quot;American Psyco&quot;, author:&quot;Bret Easton Ellis&quot;, releaseDate:&quot;2012&quot;, keywords:&quot;Novel Splatter&quot;},
-        {title:&quot;Eloquent JavaScript&quot;, author:&quot;John Doe&quot;, releaseDate:&quot;2012&quot;, keywords:&quot;JavaScript Programming&quot;}];
+<pre class="sourceCode javascript"><code class="sourceCode javascript">(<span class="kw">function</span> ($) {
+    <span class="kw">var</span> books = [{<span class="dt">title</span>:<span class="st">&quot;JS the good parts&quot;</span>, <span class="dt">author</span>:<span class="st">&quot;John Doe&quot;</span>, <span class="dt">releaseDate</span>:<span class="st">&quot;2012&quot;</span>, <span class="dt">keywords</span>:<span class="st">&quot;JavaScript Programming&quot;</span>},
+        {<span class="dt">title</span>:<span class="st">&quot;CS the better parts&quot;</span>, <span class="dt">author</span>:<span class="st">&quot;John Doe&quot;</span>, <span class="dt">releaseDate</span>:<span class="st">&quot;2012&quot;</span>, <span class="dt">keywords</span>:<span class="st">&quot;CoffeeScript Programming&quot;</span>},
+        {<span class="dt">title</span>:<span class="st">&quot;Scala for the impatient&quot;</span>, <span class="dt">author</span>:<span class="st">&quot;John Doe&quot;</span>, <span class="dt">releaseDate</span>:<span class="st">&quot;2012&quot;</span>, <span class="dt">keywords</span>:<span class="st">&quot;Scala Programming&quot;</span>},
+        {<span class="dt">title</span>:<span class="st">&quot;American Psyco&quot;</span>, <span class="dt">author</span>:<span class="st">&quot;Bret Easton Ellis&quot;</span>, <span class="dt">releaseDate</span>:<span class="st">&quot;2012&quot;</span>, <span class="dt">keywords</span>:<span class="st">&quot;Novel Splatter&quot;</span>},
+        {<span class="dt">title</span>:<span class="st">&quot;Eloquent JavaScript&quot;</span>, <span class="dt">author</span>:<span class="st">&quot;John Doe&quot;</span>, <span class="dt">releaseDate</span>:<span class="st">&quot;2012&quot;</span>, <span class="dt">keywords</span>:<span class="st">&quot;JavaScript Programming&quot;</span>}];
 
-    var Book = Backbone.Model.extend({
-        defaults:{
-            coverImage:&quot;img/placeholder.png&quot;,
-            title:&quot;Some title&quot;,
-            author:&quot;John Doe&quot;,
-            releaseDate:&quot;2012&quot;,
-            keywords:&quot;JavaScript Programming&quot;
+    <span class="kw">var</span> Book = <span class="kw">Backbone.Model</span>.<span class="fu">extend</span>({
+        <span class="dt">defaults</span>:{
+            <span class="dt">coverImage</span>:<span class="st">&quot;img/placeholder.png&quot;</span>,
+            <span class="dt">title</span>:<span class="st">&quot;Some title&quot;</span>,
+            <span class="dt">author</span>:<span class="st">&quot;John Doe&quot;</span>,
+            <span class="dt">releaseDate</span>:<span class="st">&quot;2012&quot;</span>,
+            <span class="dt">keywords</span>:<span class="st">&quot;JavaScript Programming&quot;</span>
         }
     });
 
-    var Library = Backbone.Collection.extend({
-       model:Book
+    <span class="kw">var</span> Library = <span class="kw">Backbone.Collection</span>.<span class="fu">extend</span>({
+       <span class="dt">model</span>:Book
     });
 
-    var BookView = Backbone.View.extend({
-        tagName:&quot;div&quot;,
-        className:&quot;bookContainer&quot;,
-        template:$(&quot;#bookTemplate&quot;).html(),
+    <span class="kw">var</span> BookView = <span class="kw">Backbone.View</span>.<span class="fu">extend</span>({
+        <span class="dt">tagName</span>:<span class="st">&quot;div&quot;</span>,
+        <span class="dt">className</span>:<span class="st">&quot;bookContainer&quot;</span>,
+        <span class="dt">template</span>:$(<span class="st">&quot;#bookTemplate&quot;</span>).<span class="fu">html</span>(),
 
-        render:function () {
-            var tmpl = _.template(this.template); //tmpl is a function that takes a JSON object and returns html
+        <span class="dt">render</span>:<span class="kw">function</span> () {
+            <span class="kw">var</span> tmpl = <span class="kw">_</span>.<span class="fu">template</span>(<span class="kw">this</span>.<span class="fu">template</span>); <span class="co">//tmpl is a function that takes a JSON object and returns html</span>
 
-            this.$el.html(tmpl(this.model.toJSON())); //this.el is what we defined in tagName. use $el to get access to jQuery html() function
-            return this;
+            <span class="kw">this</span>.$<span class="fu">el</span>.<span class="fu">html</span>(tmpl(<span class="kw">this</span>.<span class="fu">model</span>.<span class="fu">toJSON</span>())); <span class="co">//this.el is what we defined in tagName. use $el to get access to jQuery html() function</span>
+            <span class="kw">return</span> <span class="kw">this</span>;
         }
     });
 
- var LibraryView = Backbone.View.extend({
-        el:$(&quot;#books&quot;),
+ <span class="kw">var</span> LibraryView = <span class="kw">Backbone.View</span>.<span class="fu">extend</span>({
+        <span class="dt">el</span>:$(<span class="st">&quot;#books&quot;</span>),
 
-        initialize:function(){
-            this.collection = new Library(books);
-            this.render();
+        <span class="dt">initialize</span>:<span class="kw">function</span>(){
+            <span class="kw">this</span>.<span class="fu">collection</span> = <span class="kw">new</span> Library(books);
+            <span class="kw">this</span>.<span class="fu">render</span>();
         },
 
-        render: function(){
-            var that = this;
-            _.each(this.collection.models, function(item){
-                that.renderBook(item);
-            }, this);
+        <span class="dt">render</span>:<span class="kw">function</span>(){
+            <span class="kw">var</span> that = <span class="kw">this</span>;
+            <span class="kw">_</span>.<span class="fu">each</span>(<span class="kw">this</span>.<span class="fu">collection</span>.<span class="fu">models</span>, <span class="kw">function</span>(item){
+                <span class="kw">that</span>.<span class="fu">renderBook</span>(item);
+            }, <span class="kw">this</span>);
         },
 
-        renderBook:function(item){
-            var bookView = new BookView({
-                model: item
+        <span class="dt">renderBook</span>:<span class="kw">function</span>(item){
+            <span class="kw">var</span> bookView = <span class="kw">new</span> BookView({
+                <span class="dt">model</span>:item
             });
-            this.$el.append(bookView.render().el);
+            <span class="kw">this</span>.$<span class="fu">el</span>.<span class="fu">append</span>(<span class="kw">bookView</span>.<span class="fu">render</span>().<span class="fu">el</span>);
         }
     });
 
-    var libraryView = new LibraryView();
+    <span class="kw">var</span> libraryView = <span class="kw">new</span> LibraryView();
 
 })(jQuery);</code></pre>
 <p>So lets recap what happens here:</p>
@@ -2909,7 +2868,7 @@ if (this._hasPushState) {
 <li>Line 39: the Library constructor is called with the array of book properties from line 02, creating a collection of Book models</li>
 <li>Line 43: The render function iterates over the Book collection and calls renderBook (line 46) for each Book model</li>
 <li>Line 51: renderBook function creates a new BookView from the given Book model</li>
-<li>Line 54: The render function of BookView is called and the result is appended to the books div in out html</li>
+<li>Line 54: The render function of BookView is called and the result is appended to the books div in our html</li>
 </ul>
 <p>You have now been introduced to the basic components of Backbone Model, View and Collection. In the next part I will continue to develop our Library into something more interactive.</p>
 <p>The code for this tutorial is available <a href="https://dl.dropbox.com/u/70775642/workshop-practical/code.zip">here</a>.</p>
@@ -2917,14 +2876,18 @@ if (this._hasPushState) {
 <p>In the first part, I covered some Backbone basics of models, views and collections. I recommend reading that before continuing since this tutorial builds on the first part. In this tutorial we are going to look at how we can add and remove models from a collection.</p>
 <h3 id="adding-models"><a href="#TOC">Adding models</a></h3>
 <p>To add a new book we need to have some sort of input form. Go ahead and add one in index.html</p>
-<pre class="sourceCode html"><code class="sourceCode html"><span class="kw">&lt;div</span><span class="ot"> id=</span><span class="st">&quot;books&quot;</span><span class="kw">&gt;&lt;form</span><span class="ot"> id=</span><span class="st">&quot;addBook&quot;</span><span class="ot"> action=</span><span class="st">&quot;#&quot;</span><span class="kw">&gt;</span>
-<span class="kw">&lt;div&gt;&lt;label</span><span class="ot"> for=</span><span class="st">&quot;coverImage&quot;</span><span class="kw">&gt;</span>CoverImage: <span class="kw">&lt;/label&gt;&lt;input</span><span class="ot"> id=</span><span class="st">&quot;coverImage&quot;</span><span class="ot"> type=</span><span class="st">&quot;file&quot;</span> <span class="kw">/&gt;</span>
- <span class="kw">&lt;label</span><span class="ot"> for=</span><span class="st">&quot;title&quot;</span><span class="kw">&gt;</span>Title: <span class="kw">&lt;/label&gt;&lt;input</span><span class="ot"> id=</span><span class="st">&quot;title&quot;</span><span class="ot"> type=</span><span class="st">&quot;text&quot;</span> <span class="kw">/&gt;</span>
- <span class="kw">&lt;label</span><span class="ot"> for=</span><span class="st">&quot;author&quot;</span><span class="kw">&gt;</span>Author: <span class="kw">&lt;/label&gt;&lt;input</span><span class="ot"> id=</span><span class="st">&quot;author&quot;</span><span class="ot"> type=</span><span class="st">&quot;text&quot;</span> <span class="kw">/&gt;</span>
- <span class="kw">&lt;label</span><span class="ot"> for=</span><span class="st">&quot;releaseDate&quot;</span><span class="kw">&gt;</span>Release date: <span class="kw">&lt;/label&gt;&lt;input</span><span class="ot"> id=</span><span class="st">&quot;releaseDate&quot;</span><span class="ot"> type=</span><span class="st">&quot;text&quot;</span> <span class="kw">/&gt;</span>
- <span class="kw">&lt;label</span><span class="ot"> for=</span><span class="st">&quot;keywords&quot;</span><span class="kw">&gt;</span>Keywords: <span class="kw">&lt;/label&gt;&lt;input</span><span class="ot"> id=</span><span class="st">&quot;keywords&quot;</span><span class="ot"> type=</span><span class="st">&quot;text&quot;</span> <span class="kw">/&gt;</span>
- <span class="kw">&lt;button</span><span class="ot"> id=</span><span class="st">&quot;add&quot;</span><span class="kw">&gt;</span>Add<span class="kw">&lt;/button&gt;&lt;/div&gt;</span>
-<span class="kw">&lt;/form&gt;&lt;/div&gt;</span></code></pre>
+<pre class="sourceCode html"><code class="sourceCode html"><span class="kw">&lt;div</span><span class="ot"> id=</span><span class="st">&quot;books&quot;</span><span class="kw">&gt;</span>
+    <span class="kw">&lt;form</span><span class="ot"> id=</span><span class="st">&quot;addBook&quot;</span><span class="ot"> action=</span><span class="st">&quot;#&quot;</span><span class="kw">&gt;</span>
+        <span class="kw">&lt;div&gt;</span>
+            <span class="kw">&lt;label</span><span class="ot"> for=</span><span class="st">&quot;coverImage&quot;</span><span class="kw">&gt;</span>CoverImage: <span class="kw">&lt;/label&gt;&lt;input</span><span class="ot"> id=</span><span class="st">&quot;coverImage&quot;</span><span class="ot"> type=</span><span class="st">&quot;file&quot;</span> <span class="kw">/&gt;</span>
+            <span class="kw">&lt;label</span><span class="ot"> for=</span><span class="st">&quot;title&quot;</span><span class="kw">&gt;</span>Title: <span class="kw">&lt;/label&gt;&lt;input</span><span class="ot"> id=</span><span class="st">&quot;title&quot;</span><span class="ot"> type=</span><span class="st">&quot;text&quot;</span> <span class="kw">/&gt;</span>
+            <span class="kw">&lt;label</span><span class="ot"> for=</span><span class="st">&quot;author&quot;</span><span class="kw">&gt;</span>Author: <span class="kw">&lt;/label&gt;&lt;input</span><span class="ot"> id=</span><span class="st">&quot;author&quot;</span><span class="ot"> type=</span><span class="st">&quot;text&quot;</span> <span class="kw">/&gt;</span>
+            <span class="kw">&lt;label</span><span class="ot"> for=</span><span class="st">&quot;releaseDate&quot;</span><span class="kw">&gt;</span>Release date: <span class="kw">&lt;/label&gt;&lt;input</span><span class="ot"> id=</span><span class="st">&quot;releaseDate&quot;</span><span class="ot"> type=</span><span class="st">&quot;text&quot;</span> <span class="kw">/&gt;</span>
+            <span class="kw">&lt;label</span><span class="ot"> for=</span><span class="st">&quot;keywords&quot;</span><span class="kw">&gt;</span>Keywords: <span class="kw">&lt;/label&gt;&lt;input</span><span class="ot"> id=</span><span class="st">&quot;keywords&quot;</span><span class="ot"> type=</span><span class="st">&quot;text&quot;</span> <span class="kw">/&gt;</span>
+            <span class="kw">&lt;button</span><span class="ot"> id=</span><span class="st">&quot;add&quot;</span><span class="kw">&gt;</span>Add<span class="kw">&lt;/button&gt;</span>
+        <span class="kw">&lt;/div&gt;</span>
+    <span class="kw">&lt;/form&gt;</span>
+<span class="kw">&lt;/div&gt;</span></code></pre>
 <p>I made the ids of the inputs match the attributes in our Book model so that we don’t have to remap those later. Add this to screen.css for looks</p>
 <pre class="sourceCode css"><code class="sourceCode css"><span class="fl">#addBook</span> label <span class="kw">{</span>
     <span class="kw">width:</span><span class="dt">100px</span><span class="kw">;</span>
@@ -2932,28 +2895,28 @@ if (this._hasPushState) {
     <span class="kw">text-align:</span><span class="dt">right</span><span class="kw">;</span>
     <span class="kw">line-height:</span><span class="dt">25px</span><span class="kw">;</span>
 <span class="kw">}</span>
-
+ 
 <span class="fl">#addBook</span> label, <span class="fl">#addBook</span> input <span class="kw">{</span>
     <span class="kw">display:</span><span class="dt">block</span><span class="kw">;</span>
     <span class="kw">margin-bottom:</span><span class="dt">10px</span><span class="kw">;</span>
     <span class="kw">float:</span><span class="dt">left</span><span class="kw">;</span>
 <span class="kw">}</span>
-
+ 
 <span class="fl">#addBook</span> label<span class="ch">[for=</span><span class="st">&quot;title&quot;</span><span class="ch">]</span>, <span class="fl">#addBook</span> label<span class="ch">[for=</span><span class="st">&quot;releaseDate&quot;</span><span class="ch">]</span> <span class="kw">{</span>
     <span class="kw">clear:</span><span class="dt">both</span><span class="kw">;</span>
 <span class="kw">}</span>
-
+ 
 <span class="fl">#addBook</span> button <span class="kw">{</span>
     <span class="kw">display:</span><span class="dt">block</span><span class="kw">;</span>
     <span class="kw">margin:</span><span class="dt">5px</span> <span class="dt">20px</span> <span class="dt">10px</span> <span class="dt">10px</span><span class="kw">;</span>
-    <span class="kw">float:</span> <span class="dt">right</span><span class="kw">;</span>
-    <span class="kw">clear:</span> <span class="dt">both</span><span class="kw">;</span>
+    <span class="kw">float:</span><span class="dt">right</span><span class="kw">;</span>
+    <span class="kw">clear:</span><span class="dt">both</span><span class="kw">;</span>
 <span class="kw">}</span>
-
+ 
 <span class="fl">#addBook</span> div <span class="kw">{</span>
-    <span class="kw">width:</span> <span class="dt">550px</span><span class="kw">;</span>
+    <span class="kw">width:</span><span class="dt">550px</span><span class="kw">;</span>
 <span class="kw">}</span>
-
+ 
 <span class="fl">#addBook</span> div<span class="dv">:after</span> <span class="kw">{</span>
     <span class="kw">content:</span><span class="st">&quot;&quot;</span><span class="kw">;</span>
     <span class="kw">display:</span><span class="dt">block</span><span class="kw">;</span>
@@ -2964,70 +2927,70 @@ if (this._hasPushState) {
     <span class="kw">line-height:</span><span class="dt">0</span><span class="kw">;</span>
 <span class="kw">}</span></code></pre>
 <p>Now lets create a function that lets us add a book. We put it in our master view (LibraryView) after the render function</p>
-<pre class="js"><code>addBook: function(){
-    var formData = {};
-
-    $(&quot;#addBook&quot;).children(&quot;input&quot;).each(function(i, el){
-        formData[el.id] = $(el).val();
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="dt">addBook</span>:<span class="kw">function</span>(){
+    <span class="kw">var</span> formData = {};
+ 
+    $(<span class="st">&quot;#addBook&quot;</span>).<span class="fu">children</span>(<span class="st">&quot;input&quot;</span>).<span class="fu">each</span>(<span class="kw">function</span>(i, el){
+        formData[<span class="kw">el</span>.<span class="fu">id</span>] = $(el).<span class="fu">val</span>();
     });
-
-    books.push(formData);
-
-    this.collection.add(new Book(formData));
+ 
+    <span class="kw">books</span>.<span class="fu">push</span>(formData);
+ 
+    <span class="kw">this</span>.<span class="fu">collection</span>.<span class="fu">add</span>(<span class="kw">new</span> Book(formData));
 },</code></pre>
-<p>Here I select all the input elements the form and iterate over them using jQuery’s each. Since we used the same names for ids in our form as the keys on our Book model we can simply store them directly in the formData object and the add it to the books array. We then create a new Book model and add it to our collection. Now lets wire this function to the Add button in our form. We do this by adding an event listener in the LibraryView</p>
-<pre class="js"><code>events:{
-    &quot;click #add&quot;:&quot;addBook&quot;
+<p>Here I select all the input elements of the form and iterate over them using jQuery’s each. Since we used the same names for ids in our form as the keys on our Book model we can simply store them directly in the formData object and add it to the books array. We then create a new Book model and add it to our collection. Now lets wire this function to the Add button in our form. We do this by adding an event listener in the LibraryView</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="dt">events</span>:{
+    <span class="st">&quot;click #add&quot;</span>:<span class="st">&quot;addBook&quot;</span>
 },</code></pre>
 <p>By default, Backbone will send an event object as parameter to the function. This is useful for us in this case since we want to prevent the form from actually submit and reloading the page. Add a preventDefault to the addBook function</p>
-<pre class="js"><code>addBook: function(e){
-    e.preventDefault();
-
-    var formData = {};
-
-    $(&quot;#addBook&quot;).children(&quot;input&quot;).each(function(i, el){
-        formData[el.id] = $(el).val();
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="dt">addBook</span>:<span class="kw">function</span>(e){
+    <span class="kw">e</span>.<span class="fu">preventDefault</span>();
+ 
+    <span class="kw">var</span> formData = {};
+ 
+    $(<span class="st">&quot;#addBook&quot;</span>).<span class="fu">children</span>(<span class="st">&quot;input&quot;</span>).<span class="fu">each</span>(<span class="kw">function</span>(i, el){
+        formData[<span class="kw">el</span>.<span class="fu">id</span>] = $(el).<span class="fu">val</span>();
     });
-
-    books.push(formData);
-
-    this.collection.add(new Book(formData));
+ 
+    <span class="kw">books</span>.<span class="fu">push</span>(formData);
+ 
+    <span class="kw">this</span>.<span class="fu">collection</span>.<span class="fu">add</span>(<span class="kw">new</span> Book(formData));
 },</code></pre>
 <p>Ok, so this will add a book to our books array and our collection. It will not however be visible, because we have not called the render function of our BookView. When a model is added to a collection, the collection will fire an add event. If we listen to this event we will be able to call our renderBook function. This binding is done in initialize.</p>
-<pre class="js"><code>initialize:function () {
-    this.collection = new Library(books);
-    this.render();
-
-    this.collection.on(&quot;add&quot;, this.renderBook, this);
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="dt">initialize</span>:<span class="kw">function</span> () {
+    <span class="kw">this</span>.<span class="fu">collection</span> = <span class="kw">new</span> Library(books);
+    <span class="kw">this</span>.<span class="fu">render</span>();
+ 
+    <span class="kw">this</span>.<span class="fu">collection</span>.<span class="fu">on</span>(<span class="st">&quot;add&quot;</span>, <span class="kw">this</span>.<span class="fu">renderBook</span>, <span class="kw">this</span>);
 },</code></pre>
 <p>Now you should be ready to take the application for a spin.</p>
 <figure>
 <img src="http://codebyexample.info/wp-content/uploads/2012/04/Screen-Shot-2012-04-05-at-1.24.51-AM.png"><figcaption></figcaption>
 </figure>
 <p>As you may notice, if you leave a field blank, it will be blank in the created view as well. This is not what we want, we would like the default values to kick in. To do that we need to add a bit of logic. Also note that the file input for the cover image isn’t working, but that is left as an exercise to the reader.</p>
-<pre class="js"><code>addBook:function (e) {
-    e.preventDefault();
-
-    var formData = {};
-
-    $(&quot;#addBook div&quot;).children(&quot;input&quot;).each(function (i, el) {
-        if ($(el).val() !== &quot;&quot;) {
-            formData[el.id] = $(el).val();
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="dt">addBook</span>:<span class="kw">function</span> (e) {
+    <span class="kw">e</span>.<span class="fu">preventDefault</span>();
+ 
+    <span class="kw">var</span> formData = {};
+ 
+    $(<span class="st">&quot;#addBook div&quot;</span>).<span class="fu">children</span>(<span class="st">&quot;input&quot;</span>).<span class="fu">each</span>(<span class="kw">function</span> (i, el) {
+        <span class="kw">if</span> ($(el).<span class="fu">val</span>() !== <span class="st">&quot;&quot;</span>) {
+            formData[<span class="kw">el</span>.<span class="fu">id</span>] = $(el).<span class="fu">val</span>();
         }
     });
-
-    books.push(formData);
-
-    this.collection.add(new Book(formData));
+ 
+    <span class="kw">books</span>.<span class="fu">push</span>(formData);
+ 
+    <span class="kw">this</span>.<span class="fu">collection</span>.<span class="fu">add</span>(<span class="kw">new</span> Book(formData));
 },</code></pre>
 <p>Here I added (line 7) a check to see if the field value is empty, in which case we do not add it to the model data. While we are at it lets add default values for the other properties of Book</p>
-<pre class="js"><code>var Book = Backbone.Model.extend({
-    defaults:{
-        coverImage:&quot;img/placeholder.png&quot;,
-        title:&quot;No title&quot;,
-        author:&quot;Unknown&quot;,
-        releaseDate:&quot;Unknown&quot;,
-        keywords:&quot;None&quot;
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> Book = <span class="kw">Backbone.Model</span>.<span class="fu">extend</span>({
+    <span class="dt">defaults</span>:{
+        <span class="dt">coverImage</span>:<span class="st">&quot;img/placeholder.png&quot;</span>,
+        <span class="dt">title</span>:<span class="st">&quot;No title&quot;</span>,
+        <span class="dt">author</span>:<span class="st">&quot;Unknown&quot;</span>,
+        <span class="dt">releaseDate</span>:<span class="st">&quot;Unknown&quot;</span>,
+        <span class="dt">keywords</span>:<span class="st">&quot;None&quot;</span>
     }
 });</code></pre>
 <p>Now it has better default behaviour</p>
@@ -3037,7 +3000,7 @@ if (this._hasPushState) {
 <h3 id="removing-models"><a href="#TOC">Removing models</a></h3>
 <p>Now lets see how to remove Books. We start by adding a delete button to the template in index.html</p>
 <pre class="sourceCode html"><code class="sourceCode html"><span class="kw">&lt;script</span><span class="ot"> id=</span><span class="st">&quot;bookTemplate&quot;</span><span class="ot"> type=</span><span class="st">&quot;text/template&quot;</span><span class="kw">&gt;</span>
-    &lt;img src=<span class="st">&quot;</span>&lt;%= <span class="st">coverImage</span> %&gt;<span class="st">&quot;</span>/&gt;
+    &lt;img src=<span class="st">&quot;</span>&lt;%= <span class="st">coverImage</span> %&gt;<span class="st">&quot;</span> /&gt;
     &lt;ul&gt;
         &lt;li&gt;&lt;%= title %&gt;&lt;/li&gt;
         &lt;li&gt;&lt;%= author %&gt;&lt;/li&gt;
@@ -3049,95 +3012,94 @@ if (this._hasPushState) {
 <span class="kw">&lt;/script&gt;</span></code></pre>
 <p>We add some css to it for good looks. Note that I removed the margin of the existing ul rule above to tighten things up a bit.</p>
 <pre class="sourceCode css"><code class="sourceCode css"><span class="fl">.bookContainer</span> ul <span class="kw">{</span>
-    <span class="kw">list-style-type:</span> <span class="dt">none</span><span class="kw">;</span>
-    <span class="kw">margin-bottom:</span> <span class="dt">0</span><span class="kw">;</span>
+    <span class="kw">list-style-type:</span><span class="dt">none</span><span class="kw">;</span>
+    <span class="kw">margin-bottom:</span><span class="dt">0</span><span class="kw">;</span>
 <span class="kw">}</span>
-
+ 
 <span class="fl">.bookContainer</span> button <span class="kw">{</span>
     <span class="kw">float:</span><span class="dt">right</span><span class="kw">;</span>
-    <span class="kw">margin:</span> <span class="dt">10px</span><span class="kw">;</span>
+    <span class="kw">margin:</span><span class="dt">10px</span><span class="kw">;</span>
 <span class="kw">}</span></code></pre>
 <p>Looks okay!</p>
 <figure>
 <img src="http://codebyexample.info/wp-content/uploads/2012/04/Screen-Shot-2012-04-05-at-11.59.54-AM.png"><figcaption></figcaption>
 </figure>
 <p>Now we need to wire up the button to the logic. This works in the same way as with add. We start by creating a deleteBook function in the BookView</p>
-<pre class="js"><code>var BookView = Backbone.View.extend({
-    tagName:&quot;div&quot;,
-    className:&quot;bookContainer&quot;,
-    template:$(&quot;#bookTemplate&quot;).html(),
-
-    render:function () {
-        var tmpl = _.template(this.template); //tmpl is a function that takes a JSON and returns html
-
-        this.$el.html(tmpl(this.model.toJSON())); //this.el is what we defined in tagName. use $el to get access to jQuery html() function
-        return this;
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> BookView = <span class="kw">Backbone.View</span>.<span class="fu">extend</span>({
+    <span class="dt">tagName</span>:<span class="st">&quot;div&quot;</span>,
+    <span class="dt">className</span>:<span class="st">&quot;bookContainer&quot;</span>,
+    <span class="dt">template</span>:$(<span class="st">&quot;#bookTemplate&quot;</span>).<span class="fu">html</span>(),
+ 
+    <span class="dt">render</span>:<span class="kw">function</span> () {
+        <span class="kw">var</span> tmpl = <span class="kw">_</span>.<span class="fu">template</span>(<span class="kw">this</span>.<span class="fu">template</span>); <span class="co">//tmpl is a function that takes a JSON and returns html</span>
+ 
+        <span class="kw">this</span>.$<span class="fu">el</span>.<span class="fu">html</span>(tmpl(<span class="kw">this</span>.<span class="fu">model</span>.<span class="fu">toJSON</span>())); <span class="co">//this.el is what we defined in tagName. use $el to get access to jQuery html() function</span>
+        <span class="kw">return</span> <span class="kw">this</span>;
     },
-
-    deleteBook:function () {
-        //Delete model
-        this.model.destroy();
-
-        //Delete view
-        this.remove();
+ 
+    <span class="dt">deleteBook</span>:<span class="kw">function</span> () {
+        <span class="co">//Delete model</span>
+        <span class="kw">this</span>.<span class="fu">model</span>.<span class="fu">destroy</span>();
+ 
+        <span class="co">//Delete view</span>
+        <span class="kw">this</span>.<span class="fu">remove</span>();
     }
 });</code></pre>
-<p>Then we add en event listener to the delete button</p>
-<pre class="js"><code>var BookView = Backbone.View.extend({
-    tagName:&quot;div&quot;,
-    className:&quot;bookContainer&quot;,
-    template:$(&quot;#bookTemplate&quot;).html(),
-
-    render:function () {
-        var tmpl = _.template(this.template); //tmpl is a function that takes a JSON and returns html
-
-        this.$el.html(tmpl(this.model.toJSON())); //this.el is what we defined in tagName. use $el to get access to jQuery html() function
-        return this;
+<p>Then we add an event listener to the delete button</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> BookView = <span class="kw">Backbone.View</span>.<span class="fu">extend</span>({
+    <span class="dt">tagName</span>:<span class="st">&quot;div&quot;</span>,
+    <span class="dt">className</span>:<span class="st">&quot;bookContainer&quot;</span>,
+    <span class="dt">template</span>:$(<span class="st">&quot;#bookTemplate&quot;</span>).<span class="fu">html</span>(),
+ 
+    <span class="dt">render</span>:<span class="kw">function</span> () {
+        <span class="kw">var</span> tmpl = <span class="kw">_</span>.<span class="fu">template</span>(<span class="kw">this</span>.<span class="fu">template</span>); <span class="co">//tmpl is a function that takes a JSON and returns html</span>
+ 
+        <span class="kw">this</span>.$<span class="fu">el</span>.<span class="fu">html</span>(tmpl(<span class="kw">this</span>.<span class="fu">model</span>.<span class="fu">toJSON</span>())); <span class="co">//this.el is what we defined in tagName. use $el to get access to jQuery html() function</span>
+        <span class="kw">return</span> <span class="kw">this</span>;
     },
-
-    events: {
-        &quot;click .delete&quot;: &quot;deleteBook&quot;
+ 
+    <span class="dt">events</span>: {
+        <span class="st">&quot;click .delete&quot;</span>:<span class="st">&quot;deleteBook&quot;</span>
     },
-
-    deleteBook:function () {
-        //Delete model
-        this.model.destroy();
-
-        //Delete view
-        this.remove();
+ 
+    <span class="dt">deleteBook</span>:<span class="kw">function</span> () {
+        <span class="co">//Delete model</span>
+        <span class="kw">this</span>.<span class="fu">model</span>.<span class="fu">destroy</span>();
+ 
+        <span class="co">//Delete view</span>
+        <span class="kw">this</span>.<span class="fu">remove</span>();
     }
 });</code></pre>
 <p>If you try it out now you will see that it seems to work. However we are not yet finished. When we click the delete button the model and view will be deleted, but not the data in our books array. This means that if we were to re-render the LibraryView the deleted books would reappear. The Backbone collection is smart enough to notice when one of its models is deleted and will fire a <q>remove</q> event. This is something we can listen to in our LibraryView and take action. Add a listener in initialize of LibraryView</p>
-<pre class="js"><code>initialize:function () {
-    this.collection = new Library(books);
-    this.render();
-
-    this.collection.on(&quot;add&quot;, this.renderBook, this);
-    this.collection.on(&quot;remove&quot;, this.removeBook, this);
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="dt">initialize</span>:<span class="kw">function</span> () {
+    <span class="kw">this</span>.<span class="fu">collection</span> = <span class="kw">new</span> Library(books);
+    <span class="kw">this</span>.<span class="fu">render</span>();
+ 
+    <span class="kw">this</span>.<span class="fu">collection</span>.<span class="fu">on</span>(<span class="st">&quot;add&quot;</span>, <span class="kw">this</span>.<span class="fu">renderBook</span>, <span class="kw">this</span>);
+    <span class="kw">this</span>.<span class="fu">collection</span>.<span class="fu">on</span>(<span class="st">&quot;remove&quot;</span>, <span class="kw">this</span>.<span class="fu">removeBook</span>, <span class="kw">this</span>);
 },</code></pre>
 <p>Here I specified that the removeBook function should be called when the remove event from our collection fires, so lets create this function. Note that the collection provides the removed model as a parameter to the event.</p>
-<pre class="js"><code>
-removeBook: function(removedBook){
-    var removedBookData = removedBook.attributes;
-
-    _.each(removedBookData, function(val, key){
-        if(removedBookData[key] === removedBook.defaults[key]){
-            delete removedBookData[key];
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="dt">removeBook</span>:<span class="kw">function</span>(removedBook){
+    <span class="kw">var</span> removedBookData = <span class="kw">removedBook</span>.<span class="fu">attributes</span>;
+ 
+    <span class="kw">_</span>.<span class="fu">each</span>(removedBookData, <span class="kw">function</span>(val, key){
+        <span class="kw">if</span>(removedBookData[key] === <span class="kw">removedBook</span>.<span class="fu">defaults</span>[key]){
+            <span class="kw">delete</span> removedBookData[key];
         }
     });
-
-    _.each(books, function(book){
-        if(_.isEqual(book, removedBookData)){
-            books.splice(_.indexOf(books, book), 1);
+ 
+    <span class="kw">_</span>.<span class="fu">each</span>(books, <span class="kw">function</span>(book){
+        <span class="kw">if</span>(<span class="kw">_</span>.<span class="fu">isEqual</span>(book, removedBookData)){
+            <span class="kw">books</span>.<span class="fu">splice</span>(<span class="kw">_</span>.<span class="fu">indexOf</span>(books, book), <span class="dv">1</span>);
         }
     });
 },</code></pre>
-<p>Since the default values was not saved in the books array we need to remove them in order to find an match. We use underscores each function to iterate over the properties of the removed Book model and delete any property that is equal to the default value. Since the underscore each function also is capable of iterating over objects in an array we use it again to iterate over the objects in our books array to find the data of the removed Book. To get a match we use the isEqual function of underscore that performs a deep comparison of objects. Similarly the indexOf can find complex objects, which we use when we remove the book data using splice.</p>
+<p>Since the default values were not saved in the books array we need to remove them in order to find a match. We use underscores each function to iterate over the properties of the removed Book model and delete any property that is equal to the default value. Since the underscore each function is also capable of iterating over objects in an array we use it again to iterate over the objects in our books array to find the data of the removed Book. To get a match we use the isEqual function of underscore that performs a deep comparison of objects. Similarly the indexOf can find complex objects, which we use when we remove the book data using splice.</p>
 <h3 id="summary-1"><a href="#TOC">Summary</a></h3>
-<p>In this tutorial we have looked at how to add and remove models from a collection. We also looked at how to wire view, model and collection together using event handlers. We also saw the useful underscore functions each, indexOf and isEqual. If there is enough interest in these tutorials I’ll continue and create more episodes, there are still plenty to cover in Backbone.</p>
+<p>In this tutorial we have looked at how to add and remove models from a collection. We also looked at how to wire view, model and collection together using event handlers. We also saw the useful underscore functions each, indexOf and isEqual.</p>
 <p>The code for this part is available <a href="https://dl.dropbox.com/u/70775642/workshop-practical/code.zip">here</a>.</p>
 <h2 id="part-2.5"><a href="#TOC">Part 2.5</a></h2>
-<p>In the first two parts of this tutorial series we looked at the basic structure of a Backbone application and how to add and remove models. In the third part we will look at how to synchronize the models with the back end, but in order to do that we need to make a small detour and set up a server with a REST api. That is what we are going to do in this part.Since this is a JavaScript tutorial I will use JavaScript to create the server using node.js. If you are more comfortable in setting up a REST server in another language, this is the API you need to conform to:</p>
+<p>In the first two parts of this tutorial series we looked at the basic structure of a Backbone application and how to add and remove models. In the third part we will look at how to synchronize the models with the back end, but in order to do that we need to make a small detour and set up a server with a REST api. That is what we are going to do in this part. Since this is a JavaScript tutorial I will use JavaScript to create the server using node.js. If you are more comfortable in setting up a REST server in another language, this is the API you need to conform to:</p>
 <pre><code>url HTTP Method Operation
 /api/books  GET Get an array of all books
 /api/books/:id  GET Get the book with id of :id
@@ -3152,7 +3114,6 @@ removeBook: function(removedBook){
 <li>Create a simple web server</li>
 <li>Connect to the database</li>
 <li>Create the REST API</li>
-<li>Installing node, npm and MongoDB</li>
 </ul>
 <p>Download and install node.js from nodejs.org. The node package manager (npm) will be installed as well.</p>
 <p>Download and install MongoDB from mongodb.org. When installing MongoDB you get instructions on copying a config file in order for MongoDB to run. On OSX it can look something like this:</p>
@@ -3181,38 +3142,38 @@ server.js
 package.json</code></pre>
 <h3 id="create-a-simple-web-server"><a href="#TOC">Create a simple web server</a></h3>
 <p>Open server.js and enter the following:</p>
-<pre class="js"><code>// Module dependencies.
-var application_root = __dirname,
-    express = require(&quot;express&quot;), //Web framework
-    path = require(&quot;path&quot;), //Utilities for dealing with file paths
-    mongoose = require(&#39;mongoose&#39;); //MongoDB integration
-
-//Create server
-var app = express.createServer();
-
-// Configure server
-app.configure(function () {
-    app.use(express.bodyParser()); //parses request body and populates req.body
-    app.use(express.methodOverride()); //checks req.body for HTTP method overrides
-    app.use(app.router); //perform route lookup based on url and HTTP method
-    app.use(express.static(path.join(application_root, &quot;public&quot;))); //Where to serve static content
-    app.use(express.errorHandler({ dumpExceptions:true, showStack:true })); //Show all errors in development
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="co">// Module dependencies.</span>
+<span class="kw">var</span> application_root = __dirname,
+    express = require(<span class="st">&quot;express&quot;</span>), <span class="co">//Web framework</span>
+    path = require(<span class="st">&quot;path&quot;</span>), <span class="co">//Utilities for dealing with file paths</span>
+    mongoose = require(<span class="ch">&#39;mongoose&#39;</span>); <span class="co">//MongoDB integration</span>
+ 
+<span class="co">//Create server</span>
+<span class="kw">var</span> app = <span class="kw">express</span>.<span class="fu">createServer</span>();
+ 
+<span class="co">// Configure server</span>
+<span class="kw">app</span>.<span class="fu">configure</span>(<span class="kw">function</span> () {
+    <span class="kw">app</span>.<span class="fu">use</span>(<span class="kw">express</span>.<span class="fu">bodyParser</span>()); <span class="co">//parses request body and populates req.body</span>
+    <span class="kw">app</span>.<span class="fu">use</span>(<span class="kw">express</span>.<span class="fu">methodOverride</span>()); <span class="co">//checks req.body for HTTP method overrides</span>
+    <span class="kw">app</span>.<span class="fu">use</span>(<span class="kw">app</span>.<span class="fu">router</span>); <span class="co">//perform route lookup based on url and HTTP method</span>
+    <span class="kw">app</span>.<span class="fu">use</span>(<span class="kw">express</span>.<span class="fu">static</span>(<span class="kw">path</span>.<span class="fu">join</span>(application_root, <span class="st">&quot;public&quot;</span>))); <span class="co">//Where to serve static content</span>
+    <span class="kw">app</span>.<span class="fu">use</span>(<span class="kw">express</span>.<span class="fu">errorHandler</span>({ <span class="dt">dumpExceptions</span>:<span class="kw">true</span>, <span class="dt">showStack</span>:<span class="kw">true</span> })); <span class="co">//Show all errors in development</span>
 });
-
-//Start server
-app.listen(4711, function () {
-    console.log(&quot;Express server listening on port %d in %s mode&quot;, app.address().port, app.settings.env);
+ 
+<span class="co">//Start server</span>
+<span class="kw">app</span>.<span class="fu">listen</span>(<span class="dv">4711</span>, <span class="kw">function</span> () {
+    <span class="kw">console</span>.<span class="fu">log</span>(<span class="st">&quot;Express server listening on port %d in %s mode&quot;</span>, <span class="kw">app</span>.<span class="fu">address</span>().<span class="fu">port</span>, <span class="kw">app.settings</span>.<span class="fu">env</span>);
 });</code></pre>
-<p>I start off by loading the modules required for this project: Express for creating the HTTP server, Path for dealing with file paths and mongoose for connecting with the database. We the create an express server and configure it using an anonymous function. This is a pretty standard configuration and for our application we don’t actually need the methodOverride part. It is used for issuing PUT and DELETE HTTP requests directly from a form, since forms normally only support GET and POST. Finally I start the server by running the listen function. The port number used, in this case 4711, could be any free port on your system. I simply used 4711 since it is the most random number. We are now ready to run our first server:</p>
-<pre class="js"><code>node server.js</code></pre>
+<p>I start off by loading the modules required for this project: Express for creating the HTTP server, Path for dealing with file paths and mongoose for connecting with the database. We then create an express server and configure it using an anonymous function. This is a pretty standard configuration and for our application we don’t actually need the methodOverride part. It is used for issuing PUT and DELETE HTTP requests directly from a form, since forms normally only support GET and POST. Finally I start the server by running the listen function. The port number used, in this case 4711, could be any free port on your system. I simply used 4711 since it is the most random number. We are now ready to run our first server:</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript">node <span class="kw">server</span>.<span class="fu">js</span></code></pre>
 <p>If you open a browser on localhost:4711 you should see something like this:</p>
 <figure>
 <img src="http://codebyexample.info/wp-content/uploads/2012/04/Screen-Shot-2012-04-05-at-11.59.54-AM1.png"><figcaption></figcaption>
 </figure>
 <p>This is where we left off in Part 2, but we are now running on a server instead of directly from the files. Great job! We can now start defining routes (URLs) that the server should react to. This will be our REST API. Routes are defined by using app followed by one of the HTTP verbs get, put, post and delete, which corresponds to Create, Read, Update and Delete. Let us go back to server.js and define a simple route:</p>
-<pre class="js"><code>// Routes
-app.get(&#39;/api&#39;, function(req, res){
-    res.send(&#39;Library API is running&#39;);
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="co">// Routes</span>
+<span class="kw">app</span>.<span class="fu">get</span>(<span class="ch">&#39;/api&#39;</span>, <span class="kw">function</span>(req, res){
+    <span class="kw">res</span>.<span class="fu">send</span>(<span class="ch">&#39;Library API is running&#39;</span>);
 });</code></pre>
 <p>The get function will take the URL as first parameter and a function as second. The function will be called with request and response objects. Now you can restart node and go to our specified URL:</p>
 <figure>
@@ -3220,226 +3181,235 @@ app.get(&#39;/api&#39;, function(req, res){
 </figure>
 <h3 id="connect-to-database"><a href="#TOC">Connect to database</a></h3>
 <p>Fantastic. Now since we want to store our data in MongoDB we need to define a schema. Add this to server.js:</p>
-<pre class="js"><code>//Connect to database
-mongoose.connect(&#39;mongodb://localhost/library_database&#39;);
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="co">//Connect to database</span>
+<span class="kw">mongoose</span>.<span class="fu">connect</span>(<span class="ch">&#39;mongodb://localhost/library_database&#39;</span>);
 
-//Schemas
-var Book = new  mongoose.Schema({
-    title:String,
-    author:String,
-    releaseDate: Date
+<span class="co">//Schemas</span>
+<span class="kw">var</span> Book = <span class="kw">new</span> <span class="kw">mongoose</span>.<span class="fu">Schema</span>({
+    <span class="dt">title</span>:<span class="kw">String</span>,
+    <span class="dt">author</span>:<span class="kw">String</span>,
+    <span class="dt">releaseDate</span>:<span class="kw">Date</span>
 });
 
-//Models
-var BookModel = mongoose.model(&#39;Book&#39;, Book);</code></pre>
-<p>As you can see, schema definitions are quite straight forward. They can be more advanced, but this will do for us. I also extracted a model (BookModel) from Mongo. This is what we will be working with. Next up we define a get operation for the rest API that will return all books:</p>
-<pre class="js"><code>//Get a list of all books
-app.get(&#39;/api/books&#39;, function (req, res) {
-    return BookModel.find(function (err, books) {
-        if (!err) {
-            return res.send(books);
-        } else {
-            return console.log(err);
+<span class="co">//Models</span>
+<span class="kw">var</span> BookModel = <span class="kw">mongoose</span>.<span class="fu">model</span>(<span class="ch">&#39;Book&#39;</span>, Book);</code></pre>
+<p>As you can see, schema definitions are quite straight forward. They can be more advanced, but this will do for us. I also extracted a model (BookModel) from Mongo. This is what we will be working with. Next up we define a get operation for the REST API that will return all books:</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="co">//Get a list of all books</span>
+<span class="kw">app</span>.<span class="fu">get</span>(<span class="ch">&#39;/api/books&#39;</span>, <span class="kw">function</span> (req, res) {
+    <span class="kw">return</span> <span class="kw">BookModel</span>.<span class="fu">find</span>(<span class="kw">function</span> (err, books) {
+        <span class="kw">if</span> (!err) {
+            <span class="kw">return</span> <span class="kw">res</span>.<span class="fu">send</span>(books);
+        } <span class="kw">else</span> {
+            <span class="kw">return</span> <span class="kw">console</span>.<span class="fu">log</span>(err);
         }
     });
 });</code></pre>
 <p>The find function of Model is defined like this: function find (conditions, fields, options, callback) – but since we want a function that return all books we only need the callback parameter. The callback will be called with an error object and an array of found objects. If there was no error we return the array of objects to the client using the send function of the result object, otherwise we log the error to the console.</p>
 <p>To test our API we need to do a little typing in a JavaScript console. Restart node and go to localhost:4711 in your browser. Open up the JavaScript console. If you are using Google Chrome, go to View-&gt;Developer-&gt;JavaScript Console. If you are using Firefox, install Firebug and go to View-&gt;Firebug. If you are on any other browser I’m sure you will find a console somewhere. In the console type the following:</p>
-<pre class="js"><code>jQuery.get(&quot;/api/books/&quot;, function (data, textStatus, jqXHR) {
-    console.log(&quot;Get resposne:&quot;);
-    console.dir(data);
-    console.log(textStatus);
-    console.dir(jqXHR);
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">jQuery</span>.<span class="fu">get</span>(<span class="st">&quot;/api/books/&quot;</span>, <span class="kw">function</span> (data, textStatus, jqXHR) {
+    <span class="kw">console</span>.<span class="fu">log</span>(<span class="st">&quot;Get resposne:&quot;</span>);
+    <span class="kw">console</span>.<span class="fu">dir</span>(data);
+    <span class="kw">console</span>.<span class="fu">log</span>(textStatus);
+    <span class="kw">console</span>.<span class="fu">dir</span>(jqXHR);
 });</code></pre>
 <p>…and press enter and you should get something like this:</p>
 <figure>
 <img src="http://codebyexample.info/wp-content/uploads/2012/04/Screen-Shot-2012-04-29-at-12.50.32-AM.png"><figcaption></figcaption>
 </figure>
 <p>Here I used jQuery to make the call to our REST API, since it was already loaded on the page. The returned array is obviously empty, since we have not put anything into the database yet. Lets go and create a POST route that enables this in server.js:</p>
-<pre class="js"><code>//Insert a new book
-app.post(&#39;/api/books&#39;, function (req, res) {
-    var book = new BookModel({
-        title:req.body.title,
-        author:req.body.author,
-        releaseDate:req.body.releaseDate
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="co">//Insert a new book</span>
+<span class="kw">app</span>.<span class="fu">post</span>(<span class="ch">&#39;/api/books&#39;</span>, <span class="kw">function</span> (req, res) {
+    <span class="kw">var</span> book = <span class="kw">new</span> BookModel({
+        <span class="dt">title</span>:<span class="kw">req.body</span>.<span class="fu">title</span>,
+        <span class="dt">author</span>:<span class="kw">req.body</span>.<span class="fu">author</span>,
+        <span class="dt">releaseDate</span>:<span class="kw">req.body</span>.<span class="fu">releaseDate</span>
     });
-    book.save(function (err) {
-        if (!err) {
-            return console.log(&#39;created&#39;);
-        } else {
-            return console.log(err);
+    <span class="kw">book</span>.<span class="fu">save</span>(<span class="kw">function</span> (err) {
+        <span class="kw">if</span> (!err) {
+            <span class="kw">return</span> <span class="kw">console</span>.<span class="fu">log</span>(<span class="ch">&#39;created&#39;</span>);
+        } <span class="kw">else</span> {
+            <span class="kw">return</span> <span class="kw">console</span>.<span class="fu">log</span>(err);
         }
     });
-    return res.send(book);
+    <span class="kw">return</span> <span class="kw">res</span>.<span class="fu">send</span>(book);
 });</code></pre>
 <p>We start by creating a new BookModel passing an object with title, author and releaseDate attributes. The data are collected from req.body. This means that anyone calling this operation in the API needs to supply a JSON object containing the title, author and releaseDate attributes. Actually, the caller can omit any or all attributes since we have not made any one mandatory.</p>
-<p>We the call the save function on the BookModel passing in an anonymous function for handling errors in the same way as with the previous get route. Finally we return the saved BookModel. The reason we return the BookModel and not just <q>success</q> or similar string is that when the BookModel is saved it will get an _id attribute from MongoDB, which the client need when updating or deleting a specific book. Lets try it out again, restart node and go back to the console and type:</p>
-<pre class="js"><code>jQuery.post(&quot;/api/books&quot;, {
-  &quot;title&quot;: &quot;JavaScript the good parts&quot;,
-  &quot;author&quot;: &quot;Douglas Crockford&quot;,
-  &quot;releaseDate&quot;: new Date(2008, 4, 1).getTime()
-}, function(data, textStatus, jqXHR) {
-    console.log(&quot;Post response:&quot;); console.dir(data); console.log(textStatus); console.dir(jqXHR);
+<p>We then call the save function on the BookModel passing in an anonymous function for handling errors in the same way as with the previous get route. Finally we return the saved BookModel. The reason we return the BookModel and not just <q>success</q> or similar string is that when the BookModel is saved it will get an _id attribute from MongoDB, which the client needs when updating or deleting a specific book. Lets try it out again, restart node and go back to the console and type:</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">jQuery</span>.<span class="fu">post</span>(<span class="st">&quot;/api/books&quot;</span>, {
+  <span class="st">&quot;title&quot;</span>:<span class="st">&quot;JavaScript the good parts&quot;</span>,
+  <span class="st">&quot;author&quot;</span>:<span class="st">&quot;Douglas Crockford&quot;</span>,
+  <span class="st">&quot;releaseDate&quot;</span>:<span class="kw">new</span> <span class="kw">Date</span>(<span class="dv">2008</span>, <span class="dv">4</span>, <span class="dv">1</span>).<span class="fu">getTime</span>()
+}, <span class="kw">function</span>(data, textStatus, jqXHR) {
+    <span class="kw">console</span>.<span class="fu">log</span>(<span class="st">&quot;Post response:&quot;</span>); 
+    <span class="kw">console</span>.<span class="fu">dir</span>(data); 
+    <span class="kw">console</span>.<span class="fu">log</span>(textStatus); 
+    <span class="kw">console</span>.<span class="fu">dir</span>(jqXHR);
 });</code></pre>
 <p>..and then</p>
-<pre class="js"><code>jQuery.get(&quot;/api/books/&quot;, function (data, textStatus, jqXHR) {
-    console.log(&quot;Get response:&quot;);
-    console.dir(data);
-    console.log(textStatus);
-    console.dir(jqXHR);</code></pre>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">jQuery</span>.<span class="fu">get</span>(<span class="st">&quot;/api/books/&quot;</span>, <span class="kw">function</span> (data, textStatus, jqXHR) {
+    <span class="kw">console</span>.<span class="fu">log</span>(<span class="st">&quot;Get response:&quot;</span>);
+    <span class="kw">console</span>.<span class="fu">dir</span>(data);
+    <span class="kw">console</span>.<span class="fu">log</span>(textStatus);
+    <span class="kw">console</span>.<span class="fu">dir</span>(jqXHR);
+});</code></pre>
 <p>You should now get an array of size 1 back from our server. You may wonder about this line:</p>
-<pre class="js"><code>&quot;releaseDate&quot;: new Date(2008, 4, 1).getTime()</code></pre>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="st">&quot;releaseDate&quot;</span>:<span class="kw">new</span> <span class="kw">Date</span>(<span class="dv">2008</span>, <span class="dv">4</span>, <span class="dv">1</span>).<span class="fu">getTime</span>()</code></pre>
 <p>MongoDB expects dates in UNIX time format (milliseconds from Jan 1st 1970), so we have to convert dates before posting. The object we get back however, contains a JavaScript Date object. Also note the _id attribute of the returned object.</p>
 <figure>
 <img src="http://codebyexample.info/wp-content/uploads/2012/04/Screen-Shot-2012-04-29-at-1.16.58-AM.png"><figcaption></figcaption>
 </figure>
 <p>Lets move on to creating a get that retrieves a single book in server.js:</p>
-<pre class="js"><code>app.get(&#39;/api/books/:id&#39;, function(req, res){
-    return BookModel.findById(req.params.id, function(err, book){
-        if(!err){
-            return res.send(book);
-        } else {
-            return console.log(err);
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">app</span>.<span class="fu">get</span>(<span class="ch">&#39;/api/books/:id&#39;</span>, <span class="kw">function</span>(req, res){
+    <span class="kw">return</span> <span class="kw">BookModel</span>.<span class="fu">findById</span>(<span class="kw">req.params</span>.<span class="fu">id</span>, <span class="kw">function</span>(err, book){
+        <span class="kw">if</span>(!err){
+            <span class="kw">return</span> <span class="kw">res</span>.<span class="fu">send</span>(book);
+        } <span class="kw">else</span> {
+            <span class="kw">return</span> <span class="kw">console</span>.<span class="fu">log</span>(err);
         }
     });
 });</code></pre>
 <p>Here we use colon notation (:id) to tell express that this part of the route is dynamic. We also use the findById function on BookModel to get a single result. Now you can get a single book by adding its id to the URL like this:</p>
-<pre class="js"><code>jQuery.get(&quot;/api/books/4f95a8cb1baa9b8a1b000006&quot;, function (data, textStatus, jqXHR){
-    console.log(&quot;Get resposne:&quot;);
-    console.dir(data);
-    console.log(textStatus);
-    console.dir(jqXHR);
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">jQuery</span>.<span class="fu">get</span>(<span class="st">&quot;/api/books/4f95a8cb1baa9b8a1b000006&quot;</span>, <span class="kw">function</span> (data, textStatus, jqXHR){
+    <span class="kw">console</span>.<span class="fu">log</span>(<span class="st">&quot;Get resposne:&quot;</span>);
+    <span class="kw">console</span>.<span class="fu">dir</span>(data);
+    <span class="kw">console</span>.<span class="fu">log</span>(textStatus);
+    <span class="kw">console</span>.<span class="fu">dir</span>(jqXHR);
 });</code></pre>
 <p>Lets create the PUT (update) function next:</p>
-<pre class="js"><code>app.put(&#39;/api/books/:id&#39;, function(req, res){
-    console.log(&#39;Updating book &#39; + req.body.title);
-    return BookModel.findById(req.params.id, function(err, book){
-        book.title = req.body.title;
-        book.author = req.body.author;
-        book.releaseDate = req.body.releaseDate;
-        return book.save(function(err){
-            if(!err){
-                console.log(&#39;book updated&#39;);
-            } else {
-                console.log(err);
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">app</span>.<span class="fu">put</span>(<span class="ch">&#39;/api/books/:id&#39;</span>, <span class="kw">function</span>(req, res){
+    <span class="kw">console</span>.<span class="fu">log</span>(<span class="ch">&#39;Updating book &#39;</span> + <span class="kw">req.body</span>.<span class="fu">title</span>);
+    <span class="kw">return</span> <span class="kw">BookModel</span>.<span class="fu">findById</span>(<span class="kw">req.params</span>.<span class="fu">id</span>, <span class="kw">function</span>(err, book){
+        <span class="kw">book</span>.<span class="fu">title</span> = <span class="kw">req.body</span>.<span class="fu">title</span>;
+        <span class="kw">book</span>.<span class="fu">author</span> = <span class="kw">req.body</span>.<span class="fu">author</span>;
+        <span class="kw">book</span>.<span class="fu">releaseDate</span> = <span class="kw">req.body</span>.<span class="fu">releaseDate</span>;
+        <span class="kw">return</span> <span class="kw">book</span>.<span class="fu">save</span>(<span class="kw">function</span>(err){
+            <span class="kw">if</span>(!err){
+                <span class="kw">console</span>.<span class="fu">log</span>(<span class="ch">&#39;book updated&#39;</span>);
+            } <span class="kw">else</span> {
+                <span class="kw">console</span>.<span class="fu">log</span>(err);
             }
-            return res.send(book);
+            <span class="kw">return</span> <span class="kw">res</span>.<span class="fu">send</span>(book);
         });
     });
 });</code></pre>
 <p>This is a little larger than previous ones, but should be pretty straight forward – we find a book by id, update its properties, save it and send it back to the client.</p>
 <p>To test this we need to use the more general jQuery ajax function (replace the id with what you got from a GET request):</p>
-<pre class="js"><code>jQuery.ajax({
-  url:&quot;/api/books/4f95a8cb1baa9b8a1b000006&quot;,
-  type:&quot;PUT&quot;,
-  data:{
-    &quot;title&quot;: &quot;JavaScript The good parts&quot;,
-    &quot;author&quot;: &quot;The Legendary Douglas Crockford&quot;,
-    &quot;releaseDate&quot;: new Date(2008, 4, 1).getTime()
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">jQuery</span>.<span class="fu">ajax</span>({
+  <span class="dt">url</span>:<span class="st">&quot;/api/books/4f95a8cb1baa9b8a1b000006&quot;</span>,
+  <span class="dt">type</span>:<span class="st">&quot;PUT&quot;</span>,
+  <span class="dt">data</span>:{
+    <span class="st">&quot;title&quot;</span>:<span class="st">&quot;JavaScript The good parts&quot;</span>,
+    <span class="st">&quot;author&quot;</span>:<span class="st">&quot;The Legendary Douglas Crockford&quot;</span>,
+    <span class="st">&quot;releaseDate&quot;</span>:<span class="kw">new</span> <span class="kw">Date</span>(<span class="dv">2008</span>, <span class="dv">4</span>, <span class="dv">1</span>).<span class="fu">getTime</span>()
   },
-  success: function(data, textStatus, jqXHR) {
-    console.log(&quot;Post resposne:&quot;); console.dir(data); console.log(textStatus); console.dir(jqXHR);
-  }});
-</code></pre>
+  <span class="dt">success</span>: <span class="kw">function</span>(data, textStatus, jqXHR) {
+    <span class="kw">console</span>.<span class="fu">log</span>(<span class="st">&quot;Post resposne:&quot;</span>); 
+    <span class="kw">console</span>.<span class="fu">dir</span>(data); 
+    <span class="kw">console</span>.<span class="fu">log</span>(textStatus); 
+    <span class="kw">console</span>.<span class="fu">dir</span>(jqXHR);
+  }
+});</code></pre>
 <p>Finally we create the delete route:</p>
-<pre class="js"><code>app.delete(&#39;/api/books/:id&#39;, function(req, res){
-    console.log(&#39;Deleting book with id: &#39; + req.params.id);
-    return BookModel.findById(req.params.id, function(err, book){
-        return book.remove(function(err){
-            if(!err){
-                console.log(&#39;Book removed&#39;);
-                return res.send(&#39;&#39;);
-            } else {
-                console.log(err);
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">app</span>.<span class="fu">delete</span>(<span class="ch">&#39;/api/books/:id&#39;</span>, <span class="kw">function</span>(req, res){
+    <span class="kw">console</span>.<span class="fu">log</span>(<span class="ch">&#39;Deleting book with id: &#39;</span> + <span class="kw">req.params</span>.<span class="fu">id</span>);
+    <span class="kw">return</span> <span class="kw">BookModel</span>.<span class="fu">findById</span>(<span class="kw">req.params</span>.<span class="fu">id</span>, <span class="kw">function</span>(err, book){
+        <span class="kw">return</span> <span class="kw">book</span>.<span class="fu">remove</span>(<span class="kw">function</span>(err){
+            <span class="kw">if</span>(!err){
+                <span class="kw">console</span>.<span class="fu">log</span>(<span class="ch">&#39;Book removed&#39;</span>);
+                <span class="kw">return</span> <span class="kw">res</span>.<span class="fu">send</span>(<span class="ch">&#39;&#39;</span>);
+            } <span class="kw">else</span> {
+                <span class="kw">console</span>.<span class="fu">log</span>(err);
             }
         });
     });
 });</code></pre>
 <p>…and try it out:</p>
-<pre class="js"><code>jQuery.ajax({
-  url:&#39;/api/books/4f95a5251baa9b8a1b000001&#39;,
-  type: &#39;DELETE&#39;,
-  success:function(data, textStatus, jqXHR){
-    console.log(&quot;Post resposne:&quot;);
-    console.dir(data);
-    console.log(textStatus);
-    console.dir(jqXHR);
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">jQuery</span>.<span class="fu">ajax</span>({
+  <span class="dt">url</span>:<span class="ch">&#39;/api/books/4f95a5251baa9b8a1b000001&#39;</span>,
+  <span class="dt">type</span>:<span class="ch">&#39;DELETE&#39;</span>,
+  <span class="dt">success</span>:<span class="kw">function</span>(data, textStatus, jqXHR){
+    <span class="kw">console</span>.<span class="fu">log</span>(<span class="st">&quot;Post resposne:&quot;</span>);
+    <span class="kw">console</span>.<span class="fu">dir</span>(data);
+    <span class="kw">console</span>.<span class="fu">log</span>(textStatus);
+    <span class="kw">console</span>.<span class="fu">dir</span>(jqXHR);
   }
 });</code></pre>
 <p>So now our REST API is complete – we have support for all HTTP verbs. What next? Well, until now I have left out the keywords part of our books. This is a bit more complicated since a book could have several keywords and we don’t want to represent them as a string, but rather an array of strings. To do that we need another schema. Add a Keywords schema right above our Book schema:</p>
-<pre class="js"><code>//Schemas
-var Keywords = new mongoose.Schema({
-    keyword: String
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="co">//Schemas</span>
+<span class="kw">var</span> Keywords = <span class="kw">new</span> <span class="kw">mongoose</span>.<span class="fu">Schema</span>({
+    <span class="dt">keyword</span>:<span class="kw">String</span>
 });</code></pre>
 <p>To add a sub schema to an existing schema we use brackets notation like so:</p>
-<pre class="js"><code>var Book = new mongoose.Schema({
-    title:String,
-    author:String,
-    releaseDate:Date,
-    keywords: [Keywords]
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> Book = <span class="kw">new</span> <span class="kw">mongoose</span>.<span class="fu">Schema</span>({
+    <span class="dt">title</span>:<span class="kw">String</span>,
+    <span class="dt">author</span>:<span class="kw">String</span>,
+    <span class="dt">releaseDate</span>:<span class="kw">Date</span>,
+    <span class="dt">keywords</span>:[Keywords]
 });</code></pre>
 <p>Also update POST and PUT</p>
-<pre class="js"><code>app.post(&#39;/api/books&#39;, function (req, res) {
-    var book = new BookModel({
-        title:req.body.title,
-        author:req.body.author,
-        releaseDate:req.body.releaseDate,
-        keywords: req.body.keywords
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">app</span>.<span class="fu">post</span>(<span class="ch">&#39;/api/books&#39;</span>, <span class="kw">function</span> (req, res) {
+    <span class="kw">var</span> book = <span class="kw">new</span> BookModel({
+        <span class="dt">title</span>:<span class="kw">req.body</span>.<span class="fu">title</span>,
+        <span class="dt">author</span>:<span class="kw">req.body</span>.<span class="fu">author</span>,
+        <span class="dt">releaseDate</span>:<span class="kw">req.body</span>.<span class="fu">releaseDate</span>,
+        <span class="dt">keywords</span>:<span class="kw">req.body</span>.<span class="fu">keywords</span>
     });
-    book.save(function (err) {
-        if (!err) {
-            return console.log(&#39;created&#39;);
-        } else {
-            return console.log(err);
+    <span class="kw">book</span>.<span class="fu">save</span>(<span class="kw">function</span> (err) {
+        <span class="kw">if</span> (!err) {
+            <span class="kw">return</span> <span class="kw">console</span>.<span class="fu">log</span>(<span class="ch">&#39;created&#39;</span>);
+        } <span class="kw">else</span> {
+            <span class="kw">return</span> <span class="kw">console</span>.<span class="fu">log</span>(err);
         }
     });
-    return res.send(book);
+    <span class="kw">return</span> <span class="kw">res</span>.<span class="fu">send</span>(book);
 });
-
-app.put(&#39;/api/books/:id&#39;, function(req, res){
-    return BookModel.findById(req.params.id, function(err, book){
-        book.title = req.body.title;
-        book.author = req.body.author;
-        book.releaseDate = req.body.releaseDate;
-        book.keywords = req.body.keywords;
-        return book.save(function(err){
-            if(!err){
-                console.log(&#39;book updated&#39;);
-            } else {
-                console.log(err);
+ 
+<span class="kw">app</span>.<span class="fu">put</span>(<span class="ch">&#39;/api/books/:id&#39;</span>, <span class="kw">function</span>(req, res){
+    <span class="kw">return</span> <span class="kw">BookModel</span>.<span class="fu">findById</span>(<span class="kw">req.params</span>.<span class="fu">id</span>, <span class="kw">function</span>(err, book){
+        <span class="kw">book</span>.<span class="fu">title</span> = <span class="kw">req.body</span>.<span class="fu">title</span>;
+        <span class="kw">book</span>.<span class="fu">author</span> = <span class="kw">req.body</span>.<span class="fu">author</span>;
+        <span class="kw">book</span>.<span class="fu">releaseDate</span> = <span class="kw">req.body</span>.<span class="fu">releaseDate</span>;
+        <span class="kw">book</span>.<span class="fu">keywords</span> = <span class="kw">req.body</span>.<span class="fu">keywords</span>;
+        <span class="kw">return</span> <span class="kw">book</span>.<span class="fu">save</span>(<span class="kw">function</span>(err){
+            <span class="kw">if</span>(!err){
+                <span class="kw">console</span>.<span class="fu">log</span>(<span class="ch">&#39;book updated&#39;</span>);
+            } <span class="kw">else</span> {
+                <span class="kw">console</span>.<span class="fu">log</span>(err);
             }
-            return res.send(book);
+            <span class="kw">return</span> <span class="kw">res</span>.<span class="fu">send</span>(book);
         });
     });
 });</code></pre>
 <p>There we are, that should be all we need, now we can try it out in the console:</p>
-<pre class="js"><code>jQuery.post(&quot;/api/books&quot;, {
-  &quot;title&quot;: &quot;Secrets of the JavaScript Ninja&quot;,
-  &quot;author&quot;: &quot;John Resig&quot;,
-  &quot;releaseDate&quot;: new Date(2008, 3, 12).getTime(),
-  &quot;keywords&quot;:[{
-     &quot;keyword&quot;:&quot;JavaScript&quot;
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">jQuery</span>.<span class="fu">post</span>(<span class="st">&quot;/api/books&quot;</span>, {
+  <span class="st">&quot;title&quot;</span>:<span class="st">&quot;Secrets of the JavaScript Ninja&quot;</span>,
+  <span class="st">&quot;author&quot;</span>:<span class="st">&quot;John Resig&quot;</span>,
+  <span class="st">&quot;releaseDate&quot;</span>:<span class="kw">new</span> <span class="kw">Date</span>(<span class="dv">2008</span>, <span class="dv">3</span>, <span class="dv">12</span>).<span class="fu">getTime</span>(),
+  <span class="st">&quot;keywords&quot;</span>:[{
+     <span class="st">&quot;keyword&quot;</span>:<span class="st">&quot;JavaScript&quot;</span>
    },{
-     &quot;keyword&quot;: &quot;Reference&quot;
+     <span class="st">&quot;keyword&quot;</span>:<span class="st">&quot;Reference&quot;</span>
    }]
-}, function(data, textStatus, jqXHR) {
-    console.log(&quot;Post response:&quot;); console.dir(data); console.log(textStatus); console.dir(jqXHR);
+}, <span class="kw">function</span>(data, textStatus, jqXHR) {
+    <span class="kw">console</span>.<span class="fu">log</span>(<span class="st">&quot;Post response:&quot;</span>); 
+    <span class="kw">console</span>.<span class="fu">dir</span>(data); 
+    <span class="kw">console</span>.<span class="fu">log</span>(textStatus); 
+    <span class="kw">console</span>.<span class="fu">dir</span>(jqXHR);
 });</code></pre>
 <p>You should now have a fully functional REST server. We will use this in the next part of the tutorial to make our library application persistent.</p>
 <h2 id="part-3"><a href="#TOC">Part 3</a></h2>
-<p>In this part we will cover connecting our Backbone application to to a server through a REST API. This tutorial builds on the first two parts, so I strongly recommend reading those to fully benefit from this part.</p>
-<p>Update: If you for some reason don’t have access to a server you could use the Backbone.Localstorage plugin (you’ll need a browser that supports localstorage though). To do this, download the plugin here, add it in a script tag in the html page after Backbone and initialize it in the collection like this:</p>
-<pre class="js"><code>var Library = Backbone.Collection.extend({
-    localStorage: new Backbone.LocalStorage(&quot;LibraryStorage&quot;),
-    model: Book,
-    url: &#39;/api/books&#39;
+<p>In this part we will cover connecting our Backbone application to a server through a REST API. This tutorial builds on the first two parts, so I strongly recommend reading those to fully benefit from this part.</p>
+<p>To synchronize a Backbone application to a server we need a server with a REST API that communicates in JSON format. The server I created in part 2.5 will fit our needs, but if you are creating your own server in another language you might want to read through that tutorial to get a grip of the API. Backbone makes use of the sync function in order to persist models with the server. You usually do not need to use this function directly, but instead set a url attribute to a collection (or a Model if the Models are not in a collection) informing Backbone where to sync. So lets go ahead and add a url attribute to our Library collection:</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> Library = <span class="kw">Backbone.Collection</span>.<span class="fu">extend</span>({
+    <span class="dt">model</span>:Book,
+    <span class="dt">url</span>:<span class="ch">&#39;/api/books&#39;</span>
 });</code></pre>
-<p>To synchronize a Backbone application to a server we need a server with a REST API that communicates in JSON format. The server I created in part 2.5 will fit our needs, but if you are creating your own server in another language you might want to read through that tutorial to get a grip of the API. Backbone makes use of the sync function in order to persist models with the server. You do not need usually use this function directly, but instead set a url attribute to a collection (or a Model if the Models are not in a collection) informing Backbone where to sync. So lets go ahead and add a url attribute to our Library collection:</p>
-<pre class="js"><code>var Library = Backbone.Collection.extend({
-    model:Book,
-    url:&#39;/api/books&#39;
-});
-</code></pre>
+<p>Hint: If you, for some reason, don’t have access to a server you could use the Backbone.Localstorage plugin (you’ll need a browser that supports localstorage though). To do this, download the plugin <a href="http://github.com/jeromegn/Backbone.localStorage">here</a>, add it in a script tag in the HTML page after Backbone and initialize it in the collection like this:</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> Library = <span class="kw">Backbone.Collection</span>.<span class="fu">extend</span>({
+    <span class="dt">localStorage</span>:<span class="kw">new</span> <span class="kw">Backbone</span>.<span class="fu">LocalStorage</span>(<span class="st">&quot;LibraryStorage&quot;</span>),
+    <span class="dt">model</span>:Book,
+    <span class="dt">url</span>:<span class="ch">&#39;/api/books&#39;</span>
+});</code></pre>
 <p>By this Backbone will assume that the API looks like this:</p>
 <pre><code>url HTTP Method Operation
 /api/books  GET Get an array of all books
@@ -3448,27 +3418,23 @@ app.put(&#39;/api/books/:id&#39;, function(req, res){
 /api/books/:id  PUT Update the book with id of :id
 /api/books/:id  DELETE  Delete the book with id of :id
 </code></pre>
-<p>To make our application get the Book models from the server on page load we need to update the LibraryView. It is recommended in the Backbone documentation to insert all models when the page is generated on the server side, rather than fetching them from the client side once the page is loaded. Since this tutorial will try to give you a more complete picture of how to communicate with a server, we will go ahead and ignore that recommendation. Go to the LibraryView declaration in app.js and make the following updates:</p>
-<pre class="js"><code>var LibraryView = Backbone.View.extend({
-    el:$(&quot;#books&quot;),
+<p>To make our application get the Book models from the server on page load we need to update the LibraryView. It is recommended in the Backbone documentation to insert all models when the page is generated on the server side, rather than fetching them from the client side once the page is loaded. Since this tutorial will try to give you a more complete picture of how to communicate with a server, we will go ahead and ignore that recommendation. Go to the LibraryView declaration in app.js and update the initialize function as follows:</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="dt">initialize</span>:<span class="kw">function</span> () {
+    <span class="co">//this.collection = new Library(books);</span>
+    <span class="kw">this</span>.<span class="fu">collection</span> = <span class="kw">new</span> Library();
+    <span class="kw">this</span>.<span class="fu">collection</span>.<span class="fu">fetch</span>();
+    <span class="kw">this</span>.<span class="fu">render</span>();
 
-    initialize:function () {
-        //this.collection = new Library(books);
-        this.collection = new Library();
-        this.collection.fetch();
-        this.render();
-
-        this.collection.on(&quot;add&quot;, this.renderBook, this);
-        this.collection.on(&quot;remove&quot;, this.removeBook, this);
-        this.collection.on(&quot;reset&quot;, this.render, this);
-    },</code></pre>
-<p>Here I have replaced the row where we create a collection from the internal array with this.collection.fetch(). I have also added an listener on the reset event. We need to do this since the fetching of models is asynchronous and happens after the page is rendered. When the fetching is finished, Backbone will fire the reset event, which we listen to and re-render the view. If you reload the page now you should see all books that are stored on the server:</p>
+    <span class="kw">this</span>.<span class="fu">collection</span>.<span class="fu">on</span>(<span class="st">&quot;add&quot;</span>, <span class="kw">this</span>.<span class="fu">renderBook</span>, <span class="kw">this</span>);
+    <span class="kw">this</span>.<span class="fu">collection</span>.<span class="fu">on</span>(<span class="st">&quot;remove&quot;</span>, <span class="kw">this</span>.<span class="fu">removeBook</span>, <span class="kw">this</span>);
+    <span class="kw">this</span>.<span class="fu">collection</span>.<span class="fu">on</span>(<span class="st">&quot;reset&quot;</span>, <span class="kw">this</span>.<span class="fu">render</span>, <span class="kw">this</span>);
+},</code></pre>
+<p>Here I have replaced the row where we create a collection from the internal array with <code>this.collection.fetch()</code>. I have also added a listener on the reset event. We need to do this since the fetching of models is asynchronous and happens after the page is rendered. When the fetching is finished, Backbone will fire the reset event, which we listen to and re-render the view. If you reload the page now you should see all books that are stored on the server:</p>
 <figure>
 <img src="http://codebyexample.info/wp-content/uploads/2012/04/Screen-Shot-2012-04-30-at-12.27.32-AM.png"><figcaption></figcaption>
 </figure>
-<p>As you can see the date looks a bit weird, and also the keywords. The date delivered from the server is converted into a JavaScript Date object and when applied to the underscore template it will use the toString() function to display it. There isn’t very good support for formatting dates in JavaScript so we will use the dateFormat jQuery plugin to fix this. Go ahead and download it from here and put it in your js folder. Then go ahead and change index.html like this:</p>
-<pre class="sourceCode html"><code class="sourceCode html">
-<span class="kw">&lt;body&gt;</span>
+<p>As you can see the date and keywords look a bit weird. The date delivered from the server is converted into a JavaScript Date object and when applied to the underscore template it will use the toString() function to display it. There isn’t very good support for formatting dates in JavaScript so we will use the dateFormat jQuery plugin to fix this. Go ahead and download it from <a href="http://github.com/phstc/jquery-dateFormat">here</a> and put it in your js folder. Then go ahead and change index.html like this:</p>
+<pre class="sourceCode html"><code class="sourceCode html"><span class="kw">&lt;body&gt;</span>
 <span class="kw">&lt;div</span><span class="ot"> id=</span><span class="st">&quot;books&quot;</span><span class="kw">&gt;</span>
     <span class="kw">&lt;form</span><span class="ot"> id=</span><span class="st">&quot;addBook&quot;</span><span class="ot"> action=</span><span class="st">&quot;#&quot;</span><span class="kw">&gt;</span>
         <span class="kw">&lt;div&gt;</span>
@@ -3504,55 +3470,56 @@ app.put(&#39;/api/books/:id&#39;, function(req, res){
         &lt;li&gt;&lt;%= title%&gt;&lt;/li&gt;
         &lt;li&gt;&lt;%= author%&gt;&lt;/li&gt;
         &lt;li&gt;&lt;%= $.<span class="fu">format</span>.<span class="fu">date</span>(<span class="kw">new</span> <span class="kw">Date</span>(releaseDate), <span class="ch">&#39;dd</span>/<span class="ch">MM</span>/<span class="ch">yyyy&#39;</span>) %&gt;&lt;/li&gt;
-        &lt;li&gt;&lt;% <span class="kw">_</span>.<span class="fu">each</span>(keywords, <span class="kw">function</span>(keyobj){%&gt; &lt;%= <span class="kw">keyobj</span>.<span class="fu">keyword</span> %&gt;&lt;% }}); %&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;% <span class="kw">_</span>.<span class="fu">each</span>(keywords, <span class="kw">function</span>(keyobj){%&gt; &lt;%= <span class="kw">keyobj</span>.<span class="fu">keyword</span> %&gt;&lt;% }); %&gt;&lt;/li&gt;
     &lt;/ul&gt;
     &lt;button class=<span class="st">&quot;delete&quot;</span>&gt;Delete&lt;/button&gt;
 <span class="kw">&lt;/script&gt;</span></code></pre>
 <p>Here I iterate over the keywords array using the each function and print out every single keyword. Note that I display the keyword using the &lt;%= tag. This will display the keywords with a space between. If you would like to support space characters within a keyword, like for example <q>new age</q> then you could separate them by comma (no sane person would put a comma in a keyword right?). That would lead us to write some more code to remove the comma after the last keyword like this:</p>
-<pre class="sourceCode html"><code class="sourceCode html">       <span class="kw">&lt;li&gt;</span>
-       <span class="er">&lt;</span>% _.each(keywords, function(keyobj, index, list){%&gt;
+<pre class="sourceCode html"><code class="sourceCode html"><span class="kw">&lt;li&gt;</span>
+    <span class="er">&lt;</span>% _.each(keywords, function(keyobj, index, list){ %&gt;
         <span class="er">&lt;</span>%= keyobj.keyword %&gt;
-          <span class="er">&lt;</span>% if(index <span class="er">&lt;</span> list.length - 1){ %&gt;
-          <span class="er">&lt;</span>%= &#39;, &#39; %&gt;
-        <span class="er">&lt;</span>% }}); %&gt;
-       <span class="kw">&lt;/li&gt;</span></code></pre>
+        <span class="er">&lt;</span>% if(index <span class="er">&lt;</span> list.length - 1){ %&gt;
+            <span class="er">&lt;</span>%= &#39;, &#39; %&gt;
+        <span class="er">&lt;</span>% } %&gt;
+    <span class="er">&lt;</span>% }); %&gt;
+<span class="kw">&lt;/li&gt;</span></code></pre>
 <p>Reloading the page again should look quite decent:</p>
 <figure>
 <img src="http://codebyexample.info/wp-content/uploads/2012/04/Screen-Shot-2012-04-30-at-1.02.14-AM.png"><figcaption></figcaption>
 </figure>
 <p>Now go ahead and delete a book and then reload the page: Tadaa! the deleted book is back! Not cool, why is this? This happens because when we get the BookModels from the server they have an _id attribute (notice the underscore), but Backbone expects an id attribute (no underscore). Since no id attribute is present, Backbone sees this model as new and deleting a new model don’t need any synchronization. To fix this we could change the server response, but we are instead going to look at the parse function of Backbone.Model. The parse function lets you edit the server response before it is passed to the Model constructor. Update the Book model like this:</p>
-<pre class="js"><code>var Book = Backbone.Model.extend({
-    defaults:{
-        coverImage:&quot;img/placeholder.png&quot;,
-        title:&quot;No title&quot;,
-        author:&quot;Unknown&quot;,
-        releaseDate:&quot;Unknown&quot;,
-        keywords:&quot;None&quot;
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> Book = <span class="kw">Backbone.Model</span>.<span class="fu">extend</span>({
+    <span class="dt">defaults</span>:{
+        <span class="dt">coverImage</span>:<span class="st">&quot;img/placeholder.png&quot;</span>,
+        <span class="dt">title</span>:<span class="st">&quot;No title&quot;</span>,
+        <span class="dt">author</span>:<span class="st">&quot;Unknown&quot;</span>,
+        <span class="dt">releaseDate</span>:<span class="st">&quot;Unknown&quot;</span>,
+        <span class="dt">keywords</span>:<span class="st">&quot;None&quot;</span>
     },
-    parse:function (response) {
-        console.log(response);
-        response.id = response._id;
-        return response;
+    <span class="dt">parse</span>:<span class="kw">function</span> (response) {
+        <span class="kw">console</span>.<span class="fu">log</span>(response);
+        <span class="kw">response</span>.<span class="fu">id</span> = <span class="kw">response</span>._<span class="fu">id</span>;
+        <span class="kw">return</span> response;
     }
 });</code></pre>
 <p>I simply copy the value of _id to the needed id attribute. If you reload the page you will see that models are actually deleted on the server when you press the delete button.</p>
 <p>Note: A simpler way of making Backbone recognize _id as its unique identifier is to set the idAttribute of the model like this:</p>
-<pre class="js"><code>var Book = Backbone.Model.extend({
-    defaults:{
-        coverImage:&quot;img/placeholder.png&quot;,
-        title:&quot;No title&quot;,
-        author:&quot;Unknown&quot;,
-        releaseDate:&quot;Unknown&quot;,
-        keywords:&quot;None&quot;
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> Book = <span class="kw">Backbone.Model</span>.<span class="fu">extend</span>({
+    <span class="dt">defaults</span>:{
+        <span class="dt">coverImage</span>:<span class="st">&quot;img/placeholder.png&quot;</span>,
+        <span class="dt">title</span>:<span class="st">&quot;No title&quot;</span>,
+        <span class="dt">author</span>:<span class="st">&quot;Unknown&quot;</span>,
+        <span class="dt">releaseDate</span>:<span class="st">&quot;Unknown&quot;</span>,
+        <span class="dt">keywords</span>:<span class="st">&quot;None&quot;</span>
     },
-    idAttribute: &quot;_id&quot;
+    <span class="dt">idAttribute</span>:<span class="st">&quot;_id&quot;</span>
 });</code></pre>
 <p>If you now try to add a new book using the form you’ll notice that it is the same story as with delete – models wont get persisted on the server. This is because Backbone.Collection.add doesn’t automatically sync, but it is easy to fix. In LibraryView in app.js, change the line reading:</p>
-<pre class="js"><code>this.collection.add(new Book(formData));</code></pre>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">this</span>.<span class="fu">collection</span>.<span class="fu">add</span>(<span class="kw">new</span> Book(formData));</code></pre>
 <p>…to:</p>
-<pre class="js"><code>this.collection.create(formData);</code></pre>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">this</span>.<span class="fu">collection</span>.<span class="fu">create</span>(formData);</code></pre>
 <p>Now newly created books will get persisted. Actually, they probably wont if you enter a date. The server expects a date in UNIX timestamp format (milliseconds since Jan 1, 1970). Also any keywords you enter wont be stored since the server expects an array of objects with the attribute <q>keyword</q>.</p>
-<p>We start with fixing the date issue. We don’t really want the users to enter a date into a specific format manually so we’ll use the standard datepicker from jQuery UI. Go ahead and create a custom jQuery UI download containing datepicker from here . Add the css and js files to index.html:</p>
+<p>We start with fixing the date issue. We don’t really want the users to enter a date into a specific format manually so we’ll use the standard datepicker from jQuery UI. Go ahead and create a custom jQuery UI download containing datepicker from <a href="http://jqueryui.com/download/">here</a>. Add the css and js files to index.html:</p>
 <pre class="sourceCode html"><code class="sourceCode html"><span class="kw">&lt;head&gt;</span>
     <span class="kw">&lt;meta</span><span class="ot"> charset=</span><span class="st">&quot;UTF-8&quot;</span><span class="kw">/&gt;</span>
     <span class="kw">&lt;title&gt;</span>Backbone.js Web App<span class="kw">&lt;/title&gt;</span>
@@ -3567,66 +3534,65 @@ app.put(&#39;/api/books/:id&#39;, function(req, res){
 <span class="kw">&lt;script</span><span class="ot"> src=</span><span class="st">&quot;js/backbone.js&quot;</span><span class="kw">&gt;&lt;/script&gt;</span>
 <span class="kw">&lt;script</span><span class="ot"> src=</span><span class="st">&quot;js/app.js&quot;</span><span class="kw">&gt;&lt;/script&gt;</span></code></pre>
 <p>Now in the beginning of app.js bind datepicker to our releaseDate field:</p>
-<pre class="js"><code>(function ($) {
-    $( &quot;#releaseDate&quot; ).datepicker();
-
-    var books = [
-        {title:&quot;JS the good parts&quot;, author:&quot;John Doe&quot;, releaseDate:&quot;2012&quot;, keywords:&quot;JavaScript Programming&quot;},
-</code></pre>
+<pre class="sourceCode javascript"><code class="sourceCode javascript">(<span class="kw">function</span> ($) {
+    $(<span class="st">&quot;#releaseDate&quot;</span>).<span class="fu">datepicker</span>();
+ 
+    <span class="kw">var</span> books = [
+        {<span class="dt">title</span>:<span class="st">&quot;JS the good parts&quot;</span>, <span class="dt">author</span>:<span class="st">&quot;John Doe&quot;</span>, <span class="dt">releaseDate</span>:<span class="st">&quot;2012&quot;</span>, <span class="dt">keywords</span>:<span class="st">&quot;JavaScript Programming&quot;</span>},</code></pre>
 <p>You should now be able to pick a date when clicking in the releaseDate field:</p>
 <figure>
 <img src="http://codebyexample.info/wp-content/uploads/2012/04/Screen-Shot-2012-04-30-at-1.34.19-AM.png"><figcaption></figcaption>
 </figure>
 <p>Now go to the addBook function in LibraryView and update it like this:</p>
-<pre class="js"><code>addBook:function (e) {
-    e.preventDefault();
-
-    var formData = {};
-
-    $(&quot;#addBook div&quot;).children(&quot;input&quot;).each(function (i, el) {
-        if ($(el).val() !== &quot;&quot;) {
-            if (el.id === &#39;releaseDate&#39;){
-                formData[el.id] = $(&#39;#releaseDate&#39;).datepicker(&quot;getDate&quot;).getTime();
-            } else {
-                formData[el.id] = $(el).val();
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="dt">addBook</span>:<span class="kw">function</span> (e) {
+    <span class="kw">e</span>.<span class="fu">preventDefault</span>();
+ 
+    <span class="kw">var</span> formData = {};
+ 
+    $(<span class="st">&quot;#addBook div&quot;</span>).<span class="fu">children</span>(<span class="st">&quot;input&quot;</span>).<span class="fu">each</span>(<span class="kw">function</span> (i, el) {
+        <span class="kw">if</span> ($(el).<span class="fu">val</span>() !== <span class="st">&quot;&quot;</span>) {
+            <span class="kw">if</span> (<span class="kw">el</span>.<span class="fu">id</span> === <span class="ch">&#39;releaseDate&#39;</span>){
+                formData[<span class="kw">el</span>.<span class="fu">id</span>] = $(<span class="ch">&#39;#releaseDate&#39;</span>).<span class="fu">datepicker</span>(<span class="st">&quot;getDate&quot;</span>).<span class="fu">getTime</span>();
+            } <span class="kw">else</span> {
+                formData[<span class="kw">el</span>.<span class="fu">id</span>] = $(el).<span class="fu">val</span>();
             }
         }
     });
-
-    books.push(formData);
-
-    //this.collection.add(new Book(formData));
-    this.collection.create(formData);
+ 
+    <span class="kw">books</span>.<span class="fu">push</span>(formData);
+ 
+    <span class="co">//this.collection.add(new Book(formData));</span>
+    <span class="kw">this</span>.<span class="fu">collection</span>.<span class="fu">create</span>(formData);
 },</code></pre>
 <p>Here I check if the current element is the releaseDate input field, in which case I use datePicker(<q>getDate</q>) which will give me a Date object and then use the getTime function on that to get the time in milliseconds. While we are at it lets fix the keywords issue as well:</p>
-<pre class="js"><code>addBook:function (e) {
-    e.preventDefault();
-
-    var formData = {};
-
-    $(&quot;#addBook div&quot;).children(&quot;input&quot;).each(function (i, el) {
-        if ($(el).val() !== &quot;&quot;) {
-            if (el.id === &#39;keywords&#39;) {
-                var keywordArray = $(el).val().split(&#39;,&#39;);
-                var keywordObjects = [];
-                for (var j = 0; j &lt; keywordArray.length; j++) {
-                    keywordObjects[j] = {&quot;keyword&quot;:keywordArray[j]};
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="dt">addBook</span>:<span class="kw">function</span> (e) {
+    <span class="kw">e</span>.<span class="fu">preventDefault</span>();
+ 
+    <span class="kw">var</span> formData = {};
+ 
+    $(<span class="st">&quot;#addBook div&quot;</span>).<span class="fu">children</span>(<span class="st">&quot;input&quot;</span>).<span class="fu">each</span>(<span class="kw">function</span> (i, el) {
+        <span class="kw">if</span> ($(el).<span class="fu">val</span>() !== <span class="st">&quot;&quot;</span>) {
+            <span class="kw">if</span> (<span class="kw">el</span>.<span class="fu">id</span> === <span class="ch">&#39;keywords&#39;</span>) {
+                <span class="kw">var</span> keywordArray = $(el).<span class="fu">val</span>().<span class="fu">split</span>(<span class="ch">&#39;,&#39;</span>);
+                <span class="kw">var</span> keywordObjects = [];
+                <span class="kw">for</span> (<span class="kw">var</span> j = <span class="dv">0</span>; j &lt; <span class="kw">keywordArray</span>.<span class="fu">length</span>; j++) {
+                    keywordObjects[j] = {<span class="st">&quot;keyword&quot;</span>:keywordArray[j]};
                 }
-                formData[el.id] = keywordObjects;
-            } else if (el.id === &#39;releaseDate&#39;){
-                formData[el.id] = $(&#39;#releaseDate&#39;).datepicker(&quot;getDate&quot;).getTime();
-            } else {
-                formData[el.id] = $(el).val();
+                formData[<span class="kw">el</span>.<span class="fu">id</span>] = keywordObjects;
+            } <span class="kw">else</span> <span class="kw">if</span> (<span class="kw">el</span>.<span class="fu">id</span> === <span class="ch">&#39;releaseDate&#39;</span>){
+                formData[<span class="kw">el</span>.<span class="fu">id</span>] = $(<span class="ch">&#39;#releaseDate&#39;</span>).<span class="fu">datepicker</span>(<span class="st">&quot;getDate&quot;</span>).<span class="fu">getTime</span>();
+            } <span class="kw">else</span> {
+                formData[<span class="kw">el</span>.<span class="fu">id</span>] = $(el).<span class="fu">val</span>();
             }
         }
     });
-
-    books.push(formData);
-
-    //this.collection.add(new Book(formData));
-    this.collection.create(formData);
+ 
+    <span class="kw">books</span>.<span class="fu">push</span>(formData);
+ 
+    <span class="co">//this.collection.add(new Book(formData));</span>
+    <span class="kw">this</span>.<span class="fu">collection</span>.<span class="fu">create</span>(formData);
 },</code></pre>
-<p>Here I check if the current element is the keywords input field, in which case I split the string on each comma the create a new array with keyword objects. In other words I assume that keywords are separated by commas, so I better write a comment on that in the form. Now you should be able to add new books with both release date and keywords!</p>
+<p>Here I check if the current element is the keywords input field, in which case I split the string on each comma and then create a new array with keyword objects. In other words I assume that keywords are separated by commas, so I better write a comment on that in the form. Now you should be able to add new books with both release date and keywords!</p>
 <figure>
 <img src="http://codebyexample.info/wp-content/uploads/2012/04/Screen-Shot-2012-05-01-at-8.57.51-PM.png"><figcaption></figcaption>
 </figure>
@@ -4919,7 +4885,7 @@ $(<span class="ch">&#39;#content&#39;</span>).<span class="fu">html</span>(<span
 
   <span class="co">// Layout Footer View</span>
   <span class="co">// ------------------</span>
-
+  
   <span class="kw">Layout</span>.<span class="fu">Footer</span> = <span class="kw">Backbone.Marionette.Layout</span>.<span class="fu">extend</span>({
     <span class="dt">template </span>: <span class="ch">&#39;#template-footer&#39;</span>,
 
@@ -5006,7 +4972,7 @@ $(<span class="ch">&#39;#content&#39;</span>).<span class="fu">html</span>(<span
   <span class="co">//</span>
   <span class="co">// Control the workflow and logic that exists at the application</span>
   <span class="co">// level, above the implementation detail of views and models</span>
-
+  
   <span class="kw">TodoList</span>.<span class="fu">Controller</span> = <span class="kw">function</span>(){
     <span class="kw">this</span>.<span class="fu">todoList</span> = <span class="kw">new</span> <span class="kw">App.Todos</span>.<span class="fu">TodoList</span>();
   };
@@ -5055,7 +5021,7 @@ $(<span class="ch">&#39;#content&#39;</span>).<span class="fu">html</span>(<span
   <span class="co">// Get the TodoList up and running by initializing the mediator</span>
   <span class="co">// when the the application is started, pulling in all of the</span>
   <span class="co">// existing Todo items and displaying them.</span>
-
+  
   <span class="kw">TodoList</span>.<span class="fu">addInitializer</span>(<span class="kw">function</span>(){
 
     <span class="kw">var</span> controller = <span class="kw">new</span> <span class="kw">TodoList</span>.<span class="fu">Controller</span>();
@@ -5192,7 +5158,7 @@ $(<span class="ch">&#39;#content&#39;</span>).<span class="fu">html</span>(<span
   <span class="co">//</span>
   <span class="co">// Handler for filtering the list of items by showing and</span>
   <span class="co">// hiding through the use of various CSS classes</span>
-
+  
   <span class="kw">App.vent</span>.<span class="fu">on</span>(<span class="ch">&#39;todoList:filter&#39;</span>,<span class="kw">function</span>(filter) {
     filter = filter || <span class="ch">&#39;all&#39;</span>;
     $(<span class="ch">&#39;#todoapp&#39;</span>).<span class="fu">attr</span>(<span class="ch">&#39;class&#39;</span>, <span class="ch">&#39;filter-&#39;</span> + filter);
@@ -5206,7 +5172,7 @@ $(<span class="ch">&#39;#content&#39;</span>).<span class="fu">html</span>(<span
 
   <span class="co">// Todo Model</span>
   <span class="co">// ----------</span>
-
+  
   <span class="kw">Todos</span>.<span class="fu">Todo</span> = <span class="kw">Backbone.Model</span>.<span class="fu">extend</span>({
     <span class="dt">localStorage</span>: <span class="kw">new</span> <span class="kw">Backbone</span>.<span class="fu">LocalStorage</span>(<span class="ch">&#39;todos-backbone&#39;</span>),
 
@@ -5299,7 +5265,7 @@ $(<span class="ch">&#39;#content&#39;</span>).<span class="fu">html</span>(<span
 
 <h2 id="thorax"><a href="#TOC">Thorax</a></h2>
 <p><em>By Ryan Eastridge &amp; Addy Osmani</em></p>
-<p>Part of Backbone’s appeal is that it provides structure but is generally un-opionated, in particular when it comes to views. Thorax makes an opinionated decision to use Handlebars as it’s templating solution. Some of the patterns found in Marionette are found in Thorax as well. Marionette exposes most of these patterns as JavaScript APIs while in Thorax they are often exposed as template helpers. This chapter assumes the reader has knowledge of Handlebars.</p>
+<p>Part of Backbone’s appeal is that it provides structure but is generally un-opinionated, in particular when it comes to views. Thorax makes an opinionated decision to use Handlebars as it’s templating solution. Some of the patterns found in Marionette are found in Thorax as well. Marionette exposes most of these patterns as JavaScript APIs while in Thorax they are often exposed as template helpers. This chapter assumes the reader has knowledge of Handlebars.</p>
 <p>Thorax was created by Ryan Eastridge and Kevin Decker to create Walmart’s mobile web application. This chapter is limited to Thorax’s templating features and patterns implemented in Thorax that you can utilize in your application regardless of wether you choose to adopt Thorax. To learn more about other features implemented in Thorax and to download boilerplate projects visit the <a href="http://walmartlabs.github.com/thorax">Thorax website</a>.</p>
 <h3 id="hello-world"><a href="#TOC">Hello World</a></h3>
 <p><code>Thorax.View</code> differs from <code>Backbone.View</code> in that there is no <code>options</code> object. All arguments passed to the constructor become properties of the view, which in turn become available to the <code>template</code>:</p>
@@ -5326,7 +5292,7 @@ $(<span class="ch">&#39;#content&#39;</span>).<span class="fu">html</span>(<span
         <span class="dt">name</span>: <span class="ch">&#39;child&#39;</span>,
         <span class="dt">template</span>: ...
     });
-
+  
     <span class="kw">var</span> parent = <span class="kw">new</span> <span class="kw">Thorax</span>.<span class="fu">View</span>({
         <span class="dt">template</span>: <span class="ch">&#39;{{view &quot;child&quot; key=&quot;value&quot;}}&#39;</span>
     });</code></pre>
@@ -7554,7 +7520,7 @@ expect(<span class="ch">&#39;click&#39;</span>).<span class="fu">toHaveBeenTrigg
 <p>James Newbery was kind enough to help me with writing the Views section above and his articles on <a href="http://tinnedfruit.com/2011/04/26/testing-backbone-apps-with-jasmine-sinon-3.html">Testing Backbone Apps With SinonJS</a> were of great inspiration (you’ll actually find some Handlebars examples of the view specs in part 3 of his article). If you would like to learn more about writing spies and mocks for Backbone using <a href="http://sinonjs.org">SinonJS</a> as well as how to test Backbone routers, do consider reading his series.</p>
 <h2 id="exercise-1"><a href="#TOC">Exercise</a></h2>
 <p>As an exercise, I recommend now trying the Jasmine Koans in <code>practicals\jasmine-joans</code> and trying to fix some of the purposefully failing tests it has to offer. This is an excellent way of not just learning how Jasmine specs and suites work, but working through the examples (without peeking back) will also put your Backbone skills to test too.</p>
-<h2 id="further-reading"><a href="#TOC">Further reading</a></h2>
+<h2 id="further-reading-1"><a href="#TOC">Further reading</a></h2>
 <ul>
 <li><a href="http://japhr.blogspot.com/2011/11/jasmine-backbonejs-revisited.html">Jasmine + Backbone Revisited</a></li>
 <li><a href="http://japhr.blogspot.com/2011/12/phantomjs-and-backbonejs-and-requirejs.html">Backbone, PhantomJS and Jasmine</a></li>
@@ -8437,6 +8403,71 @@ test( <span class="ch">&#39;Should bind Collection events to View creation.&#39;
 <p>Until next time, the very best of luck with the rest of your journey!</p>
 <h2 id="notes"><a href="#TOC">Notes</a></h2>
 <p>I would like to thank the Backbone.js, Stack Overflow, DailyJS (Alex Young) and JavaScript communities for their help, references and contributions to this book. This project would not be possible without you so thank you! :)</p>
+<h1 id="appendix"><a href="#TOC">Appendix</a></h1>
+<h2 id="mvp"><a href="#TOC">MVP</a></h2>
+<p>Model-view-presenter (MVP) is a derivative of the MVC design pattern which focuses on improving presentation logic. It originated at a company named <a href="http://en.wikipedia.org/wiki/Taligent">Taligent</a> in the early 1990s while they were working on a model for a C++ CommonPoint environment. Whilst both MVC and MVP target the separation of concerns across multiple components, there are some fundamental differences between them.</p>
+<p>For the purposes of this summary we will focus on the version of MVP most suitable for web-based architectures.</p>
+<h3 id="models-views-presenters"><a href="#TOC">Models, Views &amp; Presenters</a></h3>
+<p>The P in MVP stands for presenter. It’s a component which contains the user-interface business logic for the view. Unlike MVC, invocations from the view are delegated to the presenter, which are decoupled from the view and instead talk to it through an interface. This allows for all kinds of useful things such as being able to mock views in unit tests.</p>
+<p>The most common implementation of MVP is one which uses a Passive View (a view which is for all intents and purposes <q>dumb</q>), containing little to no logic. MVP models are almost identical to MVC models and handle application data. The presenter acts as a mediator which talks to both the view and model, however both of these are isolated from each other. They effectively bind models to views, a responsibility held by Controllers in MVC. Presenters are at the heart of the MVP pattern and as you can guess, incorporate the presentation logic behind views.</p>
+<p>Solicited by a view, presenters perform any work to do with user requests and pass data back to them. In this respect, they retrieve data, manipulate it and determine how the data should be displayed in the view. In some implementations, the presenter also interacts with a service layer to persist data (models). Models may trigger events but it’s the presenter’s role to subscribe to them so that it can update the view. In this passive architecture, we have no concept of direct data binding. Views expose setters which presenters can use to set data.</p>
+<p>The benefit of this change from MVC is that it increases the testability of your application and provides a more clean separation between the view and the model. This isn’t however without its costs as the lack of data binding support in the pattern can often mean having to take care of this task separately.</p>
+<p>Although a common implementation of a <a href="http://martinfowler.com/eaaDev/PassiveScreen.html">Passive View</a> is for the view to implement an interface, there are variations on it, including the use of events which can decouple the View from the Presenter a little more. As we don’t have the interface construct in JavaScript, we’re using it more and more as a protocol than an explicit interface here. It’s technically still an API and it’s probably fair for us to refer to it as an interface from that perspective.</p>
+<p>There is also a <a href="http://martinfowler.com/eaaDev/SupervisingPresenter.html">Supervising Controller</a> variation of MVP, which is closer to the MVC and <a href="http://en.wikipedia.org/wiki/Model_View_ViewModel">MVVM</a> patterns as it provides data-binding from the Model directly from the View. Key-value observing (KVO) plugins (such as Derick Bailey’s Backbone.ModelBinding plugin) introduce this idea of a Supervising Controller to Backbone.</p>
+<h2 id="mvp-or-mvc"><a href="#TOC">MVP or MVC?</a></h2>
+<p>MVP is generally used most often in enterprise-level applications where it’s necessary to reuse as much presentation logic as possible. Applications with very complex views and a great deal of user interaction may find that MVC doesn’t quite fit the bill here as solving this problem may mean heavily relying on multiple controllers. In MVP, all of this complex logic can be encapsulated in a presenter, which can simplify maintenance greatly.</p>
+<p>As MVP views are defined through an interface and the interface is technically the only point of contact between the system and the view (other than a presenter), this pattern also allows developers to write presentation logic without needing to wait for designers to produce layouts and graphics for the application.</p>
+<p>Depending on the implementation, MVP may be more easy to automatically unit test than MVC. The reason often cited for this is that the presenter can be used as a complete mock of the user-interface and so it can be unit tested independent of other components. In my experience this really depends on the languages you are implementing MVP in (there’s quite a difference between opting for MVP for a JavaScript project over one for say, ASP.NET).</p>
+<p>At the end of the day, the underlying concerns you may have with MVC will likely hold true for MVP given that the differences between them are mainly semantic. As long as you are cleanly separating concerns into models, views and controllers (or presenters) you should be achieving most of the same benefits regardless of the pattern you opt for.</p>
+<h2 id="mvc-mvp-and-backbone.js"><a href="#TOC">MVC, MVP and Backbone.js</a></h2>
+<p>There are very few, if any architectural JavaScript frameworks that claim to implement the MVC or MVP patterns in their classical form as many JavaScript developers don’t view MVC and MVP as being mutually exclusive (we are actually more likely to see MVP strictly implemented when looking at web frameworks such as ASP.NET or GWT). This is because it’s possible to have additional presenter/view logic in your application and yet still consider it a flavor of MVC.</p>
+<p>Backbone contributor <a href="http://ireneros.com/">Irene Ros</a> subscribes to this way of thinking as when she separates Backbone views out into their own distinct components, she needs something to actually assemble them for her. This could either be a controller route (such as a <code>Backbone.Router</code>, covered later in the book) or a callback in response to data being fetched.</p>
+<p>That said, some developers do however feel that Backbone.js better fits the description of MVP than it does MVC . Their view is that:</p>
+<ul>
+<li>The presenter in MVP better describes the <code>Backbone.View</code> (the layer between View templates and the data bound to it) than a controller does</li>
+<li>The model fits <code>Backbone.Model</code> (it isn’t that different from the classical MVC <q>Model</q>)</li>
+<li>The views best represent templates (e.g Handlebars/Mustache markup templates)</li>
+</ul>
+<p>A response to this could be that the view can also just be a View (as per MVC) because Backbone is flexible enough to let it be used for multiple purposes. The V in MVC and the P in MVP can both be accomplished by <code>Backbone.View</code> because they’re able to achieve two purposes: both rendering atomic components and assembling those components rendered by other views.</p>
+<p>We’ve also seen that in Backbone the responsibility of a controller is shared with both the Backbone.View and Backbone.Router and in the following example we can actually see that aspects of that are certainly true.</p>
+<p>Here, our Backbone <code>TodoView</code> uses the Observer pattern to <q>subscribe</q> to changes to a View’s model in the line <code>this.model.on('change',...)</code>. It also handles templating in the <code>render()</code> method, but unlike some other implementations, user interaction is also handled in the View (see <code>events</code>).</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="co">// The DOM element for a todo item...</span>
+<span class="kw">app</span>.<span class="fu">TodoView</span> = <span class="kw">Backbone.View</span>.<span class="fu">extend</span>({
+
+  <span class="co">//... is a list tag.</span>
+  <span class="dt">tagName</span>:  <span class="ch">&#39;li&#39;</span>,
+
+  <span class="co">// Pass the contents of the todo template through a templating</span>
+  <span class="co">// function, cache it for a single todo</span>
+  <span class="dt">template</span>: <span class="kw">_</span>.<span class="fu">template</span>( $(<span class="ch">&#39;#item-template&#39;</span>).<span class="fu">html</span>() ),
+
+  <span class="co">// The DOM events specific to an item.</span>
+  <span class="dt">events</span>: {
+    <span class="ch">&#39;click .toggle&#39;</span>:  <span class="ch">&#39;togglecompleted&#39;</span>
+  },
+
+  <span class="co">// The TodoView listens for changes to its model, re-rendering. Since there&#39;s</span>
+  <span class="co">// a one-to-one correspondence between a **Todo** and a **TodoView** in this</span>
+  <span class="co">// app, we set a direct reference on the model for convenience.</span>
+  <span class="dt">initialize</span>: <span class="kw">function</span>() {
+    <span class="kw">this</span>.<span class="fu">model</span>.<span class="fu">on</span>( <span class="ch">&#39;change&#39;</span>, <span class="kw">this</span>.<span class="fu">render</span>, <span class="kw">this</span> );
+    <span class="kw">this</span>.<span class="fu">model</span>.<span class="fu">on</span>( <span class="ch">&#39;destroy&#39;</span>, <span class="kw">this</span>.<span class="fu">remove</span>, <span class="kw">this</span> );
+  },
+
+  <span class="co">// Re-render the titles of the todo item.</span>
+  <span class="dt">render</span>: <span class="kw">function</span>() {
+    <span class="kw">this</span>.$<span class="fu">el</span>.<span class="fu">html</span>( <span class="kw">this</span>.<span class="fu">template</span>( <span class="kw">this</span>.<span class="fu">model</span>.<span class="fu">toJSON</span>() ) );
+    <span class="kw">return</span> <span class="kw">this</span>;
+  },
+
+  <span class="co">// Toggle the `&quot;completed&quot;` state of the model.</span>
+  <span class="dt">togglecompleted</span>: <span class="kw">function</span>() {
+    <span class="kw">this</span>.<span class="fu">model</span>.<span class="fu">toggle</span>();
+  },
+});</code></pre>
+<p>Another (quite different) opinion is that Backbone more closely resembles <a href="http://martinfowler.com/eaaDev/uiArchs.html#ModelViewController">Smalltalk-80 MVC</a>, which we went through earlier.</p>
+<p>As regular Backbone user Derick Bailey has <a href="http://lostechies.com/derickbailey/2011/12/23/backbone-js-is-not-an-mvc-framework/">written</a>, it’s ultimately best not to force Backbone to fit any specific design patterns. Design patterns should be considered flexible guides to how applications may be structured and in this respect, Backbone doesn’t fit either MVC nor MVP perfectly. Instead, it borrows some of the best concepts from multiple architectural patterns and creates a flexible framework that just works well. Call it <strong>the Backbone way</strong>, MV* or whatever helps reference its flavor of application architecture.</p>
+<p>It <em>is</em> however worth understanding where and why these concepts originated, so I hope that my explanations of MVC and MVP have been of help. Most structural JavaScript frameworks will adopt their own take on classical patterns, either intentionally or by accident, but the important thing is that they help us develop applications which are organized, clean and can be easily maintained.</p>
 <hr>
 <p>Where relevant, copyright Addy Osmani, 2012-2013.</p>
 <script type="text/javascript">
