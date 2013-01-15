@@ -1619,12 +1619,12 @@ Backbone.history.start();
 // etc.
 ```
 
-Note: To test the last example, you'll need to create local development enviroment and test project, instructions for which are beyond the scope of what this book seeks to outline.
+Note: To test the last example, you'll need to create a local development environment and test project, instructions for which are beyond the scope of what this book seeks to outline.
 
 As an aside, if you would like to save application state to the URL at a particular point you can use the `.navigate()` method to achieve this. It simply updates your URL fragment without the need to trigger the `hashchange` event:
 
 ```javascript
-/* Lets imagine we would like a specific fragment (edit) once a user opens a single todo */
+// Let's imagine we would like a specific fragment (edit) once a user opens a single todo
 var TodoRouter = Backbone.Router.extend({
   routes: {
     "todo/:id": "viewTodo",
@@ -1646,7 +1646,7 @@ var myTodoRouter = new TodoRouter();
 Backbone.history.start();
 
 // Go to:
-// http://localhost/#todo/4 URL is updated to: http://localhost/#todo/45/edit
+// http://localhost/#todo/4 URL is updated to: http://localhost/#todo/4/edit
 // but editTodo() function is not invoked even though location we end up is mapped to it.
 //
 // logs: View todo requested.
