@@ -1,4 +1,3 @@
-
 ## Prelude
 
 ![](img/logo.jpg) 
@@ -351,7 +350,7 @@ HTML template for the primer that follows:
 	    <input id="todo_complete" type="checkbox" <%= completed %>>
 	    <%= title %>
     </div>
-	</script>​
+	</script>
 	<script src="underscore-min.js"></script>
   <script src="cranium.js"></script>
   <script src="example.js"></script>
@@ -2734,7 +2733,7 @@ This tutorial is long enough as is, so we won't go into in-place editing or upda
 
 ```javascript
 
-  // js/view/todos.js
+  // js/view/todo.js
 
   // Todo Item View
   // --------------
@@ -3707,7 +3706,7 @@ To test our API we need to do a little typing in a JavaScript console. Restart n
 
 ```javascript
 jQuery.get("/api/books/", function (data, textStatus, jqXHR) {
-    console.log("Get resposne:");
+    console.log("Get response:");
     console.dir(data);
     console.log(textStatus);
     console.dir(jqXHR);
@@ -3797,7 +3796,7 @@ Here we use colon notation (:id) to tell express that this part of the route is 
 
 ```javascript
 jQuery.get("/api/books/4f95a8cb1baa9b8a1b000006", function (data, textStatus, jqXHR){
-    console.log("Get resposne:");
+    console.log("Get response:");
     console.dir(data);
     console.log(textStatus);
     console.dir(jqXHR);
@@ -3839,7 +3838,7 @@ jQuery.ajax({
     "releaseDate":new Date(2008, 4, 1).getTime()
   },
   success: function(data, textStatus, jqXHR) {
-    console.log("Post resposne:"); 
+    console.log("Post response:"); 
     console.dir(data); 
     console.log(textStatus); 
     console.dir(jqXHR);
@@ -3872,7 +3871,7 @@ jQuery.ajax({
   url:'/api/books/4f95a5251baa9b8a1b000001',
   type:'DELETE',
   success:function(data, textStatus, jqXHR){
-    console.log("Post resposne:");
+    console.log("Post response:");
     console.dir(data);
     console.log(textStatus);
     console.dir(jqXHR);
