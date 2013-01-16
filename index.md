@@ -1,6 +1,6 @@
 ## Prelude
 
-![](img/logo.jpg) 
+![](img/logo.jpg)
 
 Welcome to my (in-progress) book about the [Backbone.js](http://documentcloud.github.com/backbone/) library for structuring JavaScript applications. It's released under a Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported [license](http://creativecommons.org/licenses/by-nc-sa/3.0/) meaning you can both grab a copy of the book for free or help to further [improve](https://github.com/addyosmani/backbone-fundamentals/) it.
 
@@ -6631,19 +6631,40 @@ In this next part of the book, we're going to look at how to use AMD modules and
 
 ## Organizing modules with RequireJS and AMD
 
-In case you haven't used it before, [RequireJS](http://requirejs.org) is a popular script loader written by James Burke - a developer who has been quite instrumental in helping shape the AMD module format, which we'll discuss more shortly. Some of RequireJS's capabilities include helping to load multiple script files, helping define modules with or without dependencies and loading in non-script dependencies such as text files.
+*Partly Contributed by [Jack Franklin](https://github.com/jackfranklin)*
 
-So, why use RequireJS with Backbone? Although Backbone is excellent when it comes to providing a sanitary structure to your applications, there are a few key areas where some additional help could be used:
 
-1) Backbone doesn't endorse a particular approach to modular-development. Although this means it's quite open-ended for developers to opt for classical patterns like the module-pattern or Object Literals for structuring their apps (which both work fine), it also means developers aren't sure of what works best when other concerns come into play, such as dependency management.
+[RequireJS](http://requirejs.org) is a popular script loader written by James Burke - a developer who has been quite instrumental in helping shape the AMD module format, which we'll discuss more shortly. Some of RequireJS's capabilities include helping to load multiple script files, helping define modules with or without dependencies and loading in non-script dependencies such as text files.
 
-RequireJS is compatible with the AMD (Asynchronous Module Definition) format, a format which was born from a desire to write something better than the 'write lots of script tags with implicit dependencies and manage them manually' approach to development. In addition to allowing you to clearly declare dependencies, AMD works well in the browser, supports string IDs for dependencies, declaring multiple modules in the same file and gives you easy-to-use tools to avoid polluting the global namespace.
+### Maintainability problems with multiple script files
 
-2) Let's discuss dependency management a little more as it can actually be quite challenging to get right if you're doing it by hand. When we write modules in JavaScript, we ideally want to be able to handle the reuse of code units intelligently and sometimes this will mean pulling in other modules at run-time whilst at other times you may want to do this dynamically to avoid a large pay-load when the user first hits your application.
+You might be thinking that there is little benefit to RequireJS. After all, you can simply load in your JavaScript files through multiple `<script>` tags, which is very straightforward. However, doing it that way has a lot of drawbacks, namely the HTTP overhead.
 
-Think about the GMail web-client for a moment. When users initially load up the page on their first visit, Google can simply hide widgets such as the chat module until a user has indicated (by clicking 'expand') that they wish to use it. Through dynamic dependency loading, Google could load up the chat module only then, rather than forcing all users to load it when the page first initializes. This can improve performance and load times and can definitely prove useful when building larger applications.
+Everytime the browser loads in a file you've referenced in a `<script>` tag, it makes a HTTP request to load the file's contents. It has to make a new HTTP request for each file you want to load, which causes problems.
 
-I've previously written [a detailed article](http://addyosmani.com/writing-modular-js) covering both AMD and other module formats and script loaders in case you'd like to explore this topic further. The takeaway is that although it's perfectly fine to develop applications without a script loader or clean module format in place, it can be of significant benefit to consider using these tools in your application development.
+- Browsers are limited in how many parallel requests they can make, so often it's slow to load multiple files, as it can only do a certain number at a time. This number depends on the user's settings and browser, but is usually around 4-8. When working on Backbone applications it's good to split your app into multiple JS files, so it's easy to hit that limit quickly. This can be negated by minifying your code into one file as part of a build process, but does not help with the next point.
+- When a script is loaded it is done so synchronously. This means that while it's being loaded, the browser cannot continue rendering the page.
+
+What tools like RequireJS do is load in scripts asynchronously. This means we have to adjust our code slightly, you can't just swap out `<script>` elements for a small piece of RequireJS code, but the benefits are very worthwhile.
+
+- Loading in the scripts asychrnously means they are non-blocking. The browser can continue to render the rest of the page as the scripts are being loaded, speeding up the initial load time.
+- We can load modules in more intelligently, having more control over when they are loaded; along with making sure modules that have dependencies are loaded in the right order so all dependencies are met.
+
+### Need for better dependency management
+
+Dependency management is a challenging subject, in particular when writing JavaScript in the browser. The closest thing we have to dependency management by default is simply making sure we order our `<script>` tags such that code that depends on code in another file is loaded after. This is not a good approach. As I've already discussed, loading multiple files in that way is bad for performance; needing them to be loaded in a certain order is very brittle.
+
+Being able to load different code in only when needed is something RequireJS is very good at. Rather than load all our JavaScript code in at run-time, often a better approach is to dynamically load modules at run-time, only when that code is required. This avoids loading all the code in when the user first hits your application, consequently speeding up the initial load times.
+
+Think about the GMail web-client for a moment. When users initially load up the page on their first visit, Google can simply hide widgets such as the chat module until a user has indicated (by clicking 'expand') that they wish to use it. Through dynamic dependency loading, Google could load up the chat module only then, rather than forcing all users to load it when the page first initializes. This can improve performance and load times and can definitely prove useful when building larger applications. As the codebase for an application grows this becomes even more important.
+
+The important thing to note here is that while it's absolutely fine to develop applications without a script loader, there are significant benefits to utilising tools like RequireJS in your application.
+
+### Asynchrous Module Definition (AMD)
+
+RequireJS implements the [AMD Specification](https://github.com/amdjs/amdjs-api/wiki/AMD) which defines a method for writing modular code and managing dependencies. The RequireJS website also has a section [documenting the reasons behind implementing AMD](http://requirejs.org/docs/whyamd.html):
+
+> The AMD format comes from wanting a module format that was better than today's "write a bunch of script tags with implicit dependencies that you have to manually order" and something that was easy to use directly in the browser. Something with good debugging characteristics that did not require server-specific tooling to get started.
 
 ### Writing AMD modules with RequireJS
 
@@ -6695,17 +6716,17 @@ define(function(require){
     var foo = require('foo'),
         bar = require('bar');
 
-        // return a value that defines the module export
-        // (i.e the functionality we want to expose for consumption)
+    // return a value that defines the module export
+    // (i.e the functionality we want to expose for consumption)
 
-        // create your module here
-        var myModule = {
-            doStuff:function(){
-                console.log('Yay! Stuff');
-            }
+    // create your module here
+    var myModule = {
+        doStuff:function(){
+            console.log('Yay! Stuff');
         }
+    }
 
-        return myModule;
+    return myModule;
 });
 ```
 
@@ -6724,9 +6745,119 @@ require(['foo', 'bar'], function ( foo, bar ) {
 ```
 
 
-**Wrapping modules, views and other components with AMD**
+Addy's post on [Writing Modular JS](http://addyosmani.com/writing-modular-js/) covers the AMD specification in much more detail. Defining and using modules will be covered in this book shortly when we look at more structured examples of using RequireJS.
 
-Now that we've taken a look at how to define AMD modules, let's review how to go about wrapping components like views and collections so that they can also be easily loaded as dependencies for any parts of your application that require them. At it's simplest, a Backbone model may just require Backbone and Underscore.js. These are considered its dependencies and so, to write an AMD model module, we would simply do this:
+### Getting Started with RequireJS
+Before using RequireJS and Backbone we will first set up a very basic RequireJS project to demonstrate how it works. The first thing to do is to [Download RequireJS](http://requirejs.org/docs/download.html#requirejs). When you load in the RequireJS script in your HTML file, you need to also tell it where your main JavaScript file exists. Typically this will be called something like "app.js", and is the main entry point for your application. You do this by passing in a `data-main` attribute:
+
+```html
+<script data-main="app.js" src="lib/require.js"></script>
+```
+
+Now, RequireJS will automatically load in `app.js` for you.
+
+#### RequireJS Configuration
+
+In your main JavaScript file that you pass in through the `data-main` attribute, you can configure RequireJS. This is done by calling `require.config`, and passing in an object:
+
+```javascript
+require.config({
+    // your configuration key/values here
+    baseUrl: "app", // generally the same directory as the script used in a data-main attribute for the top level script
+    paths: {}, // set up custom paths to libraries, or paths to RequireJS plugins
+    shim: {}, // used for setting up all Shims (see below for more detail)
+});
+```
+
+The main reason you'd want to configure RequireJS is for shims, which is used to allow RequireJS to work with libraries that don't use `define()` in the code, but expose themselves globally. We'll cover this shortly. To see other configuration options available to you, I recommend checking out the [RequireJS documentation](http://requirejs.org/docs/api.html#config).
+
+
+##### RequireJS Shims
+To use a library with RequireJS, ideally that library should come with AMD support. That is, it uses the `define` method to define the library as a module. However, some libraries - including Backbone and one of its dependencies, Underscore - don't do this. Fortunately RequireJS comes with a way to bypass this.
+
+To demonstrate this, first let's shim Underscore, and then we'll shim Backbone too. Shims are very simple to implement:
+
+```javascript
+require.config({
+    shim: {
+        'lib/underscore': {
+          exports: '_'
+        }
+    }
+});
+```
+
+The important line there is `exports: '_'`. That tells RequireJS that whenever we require the file `'lib/underscore'`, it would return the global `_` object, as that's where Underscore exports itself too, it adds the `_` property to the global object. Now when we require Underscore, RequireJS will return that `_` property. Now we can set up a shim for Backbone too:
+
+```javascript
+require.config({
+    shim: {
+        'lib/underscore': {
+          exports: '_'
+        },
+        'lib/backbone': {
+            deps: ['lib/underscore', 'jquery'],
+            exports: 'Backbone'
+        }
+    }
+});
+```
+
+Again, that configuration tells RequireJS to return the global `Backbone` property that Backbone exports, but also this time you'll notice that Backbone's dependencies are defined. This means whenever this:
+
+```javascript
+require( 'lib/backbone', function( Backbone ) {...} );
+```
+
+Is run, it will first make sure the dependencies are met, and then pass the global `Backbone` object into the callback function. You don't need to do this with every library, only the ones that don't support AMD. For example, jQuery does support it, as of jQuery 1.7.
+
+If you'd like to read more about general RequireJS usage, the [RequireJS API docs](http://requirejs.org/docs/api.html) are incredibly thorough and easy to read.
+
+#### Custom Paths
+
+Typing long paths to file names like `lib/backbone` can get tedious. RequireJS lets us set up custom paths in our configuration object. Here, whenever I refer to "underscore", RequireJS will look for the file `lib/underscore.js`:
+
+```javascript
+require.config({
+    paths: {
+        'underscore': 'lib/underscore'
+    }
+});
+```
+
+Of course, this can be combined with a shim:
+
+```javascript
+require.config({
+    paths: {
+        'underscore': 'lib/underscore'
+    },
+    shim: {
+        'underscore': {
+          exports: '_'
+        }
+    }
+});
+```
+
+Just make sure that in your shim settings, you refer to the custom path too. Now you can do:
+
+```javascript
+require( ['underscore'], function(_) {
+// code here
+});
+```
+
+To shim Underscore but still use a custom path.
+
+
+### Require.js and Backbone Examples
+
+Now that we've taken a look at how to define AMD modules, let's review how to go about wrapping components like views and collections so that they can also be easily loaded as dependencies for any parts of your application that require them. At it's simplest, a Backbone model may just require Backbone and Underscore.js. These are dependencies, so we can define those when defining the new modules. Note that the following examples presume you have configured RequireJS to shim Backbone and Underscore, as discussed previously.
+
+#### Wrapping modules, views and other components with AMD
+
+For example, here is how a model is defined.
 
 ```javascript
 define(['underscore', 'backbone'], function(_, Backbone) {
@@ -6768,8 +6899,12 @@ define([
 
 Aliasing to the dollar-sign (`$`), once again makes it very easy to encapsulate any part of an application you wish using AMD.
 
+Doing it this way makes it easy to organise your Backbone application as you like. It's recommended to separate modules into folders. For example, individual folders for models, collections, views and so on. RequireJS doesn't care about what folder structure you use; as long as you use the correct path when using `require`, it will happily pull in the file.
 
-## Keeping Your Templates External Using RequireJS And The Text Plugin
+If you'd like to take a look at how others do it, [Pete Hawkins' Backbone Stack repository](https://github.com/phawk/Backbone-Stack) is a good example of structuring a Backbone application, using RequireJS. Greg Franko has also written [an overview of how he uses Backbone and Require](http://gregfranko.com/blog/using-backbone-dot-js-with-require-dot-js/), and [Jeremy Kahn's post](http://jeremyckahn.github.com/blog/2012/08/18/keeping-it-sane-backbone-views-and-require-dot-js/) neatly describes his approach. For a full look at a sample application, the [Backbone and Require example](https://github.com/addyosmani/todomvc/tree/gh-pages/dependency-examples/backbone_require) of the TodoMVC repository should be your starting point.
+
+
+### Keeping Your Templates External Using RequireJS And The Text Plugin
 
 Moving your [Underscore/Mustache/Handlebars] templates to external files is actually quite straight-forward. As this application makes use of RequireJS, I'll discuss how to implement external templates using this specific script loader.
 
@@ -6777,29 +6912,22 @@ RequireJS has a special plugin called text.js which is used to load in text file
 
 1. Download the plugin from http://requirejs.org/docs/download.html#text and place it in either the same directory as your application's main JS file or a suitable sub-directory.
 
-2. Next, include the text.js plugin in your initial RequireJS configuration options. In the code snippet below, we assume that RequireJS is being included in our page prior to this code snippet being executed. Any of the other scripts being loaded are just there for the sake of example.
+2. Next, include the text.js plugin in your initial RequireJS configuration options. In the code snippet below, we assume that RequireJS is being included in our page prior to this code snippet being executed.
 
 ```javascript
 require.config( {
     paths: {
-        'backbone':         'libs/AMDbackbone-0.5.3',
-        'underscore':       'libs/underscore-1.2.2',
-        'text':             'libs/require/text',
-        'jquery':           'libs/jQuery-1.7.1',
-        'json2':            'libs/json2',
-        'datepicker':       'libs/jQuery.ui.datepicker',
-        'datepickermobile': 'libs/jquery.ui.datepicker.mobile',
-        'jquerymobile':     'libs/jquery.mobile-1.0'
+        'text': 'libs/require/text',
     },
     baseUrl: 'app'
 } );
 ```
 
-3. When the `text!` prefix is used for a dependency, RequireJS will automatically load the text plugin and treat the dependency as a text resource. A typical example of this in action may look like..
+3. When the `text!` prefix is used for a dependency, RequireJS will automatically load the text plugin and treat the dependency as a text resource. A typical example of this in action may look like:
 
 ```javascript
 require(['js/app', 'text!templates/mainView.html'],
-    function(app, mainView){
+    function( app, mainView ) {
         // the contents of the mainView file will be
         // loaded into mainView for usage.
     }
@@ -6812,11 +6940,13 @@ With Underscore.js's micro-templating (and jQuery) this would typically be:
 
 HTML:
 
-	<script type="text/template" id="mainViewTemplate">
-	    <% _.each( person, function( person_item ){ %>
-	        <li><%= person_item.get('name') %></li>
-	    <% }); %>
-	</script>
+```html
+<script type="text/template" id="mainViewTemplate">
+    <% _.each( person, function( person_item ){ %>
+        <li><%= person_item.get('name') %></li>
+    <% }); %>
+</script>
+```
 
 
 JS:
@@ -6830,7 +6960,6 @@ With RequireJS and the text plugin however, it's as simple as saving your templa
 ```javascript
 require(['js/app', 'text!templates/mainView.html'],
     function(app, mainView){
-
         var compiled_template = _.template( mainView );
     }
 );
@@ -6848,13 +6977,13 @@ All templating solutions will have their own custom methods for handling templat
 **Note:** You may also be interested in looking at [RequireJS tpl](https://github.com/ZeeAgency/requirejs-tpl). It's an AMD-compatible version of the Underscore templating system that also includes support for optimization (pre-compiled templates) which can lead to better performance and no evals. I have yet to use it myself, but it comes as a recommended resource.
 
 
-## Optimizing Backbone apps for production with the RequireJS Optimizer
+### Optimizing Backbone apps for production with the RequireJS Optimizer
 
 As experienced developers may know, an essential final step when writing both small and large JavaScript web applications is the build process.  The majority of non-trivial apps are likely to consist of more than one or two scripts and so optimizing, minimizing and concatenating your scripts prior to pushing them to production will require your users to download a reduced number (if not just one) script file.
 
-Note: If you haven't looked at build processes before and this is your first time hearing about them, you might find [my post and screencast on this topic](http://addyosmani.com/blog/client-side-build-process/) useful.
+If this is your first time looking at build scripts, [Addy Osmani's screencast on build scripts](http://addyosmani.com/blog/client-side-build-process/) may be useful.
 
-With some other structural JavaScript frameworks, my recommendation would normally be to implicitly use YUI Compressor or Google's closure compiler tools, but we have a slightly more elegant method available, when it comes to Backbone if you're using RequireJS. RequireJS has a command line optimization tool called r.js which has a number of capabilities, including:
+Another benefit to using RequireJS is its command line optimization tool, R.js. This has a number of capabilities, including:
 
 * Concatenating specific scripts and minifying them using external tools such as UglifyJS (which is used by default) or Google's Closure Compiler for optimal browser delivery, whilst preserving the ability to dynamically load modules
 * Optimizing CSS and stylesheets by inlining CSS files imported using @import, stripping out comments etc.
