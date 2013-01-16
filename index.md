@@ -1,4 +1,3 @@
-
 ## Prelude
 
 ![](img/logo.jpg)
@@ -22,9 +21,9 @@ When writing a web application from scratch it can be easy to feel like we can g
 
 In short, you can end up with a pile of spaghetti code - code that is disorganized and difficult to follow. This type of code has no simple panacea, short of a rewrite that may end up costing both time and money to alleviate. Fortunately, there are ways to avoid this problem.
 
-Modern JavaScript MVC frameworks and libraries can assist with bringing structure and organization to our projects, improving how maintainable they are from the start. They build on the trials and tribulations of developers who have had to work around similar callback chaos as you have, providing solutions to many common problems by default.
+Modern JavaScript frameworks and libraries can assist with bringing structure and organization to our projects, improving how maintainable they are from the start. They build on the trials and tribulations of developers who have had to work around similar callback chaos as you have, providing solutions to many common problems by default.
 
-With that, in "Developing Backbone.js Applications:, I and a number of other experienced authors will take you through a journey of learning how to improve your application structure using one such MVC library - Backbone.js.
+With that, in "Developing Backbone.js Applications:, I and a number of other experienced authors will take you through a journey of learning how to improve your application structure using one such library - Backbone.js.
 
 ### What Is MVC?
 
@@ -101,18 +100,15 @@ In this first chapter, we're going to explore how frameworks like Backbone.js fi
 
 Before exploring any JavaScript frameworks that assist in structuring applications, it can be useful to gain a basic understanding of architectural design patterns.
 
-### MVC, MVP & Backbone.js
+### MVC & Backbone.js
 
-Design patterns are proven solutions to common development problems and can suggest structural approaches to help guide developers in adding some organization to their applications.
+Design patterns are proven solutions to common development problems and can help guide us in adding more organization and structure to our applications. Patterns are also of great use as they reflect a set of practices which build upon the collective experience of skilled developers who have repeatedly solved similar problems. 
 
-Patterns are useful because they're a set of practices that build upon the collective experience of skilled developers who have repeatedly solved similar problems. Although developers 10 or 20 years ago may not have been using the same programming languages when implementing patterns in their projects, there are many lessons we can learn from their efforts.
-
-In this section, we're going to review two popular patterns - MVC and MVP. We'll be exploring in greater detail how Backbone.js implements these patterns shortly to better appreciate where it fits in.
-
+In this section, we're going to explore the MVC (Model-View-Controller) pattern and how it applies to Backbone.js.
 
 ## MVC
 
-MVC (Model-View-Controller) is an architectural design pattern that encourages improved application organization through a separation of concerns. It enforces the isolation of business data (Models) from user interfaces (Views), with a third component (Controllers) traditionally managing logic, user-input and the coordination of models and views. The pattern was originally designed by [Trygve Reenskaug](http://en.wikipedia.org/wiki/Trygve_Reenskaug) while working on Smalltalk-80 (1979), where it was initially called Model-View-Controller-Editor. MVC was described in depth in [“Design Patterns: Elements of Reusable Object-Oriented Software”](http://www.amazon.co.uk/Design-patterns-elements-reusable-object-oriented/dp/0201633612) (The "GoF" or “Gang of Four” book) in 1994, which played a role in popularizing its use.
+MVC is an architectural design pattern that encourages improved application organization through a separation of concerns. It enforces the isolation of business data (Models) from user interfaces (Views), with a third component (Controllers) traditionally managing logic, user-input and the coordination of models and views. The pattern was originally designed by [Trygve Reenskaug](http://en.wikipedia.org/wiki/Trygve_Reenskaug) while working on Smalltalk-80 (1979), where it was initially called Model-View-Controller-Editor. MVC was described in depth in [“Design Patterns: Elements of Reusable Object-Oriented Software”](http://www.amazon.co.uk/Design-patterns-elements-reusable-object-oriented/dp/0201633612) (The "GoF" or “Gang of Four” book) in 1994, which played a role in popularizing its use.
 
 
 ### Smalltalk-80 MVC
@@ -154,7 +150,7 @@ We can see the larger picture of typical HTTP request lifecycle through the serv
 
 ![](img/webmvcflow_bacic.png)
 
-Server receives a request and routes it through a single entry point. At the entry point, the Front Controller analyzes the request and based on it invokes the appropriate Action of the appropriate Controller. This process is called routing. The Action Model is asked to return and/or save submitted data. Model communicates with the data source (e.g. database or API etc.). Once the Model completes its work it returns data to the Controller which then loads the appropriate View. The View executes presentation logic (loops through articles and prints titles, content etc.) withthe supplied data. In the end, the response is returned to the user.
+Server receives a request and routes it through a single entry point. At the entry point, the Front Controller analyzes the request and based on it invokes the appropriate Action of the appropriate Controller. This process is called routing. The Action Model is asked to return and/or save submitted data. Model communicates with the data source (e.g. database or API etc.). Once the Model completes its work it returns data to the Controller which then loads the appropriate View. The View executes presentation logic (loops through articles and prints titles, content etc.) with the supplied data. In the end, the response is returned to the user.
 
 Demand for fast, complex and responsive Ajax powered web applications demanded a lot of this logic to be replicated on the client side. This meant a lot more code had to exist there. Eventually it brought us to the point that we needed MVC (or a similar architecture) implemented on the client side to better structure the code and make it easier to maintain and further extend during the application life-cycle.
 
@@ -354,7 +350,7 @@ HTML template for the primer that follows:
 	    <input id="todo_complete" type="checkbox" <%= completed %>>
 	    <%= title %>
     </div>
-	</script>​
+	</script>
 	<script src="underscore-min.js"></script>
   <script src="cranium.js"></script>
   <script src="example.js"></script>
@@ -506,7 +502,7 @@ It's with controllers that most JavaScript MVC frameworks depart from this inter
 
 So does Backbone.js have Controllers? Not really. Backbone's Views typically contain "controller" logic, and Routers are used to help manage application state, but neither are true Controllers according to classical MVC.
 
-In this respect, contrary to what might be mentioned in the official documentation or in blog posts, Backbone is neither a truly MVC/MVP nor MVVM framework. It's in fact better to see it a member of the MV* family which approaches architecture in its own way. There is of course nothing wrong with this, but it is important to distinguish between classical MVC and MV* should you be relying on discussions of MVC to help with your Backbone projects.
+In this respect, contrary to what might be mentioned in the official documentation or in blog posts, Backbone isn't truly an MVC framework. It's in fact better to see it a member of the MV* family which approaches architecture in its own way. There is of course nothing wrong with this, but it is important to distinguish between classical MVC and MV* should you be relying on discussions of MVC to help with your Backbone projects.
 
 ## What does MVC give us?
 
@@ -535,101 +531,9 @@ Having reviewed the classical MVC pattern, you should now understand how it allo
 
 When reviewing a new JavaScript MVC/MV* framework, remember - it can be useful to step back and consider how it's opted to approach Models, Views, Controllers or other alternatives, as this can better help you grok how the framework expects to be used.
 
+### Further reading
 
-## MVP
-
-Model-view-presenter (MVP) is a derivative of the MVC design pattern which focuses on improving presentation logic. It originated at a company named [Taligent](http://en.wikipedia.org/wiki/Taligent) in the early 1990s while they were working on a model for a C++ CommonPoint environment. Whilst both MVC and MVP target the separation of concerns across multiple components, there are some fundamental differences between them.
-
-For the purposes of this summary we will focus on the version of MVP most suitable for web-based architectures.
-
-### Models, Views & Presenters
-
-The P in MVP stands for presenter. It's a component which contains the user-interface business logic for the view. Unlike MVC, invocations from the view are delegated to the presenter, which are decoupled from the view and instead talk to it through an interface. This allows for all kinds of useful things such as being able to mock views in unit tests.
-
-The most common implementation of MVP is one which uses a Passive View (a view which is for all intents and purposes "dumb"), containing little to no logic. MVP models are almost identical to MVC models and handle application data. The presenter acts as a mediator which talks to both the view and model, however both of these are isolated from each other. They effectively bind models to views, a responsibility held by Controllers in MVC. Presenters are at the heart of the MVP pattern and as you can guess, incorporate the presentation logic behind views.
-
-Solicited by a view, presenters perform any work to do with user requests and pass data back to them. In this respect, they retrieve data, manipulate it and determine how the data should be displayed in the view. In some implementations, the presenter also interacts with a service layer to persist data (models). Models may trigger events but it's the presenter's role to subscribe to them so that it can update the view. In this passive architecture, we have no concept of direct data binding. Views expose setters which presenters can use to set data.
-
-The benefit of this change from MVC is that it increases the testability of your application and provides a more clean separation between the view and the model. This isn't however without its costs as the lack of data binding support in the pattern can often mean having to take care of this task separately.
-
-Although a common implementation of a [Passive View](http://martinfowler.com/eaaDev/PassiveScreen.html) is for the view to implement an interface, there are variations on it, including the use of events which can decouple the View from the Presenter a little more. As we don't have the interface construct in JavaScript, we're using it more and more as a protocol than an explicit interface here. It's technically still an API and it's probably fair for us to refer to it as an interface from that perspective.
-
-
-There is also a [Supervising Controller](http://martinfowler.com/eaaDev/SupervisingPresenter.html) variation of MVP, which is closer to the MVC and [MVVM](http://en.wikipedia.org/wiki/Model_View_ViewModel) patterns as it provides data-binding from the Model directly from the View. Key-value observing (KVO) plugins (such as Derick Bailey's Backbone.ModelBinding plugin) introduce this idea of a Supervising Controller to Backbone.
-
-
-## MVP or MVC?
-
-MVP is generally used most often in enterprise-level applications where it's necessary to reuse as much presentation logic as possible. Applications with very complex views and a great deal of user interaction may find that MVC doesn't quite fit the bill here as solving this problem may mean heavily relying on multiple controllers. In MVP, all of this complex logic can be encapsulated in a presenter, which can simplify maintenance greatly.
-
-As MVP views are defined through an interface and the interface is technically the only point of contact between the system and the view (other than a presenter), this pattern also allows developers to write presentation logic without needing to wait for designers to produce layouts and graphics for the application.
-
-Depending on the implementation, MVP may be more easy to automatically unit test than MVC. The reason often cited for this is that the presenter can be used as a complete mock of the user-interface and so it can be unit tested independent of other components. In my experience this really depends on the languages you are implementing MVP in (there's quite a difference between opting for MVP for a JavaScript project over one for say, ASP.NET).
-
-At the end of the day, the underlying concerns you may have with MVC will likely hold true for MVP given that the differences between them are mainly semantic. As long as you are cleanly separating concerns into models, views and controllers (or presenters) you should be achieving most of the same benefits regardless of the pattern you opt for.
-
-## MVC, MVP and Backbone.js
-
-There are very few, if any architectural JavaScript frameworks that claim to implement the MVC or MVP patterns in their classical form as many JavaScript developers don't view MVC and MVP as being mutually exclusive (we are actually more likely to see MVP strictly implemented when looking at web frameworks such as ASP.NET or GWT). This is because it's possible to have additional presenter/view logic in your application and yet still consider it a flavor of MVC.
-
-Backbone contributor [Irene Ros](http://ireneros.com/) subscribes to this way of thinking as when she separates Backbone views out into their own distinct components, she needs something to actually assemble them for her. This could either be a controller route (such as a ```Backbone.Router```, covered later in the book) or a callback in response to data being fetched.
-
-That said, some developers do however feel that Backbone.js better fits the description of MVP than it does MVC
-. Their view is that:
-
-* The presenter in MVP better describes the ```Backbone.View``` (the layer between View templates and the data bound to it) than a controller does
-* The model fits ```Backbone.Model``` (it isn't that different from the classical MVC "Model")
-* The views best represent templates (e.g Handlebars/Mustache markup templates)
-
-A response to this could be that the view can also just be a View (as per MVC) because Backbone is flexible enough to let it be used for multiple purposes. The V in MVC and the P in MVP can both be accomplished by ```Backbone.View``` because they're able to achieve two purposes: both rendering atomic components and assembling those components rendered by other views.
-
-We've also seen that in Backbone the responsibility of a controller is shared with both the Backbone.View and Backbone.Router and in the following example we can actually see that aspects of that are certainly true.
-
-Here, our Backbone ```TodoView``` uses the Observer pattern to 'subscribe' to changes to a View's model in the line ```this.model.on('change',...)```. It also handles templating in the ```render()``` method, but unlike some other implementations, user interaction is also handled in the View (see ```events```).
-
-
-```javascript
-// The DOM element for a todo item...
-app.TodoView = Backbone.View.extend({
-
-  //... is a list tag.
-  tagName:  'li',
-
-  // Pass the contents of the todo template through a templating
-  // function, cache it for a single todo
-  template: _.template( $('#item-template').html() ),
-
-  // The DOM events specific to an item.
-  events: {
-    'click .toggle':  'togglecompleted'
-  },
-
-  // The TodoView listens for changes to its model, re-rendering. Since there's
-  // a one-to-one correspondence between a **Todo** and a **TodoView** in this
-  // app, we set a direct reference on the model for convenience.
-  initialize: function() {
-    this.model.on( 'change', this.render, this );
-    this.model.on( 'destroy', this.remove, this );
-  },
-
-  // Re-render the titles of the todo item.
-  render: function() {
-    this.$el.html( this.template( this.model.toJSON() ) );
-    return this;
-  },
-
-  // Toggle the `"completed"` state of the model.
-  togglecompleted: function() {
-    this.model.toggle();
-  },
-});
-```
-
-Another (quite different) opinion is that Backbone more closely resembles [Smalltalk-80 MVC](http://martinfowler.com/eaaDev/uiArchs.html#ModelViewController), which we went through earlier.
-
-As regular Backbone user Derick Bailey has [written](http://lostechies.com/derickbailey/2011/12/23/backbone-js-is-not-an-mvc-framework/), it's ultimately best not to force Backbone to fit any specific design patterns. Design patterns should be considered flexible guides to how applications may be structured and in this respect, Backbone doesn't fit either MVC nor MVP perfectly. Instead, it borrows some of the best concepts from multiple architectural patterns and creates a flexible framework that just works well. Call it **the Backbone way**, MV* or whatever helps reference its flavor of application architecture.
-
-It *is* however worth understanding where and why these concepts originated, so I hope that my explanations of MVC and MVP have been of help. Most structural JavaScript frameworks will adopt their own take on classical patterns, either intentionally or by accident, but the important thing is that they help us develop applications which are organized, clean and can be easily maintained.
+If you are interested in learning more about the variation of MVC which Backbone.js is better categorized under, please see the MVP (Model-View-Presenter) section in the appendix.
 
 
 ## Fast facts
@@ -1335,11 +1239,11 @@ _.extend(ourObject, Backbone.Events);
 
 function dancing (msg) { console.log("We started " + msg); }
 
-// Add a namespaced custom events
+// Add namespaced custom events
 ourObject.on("dance:tap", dancing);
 ourObject.on("dance:break", dancing);
 
-// Trigger the custom events.
+// Trigger the custom events
 ourObject.trigger("dance:tap", "tap dancing. Yeah!");
 ourObject.trigger("dance:break", "break dancing. Yeah!");
 
@@ -1362,13 +1266,13 @@ ourObject.on("all", function(eventName){
   console.log("The name of the event passed was " + eventName);
 });
 
-// This time each event will be catched with catch 'all' event listener
+// This time each event will be catched with a catch 'all' event listener
 ourObject.trigger("dance:tap", "tap dancing. Yeah!");
 ourObject.trigger("dance:break", "break dancing. Yeah!");
 ourObject.trigger("dance", "break dancing. Yeah!");
 ```
 
-`off` allows us to remove a callback function that has previously been bound from an object. Going back to our Publish/Subscribe comparison, think of it as an `unsubscribe` for custom events.
+`off` allows us to remove a callback function that has previously been bound to an object. Going back to our Publish/Subscribe comparison, think of it as an `unsubscribe` for custom events.
 
 To remove the `dance` event we previously bound to `ourObject`, we would simply do:
 
@@ -1392,11 +1296,11 @@ ourObject.trigger("dance:break", "started break dancing. Yeah!");
 ourObject.off("dance:tap");
 
 // Trigger the custom events again, but one is logged.
-ourObject.trigger("dance:tap", "stopped tap dancing."); // won't be logged as its not listened for
+ourObject.trigger("dance:tap", "stopped tap dancing."); // won't be logged as it's not listened for
 ourObject.trigger("dance:break", "break dancing. Yeah!");
 ```
 
-To remove all callbacks for the event we should just pass event name (e.g `move`) to `off()` function of the object event is bound to. If we wish to remove just a callback by a specific name, we can pass callback name as second parameter:
+To remove all callbacks for the event we pass an event name (e.g `move`) to `off()` method on the object the event is bound to. If we wish to remove just a callback by a specific name, we can pass the callback name as second parameter:
 
 ```javascript
 var ourObject = {};
@@ -1556,7 +1460,7 @@ As of Backbone 0.5+, it's possible to opt-in for HTML5 pushState support via `wi
 
 #### Is there a limit to the number of routers I should be using?
 
-Andrew de Andrade has pointed out that DocumentCloud themselves usually only use a single router in most of their applications. You're very likely to not require more than one or two routers in your own projects as the majority of your application routing can be kept organized in a single router without it getting unwieldy.
+Andrew de Andrade has pointed out that DocumentCloud, the creators of Backbone, usually only use a single router in most of their applications. You're very likely to not require more than one or two routers in your own projects; the majority of your application routing can be kept organized in a single router without it getting unwieldy.
 
 #### Backbone.history
 
@@ -1591,12 +1495,12 @@ Backbone.history.start();
 // etc.
 ```
 
-Note: To test last example you should set site for testing in local development environment which is out of scope of this book.
+Note: To test the last example, you'll need to create a local development environment and test project, instructions for which are beyond the scope of what this book seeks to outline.
 
 As an aside, if you would like to save application state to the URL at a particular point you can use the `.navigate()` method to achieve this. It simply updates your URL fragment without the need to trigger the `hashchange` event:
 
 ```javascript
-/* Lets imagine we would like a specific fragment (edit) once a user opens single todo */
+// Let's imagine we would like a specific fragment (edit) once a user opens a single todo
 var TodoRouter = Backbone.Router.extend({
   routes: {
     "todo/:id": "viewTodo",
@@ -1618,7 +1522,7 @@ var myTodoRouter = new TodoRouter();
 Backbone.history.start();
 
 // Go to:
-// http://localhost/#todo/4 url is updated to: http://localhost/#todo/4/edit
+// http://localhost/#todo/4 URL is updated to: http://localhost/#todo/4/edit
 // but editTodo() function is not invoked even though location we end up is mapped to it.
 //
 // logs: View todo requested.
@@ -1660,7 +1564,7 @@ Backbone.history.start();
 
 The Backbone.sync method is intended to be overridden to support other backends. The built-in method is tailored to a certain breed of RESTful JSON APIs – Backbone was originally extracted from a Ruby on Rails application, which uses HTTP methods like PUT the same way.
 
-The way this works is the model and collection classes have a sync method that calls Backbone.sync. Both will call this.sync internally when fetching, saving, or deleting items.
+This works via the model and collection classes' sync method, which calls Backbone.sync. Both will call this.sync internally when fetching, saving, or deleting items.
 
 The sync method is called with three parameters:
 
@@ -1725,7 +1629,7 @@ There are quite a few sync implementations out there:
 
 ### Conflict Management
 
-Like most client-side projects, Backbone.js wraps everything in an immediately-invoked function expression:
+Like most client-side projects, Backbone's code is wrapped in an immediately-invoked function expression:
 
 ```javascript
 (function(){
@@ -1812,7 +1716,7 @@ For example:
 var MyMixin = {
   foo: 'bar',
   sayFoo: function(){alert(this.foo);}
-}
+};
 
 var MyView = Backbone.View.extend({
  // ...
@@ -1838,26 +1742,26 @@ However, if you have an `initialize()` method in Panel, then it won't be called 
 
 ```javascript
 var Panel = Backbone.View.extend({
-   initialize: function(options){
-      console.log('Panel initialized');
-      this.foo = 'bar';
-   }
+  initialize: function(options){
+    console.log('Panel initialized');
+    this.foo = 'bar';
+  }
 });
 
 var PanelAdvanced = Panel.extend({
-    initialize: function(options){
-      Panel.prototype.initialize.call(this, [options])
-      console.log('PanelAdvanced initialized');
-      console.log(this.foo); // Log: bar
-    }
+  initialize: function(options){
+    Panel.prototype.initialize.call(this, [options]);
+    console.log('PanelAdvanced initialized');
+    console.log(this.foo); // Log: bar
+  }
 });
 
 // We can also inherit PanelAdvaned if needed
 var PanelAdvancedExtra = PanelAdvanced.extend({
-    initialize: function(options){
-      PanelAdvanced.prototype.initialize.call(this, [options])
-      console.log('PanelAdvancedExtra initialized');
-    }
+  initialize: function(options){
+    PanelAdvanced.prototype.initialize.call(this, [options]);
+    console.log('PanelAdvancedExtra initialized');
+  }
 });
 
 new Panel();
@@ -1883,7 +1787,7 @@ var Panel = function (options) {
 _.extend(Panel.prototype, Backbone.View.prototype, {
   // put all of Panel's methods here. For example:
   sayHi: function () {
-      console.log('hello from Panel');
+    console.log('hello from Panel');
   }
 });
 
@@ -2231,7 +2135,7 @@ The first step is to setup the basic application dependencies, which in this cas
   <script src="js/lib/jquery.min.js"></script>
   <script src="js/lib/underscore-min.js"></script>
   <script src="js/lib/backbone-min.js"></script>
-  <script src="js/lib/backbone-localstorage.js"></script>
+  <script src="js/lib/backbone.localStorage.js"></script>
   <script src="js/models/todo.js"></script>
   <script type="text/template" id="item-template"></script>
   <script type="text/template" id="stats-template"></script>
@@ -2825,11 +2729,11 @@ That's all there is to it. Since we're binding to the change event, whenever the
 
 One more piece to mention is that we’ve also binded to a visible event to handle the visibility state of the todo item. This is used in conjunction with the filtering in our routes and collections so that we only display an item if its completed state falls in line with the current filter.
 
-This tutorial is long enough as is, so we won't go into in-place editing or updating. If you want an example of that, see the [complete source](https://github.com/addyosmani/todomvc/tree/master/architecture-examples/backbone/).
+This tutorial is long enough as is, so we won't go into in-place editing or updating. If you want an example of that, see the [complete source](https://github.com/addyosmani/todomvc/tree/gh-pages/architecture-examples/backbone).
 
 ```javascript
 
-  // js/view/todos.js
+  // js/view/todo.js
 
   // Todo Item View
   // --------------
@@ -3802,7 +3706,7 @@ To test our API we need to do a little typing in a JavaScript console. Restart n
 
 ```javascript
 jQuery.get("/api/books/", function (data, textStatus, jqXHR) {
-    console.log("Get resposne:");
+    console.log("Get response:");
     console.dir(data);
     console.log(textStatus);
     console.dir(jqXHR);
@@ -3892,7 +3796,7 @@ Here we use colon notation (:id) to tell express that this part of the route is 
 
 ```javascript
 jQuery.get("/api/books/4f95a8cb1baa9b8a1b000006", function (data, textStatus, jqXHR){
-    console.log("Get resposne:");
+    console.log("Get response:");
     console.dir(data);
     console.log(textStatus);
     console.dir(jqXHR);
@@ -3934,7 +3838,7 @@ jQuery.ajax({
     "releaseDate":new Date(2008, 4, 1).getTime()
   },
   success: function(data, textStatus, jqXHR) {
-    console.log("Post resposne:"); 
+    console.log("Post response:"); 
     console.dir(data); 
     console.log(textStatus); 
     console.dir(jqXHR);
@@ -3967,7 +3871,7 @@ jQuery.ajax({
   url:'/api/books/4f95a5251baa9b8a1b000001',
   type:'DELETE',
   success:function(data, textStatus, jqXHR){
-    console.log("Post resposne:");
+    console.log("Post response:");
     console.dir(data);
     console.log(textStatus);
     console.dir(jqXHR);
@@ -5910,7 +5814,7 @@ Since the region handles calling `close` for us, and we're using the `bindTo` ev
 
 ### Marionette Todo app
 
-Having learned about Marionette's high-level concepts, let's explore refactoring the Todo application we created in our first practical to use it. The complete code for this application can be found in Derick's TodoMVC [fork](https://github.com/derickbailey/todomvc/tree/master/labs/architecture-examples/backbone_marionette_modules/js).
+Having learned about Marionette's high-level concepts, let's explore refactoring the Todo application we created in our first practical to use it. The complete code for this application can be found in Derick's TodoMVC [fork](https://github.com/derickbailey/todomvc/tree/marionette/labs/architecture-examples/backbone_marionette/js).
 
 Our final implementation will be visually and functionally equivalent to the original app, as seen below.
 
@@ -6395,7 +6299,7 @@ The flexibility and versatility in Marionette is easiest to understand by examin
 
 * [Simple](https://github.com/jsoverson/todomvc/tree/master/labs/architecture-examples/backbone_marionette) - by Jarrod Overson
 * [RequireJS](https://github.com/jsoverson/todomvc/tree/master/labs/dependency-examples/backbone_marionette_require) - also by Jarrod
-* [Marionette modules](https://github.com/derickbailey/todomvc/tree/master/labs/architecture-examples/backbone_marionette_modules/js) - by Derick Bailey
+* [Marionette modules](https://github.com/derickbailey/todomvc/tree/marionette/labs/architecture-examples/backbone_marionette/js) - by Derick Bailey
 
 **The simple version**: This version of TodoMVC shows some raw use of Marionette's various view types, an application object, and the event aggregator. The objects that are created are added directly to the global namespace and are fairly straightforward. This is a great example of how Marionette can be used to augment existing code without having to re-write everything around Marionette.
 
@@ -10092,7 +9996,7 @@ Using ```this.spy()``` without any arguments creates an anonymous spy. This is c
 ```javascript
 test('should call all subscribers for a message exactly once', function () {
     var message = getUniqueString();
-    var spy = this.spy();
+    var spy1 = this.spy();
 
     PubSub.subscribe( message, spy );
     PubSub.publishSync( message, 'Hello World' );
@@ -10105,7 +10009,7 @@ We can also use ```this.spy()``` to spy on existing functions (like jQuery's ```
 
 #### Spying On Existing Functions:
 ```javascript
-test( 'should inspect jQuery.getJSON's usage of jQuery.ajax', function () {
+test( 'should inspect the jQuery.getJSON usage of jQuery.ajax', function () {
     this.spy( jQuery, 'ajax' );
 
     jQuery.getJSON( '/todos/completed' );
@@ -10116,7 +10020,7 @@ test( 'should inspect jQuery.getJSON's usage of jQuery.ajax', function () {
 });
 ```
 
-SinonJS comes with a rich spy interface which allows us to test whether a spy was called with a specific argument, if it was called a specific number of times and test against the values of arguments. A complete list of features supported in the interface can be found here (http://sinonjs.org/docs/), but let's take a look at some examples demonstrating some of the most commonly used ones:
+SinonJS comes with a rich spy interface which allows us to test whether a spy was called with a specific argument, if it was called a specific number of times and test against the values of arguments. A complete list of features supported in the interface can be found on [SinonJS.org](http://sinonjs.org/docs/), but let's take a look at some examples demonstrating some of the most commonly used ones:
 
 
 #### Matching arguments: test a spy was called with a specific set of arguments:
@@ -10731,6 +10635,103 @@ Until next time, the very best of luck with the rest of your journey!
 ## Notes
 
 I would like to thank the Backbone.js, Stack Overflow, DailyJS (Alex Young) and JavaScript communities for their help, references and contributions to this book. This project would not be possible without you so thank you! :)
+
+# Appendix
+
+## MVP
+
+Model-View-Presenter (MVP) is a derivative of the MVC design pattern which focuses on improving presentation logic. It originated at a company named [Taligent](http://en.wikipedia.org/wiki/Taligent) in the early 1990s while they were working on a model for a C++ CommonPoint environment. Whilst both MVC and MVP target the separation of concerns across multiple components, there are some fundamental differences between them.
+
+For the purposes of this summary we will focus on the version of MVP most suitable for web-based architectures.
+
+### Models, Views & Presenters
+
+The P in MVP stands for presenter. It's a component which contains the user-interface business logic for the view. Unlike MVC, invocations from the view are delegated to the presenter, which are decoupled from the view and instead talk to it through an interface. This allows for all kinds of useful things such as being able to mock views in unit tests.
+
+The most common implementation of MVP is one which uses a Passive View (a view which is for all intents and purposes "dumb"), containing little to no logic. MVP models are almost identical to MVC models and handle application data. The presenter acts as a mediator which talks to both the view and model, however both of these are isolated from each other. They effectively bind models to views, a responsibility held by Controllers in MVC. Presenters are at the heart of the MVP pattern and as you can guess, incorporate the presentation logic behind views.
+
+Solicited by a view, presenters perform any work to do with user requests and pass data back to them. In this respect, they retrieve data, manipulate it and determine how the data should be displayed in the view. In some implementations, the presenter also interacts with a service layer to persist data (models). Models may trigger events but it's the presenter's role to subscribe to them so that it can update the view. In this passive architecture, we have no concept of direct data binding. Views expose setters which presenters can use to set data.
+
+The benefit of this change from MVC is that it increases the testability of your application and provides a more clean separation between the view and the model. This isn't however without its costs as the lack of data binding support in the pattern can often mean having to take care of this task separately.
+
+Although a common implementation of a [Passive View](http://martinfowler.com/eaaDev/PassiveScreen.html) is for the view to implement an interface, there are variations on it, including the use of events which can decouple the View from the Presenter a little more. As we don't have the interface construct in JavaScript, we're using it more and more as a protocol than an explicit interface here. It's technically still an API and it's probably fair for us to refer to it as an interface from that perspective.
+
+
+There is also a [Supervising Controller](http://martinfowler.com/eaaDev/SupervisingPresenter.html) variation of MVP, which is closer to the MVC and [MVVM - Model-View-ViewModel](http://en.wikipedia.org/wiki/Model_View_ViewModel) patterns as it provides data-binding from the Model directly from the View. Key-value observing (KVO) plugins (such as Derick Bailey's Backbone.ModelBinding plugin) introduce this idea of a Supervising Controller to Backbone.
+
+
+## MVP or MVC?
+
+MVP is generally used most often in enterprise-level applications where it's necessary to reuse as much presentation logic as possible. Applications with very complex views and a great deal of user interaction may find that MVC doesn't quite fit the bill here as solving this problem may mean heavily relying on multiple controllers. In MVP, all of this complex logic can be encapsulated in a presenter, which can simplify maintenance greatly.
+
+As MVP views are defined through an interface and the interface is technically the only point of contact between the system and the view (other than a presenter), this pattern also allows developers to write presentation logic without needing to wait for designers to produce layouts and graphics for the application.
+
+Depending on the implementation, MVP may be more easy to automatically unit test than MVC. The reason often cited for this is that the presenter can be used as a complete mock of the user-interface and so it can be unit tested independent of other components. In my experience this really depends on the languages you are implementing MVP in (there's quite a difference between opting for MVP for a JavaScript project over one for say, ASP.NET).
+
+At the end of the day, the underlying concerns you may have with MVC will likely hold true for MVP given that the differences between them are mainly semantic. As long as you are cleanly separating concerns into models, views and controllers (or presenters) you should be achieving most of the same benefits regardless of the pattern you opt for.
+
+## MVC, MVP and Backbone.js
+
+There are very few, if any architectural JavaScript frameworks that claim to implement the MVC or MVP patterns in their classical form as many JavaScript developers don't view MVC and MVP as being mutually exclusive (we are actually more likely to see MVP strictly implemented when looking at web frameworks such as ASP.NET or GWT). This is because it's possible to have additional presenter/view logic in your application and yet still consider it a flavor of MVC.
+
+Backbone contributor [Irene Ros](http://ireneros.com/) subscribes to this way of thinking as when she separates Backbone views out into their own distinct components, she needs something to actually assemble them for her. This could either be a controller route (such as a ```Backbone.Router```, covered later in the book) or a callback in response to data being fetched.
+
+That said, some developers do however feel that Backbone.js better fits the description of MVP than it does MVC
+. Their view is that:
+
+* The presenter in MVP better describes the ```Backbone.View``` (the layer between View templates and the data bound to it) than a controller does
+* The model fits ```Backbone.Model``` (it isn't that different from the classical MVC "Model")
+* The views best represent templates (e.g Handlebars/Mustache markup templates)
+
+A response to this could be that the view can also just be a View (as per MVC) because Backbone is flexible enough to let it be used for multiple purposes. The V in MVC and the P in MVP can both be accomplished by ```Backbone.View``` because they're able to achieve two purposes: both rendering atomic components and assembling those components rendered by other views.
+
+We've also seen that in Backbone the responsibility of a controller is shared with both the Backbone.View and Backbone.Router and in the following example we can actually see that aspects of that are certainly true.
+
+Here, our Backbone ```TodoView``` uses the Observer pattern to 'subscribe' to changes to a View's model in the line ```this.model.on('change',...)```. It also handles templating in the ```render()``` method, but unlike some other implementations, user interaction is also handled in the View (see ```events```).
+
+
+```javascript
+// The DOM element for a todo item...
+app.TodoView = Backbone.View.extend({
+
+  //... is a list tag.
+  tagName:  'li',
+
+  // Pass the contents of the todo template through a templating
+  // function, cache it for a single todo
+  template: _.template( $('#item-template').html() ),
+
+  // The DOM events specific to an item.
+  events: {
+    'click .toggle':  'togglecompleted'
+  },
+
+  // The TodoView listens for changes to its model, re-rendering. Since there's
+  // a one-to-one correspondence between a **Todo** and a **TodoView** in this
+  // app, we set a direct reference on the model for convenience.
+  initialize: function() {
+    this.model.on( 'change', this.render, this );
+    this.model.on( 'destroy', this.remove, this );
+  },
+
+  // Re-render the titles of the todo item.
+  render: function() {
+    this.$el.html( this.template( this.model.toJSON() ) );
+    return this;
+  },
+
+  // Toggle the `"completed"` state of the model.
+  togglecompleted: function() {
+    this.model.toggle();
+  },
+});
+```
+
+Another (quite different) opinion is that Backbone more closely resembles [Smalltalk-80 MVC](http://martinfowler.com/eaaDev/uiArchs.html#ModelViewController), which we went through earlier.
+
+As regular Backbone user Derick Bailey has [written](http://lostechies.com/derickbailey/2011/12/23/backbone-js-is-not-an-mvc-framework/), it's ultimately best not to force Backbone to fit any specific design patterns. Design patterns should be considered flexible guides to how applications may be structured and in this respect, Backbone doesn't fit either MVC nor MVP perfectly. Instead, it borrows some of the best concepts from multiple architectural patterns and creates a flexible framework that just works well. Call it **the Backbone way**, MV* or whatever helps reference its flavor of application architecture.
+
+It *is* however worth understanding where and why these concepts originated, so I hope that my explanations of MVC and MVP have been of help. Most structural JavaScript frameworks will adopt their own take on classical patterns, either intentionally or by accident, but the important thing is that they help us develop applications which are organized, clean and can be easily maintained.
 
 
 ---
