@@ -6791,23 +6791,23 @@ To demonstrate this, first let's shim Underscore, and then we'll shim Backbone t
 ```javascript
 require.config({
     shim: {
-        'underscore': {
+        'lib/underscore': {
           exports: '_'
         }
     }
 });
 ```
 
-The important line there is `exports: '_'`. That tells RequireJS that whenever we require `'underscore'`, it would return the global `_` object, as that's where Underscore exports itself too, it adds the `_` property to the global object. Now when we require Underscore, RequireJS will return that `_` property. Now we can set up a shim for Backbone too:
+The important line there is `exports: '_'`. That tells RequireJS that whenever we require the file `'lib/underscore'`, it would return the global `_` object, as that's where Underscore exports itself too, it adds the `_` property to the global object. Now when we require Underscore, RequireJS will return that `_` property. Now we can set up a shim for Backbone too:
 
 ```javascript
 require.config({
     shim: {
-        'underscore': {
+        'lib/underscore': {
           exports: '_'
         },
-        'backbone': {
-            deps: ['underscore', 'jquery'],
+        'lib/backbone': {
+            deps: ['lib/underscore', 'jquery'],
             exports: 'Backbone'
         }
     }
@@ -6817,12 +6817,49 @@ require.config({
 Again, that configuration tells RequireJS to return the global `Backbone` property that Backbone exports, but also this time you'll notice that Backbone's dependencies are defined. This means whenever this:
 
 ```javascript
-require( 'backbone', function( Backbone ) {...} );
+require( 'lib/backbone', function( Backbone ) {...} );
 ```
 
 Is run, it will first make sure the dependencies are met, and then pass the global `Backbone` object into the callback function. You don't need to do this with every library, only the ones that don't support AMD. For example, jQuery does support it, as of jQuery 1.7.
 
 If you'd like to read more about general RequireJS usage, the [RequireJS API docs](http://requirejs.org/docs/api.html) are incredibly thorough and easy to read.
+
+#### Custom Paths
+
+Typing long paths to file names like `lib/backbone` can get tedious. RequireJS lets us set up custom paths in our configuration object. Here, whenever I refer to "underscore", RequireJS will look for the file `lib/underscore.js`:
+
+```javascript
+require.config({
+    paths: {
+        'underscore': 'lib/underscore'
+    }
+});
+```
+
+Of course, this can be combined with a shim:
+
+```javascript
+require.config({
+    paths: {
+        'underscore': 'lib/underscore'
+    },
+    shim: {
+        'underscore': {
+          exports: '_'
+        }
+    }
+});
+```
+
+Just make sure that in your shim settings, you refer to the custom path too. Now you can do:
+
+```javascript
+require( ['underscore'], function(_) {
+// code here
+});
+```
+
+To shim Underscore but still use a custom path.
 
 
 ### Require.js and Backbone Examples
