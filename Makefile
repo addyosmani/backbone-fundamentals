@@ -1,5 +1,5 @@
 include_dir=build
-source=index.md
+source=chapters/*.md
 title='Developing Backbone.js Applications'
 filename='backbone-fundamentals'
 
