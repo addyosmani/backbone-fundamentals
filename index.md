@@ -6769,8 +6769,6 @@ require.config({
 });
 ```
 
-// Note to Addy: Any partiular config settings (other than shims, see below) specifically worth mentioning here?
-
 The main reason you'd want to configure RequireJS is for shims, which is used to allow RequireJS to work with libraries that don't use `define()` in the code, but expose themselves globally. We'll cover this shortly. To see other configuration options available to you, I recommend checking out the [RequireJS documentation](http://requirejs.org/docs/api.html#config).
 
 
