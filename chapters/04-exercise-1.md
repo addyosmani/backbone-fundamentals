@@ -5,7 +5,7 @@ Now that we've journeyed through the fundamentals, let's move on to writing our 
 
 For this chapter, we’re going to learn how to create the Backbone.js Todo app listed on [TodoMVC.com](http://todomvc.com).
 
-![](img/todoapp.png)
+![](../img/todoapp.png)
 
 Let's think about what we need from a high level architectural standpoint.
 
@@ -535,7 +535,7 @@ If you are following along open up index.html and, if everything's going to plan
 
 Type in: `window.app.Todos.create({ title: 'My first Todo item'});` and hit return.
 
-![](img/todoconsole.png)
+![](../img/todoconsole.png)
 
 Once you've run the above in the console, we should be looking at a brand new todo (logged in console) we've just added in the todos collection. Created todo is saved into Local Storage as well and will be available on page refresh.
 
@@ -557,7 +557,7 @@ Run this into console to check it out:
 
 `secondTodo instanceof app.Todo`
 
-![](img/todoconsole2.png)
+![](../img/todoconsole2.png)
 
 ## Templates
 
@@ -613,7 +613,7 @@ Now refresh index.html and we should be able to see the fruits of our labour.
 
 The todos added through console earlier should appear in the list populated from the Local Storage. Also, we should be able to type a todo name, and press return to submit the form, creating a new todo.
 
-![](img/todocompleted.png)
+![](../img/todocompleted.png)
 
 
 Excellent, we're making great progress, but how about completing and deleting todos?
@@ -742,7 +742,7 @@ Finally, we move on to routing, which will allow us to easily bookmark the list 
 #/completed
 ```
 
-![](img/todorouting.png)
+![](../img/todorouting.png)
 
 When the route changes the todo list will be filtered on a model level and the selected class on the filter links will be toggled. When an item is updated while in a filtered state, it will be updated accordingly. 
 E.g. if the filter is active and the item is checked, it will be hidden. The active filter is persisted on reload.
