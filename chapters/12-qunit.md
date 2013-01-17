@@ -51,15 +51,15 @@ Let's go through the elements above with qunit mentioned in their ID. When QUnit
 
 When running correctly, the above test runner looks as follows:
 
-![screenshot 1](../img/7d4de12.png)
+![screenshot 1](img/7d4de12.png)
 
 The numbers of the form (a, b, c) after each test name correspond to a) failed asserts, b) passed asserts and c) total asserts. Clicking on a test name expands it to display all of the assertions for that test case. Assertions in green have successfully passed.
 
-![screenshot 2](../img/9df4.png)
+![screenshot 2](img/9df4.png)
 
 If however any tests fail, the test gets highlighted (and the qunit-banner at the top switches to red):
 
-![screenshot 3](../img/3e5545.png)
+![screenshot 3](img/3e5545.png)
 
 
 ## Assertions
