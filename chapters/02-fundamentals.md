@@ -52,7 +52,7 @@ On the server side the Front Controller would invoke default Controller and Acti
 
 We can see the larger picture of typical HTTP request lifecycle through the server side MVC in the picture below. 
 
-![](img/webmvcflow_bacic.png)
+![](../img/webmvcflow_bacic.png)
 
 Server receives a request and routes it through a single entry point. At the entry point, the Front Controller analyzes the request and based on it invokes the appropriate Action of the appropriate Controller. This process is called routing. The Action Model is asked to return and/or save submitted data. Model communicates with the data source (e.g. database or API etc.). Once the Model completes its work it returns data to the Controller which then loads the appropriate View. The View executes presentation logic (loops through articles and prints titles, content etc.) with the supplied data. In the end, the response is returned to the user.
 
@@ -72,7 +72,7 @@ A typical page in an SPA consists of smaller ingredients which, when looked at a
 
 A good example is basket in an e-commerce web application which would typically have a list of items added to it and presented to the user as box in top right corner of the page (see the picture). 
 
-![](img/wireframe_e_commerce.png)
+![](../img/wireframe_e_commerce.png)
 
 The basket has its data and representation of the data in HTML. This data and associated view in HTML changes over time. There was a time when we used jQuery (or a similar DOM manipulation library) and a bunch of Ajax calls and callbacks to sync the two. That often produced code that was not so well structured and easy to maintain. Bugs were easy to produce and they are even unavoidable.
 
