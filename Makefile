@@ -1,13 +1,16 @@
 include_dir=build
-source=index.md
+source=chapters/*.md
 title='Developing Backbone.js Applications'
 filename='backbone-fundamentals'
 
 
 all: html epub rtf pdf mobi
 
-html:
-	pandoc -s $(source) -t html5 -o index.html -c style.css \
+markdown:
+	awk 'FNR==1{print ""}{print}' $(source) > $(filename).md
+
+html: markdown
+	pandoc -s $(filename).md -t html5 -o index.html -c style.css \
 		--include-in-header $(include_dir)/head.html \
 		--include-before-body $(include_dir)/author.html \
 		--include-before-body $(include_dir)/share.html \
@@ -17,8 +20,8 @@ html:
 		--smart \
 		--toc
 
-epub:
-	pandoc -s $(source) --normalize --smart -t epub -o $(filename).epub \
+epub: markdown
+	pandoc -s $(filename).md --normalize --smart -t epub -o $(filename).epub \
 		--epub-metadata $(include_dir)/metadata.xml \
 		--epub-stylesheet epub.css \
 		--epub-cover-image img/cover.jpg \
@@ -27,18 +30,18 @@ epub:
 		--smart \
 		--toc
 
-rtf:
-	pandoc -s $(source) -o $(filename).rtf \
+rtf: markdown
+	pandoc -s $(filename).md -o $(filename).rtf \
 		--title-prefix $(title) \
 		--normalize \
 		--smart
 
-pdf:
+pdf: markdown
 	# You need `pdflatex`
 	# OS X: http://www.tug.org/mactex/
 	# Then find its path: find /usr/ -name "pdflatex"
 	# Then symlink it: ln -s /path/to/pdflatex /usr/local/bin
-	pandoc -s $(source) -o $(filename).pdf \
+	pandoc -s $(filename).md -o $(filename).pdf \
 		--title-prefix $(title) \
 		--normalize \
 		--smart \
