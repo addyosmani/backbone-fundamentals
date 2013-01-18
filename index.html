@@ -210,12 +210,24 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <li><a href="#modular-development">Modular Development</a><ul>
 <li><a href="#introduction-1">Introduction</a></li>
 <li><a href="#organizing-modules-with-requirejs-and-amd">Organizing modules with RequireJS and AMD</a><ul>
+<li><a href="#maintainability-problems-with-multiple-script-files">Maintainability problems with multiple script files</a></li>
+<li><a href="#need-for-better-dependency-management">Need for better dependency management</a></li>
+<li><a href="#asynchrous-module-definition-amd">Asynchrous Module Definition (AMD)</a></li>
 <li><a href="#writing-amd-modules-with-requirejs">Writing AMD modules with RequireJS</a><ul>
 <li><a href="#alternate-syntax">Alternate syntax</a></li>
 </ul></li>
+<li><a href="#getting-started-with-requirejs">Getting Started with RequireJS</a><ul>
+<li><a href="#requirejs-configuration">RequireJS Configuration</a><ul>
+<li><a href="#requirejs-shims">RequireJS Shims</a></li>
+</ul></li>
+<li><a href="#custom-paths">Custom Paths</a></li>
+</ul></li>
+<li><a href="#require.js-and-backbone-examples">Require.js and Backbone Examples</a><ul>
+<li><a href="#wrapping-modules-views-and-other-components-with-amd">Wrapping modules, views and other components with AMD</a></li>
 </ul></li>
 <li><a href="#keeping-your-templates-external-using-requirejs-and-the-text-plugin">Keeping Your Templates External Using RequireJS And The Text Plugin</a></li>
 <li><a href="#optimizing-backbone-apps-for-production-with-the-requirejs-optimizer">Optimizing Backbone apps for production with the RequireJS Optimizer</a></li>
+</ul></li>
 <li><a href="#optimize-and-build-a-backbone.js-javascript-application-with-requirejs-using-packages">Optimize and Build a Backbone.js JavaScript application with RequireJS using Packages</a><ul>
 <li><a href="#file-organization">File organization</a></li>
 <li><a href="#build-profile-to-optimize-modular-dependencies-with-code-organized-in-packages">Build profile to optimize modular dependencies with code organized in packages</a></li>
@@ -611,7 +623,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
         &lt;input id=<span class="st">&quot;todo</span>_<span class="st">complete&quot;</span> type=<span class="st">&quot;checkbox&quot;</span> &lt;%= completed %&gt;&gt;
         &lt;%= title %&gt;
     &lt;/div&gt;
-    <span class="kw">&lt;/script&gt;</span>​
+    <span class="kw">&lt;/script&gt;</span>
     <span class="kw">&lt;script</span><span class="ot"> src=</span><span class="st">&quot;underscore-min.js&quot;</span><span class="kw">&gt;&lt;/script&gt;</span>
   <span class="kw">&lt;script</span><span class="ot"> src=</span><span class="st">&quot;cranium.js&quot;</span><span class="kw">&gt;&lt;/script&gt;</span>
   <span class="kw">&lt;script</span><span class="ot"> src=</span><span class="st">&quot;example.js&quot;</span><span class="kw">&gt;&lt;/script&gt;</span>
@@ -629,8 +641,8 @@ code > span.er { color: #ff0000; font-weight: bold; }
 
 <span class="kw">console</span>.<span class="fu">log</span>(<span class="st">&quot;First todo title - nothing set: &quot;</span> + <span class="kw">todo1</span>.<span class="fu">get</span>(<span class="ch">&#39;title&#39;</span>));
 <span class="kw">todo1</span>.<span class="fu">set</span>({<span class="dt">title</span>: <span class="st">&quot;Do something&quot;</span>});
-<span class="kw">console</span>.<span class="fu">log</span>(<span class="st">&quot;Its chagned now: &quot;</span> + <span class="kw">todo1</span>.<span class="fu">get</span>(<span class="ch">&#39;title&#39;</span>));
-
+<span class="kw">console</span>.<span class="fu">log</span>(<span class="st">&quot;Its changed now: &quot;</span> + <span class="kw">todo1</span>.<span class="fu">get</span>(<span class="ch">&#39;title&#39;</span>));
+<span class="ch">&#39;&#39;</span>
 <span class="co">// View instance</span>
 <span class="kw">var</span> todoView = <span class="kw">new</span> <span class="kw">Cranium</span>.<span class="fu">View</span>({
     <span class="co">// DOM element selector</span>
@@ -2433,7 +2445,7 @@ if (this._hasPushState) {
 <p>One more piece to mention is that we’ve also binded to a visible event to handle the visibility state of the todo item. This is used in conjunction with the filtering in our routes and collections so that we only display an item if its completed state falls in line with the current filter.</p>
 <p>This tutorial is long enough as is, so we won’t go into in-place editing or updating. If you want an example of that, see the <a href="https://github.com/addyosmani/todomvc/tree/gh-pages/architecture-examples/backbone">complete source</a>.</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript">
-  <span class="co">// js/view/todos.js</span>
+  <span class="co">// js/view/todo.js</span>
 
   <span class="co">// Todo Item View</span>
   <span class="co">// --------------</span>
@@ -3207,7 +3219,7 @@ package.json</code></pre>
 <p>The find function of Model is defined like this: function find (conditions, fields, options, callback) – but since we want a function that return all books we only need the callback parameter. The callback will be called with an error object and an array of found objects. If there was no error we return the array of objects to the client using the send function of the result object, otherwise we log the error to the console.</p>
 <p>To test our API we need to do a little typing in a JavaScript console. Restart node and go to localhost:4711 in your browser. Open up the JavaScript console. If you are using Google Chrome, go to View-&gt;Developer-&gt;JavaScript Console. If you are using Firefox, install Firebug and go to View-&gt;Firebug. If you are on any other browser I’m sure you will find a console somewhere. In the console type the following:</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">jQuery</span>.<span class="fu">get</span>(<span class="st">&quot;/api/books/&quot;</span>, <span class="kw">function</span> (data, textStatus, jqXHR) {
-    <span class="kw">console</span>.<span class="fu">log</span>(<span class="st">&quot;Get resposne:&quot;</span>);
+    <span class="kw">console</span>.<span class="fu">log</span>(<span class="st">&quot;Get response:&quot;</span>);
     <span class="kw">console</span>.<span class="fu">dir</span>(data);
     <span class="kw">console</span>.<span class="fu">log</span>(textStatus);
     <span class="kw">console</span>.<span class="fu">dir</span>(jqXHR);
@@ -3270,7 +3282,7 @@ package.json</code></pre>
 });</code></pre>
 <p>Here we use colon notation (:id) to tell express that this part of the route is dynamic. We also use the findById function on BookModel to get a single result. Now you can get a single book by adding its id to the URL like this:</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">jQuery</span>.<span class="fu">get</span>(<span class="st">&quot;/api/books/4f95a8cb1baa9b8a1b000006&quot;</span>, <span class="kw">function</span> (data, textStatus, jqXHR){
-    <span class="kw">console</span>.<span class="fu">log</span>(<span class="st">&quot;Get resposne:&quot;</span>);
+    <span class="kw">console</span>.<span class="fu">log</span>(<span class="st">&quot;Get response:&quot;</span>);
     <span class="kw">console</span>.<span class="fu">dir</span>(data);
     <span class="kw">console</span>.<span class="fu">log</span>(textStatus);
     <span class="kw">console</span>.<span class="fu">dir</span>(jqXHR);
@@ -3303,7 +3315,7 @@ package.json</code></pre>
     <span class="st">&quot;releaseDate&quot;</span>:<span class="kw">new</span> <span class="kw">Date</span>(<span class="dv">2008</span>, <span class="dv">4</span>, <span class="dv">1</span>).<span class="fu">getTime</span>()
   },
   <span class="dt">success</span>: <span class="kw">function</span>(data, textStatus, jqXHR) {
-    <span class="kw">console</span>.<span class="fu">log</span>(<span class="st">&quot;Post resposne:&quot;</span>); 
+    <span class="kw">console</span>.<span class="fu">log</span>(<span class="st">&quot;Post response:&quot;</span>); 
     <span class="kw">console</span>.<span class="fu">dir</span>(data); 
     <span class="kw">console</span>.<span class="fu">log</span>(textStatus); 
     <span class="kw">console</span>.<span class="fu">dir</span>(jqXHR);
@@ -3328,7 +3340,7 @@ package.json</code></pre>
   <span class="dt">url</span>:<span class="ch">&#39;/api/books/4f95a5251baa9b8a1b000001&#39;</span>,
   <span class="dt">type</span>:<span class="ch">&#39;DELETE&#39;</span>,
   <span class="dt">success</span>:<span class="kw">function</span>(data, textStatus, jqXHR){
-    <span class="kw">console</span>.<span class="fu">log</span>(<span class="st">&quot;Post resposne:&quot;</span>);
+    <span class="kw">console</span>.<span class="fu">log</span>(<span class="st">&quot;Post response:&quot;</span>);
     <span class="kw">console</span>.<span class="fu">dir</span>(data);
     <span class="kw">console</span>.<span class="fu">log</span>(textStatus);
     <span class="kw">console</span>.<span class="fu">dir</span>(jqXHR);
@@ -4819,7 +4831,7 @@ $(<span class="ch">&#39;#content&#39;</span>).<span class="fu">html</span>(<span
 <p>The next time we call the <code>show</code> method of the region, the region remembers that it is currently displaying a view. The region calls the <code>close</code> method on the view, removes it from the DOM, and then proceeds to run the render &amp; display code for the new view that was passed in.</p>
 <p>Since the region handles calling <code>close</code> for us, and we’re using the <code>bindTo</code> event binder in our view instance, we no longer have to worry about zombie views in our application.</p>
 <h3 id="marionette-todo-app"><a href="#TOC">Marionette Todo app</a></h3>
-<p>Having learned about Marionette’s high-level concepts, let’s explore refactoring the Todo application we created in our first practical to use it. The complete code for this application can be found in Derick’s TodoMVC <a href="https://github.com/derickbailey/todomvc/tree/master/labs/architecture-examples/backbone_marionette_modules/js">fork</a>.</p>
+<p>Having learned about Marionette’s high-level concepts, let’s explore refactoring the Todo application we created in our first practical to use it. The complete code for this application can be found in Derick’s TodoMVC <a href="https://github.com/derickbailey/todomvc/tree/marionette/labs/architecture-examples/backbone_marionette/js">fork</a>.</p>
 <p>Our final implementation will be visually and functionally equivalent to the original app, as seen below.</p>
 <figure>
 <img src="img/marionette_todo0.png"><figcaption></figcaption>
@@ -5243,7 +5255,7 @@ $(<span class="ch">&#39;#content&#39;</span>).<span class="fu">html</span>(<span
 <ul>
 <li><a href="https://github.com/jsoverson/todomvc/tree/master/labs/architecture-examples/backbone_marionette">Simple</a> - by Jarrod Overson</li>
 <li><a href="https://github.com/jsoverson/todomvc/tree/master/labs/dependency-examples/backbone_marionette_require">RequireJS</a> - also by Jarrod</li>
-<li><a href="https://github.com/derickbailey/todomvc/tree/master/labs/architecture-examples/backbone_marionette_modules/js">Marionette modules</a> - by Derick Bailey</li>
+<li><a href="https://github.com/derickbailey/todomvc/tree/marionette/labs/architecture-examples/backbone_marionette/js">Marionette modules</a> - by Derick Bailey</li>
 </ul>
 <p><strong>The simple version</strong>: This version of TodoMVC shows some raw use of Marionette’s various view types, an application object, and the event aggregator. The objects that are created are added directly to the global namespace and are fairly straightforward. This is a great example of how Marionette can be used to augment existing code without having to re-write everything around Marionette.</p>
 <p><strong>The RequireJS version</strong>: Using Marionette with RequireJS helps to create a modularized application architecture - a tremendously important concept in scaling JavaScript applications. RequireJS provides a powerful set of tools that can be leveraged to great advantage, making Marionette even more flexible than it already is.</p>
@@ -5469,17 +5481,30 @@ To see Thorax in action on a large scale website visit walmart.com on any Androi
 <p>Whilst native solutions to these problems will be arriving in ES Harmony, the good news is that writing modular JavaScript has never been easier and you can start doing it today.</p>
 <p>In this next part of the book, we’re going to look at how to use AMD modules and RequireJS for cleanly wrapping units of code in your application into manageable modules, and an alternate approach using routes to determine when modules are loaded.</p>
 <h2 id="organizing-modules-with-requirejs-and-amd"><a href="#TOC">Organizing modules with RequireJS and AMD</a></h2>
-<p>In case you haven’t used it before, <a href="http://requirejs.org">RequireJS</a> is a popular script loader written by James Burke - a developer who has been quite instrumental in helping shape the AMD module format, which we’ll discuss more shortly. Some of RequireJS’s capabilities include helping to load multiple script files, helping define modules with or without dependencies and loading in non-script dependencies such as text files.</p>
-<p>So, why use RequireJS with Backbone? Although Backbone is excellent when it comes to providing a sanitary structure to your applications, there are a few key areas where some additional help could be used:</p>
-<ol type="1">
-<li>Backbone doesn’t endorse a particular approach to modular-development. Although this means it’s quite open-ended for developers to opt for classical patterns like the module-pattern or Object Literals for structuring their apps (which both work fine), it also means developers aren’t sure of what works best when other concerns come into play, such as dependency management.</li>
-</ol>
-<p>RequireJS is compatible with the AMD (Asynchronous Module Definition) format, a format which was born from a desire to write something better than the <q>write lots of script tags with implicit dependencies and manage them manually</q> approach to development. In addition to allowing you to clearly declare dependencies, AMD works well in the browser, supports string IDs for dependencies, declaring multiple modules in the same file and gives you easy-to-use tools to avoid polluting the global namespace.</p>
-<ol start="2" type="1">
-<li>Let’s discuss dependency management a little more as it can actually be quite challenging to get right if you’re doing it by hand. When we write modules in JavaScript, we ideally want to be able to handle the reuse of code units intelligently and sometimes this will mean pulling in other modules at run-time whilst at other times you may want to do this dynamically to avoid a large pay-load when the user first hits your application.</li>
-</ol>
-<p>Think about the GMail web-client for a moment. When users initially load up the page on their first visit, Google can simply hide widgets such as the chat module until a user has indicated (by clicking <q>expand</q>) that they wish to use it. Through dynamic dependency loading, Google could load up the chat module only then, rather than forcing all users to load it when the page first initializes. This can improve performance and load times and can definitely prove useful when building larger applications.</p>
-<p>I’ve previously written <a href="http://addyosmani.com/writing-modular-js">a detailed article</a> covering both AMD and other module formats and script loaders in case you’d like to explore this topic further. The takeaway is that although it’s perfectly fine to develop applications without a script loader or clean module format in place, it can be of significant benefit to consider using these tools in your application development.</p>
+<p><em>Partly Contributed by <a href="https://github.com/jackfranklin">Jack Franklin</a></em></p>
+<p><a href="http://requirejs.org">RequireJS</a> is a popular script loader written by James Burke - a developer who has been quite instrumental in helping shape the AMD module format, which we’ll discuss more shortly. Some of RequireJS’s capabilities include helping to load multiple script files, helping define modules with or without dependencies and loading in non-script dependencies such as text files.</p>
+<h3 id="maintainability-problems-with-multiple-script-files"><a href="#TOC">Maintainability problems with multiple script files</a></h3>
+<p>You might be thinking that there is little benefit to RequireJS. After all, you can simply load in your JavaScript files through multiple <code>&lt;script&gt;</code> tags, which is very straightforward. However, doing it that way has a lot of drawbacks, namely the HTTP overhead.</p>
+<p>Everytime the browser loads in a file you’ve referenced in a <code>&lt;script&gt;</code> tag, it makes a HTTP request to load the file’s contents. It has to make a new HTTP request for each file you want to load, which causes problems.</p>
+<ul>
+<li>Browsers are limited in how many parallel requests they can make, so often it’s slow to load multiple files, as it can only do a certain number at a time. This number depends on the user’s settings and browser, but is usually around 4-8. When working on Backbone applications it’s good to split your app into multiple JS files, so it’s easy to hit that limit quickly. This can be negated by minifying your code into one file as part of a build process, but does not help with the next point.</li>
+<li>When a script is loaded it is done so synchronously. This means that while it’s being loaded, the browser cannot continue rendering the page.</li>
+</ul>
+<p>What tools like RequireJS do is load in scripts asynchronously. This means we have to adjust our code slightly, you can’t just swap out <code>&lt;script&gt;</code> elements for a small piece of RequireJS code, but the benefits are very worthwhile.</p>
+<ul>
+<li>Loading in the scripts asychrnously means they are non-blocking. The browser can continue to render the rest of the page as the scripts are being loaded, speeding up the initial load time.</li>
+<li>We can load modules in more intelligently, having more control over when they are loaded; along with making sure modules that have dependencies are loaded in the right order so all dependencies are met.</li>
+</ul>
+<h3 id="need-for-better-dependency-management"><a href="#TOC">Need for better dependency management</a></h3>
+<p>Dependency management is a challenging subject, in particular when writing JavaScript in the browser. The closest thing we have to dependency management by default is simply making sure we order our <code>&lt;script&gt;</code> tags such that code that depends on code in another file is loaded after. This is not a good approach. As I’ve already discussed, loading multiple files in that way is bad for performance; needing them to be loaded in a certain order is very brittle.</p>
+<p>Being able to load different code in only when needed is something RequireJS is very good at. Rather than load all our JavaScript code in at run-time, often a better approach is to dynamically load modules at run-time, only when that code is required. This avoids loading all the code in when the user first hits your application, consequently speeding up the initial load times.</p>
+<p>Think about the GMail web-client for a moment. When users initially load up the page on their first visit, Google can simply hide widgets such as the chat module until a user has indicated (by clicking <q>expand</q>) that they wish to use it. Through dynamic dependency loading, Google could load up the chat module only then, rather than forcing all users to load it when the page first initializes. This can improve performance and load times and can definitely prove useful when building larger applications. As the codebase for an application grows this becomes even more important.</p>
+<p>The important thing to note here is that while it’s absolutely fine to develop applications without a script loader, there are significant benefits to utilising tools like RequireJS in your application.</p>
+<h3 id="asynchrous-module-definition-amd"><a href="#TOC">Asynchrous Module Definition (AMD)</a></h3>
+<p>RequireJS implements the <a href="https://github.com/amdjs/amdjs-api/wiki/AMD">AMD Specification</a> which defines a method for writing modular code and managing dependencies. The RequireJS website also has a section <a href="http://requirejs.org/docs/whyamd.html">documenting the reasons behind implementing AMD</a>:</p>
+<blockquote>
+<p>The AMD format comes from wanting a module format that was better than today’s <q>write a bunch of script tags with implicit dependencies that you have to manually order</q> and something that was easy to use directly in the browser. Something with good debugging characteristics that did not require server-specific tooling to get started.</p>
+</blockquote>
 <h3 id="writing-amd-modules-with-requirejs"><a href="#TOC">Writing AMD modules with RequireJS</a></h3>
 <p>As discussed above, the overall goal for the AMD format is to provide a solution for modular JavaScript that developers can use today. The two key concepts you need to be aware of when using it with a script-loader are a <code>define()</code> method for facilitating module definition and a <code>require()</code> method for handling dependency loading. <code>define()</code> is used to define named or unnamed modules based on the proposal using the following signature:</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript">define(
@@ -5517,17 +5542,17 @@ define(<span class="kw">function</span>(require){
     <span class="kw">var</span> foo = require(<span class="ch">&#39;foo&#39;</span>),
         bar = require(<span class="ch">&#39;bar&#39;</span>);
 
-        <span class="co">// return a value that defines the module export</span>
-        <span class="co">// (i.e the functionality we want to expose for consumption)</span>
+    <span class="co">// return a value that defines the module export</span>
+    <span class="co">// (i.e the functionality we want to expose for consumption)</span>
 
-        <span class="co">// create your module here</span>
-        <span class="kw">var</span> myModule = {
-            <span class="dt">doStuff</span>:<span class="kw">function</span>(){
-                <span class="kw">console</span>.<span class="fu">log</span>(<span class="ch">&#39;Yay! Stuff&#39;</span>);
-            }
+    <span class="co">// create your module here</span>
+    <span class="kw">var</span> myModule = {
+        <span class="dt">doStuff</span>:<span class="kw">function</span>(){
+            <span class="kw">console</span>.<span class="fu">log</span>(<span class="ch">&#39;Yay! Stuff&#39;</span>);
         }
+    }
 
-        <span class="kw">return</span> myModule;
+    <span class="kw">return</span> myModule;
 });</code></pre>
 <p>The <code>require()</code> method is typically used to load code in a top-level JavaScript file or within a module should you wish to dynamically fetch dependencies. An example of its usage is:</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="co">// Consider &#39;foo&#39; and &#39;bar&#39; are two external modules</span>
@@ -5539,8 +5564,73 @@ require([<span class="ch">&#39;foo&#39;</span>, <span class="ch">&#39;bar&#39;</
         <span class="co">// rest of your code here</span>
         <span class="kw">foo</span>.<span class="fu">doSomething</span>();
 });</code></pre>
-<p><strong>Wrapping modules, views and other components with AMD</strong></p>
-<p>Now that we’ve taken a look at how to define AMD modules, let’s review how to go about wrapping components like views and collections so that they can also be easily loaded as dependencies for any parts of your application that require them. At it’s simplest, a Backbone model may just require Backbone and Underscore.js. These are considered its dependencies and so, to write an AMD model module, we would simply do this:</p>
+<p>Addy’s post on <a href="http://addyosmani.com/writing-modular-js/">Writing Modular JS</a> covers the AMD specification in much more detail. Defining and using modules will be covered in this book shortly when we look at more structured examples of using RequireJS.</p>
+<h3 id="getting-started-with-requirejs"><a href="#TOC">Getting Started with RequireJS</a></h3>
+<p>Before using RequireJS and Backbone we will first set up a very basic RequireJS project to demonstrate how it works. The first thing to do is to <a href="http://requirejs.org/docs/download.html#requirejs">Download RequireJS</a>. When you load in the RequireJS script in your HTML file, you need to also tell it where your main JavaScript file exists. Typically this will be called something like <q>app.js</q>, and is the main entry point for your application. You do this by passing in a <code>data-main</code> attribute:</p>
+<pre class="sourceCode html"><code class="sourceCode html"><span class="kw">&lt;script</span><span class="ot"> data-main=</span><span class="st">&quot;app.js&quot;</span><span class="ot"> src=</span><span class="st">&quot;lib/require.js&quot;</span><span class="kw">&gt;&lt;/script&gt;</span></code></pre>
+<p>Now, RequireJS will automatically load in <code>app.js</code> for you.</p>
+<h4 id="requirejs-configuration"><a href="#TOC">RequireJS Configuration</a></h4>
+<p>In your main JavaScript file that you pass in through the <code>data-main</code> attribute, you can configure RequireJS. This is done by calling <code>require.config</code>, and passing in an object:</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">require</span>.<span class="fu">config</span>({
+    <span class="co">// your configuration key/values here</span>
+    <span class="dt">baseUrl</span>: <span class="st">&quot;app&quot;</span>, <span class="co">// generally the same directory as the script used in a data-main attribute for the top level script</span>
+    <span class="dt">paths</span>: {}, <span class="co">// set up custom paths to libraries, or paths to RequireJS plugins</span>
+    <span class="dt">shim</span>: {}, <span class="co">// used for setting up all Shims (see below for more detail)</span>
+});</code></pre>
+<p>The main reason you’d want to configure RequireJS is for shims, which is used to allow RequireJS to work with libraries that don’t use <code>define()</code> in the code, but expose themselves globally. We’ll cover this shortly. To see other configuration options available to you, I recommend checking out the <a href="http://requirejs.org/docs/api.html#config">RequireJS documentation</a>.</p>
+<h5 id="requirejs-shims"><a href="#TOC">RequireJS Shims</a></h5>
+<p>To use a library with RequireJS, ideally that library should come with AMD support. That is, it uses the <code>define</code> method to define the library as a module. However, some libraries - including Backbone and one of its dependencies, Underscore - don’t do this. Fortunately RequireJS comes with a way to bypass this.</p>
+<p>To demonstrate this, first let’s shim Underscore, and then we’ll shim Backbone too. Shims are very simple to implement:</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">require</span>.<span class="fu">config</span>({
+    <span class="dt">shim</span>: {
+        <span class="ch">&#39;lib/underscore&#39;</span>: {
+          <span class="dt">exports</span>: <span class="ch">&#39;_&#39;</span>
+        }
+    }
+});</code></pre>
+<p>The important line there is <code>exports: '_'</code>. That tells RequireJS that whenever we require the file <code>'lib/underscore'</code>, it would return the global <code>_</code> object, as that’s where Underscore exports itself too, it adds the <code>_</code> property to the global object. Now when we require Underscore, RequireJS will return that <code>_</code> property. Now we can set up a shim for Backbone too:</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">require</span>.<span class="fu">config</span>({
+    <span class="dt">shim</span>: {
+        <span class="ch">&#39;lib/underscore&#39;</span>: {
+          <span class="dt">exports</span>: <span class="ch">&#39;_&#39;</span>
+        },
+        <span class="ch">&#39;lib/backbone&#39;</span>: {
+            <span class="dt">deps</span>: [<span class="ch">&#39;lib/underscore&#39;</span>, <span class="ch">&#39;jquery&#39;</span>],
+            <span class="dt">exports</span>: <span class="ch">&#39;Backbone&#39;</span>
+        }
+    }
+});</code></pre>
+<p>Again, that configuration tells RequireJS to return the global <code>Backbone</code> property that Backbone exports, but also this time you’ll notice that Backbone’s dependencies are defined. This means whenever this:</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript">require( <span class="ch">&#39;lib/backbone&#39;</span>, <span class="kw">function</span>( Backbone ) {...} );</code></pre>
+<p>Is run, it will first make sure the dependencies are met, and then pass the global <code>Backbone</code> object into the callback function. You don’t need to do this with every library, only the ones that don’t support AMD. For example, jQuery does support it, as of jQuery 1.7.</p>
+<p>If you’d like to read more about general RequireJS usage, the <a href="http://requirejs.org/docs/api.html">RequireJS API docs</a> are incredibly thorough and easy to read.</p>
+<h4 id="custom-paths"><a href="#TOC">Custom Paths</a></h4>
+<p>Typing long paths to file names like <code>lib/backbone</code> can get tedious. RequireJS lets us set up custom paths in our configuration object. Here, whenever I refer to <q>underscore</q>, RequireJS will look for the file <code>lib/underscore.js</code>:</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">require</span>.<span class="fu">config</span>({
+    <span class="dt">paths</span>: {
+        <span class="ch">&#39;underscore&#39;</span>: <span class="ch">&#39;lib/underscore&#39;</span>
+    }
+});</code></pre>
+<p>Of course, this can be combined with a shim:</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">require</span>.<span class="fu">config</span>({
+    <span class="dt">paths</span>: {
+        <span class="ch">&#39;underscore&#39;</span>: <span class="ch">&#39;lib/underscore&#39;</span>
+    },
+    <span class="dt">shim</span>: {
+        <span class="ch">&#39;underscore&#39;</span>: {
+          <span class="dt">exports</span>: <span class="ch">&#39;_&#39;</span>
+        }
+    }
+});</code></pre>
+<p>Just make sure that in your shim settings, you refer to the custom path too. Now you can do:</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript">require( [<span class="ch">&#39;underscore&#39;</span>], <span class="kw">function</span>(_) {
+<span class="co">// code here</span>
+});</code></pre>
+<p>To shim Underscore but still use a custom path.</p>
+<h3 id="require.js-and-backbone-examples"><a href="#TOC">Require.js and Backbone Examples</a></h3>
+<p>Now that we’ve taken a look at how to define AMD modules, let’s review how to go about wrapping components like views and collections so that they can also be easily loaded as dependencies for any parts of your application that require them. At it’s simplest, a Backbone model may just require Backbone and Underscore.js. These are dependencies, so we can define those when defining the new modules. Note that the following examples presume you have configured RequireJS to shim Backbone and Underscore, as discussed previously.</p>
+<h4 id="wrapping-modules-views-and-other-components-with-amd"><a href="#TOC">Wrapping modules, views and other components with AMD</a></h4>
+<p>For example, here is how a model is defined.</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript">define([<span class="ch">&#39;underscore&#39;</span>, <span class="ch">&#39;backbone&#39;</span>], <span class="kw">function</span>(_, Backbone) {
   <span class="kw">var</span> myModel = <span class="kw">Backbone.Model</span>.<span class="fu">extend</span>({
 
@@ -5573,31 +5663,26 @@ require([<span class="ch">&#39;foo&#39;</span>, <span class="ch">&#39;bar&#39;</
   <span class="kw">var</span> AppView = <span class="kw">Backbone.View</span>.<span class="fu">extend</span>({
   ...</code></pre>
 <p>Aliasing to the dollar-sign (<code>$</code>), once again makes it very easy to encapsulate any part of an application you wish using AMD.</p>
-<h2 id="keeping-your-templates-external-using-requirejs-and-the-text-plugin"><a href="#TOC">Keeping Your Templates External Using RequireJS And The Text Plugin</a></h2>
+<p>Doing it this way makes it easy to organise your Backbone application as you like. It’s recommended to separate modules into folders. For example, individual folders for models, collections, views and so on. RequireJS doesn’t care about what folder structure you use; as long as you use the correct path when using <code>require</code>, it will happily pull in the file.</p>
+<p>If you’d like to take a look at how others do it, <a href="https://github.com/phawk/Backbone-Stack">Pete Hawkins’ Backbone Stack repository</a> is a good example of structuring a Backbone application, using RequireJS. Greg Franko has also written <a href="http://gregfranko.com/blog/using-backbone-dot-js-with-require-dot-js/">an overview of how he uses Backbone and Require</a>, and <a href="http://jeremyckahn.github.com/blog/2012/08/18/keeping-it-sane-backbone-views-and-require-dot-js/">Jeremy Kahn’s post</a> neatly describes his approach. For a full look at a sample application, the <a href="https://github.com/addyosmani/todomvc/tree/gh-pages/dependency-examples/backbone_require">Backbone and Require example</a> of the TodoMVC repository should be your starting point.</p>
+<h3 id="keeping-your-templates-external-using-requirejs-and-the-text-plugin"><a href="#TOC">Keeping Your Templates External Using RequireJS And The Text Plugin</a></h3>
 <p>Moving your [Underscore/Mustache/Handlebars] templates to external files is actually quite straight-forward. As this application makes use of RequireJS, I’ll discuss how to implement external templates using this specific script loader.</p>
 <p>RequireJS has a special plugin called text.js which is used to load in text file dependencies. To use the text plugin, simply follow these simple steps:</p>
 <ol type="1">
 <li><p>Download the plugin from http://requirejs.org/docs/download.html#text and place it in either the same directory as your application’s main JS file or a suitable sub-directory.</p></li>
-<li><p>Next, include the text.js plugin in your initial RequireJS configuration options. In the code snippet below, we assume that RequireJS is being included in our page prior to this code snippet being executed. Any of the other scripts being loaded are just there for the sake of example.</p></li>
+<li><p>Next, include the text.js plugin in your initial RequireJS configuration options. In the code snippet below, we assume that RequireJS is being included in our page prior to this code snippet being executed.</p></li>
 </ol>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">require</span>.<span class="fu">config</span>( {
     <span class="dt">paths</span>: {
-        <span class="ch">&#39;backbone&#39;</span>:         <span class="ch">&#39;libs/AMDbackbone-0.5.3&#39;</span>,
-        <span class="ch">&#39;underscore&#39;</span>:       <span class="ch">&#39;libs/underscore-1.2.2&#39;</span>,
-        <span class="ch">&#39;text&#39;</span>:             <span class="ch">&#39;libs/require/text&#39;</span>,
-        <span class="ch">&#39;jquery&#39;</span>:           <span class="ch">&#39;libs/jQuery-1.7.1&#39;</span>,
-        <span class="ch">&#39;json2&#39;</span>:            <span class="ch">&#39;libs/json2&#39;</span>,
-        <span class="ch">&#39;datepicker&#39;</span>:       <span class="ch">&#39;libs/jQuery.ui.datepicker&#39;</span>,
-        <span class="ch">&#39;datepickermobile&#39;</span>: <span class="ch">&#39;libs/jquery.ui.datepicker.mobile&#39;</span>,
-        <span class="ch">&#39;jquerymobile&#39;</span>:     <span class="ch">&#39;libs/jquery.mobile-1.0&#39;</span>
+        <span class="ch">&#39;text&#39;</span>: <span class="ch">&#39;libs/require/text&#39;</span>,
     },
     <span class="dt">baseUrl</span>: <span class="ch">&#39;app&#39;</span>
 } );</code></pre>
 <ol start="3" type="1">
-<li>When the <code>text!</code> prefix is used for a dependency, RequireJS will automatically load the text plugin and treat the dependency as a text resource. A typical example of this in action may look like..</li>
+<li>When the <code>text!</code> prefix is used for a dependency, RequireJS will automatically load the text plugin and treat the dependency as a text resource. A typical example of this in action may look like:</li>
 </ol>
 <pre class="sourceCode javascript"><code class="sourceCode javascript">require([<span class="ch">&#39;js/app&#39;</span>, <span class="ch">&#39;text!templates/mainView.html&#39;</span>],
-    <span class="kw">function</span>(app, mainView){
+    <span class="kw">function</span>( app, mainView ) {
         <span class="co">// the contents of the mainView file will be</span>
         <span class="co">// loaded into mainView for usage.</span>
     }
@@ -5607,17 +5692,16 @@ require([<span class="ch">&#39;foo&#39;</span>, <span class="ch">&#39;bar&#39;</
 </ol>
 <p>With Underscore.js’s micro-templating (and jQuery) this would typically be:</p>
 <p>HTML:</p>
-<pre><code>&lt;script type=&quot;text/template&quot; id=&quot;mainViewTemplate&quot;&gt;
-    &lt;% _.each( person, function( person_item ){ %&gt;
-        &lt;li&gt;&lt;%= person_item.get(&#39;name&#39;) %&gt;&lt;/li&gt;
+<pre class="sourceCode html"><code class="sourceCode html"><span class="kw">&lt;script</span><span class="ot"> type=</span><span class="st">&quot;text/template&quot;</span><span class="ot"> id=</span><span class="st">&quot;mainViewTemplate&quot;</span><span class="kw">&gt;</span>
+    &lt;% <span class="kw">_</span>.<span class="fu">each</span>( person, <span class="kw">function</span>( person_item ){ %&gt;
+        &lt;li&gt;&lt;%= <span class="kw">person_item</span>.<span class="fu">get</span>(<span class="ch">&#39;name&#39;</span>) %&gt;&lt;/li&gt;
     &lt;% }); %&gt;
-&lt;/script&gt;</code></pre>
+<span class="kw">&lt;/script&gt;</span></code></pre>
 <p>JS:</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> compiled_template = <span class="kw">_</span>.<span class="fu">template</span>( $(<span class="ch">&#39;#mainViewTemplate&#39;</span>).<span class="fu">html</span>() );</code></pre>
 <p>With RequireJS and the text plugin however, it’s as simple as saving your template into an external text file (say, <code>mainView.html</code>) and doing the following:</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript">require([<span class="ch">&#39;js/app&#39;</span>, <span class="ch">&#39;text!templates/mainView.html&#39;</span>],
     <span class="kw">function</span>(app, mainView){
-
         <span class="kw">var</span> compiled_template = <span class="kw">_</span>.<span class="fu">template</span>( mainView );
     }
 );</code></pre>
@@ -5625,10 +5709,10 @@ require([<span class="ch">&#39;foo&#39;</span>, <span class="ch">&#39;bar&#39;</
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">collection.someview</span>.$<span class="fu">el</span>.<span class="fu">html</span>( compiled_template( { <span class="dt">results</span>: <span class="kw">collection</span>.<span class="fu">models</span> } ) );</code></pre>
 <p>All templating solutions will have their own custom methods for handling template compilation, but if you understand the above, substituting Underscore’s micro-templating for any other solution should be fairly trivial.</p>
 <p><strong>Note:</strong> You may also be interested in looking at <a href="https://github.com/ZeeAgency/requirejs-tpl">RequireJS tpl</a>. It’s an AMD-compatible version of the Underscore templating system that also includes support for optimization (pre-compiled templates) which can lead to better performance and no evals. I have yet to use it myself, but it comes as a recommended resource.</p>
-<h2 id="optimizing-backbone-apps-for-production-with-the-requirejs-optimizer"><a href="#TOC">Optimizing Backbone apps for production with the RequireJS Optimizer</a></h2>
+<h3 id="optimizing-backbone-apps-for-production-with-the-requirejs-optimizer"><a href="#TOC">Optimizing Backbone apps for production with the RequireJS Optimizer</a></h3>
 <p>As experienced developers may know, an essential final step when writing both small and large JavaScript web applications is the build process. The majority of non-trivial apps are likely to consist of more than one or two scripts and so optimizing, minimizing and concatenating your scripts prior to pushing them to production will require your users to download a reduced number (if not just one) script file.</p>
-<p>Note: If you haven’t looked at build processes before and this is your first time hearing about them, you might find <a href="http://addyosmani.com/blog/client-side-build-process/">my post and screencast on this topic</a> useful.</p>
-<p>With some other structural JavaScript frameworks, my recommendation would normally be to implicitly use YUI Compressor or Google’s closure compiler tools, but we have a slightly more elegant method available, when it comes to Backbone if you’re using RequireJS. RequireJS has a command line optimization tool called r.js which has a number of capabilities, including:</p>
+<p>If this is your first time looking at build scripts, <a href="http://addyosmani.com/blog/client-side-build-process/">Addy Osmani’s screencast on build scripts</a> may be useful.</p>
+<p>Another benefit to using RequireJS is its command line optimization tool, R.js. This has a number of capabilities, including:</p>
 <ul>
 <li>Concatenating specific scripts and minifying them using external tools such as UglifyJS (which is used by default) or Google’s Closure Compiler for optimal browser delivery, whilst preserving the ability to dynamically load modules</li>
 <li>Optimizing CSS and stylesheets by inlining CSS files imported using @import, stripping out comments etc.</li>
