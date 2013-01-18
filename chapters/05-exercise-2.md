@@ -445,7 +445,7 @@ Now lets create a function that lets us add a book. We put it in our master view
 addBook:function(){
     var formData = {};
  
-    $("#addBook").children("input").each(function(i, el){
+    $("#addBook div").children("input").each(function(i, el){
         formData[el.id] = $(el).val();
     });
  
@@ -471,7 +471,7 @@ addBook:function(e){
  
     var formData = {};
  
-    $("#addBook").children("input").each(function(i, el){
+    $("#addBook div").children("input").each(function(i, el){
         formData[el.id] = $(el).val();
     });
  
