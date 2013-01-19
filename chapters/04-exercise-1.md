@@ -19,8 +19,7 @@ Essentially, these features are classic [CRUD](http://en.wikipedia.org/wiki/Crea
 
 ## Index
 
-The first step is to setup the basic application dependencies, which in this case will be: [jQuery](http://jquery.com), [Underscore](http://underscorejs.org), Backbone.js and the [Backbone LocalStorage adapter](https://github.com/jeromegn/Backbone.localStorage). These will be loaded in our main (and only) HTML file, index.html:
-
+First, we'll set up the basic application dependencies: [jQuery](http://jquery.com), [Underscore](http://underscorejs.org), Backbone.js and the [Backbone LocalStorage adapter](https://github.com/jeromegn/Backbone.localStorage). These will be loaded in index.html, the application's sole HTML file:
 
 ```html
 
@@ -50,9 +49,9 @@ The first step is to setup the basic application dependencies, which in this cas
 
 ```
 
-To help demonstrate how the various parts of our application can be split up, individual concerns are cleanly organized into folders representing our models, views, collections and routers. An app.js file is used to kick everything off.
+In addition to the aforementioned application dependencies, note that a few other, application-specific files are also loaded. These are organized into folders representing their application responsibilities: models, views, collections and routers. An app.js file is present to house central initialization code.
 
-Note: If you want to follow along, create directory structure as shown in index.html. Also, you will need [base.css](https://raw.github.com/addyosmani/todomvc/gh-pages/assets/base.css) and [bg.png](https://raw.github.com/addyosmani/todomvc/gh-pages/assets/bg.png), both in assets dir. As mentioned previously you can check out whole application at [TodoMVC.com](http://todomvc.com).
+Note: If you want to follow along, create a directory structure as demonstrated in index.html. You will also need [base.css](https://raw.github.com/addyosmani/todomvc/gh-pages/assets/base.css) and [bg.png](https://raw.github.com/addyosmani/todomvc/gh-pages/assets/bg.png), which can both live in an assets directory. And again, the final application can be demo'd at [TodoMVC.com](http://todomvc.com).
 
 
 ## Application HTML
