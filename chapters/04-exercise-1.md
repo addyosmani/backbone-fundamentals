@@ -56,7 +56,7 @@ Note: If you want to follow along, create a directory structure as demonstrated 
 
 ## Application HTML
 
-Now let's take a look at our application's static HTML. We're going to need an `<input>` for creating new todos, a `<ul id="todo-list" />` for listing the actual todos, and a section containing some operations, such as clearing completed todos.
+Now let's take a look at our application's static HTML. We'll need an `<input>` for creating new todos, a `<ul id="todo-list" />` for listing the actual todos and a section containing some operations, such as clearing completed todos.
 
 ```html
   <section id="todoapp">
@@ -79,13 +79,13 @@ Now let's take a look at our application's static HTML. We're going to need an `
 
 ```
 
-We’ll be populating our todo-list and adding a statistics section with details about what items are left to be completed later on.
+We’ll populate our todo-list and add a statistics section containing details about what incomplete items later on.
 
-So far so good. Now in order to tie this into our Backbone Todo app, we're going to have to go back to the fundamentals - a Todo model.
+In order to implement these features, we'll return to the fundamentals: a Todo model.
 
 ## Todo model
 
-The `Todo` model is remarkably straightforward. Firstly a todo has two attributes, a `title` and a `completed` status that indicates whether it's been completed. These attributes are passed as defaults, as you can see in the example below:
+The `Todo` model is remarkably straightforward. First, a todo has two attributes: a `title` stores todo item's title and a `completed` status indicates if it's complete. These attributes are passed as defaults, as is exemplified below:
 
 ```javascript
 
@@ -117,17 +117,17 @@ The `Todo` model is remarkably straightforward. Firstly a todo has two attribute
 
 ```
 
-We also have a `toggle()` function which allows to set whether a Todo item has been completed.
+The Todo model also features a `toggle()` method through which a Todo item's completion status can be set.
 
 
 ## Todo collection
 
 
-Next we have our `TodoList` collection used to group our models. The collection is being extended by localStorage which automatically persists Todo records to HTML5 Local Storage via the Backbone LocalStorage adapter, so they're saved between page requests.
+Next, a `TodoList` collection is used to group our models. The collection is extended by localStorage, which automatically persists Todo records to HTML5 Local Storage via the Backbone LocalStorage adapter. Through local storage, they're saved between page requests.
 
-We've then got some static methods, `completed()` and `remaining()`, which return an array of unfinished and finished todos respectively.
+The collection's `completed()` and `remaining()` methods return an array of unfinished and finished todos, respectively.
 
-Finally we have a `nextOrder()` function, that keeps our Todo items in sequential order as well as a `comparator()` used to sort items by their insertion order.
+A `nextOrder()` method keeps our Todo items in sequential order while a `comparator()` sorts items by their insertion order.
 
 ```javascript
 
