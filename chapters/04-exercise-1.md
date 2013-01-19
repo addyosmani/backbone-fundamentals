@@ -4,18 +4,18 @@ Now that we've covered fundamentals, let's write our first Backbone.js applicati
 
 ![](img/todoapp.png)
 
-Let's think about what we need from a high level architectural standpoint.
+Let's consider the application's architecture at a high level. We'll need:
 
-* A `Todo` model to describe individual todo items
-* A `TodoList` collection to store and persist todos
-* A way of creating todos
-* Listing todos
-* Editing existing todos
-* Completing todos
-* Deleting todos
-* A way to bookmark the items that have been completed or are remaining
+* a `Todo` model to describe individual todo items
+* a `TodoList` collection to store and persist todos
+* a way of creating todos
+* a way to display a listing of todos
+* a way to edit existing todos
+* a way to deem a todo complete
+* a way to deleting todos
+* a way to bookmark the items that have been completed or are remaining
 
-Basically your classic [CRUD](http://en.wikipedia.org/wiki/Create,_read,_update_and_delete) methods. Let's get started!
+Essentially, these features are classic [CRUD](http://en.wikipedia.org/wiki/Create,_read,_update_and_delete) methods. Let's get started!
 
 ## Index
 
