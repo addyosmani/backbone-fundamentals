@@ -182,11 +182,11 @@ A `nextOrder()` method keeps our Todo items in sequential order while a `compara
 
 ## Application View
 
-So let's look at the core of the application's logic, the views. Since each todo has a fair bit of logic associated with it, such as edit in place, we're going to use the element controller pattern - a pattern which consists of two views, one that controls a collection of items, and the other deals with each individual item.
+Let's examine the core of the application's logic, the views. Each view supports functionality such as edit-in-place, and is therefore associated with a fair amount of logic. To help organize this logic, we'll utilize the element controller pattern. The element controller pattern consists of two views: one controls a collection of items while the other deals with each individual item.
 
-In other words, we're going to have one view `AppView`, which will be in charge of creating new todos, and rendering the initial todo list. Then we'll have another view called TodoView instances of which will be associated with an individual Todo record. Todo instances will be in charge of editing, updating and destroying their associated todo.
+In other words, one view, `AppView`, will handle the creation of new todos, as well as rendering the initial todo list. Instances of another view, `TodoView`, will be associated with an individual Todo record. Todo instances can handle editing, updating and destroying their associated todo.
 
-To keep things simple, we'll keep things 'read-only' at the moment, and won't provide any functionality for creating, editing or deleting todos:
+To keep things simple, the application will be 'read-only', at least for now. At this stage, it won't support functionality for creating, editing or deleting todos:
 
 ```javascript
 
@@ -264,9 +264,9 @@ To keep things simple, we'll keep things 'read-only' at the moment, and won't pr
 ```
 
 
-You can see we've got a couple of things going on, an el (element), a `statsTemplate`, a constructor function and several view specific methods. To the right of the `el:` key is a DOM element selector for the element with ID `todoapp`. The value of this is just a string and Backbone will create a reference pointing to the element matching the selector #todoapp, where here it will be the `<section id="todoapp" />` element, which we previously defined in our HTML.
+A few notable features are present in the AppView, including a `statsTemplate` method, an `initialize` method that's called on instantiation, and several view-specific methods.
 
-In a nutshell this means we can now refer to this.el in our controller, which points to the `<section id="todoapp" />` element. As you can see, we're referring to el in the `addOne()` function, appending an element to the list.
+An `el` (element) property stores a selector targeting the DOM element with an ID of `todoapp`. In the case of our application, `el` refers to the matching `<section id="todoapp" />` element in index.html.
 
 Now let's take a look at the constructor function. It's binding to several events on the Todo model, such as add, reset and all. Since we're delegating handling of updates and deletes to the `TodoView` view, we don't need to worry about that here. The two pieces of logic are:
 
