@@ -13,12 +13,13 @@
 
 ## Extensions/Libraries
 
-* [Backbone Marionette](https://github.com/derickbailey/backbone.marionette)
+* [MarionetteJS](https://github.com/derickbailey/backbone.marionette)
+* [AuraJS](https://github.com/aurajs/aura)
 * [Thorax](http://walmartlabs.github.com/thorax)
 * [Lumbar](http://walmartlabs.github.com/lumbar)
 * [Backbone Layout Manager](https://github.com/tbranyen/backbone.layoutmanager)
 * [Backbone Boilerplate](https://github.com/backbone-boilerplate/backbone-boilerplate)
-* [Backbone Model Binding](https://github.com/derickbailey/backbone.modelbinding)
+* [Backbone.ModelBinder](https://github.com/theironcook/Backbone.ModelBinder)
 * [Backbone Relational - for model relationships](https://github.com/PaulUithol/Backbone-relational)
 * [Backbone CouchDB](https://github.com/janmonschke/backbone-couchdb)
 * [Backbone Validations - HTML5 inspired validations](https://github.com/n-time/backbone.validations)
