@@ -834,8 +834,7 @@ Thorax was created by Ryan Eastridge and Kevin Decker to create Walmart's mobile
         greeting: 'Hello',
         template: '{{greeting}} World!'
     });
-    view.render();
-    $('body').append(view.el);
+    view.appendTo('body');
 ```
 
  In most examples in this chapter a `template` property will be specified. In larger projects including the boilerplate projects provided on the Thorax website a `name` property would instead be used and a `template` of the same file name in your project would automatically be assigned to the view.
@@ -1099,8 +1098,7 @@ and the corresponding JavaScript:
       },
       template: '...'
   });
-  todosView.render();
-  $('body').append(todosView.el);
+  todosView.appendTo('body');
 ```
 
 To see Thorax in action on a large scale website visit walmart.com on any Android or iOS device. For a complete list of resources visit the [Thorax website](http://walmartlabs.github.com/thorax).
