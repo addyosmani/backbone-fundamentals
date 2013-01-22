@@ -12,7 +12,7 @@ Let's consider the application's architecture at a high level. We'll need:
 * a way to display a listing of todos
 * a way to edit existing todos
 * a way to deem a todo complete
-* a way to deleting todos
+* a way to delete todos
 * a way to bookmark the items that have been completed or are remaining
 
 Essentially, these features are classic [CRUD](http://en.wikipedia.org/wiki/Create,_read,_update_and_delete) methods. Let's get started!
