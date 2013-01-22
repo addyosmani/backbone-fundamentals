@@ -15,7 +15,7 @@
 
 * [MarionetteJS](https://github.com/derickbailey/backbone.marionette)
 * [AuraJS](https://github.com/aurajs/aura)
-* [Thorax](http://walmartlabs.github.com/thorax)
+* [Thorax](http://thoraxjs.org)
 * [Lumbar](http://walmartlabs.github.com/lumbar)
 * [Backbone Layout Manager](https://github.com/tbranyen/backbone.layoutmanager)
 * [Backbone Boilerplate](https://github.com/backbone-boilerplate/backbone-boilerplate)
