@@ -1,29 +1,25 @@
 # Exercise 1: Todos - Your First Backbone.js App
 
-Now that we've journeyed through the fundamentals, let's move on to writing our first Backbone.js app - a Todo List application. Building a Todo List is a great way to learn about Backbone’s conventions. It's a simple enough app, but contains enough interesting problems to be useful, such as binding, persisting model data, routing and template rendering.
-
-
-For this chapter, we’re going to learn how to create the Backbone.js Todo app listed on [TodoMVC.com](http://todomvc.com).
+Now that we've covered fundamentals, let's write our first Backbone.js application. We'll build the Backbone Todo List application exhibited on [TodoMVC.com](http://todomvc.com). Building a Todo List is a great way to learn Backbone’s conventions. It's a relatively simple application, yet technical challenges surrounding binding, persisting model data, routing and template rendering provide the opportunity to illustrate some core Backbone features.
 
 ![](img/todoapp.png)
 
-Let's think about what we need from a high level architectural standpoint.
+Let's consider the application's architecture at a high level. We'll need:
 
-* A `Todo` model to describe individual todo items
-* A `TodoList` collection to store and persist todos
-* A way of creating todos
-* Listing todos
-* Editing existing todos
-* Completing todos
-* Deleting todos
-* A way to bookmark the items that have been completed or are remaining
+* a `Todo` model to describe individual todo items
+* a `TodoList` collection to store and persist todos
+* a way of creating todos
+* a way to display a listing of todos
+* a way to edit existing todos
+* a way to deem a todo complete
+* a way to delete todos
+* a way to bookmark the items that have been completed or are remaining
 
-Basically your classic [CRUD](http://en.wikipedia.org/wiki/Create,_read,_update_and_delete) methods. Let's get started!
+Essentially, these features are classic [CRUD](http://en.wikipedia.org/wiki/Create,_read,_update_and_delete) methods. Let's get started!
 
 ## Index
 
-The first step is to setup the basic application dependencies, which in this case will be: [jQuery](http://jquery.com), [Underscore](http://underscorejs.org), Backbone.js and the [Backbone LocalStorage adapter](https://github.com/jeromegn/Backbone.localStorage). These will be loaded in our main (and only) HTML file, index.html:
-
+First, we'll set up the basic application dependencies: [jQuery](http://jquery.com), [Underscore](http://underscorejs.org), Backbone.js and the [Backbone LocalStorage adapter](https://github.com/jeromegn/Backbone.localStorage). These will be loaded in index.html, the application's sole HTML file:
 
 ```html
 
@@ -53,14 +49,14 @@ The first step is to setup the basic application dependencies, which in this cas
 
 ```
 
-To help demonstrate how the various parts of our application can be split up, individual concerns are cleanly organized into folders representing our models, views, collections and routers. An app.js file is used to kick everything off.
+In addition to the aforementioned application dependencies, note that a few other, application-specific files are also loaded. These are organized into folders representing their application responsibilities: models, views, collections and routers. An app.js file is present to house central initialization code.
 
-Note: If you want to follow along, create directory structure as shown in index.html. Also, you will need [base.css](https://raw.github.com/addyosmani/todomvc/gh-pages/assets/base.css) and [bg.png](https://raw.github.com/addyosmani/todomvc/gh-pages/assets/bg.png), both in assets dir. As mentioned previously you can check out whole application at [TodoMVC.com](http://todomvc.com).
+Note: If you want to follow along, create a directory structure as demonstrated in index.html. You will also need [base.css](https://raw.github.com/addyosmani/todomvc/gh-pages/assets/base.css) and [bg.png](https://raw.github.com/addyosmani/todomvc/gh-pages/assets/bg.png), which can both live in an assets directory. And again, the final application can be demo'd at [TodoMVC.com](http://todomvc.com).
 
 
 ## Application HTML
 
-Now let's take a look at our application's static HTML. We're going to need an `<input>` for creating new todos, a `<ul id="todo-list" />` for listing the actual todos, and a section containing some operations, such as clearing completed todos.
+Now let's take a look at our application's static HTML. We'll need an `<input>` for creating new todos, a `<ul id="todo-list" />` for listing the actual todos and a section containing some operations, such as clearing completed todos.
 
 ```html
   <section id="todoapp">
@@ -83,13 +79,13 @@ Now let's take a look at our application's static HTML. We're going to need an `
 
 ```
 
-We’ll be populating our todo-list and adding a statistics section with details about what items are left to be completed later on.
+We’ll populate our todo-list and add a statistics section containing details about what incomplete items later on.
 
-So far so good. Now in order to tie this into our Backbone Todo app, we're going to have to go back to the fundamentals - a Todo model.
+In order to implement these features, we'll return to the fundamentals: a Todo model.
 
 ## Todo model
 
-The `Todo` model is remarkably straightforward. Firstly a todo has two attributes, a `title` and a `completed` status that indicates whether it's been completed. These attributes are passed as defaults, as you can see in the example below:
+The `Todo` model is remarkably straightforward. First, a todo has two attributes: a `title` stores todo item's title and a `completed` status indicates if it's complete. These attributes are passed as defaults, as is exemplified below:
 
 ```javascript
 
@@ -121,17 +117,17 @@ The `Todo` model is remarkably straightforward. Firstly a todo has two attribute
 
 ```
 
-We also have a `toggle()` function which allows to set whether a Todo item has been completed.
+The Todo model also features a `toggle()` method through which a Todo item's completion status can be set.
 
 
 ## Todo collection
 
 
-Next we have our `TodoList` collection used to group our models. The collection is being extended by localStorage which automatically persists Todo records to HTML5 Local Storage via the Backbone LocalStorage adapter, so they're saved between page requests.
+Next, a `TodoList` collection is used to group our models. The collection is extended by localStorage, which automatically persists Todo records to HTML5 Local Storage via the Backbone LocalStorage adapter. Through local storage, they're saved between page requests.
 
-We've then got some static methods, `completed()` and `remaining()`, which return an array of unfinished and finished todos respectively.
+The collection's `completed()` and `remaining()` methods return an array of unfinished and finished todos, respectively.
 
-Finally we have a `nextOrder()` function, that keeps our Todo items in sequential order as well as a `comparator()` used to sort items by their insertion order.
+A `nextOrder()` method keeps our Todo items in sequential order while a `comparator()` sorts items by their insertion order.
 
 ```javascript
 
@@ -186,11 +182,11 @@ Finally we have a `nextOrder()` function, that keeps our Todo items in sequentia
 
 ## Application View
 
-So let's look at the core of the application's logic, the views. Since each todo has a fair bit of logic associated with it, such as edit in place, we're going to use the element controller pattern - a pattern which consists of two views, one that controls a collection of items, and the other deals with each individual item.
+Let's examine the core of the application's logic, the views. Each view supports functionality such as edit-in-place, and is therefore associated with a fair amount of logic. To help organize this logic, we'll utilize the element controller pattern. The element controller pattern consists of two views: one controls a collection of items while the other deals with each individual item.
 
-In other words, we're going to have one view `AppView`, which will be in charge of creating new todos, and rendering the initial todo list. Then we'll have another view called TodoView instances of which will be associated with an individual Todo record. Todo instances will be in charge of editing, updating and destroying their associated todo.
+In other words, one view, `AppView`, will handle the creation of new todos, as well as rendering the initial todo list. Instances of another view, `TodoView`, will be associated with an individual Todo record. Todo instances can handle editing, updating and destroying their associated todo.
 
-To keep things simple, we'll keep things 'read-only' at the moment, and won't provide any functionality for creating, editing or deleting todos:
+To keep things simple, the application will be 'read-only', at least for now. At this stage, it won't support functionality for creating, editing or deleting todos:
 
 ```javascript
 
@@ -268,9 +264,9 @@ To keep things simple, we'll keep things 'read-only' at the moment, and won't pr
 ```
 
 
-You can see we've got a couple of things going on, an el (element), a `statsTemplate`, a constructor function and several view specific methods. To the right of the `el:` key is a DOM element selector for the element with ID `todoapp`. The value of this is just a string and Backbone will create a reference pointing to the element matching the selector #todoapp, where here it will be the `<section id="todoapp" />` element, which we previously defined in our HTML.
+A few notable features are present in the AppView, including a `statsTemplate` method, an `initialize` method that's called on instantiation, and several view-specific methods.
 
-In a nutshell this means we can now refer to this.el in our controller, which points to the `<section id="todoapp" />` element. As you can see, we're referring to el in the `addOne()` function, appending an element to the list.
+An `el` (element) property stores a selector targeting the DOM element with an ID of `todoapp`. In the case of our application, `el` refers to the matching `<section id="todoapp" />` element in index.html.
 
 Now let's take a look at the constructor function. It's binding to several events on the Todo model, such as add, reset and all. Since we're delegating handling of updates and deletes to the `TodoView` view, we don't need to worry about that here. The two pieces of logic are:
 
