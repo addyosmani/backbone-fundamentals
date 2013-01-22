@@ -14,7 +14,7 @@
 ## Extensions/Libraries
 
 * [Backbone Marionette](https://github.com/derickbailey/backbone.marionette)
-* [Thorax](http://walmartlabs.github.com/thorax)
+* [Thorax](http://thoraxjs.org)
 * [Lumbar](http://walmartlabs.github.com/lumbar)
 * [Backbone Layout Manager](https://github.com/tbranyen/backbone.layoutmanager)
 * [Backbone Boilerplate](https://github.com/backbone-boilerplate/backbone-boilerplate)
