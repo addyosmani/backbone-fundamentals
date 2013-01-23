@@ -505,7 +505,7 @@ Our events hash includes three callbacks:
 
 ## Setup
 
-So now we have two views: `AppView` and `TodoView`. The former needs to get instantiated when the page loads, so some code actually gets run. You can do this simply enough, by using jQuery's `ready()` utility, which will execute a function when the DOM's loaded.
+So now we have two views: `AppView` and `TodoView`. The former needs to be instantiated on page load so its code is executed. This can be accomplished through jQuery's `ready()` utility, which will execute a function when the DOM is loaded.
 
 ```javascript
 
@@ -525,17 +525,19 @@ So now we have two views: `AppView` and `TodoView`. The former needs to get inst
 
 ## In action
 
-Now we've gone far enough without checking that things work as they should. 
+Let's pause and ensure that the work we've done functions as intended.
 
-If you are following along open up index.html and, if everything's going to plan, you shouldn't see any errors in the console. The todo list will be blank (we haven't created any todos yet), and the todo-list won't work through our slick interface, as we haven't yet hooked it up fully. However, we can create a Todo from the console.
+If you are following along, open index.html in your web browser and monitor the console. If all is well, you shouldn't see any JavaScript errors. The todo list should be blank as we haven't yet created any todos. Plus, there is some additional work we'll need to do before the user interface fully functions.
 
-Type in: `window.app.Todos.create({ title: 'My first Todo item'});` and hit return.
+However, a few things can be tested through the JavaScript console.
+
+In the console, add a new todo item: `window.app.Todos.create({ title: 'My first Todo item'});` and hit return.
 
 ![](img/todoconsole.png)
 
-Once you've run the above in the console, we should be looking at a brand new todo (logged in console) we've just added in the todos collection. Created todo is saved into Local Storage as well and will be available on page refresh.
+If all is functioning properly, this should log the new todo we've just added to the todos collection. The newly created todo is also saved to Local Storage and will be available on page refresh.
 
-`window.app.Todos.create()` used above is collection method (`collection.create(attributes, [options])`) which instantiate new model item of the type passed into the collection definition, in our case `app.Todo`:
+`window.app.Todos.create()` executes a collection method (`collection.create(attributes, [options])`) which instantiates a new model item of the type passed into the collection definition, in our case `app.Todo`:
 
 ```javascript
 
