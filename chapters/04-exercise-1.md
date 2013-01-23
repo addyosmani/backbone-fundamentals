@@ -499,9 +499,9 @@ In the `render()` method, we render an Underscore.js JavaScript template, called
 
 Our events hash includes three callbacks:
 
-* `edit()`: Changes the current view into editing mode when a user double-clicks on an existing item in the todo list. This allows them to change the existing value of the item’s title attribute
+* `edit()`: changes the current view into editing mode when a user double-clicks on an existing item in the todo list. This allows them to change the existing value of the item’s title attribute.
 * `updateOnEnter()`: checks that the user has hit the return/enter key and executes the close() function.
-* `close()`: This trims the value of the current text in our `<input/>` field, ensuring that we don’t process it further if it contains no text (e.g ‘’). If a valid value has been provided, we save the changes to the current todo model and close editing mode, by removing the corresponding CSS class.
+* `close()`: trims the value of the current text in our `<input/>` field, ensuring that we don’t process it further if it contains no text (e.g ‘’). If a valid value has been provided, we save the changes to the current todo model and close editing mode by removing the corresponding CSS class.
 
 ## Setup
 
