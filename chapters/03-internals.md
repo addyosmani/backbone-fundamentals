@@ -249,7 +249,7 @@ var Todo = Backbone.Model.extend({
 
   initialize: function(){
     console.log('This model has been initialized.');
-    this.on("error", function(model, error){
+    this.on("invalid", function(model, error){
         console.log(error);
     });
   }
