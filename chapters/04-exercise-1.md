@@ -268,13 +268,13 @@ A few notable features are present in the AppView, including a `statsTemplate` m
 
 An `el` (element) property stores a selector targeting the DOM element with an ID of `todoapp`. In the case of our application, `el` refers to the matching `<section id="todoapp" />` element in index.html.
 
-Now let's take a look at the constructor function. It's binding to several events on the Todo model, such as add, reset and all. Since we're delegating handling of updates and deletes to the `TodoView` view, we don't need to worry about that here. The two pieces of logic are:
+Let's take a look at the constructor function. It's binding to several events on the Todo model, such as `add`, `reset` and `all`. Since we're delegating handling of updates and deletes to the `TodoView` view, we don't need to worry about that here. The two pieces of logic are:
 
-* When a new todo is created, the `add` event will be fired, calling `addOne()` which instantiates the TodoView view, rendering it and appending the resultant element to our Todo list.
+* When a new todo is created, the `add` event will be fired, calling `addOne()`, which instantiates the TodoView view, rendering it and appending the resultant element to our Todo list.
 
 * When a `reset` event is called (i.e. we wish to update the collection in bulk such as when the Todos have been loaded from Local Storage), `addAll()` is called, which iterates over all of the Todos currently in our collection and fires `addOne()` for each item.
 
-We can then add in the logic for creating new todos, editing them and filtering them based on whether they are complete.
+We can then add in the logic for creating new todos, editing them and filtering them based on their completed status.
 
 * events: We define an events hash containing declarative callbacks for our DOM events.
   * `createOnEnter()`: Creates a new Todo model which persists in localStorage when a user hits return inside the `<input/>` field and resets the main `<input/>` field value to prepare it for the next entry. This creates the model via newAttributes(), which is an object literal composed of the title, order and completed state of the new item being added.
@@ -284,7 +284,7 @@ We can then add in the logic for creating new todos, editing them and filtering 
     We bind a callback for a change:completed event, letting us know a change has been made as well to an existing todo item.
     We also bind a callback for a filter event, which works a little similar to addOne() and addAll(). It’s responsibility is to toggle what todo items are visible based on the filter currently selected in the UI (all, completed or remaining) through filterOne() and filterAll().
   * `render()`:
-    We add some conditional CSS styling based on the filter currently selected so that the route that has been selected is highlighted.
+    We add some conditional CSS styling based on the filter currently selected so that the selected route is highlighted.
 
 ```javascript
 
@@ -423,7 +423,7 @@ We can then add in the logic for creating new todos, editing them and filtering 
 
 ## Individual Todo View
 
-Let’s look at the `TodoView` view, now. This will be in charge of individual Todo records, making sure the view updates when the todo does. To enable this interactive behavior we should add some event listeners to the view, that will listen to the events on individual todo represented in html.
+Let’s look at the `TodoView` view, now. This will be in charge of individual Todo records, making sure the view updates when the todo does. To enable this functionality, we should add event listeners to the view that will listen to the events on an individual todo's HTML representation.
 
 ```javascript
 
@@ -493,19 +493,19 @@ Let’s look at the `TodoView` view, now. This will be in charge of individual T
 ```
 
 
-In the `initialize()` constructor, we're setting up a listener to the todo model’s change event. In other words, when the todo updates, we want to re-render the view to reflect its changes.
+In the `initialize()` constructor, we set up a listener tthat monitors a todo model’s `change` event. In other words, when the todo updates, the application should re-render the view and visually reflect its changes.
 
-In the `render()` method, we're rendering an Underscore.js JavaScript template, called `#item-template`, which we’ve previously compiled into this.template using Underscore’s `_.template()` method.  This returns a piece of HTML that we're using to replace the view’s current element. In other words, the rendered template is now present under `this.el`, and can be appended to the todo list.
+In the `render()` method, we render an Underscore.js JavaScript template, called `#item-template`, which was previously compiled into this.template using Underscore’s `_.template()` method.  This returns an HTML fragment that replaces the view’s current element. In other words, the rendered template is now present under `this.el` and can be appended to the todo list in the user interface.
 
 Our events hash includes three callbacks:
 
-* `edit()`: Changes the current view into editing mode when a user double-clicks on an existing item in the todo list. This allows them to change the existing value of the item’s title attribute
+* `edit()`: changes the current view into editing mode when a user double-clicks on an existing item in the todo list. This allows them to change the existing value of the item’s title attribute.
 * `updateOnEnter()`: checks that the user has hit the return/enter key and executes the close() function.
-* `close()`: This trims the value of the current text in our `<input/>` field, ensuring that we don’t process it further if it contains no text (e.g ‘’). If a valid value has been provided, we save the changes to the current todo model and close editing mode, by removing the corresponding CSS class.
+* `close()`: trims the value of the current text in our `<input/>` field, ensuring that we don’t process it further if it contains no text (e.g ‘’). If a valid value has been provided, we save the changes to the current todo model and close editing mode by removing the corresponding CSS class.
 
 ## Setup
 
-So now we have two views: `AppView` and `TodoView`. The former needs to get instantiated when the page loads, so some code actually gets run. You can do this simply enough, by using jQuery's `ready()` utility, which will execute a function when the DOM's loaded.
+So now we have two views: `AppView` and `TodoView`. The former needs to be instantiated on page load so its code is executed. This can be accomplished through jQuery's `ready()` utility, which will execute a function when the DOM is loaded.
 
 ```javascript
 
@@ -525,17 +525,19 @@ So now we have two views: `AppView` and `TodoView`. The former needs to get inst
 
 ## In action
 
-Now we've gone far enough without checking that things work as they should. 
+Let's pause and ensure that the work we've done functions as intended.
 
-If you are following along open up index.html and, if everything's going to plan, you shouldn't see any errors in the console. The todo list will be blank (we haven't created any todos yet), and the todo-list won't work through our slick interface, as we haven't yet hooked it up fully. However, we can create a Todo from the console.
+If you are following along, open index.html in your web browser and monitor the console. If all is well, you shouldn't see any JavaScript errors. The todo list should be blank as we haven't yet created any todos. Plus, there is some additional work we'll need to do before the user interface fully functions.
 
-Type in: `window.app.Todos.create({ title: 'My first Todo item'});` and hit return.
+However, a few things can be tested through the JavaScript console.
+
+In the console, add a new todo item: `window.app.Todos.create({ title: 'My first Todo item'});` and hit return.
 
 ![](img/todoconsole.png)
 
-Once you've run the above in the console, we should be looking at a brand new todo (logged in console) we've just added in the todos collection. Created todo is saved into Local Storage as well and will be available on page refresh.
+If all is functioning properly, this should log the new todo we've just added to the todos collection. The newly created todo is also saved to Local Storage and will be available on page refresh.
 
-`window.app.Todos.create()` used above is collection method (`collection.create(attributes, [options])`) which instantiate new model item of the type passed into the collection definition, in our case `app.Todo`:
+`window.app.Todos.create()` executes a collection method (`collection.create(attributes, [options])`) which instantiates a new model item of the type passed into the collection definition, in our case `app.Todo`:
 
 ```javascript
 
