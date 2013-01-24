@@ -1346,6 +1346,42 @@ Here I check if the current element is the keywords input field, in which case I
 
 ![](img/Screen-Shot-2012-05-01-at-8.57.51-PM.png)
 
+### Connecting with a third party API
+
+In a real world scenario, the model and the view can be adapted to connect a third party API. For example:
+
+```
+url HTTP Method Operation
+index.php?option=com_todo&view=books&task=get  GET Get an array of all books
+```
+
+In the model, you can define the third party API URL via url definition.
+
+```javascript
+url : function() {
+  return 'index.php?option=com_todo&view=books&task=get';
+}
+```
+
+In the view, you can define the attributes to be processed by the model.
+
+```javascript
+// Third party API example.
+this.collection.create(this.collection.model, {    	
+    attrs : {
+       bookId: this.$('#book_id').val()
+    },
+					
+    // Wait for the answer.
+    wait : true,
+    
+    // Report if there's any error.
+	error : function(model, fail, xhr) {
+	    ....
+    }
+});
+```
+
 ### Summary
 
 In this tutorial we made our application persistent by binding it to a server using a REST API. We also looked at some problems that might occur when serializing and deserializing data and their solutions. We looked at the dateFormat and the datepicker jQuery plugins and how to do some more advanced things in our Underscore templates.  The code is available [here](https://dl.dropbox.com/u/70775642/workshop-practical/code.zip).
