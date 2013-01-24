@@ -1,11 +1,10 @@
 # Conclusions
 
+This concludes our voyage into the wondrous world of Backbone.js, but hopefully marks the beginning of your next journey as a user. What you have hopefully learned is that, beyond an accessible API there actually isn’t a great deal to the library. Much of its elegance lies in its simplicity and that is why many developers use it. 
 
-That's it for 'Developing Backbone.js Applications'. I hope you found this book both useful, enlightening and a good start for your journey into exploring Backbone.js.
+For the simplest of applications, you are unlikely to need more than what is prescribed out of the box. For those developing complex applications however, the Backbone.js classes are straightforward to extend, providing an easy path to building (or using a pre-made) extension layer on top of it. We’ve experienced this first hand in the chapters on MarionetteJS and Thorax.
 
-If there are other topics or areas of this book you feel could be expanded further, please feel free to let me know, or better yet, send a pull request upstream. I'm always interested in making this title as comprehensive as possible.
-
-Until next time, the very best of luck with the rest of your journey!
+Working on the client-side can sometimes feel like the wild west, but I hope this book has introduced you to sound advice and concepts that will help you keep your code both tamed and a little more maintainable. Until next time, the very best of luck creating your own front-end masterpieces.
 
 ## Notes
 

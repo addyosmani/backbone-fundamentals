@@ -1863,25 +1863,24 @@ if (this._hasPushState) {
 <p>Reviewing the namespace patterns above, the option that I prefer when writing Backbone applications is nested object namespacing with the object literal pattern.</p>
 <p>Single global variables may work fine for applications that are relatively trivial. However, larger codebases requiring both namespaces and deep sub-namespaces require a succinct solution that’s both readable and scalable. I feel this pattern achieves both of these objectives and is a good choice for most Backbone development.</p>
 <h1 id="exercise-1-todos---your-first-backbone.js-app"><a href="#TOC">Exercise 1: Todos - Your First Backbone.js App</a></h1>
-<p>Now that we’ve journeyed through the fundamentals, let’s move on to writing our first Backbone.js app - a Todo List application. Building a Todo List is a great way to learn about Backbone’s conventions. It’s a simple enough app, but contains enough interesting problems to be useful, such as binding, persisting model data, routing and template rendering.</p>
-<p>For this chapter, we’re going to learn how to create the Backbone.js Todo app listed on <a href="http://todomvc.com">TodoMVC.com</a>.</p>
+<p>Now that we’ve covered fundamentals, let’s write our first Backbone.js application. We’ll build the Backbone Todo List application exhibited on <a href="http://todomvc.com">TodoMVC.com</a>. Building a Todo List is a great way to learn Backbone’s conventions. It’s a relatively simple application, yet technical challenges surrounding binding, persisting model data, routing and template rendering provide the opportunity to illustrate some core Backbone features.</p>
 <figure>
 <img src="img/todoapp.png"><figcaption></figcaption>
 </figure>
-<p>Let’s think about what we need from a high level architectural standpoint.</p>
+<p>Let’s consider the application’s architecture at a high level. We’ll need:</p>
 <ul>
-<li>A <code>Todo</code> model to describe individual todo items</li>
-<li>A <code>TodoList</code> collection to store and persist todos</li>
-<li>A way of creating todos</li>
-<li>Listing todos</li>
-<li>Editing existing todos</li>
-<li>Completing todos</li>
-<li>Deleting todos</li>
-<li>A way to bookmark the items that have been completed or are remaining</li>
+<li>a <code>Todo</code> model to describe individual todo items</li>
+<li>a <code>TodoList</code> collection to store and persist todos</li>
+<li>a way of creating todos</li>
+<li>a way to display a listing of todos</li>
+<li>a way to edit existing todos</li>
+<li>a way to deem a todo complete</li>
+<li>a way to delete todos</li>
+<li>a way to bookmark the items that have been completed or are remaining</li>
 </ul>
-<p>Basically your classic <a href="http://en.wikipedia.org/wiki/Create,_read,_update_and_delete">CRUD</a> methods. Let’s get started!</p>
+<p>Essentially, these features are classic <a href="http://en.wikipedia.org/wiki/Create,_read,_update_and_delete">CRUD</a> methods. Let’s get started!</p>
 <h2 id="index"><a href="#TOC">Index</a></h2>
-<p>The first step is to setup the basic application dependencies, which in this case will be: <a href="http://jquery.com">jQuery</a>, <a href="http://underscorejs.org">Underscore</a>, Backbone.js and the <a href="https://github.com/jeromegn/Backbone.localStorage">Backbone LocalStorage adapter</a>. These will be loaded in our main (and only) HTML file, index.html:</p>
+<p>First, we’ll set up the basic application dependencies: <a href="http://jquery.com">jQuery</a>, <a href="http://underscorejs.org">Underscore</a>, Backbone.js and the <a href="https://github.com/jeromegn/Backbone.localStorage">Backbone LocalStorage adapter</a>. These will be loaded in index.html, the application’s sole HTML file:</p>
 <pre class="sourceCode html"><code class="sourceCode html">
 <span class="er">&lt;</span>!doctype html&gt;
 <span class="kw">&lt;html</span><span class="ot"> lang=</span><span class="st">&quot;en&quot;</span><span class="kw">&gt;</span>
@@ -1906,10 +1905,10 @@ if (this._hasPushState) {
   <span class="kw">&lt;script</span><span class="ot"> src=</span><span class="st">&quot;js/app.js&quot;</span><span class="kw">&gt;&lt;/script&gt;</span>
 <span class="kw">&lt;/body&gt;</span>
 <span class="kw">&lt;/html&gt;</span></code></pre>
-<p>To help demonstrate how the various parts of our application can be split up, individual concerns are cleanly organized into folders representing our models, views, collections and routers. An app.js file is used to kick everything off.</p>
-<p>Note: If you want to follow along, create directory structure as shown in index.html. Also, you will need <a href="https://raw.github.com/addyosmani/todomvc/gh-pages/assets/base.css">base.css</a> and <a href="https://raw.github.com/addyosmani/todomvc/gh-pages/assets/bg.png">bg.png</a>, both in assets dir. As mentioned previously you can check out whole application at <a href="http://todomvc.com">TodoMVC.com</a>.</p>
+<p>In addition to the aforementioned application dependencies, note that a few other, application-specific files are also loaded. These are organized into folders representing their application responsibilities: models, views, collections and routers. An app.js file is present to house central initialization code.</p>
+<p>Note: If you want to follow along, create a directory structure as demonstrated in index.html. You will also need <a href="https://raw.github.com/addyosmani/todomvc/gh-pages/assets/base.css">base.css</a> and <a href="https://raw.github.com/addyosmani/todomvc/gh-pages/assets/bg.png">bg.png</a>, which can both live in an assets directory. And again, the final application can be demo’d at <a href="http://todomvc.com">TodoMVC.com</a>.</p>
 <h2 id="application-html"><a href="#TOC">Application HTML</a></h2>
-<p>Now let’s take a look at our application’s static HTML. We’re going to need an <code>&lt;input&gt;</code> for creating new todos, a <code>&lt;ul id=&quot;todo-list&quot; /&gt;</code> for listing the actual todos, and a section containing some operations, such as clearing completed todos.</p>
+<p>Now let’s take a look at our application’s static HTML. We’ll need an <code>&lt;input&gt;</code> for creating new todos, a <code>&lt;ul id=&quot;todo-list&quot; /&gt;</code> for listing the actual todos and a section containing some operations, such as clearing completed todos.</p>
 <pre class="sourceCode html"><code class="sourceCode html">  <span class="kw">&lt;section</span><span class="ot"> id=</span><span class="st">&quot;todoapp&quot;</span><span class="kw">&gt;</span>
     <span class="kw">&lt;header</span><span class="ot"> id=</span><span class="st">&quot;header&quot;</span><span class="kw">&gt;</span>
       <span class="kw">&lt;h1&gt;</span>todos<span class="kw">&lt;/h1&gt;</span>
@@ -1927,10 +1926,10 @@ if (this._hasPushState) {
     <span class="kw">&lt;p&gt;</span>Written by <span class="kw">&lt;a</span><span class="ot"> href=</span><span class="st">&quot;https://github.com/addyosmani&quot;</span><span class="kw">&gt;</span>Addy Osmani<span class="kw">&lt;/a&gt;&lt;/p&gt;</span>
     <span class="kw">&lt;p&gt;</span>Part of <span class="kw">&lt;a</span><span class="ot"> href=</span><span class="st">&quot;http://todomvc.com&quot;</span><span class="kw">&gt;</span>TodoMVC<span class="kw">&lt;/a&gt;&lt;/p&gt;</span>
   <span class="kw">&lt;/div&gt;</span></code></pre>
-<p>We’ll be populating our todo-list and adding a statistics section with details about what items are left to be completed later on.</p>
-<p>So far so good. Now in order to tie this into our Backbone Todo app, we’re going to have to go back to the fundamentals - a Todo model.</p>
+<p>We’ll populate our todo-list and add a statistics section containing details about what incomplete items later on.</p>
+<p>In order to implement these features, we’ll return to the fundamentals: a Todo model.</p>
 <h2 id="todo-model"><a href="#TOC">Todo model</a></h2>
-<p>The <code>Todo</code> model is remarkably straightforward. Firstly a todo has two attributes, a <code>title</code> and a <code>completed</code> status that indicates whether it’s been completed. These attributes are passed as defaults, as you can see in the example below:</p>
+<p>The <code>Todo</code> model is remarkably straightforward. First, a todo has two attributes: a <code>title</code> stores todo item’s title and a <code>completed</code> status indicates if it’s complete. These attributes are passed as defaults, as is exemplified below:</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript">
   <span class="co">// js/models/todo.js</span>
 
@@ -1957,11 +1956,11 @@ if (this._hasPushState) {
     }
 
   });</code></pre>
-<p>We also have a <code>toggle()</code> function which allows to set whether a Todo item has been completed.</p>
+<p>The Todo model also features a <code>toggle()</code> method through which a Todo item’s completion status can be set.</p>
 <h2 id="todo-collection"><a href="#TOC">Todo collection</a></h2>
-<p>Next we have our <code>TodoList</code> collection used to group our models. The collection is being extended by localStorage which automatically persists Todo records to HTML5 Local Storage via the Backbone LocalStorage adapter, so they’re saved between page requests.</p>
-<p>We’ve then got some static methods, <code>completed()</code> and <code>remaining()</code>, which return an array of unfinished and finished todos respectively.</p>
-<p>Finally we have a <code>nextOrder()</code> function, that keeps our Todo items in sequential order as well as a <code>comparator()</code> used to sort items by their insertion order.</p>
+<p>Next, a <code>TodoList</code> collection is used to group our models. The collection is extended by localStorage, which automatically persists Todo records to HTML5 Local Storage via the Backbone LocalStorage adapter. Through local storage, they’re saved between page requests.</p>
+<p>The collection’s <code>completed()</code> and <code>remaining()</code> methods return an array of unfinished and finished todos, respectively.</p>
+<p>A <code>nextOrder()</code> method keeps our Todo items in sequential order while a <code>comparator()</code> sorts items by their insertion order.</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript">
   <span class="co">// js/collections/todos.js</span>
 
@@ -2010,9 +2009,9 @@ if (this._hasPushState) {
   <span class="co">// Create our global collection of **Todos**.</span>
   <span class="kw">app</span>.<span class="fu">Todos</span> = <span class="kw">new</span> TodoList();</code></pre>
 <h2 id="application-view"><a href="#TOC">Application View</a></h2>
-<p>So let’s look at the core of the application’s logic, the views. Since each todo has a fair bit of logic associated with it, such as edit in place, we’re going to use the element controller pattern - a pattern which consists of two views, one that controls a collection of items, and the other deals with each individual item.</p>
-<p>In other words, we’re going to have one view <code>AppView</code>, which will be in charge of creating new todos, and rendering the initial todo list. Then we’ll have another view called TodoView instances of which will be associated with an individual Todo record. Todo instances will be in charge of editing, updating and destroying their associated todo.</p>
-<p>To keep things simple, we’ll keep things <q>read-only</q> at the moment, and won’t provide any functionality for creating, editing or deleting todos:</p>
+<p>Let’s examine the core of the application’s logic, the views. Each view supports functionality such as edit-in-place, and is therefore associated with a fair amount of logic. To help organize this logic, we’ll utilize the element controller pattern. The element controller pattern consists of two views: one controls a collection of items while the other deals with each individual item.</p>
+<p>In other words, one view, <code>AppView</code>, will handle the creation of new todos, as well as rendering the initial todo list. Instances of another view, <code>TodoView</code>, will be associated with an individual Todo record. Todo instances can handle editing, updating and destroying their associated todo.</p>
+<p>To keep things simple, the application will be <q>read-only</q>, at least for now. At this stage, it won’t support functionality for creating, editing or deleting todos:</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript">
   <span class="co">// js/views/app.js</span>
 
@@ -2084,8 +2083,8 @@ if (this._hasPushState) {
     }
 
   });</code></pre>
-<p>You can see we’ve got a couple of things going on, an el (element), a <code>statsTemplate</code>, a constructor function and several view specific methods. To the right of the <code>el:</code> key is a DOM element selector for the element with ID <code>todoapp</code>. The value of this is just a string and Backbone will create a reference pointing to the element matching the selector #todoapp, where here it will be the <code>&lt;section id=&quot;todoapp&quot; /&gt;</code> element, which we previously defined in our HTML.</p>
-<p>In a nutshell this means we can now refer to this.el in our controller, which points to the <code>&lt;section id=&quot;todoapp&quot; /&gt;</code> element. As you can see, we’re referring to el in the <code>addOne()</code> function, appending an element to the list.</p>
+<p>A few notable features are present in the AppView, including a <code>statsTemplate</code> method, an <code>initialize</code> method that’s called on instantiation, and several view-specific methods.</p>
+<p>An <code>el</code> (element) property stores a selector targeting the DOM element with an ID of <code>todoapp</code>. In the case of our application, <code>el</code> refers to the matching <code>&lt;section id=&quot;todoapp&quot; /&gt;</code> element in index.html.</p>
 <p>Now let’s take a look at the constructor function. It’s binding to several events on the Todo model, such as add, reset and all. Since we’re delegating handling of updates and deletes to the <code>TodoView</code> view, we don’t need to worry about that here. The two pieces of logic are:</p>
 <ul>
 <li><p>When a new todo is created, the <code>add</code> event will be fired, calling <code>addAll()</code>. This iterates over all of the Todos currently in our collection and fires <code>addOne()</code> for each item. (This is so wrong it’s scary.)</p></li>
@@ -4582,20 +4581,20 @@ $(<span class="kw">function</span>($) {
 <p>Marionette follows a similar philosophy to Backbone in that it provides a suite of components that can be used independently of each other, or used together to create a significant advantages for us as developers. But it steps above the structural components of Backbone and provides an application layer, with more than a dozen components and building blocks.</p>
 <p>Marionette’s components range greatly in the features they provide, but they all work together to create a composite application layer that can both reduce boilerplate code and provide a much needed application structure. Its core components include:</p>
 <ul>
-<li><a href="https://github.com/marionettejs/backbone.marionette/blob/master/docs/marionette.application.md"><strong>Backbone.Marionette.Application</strong></a>: An application object that starts your app via initializers, and more</li>
-<li><a href="https://github.com/marionettejs/backbone.marionette/blob/master/docs/marionette.application.module.md"><strong>Backbone.Marionette.Application.module</strong></a>: Create modules and sub-modules within the application</li>
-<li><a href="https://github.com/marionettejs/backbone.marionette/blob/master/docs/marionette.approuter.md"><strong>Backbone.Marionette.AppRouter</strong></a>: Reduce your routers to nothing more than configuration</li>
-<li><a href="https://github.com/marionettejs/backbone.marionette/blob/master/docs/marionette.view.md"><strong>Backbone.Marionette.View</strong></a>: The base View type that other Marionette views extend from (not intended to be used directly)</li>
-<li><a href="https://github.com/marionettejs/backbone.marionette/blob/master/docs/marionette.itemview.md"><strong>Backbone.Marionette.ItemView</strong></a>: A view that renders a single item</li>
-<li><a href="https://github.com/marionettejs/backbone.marionette/blob/master/docs/marionette.collectionview.md"><strong>Backbone.Marionette.CollectionView</strong></a>: A view that iterates over a collection, and renders individual <code>ItemView</code> instances for each model</li>
-<li><a href="https://github.com/marionettejs/backbone.marionette/blob/master/docs/marionette.compositeview.md"><strong>Backbone.Marionette.CompositeView</strong></a>: A collection view and item view, for rendering leaf-branch/composite model hierarchies</li>
-<li><a href="https://github.com/marionettejs/backbone.marionette/blob/master/docs/marionette.region.md"><strong>Backbone.Marionette.Region</strong></a>: Manage visual regions of your application, including display and removal of content</li>
-<li><a href="https://github.com/marionettejs/backbone.marionette/blob/master/docs/marionette.layout.md"><strong>Backbone.Marionette.Layout</strong></a>: A view that renders a layout and creates region managers to manage areas within it</li>
-<li><a href="https://github.com/marionettejs/backbone.marionette/blob/master/docs/marionette.eventaggregator.md"><strong>Backbone.Marionette.EventAggregator</strong></a>: An extension of Backbone.Events, to be used as an event-driven or pub-sub tool</li>
-<li><a href="https://github.com/marionettejs/backbone.marionette/blob/master/docs/marionette.eventbinder.md"><strong>Backbone.Marionette.EventBinder</strong></a>: An event binding manager, to facilitate binding and unbinding of events</li>
-<li><a href="https://github.com/marionettejs/backbone.marionette/blob/master/docs/marionette.renderer.md"><strong>Backbone.Marionette.Renderer</strong></a>: Render templates with or without data, in a consistent and common manner</li>
-<li><a href="https://github.com/marionettejs/backbone.marionette/blob/master/docs/marionette.templatecache.md"><strong>Backbone.Marionette.TemplateCache</strong></a>: Cache templates that are stored in <code>&lt;script&gt;</code> blocks, for faster subsequent access</li>
-<li><a href="https://github.com/marionettejs/backbone.marionette/blob/master/docs/marionette.callbacks.md"><strong>Backbone.Marionette.Callbacks</strong></a>: Manage a collection of callback methods, and execute them as needed</li>
+<li><a href="https://github.com/marionettejs/backbone.marionette/blob/master/docs/marionette.application.md"><strong>Marionette.Application</strong></a>: An application object that starts your app via initializers, and more</li>
+<li><a href="https://github.com/marionettejs/backbone.marionette/blob/master/docs/marionette.application.module.md"><strong>Marionette.Application.module</strong></a>: Create modules and sub-modules within the application</li>
+<li><a href="https://github.com/marionettejs/backbone.marionette/blob/master/docs/marionette.approuter.md"><strong>Marionette.AppRouter</strong></a>: Reduce your routers to nothing more than configuration</li>
+<li><a href="https://github.com/marionettejs/backbone.marionette/blob/master/docs/marionette.view.md"><strong>Marionette.View</strong></a>: The base View type that other Marionette views extend from (not intended to be used directly)</li>
+<li><a href="https://github.com/marionettejs/backbone.marionette/blob/master/docs/marionette.itemview.md"><strong>Marionette.ItemView</strong></a>: A view that renders a single item</li>
+<li><a href="https://github.com/marionettejs/backbone.marionette/blob/master/docs/marionette.collectionview.md"><strong>Marionette.CollectionView</strong></a>: A view that iterates over a collection, and renders individual <code>ItemView</code> instances for each model</li>
+<li><a href="https://github.com/marionettejs/backbone.marionette/blob/master/docs/marionette.compositeview.md"><strong>Marionette.CompositeView</strong></a>: A collection view and item view, for rendering leaf-branch/composite model hierarchies</li>
+<li><a href="https://github.com/marionettejs/backbone.marionette/blob/master/docs/marionette.region.md"><strong>Marionette.Region</strong></a>: Manage visual regions of your application, including display and removal of content</li>
+<li><a href="https://github.com/marionettejs/backbone.marionette/blob/master/docs/marionette.layout.md"><strong>Marionette.Layout</strong></a>: A view that renders a layout and creates region managers to manage areas within it</li>
+<li><a href="https://github.com/marionettejs/backbone.marionette/blob/master/docs/marionette.eventaggregator.md"><strong>Marionette.EventAggregator</strong></a>: An extension of Backbone.Events, to be used as an event-driven or pub-sub tool</li>
+<li><a href="https://github.com/marionettejs/backbone.marionette/blob/master/docs/marionette.eventbinder.md"><strong>Marionette.EventBinder</strong></a>: An event binding manager, to facilitate binding and unbinding of events</li>
+<li><a href="https://github.com/marionettejs/backbone.marionette/blob/master/docs/marionette.renderer.md"><strong>Marionette.Renderer</strong></a>: Render templates with or without data, in a consistent and common manner</li>
+<li><a href="https://github.com/marionettejs/backbone.marionette/blob/master/docs/marionette.templatecache.md"><strong>Marionette.TemplateCache</strong></a>: Cache templates that are stored in <code>&lt;script&gt;</code> blocks, for faster subsequent access</li>
+<li><a href="https://github.com/marionettejs/backbone.marionette/blob/master/docs/marionette.callbacks.md"><strong>Marionette.Callbacks</strong></a>: Manage a collection of callback methods, and execute them as needed</li>
 </ul>
 <p>But like Backbone itself, you’re not required to use all of Marionette’s components just because you want to use some of them. You can pick and choose which features you want to use, when. This allows you to work with other Backbone frameworks and plugins very easily. It also means that you are not required to engage in an all-or-nothing migration to begin using Marionette.</p>
 <h3 id="boilerplate-rendering-code"><a href="#TOC">Boilerplate Rendering Code</a></h3>
@@ -4649,10 +4648,10 @@ $(<span class="ch">&#39;#content&#39;</span>).<span class="fu">html</span>(<span
 <p>Enter Marionette’s <code>ItemView</code> - a simple way to reduce the boilerplate of defining a view.</p>
 <h3 id="reducing-boilerplate-with-marionette.itemview"><a href="#TOC">Reducing Boilerplate With Marionette.ItemView</a></h3>
 <p>All of Marionette’s view types - with the exception of <code>Marionette.View</code> - include a built-in <code>render</code> method that handles the core rendering logic for you. By changing the <code>MyView</code> instance from <code>Backbone.View</code> then, we can take advantage of this. Instead of having to provide our own <code>render</code> method for the view, we can let Marionette render it for us. We’ll still use the same Underscore.js template and rendering mechanism, but the implementation of this is hidden behind the scenes for us. Thus, we can reduce the amount of code needed for this view.</p>
-<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> MyView = <span class="kw">Backbone.Marionette.ItemView</span>.<span class="fu">extend</span>({
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> MyView = <span class="kw">Marionette.ItemView</span>.<span class="fu">extend</span>({
   <span class="dt">template</span>: <span class="ch">&#39;#my-view-template&#39;</span>
 });</code></pre>
-<p>And that’s it - that’s all you need to get the exact same behaviour as the previous view implementation. Just replace <code>Backbone.View.extend</code> with <code>Backbone.Marionette.ItemView.extend</code>, then get rid of the <code>render</code> method. You can still create the view instance with a <code>model</code>, call the <code>render</code> method on the view instance, and display the view in the DOM the same way that we did before. But the view definition has been reduced to a single line of configuration for the template.</p>
+<p>And that’s it - that’s all you need to get the exact same behaviour as the previous view implementation. Just replace <code>Backbone.View.extend</code> with <code>Marionette.ItemView.extend</code>, then get rid of the <code>render</code> method. You can still create the view instance with a <code>model</code>, call the <code>render</code> method on the view instance, and display the view in the DOM the same way that we did before. But the view definition has been reduced to a single line of configuration for the template.</p>
 <h3 id="memory-management"><a href="#TOC">Memory Management</a></h3>
 <p>In addition to the reduction of code needed to define a view, Marionette includes some advanced memory management in all of it’s views, making the job of cleaning up a view instance and it’s event handlers, easy.</p>
 <p>Consider the following view implementation:</p>
@@ -4738,7 +4737,7 @@ zombieView = <span class="kw">new</span> ZombieView({
 <span class="kw">myModel</span>.<span class="fu">set</span>(<span class="ch">&#39;email&#39;</span>, <span class="ch">&#39;jeremy@gmail.com&#39;</span>);</code></pre>
 <p>Now we only see once alert box when this code runs.</p>
 <p>Rather than having to manually remove these event handlers, though, we can let Marionette do it for us.</p>
-<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> ZombieView = <span class="kw">Backbone.Marionette.ItemView</span>.<span class="fu">extend</span>({
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> ZombieView = <span class="kw">Marionette.ItemView</span>.<span class="fu">extend</span>({
   <span class="dt">template</span>: <span class="ch">&#39;#my-view-template&#39;</span>,
 
   <span class="dt">initialize</span>: <span class="kw">function</span>(){
@@ -4777,7 +4776,7 @@ $(<span class="ch">&#39;#content&#39;</span>).<span class="fu">html</span>(<span
 <p>This, again, is boilerplate code. We shouldn’t have to manually call <code>render</code> and manually select the DOM elements to show the view. Furthermore, this code doesn’t lend itself to closing any previous view instance that might be attached to the DOM element we want to populate. And we’ve seen the danger of zombie views already.</p>
 <p>To solve these problems, Marionette provides a <code>Region</code> object - an object that manages the lifecycle of individual views, displayed in a particular DOM element.</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="co">// create a region instance, telling it which DOM element to manage</span>
-<span class="kw">var</span> myRegion = <span class="kw">new</span> <span class="kw">Backbone.Marionette</span>.<span class="fu">Region</span>({
+<span class="kw">var</span> myRegion = <span class="kw">new</span> <span class="kw">Marionette</span>.<span class="fu">Region</span>({
   <span class="dt">el</span>: <span class="ch">&#39;#content&#39;</span>
 });
 
@@ -4801,7 +4800,7 @@ $(<span class="ch">&#39;#content&#39;</span>).<span class="fu">html</span>(<span
 </figure>
 <p>First, we define an application object representing our base TodoMVC app. This will contain initialisation code and define the default layout regions for our app.</p>
 <p><strong>TodoMVC.js:</strong></p>
-<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> TodoMVC = <span class="kw">new</span> <span class="kw">Backbone.Marionette</span>.<span class="fu">Application</span>();
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> TodoMVC = <span class="kw">new</span> <span class="kw">Marionette</span>.<span class="fu">Application</span>();
 
 <span class="kw">TodoMVC</span>.<span class="fu">addRegions</span>({
   <span class="dt">header </span>: <span class="ch">&#39;#header&#39;</span>,
@@ -4832,7 +4831,7 @@ $(<span class="ch">&#39;#content&#39;</span>).<span class="fu">html</span>(<span
   <span class="co">// Layout Header View</span>
   <span class="co">// ------------------</span>
 
-  <span class="kw">Layout</span>.<span class="fu">Header</span> = <span class="kw">Backbone.Marionette.ItemView</span>.<span class="fu">extend</span>({
+  <span class="kw">Layout</span>.<span class="fu">Header</span> = <span class="kw">Marionette.ItemView</span>.<span class="fu">extend</span>({
     <span class="dt">template </span>: <span class="ch">&#39;#template-header&#39;</span>,
 
     <span class="co">// UI bindings create cached attributes that</span>
@@ -4861,7 +4860,7 @@ $(<span class="ch">&#39;#content&#39;</span>).<span class="fu">html</span>(<span
   <span class="co">// Layout Footer View</span>
   <span class="co">// ------------------</span>
   
-  <span class="kw">Layout</span>.<span class="fu">Footer</span> = <span class="kw">Backbone.Marionette.Layout</span>.<span class="fu">extend</span>({
+  <span class="kw">Layout</span>.<span class="fu">Footer</span> = <span class="kw">Marionette.Layout</span>.<span class="fu">extend</span>({
     <span class="dt">template </span>: <span class="ch">&#39;#template-footer&#39;</span>,
 
     <span class="co">// UI bindings create cached attributes that</span>
@@ -5087,7 +5086,7 @@ $(<span class="ch">&#39;#content&#39;</span>).<span class="fu">html</span>(<span
   <span class="co">// Controls the rendering of the list of items, including the</span>
   <span class="co">// filtering of active vs completed items for display.</span>
 
-  <span class="kw">Views</span>.<span class="fu">ListView</span> = <span class="kw">Backbone.Marionette.CompositeView</span>.<span class="fu">extend</span>({
+  <span class="kw">Views</span>.<span class="fu">ListView</span> = <span class="kw">Marionette.CompositeView</span>.<span class="fu">extend</span>({
     <span class="dt">template </span>: <span class="ch">&#39;#template-todoListCompositeView&#39;</span>,
       <span class="dt">itemView </span>: <span class="kw">Views</span>.<span class="fu">ItemView</span>,
       <span class="dt">itemViewContainer </span>: <span class="ch">&#39;#todo-list&#39;</span>,
@@ -5241,7 +5240,7 @@ $(<span class="ch">&#39;#content&#39;</span>).<span class="fu">html</span>(<span
 <h2 id="thorax"><a href="#TOC">Thorax</a></h2>
 <p><em>By Ryan Eastridge &amp; Addy Osmani</em></p>
 <p>Part of Backbone’s appeal is that it provides structure but is generally un-opinionated, in particular when it comes to views. Thorax makes an opinionated decision to use Handlebars as it’s templating solution. Some of the patterns found in Marionette are found in Thorax as well. Marionette exposes most of these patterns as JavaScript APIs while in Thorax they are often exposed as template helpers. This chapter assumes the reader has knowledge of Handlebars.</p>
-<p>Thorax was created by Ryan Eastridge and Kevin Decker to create Walmart’s mobile web application. This chapter is limited to Thorax’s templating features and patterns implemented in Thorax that you can utilize in your application regardless of wether you choose to adopt Thorax. To learn more about other features implemented in Thorax and to download boilerplate projects visit the <a href="http://walmartlabs.github.com/thorax">Thorax website</a>.</p>
+<p>Thorax was created by Ryan Eastridge and Kevin Decker to create Walmart’s mobile web application. This chapter is limited to Thorax’s templating features and patterns implemented in Thorax that you can utilize in your application regardless of wether you choose to adopt Thorax. To learn more about other features implemented in Thorax and to download boilerplate projects visit the <a href="http://thoraxjs.org">Thorax website</a>.</p>
 <h3 id="hello-world"><a href="#TOC">Hello World</a></h3>
 <p><code>Thorax.View</code> differs from <code>Backbone.View</code> in that there is no <code>options</code> object. All arguments passed to the constructor become properties of the view, which in turn become available to the <code>template</code>:</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript">    <span class="kw">var</span> view = <span class="kw">new</span> <span class="kw">Thorax</span>.<span class="fu">View</span>({
@@ -5426,7 +5425,7 @@ $(<span class="ch">&#39;#content&#39;</span>).<span class="fu">html</span>(<span
       <span class="dt">template</span>: <span class="ch">&#39;...&#39;</span>
   });
   <span class="kw">todosView</span>.<span class="fu">appendTo</span>(<span class="ch">&#39;body&#39;</span>);</code></pre>
-To see Thorax in action on a large scale website visit walmart.com on any Android or iOS device. For a complete list of resources visit the <a href="http://walmartlabs.github.com/thorax">Thorax website</a>.
+To see Thorax in action on a large scale website visit walmart.com on any Android or iOS device. For a complete list of resources visit the <a href="http://thoraxjs.org">Thorax website</a>.
 <p>
  
 </p>
@@ -6217,7 +6216,7 @@ require([<span class="ch">&#39;views/app&#39;</span>], <span class="kw">function
 <p><strong>Note:</strong> While this first practical doesn’t use a build profile as outlined in the chapter on using the RequireJS optimizer, we will be using one in the section on building mobile Backbone applications.</p>
 <h2 id="route-based-module-loading"><a href="#TOC">Route based module loading</a></h2>
 <p>This section will discuss a route based approach to module loading as implemented in <a href="http://walmartlabs.github.com/lumbar">Lumbar</a> by Kevin Decker. Like RequireJS, Lumbar is also a modular build system, but the pattern it implements for loading routes may be used with any build system.</p>
-<p>The specifics of the Lumbar build tool are not discussed in this book. To see a complete Lumbar based project with the loader and build system see <a href="http://walmartlabs.github.com/thorax">Thorax</a> which provides boilerplate projects for various environments including Lumbar.</p>
+<p>The specifics of the Lumbar build tool are not discussed in this book. To see a complete Lumbar based project with the loader and build system see <a href="http://thoraxjs.org">Thorax</a> which provides boilerplate projects for various environments including Lumbar.</p>
 <h3 id="json-based-module-configuration"><a href="#TOC">JSON based module configuration</a></h3>
 <p>RequireJS defines dependencies per file, while Lumbar defines a list of files for each module in a central JSON configuration file, outputting a single JavaScript file for each defined module. Lumbar requires that each module (except the base module) define a single router and a list of routes. An example file might look like:</p>
 <pre><code> {
@@ -8389,7 +8388,7 @@ test( <span class="ch">&#39;Should bind Collection events to View creation.&#39;
 <ul>
 <li><a href="https://github.com/derickbailey/backbone.marionette">MarionetteJS</a></li>
 <li><a href="https://github.com/aurajs/aura">AuraJS</a></li>
-<li><a href="http://walmartlabs.github.com/thorax">Thorax</a></li>
+<li><a href="http://thoraxjs.org">Thorax</a></li>
 <li><a href="http://walmartlabs.github.com/lumbar">Lumbar</a></li>
 <li><a href="https://github.com/tbranyen/backbone.layoutmanager">Backbone Layout Manager</a></li>
 <li><a href="https://github.com/backbone-boilerplate/backbone-boilerplate">Backbone Boilerplate</a></li>
@@ -8399,9 +8398,9 @@ test( <span class="ch">&#39;Should bind Collection events to View creation.&#39;
 <li><a href="https://github.com/n-time/backbone.validations">Backbone Validations - HTML5 inspired validations</a></li>
 </ul>
 <h1 id="conclusions-3"><a href="#TOC">Conclusions</a></h1>
-<p>That’s it for <q>Developing Backbone.js Applications</q>. I hope you found this book both useful, enlightening and a good start for your journey into exploring Backbone.js.</p>
-<p>If there are other topics or areas of this book you feel could be expanded further, please feel free to let me know, or better yet, send a pull request upstream. I’m always interested in making this title as comprehensive as possible.</p>
-<p>Until next time, the very best of luck with the rest of your journey!</p>
+<p>This concludes our voyage into the wondrous world of Backbone.js, but hopefully marks the beginning of your next journey as a user. What you have hopefully learned is that, beyond an accessible API there actually isn’t a great deal to the library. Much of its elegance lies in its simplicity and that is why many developers use it.</p>
+<p>For the simplest of applications, you are unlikely to need more than what is prescribed out of the box. For those developing complex applications however, the Backbone.js classes are straightforward to extend, providing an easy path to building (or using a pre-made) extension layer on top of it. We’ve experienced this first hand in the chapters on MarionetteJS and Thorax.</p>
+<p>Working on the client-side can sometimes feel like the wild west, but I hope this book has introduced you to sound advice and concepts that will help you keep your code both tamed and a little more maintainable. Until next time, the very best of luck creating your own front-end masterpieces.</p>
 <h2 id="notes"><a href="#TOC">Notes</a></h2>
 <p>I would like to thank the Backbone.js, Stack Overflow, DailyJS (Alex Young) and JavaScript communities for their help, references and contributions to this book. This project would not be possible without you so thank you! :)</p>
 <h1 id="appendix"><a href="#TOC">Appendix</a></h1>
