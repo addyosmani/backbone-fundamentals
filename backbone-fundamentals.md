@@ -2092,30 +2092,26 @@ Single global variables may work fine for applications that are relatively trivi
 
 # Exercise 1: Todos - Your First Backbone.js App
 
-Now that we've journeyed through the fundamentals, let's move on to writing our first Backbone.js app - a Todo List application. Building a Todo List is a great way to learn about Backbone’s conventions. It's a simple enough app, but contains enough interesting problems to be useful, such as binding, persisting model data, routing and template rendering.
-
-
-For this chapter, we’re going to learn how to create the Backbone.js Todo app listed on [TodoMVC.com](http://todomvc.com).
+Now that we've covered fundamentals, let's write our first Backbone.js application. We'll build the Backbone Todo List application exhibited on [TodoMVC.com](http://todomvc.com). Building a Todo List is a great way to learn Backbone’s conventions. It's a relatively simple application, yet technical challenges surrounding binding, persisting model data, routing and template rendering provide the opportunity to illustrate some core Backbone features.
 
 ![](img/todoapp.png)
 
-Let's think about what we need from a high level architectural standpoint.
+Let's consider the application's architecture at a high level. We'll need:
 
-* A `Todo` model to describe individual todo items
-* A `TodoList` collection to store and persist todos
-* A way of creating todos
-* Listing todos
-* Editing existing todos
-* Completing todos
-* Deleting todos
-* A way to bookmark the items that have been completed or are remaining
+* a `Todo` model to describe individual todo items
+* a `TodoList` collection to store and persist todos
+* a way of creating todos
+* a way to display a listing of todos
+* a way to edit existing todos
+* a way to deem a todo complete
+* a way to delete todos
+* a way to bookmark the items that have been completed or are remaining
 
-Basically your classic [CRUD](http://en.wikipedia.org/wiki/Create,_read,_update_and_delete) methods. Let's get started!
+Essentially, these features are classic [CRUD](http://en.wikipedia.org/wiki/Create,_read,_update_and_delete) methods. Let's get started!
 
 ## Index
 
-The first step is to setup the basic application dependencies, which in this case will be: [jQuery](http://jquery.com), [Underscore](http://underscorejs.org), Backbone.js and the [Backbone LocalStorage adapter](https://github.com/jeromegn/Backbone.localStorage). These will be loaded in our main (and only) HTML file, index.html:
-
+First, we'll set up the basic application dependencies: [jQuery](http://jquery.com), [Underscore](http://underscorejs.org), Backbone.js and the [Backbone LocalStorage adapter](https://github.com/jeromegn/Backbone.localStorage). These will be loaded in index.html, the application's sole HTML file:
 
 ```html
 
@@ -2145,14 +2141,14 @@ The first step is to setup the basic application dependencies, which in this cas
 
 ```
 
-To help demonstrate how the various parts of our application can be split up, individual concerns are cleanly organized into folders representing our models, views, collections and routers. An app.js file is used to kick everything off.
+In addition to the aforementioned application dependencies, note that a few other, application-specific files are also loaded. These are organized into folders representing their application responsibilities: models, views, collections and routers. An app.js file is present to house central initialization code.
 
-Note: If you want to follow along, create directory structure as shown in index.html. Also, you will need [base.css](https://raw.github.com/addyosmani/todomvc/gh-pages/assets/base.css) and [bg.png](https://raw.github.com/addyosmani/todomvc/gh-pages/assets/bg.png), both in assets dir. As mentioned previously you can check out whole application at [TodoMVC.com](http://todomvc.com).
+Note: If you want to follow along, create a directory structure as demonstrated in index.html. You will also need [base.css](https://raw.github.com/addyosmani/todomvc/gh-pages/assets/base.css) and [bg.png](https://raw.github.com/addyosmani/todomvc/gh-pages/assets/bg.png), which can both live in an assets directory. And again, the final application can be demo'd at [TodoMVC.com](http://todomvc.com).
 
 
 ## Application HTML
 
-Now let's take a look at our application's static HTML. We're going to need an `<input>` for creating new todos, a `<ul id="todo-list" />` for listing the actual todos, and a section containing some operations, such as clearing completed todos.
+Now let's take a look at our application's static HTML. We'll need an `<input>` for creating new todos, a `<ul id="todo-list" />` for listing the actual todos and a section containing some operations, such as clearing completed todos.
 
 ```html
   <section id="todoapp">
@@ -2175,13 +2171,13 @@ Now let's take a look at our application's static HTML. We're going to need an `
 
 ```
 
-We’ll be populating our todo-list and adding a statistics section with details about what items are left to be completed later on.
+We’ll populate our todo-list and add a statistics section containing details about what incomplete items later on.
 
-So far so good. Now in order to tie this into our Backbone Todo app, we're going to have to go back to the fundamentals - a Todo model.
+In order to implement these features, we'll return to the fundamentals: a Todo model.
 
 ## Todo model
 
-The `Todo` model is remarkably straightforward. Firstly a todo has two attributes, a `title` and a `completed` status that indicates whether it's been completed. These attributes are passed as defaults, as you can see in the example below:
+The `Todo` model is remarkably straightforward. First, a todo has two attributes: a `title` stores todo item's title and a `completed` status indicates if it's complete. These attributes are passed as defaults, as is exemplified below:
 
 ```javascript
 
@@ -2213,17 +2209,17 @@ The `Todo` model is remarkably straightforward. Firstly a todo has two attribute
 
 ```
 
-We also have a `toggle()` function which allows to set whether a Todo item has been completed.
+The Todo model also features a `toggle()` method through which a Todo item's completion status can be set.
 
 
 ## Todo collection
 
 
-Next we have our `TodoList` collection used to group our models. The collection is being extended by localStorage which automatically persists Todo records to HTML5 Local Storage via the Backbone LocalStorage adapter, so they're saved between page requests.
+Next, a `TodoList` collection is used to group our models. The collection is extended by localStorage, which automatically persists Todo records to HTML5 Local Storage via the Backbone LocalStorage adapter. Through local storage, they're saved between page requests.
 
-We've then got some static methods, `completed()` and `remaining()`, which return an array of unfinished and finished todos respectively.
+The collection's `completed()` and `remaining()` methods return an array of unfinished and finished todos, respectively.
 
-Finally we have a `nextOrder()` function, that keeps our Todo items in sequential order as well as a `comparator()` used to sort items by their insertion order.
+A `nextOrder()` method keeps our Todo items in sequential order while a `comparator()` sorts items by their insertion order.
 
 ```javascript
 
@@ -2278,11 +2274,11 @@ Finally we have a `nextOrder()` function, that keeps our Todo items in sequentia
 
 ## Application View
 
-So let's look at the core of the application's logic, the views. Since each todo has a fair bit of logic associated with it, such as edit in place, we're going to use the element controller pattern - a pattern which consists of two views, one that controls a collection of items, and the other deals with each individual item.
+Let's examine the core of the application's logic, the views. Each view supports functionality such as edit-in-place, and is therefore associated with a fair amount of logic. To help organize this logic, we'll utilize the element controller pattern. The element controller pattern consists of two views: one controls a collection of items while the other deals with each individual item.
 
-In other words, we're going to have one view `AppView`, which will be in charge of creating new todos, and rendering the initial todo list. Then we'll have another view called TodoView instances of which will be associated with an individual Todo record. Todo instances will be in charge of editing, updating and destroying their associated todo.
+In other words, one view, `AppView`, will handle the creation of new todos, as well as rendering the initial todo list. Instances of another view, `TodoView`, will be associated with an individual Todo record. Todo instances can handle editing, updating and destroying their associated todo.
 
-To keep things simple, we'll keep things 'read-only' at the moment, and won't provide any functionality for creating, editing or deleting todos:
+To keep things simple, the application will be 'read-only', at least for now. At this stage, it won't support functionality for creating, editing or deleting todos:
 
 ```javascript
 
@@ -2360,9 +2356,9 @@ To keep things simple, we'll keep things 'read-only' at the moment, and won't pr
 ```
 
 
-You can see we've got a couple of things going on, an el (element), a `statsTemplate`, a constructor function and several view specific methods. To the right of the `el:` key is a DOM element selector for the element with ID `todoapp`. The value of this is just a string and Backbone will create a reference pointing to the element matching the selector #todoapp, where here it will be the `<section id="todoapp" />` element, which we previously defined in our HTML.
+A few notable features are present in the AppView, including a `statsTemplate` method, an `initialize` method that's called on instantiation, and several view-specific methods.
 
-In a nutshell this means we can now refer to this.el in our controller, which points to the `<section id="todoapp" />` element. As you can see, we're referring to el in the `addOne()` function, appending an element to the list.
+An `el` (element) property stores a selector targeting the DOM element with an ID of `todoapp`. In the case of our application, `el` refers to the matching `<section id="todoapp" />` element in index.html.
 
 Now let's take a look at the constructor function. It's binding to several events on the Todo model, such as add, reset and all. Since we're delegating handling of updates and deletes to the `TodoView` view, we don't need to worry about that here. The two pieces of logic are:
 
@@ -5529,20 +5525,20 @@ Marionette follows a similar philosophy to Backbone in that it provides a suite 
 
 Marionette's components range greatly in the features they provide, but they all work together to create a composite application layer that can both reduce boilerplate code and provide a much needed application structure. Its core components include:
 
-* [**Backbone.Marionette.Application**](https://github.com/marionettejs/backbone.marionette/blob/master/docs/marionette.application.md): An application object that starts your app via initializers, and more
-* [**Backbone.Marionette.Application.module**](https://github.com/marionettejs/backbone.marionette/blob/master/docs/marionette.application.module.md): Create modules and sub-modules within the application
-* [**Backbone.Marionette.AppRouter**](https://github.com/marionettejs/backbone.marionette/blob/master/docs/marionette.approuter.md): Reduce your routers to nothing more than configuration
-* [**Backbone.Marionette.View**](https://github.com/marionettejs/backbone.marionette/blob/master/docs/marionette.view.md): The base View type that other Marionette views extend from (not intended to be used directly)
-* [**Backbone.Marionette.ItemView**](https://github.com/marionettejs/backbone.marionette/blob/master/docs/marionette.itemview.md): A view that renders a single item
-* [**Backbone.Marionette.CollectionView**](https://github.com/marionettejs/backbone.marionette/blob/master/docs/marionette.collectionview.md): A view that iterates over a collection, and renders individual `ItemView` instances for each model
-* [**Backbone.Marionette.CompositeView**](https://github.com/marionettejs/backbone.marionette/blob/master/docs/marionette.compositeview.md): A collection view and item view, for rendering leaf-branch/composite model hierarchies
-* [**Backbone.Marionette.Region**](https://github.com/marionettejs/backbone.marionette/blob/master/docs/marionette.region.md): Manage visual regions of your application, including display and removal of content
-* [**Backbone.Marionette.Layout**](https://github.com/marionettejs/backbone.marionette/blob/master/docs/marionette.layout.md): A view that renders a layout and creates region managers to manage areas within it
-* [**Backbone.Marionette.EventAggregator**](https://github.com/marionettejs/backbone.marionette/blob/master/docs/marionette.eventaggregator.md): An extension of Backbone.Events, to be used as an event-driven or pub-sub tool
-* [**Backbone.Marionette.EventBinder**](https://github.com/marionettejs/backbone.marionette/blob/master/docs/marionette.eventbinder.md): An event binding manager, to facilitate binding and unbinding of events
-* [**Backbone.Marionette.Renderer**](https://github.com/marionettejs/backbone.marionette/blob/master/docs/marionette.renderer.md): Render templates with or without data, in a consistent and common manner
-* [**Backbone.Marionette.TemplateCache**](https://github.com/marionettejs/backbone.marionette/blob/master/docs/marionette.templatecache.md): Cache templates that are stored in `<script>` blocks, for faster subsequent access
-* [**Backbone.Marionette.Callbacks**](https://github.com/marionettejs/backbone.marionette/blob/master/docs/marionette.callbacks.md): Manage a collection of callback methods, and execute them as needed
+* [**Marionette.Application**](https://github.com/marionettejs/backbone.marionette/blob/master/docs/marionette.application.md): An application object that starts your app via initializers, and more
+* [**Marionette.Application.module**](https://github.com/marionettejs/backbone.marionette/blob/master/docs/marionette.application.module.md): Create modules and sub-modules within the application
+* [**Marionette.AppRouter**](https://github.com/marionettejs/backbone.marionette/blob/master/docs/marionette.approuter.md): Reduce your routers to nothing more than configuration
+* [**Marionette.View**](https://github.com/marionettejs/backbone.marionette/blob/master/docs/marionette.view.md): The base View type that other Marionette views extend from (not intended to be used directly)
+* [**Marionette.ItemView**](https://github.com/marionettejs/backbone.marionette/blob/master/docs/marionette.itemview.md): A view that renders a single item
+* [**Marionette.CollectionView**](https://github.com/marionettejs/backbone.marionette/blob/master/docs/marionette.collectionview.md): A view that iterates over a collection, and renders individual `ItemView` instances for each model
+* [**Marionette.CompositeView**](https://github.com/marionettejs/backbone.marionette/blob/master/docs/marionette.compositeview.md): A collection view and item view, for rendering leaf-branch/composite model hierarchies
+* [**Marionette.Region**](https://github.com/marionettejs/backbone.marionette/blob/master/docs/marionette.region.md): Manage visual regions of your application, including display and removal of content
+* [**Marionette.Layout**](https://github.com/marionettejs/backbone.marionette/blob/master/docs/marionette.layout.md): A view that renders a layout and creates region managers to manage areas within it
+* [**Marionette.EventAggregator**](https://github.com/marionettejs/backbone.marionette/blob/master/docs/marionette.eventaggregator.md): An extension of Backbone.Events, to be used as an event-driven or pub-sub tool
+* [**Marionette.EventBinder**](https://github.com/marionettejs/backbone.marionette/blob/master/docs/marionette.eventbinder.md): An event binding manager, to facilitate binding and unbinding of events
+* [**Marionette.Renderer**](https://github.com/marionettejs/backbone.marionette/blob/master/docs/marionette.renderer.md): Render templates with or without data, in a consistent and common manner
+* [**Marionette.TemplateCache**](https://github.com/marionettejs/backbone.marionette/blob/master/docs/marionette.templatecache.md): Cache templates that are stored in `<script>` blocks, for faster subsequent access
+* [**Marionette.Callbacks**](https://github.com/marionettejs/backbone.marionette/blob/master/docs/marionette.callbacks.md): Manage a collection of callback methods, and execute them as needed
 
 But like Backbone itself, you're not required to use all of Marionette's components just because you want to use some of them. You can pick and choose which features you want to use, when. This allows you to work with other Backbone frameworks and plugins very easily. It also means that you are not required to engage in an all-or-nothing migration to begin using Marionette.
 
@@ -5614,12 +5610,12 @@ Enter Marionette's `ItemView` - a simple way to reduce the boilerplate of defini
 All of Marionette's view types - with the exception of `Marionette.View` - include a built-in `render` method that handles the core rendering logic for you. By changing the `MyView` instance from `Backbone.View` then, we can take advantage of this. Instead of having to provide our own `render` method for the view, we can let Marionette render it for us. We'll still use the same Underscore.js template and rendering mechanism, but the implementation of this is hidden behind the scenes for us. Thus, we can reduce the amount of code needed for this view.
 
 ```javascript
-var MyView = Backbone.Marionette.ItemView.extend({
+var MyView = Marionette.ItemView.extend({
   template: '#my-view-template'
 });
 ```
 
-And that's it - that's all you need to get the exact same behaviour as the previous view implementation. Just replace `Backbone.View.extend` with `Backbone.Marionette.ItemView.extend`, then get rid of the `render` method. You can still create the view instance with a `model`, call the `render` method on the view instance, and display the view in the DOM the same way that we did before. But the view definition has been reduced to a single line of configuration for the template.
+And that's it - that's all you need to get the exact same behaviour as the previous view implementation. Just replace `Backbone.View.extend` with `Marionette.ItemView.extend`, then get rid of the `render` method. You can still create the view instance with a `model`, call the `render` method on the view instance, and display the view in the DOM the same way that we did before. But the view definition has been reduced to a single line of configuration for the template.
 
 ### Memory Management
 
@@ -5731,7 +5727,7 @@ Now we only see once alert box when this code runs.
 Rather than having to manually remove these event handlers, though, we can let Marionette do it for us.
 
 ```javascript
-var ZombieView = Backbone.Marionette.ItemView.extend({
+var ZombieView = Marionette.ItemView.extend({
   template: '#my-view-template',
 
   initialize: function(){
@@ -5783,7 +5779,7 @@ To solve these problems, Marionette provides a `Region` object - an object that 
 
 ```javascript
 // create a region instance, telling it which DOM element to manage
-var myRegion = new Backbone.Marionette.Region({
+var myRegion = new Marionette.Region({
   el: '#content'
 });
 
@@ -5818,7 +5814,7 @@ First, we define an application object representing our base TodoMVC app. This w
 **TodoMVC.js:**
 
 ```javascript
-var TodoMVC = new Backbone.Marionette.Application();
+var TodoMVC = new Marionette.Application();
 
 TodoMVC.addRegions({
   header : '#header',
@@ -5859,7 +5855,7 @@ TodoMVC.module('Layout', function(Layout, App, Backbone, Marionette, $, _){
   // Layout Header View
   // ------------------
 
-  Layout.Header = Backbone.Marionette.ItemView.extend({
+  Layout.Header = Marionette.ItemView.extend({
     template : '#template-header',
 
     // UI bindings create cached attributes that
@@ -5888,7 +5884,7 @@ TodoMVC.module('Layout', function(Layout, App, Backbone, Marionette, $, _){
   // Layout Footer View
   // ------------------
   
-  Layout.Footer = Backbone.Marionette.Layout.extend({
+  Layout.Footer = Marionette.Layout.extend({
     template : '#template-footer',
 
     // UI bindings create cached attributes that
@@ -6139,7 +6135,7 @@ TodoMVC.module('TodoList.Views', function(Views, App, Backbone, Marionette, $, _
   // Controls the rendering of the list of items, including the
   // filtering of active vs completed items for display.
 
-  Views.ListView = Backbone.Marionette.CompositeView.extend({
+  Views.ListView = Marionette.CompositeView.extend({
     template : '#template-todoListCompositeView',
       itemView : Views.ItemView,
       itemViewContainer : '#todo-list',
@@ -6324,7 +6320,7 @@ To learn more about Marionette, it's components, the features they provide and h
 
 Part of Backbone's appeal is that it provides structure but is generally un-opinionated, in particular when it comes to views. Thorax makes an opinionated decision to use Handlebars as it's templating solution. Some of the patterns found in Marionette are found in Thorax as well. Marionette exposes most of these patterns as JavaScript APIs while in Thorax they are often exposed as template helpers. This chapter assumes the reader has knowledge of Handlebars. 
 
-Thorax was created by Ryan Eastridge and Kevin Decker to create Walmart's mobile web application. This chapter is limited to Thorax's templating features and patterns implemented in Thorax that you can utilize in your application regardless of wether you choose to adopt Thorax. To learn more about other features implemented in Thorax and to download boilerplate projects visit the [Thorax website](http://walmartlabs.github.com/thorax).
+Thorax was created by Ryan Eastridge and Kevin Decker to create Walmart's mobile web application. This chapter is limited to Thorax's templating features and patterns implemented in Thorax that you can utilize in your application regardless of wether you choose to adopt Thorax. To learn more about other features implemented in Thorax and to download boilerplate projects visit the [Thorax website](http://thoraxjs.org).
 
 ### Hello World
 
@@ -6602,7 +6598,7 @@ and the corresponding JavaScript:
   todosView.appendTo('body');
 ```
 
-To see Thorax in action on a large scale website visit walmart.com on any Android or iOS device. For a complete list of resources visit the [Thorax website](http://walmartlabs.github.com/thorax).
+To see Thorax in action on a large scale website visit walmart.com on any Android or iOS device. For a complete list of resources visit the [Thorax website](http://thoraxjs.org).
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 
@@ -7670,7 +7666,7 @@ To see how everything ties together, feel free to grab the source by cloning thi
 
 This section will discuss a route based approach to module loading as implemented in [Lumbar](http://walmartlabs.github.com/lumbar) by Kevin Decker. Like RequireJS, Lumbar is also a modular build system, but the pattern it implements for loading routes may be used with any build system.
 
-The specifics of the Lumbar build tool are not discussed in this book. To see a complete Lumbar based project with the loader and build system see [Thorax](http://walmartlabs.github.com/thorax) which provides boilerplate projects for various environments including Lumbar.
+The specifics of the Lumbar build tool are not discussed in this book. To see a complete Lumbar based project with the loader and build system see [Thorax](http://thoraxjs.org) which provides boilerplate projects for various environments including Lumbar.
 
 ### JSON based module configuration
 
@@ -10631,7 +10627,7 @@ That's it for this section on testing applications with QUnit and SinonJS. I enc
 
 * [MarionetteJS](https://github.com/derickbailey/backbone.marionette)
 * [AuraJS](https://github.com/aurajs/aura)
-* [Thorax](http://walmartlabs.github.com/thorax)
+* [Thorax](http://thoraxjs.org)
 * [Lumbar](http://walmartlabs.github.com/lumbar)
 * [Backbone Layout Manager](https://github.com/tbranyen/backbone.layoutmanager)
 * [Backbone Boilerplate](https://github.com/backbone-boilerplate/backbone-boilerplate)
@@ -10642,12 +10638,11 @@ That's it for this section on testing applications with QUnit and SinonJS. I enc
 
 # Conclusions
 
+This concludes our voyage into the wondrous world of Backbone.js, but hopefully marks the beginning of your next journey as a user. What you have hopefully learned is that, beyond an accessible API there actually isn’t a great deal to the library. Much of its elegance lies in its simplicity and that is why many developers use it. 
 
-That's it for 'Developing Backbone.js Applications'. I hope you found this book both useful, enlightening and a good start for your journey into exploring Backbone.js.
+For the simplest of applications, you are unlikely to need more than what is prescribed out of the box. For those developing complex applications however, the Backbone.js classes are straightforward to extend, providing an easy path to building (or using a pre-made) extension layer on top of it. We’ve experienced this first hand in the chapters on MarionetteJS and Thorax.
 
-If there are other topics or areas of this book you feel could be expanded further, please feel free to let me know, or better yet, send a pull request upstream. I'm always interested in making this title as comprehensive as possible.
-
-Until next time, the very best of luck with the rest of your journey!
+Working on the client-side can sometimes feel like the wild west, but I hope this book has introduced you to sound advice and concepts that will help you keep your code both tamed and a little more maintainable. Until next time, the very best of luck creating your own front-end masterpieces.
 
 ## Notes
 
