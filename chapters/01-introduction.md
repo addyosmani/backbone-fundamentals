@@ -47,7 +47,7 @@ So, where will you likely need an MV* framework and where won’t you?
 
 If you’re writing an application where much of the heavy lifting for view rendering and data manipulation will be occurring in the browser, you may find a JavaScript MV* framework useful. Examples of applications that fall into this category are GMail and Google Docs.
 
-These types of applications typically download a single payload containing all the scripts, stylesheets and markup users need for common tasks and then perform a lot of additional behavior in the background. For instance, it’s trivial to switch between reading an email or document to writing one and a new page is never requested from the server.
+These types of applications typically download a single payload containing all the scripts, stylesheets, and markup users need for common tasks and then perform a lot of additional behavior in the background. For instance, it’s trivial to switch between reading an email or document to writing one without sending a new page request to the server.
 
 If, however, you’re building an application that still relies on the server for most of the heavy-lifting of page/view rendering and you’re just using a little JavaScript or jQuery to make things more interactive, an MV* framework may be overkill. There certainly are complex Web applications where the partial rendering of views can be coupled with a single-page application effectively, but for everything else, you may find yourself better sticking to a simpler setup.
 
@@ -69,8 +69,8 @@ Backbone's main benefits, regardless of your target platform or device, include 
 * Organize the structure to your application
 * Simplify server-side persistence
 * Decouple the DOM from your page's data
-* Model data, views and routers in a succinct manner
-* Provide DOM, model and collection synchronization
+* Model data, views, and routers in a succinct manner
+* Provide DOM, model, and collection synchronization
 
 
 ### Setting Expectations
@@ -78,3 +78,33 @@ Backbone's main benefits, regardless of your target platform or device, include 
 The goal of this book is to create an authoritative and centralized repository of information that can help those developing real-world apps with Backbone. If you come across a section or topic which you think could be improved or expanded on, please feel free to submit an issue (or better yet, a pull-request) on the book's [GitHub site](https://github.com/addyosmani/backbone-fundamentals). It won't take long and you'll be helping other developers avoid the problems you ran into.
 
 Topics will include MVC theory and how to build applications using Backbone's Models, Views, Collections, and Routers. I'll also be taking you through advanced topics like modular development with Backbone.js and AMD (via RequireJS), solutions to common problems like nested views, how to solve routing problems with Backbone and jQuery Mobile, and much more.
+
+Here is a peek at what you will be learning in each chapter:
+
+<i>Chapter 2, Fundamentals</i> traces the history of the MVC design pattern and introduces how it is implemented by Backbone.js and other JavaScript frameworks.
+
+<i>Chapter 3, The Internals</i> covers the major features of the core Backbone.js framework and technologies and techniques you will need to know in order to apply it.
+
+<i>Chapter 4, Exercise 1: Todos - Your First Backbone.js App</i> takes you step-by-step through development of a simple client-side Todo List application.
+
+<i>Chapter 5, Exercise 2: Book Library - Your First RESTful Backbone.js App</i> walks you through development of a Book Library application which persists its model to a server using a REST API.
+
+<i>Chapter 6, Backbone Boilerplate And Grunt BBB</i> introduces powerful tools you can use to bootstrap a new Backbone.js application with boilerplate code.
+
+<i>Chapter 7, Common Problems and Solutions</i> reviews common issues you may encounter when using Backbone.js and ways of addressing them.
+
+<i>Chapter 8, Backbone Extensions</i> describes Backbone.Marionette and Thorax, two extension frameworks which add features to Backbone.js that are useful for developing large-scale applications. 
+
+<i>Chapter 9, Modular Development</i> looks at how AMD modules and RequireJS can be used to modularize your code.
+
+<i>Chapter 10, Mobile Applications</i> addresses the issues that arise when using Backbone with jQuery Mobile.
+
+<i>Chapter 11, Unit Testing</i> covers how to unit test Backbone code using the Jasmine test framework.
+
+<i>Chapter 12, Unit Testing Backbone Applications with QUnit and SinonJS</i> discusses how to use the QUnit and SinusJS frameworks for unit testing.
+
+<i>Chapter 13, Resources</i> provides references to additional Backbone-related resources.
+
+<i>Chapter 14, Conclusions</i> wraps up the our tour through the world of Backbone.js development.
+
+<i>Chapter 15, Appendix</i> returns to our design pattern discussion by contrasting MVC with the Model-View-Presenter (MVP) pattern and examines how Backbone.js relates to the two patterns. It also provides useful information for existing Backbone users who may be upgrading from Backbone 0.9.2 to version 0.9.10 and beyond.
