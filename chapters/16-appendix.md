@@ -1,5 +1,7 @@
 # Appendix
 
+
+
 ## MVP
 
 Model-View-Presenter (MVP) is a derivative of the MVC design pattern which focuses on improving presentation logic. It originated at a company named [Taligent](http://en.wikipedia.org/wiki/Taligent) in the early 1990s while they were working on a model for a C++ CommonPoint environment. Whilst both MVC and MVP target the separation of concerns across multiple components, there are some fundamental differences between them.
@@ -94,6 +96,64 @@ Another (quite different) opinion is that Backbone more closely resembles [Small
 As MarionetteJS author Derick Bailey has [written](http://lostechies.com/derickbailey/2011/12/23/backbone-js-is-not-an-mvc-framework/), it's ultimately best not to force Backbone to fit any specific design patterns. Design patterns should be considered flexible guides to how applications may be structured and in this respect, Backbone doesn't fit either MVC nor MVP perfectly. Instead, it borrows some of the best concepts from multiple architectural patterns and creates a flexible framework that just works well. Call it **the Backbone way**, MV* or whatever helps reference its flavor of application architecture.
 
 It *is* however worth understanding where and why these concepts originated, so I hope that my explanations of MVC and MVP have been of help. Most structural JavaScript frameworks will adopt their own take on classical patterns, either intentionally or by accident, but the important thing is that they help us develop applications which are organized, clean and can be easily maintained.
+
+
+## Upgrading to Backbone 0.9.10
+
+For developers transitioning from earlier versions of Backbone.js, the following is a guide of [changes](http://backbonejs.org/#changelog) between 0.9.2 and 0.9.10 grouped by classes, where applicable.
+
+### Model
+* Model validation is now only enforced by default in `Model#save` and no longer enforced by default upon construction or in `Model#set`, unless the `{validate:true}` option is passed.
+* Passing `{silent:true}` on change will no longer delay individual `"change:attr"` events, instead they are silenced entirely.
+* The `Model#change` method has been removed, as delayed attribute changes as no longer available.
+* Calling `destroy` on a Model will now return `false` if the model `isNew`.
+* After fetching a model or a collection, all defined parse functions will now be run. So fetching a collection and getting back new models could cause both the collection to parse the list, and then each model to be parsed in turn, if you have both functions defined.
+* While listening to a [reset](http://backbonejs.org/#Collection-reset) event, the list of previous models is now available in `options.previousModels`, for convenience.
+
+
+### Collection
+
+* When using `add` on a collection, passing `{merge: true}` will now cause duplicate models to have their attributes merged in to the existing models, instead of being ignored.
+* `Collection#sort` now triggers a `sort` event, instead of a `reset` event.
+* Removed `getByCid` from Collections. `collection.get` now supports lookup by both id and cid.
+* Collections now also proxy Underscore method name aliases (`collect`, `inject`, `foldl`, `foldr`, `head`, `tail`, `take`, and so on...)
+* Added `update` (which is also available as an option to fetch) for "smart" updating of sets of models.
+* `collection.indexOf(model)` can be used to retrieve the index of a model as necessary.
+
+
+### View
+* `View#make` has been removed. You'll need to use `$` directly to construct DOM elements now.
+* When declaring a View, `options`, `el`, `tagName`, `id` and `className` may now be defined as functions, if you want their values to be determined at runtime.
+
+### Events
+* Added [listenTo](http://backbonejs.org/#Events-listenTo) and [stopListening](http://backbonejs.org/#Events-stopListening) to Events. They can be used as inversion-of-control flavors of [on](http://backbonejs.org/#Events-on) and [off](http://backbonejs.org/#Events-off), for convenient unbinding of all events an object is currently listening to. `view.remove()` automatically calls `view.stopListening()`.
+* The Backbone object now extends Events so that you can use it as a global event bus, if you like.
+* Backbone events now support jQuery-style event maps `obj.on({click: action})`.
+* Backbone events now supports [once](http://backbonejs.org/#Events-once), similar to Node's [once](http://nodejs.org/api/events.html#events_emitter_once_event_listener), or jQuery's [one](http://api.jquery.com/one/).
+
+### Routers
+* A "route" event is triggered on the router in addition to being fired on Backbone.history.
+* For semantic and cross browser reasons, routes will now ignore search parameters. Routes like `search?query=…&page=3` should become `search/…/3`.
+* Bugfix for normalizing leading and trailing slashes in the Router definitions. Their presence (or absence) should not affect behavior.
+* Router URLs now support optional parts via parentheses, without having to use a regex. 
+
+
+### Sync
+* For mixed-mode APIs, `Backbone.sync` now accepts [emulateHTTP](http://backbonejs.org/#Sync-emulateHTTP) and [emulateJSON](http://backbonejs.org/#Sync-emulateJSON) as inline options.
+* Consolidated `"sync"` and `"error"` events within `Backbone.sync`. They are now triggered regardless of the existence of success or error callbacks.
+* Added a `"request"` event to `Backbone.sync`, which triggers whenever a request begins to be made to the server. The natural complement to the `"sync"` event. 
+
+
+### Other
+* Bug fix on change where attribute comparison uses `!==` instead of `_.isEqual`.
+* Bug fix where an empty response from the server on save would not call the success function.
+* To improve the performance of add, `options.index` will no longer be set in the `add` event callback. 
+* Removed the `Backbone.wrapError` helper method. Overriding sync should work better for those particular use cases.
+* To set what library Backbone uses for DOM manipulation and Ajax calls, use `Backbone.$ =` ... instead of `setDomLibrary`.
+* Added a `Backbone.ajax` hook for more convenient overriding of the default use of `$.ajax`. If AJAX is too passé, set it to your preferred method for server communication.
+* Validation now occurs even during `"silent"` changes. This change means that the `isValid` method has been removed. Failed validations also trigger an error, even if an error callback is specified in the options.
+* HTTP PATCH support in save by passing `{patch: true}`.
+
 
 ---
 Where relevant, copyright Addy Osmani, 2012-2013.

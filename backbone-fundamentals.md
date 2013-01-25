@@ -801,7 +801,7 @@ var Todo = Backbone.Model.extend({
 
   initialize: function(){
     console.log('This model has been initialized.');
-    this.on("error", function(model, error){
+    this.on("invalid", function(model, error){
         console.log(error);
     });
   }
@@ -2359,13 +2359,13 @@ A few notable features are present in the AppView, including a `statsTemplate` m
 
 An `el` (element) property stores a selector targeting the DOM element with an ID of `todoapp`. In the case of our application, `el` refers to the matching `<section id="todoapp" />` element in index.html.
 
-Now let's take a look at the constructor function. It's binding to several events on the Todo model, such as add, reset and all. Since we're delegating handling of updates and deletes to the `TodoView` view, we don't need to worry about that here. The two pieces of logic are:
+Let's take a look at the constructor function. It's binding to several events on the Todo model, such as `add`, `reset` and `all`. Since we're delegating handling of updates and deletes to the `TodoView` view, we don't need to worry about that here. The two pieces of logic are:
 
-* When a new todo is created, the `add` event will be fired, calling `addOne()` which instantiates the TodoView view, rendering it and appending the resultant element to our Todo list.
+* When a new todo is created, the `add` event will be fired, calling `addOne()`, which instantiates the TodoView view, rendering it and appending the resultant element to our Todo list.
 
 * When a `reset` event is called (i.e. we wish to update the collection in bulk such as when the Todos have been loaded from Local Storage), `addAll()` is called, which iterates over all of the Todos currently in our collection and fires `addOne()` for each item.
 
-We can then add in the logic for creating new todos, editing them and filtering them based on whether they are complete.
+We can then add in the logic for creating new todos, editing them and filtering them based on their completed status.
 
 * events: We define an events hash containing declarative callbacks for our DOM events.
   * `createOnEnter()`: Creates a new Todo model which persists in localStorage when a user hits return inside the `<input/>` field and resets the main `<input/>` field value to prepare it for the next entry. This creates the model via newAttributes(), which is an object literal composed of the title, order and completed state of the new item being added.
@@ -2375,7 +2375,7 @@ We can then add in the logic for creating new todos, editing them and filtering 
     We bind a callback for a change:completed event, letting us know a change has been made as well to an existing todo item.
     We also bind a callback for a filter event, which works a little similar to addOne() and addAll(). It’s responsibility is to toggle what todo items are visible based on the filter currently selected in the UI (all, completed or remaining) through filterOne() and filterAll().
   * `render()`:
-    We add some conditional CSS styling based on the filter currently selected so that the route that has been selected is highlighted.
+    We add some conditional CSS styling based on the filter currently selected so that the selected route is highlighted.
 
 ```javascript
 
@@ -2514,7 +2514,7 @@ We can then add in the logic for creating new todos, editing them and filtering 
 
 ## Individual Todo View
 
-Let’s look at the `TodoView` view, now. This will be in charge of individual Todo records, making sure the view updates when the todo does. To enable this interactive behavior we should add some event listeners to the view, that will listen to the events on individual todo represented in html.
+Let’s look at the `TodoView` view, now. This will be in charge of individual Todo records, making sure the view updates when the todo does. To enable this functionality, we should add event listeners to the view that will listen to the events on an individual todo's HTML representation.
 
 ```javascript
 
@@ -2584,19 +2584,19 @@ Let’s look at the `TodoView` view, now. This will be in charge of individual T
 ```
 
 
-In the `initialize()` constructor, we're setting up a listener to the todo model’s change event. In other words, when the todo updates, we want to re-render the view to reflect its changes.
+In the `initialize()` constructor, we set up a listener tthat monitors a todo model’s `change` event. In other words, when the todo updates, the application should re-render the view and visually reflect its changes.
 
-In the `render()` method, we're rendering an Underscore.js JavaScript template, called `#item-template`, which we’ve previously compiled into this.template using Underscore’s `_.template()` method.  This returns a piece of HTML that we're using to replace the view’s current element. In other words, the rendered template is now present under `this.el`, and can be appended to the todo list.
+In the `render()` method, we render an Underscore.js JavaScript template, called `#item-template`, which was previously compiled into this.template using Underscore’s `_.template()` method.  This returns an HTML fragment that replaces the view’s current element. In other words, the rendered template is now present under `this.el` and can be appended to the todo list in the user interface.
 
 Our events hash includes three callbacks:
 
-* `edit()`: Changes the current view into editing mode when a user double-clicks on an existing item in the todo list. This allows them to change the existing value of the item’s title attribute
+* `edit()`: changes the current view into editing mode when a user double-clicks on an existing item in the todo list. This allows them to change the existing value of the item’s title attribute.
 * `updateOnEnter()`: checks that the user has hit the return/enter key and executes the close() function.
-* `close()`: This trims the value of the current text in our `<input/>` field, ensuring that we don’t process it further if it contains no text (e.g ‘’). If a valid value has been provided, we save the changes to the current todo model and close editing mode, by removing the corresponding CSS class.
+* `close()`: trims the value of the current text in our `<input/>` field, ensuring that we don’t process it further if it contains no text (e.g ‘’). If a valid value has been provided, we save the changes to the current todo model and close editing mode by removing the corresponding CSS class.
 
 ## Setup
 
-So now we have two views: `AppView` and `TodoView`. The former needs to get instantiated when the page loads, so some code actually gets run. You can do this simply enough, by using jQuery's `ready()` utility, which will execute a function when the DOM's loaded.
+So now we have two views: `AppView` and `TodoView`. The former needs to be instantiated on page load so its code is executed. This can be accomplished through jQuery's `ready()` utility, which will execute a function when the DOM is loaded.
 
 ```javascript
 
@@ -2616,17 +2616,19 @@ So now we have two views: `AppView` and `TodoView`. The former needs to get inst
 
 ## In action
 
-Now we've gone far enough without checking that things work as they should. 
+Let's pause and ensure that the work we've done functions as intended.
 
-If you are following along open up index.html and, if everything's going to plan, you shouldn't see any errors in the console. The todo list will be blank (we haven't created any todos yet), and the todo-list won't work through our slick interface, as we haven't yet hooked it up fully. However, we can create a Todo from the console.
+If you are following along, open index.html in your web browser and monitor the console. If all is well, you shouldn't see any JavaScript errors. The todo list should be blank as we haven't yet created any todos. Plus, there is some additional work we'll need to do before the user interface fully functions.
 
-Type in: `window.app.Todos.create({ title: 'My first Todo item'});` and hit return.
+However, a few things can be tested through the JavaScript console.
+
+In the console, add a new todo item: `window.app.Todos.create({ title: 'My first Todo item'});` and hit return.
 
 ![](img/todoconsole.png)
 
-Once you've run the above in the console, we should be looking at a brand new todo (logged in console) we've just added in the todos collection. Created todo is saved into Local Storage as well and will be available on page refresh.
+If all is functioning properly, this should log the new todo we've just added to the todos collection. The newly created todo is also saved to Local Storage and will be available on page refresh.
 
-`window.app.Todos.create()` used above is collection method (`collection.create(attributes, [options])`) which instantiate new model item of the type passed into the collection definition, in our case `app.Todo`:
+`window.app.Todos.create()` executes a collection method (`collection.create(attributes, [options])`) which instantiates a new model item of the type passed into the collection definition, in our case `app.Todo`:
 
 ```javascript
 
@@ -4218,6 +4220,42 @@ addBook:function (e) {
 Here I check if the current element is the keywords input field, in which case I split the string on each comma and then create a new array with keyword objects. In other words I assume that keywords are separated by commas, so I better write a comment on that in the form. Now you should be able to add new books with both release date and keywords!
 
 ![](img/Screen-Shot-2012-05-01-at-8.57.51-PM.png)
+
+### Connecting with a third party API
+
+In a real world scenario, the model and the view can be adapted to connect a third party API. For example:
+
+```
+url HTTP Method Operation
+index.php?option=com_todo&view=books&task=get  GET Get an array of all books
+```
+
+In the model, you can define the third party API URL via url definition.
+
+```javascript
+url : function() {
+  return 'index.php?option=com_todo&view=books&task=get';
+}
+```
+
+In the view, you can define the attributes to be processed by the model.
+
+```javascript
+// Third party API example.
+this.collection.create(this.collection.model, {    	
+    attrs : {
+       bookId: this.$('#book_id').val()
+    },
+					
+    // Wait for the answer.
+    wait : true,
+    
+    // Report if there's any error.
+	error : function(model, fail, xhr) {
+	    ....
+    }
+});
+```
 
 ### Summary
 
@@ -10649,6 +10687,8 @@ I would like to thank the Backbone.js, Stack Overflow, DailyJS (Alex Young) and 
 
 # Appendix
 
+
+
 ## MVP
 
 Model-View-Presenter (MVP) is a derivative of the MVC design pattern which focuses on improving presentation logic. It originated at a company named [Taligent](http://en.wikipedia.org/wiki/Taligent) in the early 1990s while they were working on a model for a C++ CommonPoint environment. Whilst both MVC and MVP target the separation of concerns across multiple components, there are some fundamental differences between them.
@@ -10743,6 +10783,64 @@ Another (quite different) opinion is that Backbone more closely resembles [Small
 As MarionetteJS author Derick Bailey has [written](http://lostechies.com/derickbailey/2011/12/23/backbone-js-is-not-an-mvc-framework/), it's ultimately best not to force Backbone to fit any specific design patterns. Design patterns should be considered flexible guides to how applications may be structured and in this respect, Backbone doesn't fit either MVC nor MVP perfectly. Instead, it borrows some of the best concepts from multiple architectural patterns and creates a flexible framework that just works well. Call it **the Backbone way**, MV* or whatever helps reference its flavor of application architecture.
 
 It *is* however worth understanding where and why these concepts originated, so I hope that my explanations of MVC and MVP have been of help. Most structural JavaScript frameworks will adopt their own take on classical patterns, either intentionally or by accident, but the important thing is that they help us develop applications which are organized, clean and can be easily maintained.
+
+
+## Upgrading to Backbone 0.9.10
+
+For developers transitioning from earlier versions of Backbone.js, the following is a guide of [changes](http://backbonejs.org/#changelog) between 0.9.2 and 0.9.10 grouped by classes, where applicable.
+
+### Model
+* Model validation is now only enforced by default in `Model#save` and no longer enforced by default upon construction or in `Model#set`, unless the `{validate:true}` option is passed.
+* Passing `{silent:true}` on change will no longer delay individual `"change:attr"` events, instead they are silenced entirely.
+* The `Model#change` method has been removed, as delayed attribute changes as no longer available.
+* Calling `destroy` on a Model will now return `false` if the model `isNew`.
+* After fetching a model or a collection, all defined parse functions will now be run. So fetching a collection and getting back new models could cause both the collection to parse the list, and then each model to be parsed in turn, if you have both functions defined.
+* While listening to a [reset](http://backbonejs.org/#Collection-reset) event, the list of previous models is now available in `options.previousModels`, for convenience.
+
+
+### Collection
+
+* When using `add` on a collection, passing `{merge: true}` will now cause duplicate models to have their attributes merged in to the existing models, instead of being ignored.
+* `Collection#sort` now triggers a `sort` event, instead of a `reset` event.
+* Removed `getByCid` from Collections. `collection.get` now supports lookup by both id and cid.
+* Collections now also proxy Underscore method name aliases (`collect`, `inject`, `foldl`, `foldr`, `head`, `tail`, `take`, and so on...)
+* Added `update` (which is also available as an option to fetch) for "smart" updating of sets of models.
+* `collection.indexOf(model)` can be used to retrieve the index of a model as necessary.
+
+
+### View
+* `View#make` has been removed. You'll need to use `$` directly to construct DOM elements now.
+* When declaring a View, `options`, `el`, `tagName`, `id` and `className` may now be defined as functions, if you want their values to be determined at runtime.
+
+### Events
+* Added [listenTo](http://backbonejs.org/#Events-listenTo) and [stopListening](http://backbonejs.org/#Events-stopListening) to Events. They can be used as inversion-of-control flavors of [on](http://backbonejs.org/#Events-on) and [off](http://backbonejs.org/#Events-off), for convenient unbinding of all events an object is currently listening to. `view.remove()` automatically calls `view.stopListening()`.
+* The Backbone object now extends Events so that you can use it as a global event bus, if you like.
+* Backbone events now support jQuery-style event maps `obj.on({click: action})`.
+* Backbone events now supports [once](http://backbonejs.org/#Events-once), similar to Node's [once](http://nodejs.org/api/events.html#events_emitter_once_event_listener), or jQuery's [one](http://api.jquery.com/one/).
+
+### Routers
+* A "route" event is triggered on the router in addition to being fired on Backbone.history.
+* For semantic and cross browser reasons, routes will now ignore search parameters. Routes like `search?query=…&page=3` should become `search/…/3`.
+* Bugfix for normalizing leading and trailing slashes in the Router definitions. Their presence (or absence) should not affect behavior.
+* Router URLs now support optional parts via parentheses, without having to use a regex. 
+
+
+### Sync
+* For mixed-mode APIs, `Backbone.sync` now accepts [emulateHTTP](http://backbonejs.org/#Sync-emulateHTTP) and [emulateJSON](http://backbonejs.org/#Sync-emulateJSON) as inline options.
+* Consolidated `"sync"` and `"error"` events within `Backbone.sync`. They are now triggered regardless of the existence of success or error callbacks.
+* Added a `"request"` event to `Backbone.sync`, which triggers whenever a request begins to be made to the server. The natural complement to the `"sync"` event. 
+
+
+### Other
+* Bug fix on change where attribute comparison uses `!==` instead of `_.isEqual`.
+* Bug fix where an empty response from the server on save would not call the success function.
+* To improve the performance of add, `options.index` will no longer be set in the `add` event callback. 
+* Removed the `Backbone.wrapError` helper method. Overriding sync should work better for those particular use cases.
+* To set what library Backbone uses for DOM manipulation and Ajax calls, use `Backbone.$ =` ... instead of `setDomLibrary`.
+* Added a `Backbone.ajax` hook for more convenient overriding of the default use of `$.ajax`. If AJAX is too passé, set it to your preferred method for server communication.
+* Validation now occurs even during `"silent"` changes. This change means that the `isValid` method has been removed. Failed validations also trigger an error, even if an error callback is specified in the options.
+* HTTP PATCH support in save by passing `{patch: true}`.
+
 
 ---
 Where relevant, copyright Addy Osmani, 2012-2013.
