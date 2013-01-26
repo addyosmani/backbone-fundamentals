@@ -15,3 +15,16 @@ If you are interested in leaving a review to let others know what you thoughts o
 ## Building
 
 You can build the book using `make` or `make -f Makefile`. This will output the HTML, ePub, PDF and RTF versions of the book. 
+
+### Dependencies
+
+* Make
+* [Pandoc](https://github.com/jgm/pandoc)
+* pdflatex (and recommended latex fonts)
+
+#### Linux Debian based distros:
+
+* <code>apt-get install pandoc</code>
+* <code>apt-get install texlive-latex-base</code>
+* <code>apt-get install texlive-fonts-recommended</code>
+* <code>apt-get install cm-super</code>
