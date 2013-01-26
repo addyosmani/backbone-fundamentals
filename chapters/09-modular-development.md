@@ -1174,7 +1174,7 @@ This assumes that index.html will be serving out your Backbone application. The 
 
 In this section we'll discuss applying some of the concepts I cover in my article on [Large-scale JavaScript Application development](http://addyosmani.com/largescalejavascript) to Backbone.
 
-*After, you may be interested in taking a look At [Aura](http://github.com/addyosmani/aura) - my popular widget-based Backbone.js extension framework based on many of the concepts we will be covering in this section.*
+*After, you may be interested in taking a look At [Aura](http://github.com/aurajs/aura) - my popular widget-based Backbone.js extension framework based on many of the concepts we will be covering in this section.*
 
 ### Summary
 
