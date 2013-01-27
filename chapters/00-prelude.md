@@ -32,12 +32,11 @@ I am indebted to the fantastic work done by the technical reviewers who helped i
 
 ## Credits
 
-This book would not have been possible without the time and effort invested by the other developers and authors in the community who contributed to it. I would like to extend my thanks to Derick Bailey, Ryan Eastridge, Jack Franklin, Mike Ball, Uģis Ozols and [everyone else](https://github.com/addyosmani/backbone-fundamentals/graphs/contributors) that helped made this project happen.
+None of this would have been possible without the time and effort invested by the other developers and authors in the community who contributed to it. I would like to extend my thanks to Derick Bailey, Ryan Eastridge, Jack Franklin, Mike Ball, Uģis Ozols and [everyone else](https://github.com/addyosmani/backbone-fundamentals/graphs/contributors) that helped made this project happen.
 
 ## Reading
 
-
-This book assumes your level of knowledge about JavaScript goes beyond the basics and as such certain topics such as object literals are skipped. If you need to learn more about the language, I am happy to suggest:
+I assume your level of knowledge about JavaScript goes beyond the basics and as such certain topics such as object literals are skipped. If you need to learn more about the language, I am happy to suggest:
 
 * [Object-Oriented JavaScript](http://www.amazon.com/Object-Oriented-Javascript-Stoyan-Stefanov/dp/1847194141) by Stoyan Stefanov (Packt Publishing)
 * [JavaScript: The Definitive Guide](http://shop.oreilly.com/product/9780596805531.do) by David Flanagan (O’Reilly)
