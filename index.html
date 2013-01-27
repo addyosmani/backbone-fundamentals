@@ -275,10 +275,9 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <li><a href="#jquery-mobile-going-beyond-mobile-application-development">jQuery Mobile: Going beyond mobile application development</a></li>
 </ul></li>
 </ul></li>
-<li><a href="#unit-testing">Unit Testing</a><ul>
-<li><a href="#unit-testing-backbone-applications-with-jasmine">Unit Testing Backbone Applications With Jasmine</a></li>
+<li><a href="#unit-testing">Unit Testing</a></li>
+<li><a href="#jasmine">Jasmine</a><ul>
 <li><a href="#introduction-2">Introduction</a></li>
-<li><a href="#jasmine">Jasmine</a></li>
 <li><a href="#suites-specs-spies">Suites, Specs &amp; Spies</a></li>
 <li><a href="#beforeeach-and-aftereach">beforeEach and afterEach()</a></li>
 <li><a href="#shared-scope">Shared scope</a></li>
@@ -6980,13 +6979,12 @@ $.<span class="fu">mobile</span>.<span class="fu">changePage</span>( url , { <sp
 <p>The benefit of this is that I don’t need to go pulling in jQuery UI separately to be able to take advantage of these features. Thanks to the recent ThemeRoller my components can look pretty much exactly how I would like them to and users of the app can get a jQM UI for lower-resolutions and a jQM-ish UI for everything else.</p>
 <p>The takeaway here is just to remember that if you’re not (already) going through the hassle of conditional script/style loading based on screen-resolution (using matchMedia.js etc), there are simpler approaches that can be taken to cross-device component theming.</p>
 <h1 id="unit-testing"><a href="#TOC">Unit Testing</a></h1>
-<h2 id="unit-testing-backbone-applications-with-jasmine"><a href="#TOC">Unit Testing Backbone Applications With Jasmine</a></h2>
+<h1 id="jasmine"><a href="#TOC">Jasmine</a></h1>
 <h2 id="introduction-2"><a href="#TOC">Introduction</a></h2>
 <p>One definition of unit testing is the process of taking the smallest piece of testable code in an application, isolating it from the remainder of your codebase and determining if it behaves exactly as expected. In this section, we’ll be taking a look at how to unit test Backbone applications using a popular JavaScript testing framework called <a href="http://pivotal.github.com/jasmine/">Jasmine</a> from Pivotal Labs.</p>
 <p>For an application to be considered <q>well</q>-tested, distinct functionality should ideally have its own separate unit tests where it’s tested against the different conditions you expect it to work under. All tests must pass before functionality is considered <q>complete</q>. This allows developers to both modify a unit of code and its dependencies with a level of confidence about whether these changes have caused any breakage.</p>
 <p>As a basic example of unit testing is where a developer may wish to assert whether passing specific values through to a sum function results in the correct output being returned. For an example more relevant to this book, we may wish to assert whether a user adding a new Todo item to a list correctly adds a Model of a specific type to a Todos Collection.</p>
 <p>When building modern web-applications, it’s typically considered best-practice to include automated unit testing as a part of your development process. Whilst we’ll be focusing on Jasmine as a solution for this, there are a number of other alternatives worth considering, including QUnit.</p>
-<h2 id="jasmine"><a href="#TOC">Jasmine</a></h2>
 <p>Jasmine describes itself as a behavior-driven development (BDD) framework for testing JavaScript code. Before we jump into how the framework works, it’s useful to understand exactly what <a href="http://en.wikipedia.org/wiki/Behavior_Driven_Development">BDD</a> is.</p>
 <p>BDD is a second-generation testing approach first described by <a href="http://dannorth.net/introducing-bdd/">Dan North</a> (the authority on BDD) which attempts to test the behavior of software. It’s considered second-generation as it came out of merging ideas from Domain driven design (DDD) and lean software development, helping teams to deliver high quality software by answering many of the more confusing questions early on in the agile process. Such questions commonly include those concerning documentation and testing.</p>
 <p>If you were to read a book on BDD, it’s likely to also be described as being <q>outside-in and pull-based</q>. The reason for this is that it borrows the idea of pulling features from Lean manufacturing which effectively ensures that the right software solutions are being written by a) focusing on expected outputs of the system and b) ensuring these outputs are achieved.</p>
