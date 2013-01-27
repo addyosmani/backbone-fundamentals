@@ -359,7 +359,8 @@ code > span.er { color: #ff0000; font-weight: bold; }
 </ul></li>
 <li><a href="#mvp-or-mvc">MVP or MVC?</a></li>
 <li><a href="#mvc-mvp-and-backbone.js">MVC, MVP and Backbone.js</a></li>
-<li><a href="#upgrading-to-backbone-0.9.10">Upgrading to Backbone 0.9.10</a><ul>
+<li><a href="#upgrading-to-backbone-0.9.10">Upgrading to Backbone 0.9.10</a></li>
+</ul></li>
 <li><a href="#model">Model</a></li>
 <li><a href="#collection">Collection</a></li>
 <li><a href="#view">View</a></li>
@@ -367,8 +368,6 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <li><a href="#routers-1">Routers</a></li>
 <li><a href="#sync">Sync</a></li>
 <li><a href="#other">Other</a></li>
-</ul></li>
-</ul></li>
 </ul>
 </nav>
 <h2 id="prelude"><a href="#TOC">Prelude</a></h2>
@@ -3963,6 +3962,9 @@ Initialized from template &quot;module&quot;.</code></pre>
 
   <span class="co">// Libs</span>
   <span class="ch">&#39;backbone&#39;</span>,
+
+  <span class="co">// Views</span>
+  <span class="ch">&#39;modules/foo/views&#39;</span>,
 
   <span class="co">// Plugins</span>
   <span class="ch">&#39;plugins/backbone-localstorage&#39;</span>
@@ -8528,51 +8530,303 @@ test( <span class="ch">&#39;Should bind Collection events to View creation.&#39;
 <p>As MarionetteJS author Derick Bailey has <a href="http://lostechies.com/derickbailey/2011/12/23/backbone-js-is-not-an-mvc-framework/">written</a>, it’s ultimately best not to force Backbone to fit any specific design patterns. Design patterns should be considered flexible guides to how applications may be structured and in this respect, Backbone doesn’t fit either MVC nor MVP perfectly. Instead, it borrows some of the best concepts from multiple architectural patterns and creates a flexible framework that just works well. Call it <strong>the Backbone way</strong>, MV* or whatever helps reference its flavor of application architecture.</p>
 <p>It <em>is</em> however worth understanding where and why these concepts originated, so I hope that my explanations of MVC and MVP have been of help. Most structural JavaScript frameworks will adopt their own take on classical patterns, either intentionally or by accident, but the important thing is that they help us develop applications which are organized, clean and can be easily maintained.</p>
 <h2 id="upgrading-to-backbone-0.9.10"><a href="#TOC">Upgrading to Backbone 0.9.10</a></h2>
-<p>For developers transitioning from earlier versions of Backbone.js, the following is a guide of <a href="http://backbonejs.org/#changelog">changes</a> between 0.9.2 and 0.9.10 grouped by classes, where applicable.</p>
-<h3 id="model"><a href="#TOC">Model</a></h3>
+<p><em>Developing Backbone.js Applications</em> is currently based on Backbone 0.9.2. If you are transitioning from this version to 0.9.10 or above, the following is a guide of <a href="http://backbonejs.org/#changelog">changes</a> grouped by classes, where applicable.</p>
+<p><strong>Note:</strong> We aim to update the entirety of this book to Backbone 1.0 once it has been tagged.</p>
+<h1 id="model"><a href="#TOC">Model</a></h1>
 <ul>
-<li>Model validation is now only enforced by default in <code>Model#save</code> and no longer enforced by default upon construction or in <code>Model#set</code>, unless the <code>{validate:true}</code> option is passed.</li>
-<li>Passing <code>{silent:true}</code> on change will no longer delay individual <code>&quot;change:attr&quot;</code> events, instead they are silenced entirely.</li>
-<li>The <code>Model#change</code> method has been removed, as delayed attribute changes as no longer available.</li>
-<li>Calling <code>destroy</code> on a Model will now return <code>false</code> if the model <code>isNew</code>.</li>
-<li>After fetching a model or a collection, all defined parse functions will now be run. So fetching a collection and getting back new models could cause both the collection to parse the list, and then each model to be parsed in turn, if you have both functions defined.</li>
-<li>While listening to a <a href="http://backbonejs.org/#Collection-reset">reset</a> event, the list of previous models is now available in <code>options.previousModels</code>, for convenience.</li>
+<li>Model validation is now only enforced by default in <code>Model#save</code> and is no longer enforced by default upon construction or in <code>Model#set</code>, unless the <code>{validate:true}</code> option is passed:</li>
 </ul>
-<h3 id="collection"><a href="#TOC">Collection</a></h3>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> model = <span class="kw">new</span> <span class="kw">Backbone</span>.<span class="fu">Model</span>({<span class="dt">name</span>: <span class="st">&quot;One&quot;</span>});
+<span class="kw">model</span>.<span class="fu">validate</span> = <span class="kw">function</span>(attrs) {
+  <span class="kw">if</span> (!<span class="kw">attrs</span>.<span class="fu">name</span>) {
+    <span class="kw">return</span> <span class="st">&quot;No thanks.&quot;</span>;
+  }
+};
+<span class="kw">model</span>.<span class="fu">set</span>({<span class="dt">name</span>: <span class="st">&quot;Two&quot;</span>});
+<span class="kw">console</span>.<span class="fu">log</span>(<span class="kw">model</span>.<span class="fu">get</span>(<span class="ch">&#39;name&#39;</span>));
+<span class="co">// &#39;Two&#39;</span>
+<span class="kw">model</span>.<span class="fu">unset</span>(<span class="ch">&#39;name&#39;</span>, {<span class="dt">validate</span>: <span class="kw">true</span>});
+<span class="co">// false</span></code></pre>
+<ul>
+<li>Passing <code>{silent:true}</code> on change will no longer delay individual <code>&quot;change:attr&quot;</code> events, instead they are silenced entirely.</li>
+</ul>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> model = <span class="kw">new</span> <span class="kw">Backbone</span>.<span class="fu">Model</span>();
+<span class="kw">model</span>.<span class="fu">set</span>({<span class="dt">x</span>: <span class="kw">true</span>}, {<span class="dt">silent</span>: <span class="kw">true</span>});
+
+<span class="kw">console</span>.<span class="fu">log</span>(!<span class="kw">model</span>.<span class="fu">hasChanged</span>(<span class="dv">0</span>));
+<span class="co">// true</span>
+<span class="kw">console</span>.<span class="fu">log</span>(!<span class="kw">model</span>.<span class="fu">hasChanged</span>(<span class="ch">&#39;&#39;</span>));
+<span class="co">// true</span></code></pre>
+<ul>
+<li><p>The <code>Model#change</code> method has been removed, as delayed attribute changes as no longer available.</p></li>
+<li><p>Calling <code>destroy</code> on a Model will now return <code>false</code> if the model <code>isNew</code>.</p></li>
+</ul>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> model = <span class="kw">new</span> <span class="kw">Backbone</span>.<span class="fu">Model</span>();
+<span class="kw">console</span>.<span class="fu">log</span>(<span class="kw">model</span>.<span class="fu">destroy</span>());
+<span class="co">// false</span></code></pre>
+<ul>
+<li><p>After fetching a model or a collection, all defined parse functions will now be run. So fetching a collection and getting back new models could cause both the collection to parse the list, and then each model to be parsed in turn, if you have both functions defined.</p></li>
+<li><p>HTTP PATCH support allows us to send only changed attributes (i.e partial updates) to the server by passing <code>{patch: true}</code> i.e <code>model.save(attrs, {patch: true})</code>.</p></li>
+</ul>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="co">// Save partial using PATCH</span>
+<span class="kw">model</span>.<span class="fu">clear</span>().<span class="fu">set</span>({<span class="dt">id</span>: <span class="dv">1</span>, <span class="dt">a</span>: <span class="dv">1</span>, <span class="dt">b</span>: <span class="dv">2</span>, <span class="dt">c</span>: <span class="dv">3</span>, <span class="dt">d</span>: <span class="dv">4</span>});
+<span class="kw">model</span>.<span class="fu">save</span>();
+<span class="kw">model</span>.<span class="fu">save</span>({<span class="dt">b</span>: <span class="dv">2</span>, <span class="dt">d</span>: <span class="dv">4</span>}, {<span class="dt">patch</span>: <span class="kw">true</span>});
+<span class="kw">console</span>.<span class="fu">log</span>(<span class="kw">this</span>.<span class="fu">syncArgs</span>.<span class="fu">method</span>);
+<span class="co">// &#39;patch&#39;</span></code></pre>
 <ul>
 <li>When using <code>add</code> on a collection, passing <code>{merge: true}</code> will now cause duplicate models to have their attributes merged in to the existing models, instead of being ignored.</li>
-<li><code>Collection#sort</code> now triggers a <code>sort</code> event, instead of a <code>reset</code> event.</li>
-<li>Removed <code>getByCid</code> from Collections. <code>collection.get</code> now supports lookup by both id and cid.</li>
-<li>Collections now also proxy Underscore method name aliases (<code>collect</code>, <code>inject</code>, <code>foldl</code>, <code>foldr</code>, <code>head</code>, <code>tail</code>, <code>take</code>, and so on…)</li>
-<li>Added <code>update</code> (which is also available as an option to fetch) for <q>smart</q> updating of sets of models.</li>
+</ul>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> items = <span class="kw">new</span> <span class="kw">Backbone</span>.<span class="fu">Collection</span>;
+<span class="kw">items</span>.<span class="fu">add</span>([{ <span class="dt">id </span>: <span class="dv">1</span>, <span class="dt">name</span>: <span class="st">&quot;Dog&quot;</span> , <span class="dt">age</span>: <span class="dv">3</span>}, { <span class="dt">id </span>: <span class="dv">2</span>, <span class="dt">name</span>: <span class="st">&quot;cat&quot;</span> , <span class="dt">age</span>: <span class="dv">2</span>}]);
+<span class="kw">items</span>.<span class="fu">add</span>([{ <span class="dt">id </span>: <span class="dv">1</span>, <span class="dt">name</span>: <span class="st">&quot;Bear&quot;</span> }], {<span class="dt">merge</span>: <span class="kw">true</span> });
+<span class="kw">items</span>.<span class="fu">add</span>([{ <span class="dt">id </span>: <span class="dv">2</span>, <span class="dt">name</span>: <span class="st">&quot;lion&quot;</span> }]); <span class="co">// merge: false</span>
+ 
+<span class="kw">console</span>.<span class="fu">log</span>(<span class="kw">JSON</span>.<span class="fu">stringify</span>(<span class="kw">items</span>.<span class="fu">toJSON</span>()));
+<span class="co">// [{&quot;id&quot;:1,&quot;name&quot;:&quot;Bear&quot;,&quot;age&quot;:3},{&quot;id&quot;:2,&quot;name&quot;:&quot;cat&quot;,&quot;age&quot;:2}]</span></code></pre>
+<h1 id="collection"><a href="#TOC">Collection</a></h1>
+<ul>
+<li>While listening to a <a href="http://backbonejs.org/#Collection-reset">reset</a> event, the list of previous models is now available in <code>options.previousModels</code>, for convenience.</li>
+</ul>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> model = <span class="kw">new</span> <span class="kw">Backbone</span>.<span class="fu">Model</span>();
+<span class="kw">var</span> collection = <span class="kw">new</span> <span class="kw">Backbone</span>.<span class="fu">Collection</span>([model])
+.<span class="fu">on</span>(<span class="ch">&#39;reset&#39;</span>, <span class="kw">function</span>(collection, options) {
+  <span class="kw">console</span>.<span class="fu">log</span>(<span class="kw">options</span>.<span class="fu">previousModels</span>);
+  <span class="kw">console</span>.<span class="fu">log</span>([model]);
+  <span class="kw">console</span>.<span class="fu">log</span>(<span class="kw">options</span>.<span class="fu">previousModels</span>[<span class="dv">0</span>] === model); <span class="co">// true</span>
+});
+<span class="kw">collection</span>.<span class="fu">reset</span>([]);</code></pre>
+<ul>
+<li><p><code>Collection#sort</code> now triggers a <code>sort</code> event, instead of a <code>reset</code> event.</p></li>
+<li><p>Removed <code>getByCid</code> from Collections. <code>collection.get</code> now supports lookup by both id and cid.</p></li>
+<li><p>Collections now also proxy Underscore method name aliases (<code>collect</code>, <code>inject</code>, <code>foldl</code>, <code>foldr</code>, <code>head</code>, <code>tail</code>, <code>take</code>, and so on…)</p></li>
+<li><p>Added <code>update</code> (which is also available as an option to fetch) for <q>smart</q> updating of sets of models.</p></li>
+</ul>
+<p>The update method attempts to perform smart updating of a collection using a specified list of models. When a model in this list isn’t present in the collection, it is added. If it is, its attributes will be merged. Models which are present in the collection but not in the list are removed.</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> theBeatles = <span class="kw">new</span> Collection([<span class="ch">&#39;john&#39;</span>, <span class="ch">&#39;paul&#39;</span>, <span class="ch">&#39;george&#39;</span>, <span class="ch">&#39;ringo&#39;</span>]);
+
+<span class="kw">theBeatles</span>.<span class="fu">update</span>([<span class="ch">&#39;john&#39;</span>, <span class="ch">&#39;paul&#39;</span>, <span class="ch">&#39;george&#39;</span>, <span class="ch">&#39;pete&#39;</span>]);
+
+<span class="co">// Fires a `remove` event for &#39;ringo&#39;, and an `add` event for &#39;pete&#39;.</span>
+<span class="co">// Updates any of john, paul and georges&#39;s attributes that may have</span>
+<span class="co">// changed over the years.</span></code></pre>
+<ul>
 <li><code>collection.indexOf(model)</code> can be used to retrieve the index of a model as necessary.</li>
 </ul>
-<h3 id="view"><a href="#TOC">View</a></h3>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> col = <span class="kw">new</span> <span class="kw">Backbone</span>.<span class="fu">Collection</span>;
+
+<span class="kw">col</span>.<span class="fu">comparator</span> = <span class="kw">function</span>(a, b) {
+  <span class="kw">return</span> <span class="kw">a</span>.<span class="fu">get</span>(<span class="ch">&#39;name&#39;</span>) &lt; <span class="kw">b</span>.<span class="fu">get</span>(<span class="ch">&#39;name&#39;</span>) ? -<span class="dv">1</span> : <span class="dv">1</span>;
+};
+
+<span class="kw">var</span> tom = <span class="kw">new</span> <span class="kw">Backbone</span>.<span class="fu">Model</span>({<span class="dt">name</span>: <span class="ch">&#39;Tom&#39;</span>});
+<span class="kw">var</span> rob = <span class="kw">new</span> <span class="kw">Backbone</span>.<span class="fu">Model</span>({<span class="dt">name</span>: <span class="ch">&#39;Rob&#39;</span>});
+<span class="kw">var</span> tim = <span class="kw">new</span> <span class="kw">Backbone</span>.<span class="fu">Model</span>({<span class="dt">name</span>: <span class="ch">&#39;Tim&#39;</span>});
+
+<span class="kw">col</span>.<span class="fu">add</span>(tom);
+<span class="kw">col</span>.<span class="fu">add</span>(rob);
+<span class="kw">col</span>.<span class="fu">add</span>(tim);
+
+<span class="kw">console</span>.<span class="fu">log</span>(<span class="kw">col</span>.<span class="fu">indexOf</span>(rob) === <span class="dv">0</span>); <span class="co">// true</span>
+<span class="kw">console</span>.<span class="fu">log</span>(<span class="kw">col</span>.<span class="fu">indexOf</span>(tim) === <span class="dv">1</span>); <span class="co">// true</span>
+<span class="kw">console</span>.<span class="fu">log</span>(<span class="kw">col</span>.<span class="fu">indexOf</span>(tom) === <span class="dv">2</span>); <span class="co">// true</span>
+  </code></pre>
+<h1 id="view"><a href="#TOC">View</a></h1>
 <ul>
 <li><code>View#make</code> has been removed. You’ll need to use <code>$</code> directly to construct DOM elements now.</li>
 <li>When declaring a View, <code>options</code>, <code>el</code>, <code>tagName</code>, <code>id</code> and <code>className</code> may now be defined as functions, if you want their values to be determined at runtime.</li>
 </ul>
-<h3 id="events-1"><a href="#TOC">Events</a></h3>
+<h1 id="events-1"><a href="#TOC">Events</a></h1>
+<ul>
+<li>Backbone events now support jQuery-style event maps <code>obj.on({click: action})</code>. This is clearer than needing three separate calls to <code>.on</code> and should align better with the events hash used in Views:</li>
+</ul>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"> <span class="kw">model</span>.<span class="fu">on</span>({
+     ‘change:name’ : <span class="kw">this</span>.<span class="fu">nameChanged</span>,
+     ‘change:age’ : <span class="kw">this</span>.<span class="fu">ageChanged</span>,
+     ‘change:height’ : <span class="kw">this</span>.<span class="fu">heightChanges</span>
+ });</code></pre>
+<ul>
+<li><p>The Backbone object now extends Events so that you can use it as a global event bus, if you like.</p></li>
+<li><p>Backbone events now supports <a href="http://backbonejs.org/#Events-once">once</a>, similar to Node’s <a href="http://nodejs.org/api/events.html#events_emitter_once_event_listener">once</a>, or jQuery’s <a href="http://api.jquery.com/one/">one</a>. A call to <code>once()</code> ensures that the callback only fires once when a notification arrives.</p></li>
+</ul>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="co">// Use once rather than having to explicitly unbind</span>
+<span class="kw">var</span> obj = { <span class="dt">counterA</span>: <span class="dv">0</span>, <span class="dt">counterB</span>: <span class="dv">0</span> };
+<span class="kw">_</span>.<span class="fu">extend</span>(obj, <span class="kw">Backbone</span>.<span class="fu">Events</span>);
+
+<span class="kw">var</span> incrA = <span class="kw">function</span>(){ <span class="kw">obj</span>.<span class="fu">counterA</span> += <span class="dv">1</span>; <span class="kw">obj</span>.<span class="fu">trigger</span>(<span class="ch">&#39;event&#39;</span>); };
+<span class="kw">var</span> incrB = <span class="kw">function</span>(){ <span class="kw">obj</span>.<span class="fu">counterB</span> += <span class="dv">1</span>; };
+
+<span class="kw">obj</span>.<span class="fu">once</span>(<span class="ch">&#39;event&#39;</span>, incrA);
+<span class="kw">obj</span>.<span class="fu">once</span>(<span class="ch">&#39;event&#39;</span>, incrB);
+<span class="kw">obj</span>.<span class="fu">trigger</span>(<span class="ch">&#39;event&#39;</span>);
+
+<span class="kw">console</span>.<span class="fu">log</span>(<span class="kw">obj</span>.<span class="fu">counterA</span> === <span class="dv">1</span>); <span class="co">// true</span>
+<span class="kw">console</span>.<span class="fu">log</span>(<span class="kw">obj</span>.<span class="fu">counterB</span> === <span class="dv">1</span>); <span class="co">// true </span></code></pre>
+<p><code>counterA</code> and <code>counterB</code> should only have been incremented once.</p>
 <ul>
 <li>Added <a href="http://backbonejs.org/#Events-listenTo">listenTo</a> and <a href="http://backbonejs.org/#Events-stopListening">stopListening</a> to Events. They can be used as inversion-of-control flavors of <a href="http://backbonejs.org/#Events-on">on</a> and <a href="http://backbonejs.org/#Events-off">off</a>, for convenient unbinding of all events an object is currently listening to. <code>view.remove()</code> automatically calls <code>view.stopListening()</code>.</li>
-<li>The Backbone object now extends Events so that you can use it as a global event bus, if you like.</li>
-<li>Backbone events now support jQuery-style event maps <code>obj.on({click: action})</code>.</li>
-<li>Backbone events now supports <a href="http://backbonejs.org/#Events-once">once</a>, similar to Node’s <a href="http://nodejs.org/api/events.html#events_emitter_once_event_listener">once</a>, or jQuery’s <a href="http://api.jquery.com/one/">one</a>.</li>
 </ul>
-<h3 id="routers-1"><a href="#TOC">Routers</a></h3>
+<p>If you’ve had a chance to work on a few Backbone projects by this point, you may know that every <code>on</code> called on an object also requires an <code>off</code> to be called in order for the garbage collector to do its job.</p>
+<p>This can sometimes be overlooked when Views are binding to Models. In 0.9.10, this can now be done the other way around - Views can bind to Model notifications and unbind from all of them with just one call. We achieve this using <code>view.listenTo(model, 'eventName', func)</code> and <code>view.stopListening()</code>.</p>
+<p>The default <code>remove()</code> of Views will call <code>stopListening()</code> for you, just in case you don’t remember to.</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> a = <span class="kw">_</span>.<span class="fu">extend</span>({}, <span class="kw">Backbone</span>.<span class="fu">Events</span>);
+<span class="kw">var</span> b = <span class="kw">_</span>.<span class="fu">extend</span>({}, <span class="kw">Backbone</span>.<span class="fu">Events</span>);
+<span class="kw">a</span>.<span class="fu">listenTo</span>(b, <span class="ch">&#39;all&#39;</span>, <span class="kw">function</span>(){ <span class="kw">console</span>.<span class="fu">log</span>(<span class="kw">true</span>); });
+<span class="kw">b</span>.<span class="fu">trigger</span>(<span class="ch">&#39;anything&#39;</span>);
+<span class="kw">a</span>.<span class="fu">listenTo</span>(b, <span class="ch">&#39;all&#39;</span>, <span class="kw">function</span>(){ <span class="kw">console</span>.<span class="fu">log</span>(<span class="kw">false</span>); });
+<span class="kw">a</span>.<span class="fu">stopListening</span>();
+<span class="kw">b</span>.<span class="fu">trigger</span>(<span class="ch">&#39;anything&#39;</span>);</code></pre>
+<p>A more complex example (from <a href="http://justjson.blogspot.co.uk/">Just JSON</a>) might require our Views to respond to <q>no connection</q> and <q>connection resume</q> events to re-fetch data on demand in an application.</p>
+<p>In 0.9.2, we have to do this to achieve what we need:</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"> <span class="co">// In BaseView definition</span>
+<span class="kw">var</span> BaseView = <span class="kw">Backbone.View</span>.<span class="fu">extend</span>({
+  <span class="dt">destroy</span>: <span class="kw">function</span>() {
+    <span class="co">// Allow child views to hook to this event to unsubscribe</span>
+    <span class="co">// anything they may have subscribed to to other objects.</span>
+    <span class="kw">this</span>.<span class="fu">trigger</span>(<span class="ch">&#39;beforedestroy&#39;</span>);
+    <span class="kw">if</span> (<span class="kw">this</span>.<span class="fu">model</span>) {
+      <span class="kw">this</span>.<span class="fu">model</span>.<span class="fu">off</span>(null, null, <span class="kw">this</span>);
+    }
+                
+    <span class="kw">if</span> (<span class="kw">this</span>.<span class="fu">collection</span>) {
+      <span class="kw">this</span>.<span class="fu">collection</span>.<span class="fu">off</span>(null, null, <span class="kw">this</span>);
+    }
+
+    <span class="kw">this</span>.<span class="fu">remove</span>();
+    <span class="kw">this</span>.<span class="fu">unbind</span>();
+  }
+});
+
+<span class="co">// In MyView definition. </span>
+<span class="co">// We have a global EventBus that allows elements on the app to subscribe to global events.</span>
+<span class="co">// connection/disconnected, connection/resume is two of them.</span>
+
+<span class="kw">var</span> MyView = <span class="kw">BaseView</span>.<span class="fu">extend</span>({
+  <span class="dt">initialize</span>: <span class="kw">function</span>() {
+    <span class="kw">this</span>.<span class="fu">on</span>(<span class="ch">&#39;beforedestroy&#39;</span>, <span class="kw">this</span>.<span class="fu">onBeforeDestroy</span>, <span class="kw">this</span>);
+    <span class="kw">this</span>.<span class="fu">model</span>.<span class="fu">on</span>(<span class="ch">&#39;reset&#39;</span>, <span class="kw">this</span>.<span class="fu">onModelLoaded</span>, <span class="kw">this</span>);
+    <span class="kw">EventBus</span>.<span class="fu">on</span>(<span class="ch">&#39;connection/disconnected&#39;</span>, <span class="kw">this</span>.<span class="fu">onDisconnect</span>, <span class="kw">this</span>);
+    <span class="kw">EventBus</span>.<span class="fu">on</span>(<span class="ch">&#39;connection/resume&#39;</span>, <span class="kw">this</span>.<span class="fu">onConnectionResumed</span>, <span class="kw">this</span>);
+  },
+  <span class="dt">onModelLoaded</span>: <span class="kw">function</span>() {
+    <span class="co">// We only need this to be done once! (Kinda weird...)</span>
+    <span class="kw">this</span>.<span class="fu">model</span>.<span class="fu">off</span>(<span class="ch">&#39;load&#39;</span>, <span class="kw">this</span>.<span class="fu">onModelLoaded</span>, <span class="kw">this</span>);
+  },
+  <span class="dt">onDisconnect</span>: <span class="kw">function</span>() {
+    <span class="co">// Figure out what state we are currently on, display View-specific messaging, etc.</span>
+  },
+  <span class="dt">onConnectionResumed</span>: <span class="kw">function</span>() {
+    <span class="co">// Re-do previous network request that failed.</span>
+  },
+  <span class="dt">onBeforeDestroy</span>: <span class="kw">function</span>() {
+    <span class="kw">EventBus</span>.<span class="fu">off</span>(<span class="ch">&#39;connection/resume&#39;</span>, <span class="kw">this</span>.<span class="fu">onConnectionResumed</span>, <span class="kw">this</span>);
+    <span class="kw">EventBus</span>.<span class="fu">off</span>(<span class="ch">&#39;connection/disconnected&#39;</span>, <span class="kw">this</span>.<span class="fu">onDisconnect</span>, <span class="kw">this</span>);
+  }
+});</code></pre>
+<p>However, in 0.9.10, what we need to do is quite simple:</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript">
+<span class="co">// In BaseView definition</span>
+<span class="kw">var</span> BaseView = <span class="kw">Backbone.View</span>.<span class="fu">extend</span>({
+  <span class="dt">destroy</span>: <span class="kw">function</span>() {
+    <span class="kw">this</span>.<span class="fu">trigger</span>(<span class="ch">&#39;beforedestroy&#39;</span>);
+    <span class="kw">this</span>.<span class="fu">remove</span>();
+  }
+});
+
+<span class="co">// In MyView definition. </span>
+
+<span class="kw">var</span> MyView = <span class="kw">BaseView</span>.<span class="fu">extend</span>({
+  <span class="dt">initialize</span>: <span class="kw">function</span>() {
+    <span class="kw">this</span>.<span class="fu">listenTo</span>(EventBus, <span class="ch">&#39;connection/disconnected&#39;</span>, <span class="kw">this</span>.<span class="fu">onDisconnect</span>);
+    <span class="kw">this</span>.<span class="fu">listenTo</span>(EventBus, <span class="ch">&#39;connection/resume&#39;</span>, <span class="kw">this</span>.<span class="fu">onConnectionResumed</span>);
+    <span class="kw">this</span>.<span class="fu">once</span>(<span class="kw">this</span>.<span class="fu">model</span>, <span class="ch">&#39;load&#39;</span>, <span class="kw">this</span>.<span class="fu">onModelLoaded</span>);
+  },
+  <span class="dt">onModelLoaded</span>: <span class="kw">function</span>() {
+    <span class="co">// Don&#39;t need to unsubscribe anymore!</span>
+  },
+  <span class="dt">onDisconnect</span>: <span class="kw">function</span>() {
+    <span class="co">// Figure out the state, display messaging, etc.</span>
+  },
+  <span class="dt">onConnectionResumed</span>: <span class="kw">function</span>() {
+    <span class="co">// Re-do previous network request that failed.</span>
+  }
+  <span class="co">// Most importantly, we no longer need onBeforeDestroy() anymore!</span>
+});</code></pre>
+<h1 id="routers-1"><a href="#TOC">Routers</a></h1>
 <ul>
 <li>A <q>route</q> event is triggered on the router in addition to being fired on Backbone.history.</li>
+</ul>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">Backbone.history</span>.<span class="fu">on</span>(<span class="ch">&#39;route&#39;</span>, onRoute);
+
+<span class="co">// Trigger &#39;route&#39; event on router instance.&quot;</span>
+<span class="kw">router</span>.<span class="fu">on</span>(<span class="ch">&#39;route&#39;</span>, <span class="kw">function</span>(name, args) {
+  <span class="kw">console</span>.<span class="fu">log</span>(name === <span class="ch">&#39;routeEvent&#39;</span>); 
+});
+
+<span class="kw">location</span>.<span class="fu">replace</span>(<span class="ch">&#39;http://example.com#route-event/x&#39;</span>);
+<span class="kw">Backbone.history</span>.<span class="fu">checkUrl</span>();</code></pre>
+<ul>
 <li>For semantic and cross browser reasons, routes will now ignore search parameters. Routes like <code>search?query=…&amp;page=3</code> should become <code>search/…/3</code>.</li>
 <li>Bugfix for normalizing leading and trailing slashes in the Router definitions. Their presence (or absence) should not affect behavior.</li>
 <li>Router URLs now support optional parts via parentheses, without having to use a regex.</li>
 </ul>
-<h3 id="sync"><a href="#TOC">Sync</a></h3>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> Router = <span class="kw">Backbone.Router</span>.<span class="fu">extend</span>({
+  <span class="dt">routes</span>: {
+    <span class="st">&quot;optional(/:item)&quot;</span>:           <span class="st">&quot;optionalItem&quot;</span>,
+    <span class="st">&quot;named/optional/(y:z)&quot;</span>:       <span class="st">&quot;namedOptionalItem&quot;</span>,
+  },
+  …
+});</code></pre>
+<h1 id="sync"><a href="#TOC">Sync</a></h1>
 <ul>
 <li>For mixed-mode APIs, <code>Backbone.sync</code> now accepts <a href="http://backbonejs.org/#Sync-emulateHTTP">emulateHTTP</a> and <a href="http://backbonejs.org/#Sync-emulateJSON">emulateJSON</a> as inline options.</li>
-<li>Consolidated <code>&quot;sync&quot;</code> and <code>&quot;error&quot;</code> events within <code>Backbone.sync</code>. They are now triggered regardless of the existence of success or error callbacks.</li>
-<li>Added a <code>&quot;request&quot;</code> event to <code>Backbone.sync</code>, which triggers whenever a request begins to be made to the server. The natural complement to the <code>&quot;sync&quot;</code> event.</li>
 </ul>
-<h3 id="other"><a href="#TOC">Other</a></h3>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> Library = <span class="kw">Backbone.Collection</span>.<span class="fu">extend</span>({
+    <span class="dt">url </span>: <span class="kw">function</span>() { <span class="kw">return</span> <span class="ch">&#39;/library&#39;</span>; }
+});
+
+<span class="kw">var</span> attrs = {
+    <span class="dt">title  </span>: <span class="st">&quot;The Tempest&quot;</span>,
+    <span class="dt">author </span>: <span class="st">&quot;Bill Shakespeare&quot;</span>,
+    <span class="dt">length </span>: <span class="dv">123</span>
+  };
+  
+library = <span class="kw">new</span> Library;
+<span class="kw">library</span>.<span class="fu">create</span>(attrs, {<span class="dt">wait</span>: <span class="kw">false</span>});
+  
+<span class="co">// update with just emulateHTTP</span>
+<span class="kw">library</span>.<span class="fu">first</span>().<span class="fu">save</span>({<span class="dt">id</span>: <span class="ch">&#39;2-the-tempest&#39;</span>, <span class="dt">author</span>: <span class="ch">&#39;Tim Shakespeare&#39;</span>}, {
+  <span class="dt">emulateHTTP</span>: <span class="kw">true</span>
+});
+    
+<span class="kw">console</span>.<span class="fu">log</span>(<span class="kw">this</span>.<span class="fu">ajaxSettings</span>.<span class="fu">url</span> === <span class="ch">&#39;/library/2-the-tempest&#39;</span>); <span class="co">// true</span>
+<span class="kw">console</span>.<span class="fu">log</span>(<span class="kw">this</span>.<span class="fu">ajaxSettings</span>.<span class="fu">type</span> === <span class="ch">&#39;POST&#39;</span>); <span class="co">// true</span>
+<span class="kw">console</span>.<span class="fu">log</span>(<span class="kw">this</span>.<span class="fu">ajaxSettings</span>.<span class="fu">contentType</span> === <span class="ch">&#39;application/json&#39;</span>); <span class="co">// true</span>
+
+<span class="kw">var</span> data = <span class="kw">JSON</span>.<span class="fu">parse</span>(<span class="kw">this</span>.<span class="fu">ajaxSettings</span>.<span class="fu">data</span>);
+<span class="kw">console</span>.<span class="fu">log</span>(<span class="kw">data</span>.<span class="fu">id</span> === <span class="ch">&#39;2-the-tempest&#39;</span>);
+<span class="kw">console</span>.<span class="fu">log</span>(<span class="kw">data</span>.<span class="fu">author</span> === <span class="ch">&#39;Tim Shakespeare&#39;</span>);
+<span class="kw">console</span>.<span class="fu">log</span>(<span class="kw">data</span>.<span class="fu">length</span> === <span class="dv">123</span>);
+
+<span class="co">// or update with just emulateJSON</span>
+
+<span class="kw">library</span>.<span class="fu">first</span>().<span class="fu">save</span>({<span class="dt">id</span>: <span class="ch">&#39;2-the-tempest&#39;</span>, <span class="dt">author</span>: <span class="ch">&#39;Tim Shakespeare&#39;</span>}, {
+  <span class="dt">emulateJSON</span>: <span class="kw">true</span>
+});
+
+<span class="kw">console</span>.<span class="fu">log</span>(<span class="kw">this</span>.<span class="fu">ajaxSettings</span>.<span class="fu">url</span> === <span class="ch">&#39;/library/2-the-tempest&#39;</span>); <span class="co">// true</span>
+<span class="kw">console</span>.<span class="fu">log</span>(<span class="kw">this</span>.<span class="fu">ajaxSettings</span>.<span class="fu">type</span> === <span class="ch">&#39;PUT&#39;</span>); <span class="co">// true</span>
+<span class="kw">console</span>.<span class="fu">log</span>(<span class="kw">this</span>.<span class="fu">ajaxSettings</span>.<span class="fu">contentType</span> ===<span class="ch">&#39;application/x-www-form-urlencoded&#39;</span>); <span class="co">// true</span>
+
+<span class="kw">var</span> data = <span class="kw">JSON</span>.<span class="fu">parse</span>(<span class="kw">this</span>.<span class="fu">ajaxSettings</span>.<span class="fu">data</span>.<span class="fu">model</span>);
+<span class="kw">console</span>.<span class="fu">log</span>(<span class="kw">data</span>.<span class="fu">id</span> === <span class="ch">&#39;2-the-tempest&#39;</span>);
+<span class="kw">console</span>.<span class="fu">log</span>(<span class="kw">data</span>.<span class="fu">author</span> ===<span class="ch">&#39;Tim Shakespeare&#39;</span>);
+<span class="kw">console</span>.<span class="fu">log</span>(<span class="kw">data</span>.<span class="fu">length</span> === <span class="dv">123</span>);</code></pre>
+<ul>
+<li><p>Consolidated <code>&quot;sync&quot;</code> and <code>&quot;error&quot;</code> events within <code>Backbone.sync</code>. They are now triggered regardless of the existence of success or error callbacks.</p></li>
+<li><p>Added a <code>&quot;request&quot;</code> event to <code>Backbone.sync</code>, which triggers whenever a request begins to be made to the server. The natural complement to the <code>&quot;sync&quot;</code> event.</p></li>
+</ul>
+<h1 id="other"><a href="#TOC">Other</a></h1>
 <ul>
 <li>Bug fix on change where attribute comparison uses <code>!==</code> instead of <code>_.isEqual</code>.</li>
 <li>Bug fix where an empty response from the server on save would not call the success function.</li>
@@ -8581,7 +8835,6 @@ test( <span class="ch">&#39;Should bind Collection events to View creation.&#39;
 <li>To set what library Backbone uses for DOM manipulation and Ajax calls, use <code>Backbone.$ =</code> … instead of <code>setDomLibrary</code>.</li>
 <li>Added a <code>Backbone.ajax</code> hook for more convenient overriding of the default use of <code>$.ajax</code>. If AJAX is too passé, set it to your preferred method for server communication.</li>
 <li>Validation now occurs even during <code>&quot;silent&quot;</code> changes. This change means that the <code>isValid</code> method has been removed. Failed validations also trigger an error, even if an error callback is specified in the options.</li>
-<li>HTTP PATCH support in save by passing <code>{patch: true}</code>.</li>
 </ul>
 <hr>
 <p>Where relevant, copyright Addy Osmani, 2012-2013.</p>
