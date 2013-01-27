@@ -438,6 +438,9 @@ define([
   // Libs
   'backbone',
 
+  // Views
+  'modules/foo/views',
+
   // Plugins
   'plugins/backbone-localstorage'
 ],
