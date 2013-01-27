@@ -3,14 +3,47 @@
 
 ![](img/logo.jpg)
 
-Welcome to my (in-progress) book about the [Backbone.js](http://documentcloud.github.com/backbone/) library for structuring JavaScript applications. It's released under a Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported [license](http://creativecommons.org/licenses/by-nc-sa/3.0/) meaning you can both grab a copy of the book for free or help to further [improve](https://github.com/addyosmani/backbone-fundamentals/) it.
+How do you write an organized, maintainable application with JavaScript? This book helps you answer this question with a walkthrough of the [Backbone.js](http://documentcloud.github.com/backbone/) library for structuring web applications.
 
-I'm very pleased to announce that this book will be out in physical form (once complete) via [O'Reilly Media](http://oreilly.com). Readers will have the option of purchasing the latest version in either print or a number of digital formats then or can grab a recent version from this repository.
+Begin with the fundamentals, work your way through the internals, practicals and finally learn how to build on top of what Backbone.js has to offer. If you are a developer looking to write code that can be more easily read, structured and extended - this guide is ideal for you.
+
+This (in-progress) book is released under a Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported [license](http://creativecommons.org/licenses/by-nc-sa/3.0/) meaning you can both grab a copy of the book for free or help to further [improve](https://github.com/addyosmani/backbone-fundamentals/) it.
+
+I'm very pleased to announce that this book will be out in physical form (once complete) via [O'Reilly Media](http://shop.oreilly.com/product/0636920025344.do). Readers will have the option of purchasing the latest version in either print or a number of digital formats then or can grab a recent version from this repository.
 
 Corrections to existing material are always welcome and I hope that together we can provide the community with an up-to-date resource that is of help.
 My extended thanks go out to [Jeremy Ashkenas](https://github.com/jashkenas) for creating Backbone.js and [these](https://github.com/addyosmani/backbone-fundamentals/contributors) members of the community for their assistance tweaking this project.
 
 I hope you find this book helpful!
+
+
+## Target Audience
+
+This book is targeted at novice to intermediate developers wishing to learn how to better structure their client-side code. An understanding of JavaScript fundamentals is required to get the most out of it, however we have tried to provide a basic description of these concepts where possible.
+
+
+## Acknowledgements
+
+I am indebted to the fantastic work done by the technical reviewers who helped improve this book. Their knowledge, energy and passion have helped shape it into a better learning resource and they continue to serve as a source of inspiration. Thanks go out to:
+
+* Marc Friedman
+* Dusan Gledovic
+* Sindre Sorhus
+* Mat Scales
+
+## Credits
+
+This book would not have been possible without the time and effort invested by the other developers and authors in the community who contributed to it. I would like to extend my thanks to Derick Bailey, Ryan Eastridge, Jack Franklin, Mike Ball, Uģis Ozols and [everyone else](https://github.com/addyosmani/backbone-fundamentals/graphs/contributors) that helped made this project happen.
+
+## Reading
+
+
+This book assumes your level of knowledge about JavaScript goes beyond the basics and as such certain topics such as object literals are skipped. If you need to learn more about the language, I am happy to suggest:
+
+* [Object-Oriented JavaScript](http://www.amazon.com/Object-Oriented-Javascript-Stoyan-Stefanov/dp/1847194141) by Stoyan Stefanov (Packt Publishing)
+* [JavaScript: The Definitive Guide](http://shop.oreilly.com/product/9780596805531.do) by David Flanagan (O’Reilly)
+* [JavaScript: The Good Parts](http://shop.oreilly.com/product/9780596517748.do) by Douglas Crockford (O’Reilly)
+* [Effective JavaScript](http://www.informit.com/store/effective-javascript-68-specific-ways-to-harness-the-9780321812186) by David Herman (Pearson)
 
 # Introduction
 
@@ -10785,14 +10818,14 @@ As MarionetteJS author Derick Bailey has [written](http://lostechies.com/derickb
 It *is* however worth understanding where and why these concepts originated, so I hope that my explanations of MVC and MVP have been of help. Most structural JavaScript frameworks will adopt their own take on classical patterns, either intentionally or by accident, but the important thing is that they help us develop applications which are organized, clean and can be easily maintained.
 
 
-## Upgrading to Backbone 0.9.10
+# Upgrading to Backbone 0.9.10
 
 
 *Developing Backbone.js Applications* is currently based on Backbone 0.9.2. If you are transitioning from this version to 0.9.10 or above, the following is a guide of [changes](http://backbonejs.org/#changelog) grouped by classes, where applicable. 
 
 **Note:** We aim to update the entirety of this book to Backbone 1.0 once it has been tagged.
 
-# Model
+## Model
 
 * Model validation is now only enforced by default in `Model#save` and is no longer enforced by default upon construction or in `Model#set`, unless the `{validate:true}` option is passed:
 
@@ -10858,7 +10891,7 @@ console.log(JSON.stringify(items.toJSON()));
 
 ```
 
-# Collection
+## Collection
 
 
 * While listening to a [reset](http://backbonejs.org/#Collection-reset) event, the list of previous models is now available in `options.previousModels`, for convenience.
@@ -10917,11 +10950,11 @@ console.log(col.indexOf(tom) === 2); // true
   
 ```
 
-# View
+## View
 * `View#make` has been removed. You'll need to use `$` directly to construct DOM elements now.
 * When declaring a View, `options`, `el`, `tagName`, `id` and `className` may now be defined as functions, if you want their values to be determined at runtime.
 
-# Events
+## Events
 
 * Backbone events now support jQuery-style event maps `obj.on({click: action})`. This is clearer than needing three separate calls to `.on` and should align better with the events hash used in Views:
 
@@ -11061,7 +11094,7 @@ var MyView = BaseView.extend({
 ```
 
 
-# Routers
+## Routers
 * A "route" event is triggered on the router in addition to being fired on Backbone.history.
 
 ```javascript
@@ -11090,7 +11123,7 @@ var Router = Backbone.Router.extend({
 });
 ```
 
-# Sync
+## Sync
 * For mixed-mode APIs, `Backbone.sync` now accepts [emulateHTTP](http://backbonejs.org/#Sync-emulateHTTP) and [emulateJSON](http://backbonejs.org/#Sync-emulateJSON) as inline options.
 
 ```javascript
@@ -11143,7 +11176,7 @@ console.log(data.length === 123);
 * Added a `"request"` event to `Backbone.sync`, which triggers whenever a request begins to be made to the server. The natural complement to the `"sync"` event. 
 
 
-# Other
+## Other
 * Bug fix on change where attribute comparison uses `!==` instead of `_.isEqual`.
 * Bug fix where an empty response from the server on save would not call the success function.
 * To improve the performance of add, `options.index` will no longer be set in the `add` event callback. 
