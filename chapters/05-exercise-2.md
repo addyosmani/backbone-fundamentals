@@ -48,7 +48,7 @@ Create a new file index.html in the root of your project folder and enter this:
 
 open this file in a browser and it should look something like this:
 
-![](img/Screen-Shot-2012-03-05-at-12.57.08-AM1.png)
+![](img/SS-Book-Tutorial-3.png)
 
 Not so awesome. This is not a CSS tutorial, but we need to do some formatting. Create a file screen.css in your css folder and type this:
 
@@ -76,7 +76,7 @@ body {
 
 Now it looks a bit better:
 
-![](img/Screen-Shot-2012-03-05-at-1.06.15-AM.png)
+![](img/SS-Book-Tutorial-1.png)
 
 
 So this is what we want the final result to look like, but with more books. Go ahead and copy the bookContainer div a couple of times if you would like to see what it looks like. Now we are ready to start developing the actual application. Open up app.js and enter this:
@@ -213,7 +213,7 @@ So the view works like the model in that we use the extend function and pass it 
 
 Here we have created a new Book model by calling the Book constructor and passing an object with our desired properties. The model is then used when creating a BookView. Finally the bookView is rendered and inserted into our page. It should look something like this:
 
-![](img/Screen-Shot-2012-03-05-at-10.53.34-PM.png)
+![](img/SS-Book-Tutorial-2.png)
 
 
 Looking good, we now have a working Backbone application. Since a library cannot contain just one book, we need to push further. Lets have a look at Collections. Collections contain collections of models. The models must be of the same kind, i.e. you cannot mix apples and oranges in the same collection. Other than that, collections are quite simple, you just tell them what kind of models they contain like this:
@@ -294,7 +294,7 @@ var libraryView = new LibraryView();
 
 If you view index.html in a browser you should see something like this:
 
-![](img/Screen-Shot-2012-03-06-at-9.58.03-AM.png)
+![](img/SS-Book-Tutorial-4.png)
 
 Here is the final app.js:
 
@@ -494,7 +494,7 @@ initialize:function () {
 
 Now you should be ready to take the application for a spin.
 
-![](img/Screen-Shot-2012-04-05-at-1.24.51-AM.png)
+![](img/SS-Book-Tutorial-5.png)
 
 As you may notice, if you leave a field blank, it will be blank in the created view as well. This is not what we want, we would like the default values to kick in. To do that we need to add a bit of logic. Also note that the file input for the cover image isn’t working, but that is left as an exercise to the reader.
 
@@ -532,7 +532,7 @@ var Book = Backbone.Model.extend({
 
 Now it has better default behaviour
 
-![](img/Screen-Shot-2012-04-05-at-11.41.59-AM1.png)
+![](img/SS-Book-Tutorial-6.png)
 
 ###Removing models
 
@@ -568,7 +568,7 @@ We add some css to it for good looks. Note that I removed the margin of the exis
 
 Looks okay!
 
-![](img/Screen-Shot-2012-04-05-at-11.59.54-AM.png)
+![](img/SS-Book-Tutorial-7.png)
 
 Now we need to wire up the button to the logic. This works in the same way as with add. We start by creating a deleteBook function in the BookView
 
@@ -768,7 +768,7 @@ node server.js
 
 If you open a browser on localhost:4711 you should see something like this:
 
-![](img/Screen-Shot-2012-04-05-at-11.59.54-AM1.png)
+![](img/SS-Book-Tutorial-8.png)
 
 This is where we left off in Part 2, but we are now running on a server instead of directly from the files. Great job! We can now start defining routes (URLs) that the server should react to. This will be our REST API. Routes are defined by using app followed by one of the HTTP verbs get, put, post and delete, which corresponds to Create, Read, Update and Delete. Let us go back to server.js and define a simple route:
 
@@ -781,7 +781,7 @@ app.get('/api', function(req, res){
 
 The get function will take the URL as first parameter and a function as second. The function will be called with request and response objects. Now you can restart node and go to our specified URL:
 
-![](img/Screen-Shot-2012-04-23-at-10.09.35-AM.png)
+![](img/SS-Book-Tutorial-9.png)
 
 
 ###Connect to database
@@ -833,7 +833,7 @@ jQuery.get("/api/books/", function (data, textStatus, jqXHR) {
 
 …and press enter and you should get something like this:
 
-![](img/Screen-Shot-2012-04-29-at-12.50.32-AM.png)
+![](img/SS-Book-Tutorial-11.png)
 
 
 Here I used jQuery to make the call to our REST API, since it was already loaded on the page. The returned array is obviously empty, since we have not put anything into the database yet. Lets go and create a POST route that enables this in server.js:
@@ -893,7 +893,7 @@ You should now get an array of size 1 back from our server. You may wonder about
 
 MongoDB expects dates in UNIX time format (milliseconds from Jan 1st 1970), so we have to convert dates before posting. The object we get back however, contains a JavaScript Date object. Also note the _id attribute of the returned object.
 
-![](img/Screen-Shot-2012-04-29-at-1.16.58-AM.png)
+![](img/SS-Book-Tutorial-10.png)
 
 
 Lets move on to creating a get that retrieves a single book in server.js:
@@ -1129,7 +1129,7 @@ initialize:function () {
 
 Here I have replaced the row where we create a collection from the internal array with `this.collection.fetch()`. I have also added a listener on the reset event. We need to do this since the fetching of models is asynchronous and happens after the page is rendered. When the fetching is finished, Backbone will fire the reset event, which we listen to and re-render the view. If you reload the page now you should see all books that are stored on the server:
 
-![](img/Screen-Shot-2012-04-30-at-12.27.32-AM.png)
+![](img/SS-Book-Tutorial-14.png)
 
 
 As you can see the date and keywords look a bit weird. The date delivered from the server is converted into a JavaScript Date object and when applied to the underscore template it will use the toString() function to display it. There isn’t very good support for formatting dates in JavaScript so we will use the dateFormat jQuery plugin to fix this. Go ahead and download it from [here](http://github.com/phstc/jquery-dateFormat) and put it in your js folder. Then go ahead and change  index.html like this:
@@ -1196,7 +1196,7 @@ Here I iterate over the keywords array using the each function and print out eve
 
 Reloading the page again should look quite decent:
 
-![](img/Screen-Shot-2012-04-30-at-1.02.14-AM.png)
+![](img/SS-Book-Tutorial-12.png)
 
 Now go ahead and delete a book and then reload the page: Tadaa! the deleted book is back! Not cool, why is this? This happens because when we get the BookModels from the server they have an _id attribute (notice the underscore), but Backbone expects an id attribute (no underscore). Since no id attribute is present, Backbone sees this model as new and deleting a new model don’t need any synchronization. To fix this we could change the server response, but we are instead going to look at the parse function of Backbone.Model. The parse function lets you edit the server response before it is passed to the Model constructor. Update the Book model like this:
 
@@ -1283,7 +1283,7 @@ Now in the beginning of app.js bind datepicker to our releaseDate field:
         
 You should now be able to pick a date when clicking in the releaseDate field:
 
-![](img/Screen-Shot-2012-04-30-at-1.34.19-AM.png)
+![](img/SS-Book-Tutorial-13.png)
 
 Now go to the addBook function in LibraryView and update it like this:
 
@@ -1344,7 +1344,7 @@ addBook:function (e) {
 
 Here I check if the current element is the keywords input field, in which case I split the string on each comma and then create a new array with keyword objects. In other words I assume that keywords are separated by commas, so I better write a comment on that in the form. Now you should be able to add new books with both release date and keywords!
 
-![](img/Screen-Shot-2012-05-01-at-8.57.51-PM.png)
+![](img/SS-Book-Tutorial-15.png)
 
 ### Connecting with a third party API
 
