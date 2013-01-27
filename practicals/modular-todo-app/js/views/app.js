@@ -2,10 +2,9 @@ define([
   'jquery',
   'underscore', 
   'backbone',
-  'collections/todos',
   'views/todo',
   'text!templates/stats.html'
-  ], function($, _, Backbone, Todos, TodoView, statsTemplate){
+  ], function($, _, Backbone, TodoView, statsTemplate){
   var AppView = Backbone.View.extend({
 
     // Instead of generating a new element, bind to the existing skeleton of
@@ -22,27 +21,28 @@ define([
       "click .todo-clear a": "clearCompleted"
     },
 
-    // At initialization we bind to the relevant events on the `Todos`
-    // collection, when items are added or changed. Kick things off by
+    // At initialization we listen to the relevant events on the `Todos`
+    // collection, when items are added or changed. This collection is
+    // passed on the constructor of this AppView. Kick things off by
     // loading any preexisting todos that might be saved in *localStorage*.
     initialize: function() {
       this.input    = this.$("#new-todo");
 
-      Todos.bind('add',     this.addOne, this);
-      Todos.bind('reset',   this.addAll, this);
-      Todos.bind('all',     this.render, this);
+      this.listenTo(this.collection, 'add', this.addOne);
+      this.listenTo(this.collection, 'reset', this.addAll);
+      this.listenTo(this.collection, 'all', this.render);
 
-      Todos.fetch();
+      this.collection.fetch();
     },
 
     // Re-rendering the App just means refreshing the statistics -- the rest
     // of the app doesn't change.
     render: function() {
-      var done = Todos.done().length;
+      var done = this.collection.done().length;
       this.$('#todo-stats').html(this.statsTemplate({
-        total:      Todos.length,
-        done:       Todos.done().length,
-        remaining:  Todos.remaining().length
+        total:      this.collection.length,
+        done:       this.collection.done().length,
+        remaining:  this.collection.remaining().length
       }));
     },
 
@@ -55,14 +55,14 @@ define([
 
     // Add all items in the **Todos** collection at once.
     addAll: function() {
-      Todos.each(this.addOne);
+      this.collection.each(this.addOne);
     },
 
     // Generate the attributes for a new Todo item.
     newAttributes: function() {
       return {
         content: this.input.val(),
-        order:   Todos.nextOrder(),
+        order:   this.collection.nextOrder(),
         done:    false
       };
     },
@@ -71,13 +71,13 @@ define([
     // persisting it to *localStorage*.
     createOnEnter: function(e) {
       if (e.keyCode != 13) return;
-      Todos.create(this.newAttributes());
+      this.collection.create(this.newAttributes());
       this.input.val('');
     },
 
     // Clear all done todo items, destroying their models.
     clearCompleted: function() {
-      _.each(Todos.done(), function(todo){ todo.clear(); });
+      _.each(this.collection.done(), function(todo){ todo.clear(); });
       return false;
     },
 
@@ -88,7 +88,7 @@ define([
       var val = this.input.val();
       tooltip.fadeOut();
       if (this.tooltipTimeout) clearTimeout(this.tooltipTimeout);
-      if (val == '' || val == this.input.attr('placeholder')) return;
+      if (val === '' || val === this.input.attr('placeholder')) return;
       var show = function(){ tooltip.show().fadeIn(); };
       this.tooltipTimeout = _.delay(show, 1000);
     }
