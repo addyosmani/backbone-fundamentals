@@ -2,9 +2,9 @@
 
 ![](img/logo.jpg)
 
-How do you write an organized, maintainable application with JavaScript? 
+How do you write an organized, maintainable application with JavaScript? This book helps you answer this question with a walkthrough of the [Backbone.js](http://documentcloud.github.com/backbone/) library for structuring web applications.
 
-This book helps you answer this question with a walkthrough of the [Backbone.js](http://documentcloud.github.com/backbone/) library. Begin with the fundamentals, work your way through the internals, practicals and finally learn how to build on top of what Backbone.js has to offer. If you are a developer looking to write code that can be more easily read, structured and extended - this guide is ideal for you.
+Begin with the fundamentals, work your way through the internals, practicals and finally learn how to build on top of what Backbone.js has to offer. If you are a developer looking to write code that can be more easily read, structured and extended - this guide is ideal for you.
 
 This (in-progress) book is released under a Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported [license](http://creativecommons.org/licenses/by-nc-sa/3.0/) meaning you can both grab a copy of the book for free or help to further [improve](https://github.com/addyosmani/backbone-fundamentals/) it.
 
