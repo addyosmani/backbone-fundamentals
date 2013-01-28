@@ -347,14 +347,14 @@ As MarionetteJS author Derick Bailey has [written](http://lostechies.com/derickb
 It *is* however worth understanding where and why these concepts originated, so I hope that my explanations of MVC and MVP have been of help. Most structural JavaScript frameworks will adopt their own take on classical patterns, either intentionally or by accident, but the important thing is that they help us develop applications which are organized, clean and can be easily maintained.
 
 
-# Upgrading to Backbone 0.9.10
+## Upgrading to Backbone 0.9.10
 
 
 *Developing Backbone.js Applications* is currently based on Backbone 0.9.2. If you are transitioning from this version to 0.9.10 or above, the following is a guide of [changes](http://backbonejs.org/#changelog) grouped by classes, where applicable. 
 
 **Note:** We aim to update the entirety of this book to Backbone 1.0 once it has been tagged.
 
-## Model
+### Model
 
 * Model validation is now only enforced by default in `Model#save` and is no longer enforced by default upon construction or in `Model#set`, unless the `{validate:true}` option is passed:
 
@@ -420,7 +420,7 @@ console.log(JSON.stringify(items.toJSON()));
 
 ```
 
-## Collection
+### Collection
 
 
 * While listening to a [reset](http://backbonejs.org/#Collection-reset) event, the list of previous models is now available in `options.previousModels`, for convenience.
@@ -479,11 +479,11 @@ console.log(col.indexOf(tom) === 2); // true
   
 ```
 
-## View
+### View
 * `View#make` has been removed. You'll need to use `$` directly to construct DOM elements now.
 * When declaring a View, `options`, `el`, `tagName`, `id` and `className` may now be defined as functions, if you want their values to be determined at runtime.
 
-## Events
+### Events
 
 * Backbone events now support jQuery-style event maps `obj.on({click: action})`. This is clearer than needing three separate calls to `.on` and should align better with the events hash used in Views:
 
@@ -623,7 +623,7 @@ var MyView = BaseView.extend({
 ```
 
 
-## Routers
+### Routers
 * A "route" event is triggered on the router in addition to being fired on Backbone.history.
 
 ```javascript
@@ -652,7 +652,7 @@ var Router = Backbone.Router.extend({
 });
 ```
 
-## Sync
+### Sync
 * For mixed-mode APIs, `Backbone.sync` now accepts [emulateHTTP](http://backbonejs.org/#Sync-emulateHTTP) and [emulateJSON](http://backbonejs.org/#Sync-emulateJSON) as inline options.
 
 ```javascript
@@ -705,7 +705,7 @@ console.log(data.length === 123);
 * Added a `"request"` event to `Backbone.sync`, which triggers whenever a request begins to be made to the server. The natural complement to the `"sync"` event. 
 
 
-## Other
+### Other
 * Bug fix on change where attribute comparison uses `!==` instead of `_.isEqual`.
 * Bug fix where an empty response from the server on save would not call the success function.
 * To improve the performance of add, `options.index` will no longer be set in the `add` event callback. 
