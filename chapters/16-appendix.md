@@ -1,6 +1,255 @@
 # Appendix
 
+## A Simple JavaScript MVC Implementation
 
+A comprehensive discussion of Backbone's implementation is beyond the scope of this book. We can, however, present a simple MVC library - which we will call Cranium.js - that illustrates how frameworks such as Backbone implement the MVC pattern. 
+
+Like Backbone, we will rely on [Underscore](http://underscorejs.org "Underscore.js") for inheritance and templating.
+
+### Event System
+
+At the heart of our JavaScript MVC implementation is an `Event` system (object) based on the Publisher-Subscriber Pattern which makes it possible for MVC components to communicate in an elegant, decoupled manner. Subscribers 'listen' for specific events of interest and react when Publishers broadcast these events.
+
+`Event` is mixed into both the View and Model components so that instances of either of these components can publish events of interest.
+
+```javascript
+// cranium.js - Cranium.Events
+
+var Cranium = Cranium || {};
+
+// Set DOM selection utility
+var $ = document.querySelector.bind(document) || this.jQuery || this.Zepto;
+
+// Mix in to any object in order to provide it with custom events.
+var Events = Cranium.Events = {
+  // Keeps list of events and associated listeners
+  channels: {},
+
+  // Counter
+  eventNumber: 0,
+
+  // Announce events and passes data to the listeners;
+  trigger: function (events, data) {
+    for (var topic in Cranium.Events.channels){
+      if (Cranium.Events.channels.hasOwnProperty(topic)) {
+        if (topic.split("-")[0] == events){
+          Cranium.Events.channels[topic](data) !== false || delete Cranium.Events.channels[topic];
+        }
+      }
+    }
+  },
+  // Registers an event type and its listener
+  on: function (events, callback) {
+    Cranium.Events.channels[events + --Cranium.Events.eventNumber] = callback;
+  },
+  // Unregisters an event type and its listener
+  off: function(topic) {
+    delete Cranium.Events.channels[topic];
+  }            
+};
+```
+
+The Event system makes it possible for:
+
+* a View to notify its subscribers of user interaction (e.g., clicks or input in a form), to update/re-render its presentation, etc.
+* a Model whose data has changed to notify its Subscribers to update themselves (e.g., view to re-render to show accurate/updated data), etc.
+
+### Models
+
+Models manage the (domain-specific) data for an application. They are concerned with neither the user-interface nor presentation layers, but instead represent structured data that an application may require. When a model changes (e.g when it is updated), it will typically notify its observers (Subscribers) that a change has occurred so that they may react accordingly.
+
+Let's see a simple implementation of the Model:
+
+```javascript
+// cranium.js - Cranium.Model
+
+// Attributes represents data, model's properties.
+// These are to be passed at Model instantiation.
+// Also we are creating id for each Model instance 
+// so that it can identify itself (e.g. on chage 
+// announcements)
+var Model = Cranium.Model = function (attributes) {
+    this.id = _.uniqueId('model');
+    this.attributes = attributes || {};
+};
+
+// Getter (accessor) method;
+// returns named data item
+Cranium.Model.prototype.get = function(attrName) {
+    return this.attributes[attrName];
+};
+
+// Setter (mutator) method;
+// Set/mix in into model mapped data (e.g.{name: "John"})
+// and publishes the change event
+Cranium.Model.prototype.set = function(attrs){
+    if (_.isObject(attrs)) {
+      _.extend(this.attributes, attrs);
+      this.change(this.attributes);
+    }
+    return this;
+};
+
+// Returns clone of the Models data object 
+// (used for view template rendering)
+Cranium.Model.prototype.toJSON = function(options) {
+    return _.clone(this.attributes);
+};
+
+// Helper function that announces changes to the Model
+// and passes the new data
+Cranium.Model.prototype.change = function(attrs){
+    this.trigger(this.id + 'update', attrs);
+}; 
+
+// Mix in Event system
+_.extend(Cranium.Model.prototype, Cranium.Events);
+```
+
+### Views
+
+Views are a visual representation of models that present a filtered view of their current state. A view typically observes a model and is notified when the model changes, allowing the view to update itself accordingly. Design pattern literature commonly refers to views as 'dumb', given that their knowledge of models and controllers in an application is limited.
+
+Let's explore Views a little further using a simple JavaScript example:
+
+```javascript
+// DOM View
+var View = Cranium.View = function (options) {
+  // Mix in options object (e.g extending functionallity)
+  _.extend(this, options); 
+  this.id = _.uniqueId('view');
+};
+
+// Mix in Event system
+_.extend(Cranium.View.prototype, Cranium.Events);
+```
+
+### Controllers
+
+Controllers are an intermediary between models and views which are classically responsible for two tasks: 
+
+* they update the view when the model changes
+* they update the model when the user manipulates the view
+
+```javascript
+// cranium.js - Cranium.Controller
+
+// Controller tying together a model and view
+var Controller = Cranium.Controller = function(options){
+  // Mix in options object (e.g extending functionallity)
+  _.extend(this, options); 
+  this.id = _.uniqueId('controller');
+  var parts, selector, eventType;
+
+  // Parses Events object passed during the definition of the 
+  // controller and maps it to the defined method to handle it;
+  if(this.events){
+    _.each(this.events, function(method, eventName){
+      parts = eventName.split('.');
+      selector = parts[0];
+      eventType = parts[1];
+      $(selector)['on' + eventType] = this[method];
+    }.bind(this));
+  }    
+};
+```
+
+### Practical Usage
+
+HTML template for the primer that follows:
+
+```html
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title></title>
+  <meta name="description" content="">
+</head>
+<body>
+<div id="todo">
+</div>
+  <script type="text/template" class="todo-template">
+    <div>
+      <input id="todo_complete" type="checkbox" <%= completed %>>
+      <%= title %>
+    </div>
+  </script>
+  <script src="underscore-min.js"></script>
+  <script src="cranium.js"></script>
+  <script src="example.js"></script>
+</body>
+</html>
+```
+
+Cranium.js usage:
+
+```javascript
+
+// example.js - usage of Cranium MVC
+
+// And todo instance
+var todo1 = new Cranium.Model({
+    title: "",
+    completed: ""
+});
+
+console.log("First todo title - nothing set: " + todo1.get('title'));
+todo1.set({title: "Do something"});
+console.log("Its changed now: " + todo1.get('title'));
+''
+// View instance
+var todoView = new Cranium.View({
+  // DOM element selector
+  el: '#todo',
+
+  // Todo template; Underscore temlating used
+  template: _.template($('.todo-template').innerHTML),
+
+  init: function (model) {
+    this.render( model.toJSON() );
+
+    this.on(model.id + 'update', this.render.bind(this));
+  },
+  render: function (data) {
+    console.log("View about to render.");
+    $(this.el).innerHTML = this.template( data );
+  }
+});
+
+var todoController = new Cranium.Controller({
+  // Specify the model to update
+  model: todo1,
+
+  // and the view to observe this model
+  view:  todoView,
+  
+  events: {
+    "#todo.click" : "toggleComplete"
+  },
+
+  // Initialize everything
+  initialize: function () {
+    this.view.init(this.model);
+    return this;
+  },
+  // Toggles the value of the todo in the Model
+  toggleComplete: function () {
+    var completed = todoController.model.get('completed');
+    console.log("Todo old 'completed' value?", completed);
+    todoController.model.set({ completed: (!completed) ? 'checked': '' });
+    console.log("Todo new 'completed' value?", todoController.model.get('completed'));
+    return this;
+  }
+});
+
+
+// Let's kick start things off
+todoController.initialize();
+
+todo1.set({ title: "Due to this change Model will notify View and it will re-render"});
+
+```
 
 ## MVP
 
