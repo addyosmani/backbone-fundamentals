@@ -66,26 +66,19 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <li><a href="#setting-expectations">Setting Expectations</a></li>
 </ul></li>
 <li><a href="#fundamentals">Fundamentals</a><ul>
-<li><a href="#mvc-backbone.js">MVC &amp; Backbone.js</a></li>
 <li><a href="#mvc">MVC</a><ul>
 <li><a href="#smalltalk-80-mvc">Smalltalk-80 MVC</a></li>
 <li><a href="#mvc-applied-to-the-web">MVC Applied To The Web</a></li>
 <li><a href="#mvc-in-the-browser">MVC In The Browser</a></li>
-<li><a href="#simple-javascript-mvc-implementation">Simple JavaScript MVC Implementation</a><ul>
-<li><a href="#event-system">Event System</a></li>
+<li><a href="#client-side-mvc---backbone-style">Client-Side MVC - Backbone Style</a></li>
+<li><a href="#implementation-specifics">Implementation Specifics</a><ul>
 <li><a href="#models">Models</a></li>
 <li><a href="#views">Views</a></li>
 <li><a href="#controllers">Controllers</a></li>
-<li><a href="#practical-usage">Practical Usage</a></li>
-</ul></li>
-<li><a href="#imlementation-specifics">Imlementation Specifics</a><ul>
-<li><a href="#notes-on-model">Notes on Model</a></li>
-<li><a href="#notes-on-view">Notes on View</a></li>
-<li><a href="#notes-on-controller">Notes on Controller</a></li>
 </ul></li>
 </ul></li>
 <li><a href="#what-does-mvc-give-us">What does MVC give us?</a><ul>
-<li><a href="#delving-deeper">Delving deeper</a></li>
+<li><a href="#delving-deeper-into-mvc">Delving Deeper into MVC</a></li>
 <li><a href="#summary">Summary</a></li>
 <li><a href="#further-reading">Further reading</a></li>
 </ul></li>
@@ -365,6 +358,13 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <li><a href="#notes">Notes</a></li>
 </ul></li>
 <li><a href="#appendix">Appendix</a><ul>
+<li><a href="#a-simple-javascript-mvc-implementation">A Simple JavaScript MVC Implementation</a><ul>
+<li><a href="#event-system">Event System</a></li>
+<li><a href="#models-4">Models</a></li>
+<li><a href="#views-4">Views</a></li>
+<li><a href="#controllers-2">Controllers</a></li>
+<li><a href="#practical-usage">Practical Usage</a></li>
+</ul></li>
 <li><a href="#mvp">MVP</a><ul>
 <li><a href="#models-views-presenters">Models, Views &amp; Presenters</a></li>
 </ul></li>
@@ -441,7 +441,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <p>There’s a lot more that goes into structuring an application than tying together a DOM manipulation library, templating, and routing. Mature MV* frameworks typically include not only the pieces you would find yourself writing, but also include solutions to problems you’ll find yourself running into later on down the road. This is a time-saver that you shouldn’t underestimate the value of.</p>
 <p>So, where will you likely need an MV* framework and where won’t you?</p>
 <p>If you’re writing an application where much of the heavy lifting for view rendering and data manipulation will be occurring in the browser, you may find a JavaScript MV* framework useful. Examples of applications that fall into this category are GMail and Google Docs.</p>
-<p>These types of applications typically download a single payload containing all the scripts, stylesheets and markup users need for common tasks and then perform a lot of additional behavior in the background. For instance, it’s trivial to switch between reading an email or document to writing one and a new page is never requested from the server.</p>
+<p>These types of applications typically download a single payload containing all the scripts, stylesheets, and markup users need for common tasks and then perform a lot of additional behavior in the background. For instance, it’s trivial to switch between reading an email or document to writing one without sending a new page request to the server.</p>
 <p>If, however, you’re building an application that still relies on the server for most of the heavy-lifting of page/view rendering and you’re just using a little JavaScript or jQuery to make things more interactive, an MV* framework may be overkill. There certainly are complex Web applications where the partial rendering of views can be coupled with a single-page application effectively, but for everything else, you may find yourself better sticking to a simpler setup.</p>
 <p>Maturity in software (framework) development isn’t simply about how long a framework has been around. It’s about how solid the framework is and more importantly how well it’s evolved to fill its role. Has it become more effective at solving common problems? Does it continue to improve as developers build larger and more complex applications with it?</p>
 <h3 id="why-consider-backbone.js"><a href="#TOC">Why Consider Backbone.js?</a></h3>
@@ -454,22 +454,35 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <li>Organize the structure to your application</li>
 <li>Simplify server-side persistence</li>
 <li>Decouple the DOM from your page’s data</li>
-<li>Model data, views and routers in a succinct manner</li>
-<li>Provide DOM, model and collection synchronization</li>
+<li>Model data, views, and routers in a succinct manner</li>
+<li>Provide DOM, model, and collection synchronization</li>
 </ul>
 <h3 id="setting-expectations"><a href="#TOC">Setting Expectations</a></h3>
 <p>The goal of this book is to create an authoritative and centralized repository of information that can help those developing real-world apps with Backbone. If you come across a section or topic which you think could be improved or expanded on, please feel free to submit an issue (or better yet, a pull-request) on the book’s <a href="https://github.com/addyosmani/backbone-fundamentals">GitHub site</a>. It won’t take long and you’ll be helping other developers avoid the problems you ran into.</p>
 <p>Topics will include MVC theory and how to build applications using Backbone’s Models, Views, Collections, and Routers. I’ll also be taking you through advanced topics like modular development with Backbone.js and AMD (via RequireJS), solutions to common problems like nested views, how to solve routing problems with Backbone and jQuery Mobile, and much more.</p>
+<p>Here is a peek at what you will be learning in each chapter:</p>
+<p><i>Chapter 2, Fundamentals</i> traces the history of the MVC design pattern and introduces how it is implemented by Backbone.js and other JavaScript frameworks.</p>
+<p><i>Chapter 3, The Internals</i> covers the major features of the core Backbone.js framework and technologies and techniques you will need to know in order to apply it.</p>
+<p><i>Chapter 4, Exercise 1: Todos - Your First Backbone.js App</i> takes you step-by-step through development of a simple client-side Todo List application.</p>
+<p><i>Chapter 5, Exercise 2: Book Library - Your First RESTful Backbone.js App</i> walks you through development of a Book Library application which persists its model to a server using a REST API.</p>
+<p><i>Chapter 6, Backbone Boilerplate And Grunt BBB</i> introduces powerful tools you can use to bootstrap a new Backbone.js application with boilerplate code.</p>
+<p><i>Chapter 7, Common Problems and Solutions</i> reviews common issues you may encounter when using Backbone.js and ways of addressing them.</p>
+<p><i>Chapter 8, Backbone Extensions</i> describes Backbone.Marionette and Thorax, two extension frameworks which add features to Backbone.js that are useful for developing large-scale applications.</p>
+<p><i>Chapter 9, Modular Development</i> looks at how AMD modules and RequireJS can be used to modularize your code.</p>
+<p><i>Chapter 10, Mobile Applications</i> addresses the issues that arise when using Backbone with jQuery Mobile.</p>
+<p><i>Chapter 11, Unit Testing</i> covers how to unit test Backbone code using the Jasmine test framework.</p>
+<p><i>Chapter 12, Unit Testing Backbone Applications with QUnit and SinonJS</i> discusses how to use the QUnit and SinusJS frameworks for unit testing.</p>
+<p><i>Chapter 13, Resources</i> provides references to additional Backbone-related resources.</p>
+<p><i>Chapter 14, Conclusions</i> wraps up the our tour through the world of Backbone.js development.</p>
+<p><i>Chapter 15, Appendix</i> returns to our design pattern discussion by contrasting MVC with the Model-View-Presenter (MVP) pattern and examines how Backbone.js relates to the two patterns. It also provides useful information for existing Backbone users who may be upgrading from Backbone 0.9.2 to version 0.9.10 and beyond.</p>
 <h1 id="fundamentals"><a href="#TOC">Fundamentals</a></h1>
-<p>In this first chapter, we’re going to explore how frameworks like Backbone.js fit in the world of JavaScript application architecture. Classically, developers creating desktop and server-class applications have had a wealth of design patterns available for them to lean on, but it’s only been in the past few years that such patterns have come to client-side development.</p>
-<p>Before exploring any JavaScript frameworks that assist in structuring applications, it can be useful to gain a basic understanding of architectural design patterns.</p>
-<h3 id="mvc-backbone.js"><a href="#TOC">MVC &amp; Backbone.js</a></h3>
-<p>Design patterns are proven solutions to common development problems and can help guide us in adding more organization and structure to our applications. Patterns are also of great use as they reflect a set of practices which build upon the collective experience of skilled developers who have repeatedly solved similar problems.</p>
-<p>In this section, we’re going to explore the MVC (Model-View-Controller) pattern and how it applies to Backbone.js.</p>
+<p>Design patterns are proven solutions to common development problems that can help us improve the organization and structure of our applications. By using patterns, we benefit from the collective experience of skilled developers who have repeatedly solved similar problems.</p>
+<p>Historically, developers creating desktop and server-class applications have had a wealth of design patterns available for them to lean on, but it’s only been in the past few years that such patterns have been applied to client-side development.</p>
+<p>In this chapter, we’re going to explore the evolution of the Model-View-Controller (MVC) design pattern and get our first look at how the Backbone.js framework enables application of this pattern to client-side development.</p>
 <h2 id="mvc"><a href="#TOC">MVC</a></h2>
-<p>MVC is an architectural design pattern that encourages improved application organization through a separation of concerns. It enforces the isolation of business data (Models) from user interfaces (Views), with a third component (Controllers) traditionally managing logic, user-input and the coordination of models and views. The pattern was originally designed by <a href="http://en.wikipedia.org/wiki/Trygve_Reenskaug">Trygve Reenskaug</a> while working on Smalltalk-80 (1979), where it was initially called Model-View-Controller-Editor. MVC was described in depth in <a href="http://www.amazon.co.uk/Design-patterns-elements-reusable-object-oriented/dp/0201633612"><q>Design Patterns: Elements of Reusable Object-Oriented Software</q></a> (The <q>GoF</q> or <q>Gang of Four</q> book) in 1994, which played a role in popularizing its use.</p>
+<p>MVC is an architectural design pattern that encourages improved application organization through a separation of concerns. It enforces the isolation of business data (Models) from user interfaces (Views), with a third component (Controllers) traditionally managing logic, user-input, and coordination of models and views. The pattern was originally designed by <a href="http://en.wikipedia.org/wiki/Trygve_Reenskaug">Trygve Reenskaug</a> while working on Smalltalk-80 (1979), where it was initially called Model-View-Controller-Editor. MVC was described in depth in <a href="http://www.amazon.co.uk/Design-patterns-elements-reusable-object-oriented/dp/0201633612"><q>Design Patterns: Elements of Reusable Object-Oriented Software</q></a> (The <q>GoF</q> or <q>Gang of Four</q> book) in 1994, which played a role in popularizing its use.</p>
 <h3 id="smalltalk-80-mvc"><a href="#TOC">Smalltalk-80 MVC</a></h3>
-<p>It’s important to understand what the original MVC pattern was aiming to solve as it has changed quite heavily since the days of its origin. Back in the 70’s, graphical user-interfaces were few and far between. An approach known as <a href="http://martinfowler.com/eaaDev/uiArchs.html">Separated Presentation</a> began to be used as a means to make a clear division between domain objects which modeled concepts in the real world (e.g., a photo, a person) and the presentation objects which were rendered to the user’s screen.</p>
+<p>It’s important to understand the issues that the original MVC pattern was aiming to solve as it has changed quite heavily since the days of its origin. Back in the 70’s, graphical user-interfaces were few and far between. An approach known as <a href="http://martinfowler.com/eaaDev/uiArchs.html">Separated Presentation</a> began to be used as a means to make a clear division between domain objects which modeled concepts in the real world (e.g., a photo, a person) and the presentation objects which were rendered to the user’s screen.</p>
 <p>The Smalltalk-80 implementation of MVC took this concept further and had an objective of separating out the application logic from the user interface. The idea was that decoupling these parts of the application would also allow the reuse of models for other interfaces in the application. There are some interesting points worth noting about Smalltalk-80’s MVC architecture:</p>
 <ul>
 <li>A Domain element was known as a Model and was ignorant of the user-interface (Views and Controllers)</li>
@@ -480,148 +493,33 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <p>Developers are sometimes surprised when they learn that the Observer pattern (nowadays commonly implemented as a Publish/Subscribe system) was included as a part of MVC’s architecture decades ago. In Smalltalk-80’s MVC, the View and Controller both observe the Model: anytime the Model changes, the Views react. A simple example of this is an application backed by stock market data - for the application to show real-time information, any change to the data in its Model should result in the View being refreshed instantly.</p>
 <p>Martin Fowler has done an excellent job of writing about the <a href="http://martinfowler.com/eaaDev/uiArchs.html">origins</a> of MVC over the years and if you are interested in further historical information about Smalltalk-80’s MVC, I recommend reading his work.</p>
 <h3 id="mvc-applied-to-the-web"><a href="#TOC">MVC Applied To The Web</a></h3>
-<p>The web heavily relies on the HTTP protocol, which is stateless. This means that there is not a constantly open connection between the browser and server; each request instantiates a new communication channel between the two. Once the request initiator (e.g. a browser) gets a response the connection is closed. This fact creates a completely different context when compared to the one of the operating systems on which many of the original MVC ideas were developed. The MVC implementation has to conform to the web context.</p>
-<p>A typical server-side MVC implementation has one MVC stack layered behind a single point of entry. This single point of entry means that all HTTP requests, e.g., <code>http://www.example.com</code>, <code>http://www.example.com/whichever-page/</code>, etc., are routed by the server configuration to the same handler, independent of the URI.</p>
-<p>At that point, there would be an implementation of the Front Controller pattern which analyzes HTTP requests and decides which class (Controller) and method (Action) to invoke in response to the request.</p>
-<p>The selected Controller takes over and passes to and/or fetches data from the appropriate Model. After the Controller receives the data from the Model, it loads an appropriate View, injects the Model data into it, and returns the response to the browser.</p>
+<p>The web heavily relies on the HTTP protocol, which is stateless. This means that there is not a constantly open connection between the browser and server; each request instantiates a new communication channel between the two. Once the request initiator (e.g., a browser) gets a response the connection is closed. This fact creates a completely different context when compared to the one of the operating systems on which many of the original MVC ideas were developed. The MVC implementation has to conform to the web context.</p>
+<p>A typical server-side MVC implementation implements the Front Controller design pattern. This pattern layers an MVC stack behind a single point of entry. This single point of entry means that all HTTP requests (e.g., <code>http://www.example.com</code>, <code>http://www.example.com/whichever-page/</code>, etc.) are routed by the server’s configuration to the same handler, independent of the URI.</p>
+<p>When the Front Controller receives an HTTP request it analyzes it and decides which class (Controller) and method (Action) to invoke. The selected Controller Action takes over and interacts with the appropriate Model to fulfill the request. The Controller receives data back from the Model, loads an appropriate View, injects the Model data into it, and returns the response to the browser.</p>
 <p>For example, let say we have our blog on <code>www.example.com</code> and we want to edit an article (with <code>id=43</code>) and request <code>http://www.example.com/article/edit/43</code>:</p>
 <p>On the server side, the Front Controller would analyze the URL and invoke the Article Controller (corresponding to the <code>/article/</code> part of the URI) and its Edit Action (corresponding to the <code>/edit/</code> part of the URI). Within the Action there would be a call to, lets say, the Articles model and its <code>Articles::getEntry(43)</code> method (43 corresponding to the <code>/43</code> at the end of the URI). This would return the blog article data from the database for edit. The Article Controller would then load the (<code>article/edit</code>) View which would include logic for injecting the article’s data into a form suitable for editing its content, title, and other (meta) data. Finally, the resulting HTML response would be returned to the browser.</p>
 <p>As you can imagine, a similar flow is necessary with POST requests after we press a save button in a form. The POST action URI would look like <code>/article/save/43</code>. The request would go through the same Controller, but this time the Save Action would be invoked (due to the <code>/save/</code> URI chunk), the Articles Model would save the edited article to the database with <code>Articles::saveEntry(43)</code>, and the browser would be redirected to the <code>/article/edit/43</code> URI for further editing.</p>
-<p>If the user requested <code>http://www.example.com/</code>:</p>
-<p>On the server side the Front Controller would invoke the default Controller and Action; e.g., the Index Controller and its Index action. Within Index Action there would be a call to the Articles model and its <code>Articles::getLastEntries(10)</code> method which would return the last 10 blog posts. Afterwards, the Controller would load the blog/index View which would have basic logic for listing the blog posts.</p>
-<p>We can see the larger picture of typical HTTP request lifecycle through the server side MVC in the picture below.</p>
+<p>Finally, if the user requested <code>http://www.example.com/</code> the Front Controller would invoke the default Controller and Action; e.g., the Index Controller and its Index action. Within Index Action there would be a call to the Articles model and its <code>Articles::getLastEntries(10)</code> method which would return the last 10 blog posts. The Controller would load the blog/index View which would have basic logic for listing the blog posts.</p>
+<p>The picture below shows this typical HTTP request/response lifecycle for server-side MVC:</p>
 <figure>
 <img src="img/webmvcflow_bacic.png"><figcaption></figcaption>
 </figure>
 <p>The Server receives an HTTP request and routes it through a single entry point. At that entry point, the Front Controller analyzes the request and based on it invokes an Action of the appropriate Controller. This process is called routing. The Action Model is asked to return and/or save submitted data. The Model communicates with the data source (e.g., database or API). Once the Model completes its work it returns data to the Controller which then loads the appropriate View. The View executes presentation logic (loops through articles and prints titles, content, etc.) using the supplied data. In the end, an HTTP response is returned to the browser.</p>
 <p>The need for fast, complex, and responsive Ajax-powered web applications demands replication of a lot of this logic on the client side, dramatically increasing the size and complexity of the code residing there. Eventually this has brought us to the point where we need MVC (or a similar architecture) implemented on the client side to better structure the code and make it easier to maintain and further extend during the application life-cycle.</p>
-<p>And, of course, JavaScript and browsers create another context to which we must adjust the traditional MVC paradigm.</p>
+<p>And, of course, JavaScript and browsers constitute another context to which the traditional MVC paradigm must be adapted.</p>
 <h3 id="mvc-in-the-browser"><a href="#TOC">MVC In The Browser</a></h3>
-<p>In complex JavaScript single-page web applications (SPA), all application responses (e.g., UI updates) to user inputs are done seamlessly on the client-side. Data fetching and persistence (e.g., saving to a database on a server) are done with Ajax in the background. For silky, slick, and smooth user experiences, the code powering these interacions needs to be well thought out.</p>
-<p>Through evolution, trial and error, and a lot of spaghetti (and not so spaghetti-like) code, JavaScript developers have, in the end, harnessed the ideas of the traditional MVC paradigm. This has led to the development of a number of JavaScript MVC frameworks, including Ember.js, JavaScriptMVC, and of course Backbone.js.</p>
+<p>In complex JavaScript single-page web applications (SPA), all application responses (e.g., UI updates) to user inputs are done seamlessly on the client-side. Data fetching and persistence (e.g., saving to a database on a server) are done with Ajax in the background. For silky, slick, and smooth user experiences, the code powering these interactions needs to be well thought out.</p>
 <p><strong>The problem</strong></p>
-<p>A typical page in an SPA consists of small elements representing logical entities. These entities belong to specific data domains that should be represented in a particular way on the page.</p>
-<p>A good example is a basket in an e-commerce web application which can have a items added to it. This basket might be presented to the user in a box in the top right corner of the page (see the picture).</p>
+<p>A typical page in a SPA consists of small elements representing logical entities. These entities belong to specific data domains and need to be presented in particular ways on the page.</p>
+<p>A good example is a basket in an e-commerce web application which can have items added to it. This basket might be presented to the user in a box in the top right corner of the page (see the picture below):</p>
 <figure>
 <img src="img/wireframe_e_commerce.png"><figcaption></figcaption>
 </figure>
-<p>The basket and its data are presented in HTML. The data and its associated view in HTML changes over time. There was a time when we used jQuery (or a similar DOM manipulation library) and a bunch of Ajax calls and callbacks to keep the two in sync. That often produced code that was not well structured or easy to maintain. Bugs were frequent and perhaps even unavoidable.</p>
-<p>Eventually, an elegant way to handle it was brought to the client side throught JavaScript MVC libraries.</p>
-<p>Using MVC, data is handled with a Model and its HTML presentation with a View. When the Model changes the View is updated and vice versa. A Controller manages this synchronization. It sends update commands both ways: to the View to update itself when the Model changes (e.g., synchronization with the database) and to the Model when the View changes (e.g., new items dropped into the basket). This results in a better separation of concerns and improved code structure.</p>
-<h3 id="simple-javascript-mvc-implementation"><a href="#TOC">Simple JavaScript MVC Implementation</a></h3>
-<p>Let’s see a simple implementation of the MVC pattern and its usage to clarify some concepts - we’re going to call our little library Cranium.js.</p>
-<p>To simplify a bit we will rely on <a href="http://underscorejs.org" title="Underscore.js">Underscore</a> for inheritance and templating (similar to Backbone).</p>
-<h4 id="event-system"><a href="#TOC">Event System</a></h4>
-<p>At the heart of our JavaScript MVC implementation is an <code>Event</code> system (object) based on the Publisher-Subscriber Pattern which makes it possible for MVC components to intercommunicate in an elegant, decoupled manner. Subscribers <q>listen</q> for specific events of interest and react when Publishers broadcast these events.</p>
-<p><code>Event</code> is inherited by the View and Model components. That way each of them can inform other components that event of the interest has occurred.</p>
-<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="co">// cranium.js - Cranium.Events</span>
-
-<span class="kw">var</span> Cranium = Cranium || {};
-
-<span class="co">// Set DOM selection utility</span>
-<span class="kw">var</span> $ = <span class="kw">document</span>.<span class="fu">querySelector</span>.<span class="fu">bind</span>(<span class="kw">document</span>) || <span class="kw">this</span>.<span class="fu">jQuery</span> || <span class="kw">this</span>.<span class="fu">Zepto</span>;
-
-<span class="co">// Mix in to any object in order to provide it with custom events.</span>
-<span class="kw">var</span> Events = <span class="kw">Cranium</span>.<span class="fu">Events</span> = {
-  <span class="co">// Keeps list of events and associated listeners</span>
-  <span class="dt">channels</span>: {},
-
-  <span class="co">// Counter</span>
-  <span class="dt">eventNumber</span>: <span class="dv">0</span>,
-
-  <span class="co">// Announce events and passes data to the listeners;</span>
-  <span class="dt">trigger</span>: <span class="kw">function</span> (events, data) {
-    <span class="kw">for</span> (<span class="kw">var</span> topic <span class="kw">in</span> <span class="kw">Cranium.Events</span>.<span class="fu">channels</span>){
-      <span class="kw">if</span> (<span class="kw">Cranium.Events.channels</span>.<span class="fu">hasOwnProperty</span>(topic)) {
-        <span class="kw">if</span> (<span class="kw">topic</span>.<span class="fu">split</span>(<span class="st">&quot;-&quot;</span>)[<span class="dv">0</span>] == events){
-          <span class="kw">Cranium.Events</span>.<span class="fu">channels</span>[topic](data) !== <span class="kw">false</span> || <span class="kw">delete</span> <span class="kw">Cranium.Events</span>.<span class="fu">channels</span>[topic];
-        }
-      }
-    }
-  },
-  <span class="co">// Registers an event type and its listener</span>
-  <span class="dt">on</span>: <span class="kw">function</span> (events, callback) {
-    <span class="kw">Cranium.Events</span>.<span class="fu">channels</span>[events + --<span class="kw">Cranium.Events</span>.<span class="fu">eventNumber</span>] = callback;
-  },
-  <span class="co">// Unregisters an event type and its listener</span>
-  <span class="dt">off</span>: <span class="kw">function</span>(topic) {
-    <span class="kw">delete</span> <span class="kw">Cranium.Events</span>.<span class="fu">channels</span>[topic];
-  }            
-};</code></pre>
-<p>The Event system makes it possible for:</p>
-<ul>
-<li>a View to notify its subscribers of user interaction (e.g., clicks or input in a form), to update/re-render its presentation, etc.</li>
-<li>a Model whose data has changed to notify its Subscribers to update themselves (e.g., view to re-render to show accurate/updated data), etc.</li>
-</ul>
-<h4 id="models"><a href="#TOC">Models</a></h4>
-<p>Models manage the (domain-specific) data for an application. They are concerned with neither the user-interface nor presentation layers, but instead represent structured data that an application may require. When a model changes (e.g when it is updated), it will typically notify its observers (Subscribers) that a change has occurred so that they may react accordingly.</p>
-<p>Let’s see a simple implementation of the Model:</p>
-<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="co">// cranium.js - Cranium.Model</span>
-
-<span class="co">// Attributes represents data, model&#39;s properties.</span>
-<span class="co">// These are to be passed at Model instantiation.</span>
-<span class="co">// Also we are creating id for each Model instance </span>
-<span class="co">// so that it can identify itself (e.g. on chage </span>
-<span class="co">// announcements)</span>
-<span class="kw">var</span> Model = <span class="kw">Cranium</span>.<span class="fu">Model</span> = <span class="kw">function</span> (attributes) {
-    <span class="kw">this</span>.<span class="fu">id</span> = <span class="kw">_</span>.<span class="fu">uniqueId</span>(<span class="ch">&#39;model&#39;</span>);
-    <span class="kw">this</span>.<span class="fu">attributes</span> = attributes || {};
-};
-
-  <span class="co">// todo instantiated with default attributes </span>
-  <span class="kw">var</span> firstTodo = <span class="kw">new</span> Todo();
-
-  <span class="kw">console</span>.<span class="fu">log</span>(<span class="st">&quot;Todo&#39;s default title: &quot;</span> + <span class="kw">firstTodo</span>.<span class="fu">get</span>(<span class="ch">&#39;title&#39;</span>)); <span class="co">// &quot;&quot;</span>
-  <span class="kw">console</span>.<span class="fu">log</span>(<span class="st">&quot;Todo&#39;s default status: &quot;</span> + <span class="kw">firstTodo</span>.<span class="fu">get</span>(<span class="ch">&#39;completed&#39;</span>)); <span class="co">// false</span>
-
-  <span class="kw">firstTodo</span>.<span class="fu">set</span>(<span class="ch">&#39;title&#39;</span>, <span class="ch">&#39;Enjoy reading the book&#39;</span>);
-  <span class="kw">console</span>.<span class="fu">log</span>(<span class="ch">&#39;Title changed: &#39;</span> + <span class="kw">firstTodo</span>.<span class="fu">get</span>(<span class="ch">&#39;title&#39;</span>));
-
-  <span class="co">// new todo instantiated with todo specific data</span>
-  <span class="kw">var</span> secondTodo = <span class="kw">new</span> Todo({ <span class="dt">title</span>: <span class="ch">&#39;Try this code in chrome console&#39;</span>});
-
-<span class="co">// Mix in Event system</span>
-<span class="kw">_</span>.<span class="fu">extend</span>(<span class="kw">Cranium.Model</span>.<span class="fu">prototype</span>, <span class="kw">Cranium</span>.<span class="fu">Events</span>);</code></pre>
-<h4 id="views"><a href="#TOC">Views</a></h4>
-<p>Views are a visual representation of models that present a filtered view of their current state. A view typically observes a model and is notified when the model changes, allowing the view to update itself accordingly. Design pattern literature commonly refers to views as <q>dumb</q>, given that their knowledge of models and controllers in an application is limited.</p>
-<p>Let’s explore Views a little further using a simple JavaScript example:</p>
-<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="co">// DOM View</span>
-<span class="kw">var</span> View = <span class="kw">Cranium</span>.<span class="fu">View</span> = <span class="kw">function</span> (options) {
-    <span class="co">// Mix in options object (e.g extending functionallity)</span>
-  <span class="kw">_</span>.<span class="fu">extend</span>(<span class="kw">this</span>, options); 
-  <span class="kw">this</span>.<span class="fu">id</span> = <span class="kw">_</span>.<span class="fu">uniqueId</span>(<span class="ch">&#39;view&#39;</span>);
-};
-
-<span class="co">// Mix in Event system</span>
-<span class="kw">_</span>.<span class="fu">extend</span>(<span class="kw">Cranium.View</span>.<span class="fu">prototype</span>, <span class="kw">Cranium</span>.<span class="fu">Events</span>);</code></pre>
-<h4 id="controllers"><a href="#TOC">Controllers</a></h4>
-<p>Controllers are an intermediary between models and views which are classically responsible for two tasks:</p>
-<ul>
-<li>they update the view when the model changes</li>
-<li>they update the model when the user manipulates the view</li>
-</ul>
-<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="co">// cranium.js - Cranium.Controller</span>
-
-<span class="co">// Controller tying together a model and view</span>
-<span class="kw">var</span> Controller = <span class="kw">Cranium</span>.<span class="fu">Controller</span> = <span class="kw">function</span>(options){
-    <span class="co">// Mix in options object (e.g extending functionallity)</span>
-  <span class="kw">_</span>.<span class="fu">extend</span>(<span class="kw">this</span>, options); 
-  <span class="kw">this</span>.<span class="fu">id</span> = <span class="kw">_</span>.<span class="fu">uniqueId</span>(<span class="ch">&#39;controller&#39;</span>);
-  <span class="kw">var</span> parts, selector, eventType;
-
-  <span class="co">// Parses Events object passed during the definition of the </span>
-    <span class="co">// controller and maps it to the defined method to handle it;</span>
-  <span class="kw">if</span>(<span class="kw">this</span>.<span class="fu">events</span>){
-    <span class="kw">_</span>.<span class="fu">each</span>(<span class="kw">this</span>.<span class="fu">events</span>, <span class="kw">function</span>(method, eventName){
-      parts = <span class="kw">eventName</span>.<span class="fu">split</span>(<span class="ch">&#39;.&#39;</span>);
-      selector = parts[<span class="dv">0</span>];
-      eventType = parts[<span class="dv">1</span>];
-      $(selector)[<span class="ch">&#39;on&#39;</span> + eventType] = <span class="kw">this</span>[method];
-    }.<span class="fu">bind</span>(<span class="kw">this</span>));
-  }    
-};</code></pre>
-<h4 id="practical-usage"><a href="#TOC">Practical Usage</a></h4>
-<p>HTML template for the primer that follows:</p>
+<p>The basket and its data are presented in HTML. The data and its associated view in HTML changes over time. There was a time when we used jQuery (or a similar DOM manipulation library) and a bunch of Ajax calls and callbacks to keep the two in sync. That often produced code that was not well-structured or easy to maintain. Bugs were frequent and perhaps even unavoidable.</p>
+<p>Through evolution, trial and error, and a lot of spaghetti (and not so spaghetti-like) code, JavaScript developers have, in the end, harnessed the ideas of the traditional MVC paradigm. This has led to the development of a number of JavaScript MVC frameworks, including Ember.js, JavaScriptMVC, and of course Backbone.js.</p>
+<h3 id="client-side-mvc---backbone-style"><a href="#TOC">Client-Side MVC - Backbone Style</a></h3>
+<p>Let’s take our first look at how Backbone.js brings the benefits of MVC to client-side development using a Todo application as our example. We will build on this example in the coming chapters when we explore Backbone’s features but for now we will just focus on the core components’ relationships to MVC.</p>
+<p>Our example will need a div element to which it can attach a list of Todo’s and an HTML template for each Todo item containing its title and a checkbox indicating if it has been completed. These are provided by the following HTML:</p>
 <pre class="sourceCode html"><code class="sourceCode html"><span class="er">&lt;</span>!doctype html&gt;
 <span class="kw">&lt;html</span><span class="ot"> lang=</span><span class="st">&quot;en&quot;</span><span class="kw">&gt;</span>
 <span class="kw">&lt;head&gt;</span>
@@ -630,114 +528,98 @@ code > span.er { color: #ff0000; font-weight: bold; }
   <span class="kw">&lt;meta</span><span class="ot"> name=</span><span class="st">&quot;description&quot;</span><span class="ot"> content=</span><span class="st">&quot;&quot;</span><span class="kw">&gt;</span>
 <span class="kw">&lt;/head&gt;</span>
 <span class="kw">&lt;body&gt;</span>
-<span class="kw">&lt;div</span><span class="ot"> id=</span><span class="st">&quot;todo&quot;</span><span class="kw">&gt;</span>
-<span class="kw">&lt;/div&gt;</span>
-    <span class="kw">&lt;script</span><span class="ot"> type=</span><span class="st">&quot;text/template&quot;</span><span class="ot"> class=</span><span class="st">&quot;todo-template&quot;</span><span class="kw">&gt;</span>
+  <span class="kw">&lt;div</span><span class="ot"> id=</span><span class="st">&quot;todo&quot;</span><span class="kw">&gt;</span>
+  <span class="kw">&lt;/div&gt;</span>
+  <span class="kw">&lt;script</span><span class="ot"> type=</span><span class="st">&quot;text/template&quot;</span><span class="ot"> id=</span><span class="st">&quot;item-template&quot;</span><span class="kw">&gt;</span>
     &lt;div&gt;
-        &lt;input id=<span class="st">&quot;todo</span>_<span class="st">complete&quot;</span> type=<span class="st">&quot;checkbox&quot;</span> &lt;%= completed %&gt;&gt;
-        &lt;%= title %&gt;
+      &lt;input id=<span class="st">&quot;todo</span>_<span class="st">complete&quot;</span> type=<span class="st">&quot;checkbox&quot;</span> &lt;%= completed %&gt;&gt;
+      &lt;%= title %&gt;
     &lt;/div&gt;
-    <span class="kw">&lt;/script&gt;</span>
-    <span class="kw">&lt;script</span><span class="ot"> src=</span><span class="st">&quot;underscore-min.js&quot;</span><span class="kw">&gt;&lt;/script&gt;</span>
+  <span class="kw">&lt;/script&gt;</span>
+  <span class="kw">&lt;script</span><span class="ot"> src=</span><span class="st">&quot;underscore-min.js&quot;</span><span class="kw">&gt;&lt;/script&gt;</span>
   <span class="kw">&lt;script</span><span class="ot"> src=</span><span class="st">&quot;cranium.js&quot;</span><span class="kw">&gt;&lt;/script&gt;</span>
   <span class="kw">&lt;script</span><span class="ot"> src=</span><span class="st">&quot;example.js&quot;</span><span class="kw">&gt;&lt;/script&gt;</span>
 <span class="kw">&lt;/body&gt;</span>
 <span class="kw">&lt;/html&gt;</span></code></pre>
-<p>Cranium.js usage:</p>
-<pre class="sourceCode javascript"><code class="sourceCode javascript">
-<span class="co">// example.js - usage of Cranium MVC</span>
+<p>In our Todo application, Backbone Model instances are used to hold the data for each Todo item:</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="co">// Define a Todo Model</span>
+<span class="kw">var</span> Todo = <span class="kw">Backbone.Model</span>.<span class="fu">extend</span>({
+  <span class="co">// Default todo attribute values</span>
+  <span class="dt">defaults</span>: {
+    <span class="dt">title</span>: <span class="ch">&#39;&#39;</span>,
+    <span class="dt">completed</span>: <span class="kw">false</span>
+  }
+});
 
-  <span class="kw">var</span> Todos = <span class="kw">Backbone.Collection</span>.<span class="fu">extend</span>({
-    <span class="dt">model</span>: Todo,
-    
-    <span class="co">// For simplicity we&#39;ll use localStorage throughout the first part of book.</span>
-    <span class="co">// Save all of the todo items under the `&quot;todos&quot;` namespace.</span>
-    <span class="dt">localStorage</span>: <span class="kw">new</span> Store(<span class="ch">&#39;todos-backbone&#39;</span>)
-    
-    <span class="co">// When working with REST API on back-end here would be</span>
-    <span class="co">// appropriate to use:</span>
-    <span class="co">// url: &quot;/todos&quot;</span>
-    
-  });
+<span class="co">// Instantiate the Todo Model with a title, allowing completed attribute</span>
+<span class="co">// to default to false</span>
+<span class="kw">var</span> todo1 = <span class="kw">new</span> Todo({ 
+  <span class="dt">title</span>: <span class="ch">&#39;Check attributes property of the logged models in the console.&#39;</span>
+});</code></pre>
+<p>Our Todo model extends Backbone.Model and simply defines default values for two data attributes. As you will discover in the upcoming chapters Backbone Models provide many more features, but this simple model illustrates that first and foremost a Model is a data container.</p>
+<p>Each Todo instance will be rendered on the page by a TodoView:</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> TodoView = <span class="kw">Backbone.View</span>.<span class="fu">extend</span>({
 
-<span class="kw">console</span>.<span class="fu">log</span>(<span class="st">&quot;First todo title - nothing set: &quot;</span> + <span class="kw">todo1</span>.<span class="fu">get</span>(<span class="ch">&#39;title&#39;</span>));
-<span class="kw">todo1</span>.<span class="fu">set</span>({<span class="dt">title</span>: <span class="st">&quot;Do something&quot;</span>});
-<span class="kw">console</span>.<span class="fu">log</span>(<span class="st">&quot;Its changed now: &quot;</span> + <span class="kw">todo1</span>.<span class="fu">get</span>(<span class="ch">&#39;title&#39;</span>));
-<span class="ch">&#39;&#39;</span>
-<span class="co">// View instance</span>
-<span class="kw">var</span> todoView = <span class="kw">new</span> <span class="kw">Cranium</span>.<span class="fu">View</span>({
-    <span class="co">// DOM element selector</span>
-  <span class="dt">el</span>: <span class="ch">&#39;#todo&#39;</span>,
+  <span class="dt">tagName</span>:  <span class="ch">&#39;li&#39;</span>,
 
-  <span class="co">// Collection&#39;s convenience method used to create </span>
-  <span class="co">// new model instance within collection itself.</span>
-  <span class="kw">todos</span>.<span class="fu">create</span>({<span class="dt">title</span>:<span class="ch">&#39;Try out code examples&#39;</span>});
-  <span class="kw">console</span>.<span class="fu">log</span>(<span class="kw">todos</span>.<span class="fu">length</span>);
+  <span class="co">// Cache the template function for a single item.</span>
+  <span class="dt">todoTpl</span>: <span class="kw">_</span>.<span class="fu">template</span>( $(<span class="ch">&#39;#item-template&#39;</span>).<span class="fu">html</span>() ),
 
-  <span class="kw">var</span> thirdTodo = <span class="kw">new</span> Todo({<span class="dt">title</span>:<span class="ch">&#39;Make something cool&#39;</span>});
-
-  <span class="co">// Adds model to collection</span>
-  <span class="kw">todos</span>.<span class="fu">add</span>(thirdTodo);
-  <span class="kw">console</span>.<span class="fu">log</span>(<span class="kw">todos</span>.<span class="fu">length</span>);
-
-  <span class="co">// Collection keeps models in models </span>
-  <span class="co">// property which is an array.</span>
-  <span class="kw">console</span>.<span class="fu">log</span>(<span class="kw">todos</span>.<span class="fu">models</span>);</code></pre>
-<p>If you read older texts on MVC, you may come across a description of models as also managing application <q>state</q>. In JavaScript applications state has a specific meaning, typically referring to the current state of a view or sub-view on a user’s screen at a fixed time. State is a topic which is regularly discussed when looking at Single-page applications, where the concept of state needs to be simulated.</p>
-<h3 id="views"><a href="#TOC">Views</a></h3>
-<p>Views are a visual representation of models that present a filtered view of their current state. A view typically observes a model and is notified when the model changes, allowing the view to update itself accordingly. Design pattern literature commonly refers to views as <q>dumb</q>, given that their knowledge of models and controllers in an application is limited.</p>
-<p>Users interact with views, which usually means reading and editing model data. For example, in our todo application example, todo model viewing might happen in a user interface in the list of all todo items. Within it each todo is rendered with their title and completed checkbox. Model editing could be done through an <q>edit</q> view where a user who has selected a specific todo could edit its title in a form.</p>
-<p>In MVC, the actual task of updating the Model falls to Controllers, which we’ll be covering shortly.</p>
-<p>Let’s explore Views a little further using a simple JavaScript example. Below we can see a function that creates a single Todo view, consuming both a model instance and a controller instance.</p>
-<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> buildTodoView = <span class="kw">function</span> ( todoModel, todoController ) {
-  <span class="kw">var</span> base       = <span class="kw">document</span>.<span class="fu">createElement</span>(<span class="ch">&#39;div&#39;</span>),
-      todoEl     = <span class="kw">document</span>.<span class="fu">createElement</span>(<span class="ch">&#39;div&#39;</span>);
-
-  <span class="kw">base</span>.<span class="fu">appendChild</span>(todoEl);
-
-  <span class="kw">var</span> render= <span class="kw">function</span>(){
-    <span class="co">// We use a templating library such as Underscore</span>
-    <span class="co">// templating which generates the HTML for our</span>
-    <span class="co">// todo entry</span>
-    <span class="kw">todoEl</span>.<span class="fu">innerHTML</span> = <span class="kw">_</span>.<span class="fu">template</span>( $(<span class="ch">&#39;#todoTemplate&#39;</span>).<span class="fu">html</span>(), { <span class="dt">src</span>: <span class="kw">todoModel</span>.<span class="fu">getSrc</span>() });
-   }
-
-  <span class="co">// and the view to observe this model</span>
-  <span class="dt">view</span>:  todoView,
-  
   <span class="dt">events</span>: {
-    <span class="st">&quot;#todo.click&quot;</span> : <span class="st">&quot;toggleComplete&quot;</span>
+    <span class="ch">&#39;dblclick label&#39;</span>: <span class="ch">&#39;edit&#39;</span>,
+    <span class="ch">&#39;keypress .edit&#39;</span>: <span class="ch">&#39;updateOnEnter&#39;</span>,
+    <span class="ch">&#39;blur .edit&#39;</span>:   <span class="ch">&#39;close&#39;</span>
   },
 
-  <span class="kw">var</span> show = <span class="kw">function</span>(){
-    <span class="kw">todoEl.style</span>.<span class="fu">display</span>  = <span class="ch">&#39;&#39;</span>;
-  }
+  <span class="co">// Re-render the titles of the todo item.</span>
+  <span class="dt">render</span>: <span class="kw">function</span>() {
+    <span class="kw">this</span>.$<span class="fu">el</span>.<span class="fu">html</span>( <span class="kw">this</span>.<span class="fu">todoTpl</span>( <span class="kw">this</span>.<span class="fu">model</span>.<span class="fu">toJSON</span>() ) );
+    <span class="kw">this</span>.<span class="fu">input</span> = <span class="kw">this</span>.$(<span class="ch">&#39;.edit&#39;</span>);
+    <span class="kw">return</span> <span class="kw">this</span>;
+  },
 
-  <span class="kw">var</span> hide = <span class="kw">function</span>(){
-    <span class="kw">todoEl.style</span>.<span class="fu">display</span>  = <span class="ch">&#39;none&#39;</span>;
-  }
+  <span class="dt">edit</span>: <span class="kw">function</span>() {
+    <span class="co">// executed when todo label is double clicked</span>
+  },
 
-<span class="kw">todo1</span>.<span class="fu">set</span>({ <span class="dt">title</span>: <span class="st">&quot;Due to this change Model will notify View and it will re-render&quot;</span>});</code></pre>
-<h3 id="imlementation-specifics"><a href="#TOC">Imlementation Specifics</a></h3>
-<h4 id="notes-on-model"><a href="#TOC">Notes on Model</a></h4>
+  <span class="dt">close</span>: <span class="kw">function</span>() {
+    <span class="co">// executed when todo loses focus</span>
+  },
+
+  <span class="dt">updateOnEnter</span>: <span class="kw">function</span>( e ) {
+    <span class="co">// executed on each keypress when in todo edit mode, </span>
+    <span class="co">// but we&#39;ll wait for enter to get in action</span>
+  }
+});
+
+<span class="co">// create a view for a todo</span>
+<span class="kw">var</span> todoView = <span class="kw">new</span> TodoView({<span class="dt">model</span>: todo});</code></pre>
+<p>TodoView is defined by extending Backbone.View and is instantiated with an associated model. In our example, the <code>render()</code> method uses a template to construct the HTML for the Todo item which is placed inside a li element. Each call to <code>render()</code> will replace the content of the li element using the current model data. Later we will see how a View can bind its <code>render()</code> method to model change events, causing the View to re-render whenever the model changes.</p>
+<p>So far, we have seen that Backbone.Model implements the Model aspect of MVC and Backbone.View implements the View. However, as we noted earlier, Backbone departs from traditional MVC when it comes to Controllers - there is no Backbone.Controller!</p>
+<p>Instead, the Controller responsibility is addressed within the View. Recall that Controllers respond to requests and perform appropriate actions which may result in changes to the Model and updates to the View. In a single-page application, rather than having requests in the traditional sense, we have events. Events can be traditional browser DOM events (e.g., clicks) or internal application events such as Model changes.</p>
+<p>In our TodoView, the <code>events</code> attribute fulfills the role of the controller configuration, defining how events occurring within the view’s DOM element are to be routed to event-handling methods defined in the view.</p>
+<p>While in this instance events help us relate Backbone to the MVC pattern, we will see them playing a much larger role in our SPA applications. Backbone.Event is a fundamental Backbone component which is mixed into both Backbone.Model and Backbone.View, providing them with rich event management capabilities.</p>
+<p>This completes our first encounter with Backbone.js. The remainder of this book will explore the many features of the framework which build on these simple constructs. Before moving on, let’s take a look at common features of JavaScript MV* frameworks.</p>
+<h3 id="implementation-specifics"><a href="#TOC">Implementation Specifics</a></h3>
+<h4 id="models"><a href="#TOC">Models</a></h4>
 <ul>
 <li><p>The built-in capabilities of models vary across frameworks; however, it’s common for them to support validation of attributes, where attributes represent the properties of the model, such as a model identifier.</p></li>
 <li><p>When using models in real-world applications we generally also need a way of persisting models. Persistence allows us to edit and update models with the knowledge that their most recent states will be saved somewhere, for example in a web browser’s localStorage data-store or synchronized with a database.</p></li>
-<li><p>A model may also have single or multiple views observing it. Depending on the requirements, a developer might create a single view displaying all Model attributes, or they might create three separate views displaying different attributes. The important point is that the model doesn’t care how these views are organized, it simply announces updates to its data as necessary. It does so through a system like the Event System in our Cranium Framework.</p></li>
+<li><p>A model may also have single or multiple views observing it. Depending on the requirements, a developer might create a single view displaying all Model attributes, or they might create separate views displaying different attributes. The important point is that the model doesn’t care how these views are organized, it simply announces updates to its data as necessary through the framework’s event system.</p></li>
 <li><p>It is not uncommon for modern MVC/MV* frameworks to provide a means of grouping models together. In Backbone, these groups are called <q>Collections.</q> Managing models in groups allows us to write application logic based on notifications from the group when a model within the group changes. This avoids the need to manually observe individual model instances. We’ll see this in action later in the book.</p></li>
-<li><p>If you read older texts on MVC, you may come across a description of models as also managing application <q>state</q>. In JavaScript applications state has a specific meaning, typically referring to the current state of a view or sub-view on a user’s screen at a fixed time. State is a topic which is regularly discussed when looking at Single-page applications, where the concept of state needs to be simulated.</p></li>
+<li><p>If you read older texts on MVC, you may come across a description of models as also managing application <q>state.</q> In JavaScript applications state has a specific meaning, typically referring to the current state of a view or sub-view on a user’s screen at a fixed time. State is a topic which is regularly discussed when looking at Single-page applications, where the concept of state needs to be simulated.</p></li>
 </ul>
-<h4 id="notes-on-view"><a href="#TOC">Notes on View</a></h4>
+<h4 id="views"><a href="#TOC">Views</a></h4>
 <ul>
-<li><p>Users interact with views, which usually means reading and editing model data. For example, in todo application example we will examine, todo model viewing happens in the user interface in the list of all todo items. Within it, each todo is rendered with its title and completed checkbox. Model editing is done through an <q>edit</q> view where a user who has selected a specific todo edits its title in a form.</p></li>
+<li><p>Users interact with views, which usually means reading and editing model data. For example, in our todo application, todo model viewing happens in the user interface in the list of all todo items. Within it, each todo is rendered with its title and completed checkbox. Model editing is done through an <q>edit</q> view where a user who has selected a specific todo edits its title in a form.</p></li>
 <li><p>We define a <code>render()</code> utility within our view which is responsible for rendering the contents of the <code>Model</code> using a JavaScript templating engine (provided by Underscore.js) and updating the contents of our view, referenced by <code>el</code>.</p></li>
-<li><p>We then add our <code>render()</code> callback as one of <code>Model</code> subscribers, so that through the Event System the view can be triggered to update when the model changes.</p></li>
-<li><p>You may wonder where user interaction comes into play here. When users click on a todo element within the view, it’s not the view’s responsibility to know what to do next. A Controller makes this decision. In our implementation, this is achieved by adding an event listener to a todo element which delegates handling of the click back to the controller, passing the model information along with it in case it’s needed. The benefit of this architecture is that each component plays its own separate role in making the application function as needed.</p></li>
+<li><p>We then add our <code>render()</code> callback as a Model subscriber, so the view can be triggered to update when the model changes.</p></li>
+<li><p>You may wonder where user interaction comes into play here. When users click on a todo element within the view, it’s not the view’s responsibility to know what to do next. A Controller makes this decision. In Backbone, this is achieved by adding an event listener to the todo element which delegates handling of the click to an event handler.</p></li>
 </ul>
 <p><strong>Templating</strong></p>
 <p>In the context of JavaScript frameworks that support MVC/MV*, it is worth looking more closely at JavaScript templating and its relationship to Views.</p>
 <p>It has long been considered bad practice (and computationally expensive) to manually create large blocks of HTML markup in-memory through string concatenation. Developers using this technique often find themselves iterating through their data, wrapping it in nested divs and using outdated techniques such as <code>document.write</code> to inject the <q>template</q> into the DOM. This approach often means keeping scripted markup inline with standard markup, which can quickly become difficult to read and maintain, especially when building large applications.</p>
-<p>JavaScript templating libraries (such as Handlebars.js or Mustache) are often used to define templates for views as HTML markup containing template variables. These template blocks can be either stored externally or within script tags with a custom type (e.g <q>text/template</q>). Variables are delimited using a variable syntax (e.g {{title}}). Javascript template libraries typically accept data in JSON, and the grunt work of populating templates with data is taken care of by the framework itself. This has a several benefits, particularly when opting to store templates externally as enables applications to load templates dynamically on an as-needed basis.</p>
+<p>JavaScript templating libraries (such as Handlebars.js or Mustache) are often used to define templates for views as HTML markup containing template variables. These template blocks can be either stored externally or within script tags with a custom type (e.g <q>text/template</q>). Variables are delimited using a variable syntax (e.g &lt;%= title %&gt;). Javascript template libraries typically accept data in JSON, and the grunt work of populating templates with data is taken care of by the framework itself. This has a several benefits, particularly when opting to store templates externally which enables applications to load templates dynamically on an as-needed basis.</p>
 <p>Let’s compare two examples of HTML templates. One is implemented using the popular Handlebars.js library, and the other uses Underscore’s <q>microtemplates</q>.</p>
 <p><strong>Handlebars.js:</strong></p>
 <pre class="sourceCode html"><code class="sourceCode html"><span class="kw">&lt;div</span><span class="ot"> class=</span><span class="st">&quot;view&quot;</span><span class="kw">&gt;</span>
@@ -757,7 +639,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">_</span>.<span class="fu">templateSettings</span> = { <span class="dt">interpolate </span>: <span class="ot">/</span><span class="fl">\{\{(</span><span class="ot">.</span><span class="fl">+?)\}\}</span><span class="ot">/g</span> };</code></pre>
 <p><strong>A note on navigation and state</strong></p>
 <p>It is also worth noting that in classical web development, navigating between independent views required the use of a page refresh. In single-page JavaScript applications, however, once data is fetched from a server via Ajax, it can be dynamically rendered in a new view within the same page. Since this doesn’t automatically update the URL, the role of navigation thus falls to a <q>router</q>, which assists in managing application state (e.g., allowing users to bookmark a particular view they have navigated to). As routers are neither a part of MVC nor present in every MVC-like framework, I will not be going into them in greater detail in this section.</p>
-<h4 id="notes-on-controller"><a href="#TOC">Notes on Controller</a></h4>
+<h4 id="controllers"><a href="#TOC">Controllers</a></h4>
 <p>In our Todo application, a controller would be responsible for handling changes the user made in the edit view for a particular todo, updating a specific todo model when a user has finished editing.</p>
 <p>It’s with controllers that most JavaScript MVC frameworks depart from the traditional interpretation of the MVC pattern. The reasons for this vary, but in my opinion, Javascript framework authors likely initially looked at server-side interpretations of MVC (such as Ruby on Rails), realized that that approach didn’t translate 1:1 on the client-side, and so re-interpreted the C in MVC to solve their state management problem. This was a clever approach, but it can make it hard for developers coming to MVC for the first time to understand both the classical MVC pattern and the <q>proper</q> role of controllers in other JavaScript frameworks.</p>
 <p>So does Backbone.js have Controllers? Not really. Backbone’s Views typically contain <q>controller</q> logic, and Routers are used to help manage application state, but neither are true Controllers according to classical MVC.</p>
@@ -770,7 +652,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <li>Duplication of low-level model and controller code is eliminated across the application</li>
 <li>Depending on the size of the application and separation of roles, this modularity allows developers responsible for core logic and developers working on the user-interfaces to work simultaneously</li>
 </ul>
-<h3 id="delving-deeper"><a href="#TOC">Delving deeper</a></h3>
+<h3 id="delving-deeper-into-mvc"><a href="#TOC">Delving Deeper into MVC</a></h3>
 <p>Right now, you likely have a basic understanding of what the MVC pattern provides, but for the curious, we’ll explore it a little further.</p>
 <p>The GoF (Gang of Four) do not refer to MVC as a design pattern, but rather consider it a <q>set of classes to build a user interface.</q> In their view, it’s actually a variation of three other classical design patterns: the Observer (Pub/Sub), Strategy, and Composite patterns. Depending on how MVC has been implemented in a framework, it may also use the Factory and Decorator patterns. I’ve covered some of these patterns in my other free book, <q>JavaScript Design Patterns For Beginners</q> if you would like to read about them further.</p>
 <p>As we’ve discussed, models represent application data, while views handle what the user is presented on screen. As such, MVC relies on Publish/Subscribe for some of its core communication (something that surprisingly isn’t covered in many articles about the MVC pattern). When a model is changed it <q>publishes</q> to the rest of the application that it has been updated. The <q>subscriber,</q> generally a Controller, then updates the view accordingly. The observer-viewer nature of this relationship is what facilitates multiple views being attached to the same model.</p>
@@ -8543,6 +8425,222 @@ test( <span class="ch">&#39;Should bind Collection events to View creation.&#39;
 <h2 id="notes"><a href="#TOC">Notes</a></h2>
 <p>I would like to thank the Backbone.js, Stack Overflow, DailyJS (Alex Young) and JavaScript communities for their help, references and contributions to this book. This project would not be possible without you so thank you! :)</p>
 <h1 id="appendix"><a href="#TOC">Appendix</a></h1>
+<h2 id="a-simple-javascript-mvc-implementation"><a href="#TOC">A Simple JavaScript MVC Implementation</a></h2>
+<p>A comprehensive discussion of Backbone’s implementation is beyond the scope of this book. We can, however, present a simple MVC library - which we will call Cranium.js - that illustrates how frameworks such as Backbone implement the MVC pattern.</p>
+<p>Like Backbone, we will rely on <a href="http://underscorejs.org" title="Underscore.js">Underscore</a> for inheritance and templating.</p>
+<h3 id="event-system"><a href="#TOC">Event System</a></h3>
+<p>At the heart of our JavaScript MVC implementation is an <code>Event</code> system (object) based on the Publisher-Subscriber Pattern which makes it possible for MVC components to communicate in an elegant, decoupled manner. Subscribers <q>listen</q> for specific events of interest and react when Publishers broadcast these events.</p>
+<p><code>Event</code> is mixed into both the View and Model components so that instances of either of these components can publish events of interest.</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="co">// cranium.js - Cranium.Events</span>
+
+<span class="kw">var</span> Cranium = Cranium || {};
+
+<span class="co">// Set DOM selection utility</span>
+<span class="kw">var</span> $ = <span class="kw">document</span>.<span class="fu">querySelector</span>.<span class="fu">bind</span>(<span class="kw">document</span>) || <span class="kw">this</span>.<span class="fu">jQuery</span> || <span class="kw">this</span>.<span class="fu">Zepto</span>;
+
+<span class="co">// Mix in to any object in order to provide it with custom events.</span>
+<span class="kw">var</span> Events = <span class="kw">Cranium</span>.<span class="fu">Events</span> = {
+  <span class="co">// Keeps list of events and associated listeners</span>
+  <span class="dt">channels</span>: {},
+
+  <span class="co">// Counter</span>
+  <span class="dt">eventNumber</span>: <span class="dv">0</span>,
+
+  <span class="co">// Announce events and passes data to the listeners;</span>
+  <span class="dt">trigger</span>: <span class="kw">function</span> (events, data) {
+    <span class="kw">for</span> (<span class="kw">var</span> topic <span class="kw">in</span> <span class="kw">Cranium.Events</span>.<span class="fu">channels</span>){
+      <span class="kw">if</span> (<span class="kw">Cranium.Events.channels</span>.<span class="fu">hasOwnProperty</span>(topic)) {
+        <span class="kw">if</span> (<span class="kw">topic</span>.<span class="fu">split</span>(<span class="st">&quot;-&quot;</span>)[<span class="dv">0</span>] == events){
+          <span class="kw">Cranium.Events</span>.<span class="fu">channels</span>[topic](data) !== <span class="kw">false</span> || <span class="kw">delete</span> <span class="kw">Cranium.Events</span>.<span class="fu">channels</span>[topic];
+        }
+      }
+    }
+  },
+  <span class="co">// Registers an event type and its listener</span>
+  <span class="dt">on</span>: <span class="kw">function</span> (events, callback) {
+    <span class="kw">Cranium.Events</span>.<span class="fu">channels</span>[events + --<span class="kw">Cranium.Events</span>.<span class="fu">eventNumber</span>] = callback;
+  },
+  <span class="co">// Unregisters an event type and its listener</span>
+  <span class="dt">off</span>: <span class="kw">function</span>(topic) {
+    <span class="kw">delete</span> <span class="kw">Cranium.Events</span>.<span class="fu">channels</span>[topic];
+  }            
+};</code></pre>
+<p>The Event system makes it possible for:</p>
+<ul>
+<li>a View to notify its subscribers of user interaction (e.g., clicks or input in a form), to update/re-render its presentation, etc.</li>
+<li>a Model whose data has changed to notify its Subscribers to update themselves (e.g., view to re-render to show accurate/updated data), etc.</li>
+</ul>
+<h3 id="models-4"><a href="#TOC">Models</a></h3>
+<p>Models manage the (domain-specific) data for an application. They are concerned with neither the user-interface nor presentation layers, but instead represent structured data that an application may require. When a model changes (e.g when it is updated), it will typically notify its observers (Subscribers) that a change has occurred so that they may react accordingly.</p>
+<p>Let’s see a simple implementation of the Model:</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="co">// cranium.js - Cranium.Model</span>
+
+<span class="co">// Attributes represents data, model&#39;s properties.</span>
+<span class="co">// These are to be passed at Model instantiation.</span>
+<span class="co">// Also we are creating id for each Model instance </span>
+<span class="co">// so that it can identify itself (e.g. on chage </span>
+<span class="co">// announcements)</span>
+<span class="kw">var</span> Model = <span class="kw">Cranium</span>.<span class="fu">Model</span> = <span class="kw">function</span> (attributes) {
+    <span class="kw">this</span>.<span class="fu">id</span> = <span class="kw">_</span>.<span class="fu">uniqueId</span>(<span class="ch">&#39;model&#39;</span>);
+    <span class="kw">this</span>.<span class="fu">attributes</span> = attributes || {};
+};
+
+<span class="co">// Getter (accessor) method;</span>
+<span class="co">// returns named data item</span>
+<span class="kw">Cranium.Model.prototype</span>.<span class="fu">get</span> = <span class="kw">function</span>(attrName) {
+    <span class="kw">return</span> <span class="kw">this</span>.<span class="fu">attributes</span>[attrName];
+};
+
+<span class="co">// Setter (mutator) method;</span>
+<span class="co">// Set/mix in into model mapped data (e.g.{name: &quot;John&quot;})</span>
+<span class="co">// and publishes the change event</span>
+<span class="kw">Cranium.Model.prototype</span>.<span class="fu">set</span> = <span class="kw">function</span>(attrs){
+    <span class="kw">if</span> (<span class="kw">_</span>.<span class="fu">isObject</span>(attrs)) {
+      <span class="kw">_</span>.<span class="fu">extend</span>(<span class="kw">this</span>.<span class="fu">attributes</span>, attrs);
+      <span class="kw">this</span>.<span class="fu">change</span>(<span class="kw">this</span>.<span class="fu">attributes</span>);
+    }
+    <span class="kw">return</span> <span class="kw">this</span>;
+};
+
+<span class="co">// Returns clone of the Models data object </span>
+<span class="co">// (used for view template rendering)</span>
+<span class="kw">Cranium.Model.prototype</span>.<span class="fu">toJSON</span> = <span class="kw">function</span>(options) {
+    <span class="kw">return</span> <span class="kw">_</span>.<span class="fu">clone</span>(<span class="kw">this</span>.<span class="fu">attributes</span>);
+};
+
+<span class="co">// Helper function that announces changes to the Model</span>
+<span class="co">// and passes the new data</span>
+<span class="kw">Cranium.Model.prototype</span>.<span class="fu">change</span> = <span class="kw">function</span>(attrs){
+    <span class="kw">this</span>.<span class="fu">trigger</span>(<span class="kw">this</span>.<span class="fu">id</span> + <span class="ch">&#39;update&#39;</span>, attrs);
+}; 
+
+<span class="co">// Mix in Event system</span>
+<span class="kw">_</span>.<span class="fu">extend</span>(<span class="kw">Cranium.Model</span>.<span class="fu">prototype</span>, <span class="kw">Cranium</span>.<span class="fu">Events</span>);</code></pre>
+<h3 id="views-4"><a href="#TOC">Views</a></h3>
+<p>Views are a visual representation of models that present a filtered view of their current state. A view typically observes a model and is notified when the model changes, allowing the view to update itself accordingly. Design pattern literature commonly refers to views as <q>dumb</q>, given that their knowledge of models and controllers in an application is limited.</p>
+<p>Let’s explore Views a little further using a simple JavaScript example:</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="co">// DOM View</span>
+<span class="kw">var</span> View = <span class="kw">Cranium</span>.<span class="fu">View</span> = <span class="kw">function</span> (options) {
+  <span class="co">// Mix in options object (e.g extending functionallity)</span>
+  <span class="kw">_</span>.<span class="fu">extend</span>(<span class="kw">this</span>, options); 
+  <span class="kw">this</span>.<span class="fu">id</span> = <span class="kw">_</span>.<span class="fu">uniqueId</span>(<span class="ch">&#39;view&#39;</span>);
+};
+
+<span class="co">// Mix in Event system</span>
+<span class="kw">_</span>.<span class="fu">extend</span>(<span class="kw">Cranium.View</span>.<span class="fu">prototype</span>, <span class="kw">Cranium</span>.<span class="fu">Events</span>);</code></pre>
+<h3 id="controllers-2"><a href="#TOC">Controllers</a></h3>
+<p>Controllers are an intermediary between models and views which are classically responsible for two tasks:</p>
+<ul>
+<li>they update the view when the model changes</li>
+<li>they update the model when the user manipulates the view</li>
+</ul>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="co">// cranium.js - Cranium.Controller</span>
+
+<span class="co">// Controller tying together a model and view</span>
+<span class="kw">var</span> Controller = <span class="kw">Cranium</span>.<span class="fu">Controller</span> = <span class="kw">function</span>(options){
+  <span class="co">// Mix in options object (e.g extending functionallity)</span>
+  <span class="kw">_</span>.<span class="fu">extend</span>(<span class="kw">this</span>, options); 
+  <span class="kw">this</span>.<span class="fu">id</span> = <span class="kw">_</span>.<span class="fu">uniqueId</span>(<span class="ch">&#39;controller&#39;</span>);
+  <span class="kw">var</span> parts, selector, eventType;
+
+  <span class="co">// Parses Events object passed during the definition of the </span>
+  <span class="co">// controller and maps it to the defined method to handle it;</span>
+  <span class="kw">if</span>(<span class="kw">this</span>.<span class="fu">events</span>){
+    <span class="kw">_</span>.<span class="fu">each</span>(<span class="kw">this</span>.<span class="fu">events</span>, <span class="kw">function</span>(method, eventName){
+      parts = <span class="kw">eventName</span>.<span class="fu">split</span>(<span class="ch">&#39;.&#39;</span>);
+      selector = parts[<span class="dv">0</span>];
+      eventType = parts[<span class="dv">1</span>];
+      $(selector)[<span class="ch">&#39;on&#39;</span> + eventType] = <span class="kw">this</span>[method];
+    }.<span class="fu">bind</span>(<span class="kw">this</span>));
+  }    
+};</code></pre>
+<h3 id="practical-usage"><a href="#TOC">Practical Usage</a></h3>
+<p>HTML template for the primer that follows:</p>
+<pre class="sourceCode html"><code class="sourceCode html"><span class="er">&lt;</span>!doctype html&gt;
+<span class="kw">&lt;html</span><span class="ot"> lang=</span><span class="st">&quot;en&quot;</span><span class="kw">&gt;</span>
+<span class="kw">&lt;head&gt;</span>
+  <span class="kw">&lt;meta</span><span class="ot"> charset=</span><span class="st">&quot;utf-8&quot;</span><span class="kw">&gt;</span>
+  <span class="kw">&lt;title&gt;&lt;/title&gt;</span>
+  <span class="kw">&lt;meta</span><span class="ot"> name=</span><span class="st">&quot;description&quot;</span><span class="ot"> content=</span><span class="st">&quot;&quot;</span><span class="kw">&gt;</span>
+<span class="kw">&lt;/head&gt;</span>
+<span class="kw">&lt;body&gt;</span>
+<span class="kw">&lt;div</span><span class="ot"> id=</span><span class="st">&quot;todo&quot;</span><span class="kw">&gt;</span>
+<span class="kw">&lt;/div&gt;</span>
+  <span class="kw">&lt;script</span><span class="ot"> type=</span><span class="st">&quot;text/template&quot;</span><span class="ot"> class=</span><span class="st">&quot;todo-template&quot;</span><span class="kw">&gt;</span>
+    &lt;div&gt;
+      &lt;input id=<span class="st">&quot;todo</span>_<span class="st">complete&quot;</span> type=<span class="st">&quot;checkbox&quot;</span> &lt;%= completed %&gt;&gt;
+      &lt;%= title %&gt;
+    &lt;/div&gt;
+  <span class="kw">&lt;/script&gt;</span>
+  <span class="kw">&lt;script</span><span class="ot"> src=</span><span class="st">&quot;underscore-min.js&quot;</span><span class="kw">&gt;&lt;/script&gt;</span>
+  <span class="kw">&lt;script</span><span class="ot"> src=</span><span class="st">&quot;cranium.js&quot;</span><span class="kw">&gt;&lt;/script&gt;</span>
+  <span class="kw">&lt;script</span><span class="ot"> src=</span><span class="st">&quot;example.js&quot;</span><span class="kw">&gt;&lt;/script&gt;</span>
+<span class="kw">&lt;/body&gt;</span>
+<span class="kw">&lt;/html&gt;</span></code></pre>
+<p>Cranium.js usage:</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript">
+<span class="co">// example.js - usage of Cranium MVC</span>
+
+<span class="co">// And todo instance</span>
+<span class="kw">var</span> todo1 = <span class="kw">new</span> <span class="kw">Cranium</span>.<span class="fu">Model</span>({
+    <span class="dt">title</span>: <span class="st">&quot;&quot;</span>,
+    <span class="dt">completed</span>: <span class="st">&quot;&quot;</span>
+});
+
+<span class="kw">console</span>.<span class="fu">log</span>(<span class="st">&quot;First todo title - nothing set: &quot;</span> + <span class="kw">todo1</span>.<span class="fu">get</span>(<span class="ch">&#39;title&#39;</span>));
+<span class="kw">todo1</span>.<span class="fu">set</span>({<span class="dt">title</span>: <span class="st">&quot;Do something&quot;</span>});
+<span class="kw">console</span>.<span class="fu">log</span>(<span class="st">&quot;Its changed now: &quot;</span> + <span class="kw">todo1</span>.<span class="fu">get</span>(<span class="ch">&#39;title&#39;</span>));
+<span class="ch">&#39;&#39;</span>
+<span class="co">// View instance</span>
+<span class="kw">var</span> todoView = <span class="kw">new</span> <span class="kw">Cranium</span>.<span class="fu">View</span>({
+  <span class="co">// DOM element selector</span>
+  <span class="dt">el</span>: <span class="ch">&#39;#todo&#39;</span>,
+
+  <span class="co">// Todo template; Underscore temlating used</span>
+  <span class="dt">template</span>: <span class="kw">_</span>.<span class="fu">template</span>($(<span class="ch">&#39;.todo-template&#39;</span>).<span class="fu">innerHTML</span>),
+
+  <span class="dt">init</span>: <span class="kw">function</span> (model) {
+    <span class="kw">this</span>.<span class="fu">render</span>( <span class="kw">model</span>.<span class="fu">toJSON</span>() );
+
+    <span class="kw">this</span>.<span class="fu">on</span>(<span class="kw">model</span>.<span class="fu">id</span> + <span class="ch">&#39;update&#39;</span>, <span class="kw">this</span>.<span class="fu">render</span>.<span class="fu">bind</span>(<span class="kw">this</span>));
+  },
+  <span class="dt">render</span>: <span class="kw">function</span> (data) {
+    <span class="kw">console</span>.<span class="fu">log</span>(<span class="st">&quot;View about to render.&quot;</span>);
+    $(<span class="kw">this</span>.<span class="fu">el</span>).<span class="fu">innerHTML</span> = <span class="kw">this</span>.<span class="fu">template</span>( data );
+  }
+});
+
+<span class="kw">var</span> todoController = <span class="kw">new</span> <span class="kw">Cranium</span>.<span class="fu">Controller</span>({
+  <span class="co">// Specify the model to update</span>
+  <span class="dt">model</span>: todo1,
+
+  <span class="co">// and the view to observe this model</span>
+  <span class="dt">view</span>:  todoView,
+  
+  <span class="dt">events</span>: {
+    <span class="st">&quot;#todo.click&quot;</span> : <span class="st">&quot;toggleComplete&quot;</span>
+  },
+
+  <span class="co">// Initialize everything</span>
+  <span class="dt">initialize</span>: <span class="kw">function</span> () {
+    <span class="kw">this</span>.<span class="fu">view</span>.<span class="fu">init</span>(<span class="kw">this</span>.<span class="fu">model</span>);
+    <span class="kw">return</span> <span class="kw">this</span>;
+  },
+  <span class="co">// Toggles the value of the todo in the Model</span>
+  <span class="dt">toggleComplete</span>: <span class="kw">function</span> () {
+    <span class="kw">var</span> completed = <span class="kw">todoController.model</span>.<span class="fu">get</span>(<span class="ch">&#39;completed&#39;</span>);
+    <span class="kw">console</span>.<span class="fu">log</span>(<span class="st">&quot;Todo old &#39;completed&#39; value?&quot;</span>, completed);
+    <span class="kw">todoController.model</span>.<span class="fu">set</span>({ <span class="dt">completed</span>: (!completed) ? <span class="ch">&#39;checked&#39;</span>: <span class="ch">&#39;&#39;</span> });
+    <span class="kw">console</span>.<span class="fu">log</span>(<span class="st">&quot;Todo new &#39;completed&#39; value?&quot;</span>, <span class="kw">todoController.model</span>.<span class="fu">get</span>(<span class="ch">&#39;completed&#39;</span>));
+    <span class="kw">return</span> <span class="kw">this</span>;
+  }
+});
+
+
+<span class="co">// Let&#39;s kick start things off</span>
+<span class="kw">todoController</span>.<span class="fu">initialize</span>();
+
+<span class="kw">todo1</span>.<span class="fu">set</span>({ <span class="dt">title</span>: <span class="st">&quot;Due to this change Model will notify View and it will re-render&quot;</span>});</code></pre>
 <h2 id="mvp"><a href="#TOC">MVP</a></h2>
 <p>Model-View-Presenter (MVP) is a derivative of the MVC design pattern which focuses on improving presentation logic. It originated at a company named <a href="http://en.wikipedia.org/wiki/Taligent">Taligent</a> in the early 1990s while they were working on a model for a C++ CommonPoint environment. Whilst both MVC and MVP target the separation of concerns across multiple components, there are some fundamental differences between them.</p>
 <p>For the purposes of this summary we will focus on the version of MVP most suitable for web-based architectures.</p>
