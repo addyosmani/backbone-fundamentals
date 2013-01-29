@@ -74,7 +74,7 @@ For this reason we refer to such frameworks as following the MV* pattern; that i
 
 ### What is Backbone.js?
 
-![](img/backbonejsorg.png)
+![](img/backbonejsorg.jpg)
 
 Backbone.js is a lightweight JavaScript library that adds structure to your client-side code. It makes it easy to manage and decouple concerns in your application, leaving you with code that is more maintainable in the long term.
 
