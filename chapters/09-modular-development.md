@@ -1149,7 +1149,7 @@ Another advantage to defining all routes in a single location is that the same J
     var fs = require('fs'),
         _ = require('underscore'),
         express = require('express'),
-        server = express.createServer(),
+        server = express(),
         config = JSON.parse(fs.readFileSync('path/to/config.json'));
 
     _.each(config.modules, function(module, moduleName) {
