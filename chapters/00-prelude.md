@@ -32,7 +32,7 @@ I am indebted to the fantastic work done by the technical reviewers who helped i
 
 ## Credits
 
-None of this would have been possible without the time and effort invested by the other developers and authors in the community who contributed to it. I would like to extend my thanks to Derick Bailey, Ryan Eastridge, Jack Franklin, Mike Ball, Uģis Ozols and [everyone else](https://github.com/addyosmani/backbone-fundamentals/graphs/contributors) that helped made this project happen.
+None of this would have been possible without the time and effort invested by the other developers and authors in the community who contributed to it. I would like to extend my thanks to Derick Bailey, Ryan Eastridge, Jack Franklin, Mike Ball, Uģis Ozols, Björn Ekengren and [everyone else](https://github.com/addyosmani/backbone-fundamentals/graphs/contributors) that helped made this project happen.
 
 ## Reading
 
