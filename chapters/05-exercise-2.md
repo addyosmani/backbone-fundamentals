@@ -1381,6 +1381,13 @@ this.collection.create(this.collection.model, {
     }
 });
 ```
+The final result is a POST to the defined url. In the POST body, the attributes are submitted as a JSON encoded array. 
+
+```php
+    $raw = file_get_contents('php://input');
+    $data = json_decode($raw, true);
+    $book_id = $data['bookId'];
+```		
 
 ### Summary
 
