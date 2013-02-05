@@ -121,9 +121,9 @@ The `require()` method is typically used to load code in a top-level JavaScript 
 // function arguments to the callback (foo and bar)
 // so that they can similarly be accessed
 
-require(['foo', 'bar'], function ( foo, bar ) {
-        // rest of your code here
-        foo.doSomething();
+require( ['foo', 'bar'], function ( foo, bar ) {
+    // rest of your code here
+    foo.doSomething();
 });
 ```
 
@@ -284,7 +284,92 @@ Aliasing to the dollar-sign (`$`), once again makes it very easy to encapsulate 
 
 Doing it this way makes it easy to organise your Backbone application as you like. It's recommended to separate modules into folders. For example, individual folders for models, collections, views and so on. RequireJS doesn't care about what folder structure you use; as long as you use the correct path when using `require`, it will happily pull in the file.
 
+As part of this chapter I've made a very simple [Backbone application with RequireJS that you can find on Github](https://github.com/javascript-playground/backbone-require-example). This application is incredibly simple. It is a stock application for a manager of a shop. They can add new items and filter down the items based on price, but nothing more. Because it's so simple it's easier to focus purely on the RequireJS part of the implementation, rather than deal with complex JavaScript and Backbone logic too.
+
+At the base of this application is the `Item` model, which describes a single item in the stock. Its implementation is very straight forward:
+
+```javascript
+define( ["lib/backbone"], function ( Backbone ) {
+  var Item = Backbone.Model.extend({
+    defaults: {
+      price: 35,
+      photo: "http://www.placedog.com/100/100"
+    }
+  });
+  return Item;
+});
+```
+
+Converting an individual model, collection, view or similar into an AMD, RequireJS compliant one is typically very straight forward. Usually all that's needed is the first line, calling `define`, and to make sure that once you've defined your object - in this case, the `Item` model, to return it.
+
+Lets now set up a view for that individual item:
+
+```javascript
+define( ["lib/backbone"], function ( Backbone ) {
+  var ItemView = Backbone.View.extend({
+    tagName: "div",
+    className: "item-wrap",
+    template: _.template($("#itemTemplate").html()),
+
+    render: function() {
+      this.$el.html(this.template(this.model.toJSON()));
+      return this;
+    }
+  });
+  return ItemView;
+});
+```
+
+This view doesn't actually depend on the model it will be used with, so again the only dependency is Backbone. Other than that it's just a regular Backbone view. There's nothing special going on here, other than returning the object and using `define` so RequireJS can pick it up. Now lets make a collection to view a list of items. This time we will need to reference the `Item` model, so we add it as a dependency:
+
+```javascript
+define(["lib/backbone", "models/item"], function(Backbone, Item) {
+  var Cart = Backbone.Collection.extend({
+    model: Item,
+    initialize: function() {
+      this.on("add", this.updateSet, this);
+    },
+    updateSet: function() {
+      items = this.models;
+    }
+  });
+  return Cart;
+});
+```
+
+I've called this collection `Cart`, as it's a group of items. As the `Item` model is the second dependency, I can bind the variable `Item` too it by declaring it as the second argument to the callback function. I can then refer to this within my collection implementation.
+
+Finally, let's have a look at the view for this collection. (This file is much bigger in the application, but I've taken some bits out so it's easier to examine).
+
+```javascript
+define(["lib/backbone", "models/item", "views/itemview"], function(Backbone, Item, ItemView) {
+  var ItemCollectionView = Backbone.View.extend({
+    el: '#yourcart',
+    initialize: function(collection) {
+      this.collection = collection;
+      this.render();
+      this.collection.on("reset", this.render, this);
+    },
+    render: function() {
+      this.$el.html("");
+      this.collection.each(function(item) {
+        this.renderItem(item);
+      }, this);
+    },
+    renderItem: function(item) {
+      var itemView = new ItemView({model: item});
+      this.$el.append(itemView.render().el);
+    },
+    // more methods here removed
+  });
+  return ItemCollectionView;
+});
+```
+
+There really is nothing to it once you've got the general pattern. Define each "object" (a model, view, collection, router or otherwise) through RequireJS, and then specify them as dependencies to other objects that need them. Again, you can find this entire application [on Github](https://github.com/javascript-playground/backbone-require-example).
+
 If you'd like to take a look at how others do it, [Pete Hawkins' Backbone Stack repository](https://github.com/phawk/Backbone-Stack) is a good example of structuring a Backbone application, using RequireJS. Greg Franko has also written [an overview of how he uses Backbone and Require](http://gregfranko.com/blog/using-backbone-dot-js-with-require-dot-js/), and [Jeremy Kahn's post](http://jeremyckahn.github.com/blog/2012/08/18/keeping-it-sane-backbone-views-and-require-dot-js/) neatly describes his approach. For a full look at a sample application, the [Backbone and Require example](https://github.com/addyosmani/todomvc/tree/gh-pages/dependency-examples/backbone_require) of the TodoMVC repository should be your starting point.
+
 
 
 ### Keeping Your Templates External Using RequireJS And The Text Plugin
