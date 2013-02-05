@@ -66,7 +66,7 @@ A good example is a basket in an e-commerce web application which can have items
 
 The basket and its data are presented in HTML. The data and its associated View in HTML changes over time. There was a time when we used jQuery (or a similar DOM manipulation library) and a bunch of Ajax calls and callbacks to keep the two in sync. That often produced code that was not well-structured or easy to maintain. Bugs were frequent and perhaps even unavoidable.
 
-Through evolution, trial and error, and a lot of spaghetti (and not so spaghetti-like) code, JavaScript developers have, in the end, harnessed the ideas of the traditional MVC paradigm. This has led to the development of a number of JavaScript MVC frameworks, including Ember.js, JavaScriptMVC, and of course Backbone.js.
+Through evolution, trial and error, and a lot of spaghetti (and not so spaghetti-like) code, JavaScript developers have, in the end, harnessed the ideas of the traditional MVC paradigm. This has led to the development of a number of JavaScript MVC frameworks, including Ember.js, JavaScriptMVC, Angular.js, and of course Backbone.js.
 
 ### Client-Side MVC - Backbone Style
 
