@@ -678,3 +678,217 @@ user.set({ 'firstname': 'Greg' }, {validateAll: false});
 That's it!.
 
 The Backbone.validateAll logic doesn't override the default Backbone logic by default and so it's perfectly capable of being used for scenarios where you might care more about field-validation [performance](http://jsperf.com/backbone-validateall) as well as those where you don't. Both solutions presented in this section should work fine however.
+
+
+#### How do you use multiple Backbone versions in the same project?
+
+Like most client-side projects, Backbone's code is wrapped in an immediately-invoked function expression:
+
+```javascript
+(function(){
+  // Backbone.js
+}).call(this);
+```
+
+Several things happen during this configuration stage. A Backbone `namespace` is created, and multiple versions of Backbone on the same page are supported through the noConflict mode:
+
+```javascript
+var root = this;
+var previousBackbone = root.Backbone;
+
+Backbone.noConflict = function() {
+  root.Backbone = previousBackbone;
+  return this;
+};
+```
+
+Multiple versions of Backbone can be used on the same page by calling noConflict like this:
+
+```javascript
+var Backbone19 = Backbone.noConflict();
+// Backbone19 refers to the most recently loaded version,
+// and `window.Backbone` will be restored to the previously
+// loaded version
+```
+
+This initial configuration code also supports CommonJS modules so Backbone can be used in Node projects:
+
+```javascript
+var Backbone;
+if (typeof exports !== 'undefined') {
+  Backbone = exports;
+} else {
+  Backbone = root.Backbone = {};
+}
+```
+
+#### How do you do inheritence and mixins with Backbone
+
+For its inheritance, Backbone internally uses an `inherits` function inspired by `goog.inherits`, Google's implementation from the Closure Library. It's basically a function to correctly setup the prototype chain.
+
+```javascript
+ var inherits = function(parent, protoProps, staticProps) {
+      ...
+```
+
+The only major difference here is that Backbone's API accepts two objects containing `instance` and `static` methods.
+
+Following on from this, for inheritance purposes all of Backbone's objects contain an `extend` method as follows:
+
+```javascript
+Model.extend = Collection.extend = Router.extend = View.extend = extend;
+```
+
+Most development with Backbone is based around inheriting from these objects, and they're designed to mimic a classical object-oriented implementation.
+
+If this sounds familiar, it's because `extend` is an Underscore.js utility, although Backbone itself does a lot more with this. See below for Underscore's `extend`:
+
+```javascript
+each(slice.call(arguments, 1), function(source) {
+  for (var prop in source) {
+    obj[prop] = source[prop];
+  }
+});
+return obj;
+```
+
+The above isn't quite the same as ECMAScript 5's `Object.create`, as it's actually copying properties (methods and values) from one object to another. As this isn't enough to support Backbone's inheritance and class model, the following steps are performed:
+
+* The instance methods are checked to see if there's a constructor property. If so, the class's constructor is used, otherwise the parent's constructor is used (i.e., Backbone.Model)
+* Underscore's extend method is called to add the parent class's methods to the new child class
+* The `prototype` property of a blank constructor function is assigned with the parent's prototype, and a new instance of this is set to the child's `prototype` property
+* Underscore's extend method is called twice to add the static and instance methods to the child class
+* The child's prototype's constructor and a `__super__` property are assigned
+* This pattern is also used for classes in CoffeeScript, so Backbone classes are compatible with CoffeeScript classes.
+
+`extend` can be used for a great deal more and developers who are fans of mixins will like that it can be used for this too. You can define functionality on any custom object, and then quite literally copy & paste all of the methods and attributes from that object to a Backbone one:
+
+For example:
+
+```javascript
+var MyMixin = {
+  foo: 'bar',
+  sayFoo: function(){alert(this.foo);}
+};
+
+var MyView = Backbone.View.extend({
+ // ...
+});
+
+_.extend(MyView.prototype, MyMixin);
+
+var myView = new MyView();
+myView.sayFoo(); //=> 'bar'
+```
+
+We can take this further and also apply it to View inheritance. The following is an example of how to extend one View using another:
+
+```javascript
+var Panel = Backbone.View.extend({
+});
+
+var PanelAdvanced = Panel.extend({
+});
+```
+
+However, if you have an `initialize()` method in Panel, then it won't be called if you also have an `initialize()` method in PanelAdvanced, so you would have to call Panel's initialize method explicitly:
+
+```javascript
+var Panel = Backbone.View.extend({
+  initialize: function(options){
+    console.log('Panel initialized');
+    this.foo = 'bar';
+  }
+});
+
+var PanelAdvanced = Panel.extend({
+  initialize: function(options){
+    Panel.prototype.initialize.call(this, [options]);
+    console.log('PanelAdvanced initialized');
+    console.log(this.foo); // Log: bar
+  }
+});
+
+// We can also inherit PanelAdvaned if needed
+var PanelAdvancedExtra = PanelAdvanced.extend({
+  initialize: function(options){
+    PanelAdvanced.prototype.initialize.call(this, [options]);
+    console.log('PanelAdvancedExtra initialized');
+  }
+});
+
+new Panel();
+new PanelAdvanced();
+new PanelAdvancedExtra();
+```
+
+This isn't the most elegant of solutions because if you have a lot of Views that inherit from Panel, then you'll have to remember to call Panel's initialize from all of them.
+
+It's worth noting that if Panel doesn't have an initialize method now but you choose to add it in the future, then you'll need to go to all of the inherited classes in the future and make sure they call Panel's initialize.
+
+So here's an alternative way to define Panel so that your inherited views don't need to call Panel's initialize method:
+
+```javascript
+var Panel = function (options) {
+  // put all of Panel's initialization code here
+  console.log('Panel initialized');
+  this.foo = 'bar';
+
+  Backbone.View.apply(this, [options]);
+};
+
+_.extend(Panel.prototype, Backbone.View.prototype, {
+  // put all of Panel's methods here. For example:
+  sayHi: function () {
+    console.log('hello from Panel');
+  }
+});
+
+Panel.extend = Backbone.View.extend;
+
+// other classes then inherit from Panel like this:
+var PanelAdvanced = Panel.extend({
+  initialize: function (options) {
+    console.log('PanelAdvanced initialized');
+    console.log(this.foo);
+  }
+});
+
+var panelAdvanced = new PanelAdvanced(); //Logs: Panel initialized, PanelAdvanced initialized, bar
+panelAdvanced.sayHi(); // Logs: hello from Panel
+```
+
+When used appropriately, Underscore's `extend` method can save a great deal of time and effort writing redundant code.
+
+(Thanks to [Alex Young](http://dailyjs.com), [Derick Bailey](http://stackoverflow.com/users/93448/derick-bailey) and [JohnnyO](http://stackoverflow.com/users/188740/johnnyo) for the heads up about these tips).
+
+#### Backbone-Super
+
+[Backbone-Super](https://github.com/lukasolson/Backbone-Super) by Lukas Olson adds a *_super* method to *Backbone.Model* using [John Resig's Inheritance script](http://ejohn.org/blog/simple-javascript-inheritance/).
+Rather than using Backbone.Model.prototype.set.call as per the Backbone.js documentation, _super can be called instead:
+
+```javascript
+// This is how we normally do it
+var OldFashionedNote = Backbone.Model.extend({
+  set: function(attributes, options) {
+    // Call parent's method
+    Backbone.Model.prototype.set.call(this, attributes, options);
+    // some custom code here
+    // ...
+  }
+});
+```
+
+After including this plugin, you can do the same thing with the following syntax:
+
+```javascript
+// This is how we can do it after using the Backbone-super plugin
+var Note = Backbone.Model.extend({
+  set: function(attributes, options) {
+    // Call parent's method
+    this._super(attributes, options);
+    // some custom code here
+    // ...
+  }
+});
+```
