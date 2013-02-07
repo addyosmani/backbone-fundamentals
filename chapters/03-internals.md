@@ -1,14 +1,6 @@
 # Backbone Basics
 
-In this section, you'll learn the essentials of Backbone's models, views, collections and routers. We'll also discuss how to use namespacing to organize your code. This isn't meant as a replacement for the official documentation, but it will help you understand many of the core concepts behind Backbone before you start building applications with it.
-
-* Models
-* Collections
-* Routers
-* Views
-* Dependencies
-* Namespacing
-
+In this section, you'll learn the essentials of Backbone's models, views, collections, events, and routers. This isn't meant as a replacement for the official documentation, but it will help you understand many of the core concepts behind Backbone before you start building applications with it.
 
 ## Models
 
@@ -568,7 +560,43 @@ myTodo.set('title', 'go fishing');
 
 **Resetting/Refreshing Collections**
 
-Rather than adding or removing models individually, you might want to update an entire collection at once. ```Collection.reset()``` allows us to replace an entire collection with new models as shown below:
+Rather than adding or removing models individually, you might want to update an entire collection at once. `Collection.update()` takes an array of models and performs the necessary add, remove, and change operations required to update the collection.
+
+```javascript
+var TodosCollection = new Backbone.Collection();
+
+TodosCollection.add([
+    { id: 1, title: 'go to Jamaica.', completed: false },
+    { id: 2, title: 'go to China.', completed: false },
+    { id: 3, title: 'go to Disneyland.', completed: true }
+]);
+
+// we can listen for add/change/remove events
+TodosCollection.on("add", function(model) {
+  console.log("Added " + model.get('title'));
+});
+
+TodosCollection.on("remove", function(model) {
+  console.log("Removed " + model.get('title'));
+});
+
+TodosCollection.on("change:completed", function(model) {
+  console.log("Completed " + model.get('title'));
+});
+
+TodosCollection.update([
+    { id: 1, title: 'go to Jamaica.', completed: true },
+    { id: 2, title: 'go to China.', completed: false },
+    { id: 4, title: 'go to Disneyworld.', completed: false }
+]);
+
+// Above logs:
+// Removed go to Disneyland.
+// Completed go to Jamaica.
+// Added go to Disneyworld.
+```
+
+If you need to simply replace the entire content of the collection then `Collection.reset()` can be used:
 
 ```javascript
 var TodosCollection = new Backbone.Collection();
@@ -596,7 +624,7 @@ console.log('Collection size: ' + TodosCollection.length); // Collection size: 1
 
 Note that using `Collection.reset()` doesn't fire any `add` or `remove` events. A `reset` event is fired instead as shown in example.
 
-### RESTful Persistence
+#### RESTful Persistence
 
 Thus far, all of our example data has been created in the browser. For most single page applications, the models are derived from a data set residing on a server. This is an area in which Backbone dramatically simplifies the code you need to write to perform RESTful synchronization with a server through a simple API on its models and collections.
 
@@ -674,7 +702,13 @@ var todo2 = todos.get(2);
 todo2.destroy(); // sends HTTP DELETE to /todos/2 and removes from collection
 ```
 
-### Underscore utility functions
+**Options**
+
+Each RESTful API method accepts a variety of options. Most importantly, all methods accept success and error callbacks which can be used to customize the handling of server responses. Specifying the `{patch: true}` option to `Model.save()` will cause it to use HTTP PATCH to send only the changed attributes to the server instead of the entire model. Similarly, passing the `{update: true}` option to `Collection.fetch()` will result in the merger of the retrieved data into the existing collection using adds, updates, and removes.
+
+See the Backbone.js documentation for full descriptions of the supported options.
+
+#### Underscore utility functions
 
 As Backbone requires Underscore as a hard dependency, we're able to use many of the utilities it has to offer to aid with our application development. Here's an example of how Underscore's `forEach` method can be used for iterating over collections and its `sortBy()` method can be used to sort a collection of todos based on a particular attribute.
 
@@ -714,7 +748,7 @@ sortedByAlphabet.forEach(function(model){
 
 The complete list of what Underscore can do is beyond the scope of this book, but can be found in its official [docs](http://documentcloud.github.com/underscore/).
 
-### Chainable API
+#### Chainable API
 
 Speaking of utility methods, another bit of sugar in Backbone is its support for Underscore’s `chain()` method. Chaining is a common idiom in object-oriented languages; a chain is a sequence of method calls on the same object that are performed in a single statement. While Backbone makes Underscore's array manipulation operations available as methods of Collection objects, they cannot be directly chained since they return arrays rather than the original Collection.
 
@@ -757,13 +791,23 @@ We've seen how actions on Models and Collections can trigger events and how func
 
 `Backbone.Events` is mixed into the other Backbone "classes", including:
 
+* Backbone
 * Backbone.Model
 * Backbone.Collection
 * Backbone.Router
 * Backbone.History
 * Backbone.View
 
-`Backbone.Events` can give any object the ability to bind and trigger custom events. We can mix this module into any object easily and there isn't a requirement for events to be declared prior to them being bound.
+Note that `Backbone.Events` is mixed into the `Backbone` object. Since `Backbone` is globally visible, it can be used as a simple event bus:
+
+```javascript
+Backbone.on('event', function() {console.log('Handled Backbone event');});
+Backbone.trigger('event'); // logs: Handled Backbone event
+```
+
+#### on(), off(), and trigger()
+
+`Backbone.Events` can give any object the ability to bind and trigger custom events. We can mix this module into any object easily and there isn't a requirement for events to be declared before being bound to a callback handler.
 
 Example:
 
@@ -784,7 +828,7 @@ ourObject.trigger('dance', 'our event');
 
 If you're familiar with jQuery custom events or the concept of Publish/Subscribe, `Backbone.Events` provides a system that is very similar with `on` being analogous to `subscribe` and `trigger` being similar to `publish`.
 
-`on` basically allows us to bind a callback function to any object, as we've done with `dance` in the above example. Whenever the event is fired, our callback is invoked.
+`on` binds a callback function to an object, as we've done with `dance` in the above example. The callback is invoked whenever the event is triggered.
 
 The official Backbone.js documentation recommends namespacing event names using colons if you end up using quite a few of these on your page. e.g.:
 
@@ -808,7 +852,7 @@ ourObject.trigger("dance:break", "break dancing. Yeah!");
 ourObject.trigger("dance", "break dancing. Yeah!");
 ```
 
-A special `all` event is made available in case you would like an event to be triggered when any event occurs (e.g., if you would like to screen events in a single location). The `all` event can be used as follows:
+A special `all` event is made available in case you would like notifications for every event that occurs on the object (e.g., if you would like to screen events in a single location). The `all` event can be used as follows:
 
 
 ```javascript
@@ -829,7 +873,7 @@ ourObject.trigger("dance:break", "break dancing. Yeah!");
 ourObject.trigger("dance", "break dancing. Yeah!");
 ```
 
-`off` allows us to remove a callback function that was previously bound to an object. Going back to our Publish/Subscribe comparison, think of it as an `unsubscribe` for custom events.
+`off` removes callback functions that were previously bound to an object. Going back to our Publish/Subscribe comparison, think of it as an `unsubscribe` for custom events.
 
 To remove the `dance` event we previously bound to `ourObject`, we would simply do:
 
@@ -904,7 +948,7 @@ ourObject.trigger("dance", 'just dancing.');
 ourObject.trigger("dance jump skip", 'very tired from so much action.');
 ```
 
-It is also possible to pass along additional arguments to each (or all) of these events via a second argument supported by `trigger`. e.g.:
+`trigger` can pass multiple arguments to the callback function:
 
 ```javascript
 var ourObject = {};
@@ -912,8 +956,8 @@ var ourObject = {};
 // Mixin
 _.extend(ourObject, Backbone.Events);
 
-function doAction (actionObj) {
-  console.log("We are " + actionObj.action + ' for ' + actionObj.duration ); 
+function doAction (action, duration) {
+  console.log("We are " + action + ' for ' + duration ); 
 }
 
 // Add event listeners
@@ -922,10 +966,92 @@ ourObject.on("jump", doAction);
 ourObject.on("skip", doAction);
 
 // Passing multiple arguments to single event
-ourObject.trigger("dance", {duration: "5 minutes", action: 'dancing'});
+ourObject.trigger("dance", 'dancing', "5 minutes");
 
 // Passing multiple arguments to multiple events
-ourObject.trigger("dance jump skip", {duration: "15 minutes", action: 'on fire'});
+ourObject.trigger("dance jump skip", 'on fire', "15 minutes");
+```
+
+#### listenTo() and stopListening()
+
+While `on()` and `off()` add callbacks directly to an observed object, `listenTo()` tells an object to listen for events on another object, allowing the listener to keep track of the events for which it is listening. `stopListening()` can subsequently be called on the listener to tell it to stop listening for events:
+
+```javascript
+var a = _.extend({}, Backbone.Events);
+var b = _.extend({}, Backbone.Events);
+var c = _.extend({}, Backbone.Events);
+
+// add listeners to A for events on B and C
+a.listenTo(b, 'anything', function(event){ console.log("anything happened"); });
+a.listenTo(c, 'everything', function(event){ console.log("everything happened"); });
+
+// trigger an event
+b.trigger('anything'); // logs: anything happened
+
+// stop listening 
+a.stopListening();
+
+// A does not receive these events
+b.trigger('anything');
+c.trigger('everything');
+```
+
+`stopListening()` can also be used to selectively stop listening based on the event, model, or callback handler.
+
+`listenTo()` is especially useful with Views since removing a View without unbinding its handlers can result in memory leaks and other application bugs. The default implementation of `View.remove()` makes a call to `stopListening()`, ensuring that any listeners bound using `listenTo()` are unbound before the view is destroyed.
+
+#### Events and Views
+
+Within a View, there are two types of events you can listen for: DOM events and events triggered using the Event API. It is important to understand the differences in how views bind to these events and the context in which their callbacks are invoked.
+
+DOM events can be bound to using the View's `events` property or using `jQuery.on()`. Within callbacks bound using the `events` property, `this` refers to the View object; whereas any callbacks bound directly using jQuery will have `this` set to the handling DOM element by jQuery. All DOM event callbacks are passed an `event` object by jQuery. See `delegateEvents()` in the Backbone documentation for additional details.
+
+Event API events are bound as described in this section. If the event is bound using `on()` on the observed object, a context parameter can be passed as the third argument. If the event is bound using `listenTo()` then within the callback `this` refers to the listener. The arguments passed to Event API callbacks depends on the type of event. See the Catalog of Events in the Backbone documenation for details.
+
+The following example illustrates these differences:
+
+```html
+<div id="todo">
+    <input type='checkbox' />
+</div>
+```
+
+```javascript
+var View = Backbone.View.extend({
+
+    el: '#todo',
+
+    // bind to DOM event using events property
+    events: {
+        'click [type="checkbox"]': 'clicked',
+    },
+
+    initialize: function () {
+        // bind to DOM event using jQuery
+        this.$el.click(this.jqueryClicked);
+        
+        // bind to API event
+        this.on('apiEvent', this.callback);
+    },
+
+    // 'this' is view
+    clicked: function(event) {
+        console.log("events handler for " + this.el.outerHTML);
+        this.trigger('apiEvent', event.type);
+    },
+    
+    // 'this' is handling DOM element
+    jqueryClicked: function(event) {
+        console.log("jQuery handler for " + this.outerHTML);
+    },
+    
+    callback: function(eventType) {
+        console.log("event type was " + eventType);
+    }
+    
+});
+
+var view = new View();
 ```
 
 ## Routers
@@ -1015,7 +1141,7 @@ var myTodoRouter = new TodoRouter();
 
 As of Backbone 0.5+, it's possible to opt-in for HTML5 pushState support via `window.history.pushState`. This permits you to define routes such as http://www.scriptjunkie.com/just/an/example. This will be supported with automatic degradation when a user's browser doesn't support pushState. In this discussion we'll continue using the hashtag method.
 
-#### Is there a limit to the number of routers I should be using?
+**Is there a limit to the number of routers I should be using?**
 
 Andrew de Andrade has pointed out that DocumentCloud, the creators of Backbone, usually only use a single router in most of their applications. You're very likely to not require more than one or two routers in your own projects; the majority of your application routing can be kept organized in a single router without it getting unwieldy.
 
@@ -1116,16 +1242,16 @@ Backbone.history.start();
 // URL is updated to: http://localhost/#todo/4/edit
 // and this time editTodo() function is invoked.
 // 
-// logs: 
+// logs:
 // View todo requested.
 // Edit todo opened. 
 ```
 
-### Backbone’s Sync API
+## Backbone’s Sync API
 
 We previously discussed how Backbone supports RESTful persistence via its `fetch()` and `create()` methods on Collections and `save()`, and `delete()` methods on Models. Now we are going to take a closer look at Backbone's sync method which underlies these operations.
 
-The Backbone.sync method is an integral part of Backbone.js. It assumes a jQuery-like `$.ajax()` method, so HTTP parameters are organised based on jQuery’s API. Since some servers may not support JSON-formatted requests and HTTP PUT and DELETE operations, Backbone can be configured to emulate these capabilities using the two configuration variables shown below with their default values:
+The Backbone.sync method is an integral part of Backbone.js. It assumes a jQuery-like `$.ajax()` method, so HTTP parameters are organised based on jQuery’s API. Since some legacy servers may not support JSON-formatted requests and HTTP PUT and DELETE operations, Backbone can be configured to emulate these capabilities using the two configuration variables shown below with their default values:
 
 ```javascript
 Backbone.emulateHTTP = false; // set to true if server cannot handle HTTP PUT or HTTP DELETE
@@ -1153,6 +1279,7 @@ The methodMap below is used by the standard sync implementation to map the metho
 var methodMap = {
   'create': 'POST',
   'update': 'PUT',
+  'patch':  'PATCH',
   'delete': 'DELETE',
   'read':   'GET'
 };
@@ -1174,7 +1301,7 @@ The Backbone.sync method is intended to be overridden to support other persisten
 
 The sync method is called with three parameters:
 
-* method: One of create, update, delete, or read
+* method: One of create, update, patch, delete, or read
 * model: The Backbone model object
 * options: May include success and error methods
 
@@ -1202,13 +1329,14 @@ Backbone.sync = function(method, model, options) {
 
   switch (method) {
     case 'create':
-      requestContent['resource'] = model.toJSON();
       return MyAPI.create(model, success, error);
 
     case 'update':
-      requestContent['resource'] = model.toJSON();
       return MyAPI.update(model, success, error);
 
+    case 'patch':
+      return MyAPI.patch(model, success, error);
+      
     case 'delete':
       return MyAPI.destroy(model, success, error);
 
@@ -1233,468 +1361,19 @@ There are quite a few sync implementations out there (all are available on GitHu
 * backbone-websql: stores data to WebSQL
 * Backbone Caching Sync: uses local storage as cache for other sync implementations
 
-### Conflict Management
-
-Like most client-side projects, Backbone's code is wrapped in an immediately-invoked function expression:
-
-```javascript
-(function(){
-  // Backbone.js
-}).call(this);
-```
-
-Several things happen during this configuration stage. A Backbone “namespace” is created, and multiple versions of Backbone on the same page are supported through the noConflict mode:
-
-```javascript
-var root = this;
-var previousBackbone = root.Backbone;
-
-Backbone.noConflict = function() {
-  root.Backbone = previousBackbone;
-  return this;
-};
-```
-
-Multiple versions of Backbone can be used on the same page by calling noConflict like this:
-
-```javascript
-var Backbone19 = Backbone.noConflict();
-// Backbone19 refers to the most recently loaded version,
-// and `window.Backbone` will be restored to the previously
-// loaded version
-```
-
-This initial configuration code also supports CommonJS modules so Backbone can be used in Node projects:
-
-```javascript
-var Backbone;
-if (typeof exports !== 'undefined') {
-  Backbone = exports;
-} else {
-  Backbone = root.Backbone = {};
-}
-```
-
-## Inheritance & Mixins
-
-For its inheritance, Backbone internally uses an `inherits` function inspired by `goog.inherits`, Google’s implementation from the Closure Library. It's basically a function to correctly setup the prototype chain.
-
-```javascript
- var inherits = function(parent, protoProps, staticProps) {
-      ...
-```
-
-The only major difference here is that Backbone’s API accepts two objects containing “instance” and “static” methods.
-
-Following on from this, for inheritance purposes all of Backbone's objects contain an `extend` method as follows:
-
-```javascript
-Model.extend = Collection.extend = Router.extend = View.extend = extend;
-```
-
-Most development with Backbone is based around inheriting from these objects, and they’re designed to mimic a classical object-oriented implementation.
-
-If this sounds familiar, it's because `extend` is an Underscore.js utility, although Backbone itself does a lot more with this. See below for Underscore's `extend`:
-
-```javascript
-each(slice.call(arguments, 1), function(source) {
-  for (var prop in source) {
-    obj[prop] = source[prop];
-  }
-});
-return obj;
-```
-
-The above isn’t quite the same as ECMAScript 5’s `Object.create`, as it’s actually copying properties (methods and values) from one object to another. As this isn’t enough to support Backbone’s inheritance and class model, the following steps are performed:
-
-* The instance methods are checked to see if there’s a constructor property. If so, the class’s constructor is used, otherwise the parent’s constructor is used (i.e., Backbone.Model)
-* Underscore’s extend method is called to add the parent class’s methods to the new child class
-* The `prototype` property of a blank constructor function is assigned with the parent’s prototype, and a new instance of this is set to the child’s `prototype` property
-* Underscore’s extend method is called twice to add the static and instance methods to the child class
-* The child’s prototype’s constructor and a `__super__` property are assigned
-* This pattern is also used for classes in CoffeeScript, so Backbone classes are compatible with CoffeeScript classes.
-
-`extend` can be used for a great deal more and developers who are fans of mixins will like that it can be used for this too. You can define functionality on any custom object, and then quite literally copy & paste all of the methods and attributes from that object to a Backbone one:
-
-For example:
-
-```javascript
-var MyMixin = {
-  foo: 'bar',
-  sayFoo: function(){alert(this.foo);}
-};
-
-var MyView = Backbone.View.extend({
- // ...
-});
-
-_.extend(MyView.prototype, MyMixin);
-
-var myView = new MyView();
-myView.sayFoo(); //=> 'bar'
-```
-
-We can take this further and also apply it to View inheritance. The following is an example of how to extend one View using another:
-
-```javascript
-var Panel = Backbone.View.extend({
-});
-
-var PanelAdvanced = Panel.extend({
-});
-```
-
-However, if you have an `initialize()` method in Panel, then it won't be called if you also have an `initialize()` method in PanelAdvanced, so you would have to call Panel's initialize method explicitly:
-
-```javascript
-var Panel = Backbone.View.extend({
-  initialize: function(options){
-    console.log('Panel initialized');
-    this.foo = 'bar';
-  }
-});
-
-var PanelAdvanced = Panel.extend({
-  initialize: function(options){
-    Panel.prototype.initialize.call(this, [options]);
-    console.log('PanelAdvanced initialized');
-    console.log(this.foo); // Log: bar
-  }
-});
-
-// We can also inherit PanelAdvaned if needed
-var PanelAdvancedExtra = PanelAdvanced.extend({
-  initialize: function(options){
-    PanelAdvanced.prototype.initialize.call(this, [options]);
-    console.log('PanelAdvancedExtra initialized');
-  }
-});
-
-new Panel();
-new PanelAdvanced();
-new PanelAdvancedExtra();
-```
-
-This isn't the most elegant of solutions because if you have a lot of Views that inherit from Panel, then you'll have to remember to call Panel's initialize from all of them.
-
-It's worth noting that if Panel doesn't have an initialize method now but you choose to add it in the future, then you'll need to go to all of the inherited classes in the future and make sure they call Panel's initialize.
-
-So here's an alternative way to define Panel so that your inherited views don't need to call Panel's initialize method:
-
-```javascript
-var Panel = function (options) {
-  // put all of Panel's initialization code here
-  console.log('Panel initialized');
-  this.foo = 'bar';
-
-  Backbone.View.apply(this, [options]);
-};
-
-_.extend(Panel.prototype, Backbone.View.prototype, {
-  // put all of Panel's methods here. For example:
-  sayHi: function () {
-    console.log('hello from Panel');
-  }
-});
-
-Panel.extend = Backbone.View.extend;
-
-// other classes then inherit from Panel like this:
-var PanelAdvanced = Panel.extend({
-  initialize: function (options) {
-    console.log('PanelAdvanced initialized');
-    console.log(this.foo);
-  }
-});
-
-var panelAdvanced = new PanelAdvanced(); //Logs: Panel initialized, PanelAdvanced initialized, bar
-panelAdvanced.sayHi(); // Logs: hello from Panel
-```
-
-When used appropriately, Underscore's `extend` method can save a great deal of time and effort writing redundant code.
-
-(Thanks to [Alex Young](http://dailyjs.com), [Derick Bailey](http://stackoverflow.com/users/93448/derick-bailey) and [JohnnyO](http://stackoverflow.com/users/188740/johnnyo) for the heads up about these tips).
-
-#### Backbone-Super
-
-[Backbone-Super](https://github.com/lukasolson/Backbone-Super) by Lukas Olson adds a *_super* method to *Backbone.Model* using [John Resig’s Inheritance script](http://ejohn.org/blog/simple-javascript-inheritance/).
-Rather than using Backbone.Model.prototype.set.call as per the Backbone.js documentation, _super can be called instead:
-
-```javascript
-// This is how we normally do it
-var OldFashionedNote = Backbone.Model.extend({
-  set: function(attributes, options) {
-    // Call parent's method
-    Backbone.Model.prototype.set.call(this, attributes, options);
-    // some custom code here
-    // ...
-  }
-});
-```
-
-After including this plugin, you can do the same thing with the following syntax:
-
-```javascript
-// This is how we can do it after using the Backbone-super plugin
-var Note = Backbone.Model.extend({
-  set: function(attributes, options) {
-    // Call parent's method
-    this._super(attributes, options);
-    // some custom code here
-    // ...
-  }
-});
-```
 
 ## Dependencies
 
 The official Backbone.js [documentation](http://backbonejs.org/) states:
 
->Backbone's only hard dependency is Underscore.js ( > 1.3.1). For RESTful persistence, history support via Backbone.Router and DOM manipulation with Backbone.View, include json2.js, and either jQuery ( > 1.4.2) or Zepto.
-
-*[Lo-dash](https://github.com/bestiejs/lodash), a fork of Underscore containing performance enhancements is also compatible with Backbone.*
+>Backbone's only hard dependency is either Underscore.js ( >= 1.4.3) or Lo-Dash. For RESTful persistence, history support via Backbone.Router and DOM manipulation with Backbone.View, include json2.js, and either jQuery ( >= 1.7.0) or Zepto.
 
 What this translates to is that if you require working with anything beyond models, you will need to include a DOM manipulation library such as jQuery or Zepto. Underscore is primarily used for it's utility methods (which Backbone relies upon heaviy) and json2.js for legacy browser JSON support if Backbone.sync is used.
 
-### DOM Manipulation
+## Summary
 
-Although most developers won't need it, Backbone does support setting a custom DOM library to be used instead of these options. From the source:
+In this chapter we have introduced you to the components you will be using to build application with Backbone: Models, Views, Collections, and Routers. We've also explored the Events mix-in that Backbone uses to enhance all components with publish-subscribe capabilities and seen how it can be used with arbitrary objects. Finally, we saw how Backbone leverages the Underscore.js and jQuery/Zepto APIs to add rich manipulation and persistence features to Backbone Collections and Models.
 
-```
-// Set the JavaScript library that will be used for DOM manipulation and
-// Ajax calls (a.k.a. the `$` variable). By default Backbone will use: jQuery,
-// Zepto, or Ender; but the `setDomLibrary()` method lets you inject an
-// alternate JavaScript library (or a mock library for testing your views
-// outside of a browser).
+Backbone has many operations and options beyond those we have covered here and is always evolving, so be sure to visit the official [documentation](http://backbonejs.org/) for more details and the latest features. In the next chapter you will start to get your hands dirty as we walk you through implementation of your first Backbone application.
 
-Backbone.setDomLibrary = function(lib) {
-  $ = lib;
-};
-```
 
-Calling this method will allow you to use any custom DOM-manipulation library. e.g:
-
-```
-Backbone.setDomLibrary(aCustomLibrary);
-```
-
-### Utilities
-
-Underscore.js is heavily used in Backbone behind the scenes for everything from object extension to event binding. As the entire library is generally included, we get free access to a number of useful utilities we can use on Collections such as filtering `_.filter()`, sorting `_.sortBy()`, mapping `_.map()` and so on. 
-
-From the source:
-
-```
-// Underscore methods that we want to implement on the Collection.
-var methods = ['forEach', 'each', 'map', 'reduce', 'reduceRight', 'find',
-    'detect', 'filter', 'select', 'reject', 'every', 'all', 'some', 'any',
-    'include', 'contains', 'invoke', 'max', 'min', 'sortBy', 'sortedIndex',
-    'toArray', 'size', 'first', 'initial', 'rest', 'last', 'without', 'indexOf',
-    'shuffle', 'lastIndexOf', 'isEmpty', 'groupBy'];
-
-// Mix in each Underscore method as a proxy to Collection#models.
-  _.each(methods, function(method) {
-    Collection.prototype[method] = function() {
-      return _[method].apply(_, [this.models].concat(_.toArray(arguments)));
-    };
-```
-
-However, for a complete linked list of methods supported, see the [official documentation](http://backbonejs.org/#Collection-Underscore-Methods).
-
-### RESTful persistence
-
-Models and collections in Backbone can be "sync"ed with the server using the `fetch`, `save` and `destroy` methods. All of these methods delegate back to the `Backbone.sync` function, which actually wraps jQuery/Zepto's `$.ajax` function, calling GET, POST and DELETE for the respective persistence methods on Backbone models. 
-
-From the the source for `Backbone.sync`:
-
-```
-var methodMap = {
-    'create': 'POST',
-    'update': 'PUT',
-    'delete': 'DELETE',
-    'read':   'GET'
-  };
-  
-Backbone.sync = function(method, model, options) {
-    var type = methodMap[method];
-    options || (options = {});
-    // ... Followed by lots of Backbone.js configuration, then..
-   return $.ajax(_.extend(params, options));
-```
-
-### Routing
-
-Calls to `Backbone.History.start` rely on jQuery/Zepto binding `popState` or `hashchange` event listeners back to the window object. 
-
-From the source for `Backbone.history.start`:
-
-```
-// Depending on whether we're using pushState or hashes, and whether 'onhashchange' is 
-// supported, determine how we check the URL state.
-if (this._hasPushState) {
-        $(window).bind('popstate', this.checkUrl);
-      } else if (this._wantsHashChange && ('onhashchange' in window) && !oldIE) {
-        $(window).bind('hashchange', this.checkUrl);
-      ...
-```
-
-`Backbone.History.stop` similarly uses your DOM manipulation library to unbind these event listeners.
-
-
-
-## Namespacing
-
-When learning how to use Backbone, an important and commonly overlooked area by tutorials is namespacing. If you already have experience with namespacing in JavaScript, the following section will provide some advice on how to specifically apply concepts you know to Backbone, however I will also be covering explanations for beginners to ensure everyone is on the same page.
-
-#### What is namespacing?
-
-Namespacing is a way to avoid collisions with other objects or variables in the global namespace. Using namespacing reduces the potential of your code breaking because another script on the page is using the same variable names that you are. As a good 'citizen' of the global namespace, it's also imperative that you do your best to minimize the possibility of your code breaking other developer's scripts.
-
-JavaScript doesn't really have built-in support for namespaces like other languages, however it does have closures which can be used to achieve a similar effect.
-
-In this section we'll be taking a look shortly at some examples of how you can namespace your models, views, routers and other components. The patterns we'll be examining are:
-
-* Single global variables
-* Object Literals
-* Nested namespacing
-
-**Single global variables**
-
-One popular pattern for namespacing in JavaScript is opting for a single global variable as your primary object of reference. A skeleton implementation of this where we return an object with functions and properties can be found below:
-
-```javascript
-var myApplication = (function(){
-    function(){
-      // ...
-    },
-    return {
-      // ...
-    }
-})();
-```
-
-You've probably seen this technique before. A Backbone-specific example might look like this:
-
-```javascript
-var myViews = (function(){
-    return {
-        TodoView: Backbone.View.extend({ .. }),
-        TodosView: Backbone.View.extend({ .. }),
-        AboutView: Backbone.View.extend({ .. });
-        //etc.
-    };
-})();
-```
-
-Here we can return a set of views, but the same technique could return an entire collection of models, views and routers depending on how you decide to structure your application. Although this works for certain situations, the biggest challenge with the single global variable pattern is ensuring that no one else has used the same global variable name as you have in the page.
-
-One solution to this problem, as mentioned by Peter Michaux, is to use prefix namespacing. It's a simple concept at heart, but the idea is you select a common prefix name (in this example, `myApplication_`) and then define any methods, variables or other objects after the prefix.
-
-```javascript
-var myApplication_todoView = Backbone.View.extend({}),
-    myApplication_todosView = Backbone.View.extend({});
-```
-
-This is effective from the perspective of trying to lower the chances of a particular variable existing in the global scope, but remember that a uniquely named object can have the same effect. This aside, the biggest issue with the pattern is that it can result in a large number of global objects once your application starts to grow.
-
-For more on Peter's views about the single global variable pattern, read his [excellent post on them](http://michaux.ca/articles/javascript-namespacing).
-
-Note: There are several other variations on the single global variable pattern out in the wild, however having reviewed quite a few, I felt the prefixing approach applied best to Backbone.
-
-**Object Literals**
-
-Object Literals have the advantage of not polluting the global namespace but assist in organizing code and parameters logically. They're beneficial if you wish to create easily readable structures that can be expanded to support deep nesting. Unlike simple global variables, Object Literals often also take into account tests for the existence of a variable by the same name, which helps reduce the chances of collision.
-
-This example demonstrates two ways you can check to see if a namespace already exists before defining it. I commonly use Option 2.
-
-```javascript
-/* Doesn't check for existence of myApplication */
-var myApplication = {};
-
-/*
-Does check for existence. If already defined, we use that instance.
-Option 1:   if(!myApplication) myApplication = {};
-Option 2:   var myApplication = myApplication || {};
-We can then populate our object literal to support models, views and collections (or any data, really):
-*/
-
-var myApplication = {
-    models : {},
-    views : {
-        pages : {}
-    },
-    collections : {}
-};
-```
-
-One can also opt for adding properties directly to the namespace (such as your views, in the following example):
-
-```javascript
-var myTodosViews = myTodosViews || {};
-myTodosViews.todoView = Backbone.View.extend({});
-myTodosViews.todosView = Backbone.View.extend({});
-```
-
-The benefit of this pattern is that you're able to easily encapsulate all of your models, views, routers etc. in a way that clearly separates them and provides a solid foundation for extending your code.
-
-This pattern has a number of benefits. It's often a good idea to decouple the default configuration for your application into a single area that can be easily modified without the need to search through your entire codebase just to alter it. Here's an example of a hypothetical object literal that stores application configuration settings:
-
-
-```javascript
-var myConfig = {
-  language: 'english',
-  defaults: {
-    enableDelegation: true,
-    maxTodos: 40
-  },
-  theme: {
-    skin: 'a',
-    toolbars: {
-      index: 'ui-navigation-toolbar',
-      pages: 'ui-custom-toolbar'
-    }
-  }
-}
-```
-
-Note that there are really only minor syntactical differences between the Object Literal pattern and a standard JSON data set. If for any reason you wish to use JSON for storing your configurations instead (e.g. for simpler storage when sending to the back-end), feel free to.
-
-For more on the Object Literal pattern, I recommend reading Rebecca Murphey's [excellent article on the topic](http://rmurphey.com/blog/2009/10/15/using-objects-to-organize-your-code).
-
-**Nested namespacing**
-
-An extension of the Object Literal pattern is nested namespacing. It's another common pattern used that offers a lower risk of collision due to the fact that even if a top-level namespace already exists, it's unlikely the same nested children do. For example, Yahoo's YUI uses the nested object namespacing pattern extensively:
-
-```javascript
-YAHOO.util.Dom.getElementsByClassName('test');
-```
-
-Yahoo's YUI uses the nested object namespacing pattern regularly and even DocumentCloud (the creators of Backbone) use the nested namespacing pattern in their main applications. A sample implementation of nested namespacing with Backbone may look like this:
-
-```javascript
-var todoApp =  todoApp || {};
-
-// perform similar check for nested children
-todoApp.routers = todoApp.routers || {};
-todoApp.model = todoApp.model || {};
-todoApp.model.special = todoApp.model.special || {};
-
-// routers
-todoApp.routers.Workspace   = Backbone.Router.extend({});
-todoApp.routers.TodoSearch = Backbone.Router.extend({});
-
-// models
-todoApp.model.Todo   = Backbone.Model.extend({});
-todoApp.model.Notes = Backbone.Model.extend({});
-
-// special models
-todoApp.model.special.Admin = Backbone.Model.extend({});
-```
-
-This is readable, clearly organized, and is a relatively safe way of namespacing your Backbone application. The only real caveat however is that it requires your browser's JavaScript engine to first locate the todoApp object, then dig down until it gets to the function you're calling. However, developers such as Juriy Zaytsev (kangax) have tested and found the performance differences between single object namespacing vs the 'nested' approach to be quite negligible.
-
-**Recommendation**
-
-Reviewing the namespace patterns above, the option that I prefer when writing Backbone applications is nested object namespacing with the object literal pattern.
-
-Single global variables may work fine for applications that are relatively trivial. However, larger codebases requiring both namespaces and deep sub-namespaces require a succinct solution that's both readable and scalable. I feel this pattern achieves both of these objectives and is a good choice for most Backbone development.
