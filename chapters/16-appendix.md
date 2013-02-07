@@ -346,6 +346,256 @@ As MarionetteJS author Derick Bailey has [written](http://lostechies.com/derickb
 
 It *is* however worth understanding where and why these concepts originated, so I hope that my explanations of MVC and MVP have been of help. Most structural JavaScript frameworks will adopt their own take on classical patterns, either intentionally or by accident, but the important thing is that they help us develop applications which are organized, clean and can be easily maintained.
 
+## Namespacing
+
+When learning how to use Backbone, an important and commonly overlooked area by tutorials is namespacing. If you already have experience with namespacing in JavaScript, the following section will provide some advice on how to specifically apply concepts you know to Backbone, however I will also be covering explanations for beginners to ensure everyone is on the same page.
+
+#### What is namespacing?
+
+Namespacing is a way to avoid collisions with other objects or variables in the global namespace. Using namespacing reduces the potential of your code breaking because another script on the page is using the same variable names that you are. As a good 'citizen' of the global namespace, it's also imperative that you do your best to minimize the possibility of your code breaking other developer's scripts.
+
+JavaScript doesn't really have built-in support for namespaces like other languages, however it does have closures which can be used to achieve a similar effect.
+
+In this section we'll be taking a look shortly at some examples of how you can namespace your models, views, routers and other components. The patterns we'll be examining are:
+
+* Single global variables
+* Object Literals
+* Nested namespacing
+
+**Single global variables**
+
+One popular pattern for namespacing in JavaScript is opting for a single global variable as your primary object of reference. A skeleton implementation of this where we return an object with functions and properties can be found below:
+
+```javascript
+var myApplication = (function(){
+    function(){
+      // ...
+    },
+    return {
+      // ...
+    }
+})();
+```
+
+You've probably seen this technique before. A Backbone-specific example might look like this:
+
+```javascript
+var myViews = (function(){
+    return {
+        TodoView: Backbone.View.extend({ .. }),
+        TodosView: Backbone.View.extend({ .. }),
+        AboutView: Backbone.View.extend({ .. });
+        //etc.
+    };
+})();
+```
+
+Here we can return a set of views, but the same technique could return an entire collection of models, views and routers depending on how you decide to structure your application. Although this works for certain situations, the biggest challenge with the single global variable pattern is ensuring that no one else has used the same global variable name as you have in the page.
+
+One solution to this problem, as mentioned by Peter Michaux, is to use prefix namespacing. It's a simple concept at heart, but the idea is you select a common prefix name (in this example, `myApplication_`) and then define any methods, variables or other objects after the prefix.
+
+```javascript
+var myApplication_todoView = Backbone.View.extend({}),
+    myApplication_todosView = Backbone.View.extend({});
+```
+
+This is effective from the perspective of trying to lower the chances of a particular variable existing in the global scope, but remember that a uniquely named object can have the same effect. This aside, the biggest issue with the pattern is that it can result in a large number of global objects once your application starts to grow.
+
+For more on Peter's views about the single global variable pattern, read his [excellent post on them](http://michaux.ca/articles/javascript-namespacing).
+
+Note: There are several other variations on the single global variable pattern out in the wild, however having reviewed quite a few, I felt the prefixing approach applied best to Backbone.
+
+**Object Literals**
+
+Object Literals have the advantage of not polluting the global namespace but assist in organizing code and parameters logically. They're beneficial if you wish to create easily readable structures that can be expanded to support deep nesting. Unlike simple global variables, Object Literals often also take into account tests for the existence of a variable by the same name, which helps reduce the chances of collision.
+
+This example demonstrates two ways you can check to see if a namespace already exists before defining it. I commonly use Option 2.
+
+```javascript
+/* Doesn't check for existence of myApplication */
+var myApplication = {};
+
+/*
+Does check for existence. If already defined, we use that instance.
+Option 1:   if(!myApplication) myApplication = {};
+Option 2:   var myApplication = myApplication || {};
+We can then populate our object literal to support models, views and collections (or any data, really):
+*/
+
+var myApplication = {
+    models : {},
+    views : {
+        pages : {}
+    },
+    collections : {}
+};
+```
+
+One can also opt for adding properties directly to the namespace (such as your views, in the following example):
+
+```javascript
+var myTodosViews = myTodosViews || {};
+myTodosViews.todoView = Backbone.View.extend({});
+myTodosViews.todosView = Backbone.View.extend({});
+```
+
+The benefit of this pattern is that you're able to easily encapsulate all of your models, views, routers etc. in a way that clearly separates them and provides a solid foundation for extending your code.
+
+This pattern has a number of benefits. It's often a good idea to decouple the default configuration for your application into a single area that can be easily modified without the need to search through your entire codebase just to alter it. Here's an example of a hypothetical object literal that stores application configuration settings:
+
+
+```javascript
+var myConfig = {
+  language: 'english',
+  defaults: {
+    enableDelegation: true,
+    maxTodos: 40
+  },
+  theme: {
+    skin: 'a',
+    toolbars: {
+      index: 'ui-navigation-toolbar',
+      pages: 'ui-custom-toolbar'
+    }
+  }
+}
+```
+
+Note that there are really only minor syntactical differences between the Object Literal pattern and a standard JSON data set. If for any reason you wish to use JSON for storing your configurations instead (e.g. for simpler storage when sending to the back-end), feel free to.
+
+For more on the Object Literal pattern, I recommend reading Rebecca Murphey's [excellent article on the topic](http://rmurphey.com/blog/2009/10/15/using-objects-to-organize-your-code).
+
+**Nested namespacing**
+
+An extension of the Object Literal pattern is nested namespacing. It's another common pattern used that offers a lower risk of collision due to the fact that even if a top-level namespace already exists, it's unlikely the same nested children do. For example, Yahoo's YUI uses the nested object namespacing pattern extensively:
+
+```javascript
+YAHOO.util.Dom.getElementsByClassName('test');
+```
+
+Yahoo's YUI uses the nested object namespacing pattern regularly and even DocumentCloud (the creators of Backbone) use the nested namespacing pattern in their main applications. A sample implementation of nested namespacing with Backbone may look like this:
+
+```javascript
+var todoApp =  todoApp || {};
+
+// perform similar check for nested children
+todoApp.routers = todoApp.routers || {};
+todoApp.model = todoApp.model || {};
+todoApp.model.special = todoApp.model.special || {};
+
+// routers
+todoApp.routers.Workspace   = Backbone.Router.extend({});
+todoApp.routers.TodoSearch = Backbone.Router.extend({});
+
+// models
+todoApp.model.Todo   = Backbone.Model.extend({});
+todoApp.model.Notes = Backbone.Model.extend({});
+
+// special models
+todoApp.model.special.Admin = Backbone.Model.extend({});
+```
+
+This is readable, clearly organized, and is a relatively safe way of namespacing your Backbone application. The only real caveat however is that it requires your browser's JavaScript engine to first locate the todoApp object, then dig down until it gets to the function you're calling. However, developers such as Juriy Zaytsev (kangax) have tested and found the performance differences between single object namespacing vs the 'nested' approach to be quite negligible.
+
+**Recommendation**
+
+Reviewing the namespace patterns above, the option that I prefer when writing Backbone applications is nested object namespacing with the object literal pattern.
+
+Single global variables may work fine for applications that are relatively trivial. However, larger codebases requiring both namespaces and deep sub-namespaces require a succinct solution that's both readable and scalable. I feel this pattern achieves both of these objectives and is a good choice for most Backbone development.
+
+## Backbone Dependency Details
+
+The following sections provide insight into how Backbone uses jQuery/Zepto and Underscore.js.
+
+### DOM Manipulation
+
+Although most developers won't need it, Backbone does support setting a custom DOM library to be used instead of these options. From the source:
+
+```
+// Set the JavaScript library that will be used for DOM manipulation and
+// Ajax calls (a.k.a. the `$` variable). By default Backbone will use: jQuery,
+// Zepto, or Ender; but the `setDomLibrary()` method lets you inject an
+// alternate JavaScript library (or a mock library for testing your views
+// outside of a browser).
+
+Backbone.setDomLibrary = function(lib) {
+  $ = lib;
+};
+```
+
+Calling this method will allow you to use any custom DOM-manipulation library. e.g:
+
+```
+Backbone.setDomLibrary(aCustomLibrary);
+```
+
+### Utilities
+
+Underscore.js is heavily used in Backbone behind the scenes for everything from object extension to event binding. As the entire library is generally included, we get free access to a number of useful utilities we can use on Collections such as filtering `_.filter()`, sorting `_.sortBy()`, mapping `_.map()` and so on. 
+
+From the source:
+
+```
+// Underscore methods that we want to implement on the Collection.
+var methods = ['forEach', 'each', 'map', 'reduce', 'reduceRight', 'find',
+    'detect', 'filter', 'select', 'reject', 'every', 'all', 'some', 'any',
+    'include', 'contains', 'invoke', 'max', 'min', 'sortBy', 'sortedIndex',
+    'toArray', 'size', 'first', 'initial', 'rest', 'last', 'without', 'indexOf',
+    'shuffle', 'lastIndexOf', 'isEmpty', 'groupBy'];
+
+// Mix in each Underscore method as a proxy to Collection#models.
+  _.each(methods, function(method) {
+    Collection.prototype[method] = function() {
+      return _[method].apply(_, [this.models].concat(_.toArray(arguments)));
+    };
+```
+
+However, for a complete linked list of methods supported, see the [official documentation](http://backbonejs.org/#Collection-Underscore-Methods).
+
+### RESTful persistence
+
+Models and collections in Backbone can be "sync"ed with the server using the `fetch`, `save` and `destroy` methods. All of these methods delegate back to the `Backbone.sync` function, which actually wraps jQuery/Zepto's `$.ajax` function, calling GET, POST and DELETE for the respective persistence methods on Backbone models. 
+
+From the the source for `Backbone.sync`:
+
+```
+var methodMap = {
+  'create': 'POST',
+  'update': 'PUT',
+  'patch':  'PATCH',
+  'delete': 'DELETE',
+  'read':   'GET'
+};
+  
+Backbone.sync = function(method, model, options) {
+    var type = methodMap[method];
+
+    // ... Followed by lots of Backbone.js configuration, then..
+    
+    // Make the request, allowing the user to override any Ajax options.
+    var xhr = options.xhr = Backbone.ajax(_.extend(params, options));
+    model.trigger('request', model, xhr, options);
+    return xhr;
+```
+
+### Routing
+
+Calls to `Backbone.History.start` rely on jQuery/Zepto binding `popState` or `hashchange` event listeners back to the window object. 
+
+From the source for `Backbone.history.start`:
+
+```
+      // Depending on whether we're using pushState or hashes, and whether
+      // 'onhashchange' is supported, determine how we check the URL state.
+      if (this._hasPushState) {
+        Backbone.$(window).on('popstate', this.checkUrl);
+      } else if (this._wantsHashChange && ('onhashchange' in window) && !oldIE) {
+        Backbone.$(window).on('hashchange', this.checkUrl);
+      ...
+```
+
+`Backbone.History.stop` similarly uses your DOM manipulation library to unbind these event listeners.
+
 
 ## Upgrading to Backbone 0.9.10
 
