@@ -493,7 +493,7 @@ Let’s look at the `TodoView` view, now. This will be in charge of individual T
 ```
 
 
-In the `initialize()` constructor, we set up a listener tthat monitors a todo model’s `change` event. In other words, when the todo updates, the application should re-render the view and visually reflect its changes.
+In the `initialize()` constructor, we set up a listener that monitors a todo model’s `change` event. In other words, when the todo updates, the application should re-render the view and visually reflect its changes.
 
 In the `render()` method, we render an Underscore.js JavaScript template, called `#item-template`, which was previously compiled into this.template using Underscore’s `_.template()` method.  This returns an HTML fragment that replaces the view’s current element. In other words, the rendered template is now present under `this.el` and can be appended to the todo list in the user interface.
 
