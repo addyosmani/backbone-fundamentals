@@ -1,0 +1,4 @@
+dist/
+npm-debug.log
+.lock-wscript
+

@@ -1,0 +1,85 @@
+@import "h5bp.css";
+
+label.error {
+    color: red;
+    font-size: 16px;
+    font-weight: normal;
+    line-height: 1.4;
+    margin-top: 0.5em;
+    width: 100%;
+    float: none;
+}
+
+@media screen and (orientation: portrait) {
+    label.error {
+        margin-left: 0;
+        display: block;
+    }
+}
+
+@media screen and (orientation: landscape) {
+    label.error {
+        display: inline-block;
+        margin-left: 22%;
+    }
+}
+
+.transparent {
+    background-color: orange;
+    zoom: 1;
+    filter: alpha(opacity = 50);
+    opacity: 0.5;
+}
+
+.ui-dialog-background {
+    opacity: 0.5;
+    display: block !important;
+    -webkit-transition: opacity 0.5s ease-in;
+}
+
+#todo-list li label {
+    margin-left: 0;
+
+/*
+ word-break: break-word;
+ padding: 15px;
+ display: block;
+ line-height: 1.2;
+*/
+}
+
+
+.ui-slider{
+    display:inline;
+}
+
+input.ui-input-text{
+    display:inline;
+    width:60%;
+}
+
+#todoapp h1 {
+    top: -180px;
+}
+
+#todo-list li label{
+    display:inline;
+}
+
+#footer:before {
+    height: 70px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.3),
+    0 6px 0 -3px rgba(255, 255, 255, 0.8),
+    0 7px 1px -3px rgba(0, 0, 0, 0.3),
+    0 63px 0 -6px rgba(255, 255, 255, 0.8),
+    0 64px 2px -6px rgba(0, 0, 0, 0.2);
+}
+
+#filters{
+    left: 40%;
+    top: -20%;
+}
+
+#filters li a{
+    margin: 0;
+}
