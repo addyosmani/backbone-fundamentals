@@ -1,0 +1,32 @@
+<section id="todoapp">
+
+    <header id="header">
+        <h1>todos</h1>
+    </header>
+    <div class="ui-grid-a" >
+        <div class="ui-block-a" style="width:9%;">
+            <label><input type="checkbox" id="toggle-all" />All</label>
+        </div>
+        <div class="ui-block-b">
+            <input id="new-todo" placeholder="What needs to be done?" data-enhance="false" autofocus="true" />
+        </div>
+    </div>
+
+            <section id="main">
+
+
+                <ul id="todo-list">
+                    <!-- singleTodo.template is included here by view-->
+                </ul>
+            </section>
+
+
+    <footer id="footer">{{> todosStatisticsAndBulkFooter}}</footer>
+</section>
+<footer id="info">
+<p>Click to edit a todo</p>
+
+<p>Written by <a href="http://addyosmani.github.com/todomvc/">David Amend</a></p>
+
+<p>Part of <a href="http://todomvc.com">TodoMVC</a></p>
+</footer>

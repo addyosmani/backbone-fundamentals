@@ -1,0 +1,6 @@
+<a href="#todo" >test </a>
+        <br />
+        <a href="#pages/second">second</a>
+<p>Are you sure to delete all completed Todos?</p>
+<a id="clear-completed" href="#todo"  style="float: left;" data-role="button" data-icon="delete" data-mini="true" data-inline="true">Delete Completed({{completed}})</a> -->
+
