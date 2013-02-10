@@ -1,6 +1,0 @@
-
-    <p>Change your todo description here.(no special characters allowed)</p>
-    <form>
-        <input type="text" id="edit_title" name="edit_title" value="{{title}}"/>
-        <a data-role="button" type="submit">Save</a>
-    </form>

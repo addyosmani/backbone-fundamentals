@@ -2,8 +2,8 @@ define([
     "backbone", "modules/view/abstract/BasicView"],
     function (Backbone, BasicView) {
         return BasicView.extend({
-            id : "editTodoPopup",
-            headerTitle : "Edit Todo",
+            id : "editTodoView",
+            getHeaderTitle : function () { return "Edit Todo";},
             getSpecificTemplateValues : function () {
                 return this.model.toJSON();
             },

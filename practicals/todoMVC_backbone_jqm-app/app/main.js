@@ -10,12 +10,10 @@ require([
     "modules/view/TodosView",
     "modules/TodosCollection",
     "common",
-    "modules/view/ExamplePage2",
-    "modules/view/EditTodoPopup"
-    //,"modules/view/EditTodoDialog"
+    "modules/view/EditTodoPage"
 ],
 //    jqValidationUnused
-    function ($, Backbone, bbsuperUnused, _, Handlebars, initializeSettings, handlebarscompUnused, jqmUnused, TodosView, TodosCollection, Common, ExamplePage2,  EditTodoPopup) { // ExampleDialog
+    function ($, Backbone, bbsuperUnused, _, Handlebars, initializeSettings, handlebarscompUnused, jqmUnused, TodosView, TodosCollection, Common, EditTodoPage) { // ExampleDialog
         initializeSettings.init();
 
         var Router = Backbone.Router.extend({
@@ -24,10 +22,8 @@ require([
                 "todo" : "index",
                 "todo/:filter" : "filter",
                 "editTodo/:id" : "editTodo",
-                'pages/second' : 'secondPage',
                 '*path' : 'index'
             },
-
             index : function () {
                 new TodosView();
             },
@@ -36,16 +32,9 @@ require([
                 TodosCollection.trigger('filter');
             },
             editTodo : function (id){
-
-                new EditTodoPopup({
+                new EditTodoPage({
                     model : TodosCollection.get(id)
                 });
-            },
-            openDialog : function (todoCID) {
-             //   new ExampleDialog({model : TodosCollection.getByCid(todoCID)});
-            },
-            secondPage : function () {
-                new ExamplePage2();
             }
         });
 
