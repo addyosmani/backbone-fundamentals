@@ -1108,7 +1108,7 @@ var TodoRouter = Backbone.Router.extend({
         /* This is a default route that also uses a *splat. Consider the
         default route a wildcard for URLs that are either not matched or where
         the user has incorrectly typed in a route path manually */
-        /* Sample usage: http://example.com/# <anything */
+        /* Sample usage: http://example.com/# <anything> */
     },
 
     showAbout: function(){
