@@ -2261,7 +2261,7 @@ A few notable features are present in the AppView, including a `statsTemplate` m
 
 An `el` (element) property stores a selector targeting the DOM element with an ID of `todoapp`. In the case of our application, `el` refers to the matching `<section id="todoapp" />` element in index.html.
 
-Let's take a look at the constructor function. It's binding to several events on the Todo model, such as `add`, `reset` and `all`. Since we're delegating handling of updates and deletes to the `TodoView` view, we don't need to worry about that here. The two pieces of logic are:
+Let's take a look at the constructor function. It's binding to several events on the Todos collection, such as `add`, `reset` and `all`. Since we're delegating handling of updates and deletes to the `TodoView` view, we don't need to worry about that here. The two pieces of logic are:
 
 * When a new todo is created, the `add` event will be fired, calling `addOne()`, which instantiates the TodoView view, rendering it and appending the resultant element to our Todo list.
 
