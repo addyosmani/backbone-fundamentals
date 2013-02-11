@@ -33,7 +33,7 @@ require([
             },
             editTodo : function (id){
                 new EditTodoPage({
-                    model : TodosCollection.get(id)
+                    model : TodosCollection.getByCid(id)
                 });
             }
         });

@@ -28,10 +28,10 @@ define(['jquery'], function ($) {
     /*
     Seem not to work properly to remove events
      */
-    $(document).live('pageshow',function(event, ui){
-        var id = $(ui.prevPage).first().attr("id");
-        $(ui.prevPage).remove();
-        $("#"+id).remove();
-    });
+//    $(document).live('pageshow',function(event, ui){
+//        var id = $(ui.prevPage).first().attr("id");
+//        $(ui.prevPage).remove();
+//        $("#"+id).remove();
+//    });
 
 });

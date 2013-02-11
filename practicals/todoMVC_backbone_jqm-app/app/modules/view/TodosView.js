@@ -11,6 +11,7 @@ define([
         var TodosView = BasicView.extend({
             id : "todosPage", // used for template
             initialize : function () {
+                TodosCollection.unbind();
                 TodosCollection.on('add', this.addOne, this);
                 TodosCollection.on('reset', this.addAllTodos, this);
                 TodosCollection.on('change:completed', this.filterOne, this);
@@ -55,7 +56,6 @@ define([
                     this.$main.hide();
                     this.$footer.hide();
                 }
-
                 this.allCheckbox.checked = !remaining;
             },
             addOne : function (todo) {
@@ -63,7 +63,6 @@ define([
                 $('#todo-list').append(view.render().el).trigger("create");
             },
             addAllTodos : function () {
-                console.log("HANDLER CALLED");
                 this._super("render", {});
                 this.$('#todo-list').html('');
                 TodosCollection.each(this.addOne, this);
@@ -85,7 +84,6 @@ define([
                 if (e.which !== Common.ENTER_KEY || !this.input.val().trim()) {
                     return;
                 }
-
                 TodosCollection.create(this.newAttributes());
                 this.input.val('');
             },
