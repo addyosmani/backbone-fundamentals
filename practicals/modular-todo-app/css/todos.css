@@ -396,13 +396,13 @@ body {
 /* line 67 */
 #todoapp .content ul#todo-list li.editing .todo-input {
 	display: block;
-	width: 466px;
+	width: 443px;
 	font-size: 24px;
 	font-family: inherit;
 	line-height: 1.4em;
 	border: 0;
 	outline: none;
-	padding: 6px;
+	padding: 6px 6px 6px 29px;
 	border: 1px solid #999999;
 	-moz-box-shadow: rgba(0, 0, 0, 0.2) 0 1px 2px 0 inset;
 	-webkit-box-shadow: rgba(0, 0, 0, 0.2) 0 1px 2px 0 inset;
