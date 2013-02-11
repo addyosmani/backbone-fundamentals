@@ -3,7 +3,6 @@ define([
     "backbone",
     "handlebars",
     "handlebars_helpers"
-    // add handlebars compiled instead of window.jst
 ],
 
     function (_, Backbone, Handlebars) {
@@ -36,8 +35,6 @@ define([
             },
             getBasicPageTemplateResult : function () {
                 var templateValues = {templatePartialPageID : this.id, headerTitle : this.getHeaderTitle()};
-                var specific = this.getSpecificTemplateValues();
-
                 $.extend(templateValues, this.getSpecificTemplateValues());
                 return this.getTemplateResult(this.getTemplateID(), templateValues);
             },
@@ -45,14 +42,14 @@ define([
                 this.getBasicPageTemplateResult();
             },
             render : function () {
-                this.cleanupPossiblePageDuplicationInDOM();
+//                this.cleanupPossiblePageDuplicationInDOM();
                 $(this.el).html(this.getBasicPageTemplateResult());
                 this.addPageToDOMAndRenderJQM();
-               this.enhanceJQMComponentsAPI();
+                this.enhanceJQMComponentsAPI();
             },
             enhanceJQMComponentsAPI : function () {
                 $.mobile.changePage("#" + this.id, {
-                    reverse : false,
+                    transition : 'none',
                     changeHash : false,
                     role : this.role
                 });
@@ -63,10 +60,12 @@ define([
             },
             // Instead you could use event "pagehide": "onPageHide"
             cleanupPossiblePageDuplicationInDOM : function () {
+
                 var $previousEl = $("#" + this.id);
-                var alreadyInDom = $previousEl.length >= 0;
-                if (alreadyInDom) {
-                    //$previousEl.remove();
+                var isAlreadyInDom = $previousEl.length >= 0;
+                if (isAlreadyInDom) {
+                    // used because from-to page switch
+                    // needs events at that point of time
                     $previousEl.detach();
                 }
             }
