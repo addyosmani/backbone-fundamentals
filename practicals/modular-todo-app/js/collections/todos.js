@@ -1,10 +1,10 @@
 define([
   'underscore', 
   'backbone', 
-  'libs/backbone/localstorage', 
+  'storage', 
   'models/todo'
   ], function(_, Backbone, Store, Todo){
-	  
+
 	var TodosCollection = Backbone.Collection.extend({
 
     // Reference to this collection's model.
@@ -36,5 +36,5 @@ define([
     }
 
   });
-  return new TodosCollection;
+  return new TodosCollection();
 });
