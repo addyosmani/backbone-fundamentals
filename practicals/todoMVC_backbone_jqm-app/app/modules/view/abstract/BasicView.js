@@ -42,7 +42,7 @@ define([
                 this.getBasicPageTemplateResult();
             },
             render : function () {
-//                this.cleanupPossiblePageDuplicationInDOM();
+                this.cleanupPossiblePageDuplicationInDOM();
                 $(this.el).html(this.getBasicPageTemplateResult());
                 this.addPageToDOMAndRenderJQM();
                 this.enhanceJQMComponentsAPI();

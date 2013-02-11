@@ -27,7 +27,11 @@ define([
 
             // Re-render the titles of the todo item.
             render : function () {
-                this.$el.html(this.template(this.model.toJSON()));
+                this.$el.html(this.template({
+                    'title' : this.model.get('title'),
+                    'id'    : this.model.cid,
+                    completed : this.model.get("completed")
+                }));
                 this.$el.toggleClass('completed', this.model.get('completed'));
                 this.toggleVisible();
                 return this;
@@ -57,11 +61,6 @@ define([
                 this.refreshCompeltedStateInUI();
                 //this.$el.toggleClass('completed', 'completed');
             },
-//            edit : function () {
-//                window.location = "#editTodoTitle/"+this.model.cid;
-//                this.$el.addClass('editing');
-//                this.input.focus();
-//            },
             close : function () {
                 var value = this.input.val().trim();
 
