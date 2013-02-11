@@ -39,7 +39,7 @@ require([
         });
 
         $(function () {
-            new Router();
+            window.BackboneRouter = new Router();
             Backbone.history.start({ pushState : false });
         });
     });

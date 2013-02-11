@@ -1,40 +1,25 @@
 @import "h5bp.css";
 
-label.error {
-    color: red;
-    font-size: 16px;
-    font-weight: normal;
-    line-height: 1.4;
-    margin-top: 0.5em;
-    width: 100%;
-    float: none;
+.toggleAllCheckbox{
+    width: 160px !important;
+    padding-left:0.8% !important;
 }
 
-@media screen and (orientation: portrait) {
-    label.error {
-        margin-left: 0;
-        display: block;
-    }
+.newTodoText{
+    padding-left: 3% !important;
 }
 
-@media screen and (orientation: landscape) {
-    label.error {
-        display: inline-block;
-        margin-left: 22%;
-    }
-}
-
-.transparent {
-    background-color: orange;
-    zoom: 1;
-    filter: alpha(opacity = 50);
-    opacity: 0.5;
-}
-
-.ui-dialog-background {
-    opacity: 0.5;
+#todo-list li label {
     display: block !important;
-    -webkit-transition: opacity 0.5s ease-in;
+}
+
+.singleTodoDescription{
+    padding-left: 2.2% !important;
+}
+
+.singleTodoCompletedToggle{
+    width: 135px !important;
+    margin-left:1% !important;
 }
 
 #todo-list li label {

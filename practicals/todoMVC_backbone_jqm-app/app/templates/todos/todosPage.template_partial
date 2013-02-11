@@ -4,22 +4,21 @@
         <h1>todos</h1>
     </header>
     <div class="ui-grid-a" >
-        <div class="ui-block-a" style="width:9%;">
-            <label><input type="checkbox" id="toggle-all" />All</label>
+        <div class="ui-block-a toggleAllCheckbox" >
+            <label><input type="checkbox" data-mini="true" id="toggle-all"  />All</label>
         </div>
-        <div class="ui-block-b">
-            <input id="new-todo" placeholder="What needs to be done?" data-enhance="false" autofocus="true" />
+        <div class="ui-block-b newTodoText" >
+            <input id="new-todo" type="text" placeholder="What needs to be done?" autofocus="true" />
         </div>
     </div>
 
-            <section id="main">
+    <section id="main">
 
 
-                <ul id="todo-list">
-                    <!-- singleTodo.template is included here by view-->
-                </ul>
-            </section>
-
+        <ul id="todo-list">
+            <!-- singleTodo.template is included here by view-->
+        </ul>
+    </section>
 
     <footer id="footer">{{> todosStatisticsAndBulkFooter}}</footer>
 </section>

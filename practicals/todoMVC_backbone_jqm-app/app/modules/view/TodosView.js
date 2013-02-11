@@ -63,6 +63,7 @@ define([
                 $('#todo-list').append(view.render().el).trigger("create");
             },
             addAllTodos : function () {
+                console.log("HANDLER CALLED");
                 this._super("render", {});
                 this.$('#todo-list').html('');
                 TodosCollection.each(this.addOne, this);
@@ -70,7 +71,6 @@ define([
             filterOne : function (todo) {
                 todo.trigger("visible");
             },
-
             filterAll : function () {
                 TodosCollection.each(this.filterOne, this);
             },
@@ -90,22 +90,14 @@ define([
                 this.input.val('');
             },
             toggleAllComplete : function () {
-                var toggledTodoState = TodosCollection.remaining().length > 0;
+                var wasNoRemainingBefore = TodosCollection.remaining().length > 0;
 
               TodosCollection.each(function (todo) {
-
                     todo.toggle();
-                    //this.$el.toggleClass('completed', 'completed');
                     todo.save({
-                        'completed' : toggledTodoState
+                        'completed' : wasNoRemainingBefore
                     });
                 });
-
-                //this._super("render", {});
-
-                //$("select[name='completed']").trigger('create');
-                //$('.ui-slider').slider('refresh');
-                //$('.selector').slider('refresh');
                 this.delegateEvents(this.events);
             },
             clearCompleted : function () {
