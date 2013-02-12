@@ -832,7 +832,7 @@ Thorax was created by Ryan Eastridge and Kevin Decker to create Walmart's mobile
 ```javascript
     var view = new Thorax.View({
         greeting: 'Hello',
-        template: '{{greeting}} World!'
+        template: Handlebars.compile('{{greeting}} World!')
     });
     view.appendTo('body');
 ```
@@ -843,7 +843,7 @@ Thorax was created by Ryan Eastridge and Kevin Decker to create Walmart's mobile
 
     var view = new Thorax.View({
         model: new Thorax.Model({key: 'value'}),
-        template: '{{key}}'
+        template: Handlebars.compile('{{key}}')
     });
 
 ### Embedding child views
@@ -853,7 +853,7 @@ The view helper allows you to embed other views within a view. Child views can b
 ```javascript
     var parent = new Thorax.View({
         child: new Thorax.View(...),
-        template: '{{view child}}'
+        template: Handlebars.compile('{{view child}}')
     });
 ```
 
@@ -866,7 +866,7 @@ Or the name of a child view to initialize (and any optional properties to pass).
     });
   
     var parent = new Thorax.View({
-        template: '{{view "child" key="value"}}'
+        template: Handlebars.compile('{{view "child" key="value"}}')
     });
 ```
 
