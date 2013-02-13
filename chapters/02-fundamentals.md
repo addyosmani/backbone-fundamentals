@@ -88,7 +88,7 @@ Our example will need a div element to which we can attach a list of Todo's. It 
   <script type="text/template" id="item-template">
     <div>
       <input id="todo_complete" type="checkbox" <%= completed ? 'checked="checked"' : '' %>>
-      <%= title %>
+      <%- title %>
     </div>
   </script>
   <script src="underscore-min.js"></script>
@@ -222,7 +222,7 @@ Let's compare two examples of HTML templates. One is implemented using the popul
 ```html
 <div class="view">
   <input class="toggle" type="checkbox" <%= completed ? 'checked' : '' %>>
-  <label><%= title %></label>
+  <label><%- title %></label>
   <button class="destroy"></button>
 </div>
 <input class="edit" value="<%= title %>">
