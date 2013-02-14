@@ -90,7 +90,7 @@ To see what this will look like with some data in it, go ahead and add a manuall
 
 Open this file in a browser and it should look something like this:
 
-![](img/SS-Book-Tutorial-3.png)
+![](img/chapter5-1.png)
 
 Not so great. This is not a CSS tutorial, but we still need to do some formatting. Create a file screen.css in your site/css folder
 
@@ -164,7 +164,7 @@ body {
 
 Now it looks a bit better:
 
-![](img/SS-Book-Tutorial-1.png)
+![](img/chapter5-2.png)
 
 So this is what we want the final result to look like, but with more books. Go ahead and copy the bookContainer div a few more times if you would like to see what it looks like. Now we are ready to start developing the actual application.
 
@@ -257,11 +257,11 @@ var app = app || {};
 
 $(function() {
 	var books = [
-		{ title: "JavaScript: The Good Parts", author: "Douglas Crockford", releaseDate: "2008", keywords: "JavaScript Programming" },
-		{ title: "The Little Book on CoffeeScript", author: "Alex MacCaw", releaseDate: "2012", keywords: "CoffeeScript Programming" },
-		{ title: "Scala for the Impatient", author: "Cay S. Horstmann", releaseDate: "2012", keywords: "Scala Programming" },
-		{ title: "American Psycho", author: "Bret Easton Ellis", releaseDate: "1991", keywords: "Novel Splatter" },
-		{ title: "Eloquent JavaScript", author: "Marijn Haverbeke", releaseDate: "2011", keywords: "JavaScript Programming" }
+		{ title: 'JavaScript: The Good Parts', author: 'Douglas Crockford', releaseDate: '2008', keywords: 'JavaScript Programming' },
+		{ title: 'The Little Book on CoffeeScript', author: 'Alex MacCaw', releaseDate: '2012', keywords: 'CoffeeScript Programming' },
+		{ title: 'Scala for the Impatient', author: 'Cay S. Horstmann', releaseDate: '2012', keywords: 'Scala Programming' },
+		{ title: 'American Psycho', author: 'Bret Easton Ellis', releaseDate: '1991', keywords: 'Novel Splatter' },
+		{ title: 'Eloquent JavaScript', author: 'Marijn Haverbeke', releaseDate: '2011', keywords: 'JavaScript Programming' }
 	];
 
 	new app.LibraryView( books );
@@ -270,7 +270,7 @@ $(function() {
 
 If you view index.html in a browser you should see something like this:
 
-![](img/SS-Book-Tutorial-4.png)
+![](img/chapter5-3.png)
 
 This is a complete Backbone application, though it doesn't yet do anything interesting.
 
@@ -284,7 +284,7 @@ When the user clicks the add button we want to take the data in the form and use
 
 ```javascript
 events:{
-    "click #add":"addBook"
+    'click #add':'addBook'
 },
 
 addBook: function( e ) {
@@ -293,7 +293,7 @@ addBook: function( e ) {
 	var formData = {};
 
 	$( '#addBook div' ).children( 'input' ).each( function( i, el ) {
-		if( $( el ).val() != "" )
+		if( $( el ).val() != '' )
 		{
 			formData[ el.id ] = $( el ).val();
 		}
@@ -317,7 +317,7 @@ in the initialize function of LibraryView.
 
 Now you should be ready to take the application for a spin.
 
-![](img/SS-Book-Tutorial-5.png)
+![](img/chapter5-4.png)
 
 You may notice that the file input for the cover image isn’t working, but that is left as an exercise to the reader.
 
@@ -458,7 +458,7 @@ node server.js
 
 If you open a browser on http://localhost:4711 you should see something like this:
 
-![](img/SS-Book-Tutorial-8.png)
+![](img/chapter5-5.png)
 
 This is where we left off in Part 2, but we are now running on a server instead of directly from the files. Great job! We can now start defining routes (URLs) that the server should react to. This will be our REST API. Routes are defined by using app followed by one of the HTTP verbs get, put, post and delete, which corresponds to Create, Read, Update and Delete. Let us go back to server.js and define a simple route:
 
@@ -471,7 +471,7 @@ app.get( '/api', function( request, response ) {
 
 The get function takes a URL as first parameter and a function as second. The function will be called with request and response objects. Now you can restart node and go to our specified URL:
 
-![](img/SS-Book-Tutorial-9.png)
+![](img/chapter5-6.png)
 
 ###Connect to database
 
@@ -522,7 +522,7 @@ jQuery.get( '/api/books/', function( data, textStatus, jqXHR ) {
 
 …and press enter and you should get something like this:
 
-![](img/SS-Book-Tutorial-11.png)
+![](img/chapter5-7.png)
 
 Here I used jQuery to make the call to our REST API, since it was already loaded on the page. The returned array is obviously empty, since we have not put anything into the database yet. Lets go and create a POST route that enables adding new items in server.js:
 
@@ -581,10 +581,10 @@ You should now get an array of size 1 back from our server. You may wonder about
 
 MongoDB expects dates in UNIX time format (milliseconds from the start of Jan 1st 1970 UTC), so we have to convert dates before posting. The object we get back however, contains a JavaScript Date object. Also note the _id attribute of the returned object.
 
-![](img/SS-Book-Tutorial-10.png)
+![](img/chapter5-8.png)
 
 
-Lets move on to creating a GET reqquest that retrieves a single book in server.js:
+Lets move on to creating a GET request that retrieves a single book in server.js:
 
 ```javascript
 //Get a single book by id
@@ -813,7 +813,7 @@ initialize: function() {
 
 The initialize function no longer takes a set of sample data as an argument, so doesn't pass anything to the app.Library constructor. You can now remove the sample data from site/js/app.js. Instead we will populate our Library from the database with `this.collection.fetch()`. I have also added a listener on the reset event. We need to do this since the fetching of models is asynchronous and happens after the page is rendered. When the fetching is finished, Backbone will fire the reset event, which we listen to and re-render the view. If you reload the page now you should see all books that are stored on the server:
 
-![](img/SS-Book-Tutorial-14.png)
+![](img/chapter5-9.png)
 
 As you can see the date and keywords look a bit weird. The date delivered from the server is converted into a JavaScript Date object and when applied to the underscore template it will use the toString() function to display it. There isn’t very good support for formatting dates in JavaScript so we will use the dateFormat jQuery plugin to fix this. Go ahead and download it from [here](http://github.com/phstc/jquery-dateFormat) and put it in your site/js/lib folder. Update the book template so that the date is displayed with:
 
@@ -837,7 +837,7 @@ Here I iterate over the keywords array using the each function and print out eve
 
 Reloading the page again should look quite decent:
 
-![](img/SS-Book-Tutorial-12.png)
+![](img/chapter5-10.png)
 
 Now go ahead and delete a book and then reload the page: Tadaa! the deleted book is back! Not cool, why is this? This happens because when we get the BookModels from the server they have an _id attribute (notice the underscore), but Backbone expects an id attribute (no underscore). Since no id attribute is present, Backbone sees this model as new and deleting a new model doesn’t need any synchronization.
 
@@ -896,7 +896,7 @@ $(function() {
 
 You should now be able to pick a date when clicking in the releaseDate field:
 
-![](img/SS-Book-Tutorial-13.png)
+![](img/chapter5-11.png)
 
 Finally, we have to make sure that the form input is properly transformed into our storage format. Change the addBook function in LibraryView to:
 
@@ -907,7 +907,7 @@ addBook: function( e ) {
 	var formData = {};
 
 	$( '#addBook div' ).children( 'input' ).each( function( i, el ) {
-		if( $( el ).val() != "" )
+		if( $( el ).val() != '' )
 		{
 			if( el.id === 'keywords' ) {
 				formData[ el.id ] = [];
@@ -929,7 +929,7 @@ addBook: function( e ) {
 
 Here I check if the current element is the releaseDate input field, in which case I use datePicker(“getDate”) which will give me a Date object and then use the getTime function on that to get the time in milliseconds. Then I check if the current element is the keywords input field, in which case I split the string on each space and create an array with keyword objects. Now you should be able to add new books with both release date and keywords!
 
-![](img/SS-Book-Tutorial-15.png)
+![](img/chapter5-12.png)
 
 ### Connecting with a third party API
 
@@ -969,10 +969,10 @@ this.collection.create( this.collection.model, {
 The final result is a POST to the defined url. In the POST body, the attributes are submitted as a JSON encoded array. 
 
 ```php
-    $raw = file_get_contents('php://input');
-    $data = json_decode($raw, true);
-    $book_id = $data['bookId'];
-```		
+$raw = file_get_contents('php://input');
+$data = json_decode($raw, true);
+$book_id = $data['bookId'];
+```
 
 ### Summary
 
