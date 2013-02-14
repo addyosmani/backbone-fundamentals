@@ -280,7 +280,7 @@ var Todo = Backbone.Model.extend({
 });
 
 var myTodo = new Todo();
-myTodo.set('completed', true, {validate: true}); // logs: Remember to set a title for your todo.
+myTodo.save('completed', true, {validate: true}); // logs: Remember to set a title for your todo.
 console.log('completed: ' + myTodo.get('completed')); // completed: false
 ```
 
