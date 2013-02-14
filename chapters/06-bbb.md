@@ -60,7 +60,7 @@ A typical workflow for using grunt-bbb, which we can use later on is:
 
 ## Creating a new project
 
-Let's create a new folder for our project and run `bbb init` to kick things off. If everything has been correctly installed, this will sub out some project directories and files for us. Let's review what is generated.
+Let's create a new folder for our project and run `bbb init` to kick things off. If everything has been correctly installed, this will stub out some project directories and files for us. Let's review what is generated.
 
 ### index.html
 
@@ -100,7 +100,7 @@ The `data-main` attribute is used to inform RequireJS to load `app/config.js` (a
 
 ### config.js
 
-A RequireJS configuration object allows us to specify aliases and paths for dependencies we're likely to reference often (e.g jQuery), bootstrap properties like our base application URL and `shim` libraries that don't support AMD natively.
+A RequireJS configuration object allows us to specify aliases and paths for dependencies we're likely to reference often (e.g., jQuery), bootstrap properties like our base application URL, and `shim` libraries that don't support AMD natively.
 
 This is what the config file in Backbone Boilerplate looks like:
 
@@ -136,9 +136,7 @@ require.config({
 });
 ```
 
-The first option defined in the above config is `deps: ['main']`. This informs RequireJS to load up our main.js file, which is considered the entry point for our application. You may notice that we haven't specified any other path information for `main`.
-
-This is because as we haven't overridden the path to our scripts using the `baseUrl` option, Require will infer this using the path from our `data-main` attribute in index.html. In other words, our `baseUrl` is `app/` and any scripts we require will be loaded relative to this location.
+The first option defined in the above config is `deps: ['main']`. This informs RequireJS to load up our main.js file, which is considered the entry point for our application. You may notice that we haven't specified any other path information for `main`. Require will infer the default `baseUrl` using the path from our `data-main` attribute in index.html. In other words, our `baseUrl` is `app/` and any scripts we require will be loaded relative to this location. We could use the `baseUrl` option to override this default if we wanted to use a different location.
 
 The next block is `paths`, which we can use to specify paths relative to the `baseUrl` as well as the paths/aliases to dependencies we're likely to regularly reference.
 
@@ -181,18 +179,18 @@ For example, in the block below, we state that Backbone.js is dependent on Lodas
     }
 ```
 
-Finally, we inform RequireJS that the Backbone [LayoutManager](https://github.com/tbranyen/backbone.layoutmanager) plugin (a template and layout manager, also included) requires that Backbone be loaded before it should be.
+Finally, we inform RequireJS that the Backbone [LayoutManager](https://github.com/tbranyen/backbone.layoutmanager) plugin (a template and layout manager, also included) requires that Backbone be loaded before it is loaded.
 
 ```javascript
     // Backbone.LayoutManager depends on Backbone.
     'plugins/backbone.layoutmanager': ['backbone']
 ```
 
-This entire setup ensures that our scripts correctly get loaded in the order in which we expect.
+This entire setup ensures that our scripts get loaded in the order in which we expect.
 
 ### main.js
 
-Next, we have `main.js`, which defines the entry point for our application. We use a global `require()` method to load an array any other scripts needed, such as our application `app.js` and our main router `router.js`. Note that most of the time, we will only use `require()` for bootstrapping an application and a similar method called `define()` for all other purposes.
+Next, we have `main.js`, which defines the entry point for our application. We use a global `require()` method to load an array containing any other scripts needed, such as our application `app.js` and our main router `router.js`. Note that most of the time, we will only use `require()` for bootstrapping an application and a similar method called `define()` for all other purposes.
 
 The function defined after our array of dependencies is a callback which doesn't fire until these scripts have loaded. Notice how we're able to locally alias references to "app" and "router" as `app` and `Router` for convenience.
 
@@ -393,7 +391,7 @@ Notice how boilerplate code for our model and collection has already been writte
 
 Now, you may be wondering where or how Views fit into this setup. Although Backbone Boilerplate doesn't include Views in its generated modules by default, we can easily add them ourselves as needed.
 
-e.g:
+e.g.:
 
 ```javascript
 define([
@@ -501,12 +499,12 @@ function(app, Backbone) {
 });
 ```
 
-Where the `template` references in our Views, correspond to files in the `app/templates` directory. e.g `foo/bar` is located at `app/templates/foo/bar.html` and is a HTML template that can contain Lodash/Underscore.js Micro-templating logic.
+Where the `template` references in our Views correspond to files in the `app/templates` directory; e.g., `foo/bar` is located at `app/templates/foo/bar.html` and is an HTML template that can contain Lodash/Underscore.js Micro-templating logic.
 
 
 ### router.js
 
-Finally, let's look at our application router, used for handling navigation. The default router Backbone Boilerplate generates for us inclues sane defaults for no routes being specified.
+Finally, let's look at our application router which is used for handling navigation. The default router Backbone Boilerplate generates for us includes sane defaults for no routes being specified.
 
 ```javascript
 define([
@@ -565,7 +563,7 @@ function(app, Foo) {
     }
   });
 
-  // Fetch data (e.g from localStorage)
+  // Fetch data (e.g., from localStorage)
   collection.fetch();
 
   return Router;
@@ -579,7 +577,7 @@ In this section we reviewed Backbone Boilerplate and learned how to use the BBB 
 
 If you would like to learn more about how this project helps structure your app, BBB includes some built-in boilerplate sample apps that can be easily generated for review.
 
-These include a boilerplate tutorial project (`bbb init:tutorial`) and an implementation of my [TodoMVC](http://todomvc) project (`bbb init:todomvc`). I recommend checking these out as they'll provide you with a more complete picture of how Backbone Boilerplate, its templates and so on fit into the overall setup for a web app.
+These include a boilerplate tutorial project (`bbb init:tutorial`) and an implementation of my [TodoMVC](http://todomvc) project (`bbb init:todomvc`). I recommend checking these out as they'll provide you with a more complete picture of how Backbone Boilerplate, its templates, and so on fit into the overall setup for a web app.
 
 For more about Grunt-BBB, remember to take a look at the official project [repository](https://github.com/backbone-boilerplate/grunt-bbb). There is also a related [slide-deck](https://dl.dropbox.com/u/79007/talks/Modern_Web_Applications/slides/index.html) available for those interested in reading more.
 
@@ -587,6 +585,6 @@ For more about Grunt-BBB, remember to take a look at the official project [repos
 
 As we've seen, scaffolding tools can assist in expediting how quickly you can begin a new application by creating the basic files required for a project automatically. If you appreciate such tools, I'm happy to also recommend checking out [Yeoman](http://yeoman.io) (one of my upcoming projects) and [Brunch](https://github.com/brunch/brunch).
 
-Brunch works very well with Backbone, Underscore, jQuery and CoffeeScript and is even used by companies such as Red Bull and Jim Beam. You may have to update any third party dependencies (e.g. latest jQuery or Zepto) when using it, but other than that it should be fairly stable to use right out of the box.
+Brunch works very well with Backbone, Underscore, jQuery and CoffeeScript and is even used by companies such as Red Bull and Jim Beam. You may have to update any third party dependencies (e.g., latest jQuery or Zepto) when using it, but other than that it should be fairly stable to use right out of the box.
 
 Brunch can be installed via the nodejs package manager and is easy to get started with. If you happen to use Vim or Textmate as your editor of choice, you'll be happy to know that there are Brunch bundles available for both.
