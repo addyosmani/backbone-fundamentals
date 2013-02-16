@@ -229,7 +229,7 @@ In the previous section you may have noticed that we initially declared a variab
 
 Now that we've reviewed some fundamentals, let's go through downloading Jasmine and getting everything setup to write tests.
 
-A standalone release of Jasmine can be [downloaded](http://pivotal.github.com/jasmine/download.html) from the official release page.
+A standalone release of Jasmine can be [downloaded](https://github.com/pivotal/jasmine/downloads) from the official release page.
 
 You'll need a file called SpecRunner.html in addition to the release. It can be downloaded from https://github.com/pivotal/jasmine/tree/master/lib/jasmine-core/example or as part of a download of the complete Jasmine [repo](https://github.com/pivotal/jasmine/zipball/master).Alternatively, you can ```git clone``` the main Jasmine repository from https://github.com/pivotal/jasmine.git.
 
