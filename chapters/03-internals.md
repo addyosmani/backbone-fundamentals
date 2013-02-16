@@ -100,14 +100,14 @@ console.log(todo1.get('title')); // empty string
 console.log(todo1.get('completed')); // false
 
 var todo2 = new Todo({
-  title: "Retrieved with models get() method.",
+  title: "Retrieved with model's get() method.",
   completed: true
 });
-console.log(todo2.get('title')); // Retrieved with models get() method.
+console.log(todo2.get('title')); // Retrieved with model's get() method.
 console.log(todo2.get('completed')); // true
 ```
 
-If you need to read or clone all of a model's data attributes, use its `toJSON()` method. This method returns a copy of the attributes as an object (not a JSON string despite its name). (`toJSON()` is part of the JSON.stringify specification - when passed an object with a `toJSON()` method it stringifies the return value of that method instead of the original object. The examples above used this feature when they used JSON.stringify to log model instances.)
+If you need to read or clone all of a model's data attributes, use its `toJSON()` method. This method returns a copy of the attributes as an object (not a JSON string despite its name). (When `JSON.stringify()` is passed an object with a `toJSON()` method, it stringifies the return value of `toJSON()` instead of the original object. The examples in the previous section took advantage of this feature when they called `JSON.stringify()` to log model instances.)
 
 ```javascript
 var Todo = Backbone.Model.extend({
@@ -415,7 +415,7 @@ View logic often needs to invoke jQuery functions on the `el` element and elemen
 
 The `_.template` method in Underscore compiles JavaScript templates into functions which can be evaluated for rendering. In the TodoView, I'm passing the markup from the template with id `item-template` to `_.template()` to be compiled and stored in the todoTpl property when the view is created.
 
-The `render()` method uses this template by passing it the `toJSON()` encoding of the attributes of the model associated with the view. The template returns its markup after using the model's title and completed flag to evaluate the expressions containing them. I then set this markup as the HTML content of the `el` DOM element use the `$el` property.
+The `render()` method uses this template by passing it the `toJSON()` encoding of the attributes of the model associated with the view. The template returns its markup after using the model's title and completed flag to evaluate the expressions containing them. I then set this markup as the HTML content of the `el` DOM element using the `$el` property.
 
 Presto! This populates the template, giving you a data-complete set of markup in just a few short lines of code.
 
@@ -423,7 +423,7 @@ Presto! This populates the template, giving you a data-complete set of markup in
 
 The Backbone `events` attribute allows us to attach event listeners to either `el`-relative custom selectors, or directly to `el` if no selector is provided. An event takes the form `{'eventName selector': 'callbackFunction'}` and a number of DOM event-types are supported, including `click`, `submit`, `mouseover`, `dblclick` and more.
 
-What isn't instantly obvious is that while Backbone uses jQuery's `.delegate()` underneath, it goes further by extending it so that `this` always refers to the current view object within callback functions. The only thing to really keep in mind is that any string callback supplied to the events attribute must have a corresponding function with the same name within the scope of your view. In our TodoView example, the edit callback is invoked when the use double-clicks a label element within the `el` element, updateOnEnter is called for each keypress in an element with class 'edit', and close executes when an element with class 'edit' loses focus. Each of these callback functions can use `this` to refer to the TodoView object. 
+What isn't instantly obvious is that while Backbone uses jQuery's `.delegate()` underneath, it goes further by extending it so that `this` always refers to the current view object within callback functions. The only thing to really keep in mind is that any string callback supplied to the events attribute must have a corresponding function with the same name within the scope of your view. In our TodoView example, the edit callback is invoked when the user double-clicks a label element within the `el` element, updateOnEnter is called for each keypress in an element with class 'edit', and close executes when an element with class 'edit' loses focus. Each of these callback functions can use `this` to refer to the TodoView object. 
 
 
 ## Collections
@@ -1069,7 +1069,7 @@ An application will usually have at least one route mapping a URL route to a fun
 'route' : 'mappedFunction'
 ```
 
-Let's define our first router by extending `Backbone.Router`. For the purposes of this guide, we're going to continue pretending we're creating a complex todo application (something like personal organize/planner) that requires a complex TodoRouter.
+Let's define our first router by extending `Backbone.Router`. For the purposes of this guide, we're going to continue pretending we're creating a complex todo application (something like a personal organizer/planner) that requires a complex TodoRouter.
 
 Note the inline comments in the code example below as they continue our lesson on routers.
 
@@ -1251,7 +1251,7 @@ Backbone.history.start();
 
 We previously discussed how Backbone supports RESTful persistence via its `fetch()` and `create()` methods on Collections and `save()`, and `delete()` methods on Models. Now we are going to take a closer look at Backbone's sync method which underlies these operations.
 
-The Backbone.sync method is an integral part of Backbone.js. It assumes a jQuery-like `$.ajax()` method, so HTTP parameters are organised based on jQuery’s API. Since some legacy servers may not support JSON-formatted requests and HTTP PUT and DELETE operations, Backbone can be configured to emulate these capabilities using the two configuration variables shown below with their default values:
+The Backbone.sync method is an integral part of Backbone.js. It assumes a jQuery-like `$.ajax()` method, so HTTP parameters are organized based on jQuery’s API. Since some legacy servers may not support JSON-formatted requests and HTTP PUT and DELETE operations, Backbone can be configured to emulate these capabilities using the two configuration variables shown below with their default values:
 
 ```javascript
 Backbone.emulateHTTP = false; // set to true if server cannot handle HTTP PUT or HTTP DELETE
@@ -1290,7 +1290,7 @@ If we wanted to replace the standard `sync` implementation with one that simply 
 ```javascript
 var id_counter = 1;
 Backbone.sync = function(method, model) {
-  console.log("I\'ve been passed " + method + " with " + JSON.stringify(model));
+  console.log("I've been passed " + method + " with " + JSON.stringify(model));
   if(method === 'create'){ model.set('id', id_counter++); }
 };
 ```
@@ -1368,7 +1368,7 @@ The official Backbone.js [documentation](http://backbonejs.org/) states:
 
 >Backbone's only hard dependency is either Underscore.js ( >= 1.4.3) or Lo-Dash. For RESTful persistence, history support via Backbone.Router and DOM manipulation with Backbone.View, include json2.js, and either jQuery ( >= 1.7.0) or Zepto.
 
-What this translates to is that if you require working with anything beyond models, you will need to include a DOM manipulation library such as jQuery or Zepto. Underscore is primarily used for it's utility methods (which Backbone relies upon heaviy) and json2.js for legacy browser JSON support if Backbone.sync is used.
+What this translates to is that if you require working with anything beyond models, you will need to include a DOM manipulation library such as jQuery or Zepto. Underscore is primarily used for its utility methods (which Backbone relies upon heavily) and json2.js for legacy browser JSON support if Backbone.sync is used.
 
 ## Summary
 
