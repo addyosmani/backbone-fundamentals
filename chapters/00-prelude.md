@@ -11,6 +11,7 @@ This (in-progress) book is released under a Creative Commons Attribution-NonComm
 I'm very pleased to announce that this book will be out in physical form (once complete) via [O'Reilly Media](http://shop.oreilly.com/product/0636920025344.do). Readers will have the option of purchasing the latest version in either print or a number of digital formats then or can grab a recent version from this repository.
 
 Corrections to existing material are always welcome and I hope that together we can provide the community with an up-to-date resource that is of help.
+
 My extended thanks go out to [Jeremy Ashkenas](https://github.com/jashkenas) for creating Backbone.js and [these](https://github.com/addyosmani/backbone-fundamentals/contributors) members of the community for their assistance tweaking this project.
 
 I hope you find this book helpful!
@@ -25,10 +26,10 @@ This book is targeted at novice to intermediate developers wishing to learn how 
 
 I am indebted to the fantastic work done by the technical reviewers who helped improve this book. Their knowledge, energy and passion have helped shape it into a better learning resource and they continue to serve as a source of inspiration. Thanks go out to:
 
-* Marc Friedman
-* Dusan Gledovic
-* Sindre Sorhus
-* Mat Scales
+* [Marc Friedman](http://github.com/dcmaf)
+* [Mat Scales](http://github.com/wibblymat)
+* [Dusan Gledovic](http://github.com/g6scheme)
+* [Sindre Sorhus](http://github.com/sindresorhus)
 
 ## Credits
 
