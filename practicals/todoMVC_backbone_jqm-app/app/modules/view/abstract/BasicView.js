@@ -58,7 +58,6 @@ define([
                 $("body").append($(this.el));
                 $("#" + this.id).page();
             },
-            // Instead you could use event "pagehide": "onPageHide"
             cleanupPossiblePageDuplicationInDOM : function () {
 
                 var $previousEl = $("#" + this.id);
@@ -66,6 +65,7 @@ define([
                 if (isAlreadyInDom) {
                     // used because from-to page switch
                     // needs events at that point of time
+                    // have in mind, that detach will not remove handlers
                     $previousEl.detach();
                 }
             }
