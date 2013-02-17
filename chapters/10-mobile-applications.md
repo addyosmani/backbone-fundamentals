@@ -21,7 +21,7 @@ The basic setup of the libraries to load by Require.js are in the following orde
 5. JqueryMobileCustomInitConfig
 6. Instantiation of the Backbone Router
 
-![](img/chapter10-1-1.png)
+![](../img/chapter10-1-1.png)
 
 ### Delegating jQuery Mobile navigation to Backbone
 
@@ -61,7 +61,7 @@ $.mobile.page.prototype.options.degradeInputs.date = true;
 });
 ```
 
-![](img/chapter10-2-1.png)
+![](../img/chapter10-2-1.png)
 
 Every time the hash URL was changed, e.g. by clicking a link, the configuration prevents jQM to trigger its events. Instead, the Backbone Router will listen to hash changes and decide with view to request.
 
@@ -225,7 +225,7 @@ To retain control of hash routing, “changeHash” has to be set to false as we
 
 Make sure to always progress component enrichment of new added HTML into the DOM, to guarantee correct appearance of the mobile components.
 
-![](img/chapter10-2-2.png)
+![](../img/chapter10-2-2.png)
 
 If you consider the following HTML declaration of the editing Todo page the following input
 
@@ -298,7 +298,7 @@ $('#myPage').live('pagecreate', function(event){
 ```
 In such scenarios, it is important to known when the jQuery Mobile events occur, so have a look on the diagram.
 
-![](img/chapter10-3-1.png)
+![](../img/chapter10-3-1.png)
 
 An alternative is the jQuery Mobile Router project, which you would need to replace with the Backbone Router. With the jQM-Router project, you get a powerful way to intercept and route one of the various jQM events. It’s independent of another framework, but very tight bound to jQM.# If you decide to use it, consider Backbone.js Custom Builds to exclude the router code.# It will save you ~ 25% out of the max compressed size of 17,1 KB.
 
