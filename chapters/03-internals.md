@@ -18,12 +18,12 @@ var todo1 = new Todo();
 console.log(JSON.stringify(todo1));
 
 // or with some arbitrary data:
-var todo2 = new Todo({ 
-  title: 'Check attributes property of the both model instances in the console.', 
+var todo2 = new Todo({
+  title: 'Check the attributes of both model instances in the console.',
   completed: true
 });
 
-// Following logs: {"title":"Check attributes property of the both model instances in the console.","completed":true}
+// Following logs: {"title":"Check the attributes of both model instances in the console.","completed":true}
 console.log(JSON.stringify(todo2));
 ```
 
@@ -55,22 +55,22 @@ var Todo = Backbone.Model.extend({
   }
 });
 
-// Now we can create our concrete instance of the model 
+// Now we can create our concrete instance of the model
 // with default values as follows:
 var todo1 = new Todo();
 
-// Following logs: {"title":"","completed":false} 
+// Following logs: {"title":"","completed":false}
 console.log(JSON.stringify(todo1));
 
 // Or we could instantiate it with some of the attributes (e.g., with custom title):
-var todo2 = new Todo({ 
-  title: 'Check attributes property of the logged models in the console.'
+var todo2 = new Todo({
+  title: 'Check attributes of the logged models in the console.'
 });
 
-// Following logs: {"title":"Check attributes property of the logged models in the console.","completed":false} 
+// Following logs: {"title":"Check attributes of the logged models in the console.","completed":false}
 console.log(JSON.stringify(todo2));
 
-// Or override all the default attributes:
+// Or override all of the default attributes:
 var todo3 = new Todo({
   title: 'This todo is done, so take no action on this one.',
   completed: true
@@ -146,10 +146,10 @@ var Todo = Backbone.Model.extend({
 });
 
 // Setting the value of attributes via instantiation
-var myTodo = new Todo({ 
-  title: "Set through instantiation." 
+var myTodo = new Todo({
+  title: "Set through instantiation."
 });
-console.log('Todo title: ' + myTodo.get('title')); // Todo title: Set through instantiation. 
+console.log('Todo title: ' + myTodo.get('title')); // Todo title: Set through instantiation.
 console.log('Completed: ' + myTodo.get('completed')); // Completed: false
 
 // Set single attribute value at a time through Model.set():
@@ -158,7 +158,7 @@ console.log('Todo title: ' + myTodo.get('title')); // Todo title: Title attribut
 console.log('Completed: ' + myTodo.get('completed')); // Completed: false
 
 // Set map of attributes through Model.set():
-myTodo.set({ 
+myTodo.set({
   title: "Both attributes set through Model.set().",
   completed: true
 });
@@ -168,7 +168,7 @@ console.log('Completed: ' + myTodo.get('completed')); // Completed: true
 
 **Direct access**
 
-Models store attributes internally in the `Model.attributes` object which can be accessed directly if necessary. But remember it is best practice to use Model.get(), Model.set(), or direct instantiation as explained above. 
+Models store attributes internally in the `Model.attributes` object which can be accessed directly if necessary. But remember it is best practice to use Model.get(), Model.set(), or direct instantiation as explained above.
 
 #### Listening for changes to your model
 
@@ -191,7 +191,7 @@ var Todo = Backbone.Model.extend({
 
 var myTodo = new Todo();
 
-myTodo.set('title', 'On each change of attribute values listener is triggered.');
+myTodo.set('title', 'The listener is triggered whenever an attribute value changes.');
 console.log('Title has changed: ' + myTodo.get('title'));
 
 
@@ -199,17 +199,17 @@ myTodo.set('completed', true);
 console.log('Completed has changed: ' + myTodo.get('completed'));
 
 myTodo.set({
-  title: 'Listener is triggered for each change, not for change of the each attribute.',
+  title: 'Changing more than one attribute at the same time only triggers the listener once.',
   'complete': true
 });
 
 // Above logs:
 // This model has been initialized.
 // - Values for this model have changed.
-// Title has changed: On each change of attribute values listener is triggered.
+// Title has changed: The listener is triggered whenever an attribute value changes.
 // - Values for this model have changed.
 // Completed has changed: true
-// - Values for this model have changed. 
+// - Values for this model have changed.
 ```
 
 You can also listen for changes to individual attributes in a Backbone model. In the following example, we log a message whenever a specific attribute (the title of our Todo model) is altered.
@@ -221,14 +221,14 @@ var Todo = Backbone.Model.extend({
     title: '',
     completed: false
   },
-  
+
   initialize: function(){
     console.log('This model has been initialized.');
     this.on('change:title', function(){
         console.log('Title value for this model has changed.');
     });
   },
-  
+
   setTitle: function(newTitle){
     this.set({ title: newTitle });
   }
@@ -264,7 +264,7 @@ var Todo = Backbone.Model.extend({
   defaults: {
     completed: false
   },
-  
+
   validate: function(attribs){
     if(attribs.title === undefined){
         return "Remember to set a title for your todo.";
@@ -305,13 +305,13 @@ var TodoView = Backbone.View.extend({
 
   // Cache the template function for a single item.
   todoTpl: _.template( $('#item-template').html() ),
-  
+
   events: {
     'dblclick label': 'edit',
     'keypress .edit': 'updateOnEnter',
     'blur .edit':   'close'
   },
-  
+
   // Re-render the titles of the todo item.
   render: function() {
     this.$el.html( this.todoTpl( this.model.toJSON() ) );
@@ -328,7 +328,7 @@ var TodoView = Backbone.View.extend({
   },
 
   updateOnEnter: function( e ) {
-    // executed on each keypress when in todo edit mode, 
+    // executed on each keypress when in todo edit mode,
     // but we'll wait for enter to get in action
   }
 });
@@ -343,11 +343,11 @@ console.log(todoView.el); // logs <li></li>
 
 The central property of a view is `el` (the value logged in the last statement of the example). What is `el` and how is it defined? 
 
-`el` is basically a reference to a DOM element and all views must have one. Views can use `el` to compose their element's content and then insert it into the DOM all at once, which makes for faster rendering because the browser performs the minimum required reflows and repaints.
+`el` is basically a reference to a DOM element and all views must have one. Views can use `el` to compose their element's content and then insert it into the DOM all at once, which makes for faster rendering because the browser performs the minimum required number of reflows and repaints.
 
 There are two ways to associate a DOM element with a view: a new element can be created for the view and subsequently added to the DOM or a reference can be made to an element which already exists in the page.
 
-If you want to create a new element for your view, set any combination of the following view's properties: `tagName`, `id` and `className`. A new element will be created for you by the framework and a reference to it will be available at the `el` property. If nothing is specified `tagName` defaults to `div`.
+If you want to create a new element for your view, set any combination of the following properties on the view: `tagName`, `id` and `className`. A new element will be created for you by the framework and a reference to it will be available at the `el` property. If nothing is specified `tagName` defaults to `div`.
 
 In the example above, `tagName` is set to 'li', resulting in creation of an li element. The following example creates a ul element with id and class attributes:
 
@@ -408,6 +408,7 @@ View logic often needs to invoke jQuery functions on the `el` element and elemen
   </script>
   <script src="underscore-min.js"></script>
   <script src="backbone-min.js"></script>
+  <script src="jquery-min.js"></script>
   <script src="example.js"></script>
 </body>
 </html>
@@ -423,7 +424,7 @@ Presto! This populates the template, giving you a data-complete set of markup in
 
 The Backbone `events` attribute allows us to attach event listeners to either `el`-relative custom selectors, or directly to `el` if no selector is provided. An event takes the form `{'eventName selector': 'callbackFunction'}` and a number of DOM event-types are supported, including `click`, `submit`, `mouseover`, `dblclick` and more.
 
-What isn't instantly obvious is that while Backbone uses jQuery's `.delegate()` underneath, it goes further by extending it so that `this` always refers to the current view object within callback functions. The only thing to really keep in mind is that any string callback supplied to the events attribute must have a corresponding function with the same name within the scope of your view. In our TodoView example, the edit callback is invoked when the user double-clicks a label element within the `el` element, updateOnEnter is called for each keypress in an element with class 'edit', and close executes when an element with class 'edit' loses focus. Each of these callback functions can use `this` to refer to the TodoView object. 
+What isn't instantly obvious is that while Backbone uses jQuery's `.delegate()` underneath, it goes further by extending it so that `this` always refers to the current view object within callback functions. The only thing to really keep in mind is that any string callback supplied to the events attribute must have a corresponding function with the same name within the scope of your view. In our TodoView example, the edit callback is invoked when the user double-clicks a label element within the `el` element, updateOnEnter is called for each keypress in an element with class 'edit', and close executes when an element with class 'edit' loses focus. Each of these callback functions can use `this` to refer to the TodoView object.
 
 
 ## Collections
@@ -523,7 +524,7 @@ As collections represent a group of items, we can listen for `add` and `remove` 
 var TodosCollection = new Backbone.Collection();
 
 TodosCollection.on("add", function(todo) {
-  console.log("I should " + todo.get("title") + ". Have I done it before? "  + (todo.get("completed") ? 'Yeah!': 'Not.' ));
+  console.log("I should " + todo.get("title") + ". Have I done it before? "  + (todo.get("completed") ? 'Yeah!': 'No.' ));
 });
 
 TodosCollection.add([
@@ -533,8 +534,8 @@ TodosCollection.add([
 ]);
 
 // The above logs:
-// I should go to Jamaica. Have I done it before? Not.
-// I should go to China. Have I done it before? Not.
+// I should go to Jamaica. Have I done it before? No.
+// I should go to China. Have I done it before? No.
 // I should go to Disneyland. Have I done it before? Yeah!
 ```
 
@@ -545,7 +546,7 @@ var TodosCollection = new Backbone.Collection();
 
 // log a message if a model in the collection changes
 TodosCollection.on("change:title", function(model) {
-    console.log("Changed my mind about where I should go, " + model.get('title'));
+    console.log("Changed my mind! I should " + model.get('title'));
 });
 
 TodosCollection.add([
@@ -555,7 +556,7 @@ TodosCollection.add([
 var myTodo = TodosCollection.get(3);
 
 myTodo.set('title', 'go fishing');
-// Logs: Changed my mind about where I should go, go fishing
+// Logs: Changed my mind! I should go fishing
 ```
 
 **Resetting/Refreshing Collections**
@@ -587,13 +588,13 @@ TodosCollection.on("change:completed", function(model) {
 TodosCollection.update([
     { id: 1, title: 'go to Jamaica.', completed: true },
     { id: 2, title: 'go to China.', completed: false },
-    { id: 4, title: 'go to Disneyworld.', completed: false }
+    { id: 4, title: 'go to Disney World.', completed: false }
 ]);
 
 // Above logs:
 // Removed go to Disneyland.
 // Completed go to Jamaica.
-// Added go to Disneyworld.
+// Added go to Disney World.
 ```
 
 If you need to simply replace the entire content of the collection then `Collection.reset()` can be used:
@@ -622,7 +623,7 @@ TodosCollection.reset([
 console.log('Collection size: ' + TodosCollection.length); // Collection size: 1
 ```
 
-Note that using `Collection.reset()` doesn't fire any `add` or `remove` events. A `reset` event is fired instead as shown in example.
+Note that using `Collection.reset()` doesn't fire any `add` or `remove` events. A `reset` event is fired instead as shown in the example.
 
 #### RESTful Persistence
 
@@ -680,7 +681,7 @@ As mentioned above, a model's `validate()` method is called automatically by `sa
 
 **Deleting models from the server**
 
-A model can be removed from the containing collection and the server by calling its `destroy()` method. Unlike `Collection.remove()` which only removes a model from a collection, `Model.destroy()` will also send an HTTP DELETE to collection's URL.
+A model can be removed from the containing collection and the server by calling its `destroy()` method. Unlike `Collection.remove()` which only removes a model from a collection, `Model.destroy()` will also send an HTTP DELETE to the collection's URL.
 
 ```javascript
 var Todo = Backbone.Model.extend({
@@ -752,7 +753,7 @@ The complete list of what Underscore can do is beyond the scope of this book, bu
 
 Speaking of utility methods, another bit of sugar in Backbone is its support for Underscore’s `chain()` method. Chaining is a common idiom in object-oriented languages; a chain is a sequence of method calls on the same object that are performed in a single statement. While Backbone makes Underscore's array manipulation operations available as methods of Collection objects, they cannot be directly chained since they return arrays rather than the original Collection.
 
-Fortunately, the inclusion of Underscore's `chain()` method enables you to chain calls to these methods on Collections. 
+Fortunately, the inclusion of Underscore's `chain()` method enables you to chain calls to these methods on Collections.
 The `chain()` method returns an object that has all of the Underscore array operations attached as methods which return that object. The chain ends with a call to the `value()` method which simply returns the resulting array value. In case you haven’t seen it before, the chainable API looks like this:
 
 ```javascript
@@ -787,7 +788,7 @@ console.log(names); // logs: ['John', 'Harry', 'Steve']
 
 ## Events
 
-We've seen how actions on Models and Collections can trigger events and how functions can be bound to these events and those raised by the DOM. Events are the standard way of dealing with user interface actions. Mastering events is one of the quickest ways to become more productive with Backbone, so let's take a closer look at Backbone's event model. 
+We've seen how actions on Models and Collections can trigger events and how functions can be bound to these events and those raised by the DOM. Events are the standard way of dealing with user interface actions. Mastering events is one of the quickest ways to become more productive with Backbone, so let's take a closer look at Backbone's event model.
 
 `Backbone.Events` is mixed into the other Backbone "classes", including:
 
@@ -988,7 +989,7 @@ a.listenTo(c, 'everything', function(event){ console.log("everything happened");
 // trigger an event
 b.trigger('anything'); // logs: anything happened
 
-// stop listening 
+// stop listening
 a.stopListening();
 
 // A does not receive these events
@@ -1006,7 +1007,7 @@ Within a View, there are two types of events you can listen for: DOM events and 
 
 DOM events can be bound to using the View's `events` property or using `jQuery.on()`. Within callbacks bound using the `events` property, `this` refers to the View object; whereas any callbacks bound directly using jQuery will have `this` set to the handling DOM element by jQuery. All DOM event callbacks are passed an `event` object by jQuery. See `delegateEvents()` in the Backbone documentation for additional details.
 
-Event API events are bound as described in this section. If the event is bound using `on()` on the observed object, a context parameter can be passed as the third argument. If the event is bound using `listenTo()` then within the callback `this` refers to the listener. The arguments passed to Event API callbacks depends on the type of event. See the Catalog of Events in the Backbone documenation for details.
+Event API events are bound as described in this section. If the event is bound using `on()` on the observed object, a context parameter can be passed as the third argument. If the event is bound using `listenTo()` then within the callback `this` refers to the listener. The arguments passed to Event API callbacks depends on the type of event. See the Catalog of Events in the Backbone documentation for details.
 
 The following example illustrates these differences:
 
@@ -1029,7 +1030,7 @@ var View = Backbone.View.extend({
     initialize: function () {
         // bind to DOM event using jQuery
         this.$el.click(this.jqueryClicked);
-        
+
         // bind to API event
         this.on('apiEvent', this.callback);
     },
@@ -1039,16 +1040,16 @@ var View = Backbone.View.extend({
         console.log("events handler for " + this.el.outerHTML);
         this.trigger('apiEvent', event.type);
     },
-    
+
     // 'this' is handling DOM element
     jqueryClicked: function(event) {
         console.log("jQuery handler for " + this.outerHTML);
     },
-    
+
     callback: function(eventType) {
         console.log("event type was " + eventType);
     }
-    
+
 });
 
 var view = new View();
@@ -1195,7 +1196,7 @@ var TodoRouter = Backbone.Router.extend({
     console.log("View todo requested.");
     this.navigate("todo/" + id + '/edit'); // updates the fragment for us, but doesn't trigger the route
   },
-  
+
   editTodo: function(id) {
     console.log("Edit todo opened.");
   }
@@ -1227,7 +1228,7 @@ var TodoRouter = Backbone.Router.extend({
     console.log("View todo requested.");
     this.navigate("todo/" + id + '/edit', true); // updates the fragment and triggers the route as well
   },
-  
+
   editTodo: function(id) {
     console.log("Edit todo opened.");
   }
@@ -1241,10 +1242,10 @@ Backbone.history.start();
 //
 // URL is updated to: http://localhost/#todo/4/edit
 // and this time editTodo() function is invoked.
-// 
+//
 // logs:
 // View todo requested.
-// Edit todo opened. 
+// Edit todo opened.
 ```
 
 ## Backbone’s Sync API
@@ -1336,7 +1337,7 @@ Backbone.sync = function(method, model, options) {
 
     case 'patch':
       return MyAPI.patch(model, success, error);
-      
+
     case 'delete':
       return MyAPI.destroy(model, success, error);
 
@@ -1352,7 +1353,7 @@ Backbone.sync = function(method, model, options) {
 
 This pattern delegates API calls to a new object (MyAPI), which could be a Backbone-style class that supports events. This can be safely tested separately, and potentially used with libraries other than Backbone.
 
-There are quite a few sync implementations out there (all are available on GitHub):
+There are quite a few sync implementations out there. The following examples are all available on GitHub:
 
 * Backbone localStorage: persists to the browser's local storage
 * Backbone offline: supports working offline
@@ -1372,7 +1373,7 @@ What this translates to is that if you require working with anything beyond mode
 
 ## Summary
 
-In this chapter we have introduced you to the components you will be using to build application with Backbone: Models, Views, Collections, and Routers. We've also explored the Events mix-in that Backbone uses to enhance all components with publish-subscribe capabilities and seen how it can be used with arbitrary objects. Finally, we saw how Backbone leverages the Underscore.js and jQuery/Zepto APIs to add rich manipulation and persistence features to Backbone Collections and Models.
+In this chapter we have introduced you to the components you will be using to build applications with Backbone: Models, Views, Collections, and Routers. We've also explored the Events mix-in that Backbone uses to enhance all components with publish-subscribe capabilities and seen how it can be used with arbitrary objects. Finally, we saw how Backbone leverages the Underscore.js and jQuery/Zepto APIs to add rich manipulation and persistence features to Backbone Collections and Models.
 
 Backbone has many operations and options beyond those we have covered here and is always evolving, so be sure to visit the official [documentation](http://backbonejs.org/) for more details and the latest features. In the next chapter you will start to get your hands dirty as we walk you through implementation of your first Backbone application.
 
