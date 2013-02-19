@@ -185,7 +185,7 @@ This completes our first encounter with Backbone.js. The remainder of this book 
 
 * It is not uncommon for modern MVC/MV* frameworks to provide a means of grouping Models together. In Backbone, these groups are called "Collections." Managing Models in groups allows us to write application logic based on notifications from the group when a Model within the group changes. This avoids the need to manually observe individual Model instances. We'll see this in action later in the book.
 
-* If you read older texts on MVC, you may come across a description of Models as also managing application "state." In JavaScript applications state has a specific meaning, typically referring to the current state of a view or sub-view on a user's screen at a fixed time. State is a topic which is regularly discussed when looking at Single-page applications, where the concept of state needs to be simulated.
+* If you read older texts on MVC, you may come across a description of Models as also managing application "state." In JavaScript applications state has a specific meaning, typically referring to the current state of a view or sub-view on a user's screen at a fixed time. State is an important topic to consider when writing single-page applications. In JavaScript apps we care about state memory - that is, recalling a previous state or sharing it with someone else.
 
 #### Views
 
