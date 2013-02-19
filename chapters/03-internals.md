@@ -1179,7 +1179,7 @@ Backbone.history.start();
 // etc.
 ```
 
-Note: To run the last example, you'll need to create a local development environment and test project, instructions for which are beyond the scope of what this book seeks to outline.
+Note: To run the last example, you'll need to create a local development environment and test project, which we will cover later on in the book.
 
 If you would like to update the URL to reflect the application state at a particular point, you can use the router's `.navigate()` method. By default, it simply updates your URL fragment without triggering the `hashchange` event:
 
@@ -1310,7 +1310,6 @@ Implementing a new sync method can use the following pattern:
 
 ```javascript
 Backbone.sync = function(method, model, options) {
-  var requestContent = {}, success, error;
 
   function success(result) {
     // Handle successful results from MyAPI
