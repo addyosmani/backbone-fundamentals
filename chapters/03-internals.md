@@ -304,7 +304,7 @@ var TodoView = Backbone.View.extend({
   tagName:  'li',
 
   // Cache the template function for a single item.
-  todoTpl: _.template( $('#item-template').html() ),
+  todoTpl: _.template( "An example template" ),
 
   events: {
     'dblclick label': 'edit',
