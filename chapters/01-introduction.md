@@ -58,7 +58,7 @@ Maturity in software (framework) development isn't simply about how long a frame
 
 Does the following describe you?:
 
-"I want something flexible which offers a minimalist solution to separating concerns in my application. It should support a persistence layer and RESTful sync, Models, Views (with Controllers), event-driven communication, templating, and routing. It should be imperative, allowing Views to update themselves when Models change. I’d like some decisions about the architecture left up to me. Ideally, many large companies have used the solution to build non-trivial applications.
+"I want a flexible library which allows me to cleanly separate concerns in my application. It should support a persistence layer and RESTful sync, models, views, event-driven communication and routing. I’d like some decisions about the architecture left up to me."
 
 As I may be building something complex, I’d like there to be an active extension community around the framework that is already addressing issues I may run into down the road. Ideally, there are also scaffolding tools available for the solution."
 
