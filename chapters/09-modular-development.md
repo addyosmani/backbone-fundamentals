@@ -30,7 +30,7 @@ Everytime the browser loads in a file you've referenced in a `<script>` tag, it 
 
 What tools like RequireJS do is load in scripts asynchronously. This means we have to adjust our code slightly, you can't just swap out `<script>` elements for a small piece of RequireJS code, but the benefits are very worthwhile.
 
-- Loading in the scripts asychrnously means they are non-blocking. The browser can continue to render the rest of the page as the scripts are being loaded, speeding up the initial load time.
+- Loading in the scripts asynchronously means they are non-blocking. The browser can continue to render the rest of the page as the scripts are being loaded, speeding up the initial load time.
 - We can load modules in more intelligently, having more control over when they are loaded; along with making sure modules that have dependencies are loaded in the right order so all dependencies are met.
 
 ### Need for better dependency management
@@ -43,7 +43,7 @@ Think about the GMail web-client for a moment. When users initially load up the 
 
 The important thing to note here is that while it's absolutely fine to develop applications without a script loader, there are significant benefits to utilising tools like RequireJS in your application.
 
-### Asynchrous Module Definition (AMD)
+### Asynchronous Module Definition (AMD)
 
 RequireJS implements the [AMD Specification](https://github.com/amdjs/amdjs-api/wiki/AMD) which defines a method for writing modular code and managing dependencies. The RequireJS website also has a section [documenting the reasons behind implementing AMD](http://requirejs.org/docs/whyamd.html):
 
@@ -236,7 +236,7 @@ To shim Underscore but still use a custom path.
 
 ### Require.js and Backbone Examples
 
-Now that we've taken a look at how to define AMD modules, let's review how to go about wrapping components like views and collections so that they can also be easily loaded as dependencies for any parts of your application that require them. At it's simplest, a Backbone model may just require Backbone and Underscore.js. These are dependencies, so we can define those when defining the new modules. Note that the following examples presume you have configured RequireJS to shim Backbone and Underscore, as discussed previously.
+Now that we've taken a look at how to define AMD modules, let's review how to go about wrapping components like views and collections so that they can also be easily loaded as dependencies for any parts of your application that require them. At its simplest, a Backbone model may just require Backbone and Underscore.js. These are dependencies, so we can define those when defining the new modules. Note that the following examples presume you have configured RequireJS to shim Backbone and Underscore, as discussed previously.
 
 #### Wrapping modules, views and other components with AMD
 
@@ -1186,7 +1186,7 @@ Every JavaScript file defined in a module will have a `module` object in scope w
 
 ### Module loader Router
 
-A little used feature of `Backbone.Router` is it's ability to create multiple routers that listen to the same set of routes. Lumbar uses this feature to create a router that listens to all routes in the application. When a route is matched, this master router checks to see if the needed module is loaded. If the module is already loaded, then the master router takes no action and the router defined by the module will handle the route. If the needed module has not yet been loaded, it will be loaded, then `Backbone.history.loadUrl` will be called. This reloads the route, causes the master router to take no further action and the router defined in the freshly loaded module to respond.
+A little used feature of `Backbone.Router` is its ability to create multiple routers that listen to the same set of routes. Lumbar uses this feature to create a router that listens to all routes in the application. When a route is matched, this master router checks to see if the needed module is loaded. If the module is already loaded, then the master router takes no action and the router defined by the module will handle the route. If the needed module has not yet been loaded, it will be loaded, then `Backbone.history.loadUrl` will be called. This reloads the route, causes the master router to take no further action and the router defined in the freshly loaded module to respond.
 
 A sample implementation is provided below. The `config` object would need to contain the data from our sample configuration JSON file above, and the `loader` object would need to implement `isLoaded` and `loadModule` methods. Note that Lumbar provides all of these implementations, the examples are provided to create your own implementation.
 
@@ -1592,7 +1592,7 @@ When working with a structural framework like Backbone.js, the three types of pa
 
 This problem actually has quite a great deal more to it, such as maintaining persistence of other URL parameters (e.g sort, query, order) which can change based on a user's search configuration in a UI. One also had to think of a clean way of hooking views up to this pagination so you can easily navigate between pages (e.g First, Last, Next, Previous, 1,2,3), manage the number of results displayed per page and so on.
 
-**Further client-side pagination of data returned -** e.g we've been returned a JSON response containing 100 results. Rather than displaying all 100 to the user, we only display 20 of these results within a navigatable UI in the browser.
+**Further client-side pagination of data returned -** e.g we've been returned a JSON response containing 100 results. Rather than displaying all 100 to the user, we only display 20 of these results within a navigable UI in the browser.
 
 Similar to the request problem, client-pagination has its own challenges like navigation once again (Next, Previous, 1,2,3), sorting, order, switching the number of results to display per page and so on.
 
@@ -1686,7 +1686,7 @@ We need to tell the library how many items per page would we like to see, etc...
 #### 5. Configure the parameters we want to send to the server
 
 Only the base URL won't be enough for most cases, so you can pass more parameters to the server.
-Note how you can use functions insead of hardcoded values, and you can also reffer to the values you specified in `paginator_ui`.
+Note how you can use functions insead of hardcoded values, and you can also refer to the values you specified in `paginator_ui`.
 
 ```javascript
     server_api: {
@@ -1717,7 +1717,7 @@ Note how you can use functions insead of hardcoded values, and you can also reff
 
 The last thing we need to do is configure our collection's `parse()` method. We want to ensure we're returning the correct part of our JSON response containing the data our collection will be populated with, which below is `response.d.results` (for the Netflix API).
 
-You might also notice that we're setting `this.totalPages` to the total page count returned by the API. This allows us to define the maximum number of (result) pages available for the current/last request so that we can clearly display this in the UI. It also allows us to infuence whether clicking say, a 'next' button should proceed with a request or not.
+You might also notice that we're setting `this.totalPages` to the total page count returned by the API. This allows us to define the maximum number of (result) pages available for the current/last request so that we can clearly display this in the UI. It also allows us to influence whether clicking say, a 'next' button should proceed with a request or not.
 
 ```javascript
         parse: function (response) {
@@ -1839,7 +1839,7 @@ We need to tell the library how many items per page would we like to see, etc...
 #### 4. Configure the parameters we want to send to the server
 
 Only the base URL won't be enough for most cases, so you can pass more parameters to the server.
-Note how you can use functions insead of hardcoded values, and you can also reffer to the values you specified in `paginator_ui`.
+Note how you can use functions instead of hardcoded values, and you can also refer to the values you specified in `paginator_ui`.
 
 ```javascript
     server_api: {
@@ -1887,7 +1887,7 @@ As mentioned, your views can hook into a number of convenience methods to naviga
 * **Collection.previousPage()** - go to the previous page
 * **Collection.nextPage()** - go to the next page
 * **Collection.howManyPer(n)** - set how many items to display per page
-* **Collection.setSort(sortBy, sortDirection)** - update sort on the current view. Sorting will automatically detect if you're trying to sort numbers (even if they're strored as strings) and will do the right thing.
+* **Collection.setSort(sortBy, sortDirection)** - update sort on the current view. Sorting will automatically detect if you're trying to sort numbers (even if they're stored as strings) and will do the right thing.
 * **Collection.setFilter(filterFields, filterWords)** - filter the current view. Filtering supports multiple words without any specific order, so you'll basically get a full-text search ability. Also, you can pass it only one field from the model, or you can pass an array with fields and all of them will get filtered. Last option is to pass it an object containing a comparison method and rules. Currently, only ```levenshtein``` method is available.
 
 ```javascript
@@ -1899,7 +1899,7 @@ As mentioned, your views can hook into a number of convenience methods to naviga
 
 Also note that the levenshtein plugin should be loaded and enabled using the ```useLevenshteinPlugin``` variable.
 
-Last but not less important: Performing Levenshtein comparison returns the ```distance``` between to strings. It won't let you *search* lenghty text.
+Last but not less important: Performing Levenshtein comparison returns the ```distance``` between to strings. It won't let you *search* lengthy text.
 
 The distance between two strings means the number of characters that should be added, removed or moved to the left or to the right so the strings get equal.
 
@@ -1909,7 +1909,7 @@ Use levenshtein only for short texts (titles, names, etc).
 
 * **Collection.doFakeFilter(filterFields, filterWords)** - returns the models count after fake-applying a call to ```Collection.setFilter```.
 
-* **Collection.setFieldFilter(rules)** - filter each value of each model according to `rules` that you pass as argument. Example: You have a collection of books with 'release year' and 'author'. You can filter only the books that were released between 1999 and 2003. And then you can add another `rule` that will filter those books only to authors who's name start with 'A'. Possible rules: function, required, min, max, range, minLength, maxLength, rangeLength, oneOf, equalTo, pattern.
+* **Collection.setFieldFilter(rules)** - filter each value of each model according to `rules` that you pass as argument. Example: You have a collection of books with 'release year' and 'author'. You can filter only the books that were released between 1999 and 2003. And then you can add another `rule` that will filter those books only to authors whose names start with 'A'. Possible rules: function, required, min, max, range, minLength, maxLength, rangeLength, oneOf, equalTo, pattern.
 
 
 ```javascript
@@ -1953,9 +1953,9 @@ You can use some variables in your ```View``` to represent the actual state of t
 
 ```totalPages``` - The number of total pages.
 
-```startRecord``` - The posicion of the first record shown in the current page (eg 41 to 50 from 2000 records) (Only available in ```clientPager```)
+```startRecord``` - The position of the first record shown in the current page (eg 41 to 50 from 2000 records) (Only available in ```clientPager```)
 
-```endRecord``` - The posicion of the last record shown in the current page (eg 41 to 50 from 2000 records) (Only available in ```clientPager```)
+```endRecord``` - The position of the last record shown in the current page (eg 41 to 50 from 2000 records) (Only available in ```clientPager```)
 
 ### Plugins
 
@@ -1991,7 +1991,7 @@ Paginator.clientPager = Backbone.Collection.extend({
 
 ### Creating new View helpers
 
-Note that this differs from `Handlebars.registerHelper`. Registers a helper that will create and append a new `HelperView` instance, with it's `template` attribute set to the value of the captured block. `callback` will recieve any arguments passed to the helper followed by a `HelperView` instance. Named arguments to the helper will be present on `options` attribute of the `HelperView` instance.
+Note that this differs from `Handlebars.registerHelper`. Registers a helper that will create and append a new `HelperView` instance, with its `template` attribute set to the value of the captured block. `callback` will receive any arguments passed to the helper followed by a `HelperView` instance. Named arguments to the helper will be present on `options` attribute of the `HelperView` instance.
 
 A `HelperView` instance differs from a regular view instance in that it has a `parent` attribute which is always set to the declaring view, and a `context` which always returns the value of the `parent`'s context method. The `collection`, `empty` and other built in block view helpers are created with `registerViewHelper`.
 
@@ -2005,16 +2005,16 @@ A helper that re-rendered a `HelperView` every time an event was triggered on th
       });
     });
 
-An example use of this would be to have a counter that would incriment each time a button was clicked. In Handlebars:
+An example use of this would be to have a counter that would increment each time a button was clicked. In Handlebars:
 
-    {{#on "incrimented"}}{{i}}{/on}}
-    {{#button trigger="incrimented"}}Add{{/button}}
+    {{#on "incremented"}}{{i}}{/on}}
+    {{#button trigger="incremented"}}Add{{/button}}
 
 And the corresponding view class:
 
     new Thorax.View({
         events: {
-            incrimented: function() {
+            incremented: function() {
                 ++this.i;
             }
         },
