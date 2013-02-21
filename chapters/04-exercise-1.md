@@ -11,7 +11,7 @@ Let's consider the application's architecture at a high level. We'll need:
 * a way of creating todos
 * a way to display a listing of todos
 * a way to edit existing todos
-* a way to deem a todo complete
+* a way to mark a todo as completed
 * a way to delete todos
 * a way to filter the items that have been completed or are remaining
 
@@ -59,7 +59,7 @@ Note: If you want to follow along, create a directory structure as demonstrated 
 2. Download jQuery, Underscore, Backbone, and Backbone LocalStorage from their respective web sites and place them under js/lib
 3. Create the directories js/models, js/collections, js/views, and js/routers
 
-You will also need [base.css](https://raw.github.com/addyosmani/todomvc/gh-pages/assets/base.css) and [bg.png](https://raw.github.com/addyosmani/todomvc/gh-pages/assets/bg.png), which should live in an assets directory. And again, the final application can be demo'd at [TodoMVC.com](http://todomvc.com).
+You will also need [base.css](https://raw.github.com/addyosmani/todomvc/gh-pages/assets/base.css) and [bg.png](https://raw.github.com/addyosmani/todomvc/gh-pages/assets/bg.png), which should live in an assets directory. And remember that you can see a demo of the final application at [TodoMVC.com](http://todomvc.com).
 
 We will be creating the application JavaScript files during the tutorial. Don't worry about the two 'text/template' script elements - we will replace those soon!
 
@@ -152,8 +152,7 @@ The `Todo` model is remarkably straightforward. First, a todo has two attributes
 
   app.Todo = Backbone.Model.extend({
 
-    // Default attributes for the todo
-    // and ensure that each todo created has `title` and `completed` keys.
+    // Default attributes ensure that each todo created has `title` and `completed` keys.
     defaults: {
       title: '',
       completed: false
@@ -440,12 +439,12 @@ We have added the logic for creating new todos, editing them, and filtering them
   * `createOnEnter()`: Creates a new Todo model and persists it in localStorage when a user hits enter inside the `<input/>` field. Also resets the main `<input/>` field value to prepare it for the next entry. The model is populated by newAttributes(), which returns an object literal composed of the title, order, and completed state of the new item. Note that `this` is referring to the view and not the DOM element since the callback was bound using the `events` hash.
   * `clearCompleted()`: Removes the items in the todo list that have been marked as completed when the user clicks the clear-completed checkbox (this checkbox will be in the footer populated by the #stats-template).
   * `toggleAllComplete()`: Allows a user to mark all of the items in the todo list as completed by clicking the toggle-all checkbox.
-  
+
 * `initialize()`: We've bound callbacks to several additional events:
   * We've bound a `filterOne()` callback on the Todos collection for a `change:completed` event. This listens for changes to the completed flag for any model in the collection. The affected todo is passed to the callback which triggers a custom `visible` event on the model.
   * We've bound a `filterAll()` callback for a `filter` event, which works a little similar to addOne() and addAll(). It’s responsibility is to toggle which todo items are visible based on the filter currently selected in the UI (all, completed or remaining) via calls to filterOne().
   * We've used the special `all` event to bind any event triggered on the Todos collection to the view's render method (discussed below).
-  
+
 The `initialize()` method completes by fetching the previously saved todos from localStorage.
 
 * `render()`: Several things are happening in our `render()` method:
@@ -453,7 +452,7 @@ The `initialize()` method completes by fetching the previously saved todos from 
   * The footer is populated with the HTML produced by instantiating the statsTemplate with the number of completed and remaining todo items.
   * The HTML produced by the preceding step contains a list of filter links. The value of `app.TodoFilter`, which will be set by our router, is being used to apply the class 'selected' to the link corresponding to the currently selected filter. This will result in conditional CSS styling being applied to that filter.
   * The allCheckbox is updated based on whether there are remaining todos.
-    
+
 ## Individual Todo View
 
 Now let’s look at the `TodoView` view. This will be in charge of individual Todo records, making sure the view updates when the todo does. To enable this functionality, we will add event listeners to the view that listen for events on an individual todo's HTML representation.
@@ -471,7 +470,7 @@ Now let’s look at the `TodoView` view. This will be in charge of individual To
   app.TodoView = Backbone.View.extend({
 
     //... is a list tag.
-    tagName:  'li',
+    tagName: 'li',
 
     // Cache the template function for a single item.
     template: _.template( $('#item-template').html() ),
@@ -573,7 +572,7 @@ If all is functioning properly, this should log the new todo we've just added to
 ```javascript
 
   // from our js/collections/todos.js
-  
+
   var TodoList = Backbone.Collection.extend({
 
       model: app.Todo // the model type used by collection.create() to instantiate new model in the collection
@@ -593,7 +592,7 @@ If all is working well, you should see this:
 
 ![](img/todoconsole2.png)
 
-Now refresh the page and we should be able to see the fruits of our labour. 
+Now refresh the page and we should be able to see the fruits of our labour.
 
 The todos added through the console should still appear in the list since they are populated from the Local Storage. Also, we should be able to create a new todo by typing a title and pressing enter.
 
@@ -610,6 +609,8 @@ The next part of our tutorial is going to cover completing and deleting todos. T
 
   // js/view/todos.js
 
+  var app = app || {};
+
   // Todo Item View
   // --------------
 
@@ -617,18 +618,18 @@ The next part of our tutorial is going to cover completing and deleting todos. T
   app.TodoView = Backbone.View.extend({
 
     //... is a list tag.
-    tagName:  'li',
+    tagName: 'li',
 
     // Cache the template function for a single item.
     template: _.template( $('#item-template').html() ),
 
     // The DOM events specific to an item.
     events: {
-      'click .toggle':  'togglecompleted', // NEW
+      'click .toggle': 'togglecompleted', // NEW
       'dblclick label': 'edit',
       'click .destroy': 'clear',           // NEW
       'keypress .edit': 'updateOnEnter',
-      'blur .edit':   'close'
+      'blur .edit': 'close'
     },
 
     // The TodoView listens for changes to its model, re-rendering. Since there's
@@ -643,10 +644,10 @@ The next part of our tutorial is going to cover completing and deleting todos. T
     // Re-render the titles of the todo item.
     render: function() {
       this.$el.html( this.template( this.model.toJSON() ) );
-      
+
       this.$el.toggleClass( 'completed', this.model.get('completed') ); // NEW
       this.toggleVisible();                                             // NEW
-      
+
       this.$input = this.$('.edit');
       return this;
     },
@@ -769,7 +770,7 @@ When the route changes, the todo list will be filtered on a model level and the 
 
 Our router uses a *splat to set up a default route which passes the string after '#/' in the URL to `setFilter()` which sets `window.app.TodoFilter` to that string.
 
-As we can see in the line `window.app.Todos.trigger('filter')`, once the filter has been set, we simply trigger 'filter' on our Todos collection to toggle which items are visible and which are hidden (recall that our AppView's `filterAll()` method is bound to the collection's filter event and that any event on the collection will cause the AppView to re-render).
+As we can see in the line `window.app.Todos.trigger('filter')`, once the filter has been set, we simply trigger 'filter' on our Todos collection to toggle which items are visible and which are hidden. Recall that our AppView's `filterAll()` method is bound to the collection's filter event and that any event on the collection will cause the AppView to re-render.
 
 Finally, we create an instance of our router and call `Backbone.history.start()` to route the initial URL during page load.
 

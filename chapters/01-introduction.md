@@ -6,7 +6,7 @@ The goal of all architecture is to build something well; in our case, to craft c
 
 When writing a web application from scratch it can be easy to feel like you can get by simply relying on a DOM manipulation library (such as jQuery) and a handful of plugins. The challenge with this approach is that it doesn’t take long to get lost in a nested pile of callbacks and DOM elements without any real structure in place.
 
-In short, you can end up with a pile of spaghetti code - code that is disorganized and difficult to follow. This type of code has no simple panacea, short of a rewrite that may end up costing both time and money to alleviate. Fortunately, there are ways to avoid this problem.
+In short, you can end up with a pile of spaghetti code - code that is disorganized and difficult to follow. This type of code has no simple panacea, short of a rewrite that may end up costing both time and money to complete. Fortunately, there are ways to avoid this problem.
 
 Modern JavaScript frameworks and libraries can bring structure and organization to your projects, establishing a maintainable foundation right from the start. They build on the trials and tribulations of developers who have had to work around callback chaos similar to that which you are facing now or may in the near future.
 
@@ -58,7 +58,7 @@ Maturity in software (framework) development isn't simply about how long a frame
 
 Does the following describe you?:
 
-"I want something flexible which offers a minimalist solution to separating concerns in my application. It should support a persistence layer and RESTful sync, Models, Views (with Controllers), event-driven communication, templating, and routing. It should be imperative, allowing Views to update themselves when Models change. I’d like some decisions about the architecture left up to me. Ideally, many large companies have used the solution to build non-trivial applications.
+"I want a flexible library which allows me to cleanly separate concerns in my application. It should support a persistence layer and RESTful sync, models, views, event-driven communication and routing. I’d like some decisions about the architecture left up to me."
 
 As I may be building something complex, I’d like there to be an active extension community around the framework that is already addressing issues I may run into down the road. Ideally, there are also scaffolding tools available for the solution."
 
@@ -83,7 +83,7 @@ Here is a peek at what you will be learning in each chapter:
 
 <i>Chapter 2, Fundamentals</i> traces the history of the MVC design pattern and introduces how it is implemented by Backbone.js and other JavaScript frameworks.
 
-<i>Chapter 3, The Internals</i> covers the major features of the core Backbone.js framework and technologies and techniques you will need to know in order to apply it.
+<i>Chapter 3, Backbone Basics</i> covers the major features of the core Backbone.js framework and technologies and techniques you will need to know in order to apply it.
 
 <i>Chapter 4, Exercise 1: Todos - Your First Backbone.js App</i> takes you step-by-step through development of a simple client-side Todo List application.
 
@@ -93,7 +93,7 @@ Here is a peek at what you will be learning in each chapter:
 
 <i>Chapter 7, Common Problems and Solutions</i> reviews common issues you may encounter when using Backbone.js and ways of addressing them.
 
-<i>Chapter 8, Backbone Extensions</i> describes Backbone.Marionette and Thorax, two extension frameworks which add features to Backbone.js that are useful for developing large-scale applications. 
+<i>Chapter 8, Backbone Extensions</i> describes Backbone.Marionette and Thorax, two extension frameworks which add features to Backbone.js that are useful for developing large-scale applications.
 
 <i>Chapter 9, Modular Development</i> looks at how AMD modules and RequireJS can be used to modularize your code.
 
