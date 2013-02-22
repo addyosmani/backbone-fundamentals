@@ -1004,7 +1004,7 @@ In addition to making your application more immediately comprehensible in the in
     MyApplication.View = Backbone.View.extend({
         _configure: function() {
             Backbone.View.prototype._configure.apply(this, arguments);
-            Thorax._viewsIndexedByCid[this.cid] = cid;
+            Thorax._viewsIndexedByCid[this.cid] = this;
         },
         dispose: function() {
             Backbone.View.prototype.dispose.apply(this, arguments);
