@@ -8,7 +8,7 @@ By default, Backbone Boilerplate provides you with:
 
 * Backbone, [Lodash](https://github.com/bestiejs/lodash) (an [Underscore.js](http://underscorejs.org/) alternative) and [jQuery](http://jquery.com) with an [HTML5 Boilerplate](http://html5boilerplate.com) foundation
 * Boilerplate module code
-* A Windows/Mac/Linux build tool for template precompilation and, concatenation & minification of all your libraries, application code and CSS
+* A build tool for template precompilation and, concatenation & minification of all your libraries, application code and CSS
 * Scaffolding support (via grunt-bbb - [B]ackbone [B]oilerplate [B]uild) so you have to spend minimal time writing boilerplate for modules, collections and so on.
 * A Lightweight node.js webserver
 * Numerous other Backbone.js snippets for making your life easier
