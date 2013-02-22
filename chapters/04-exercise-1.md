@@ -727,7 +727,7 @@ Now let's look at what happens when we click on a todo's destroy button:
 
 That's all there is to it!
 
-The in-place editing and updating features are still left to be implemented, but we will leave those for you to try on your own. If you want to see an example of those, see the [complete source](https://github.com/addyosmani/todomvc/tree/gh-pages/architecture-examples/backbone).
+If you want to see an example of those, see the [complete source](https://github.com/addyosmani/todomvc/tree/gh-pages/architecture-examples/backbone).
 
 ## Todo routing
 
