@@ -230,6 +230,8 @@ The collection's `completed()` and `remaining()` methods return an array of unfi
 
 A `nextOrder()` method implements a sequence generator while a `comparator()` sorts items by their insertion order.
 
+*Note*: `this.filter`, `this.without` and `this.last` are Underscore methods that are mixed in to Backbone.Collection so that the reader knows how to find out more about them.
+
 ## Application View
 
 Let's examine the core application logic which resides in the views. Each view supports functionality such as edit-in-place, and therefore contains a fair amount of logic. To help organize this logic, we'll use the element controller pattern. The element controller pattern consists of two views: one controls a collection of items while the other deals with each individual item.
