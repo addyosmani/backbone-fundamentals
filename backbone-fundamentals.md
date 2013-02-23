@@ -3602,18 +3602,24 @@ In this chapter we made our application persistent by binding it to a server usi
 
 # Backbone Boilerplate And Grunt-BBB
 
-[Backbone Boilerplate](https://github.com/tbranyen/backbone-boilerplate/) is an excellent set of best practices and utilities for building Backbone.js applications, created by Backbone contributor [Tim Branyen](https://github.com/tbranyen). He organized this boilerplate out of the gotchas, pitfalls and common tasks he ran into over a year of heavily using Backbone to build apps at Bocoup. This includes apps such [StartupDataTrends.com](http://startupdatatrends.com).
+[Backbone Boilerplate](https://github.com/tbranyen/backbone-boilerplate/) is an excellent set of best practices and utilities for building Backbone.js applications. It was created by Backbone contributor [Tim Branyen](https://github.com/tbranyen). 
 
-With scaffolding and built in build tasks that take care of minification, concatentation, server, template compilation and more, Backbone Boilerplate (and sister project [Grunt-BBB](https://github.com/backbone-boilerplate/grunt-bbb)) are an excellent choice for developers of all levels. I heavily recommend using them as they will give you an enormous start when it comes to getting setup for development. They also have some great inline documentation which is also another excellent time-saver.
+Tim organized this boilerplate out of the gotchas, pitfalls and common tasks he ran into over a year of heavily using Backbone to build apps at Bocoup. This includes apps such [StartupDataTrends.com](http://startupdatatrends.com). With scaffolding and built in build tasks, Backbone Boilerplate (and sister project [Grunt-BBB](https://github.com/backbone-boilerplate/grunt-bbb)) are an excellent choice for developers wishing to get started for development on a Backbone application more swiftly.
 
 By default, Backbone Boilerplate provides you with:
 
 * Backbone, [Lodash](https://github.com/bestiejs/lodash) (an [Underscore.js](http://underscorejs.org/) alternative) and [jQuery](http://jquery.com) with an [HTML5 Boilerplate](http://html5boilerplate.com) foundation
 * Boilerplate module code
-* A build tool for template precompilation and, concatenation & minification of all your libraries, application code and CSS
+* A build tool for template pre-compilation and, concatenation & minification of all your libraries, application code and stylesheets
 * Scaffolding support (via grunt-bbb - [B]ackbone [B]oilerplate [B]uild) so you have to spend minimal time writing boilerplate for modules, collections and so on.
 * A Lightweight node.js webserver
 * Numerous other Backbone.js snippets for making your life easier
+
+Notes on build steps:
+
+* Template pre-compilation: Using a template library such as Handlebars.js generally involves three steps: (1) reading a raw template, (2) compiling it into a JavaScript function and (3) running the compiled template with your desired data. Precompiling eliminates the second step from runtime, by moving this process into a build step.
+* Concatenation: This is the process of combining a number of assets (in our case, script files) into a single (or fewer number) of files to reduce the number of HTTP requests required to obtain them.
+* Minification: This is the process of removing unnecessary characters (e.g white space, new lines, comments) from code and compressing it to reduce the overall size of the scripts being served.
 
 ## Getting Started
 
@@ -3662,7 +3668,63 @@ A typical workflow for using grunt-bbb, which we can use later on is:
 
 ## Creating a new project
 
-Let's create a new folder for our project and run `bbb init` to kick things off. If everything has been correctly installed, this will stub out some project directories and files for us. Let's review what is generated.
+Let's create a new directory for our project and run `bbb init` to kick things off. A number of project sub-directories and files will be stubbed out for us, as shown below:
+
+```shell
+$ bbb init
+Running "init" task
+This task will create one or more files in the current directory, based on the
+environment and the answers to a few questions. Note that answering "?" to any
+question will show question-specific help and answering "none" to most questions
+will leave its value blank.
+
+"bbb" template notes:
+This tool will help you install, configure, build, and maintain your Backbone
+Boilerplate project.
+Writing app/app.js...OK
+Writing app/config.js...OK
+Writing app/main.js...OK
+Writing app/router.js...OK
+Writing app/styles/index.css...OK
+Writing favicon.ico...OK
+Writing grunt.js...OK
+Writing index.html...OK
+Writing package.json...OK
+Writing readme.md...OK
+Writing test/jasmine/index.html...OK
+Writing test/jasmine/spec/example.js...OK
+Writing test/jasmine/vendor/jasmine-html.js...OK
+Writing test/jasmine/vendor/jasmine.css...OK
+Writing test/jasmine/vendor/jasmine.js...OK
+Writing test/jasmine/vendor/jasmine_favicon.png...OK
+Writing test/jasmine/vendor/MIT.LICENSE...OK
+Writing test/qunit/index.html...OK
+Writing test/qunit/tests/example.js...OK
+Writing test/qunit/vendor/qunit.css...OK
+Writing test/qunit/vendor/qunit.js...OK
+Writing vendor/h5bp/css/main.css...OK
+Writing vendor/h5bp/css/normalize.css...OK
+Writing vendor/jam/backbone/backbone.js...OK
+Writing vendor/jam/backbone/package.json...OK
+Writing vendor/jam/backbone.layoutmanager/backbone.layoutmanager.js...OK
+Writing vendor/jam/backbone.layoutmanager/package.json...OK
+Writing vendor/jam/jquery/jquery.js...OK
+Writing vendor/jam/jquery/package.json...OK
+Writing vendor/jam/lodash/lodash.js...OK
+Writing vendor/jam/lodash/lodash.min.js...OK
+Writing vendor/jam/lodash/lodash.underscore.min.js...OK
+Writing vendor/jam/lodash/package.json...OK
+Writing vendor/jam/require.config.js...OK
+Writing vendor/jam/require.js...OK
+Writing vendor/js/libs/almond.js...OK
+Writing vendor/js/libs/require.js...OK
+
+Initialized from template "bbb".
+
+Done, without errors.
+```
+
+Let's review what has been generated.
 
 ### index.html
 
@@ -3781,7 +3843,7 @@ For example, in the block below, we state that Backbone.js is dependent on Lodas
     }
 ```
 
-Finally, we inform RequireJS that the Backbone [LayoutManager](https://github.com/tbranyen/backbone.layoutmanager) plugin (a template and layout manager, also included) requires that Backbone be loaded before it is loaded.
+Finally, we inform RequireJS that the Backbone [LayoutManager](https://github.com/tbranyen/backbone.layoutmanager) plugin requires that Backbone be loaded before it is.
 
 ```javascript
     // Backbone.LayoutManager depends on Backbone.
@@ -3933,6 +3995,8 @@ function($, _, Backbone) {
 
 });
 ```
+
+Additional files have been stubbed, but for the purposes of brevity we will not be exploring them in detail. For those curious about the `backbone.layoutmanager` files added, [Backbone.LayoutManager](https://github.com/tbranyen/backbone.layoutmanager) is a Backbone plugin that provides a foundation for assembling layouts and views within Backbone. It is a Backbone Boilerplate dependency.
 
 ### Creating Backbone Boilerplate Modules
 
@@ -4190,6 +4254,946 @@ As we've seen, scaffolding tools can assist in expediting how quickly you can be
 Brunch works very well with Backbone, Underscore, jQuery and CoffeeScript and is even used by companies such as Red Bull and Jim Beam. You may have to update any third party dependencies (e.g., latest jQuery or Zepto) when using it, but other than that it should be fairly stable to use right out of the box.
 
 Brunch can be installed via the nodejs package manager and is easy to get started with. If you happen to use Vim or Textmate as your editor of choice, you'll be happy to know that there are Brunch bundles available for both.
+
+# Common Problems & Solutions
+
+In this section, we will review a number of common problems developers often experience once they've started to work on relatively non-trivial projects using Backbone.js, as well as present potential solutions.
+
+Perhaps the most frequent of these questions surround how to do more with Views. If you are interested in discovering how to work with nested Views, learn about view disposal and inheritance, this section will hopefully have you covered.
+
+
+#### View Nesting
+
+**Problem**
+
+What is the best approach for rendering and appending Subviews in Backbone.js?
+
+**Solution**
+
+Since web pages are composed of nested elements and Backbone views correspond to elements within the page, nesting views is an intuitive approach to managing a hierarchy of elements. As a beginner, one might try writing a very simple setup with subviews (e.g inner views) as follows:
+
+```javascript
+
+// Where we have previously defined a View, SubView
+// in a parent View we could do:
+
+...
+initialize : function () {
+
+    this.innerView1 = new Subview({options});
+    this.innerView2 = new Subview({options});
+},
+
+render : function () {
+
+    this.$el.html(this.template());
+
+    this.innerView1.setElement('.some-element1').render();
+    this.innerView2.setElement('.some-element2').render();
+}
+```
+
+Here we are creating subviews in the parent view's `initialize()` method and rendering the subviews in the parent's `render()` method. The elements managed by the subviews exist in the parent's template and the `View.setElement()` method is used to re-assign the element associated with each subview. `setElement()` changes a view's element, including re-delegating event handlers by removing them from the old element and binding them to the new element. Note that `setElement()` returns the view, allowing us to chain the call to `render()`.
+
+This works and has some positive qualities: you don't need to worry about maintaining the order of your DOM elements when appending, views are initialized early, and the render() method doesn't need to take on too many responsibilities at once. Unfortunately, downsides are that you can't set the `tagName` property of subviews and events need to be re-delegated.
+
+An alternative approach which doesn't suffer from the re-delegation problem can be written as follows:
+
+```javascript
+
+initialize : function () {
+
+},
+
+render : function () {
+
+    this.$el.empty();
+
+    this.innerView1 = new Subview({options});
+    this.innerView2 = new Subview({options});
+
+
+    this.$el.append(this.innerView1.render().el, this.innerView2.render().el);
+}
+
+```
+
+In this version, we are creating new instances of the subviews, rendering them, and appending their elements to an empty parent element each time the parent is rendered. Each subview is responsible for creating and rendering its own element, so we don't need a template containing empty placeholders and the issue with `tagName`s is solved as they are defined by the subviews once again.
+
+Yet another variation which moves logic into an `onRender` event, could be written with only a few subtle changes:
+
+```javascript
+
+initialize : function () {
+    this.on('render', this.onRender);
+},
+
+render : function () {
+
+    this.$el.html(this.template);
+
+    // more logic
+
+    return this.trigger('render');
+},
+
+onRender : function () {
+    this.innerView1 = new Subview();
+    this.innerView2 = new Subview();
+    this.innerView1.setElement('.some-element').render();
+    this.innerView2.setElement('.some-element').render();
+}
+```
+
+If you find yourself nesting views in your application, there are more optimal approaches possible for initializing, rendering, and appending your subviews. One such solution could be written:
+
+```javascript
+
+var OuterView = Backbone.View.extend({
+    initialize: function() {
+        this.inner = new InnerView();
+    },
+
+    render: function() {
+        this.$el.html(template); // or this.$el.empty() if you have no template
+        this.$el.append(this.inner.$el);
+        this.inner.render();
+    }
+});
+
+var InnerView = Backbone.View.extend({
+    render: function() {
+        this.$el.html(template);
+        this.delegateEvents();
+    }
+});
+
+```
+
+This tackles a few specific design decisions:
+
+* The order in which you append the sub-elements matters
+* The OuterView doesn't contain the HTML elements to be set in the InnerView(s), meaning that we can still specify tagName in the InnerView
+* render() is called after the InnerView element has been placed into the DOM. This is useful if your InnerView's render() method is sizing itself on the page based on the dimensions of another element. This is a common use case.
+
+Note that InnerView needs to call `View.delegateEvents()` to bind its event handlers to its new DOM since it is replacing the content of its element.
+
+A second potential solution is this, which may appear cleaner but in reality has a tendency to affect performance:
+
+```javascript
+
+var OuterView = Backbone.View.extend({
+    initialize: function() {
+        this.render();
+    },
+
+    render: function() {
+        this.$el.html(template); // or this.$el.empty() if you have no template
+        this.inner = new InnerView();
+        this.$el.append(this.inner.$el);
+    }
+});
+
+var InnerView = Backbone.View.extend({
+    initialize: function() {
+        this.render();
+    },
+
+    render: function() {
+        this.$el.html(template);
+    }
+});
+```
+
+If multiple views need to be nested at particular locations in a template, a hash of child views indexed by child view cids' should be created. In the template, use a custom HTML attribute named `data-view-cid` to create placeholder elements for each view to embed. Once the template has been rendered and its output appended to the parent view's `$el`, each placeholder can be queried for and replaced with the child view's `el`.
+
+A sample implementation containing a single child view:
+
+```javascript
+
+var OuterView = Backbone.View.extend({
+    initialize: function() {
+        this.children = {};
+        var child = new Backbone.View();
+        this.children[child.cid] = child;
+    },
+
+    render: function() {
+        this.$el.html('<div data-view-cid="' + this.child.cid + '"></div>');        
+        _.each(this.children, function(view, cid) {
+            this.$('[data-view-cid="' + cid + '"]').replaceWith(view.el);
+        }, this);
+    }
+};
+
+```
+
+Generally speaking, more developers opt for the first solution as:
+
+* The majority of their views may already rely on being in the DOM in their render() method
+* When the OuterView is re-rendered, views don't have to be re-initialized where re-initialization has the potential to cause memory leaks and issues with existing bindings
+
+The Backbone extensions [Marionette](#marionette) and [Thorax](#thorax) provide logic for nesting views, and rendering collections where each item has an associated view. Marionette provides APIs in JavaScript while Thorax provides APIs via Handlebars template helpers. We will examine both of these in an upcoming chapter.
+
+(Thanks to [Lukas](http://stackoverflow.com/users/299189/lukas)  and [Ian Taylor](http://stackoverflow.com/users/154765/ian-storm-taylor) for these tips).
+
+#### What is the best way to manage models in nested Views?
+
+In order to reach attributes on related models in a nested setup, the models involved need to have some prior knowledge about which models this refers to. Backbone.js doesn't implicitly handle relations or nesting, meaning it's up to us to ensure models have a knowledge of each other.
+
+One approach is to make sure each child model has a 'parent' attribute. This way you can traverse the nesting first up to the parent and then down to any siblings that you know of. So, assuming we have models modelA, modelB and modelC:
+
+```javascript
+
+// When initializing modelA, I would suggest setting a link to the parent
+// model when doing this, like this:
+
+ModelA = Backbone.Model.extend({
+
+    initialize: function(){
+        this.modelB = new modelB();
+        this.modelB.parent = this;
+        this.modelC = new modelC();
+        this.modelC.parent = this;
+    }
+}
+```
+
+This allows you to reach the parent model in any child model function by calling this.parent.
+
+When you have a need to nest Backbone.js views, you might find it easier to let each view represent a single HTML tag using the tagName option of the View. This may be written as:
+
+```javascript
+ViewA = Backbone.View.extend({
+
+    tagName: 'div',
+    id: 'new',
+
+    initialize: function(){
+       this.viewB = new ViewB();
+       this.viewB.parentView = this;
+       $(this.el).append(this.viewB.el);
+    }
+});
+
+ViewB = Backbone.View.extend({
+
+    tagName: 'h1',
+
+    render: function(){
+        $(this.el).html('Header text'); // or use this.options.headerText or equivalent
+    },
+
+    funcB1: function(){
+        this.model.parent.doSomethingOnParent();
+        this.model.parent.modelC.doSomethingOnSibling();
+        $(this.parentView.el).shakeViolently();
+    }
+
+});
+```
+
+Then in your application initialization code , you would initiate ViewA and place its element inside the body element.
+
+An alternative approach is to use an extension called [Backbone-Forms](https://github.com/powmedia/backbone-forms). Using a similar schema to what we wrote earlier, nesting could be achieved as follows:
+
+```javascript
+var ModelB = Backbone.Model.extend({
+    schema: {
+        attributeB1: 'Text',
+        attributeB2: 'Text'
+    }
+});
+
+var ModelC = Backbone.Model.extend({
+    schema: {
+        attributeC: 'Text',
+    }
+});
+
+var ModelA = Backbone.Model.extend({
+    schema: {
+        attributeA1: 'Text',
+        attributeA2: 'Text',
+        refToModelB: { type: 'NestedModel', model: ModelB, template: 'templateB' },
+        refToModelC: { type: 'NestedModel', model: ModelC, template: 'templateC' }
+    }
+});
+```
+
+There is more information about this technique available on [GitHub](https://github.com/powmedia/backbone-forms#customising-templates).
+
+(Thanks to [Jens Alm](http://stackoverflow.com/users/100952/jens-alm) and [Artem Oboturov](http://stackoverflow.com/users/801466/artem-oboturov) for these tips)
+
+#### Rendering Parent View from Child
+
+**Problem**
+
+How would one render a Parent View from one of its Children?
+
+**Solution**
+
+If you say, have a view which contains another view (e.g., a main view containing a modal view) and  would like to render or re-render the parent view from the child, this is extremely straight-forward.
+
+In such a scenario, you would most likely want to execute the rendering when a particular event has occurred. For the sake of example, let us call this event 'somethingHappened'. The parent view can bind notifications on the child view to know when the event has occurred. It can then render itself.
+
+In the parent view:
+
+```javascript
+// Parent initialize
+this.listenTo(this.childView, 'somethingHappened', this.render);
+
+// Parent removal
+this.stopListening(this.childView, 'somethingHappened');
+```
+
+In the child view:
+
+```javascript
+
+// After the event has occurred
+this.trigger('somethingHappened');
+
+```
+
+The child will trigger a "somethingHappened" event and the parent's render function will be called.
+
+(Thanks to Tal [Bereznitskey](http://stackoverflow.com/users/269666/tal-bereznitskey) for this tip)
+
+
+#### Triggering updates in other Views
+
+**Problem**
+
+How can a View trigger an update in an unrelated View?
+
+**Solution**
+
+The Mediator pattern is an excellent option for implementing a solution to this problem.
+
+Without going into too much detail about the pattern, a mediator can effectively be used as an event manager that lets you to subscribe to and publish events. So an ApplicationViewA could subscribe to an event, (e.g., 'selected') and then the ApplicationViewB would publish the 'selected' event.
+
+The reason I like this is it allows you to send events between views, without the views being directly bound together.
+
+For Example:
+
+```javascript
+
+// See http://addyosmani.com/largescalejavascript/#mediatorpattern
+// for an implementation or alternatively for a more thorough one
+// http://thejacklawson.com/Mediator.js/
+
+var mediator = new Mediator();
+
+var ApplicationViewB = Backbone.View.extend({
+    toggle_select: function() {
+        ...
+        mediator.publish('selected', any, data, you, want);
+        return this;
+    }
+});
+
+var ApplicationViewA = Backbone.View.extend({
+    initialize: function() {
+        mediator.subscribe('selected', this.delete_selected)
+    },
+
+    delete_selected: function(any, data, you, want) {
+        ... do something ...
+    },
+});
+```
+
+This way your ApplicationViewA doesn't care if it is an ApplicationViewB or FooView that publishes the 'selected' event, only that the event occurred. As a result, you may find it a maintainable way to manage events between parts of your application, not just views.
+
+(Thanks to [John McKim](http://stackoverflow.com/users/937577/john-mckim) for this tip and for referencing my Large Scale JavaScript Patterns article).
+
+
+#### Disposing Views cleanly
+
+**Problem**
+
+How do you cleanly dispose Views to avoid memory leaks?
+
+**Solution**
+
+As your application grows, keeping live views around which aren't being used can quickly become difficult to maintain. Instead, you may find it more optimal to destroy views that are no longer required and simply create new ones as the need arises.
+
+A solution to help with this is to create a BaseView from which the rest of your views inherit from. The idea here is that your view will maintain a reference to all of the events to which its subscribed to so that when it is time to dispose of a view, all of those bindings will be automatically unbound.
+
+Here is a sample implementation of this:
+
+```javascript
+var BaseView = function (options) {
+
+    this.bindings = [];
+    Backbone.View.apply(this, [options]);
+};
+
+_.extend(BaseView.prototype, Backbone.View.prototype, {
+
+    bindTo: function (model, ev, callback) {
+
+        model.bind(ev, callback, this);
+        this.bindings.push({ model: model, ev: ev, callback: callback });
+    },
+
+    unbindFromAll: function () {
+        _.each(this.bindings, function (binding) {
+            binding.model.unbind(binding.ev, binding.callback);
+        });
+        this.bindings = [];
+    },
+
+    dispose: function () {
+        this.unbindFromAll(); // this will unbind all events that this view has bound to
+        this.unbind(); // this will unbind all listeners to events from this view. This is probably not necessary because this view will be garbage collected.
+        this.remove(); // uses the default Backbone.View.remove() method which removes this.el from the DOM and removes DOM events.
+    }
+
+});
+```
+
+```javascript
+BaseView.extend = Backbone.View.extend;
+```
+
+Then, whenever a view has the need to bind to an event on a model or a collection, you would use the bindTo method. e.g:
+
+```
+var SampleView = BaseView.extend({
+
+    initialize: function(){
+        this.bindTo(this.model, 'change', this.render);
+        this.bindTo(this.collection, 'reset', this.doSomething);
+    }
+});
+```
+
+When you remove a view, simply call the dispose() method which will clean everything up for you automatically:
+
+```javascript
+var sampleView = new SampleView({model: some_model, collection: some_collection});
+sampleView.dispose();
+```
+
+(Thanks to [JohnnyO](http://stackoverflow.com/users/188740/johnnyo) for this tip).
+
+#### Disposing View hierarchies
+
+**Problem**
+
+In the last question, we looked at how to effectively dispose views to decrease memory usage.
+
+Where your application is setup with multiple Parent and Child Views, it is also common to desire removing any DOM elements associated with such views as well as unbinding any event handlers tied to child elements when you no longer require them.
+
+**Solution**
+
+The solution in the last question should be enough to handle this use case, but if you require a more explicit example that handles children, we can see one below:
+
+```javascript
+Backbone.View.prototype.close = function() {
+    if (this.onClose) {
+        this.onClose();
+    }
+    this.remove();
+    this.unbind();
+};
+
+NewView = Backbone.View.extend({
+    initialize: function() {
+       this.childViews = [];
+    },
+    renderChildren: function(item) {
+        var itemView = new NewChildView({ model: item });
+        $(this.el).prepend(itemView.render());
+        this.childViews.push(itemView);
+    },
+    onClose: function() {
+      _(this.childViews).each(function(view) {
+        view.close();
+      });
+    }
+});
+
+NewChildView = Backbone.View.extend({
+    tagName: 'li',
+    render: function() {
+    }
+});
+```
+
+Here, a close() method for views is implemented which disposes of a view when it is no longer needed or needs to be reset.
+
+In most cases, the view removal should not affect any associated models. For example, if you are working on a blogging application and you remove a view with comments, perhaps another view in your app shows a selection of comments and resetting the collection would affect those views as well.
+
+(Thanks to [dira](http://stackoverflow.com/users/906136/dira) for this tip)
+
+#### Rendering View hierarchies
+
+**Problem**
+
+Let us say you have a Collection, where each item in the Collection could itself be a Collection. You can render each item in the Collection, and indeed can render any items which themselves are Collections. The problem you might have is how to render this structure where the HTML reflects the hierarchical nature of the data structure.
+
+**Solution**
+
+The most straight-forward way to approach this problem is to use a framework like Derick Baileys [Backbone.Marionette](https://github.com/marionettejs/backbone.marionette). In this framework is a type of view called a CompositeView.
+
+The basic idea of a CompositeView is that it can render a model and a collection within the same view.
+
+It can render a single model with a template. It can also take a collection from that model and for each model in that collection, render a view. By default it uses the same composite view type that you've defined, to render each of the models in the collection. All you have to do is tell the view instance where the collection is, via the initialize method, and you'll get a recursive hierarchy rendered.
+
+There is a working demo of this in action available [online](http://jsfiddle.net/derickbailey/AdWjU/).
+
+And you can get the source code and documentation for [Marionette](https://github.com/marionettejs/backbone.marionette) too.
+
+#### Better Model Property Validation
+
+**Problem**
+
+As we learned earlier in the book, the `validate` method on a Model is called by `set` (when the validate option is set) and `save`, and is passed the model attributes updated with the values passed to these methods.
+
+By default, when we define a custom `validate` method, Backbone passes all of a Model's attributes through this validation each time, regardless of which model attributes are being set.
+
+This means that it can be a challenge to determine which specific fields are being set or validated without being concerned about the others that aren't being set at the same time.
+
+**Solution**
+
+To illustrate this problem better, let us look at a typical registration form use case that:
+
+* Validates form fields using the blur event
+* Validates each field regardless of whether other model attributes (i.e., other form data) are valid or not.
+
+Here is one example of a desired use case:
+
+We have a form where a user focuses and blurs first name, last name, and email HTML input boxes without entering any data. A "this field is required" message should be presented next to each form field.
+
+HTML:
+
+```
+<!doctype html>
+<html>
+<head>
+  <meta charset=utf-8>
+  <title>Form Validation - Model#validate</title>
+  <script src='http://code.jquery.com/jquery.js'></script>
+  <script src='http://underscorejs.org/underscore.js'></script>
+  <script src='http://backbonejs.org/backbone.js'></script>
+</head>
+<body>
+  <form>
+    <label>First Name</label>
+    <input name='firstname'>
+    <span data-msg='firstname'></span>
+    <br>
+    <label>Last Name</label>
+    <input name='lastname'>
+    <span data-msg='lastname'></span>
+    <br>
+    <label>Email</label>
+    <input name='email'>
+    <span data-msg='email'></span>
+  </form>
+</body>
+</html>
+```
+
+Some simple validation that could be written using the current Backbone `validate` method to work with this form could be implemented using something like:
+
+
+```javascript
+validate: function(attrs) {
+
+    if(!attrs.firstname) return 'first name is empty';
+    if(!attrs.lastname) return 'last name is empty';
+    if(!attrs.email) return 'email is empty';
+
+}
+```
+
+Unfortunately, this method would trigger a first name error each time any of the fields were blurred and only an error message next to the first name field would be presented.
+
+One potential solution to the problem is to validate all fields and return all of the errors:
+
+```javascript
+validate: function(attrs) {
+  var errors = {};
+
+  if (!attrs.firstname) errors.firstname = 'first name is empty';
+  if (!attrs.lastname) errors.lastname = 'last name is empty';
+  if (!attrs.email) errors.email = 'email is empty';
+
+  if (!_.isEmpty(errors)) return errors;
+}
+```
+
+This can be adapted into a complete solution that defines a Field model for each input in our form and works within the parameters of our use case as follows:
+
+```javascript
+
+$(function($) {
+
+  var User = Backbone.Model.extend({
+    validate: function(attrs) {
+      var errors = this.errors = {};
+
+      if (!attrs.firstname) errors.firstname = 'firstname is required';
+      if (!attrs.lastname) errors.lastname = 'lastname is required';
+      if (!attrs.email) errors.email = 'email is required';
+
+      if (!_.isEmpty(errors)) return errors;
+    }
+  });
+
+  var Field = Backbone.View.extend({
+    events: {blur: 'validate'},
+    initialize: function() {
+      this.name = this.$el.attr('name');
+      this.$msg = $('[data-msg=' + this.name + ']');
+    },
+    validate: function() {
+      this.model.set(this.name, this.$el.val());
+      this.$msg.text(this.model.errors[this.name] || '');
+    }
+  });
+
+  var user = new User;
+
+  $('input').each(function() {
+    new Field({el: this, model: user});
+  });
+
+});
+
+```
+
+
+This works great as the solution checks the validation for each attribute individually and sets the message for the correct blurred field. A [demo](http://jsbin.com/afetez/2/edit) of the above by [@braddunbar](http://github.com/braddunbar) is also available.
+
+Unfortunately, this solution does perform validation on all fields every time, even though we are only displaying errors for the field that has changed. If we have multiple client-side validation methods, we may not want to have to call each validation method on every attribute every time, so this solution might not be ideal for everyone.
+
+A potentially better alternative to the above is to use [@gfranko](http://github.com/@franko)'s [Backbone.validateAll](https://github.com/gfranko/Backbone.validateAll) plugin, specifically created to validate specific Model properties (or form fields) without worrying about the validation of any other Model properties (or form fields).
+
+Here is how we would setup a partial User Model and validate method using this plugin for our use case:
+
+
+```javascript
+
+// Create a new User Model
+var User = Backbone.Model.extend({
+
+      // RegEx Patterns
+      patterns: {
+
+          specialCharacters: '[^a-zA-Z 0-9]+',
+
+          digits: '[0-9]',
+
+          email: '^[a-zA-Z0-9._-]+@[a-zA-Z0-9][a-zA-Z0-9.-]*[.]{1}[a-zA-Z]{2,6}$'
+      },
+
+    // Validators
+      validators: {
+
+          minLength: function(value, minLength) {
+            return value.length >= minLength;
+
+          },
+
+          maxLength: function(value, maxLength) {
+            return value.length <= maxLength;
+
+          },
+
+          isEmail: function(value) {
+            return User.prototype.validators.pattern(value, User.prototype.patterns.email);
+
+          },
+
+          hasSpecialCharacter: function(value) {
+            return User.prototype.validators.pattern(value, User.prototype.patterns.specialCharacters);
+
+          },
+         ...
+
+    // We can determine which properties are getting validated by
+    // checking to see if properties are equal to null
+
+        validate: function(attrs) {
+
+          var errors = this.errors = {};
+
+          if(attrs.firstname != null) {
+              if (!attrs.firstname) {
+                  errors.firstname = 'firstname is required';
+                  console.log('first name isEmpty validation called');
+              }
+
+              else if(!this.validators.minLength(attrs.firstname, 2))
+                errors.firstname = 'firstname is too short';
+              else if(!this.validators.maxLength(attrs.firstname, 15))
+                errors.firstname = 'firstname is too large';
+              else if(this.validators.hasSpecialCharacter(attrs.firstname)) errors.firstname = 'firstname cannot contain special characters';
+          }
+
+          if(attrs.lastname != null) {
+
+              if (!attrs.lastname) {
+                  errors.lastname = 'lastname is required';
+                  console.log('last name isEmpty validation called');
+              }
+
+              else if(!this.validators.minLength(attrs.lastname, 2))
+                errors.lastname = 'lastname is too short';
+              else if(!this.validators.maxLength(attrs.lastname, 15))
+                errors.lastname = 'lastname is too large';
+              else if(this.validators.hasSpecialCharacter(attrs.lastname)) errors.lastname = 'lastname cannot contain special characters';
+
+          }
+```
+
+
+This allows the logic inside of our validate methods to determine which form fields are currently being set/validated, and ignore the model properties that are not being set.
+
+It's fairly straight-forward to use as well. We can simply define a new Model instance and then set the data on our model using the `validateAll` option to use the behavior defined by the plugin:
+
+```javascript
+var user = new User();
+user.set({ 'firstname': 'Greg' }, {validate: true, validateAll: false});
+
+```
+
+That's it!
+
+The Backbone.validateAll logic doesn't override the default Backbone logic by default and so it's perfectly capable of being used for scenarios where you might care more about field-validation [performance](http://jsperf.com/backbone-validateall) as well as those where you don't. Both solutions presented in this section should work fine however.
+
+
+#### Multiple Backbone versions
+
+**Problem**
+
+In some instances it may be necessary to use multiple versions of Backbone in the same project.
+
+**Solution**
+
+Like most client-side projects, Backbone's code is wrapped in an immediately-invoked function expression:
+
+```javascript
+(function(){
+  // Backbone.js
+}).call(this);
+```
+
+Several things happen during this configuration stage. A Backbone `namespace` is created, and multiple versions of Backbone on the same page are supported through the noConflict mode:
+
+```javascript
+var root = this;
+var previousBackbone = root.Backbone;
+
+Backbone.noConflict = function() {
+  root.Backbone = previousBackbone;
+  return this;
+};
+```
+
+Multiple versions of Backbone can be used on the same page by calling noConflict like this:
+
+```javascript
+var Backbone19 = Backbone.noConflict();
+// Backbone19 refers to the most recently loaded version,
+// and `window.Backbone` will be restored to the previously
+// loaded version
+```
+
+This initial configuration code also supports CommonJS modules so Backbone can be used in Node projects:
+
+```javascript
+var Backbone;
+if (typeof exports !== 'undefined') {
+  Backbone = exports;
+} else {
+  Backbone = root.Backbone = {};
+}
+```
+
+#### Building Model and View hierarchies
+
+**Problem**
+
+How does inheritence work with Backbone? How can I share code between similar models and views? How can I call methods that have been overridden?
+
+**Solution**
+
+For its inheritance, Backbone internally uses an `inherits` function inspired by `goog.inherits`, Google's implementation from the Closure Library. It's basically a function to correctly setup the prototype chain.
+
+```javascript
+ var inherits = function(parent, protoProps, staticProps) {
+      ...
+```
+
+The only major difference here is that Backbone's API accepts two objects containing `instance` and `static` methods.
+
+Following on from this, for inheritance purposes all of Backbone's objects contain an `extend` method as follows:
+
+```javascript
+Model.extend = Collection.extend = Router.extend = View.extend = extend;
+```
+
+Most development with Backbone is based around inheriting from these objects, and they're designed to mimic a classical object-oriented implementation.
+
+If this sounds familiar, it's because `extend` is an Underscore.js utility, although Backbone itself does a lot more with this. See below for Underscore's `extend`:
+
+```javascript
+each(slice.call(arguments, 1), function(source) {
+  for (var prop in source) {
+    obj[prop] = source[prop];
+  }
+});
+return obj;
+```
+
+The above isn't quite the same as ECMAScript 5's `Object.create`, as it's actually copying properties (methods and values) from one object to another. As this isn't enough to support Backbone's inheritance and class model, the following steps are performed:
+
+* The instance methods are checked to see if there's a constructor property. If so, the class's constructor is used, otherwise the parent's constructor is used (i.e., Backbone.Model)
+* Underscore's extend method is called to add the parent class's methods to the new child class
+* The `prototype` property of a blank constructor function is assigned with the parent's prototype, and a new instance of this is set to the child's `prototype` property
+* Underscore's extend method is called twice to add the static and instance methods to the child class
+* The child's prototype's constructor and a `__super__` property are assigned
+* This pattern is also used for classes in CoffeeScript, so Backbone classes are compatible with CoffeeScript classes.
+
+`extend` can be used for a great deal more and developers who are fans of mixins will like that it can be used for this too. You can define functionality on any custom object, and then quite literally copy & paste all of the methods and attributes from that object to a Backbone one:
+
+For example:
+
+```javascript
+var MyMixin = {
+  foo: 'bar',
+  sayFoo: function(){alert(this.foo);}
+};
+
+var MyView = Backbone.View.extend({
+ // ...
+});
+
+_.extend(MyView.prototype, MyMixin);
+
+var myView = new MyView();
+myView.sayFoo(); //=> 'bar'
+```
+
+We can take this further and also apply it to View inheritance. The following is an example of how to extend one View using another:
+
+```javascript
+var Panel = Backbone.View.extend({
+});
+
+var PanelAdvanced = Panel.extend({
+});
+```
+
+**Calling Overridden Methods**
+
+However, if you have an `initialize()` method in Panel, then it won't be called if you also have an `initialize()` method in PanelAdvanced, so you would have to call Panel's initialize method explicitly:
+
+```javascript
+var Panel = Backbone.View.extend({
+  initialize: function(options){
+    console.log('Panel initialized');
+    this.foo = 'bar';
+  }
+});
+
+var PanelAdvanced = Panel.extend({
+  initialize: function(options){
+    Panel.prototype.initialize.call(this, [options]);
+    console.log('PanelAdvanced initialized');
+    console.log(this.foo); // Log: bar
+  }
+});
+
+// We can also inherit PanelAdvaned if needed
+var PanelAdvancedExtra = PanelAdvanced.extend({
+  initialize: function(options){
+    PanelAdvanced.prototype.initialize.call(this, [options]);
+    console.log('PanelAdvancedExtra initialized');
+  }
+});
+
+new Panel();
+new PanelAdvanced();
+new PanelAdvancedExtra();
+```
+
+This isn't the most elegant of solutions because if you have a lot of Views that inherit from Panel, then you'll have to remember to call Panel's initialize from all of them.
+
+It's worth noting that if Panel doesn't have an initialize method now but you choose to add it in the future, then you'll need to go to all of the inherited classes in the future and make sure they call Panel's initialize.
+
+So here's an alternative way to define Panel so that your inherited views don't need to call Panel's initialize method:
+
+```javascript
+var Panel = function (options) {
+  // put all of Panel's initialization code here
+  console.log('Panel initialized');
+  this.foo = 'bar';
+
+  Backbone.View.apply(this, [options]);
+};
+
+_.extend(Panel.prototype, Backbone.View.prototype, {
+  // put all of Panel's methods here. For example:
+  sayHi: function () {
+    console.log('hello from Panel');
+  }
+});
+
+Panel.extend = Backbone.View.extend;
+
+// other classes then inherit from Panel like this:
+var PanelAdvanced = Panel.extend({
+  initialize: function (options) {
+    console.log('PanelAdvanced initialized');
+    console.log(this.foo);
+  }
+});
+
+var panelAdvanced = new PanelAdvanced(); //Logs: Panel initialized, PanelAdvanced initialized, bar
+panelAdvanced.sayHi(); // Logs: hello from Panel
+```
+
+When used appropriately, Underscore's `extend` method can save a great deal of time and effort writing redundant code.
+
+(Thanks to [Alex Young](http://dailyjs.com), [Derick Bailey](http://stackoverflow.com/users/93448/derick-bailey) and [JohnnyO](http://stackoverflow.com/users/188740/johnnyo) for the heads up about these tips).
+
+**Backbone-Super**
+
+[Backbone-Super](https://github.com/lukasolson/Backbone-Super) by Lukas Olson adds a *_super* method to *Backbone.Model* using [John Resig's Inheritance script](http://ejohn.org/blog/simple-javascript-inheritance/).
+Rather than using Backbone.Model.prototype.set.call as per the Backbone.js documentation, _super can be called instead:
+
+```javascript
+// This is how we normally do it
+var OldFashionedNote = Backbone.Model.extend({
+  set: function(attributes, options) {
+    // Call parent's method
+    Backbone.Model.prototype.set.call(this, attributes, options);
+    // some custom code here
+    // ...
+  }
+});
+```
+
+After including this plugin, you can do the same thing with the following syntax:
+
+```javascript
+// This is how we can do it after using the Backbone-super plugin
+var Note = Backbone.Model.extend({
+  set: function(attributes, options) {
+    // Call parent's method
+    this._super(attributes, options);
+    // some custom code here
+    // ...
+  }
+});
+```
 
 # Backbone Extensions
 
@@ -4524,8 +5528,6 @@ TodoMVC.on('initialize:after', function(){
 ```
 
 Regions are used to manage the content that's displayed within specific elements, and the `addRegions` method on the `TodoMVC` object is just a shortcut for creating `Region` objects. We supply a jQuery selector for each region to manage (e.g., `#header`, `#main`, and `#footer`) and then tell the region to show various Backbone views within that region.
-
-![](img/marionette_todo1.png)
 
 Once the application object has been initialized, we call `Backbone.history.start()` to route the initial URL.
 
@@ -6239,6 +7241,1115 @@ var Note = Backbone.Model.extend({
   }
 });
 ```
+
+# Backbone Extensions
+
+
+## Backbone.Marionette
+
+*By Derick Bailey & Addy Osmani*
+
+As we've seen, Backbone provides a great set of building blocks for our JavaScript applications. It gives us the core constructs that are needed to build small to mid-sized apps, organize jQuery DOM events, or create single page apps that support mobile devices and large scale enterprise needs. But Backbone is not a complete framework. It's a set of building blocks that leaves much of the application design, architecture, and scalability to the developer, including memory management, view management, and more.
+
+[Backbone.Marionette](http://marionettejs.com) (or just "Marionette") provides many of the features that the non-trivial application developer needs, above what Backbone itself provides. It is a composite application library that aims to simplify the construction of large scale applications. It does this by providing a collection of common design and implementation patterns found in the applications that the creator, [Derick Bailey](http://lostechies.com/derickbailey/), and many other [contributors](https://github.com/marionettejs/backbone.marionette/graphs/contributors) have been using to build Backbone apps. 
+
+Marionette's key benefits include:
+
+* Scaling applications out with modular, event driven architecture
+* Sensible defaults, such as using Underscore templates for view rendering
+* Easy to modify to make it work with your application's specific needs
+* Reducing boilerplate for views, with specialized view types
+* Build on a modular architecture with an Application and modules that attach to it
+* Compose your application's visuals at runtime, with Region and Layout
+* Nested views and layouts within visual regions
+* Built-in memory management and zombie killing in views, regions, and layouts
+* Built-in event clean up with the EventBinder
+* Event-driven architecture with the EventAggregator
+* Flexible, "as-needed" architecture allowing you to pick and choose what you need
+* And much, much more
+
+Marionette follows a similar philosophy to Backbone in that it provides a suite of components that can be used independently of each other, or used together to create a significant advantages for us as developers. But it steps above the structural components of Backbone and provides an application layer, with more than a dozen components and building blocks. 
+
+Marionette's components range greatly in the features they provide, but they all work together to create a composite application layer that can both reduce boilerplate code and provide a much needed application structure. Its core components include:
+
+* [**Marionette.Application**](https://github.com/marionettejs/backbone.marionette/blob/master/docs/marionette.application.md): An application object that starts your app via initializers, and more
+* [**Marionette.Application.module**](https://github.com/marionettejs/backbone.marionette/blob/master/docs/marionette.application.module.md): Create modules and sub-modules within the application
+* [**Marionette.AppRouter**](https://github.com/marionettejs/backbone.marionette/blob/master/docs/marionette.approuter.md): Reduce your routers to nothing more than configuration
+* [**Marionette.View**](https://github.com/marionettejs/backbone.marionette/blob/master/docs/marionette.view.md): The base View type that other Marionette views extend from (not intended to be used directly)
+* [**Marionette.ItemView**](https://github.com/marionettejs/backbone.marionette/blob/master/docs/marionette.itemview.md): A view that renders a single item
+* [**Marionette.CollectionView**](https://github.com/marionettejs/backbone.marionette/blob/master/docs/marionette.collectionview.md): A view that iterates over a collection, and renders individual `ItemView` instances for each model
+* [**Marionette.CompositeView**](https://github.com/marionettejs/backbone.marionette/blob/master/docs/marionette.compositeview.md): A collection view and item view, for rendering leaf-branch/composite model hierarchies
+* [**Marionette.Region**](https://github.com/marionettejs/backbone.marionette/blob/master/docs/marionette.region.md): Manage visual regions of your application, including display and removal of content
+* [**Marionette.Layout**](https://github.com/marionettejs/backbone.marionette/blob/master/docs/marionette.layout.md): A view that renders a layout and creates region managers to manage areas within it
+* [**Marionette.EventAggregator**](https://github.com/marionettejs/backbone.marionette/blob/master/docs/marionette.eventaggregator.md): An extension of Backbone.Events, to be used as an event-driven or pub-sub tool
+* [**Marionette.EventBinder**](https://github.com/marionettejs/backbone.marionette/blob/master/docs/marionette.eventbinder.md): An event binding manager, to facilitate binding and unbinding of events
+* [**Marionette.Renderer**](https://github.com/marionettejs/backbone.marionette/blob/master/docs/marionette.renderer.md): Render templates with or without data, in a consistent and common manner
+* [**Marionette.TemplateCache**](https://github.com/marionettejs/backbone.marionette/blob/master/docs/marionette.templatecache.md): Cache templates that are stored in `<script>` blocks, for faster subsequent access
+* [**Marionette.Callbacks**](https://github.com/marionettejs/backbone.marionette/blob/master/docs/marionette.callbacks.md): Manage a collection of callback methods, and execute them as needed
+
+But like Backbone itself, you're not required to use all of Marionette's components just because you want to use some of them. You can pick and choose which features you want to use and when. This allows you to work with other Backbone frameworks and plugins very easily. It also means that you are not required to engage in an all-or-nothing migration to begin using Marionette.
+
+### Boilerplate Rendering Code
+
+Consider the code that it typically requires to render a view with Backbone and Underscore template. We need a template to render, which can be placed in the DOM directly, and we need the JavaScript that defines a view that uses the template and populates it with data from a model.
+
+```
+<script type="text/html" id="my-view-template">
+  <div class="row">
+    <label>First Name:</label>
+    <span><%= firstName %></span>
+  </div>
+  <div class="row">
+    <label>Last Name:</label>
+    <span><%= lastName %></span>
+  </div>
+  <div class="row">
+    <label>Email:</label>
+    <span><%= email %></span>
+  </div>
+</script>
+</pre>
+```
+
+```javascript
+var MyView = Backbone.View.extend({
+  template: $('#my-view-template').html(),
+
+  render: function(){
+
+    // compile the Underscore.js template
+    var compiledTemplate = _.template(this.template);
+
+    // render the template with the model data
+    var data = this.model.toJSON();
+    var html = compiledTemplate(data);
+
+    // populate the view with the rendered html
+    this.$el.html(html);
+  }
+});
+```
+
+Once this is in place, you need to create an instance of your view and pass your model in to it. Then you can take the view's `el` and append it to the DOM in order to display the view.
+
+```javascript
+var myModel = new MyModel({
+  firstName: 'Derick',
+  lastName: 'Bailey',
+  email: 'derickbailey@gmail.com'
+});
+
+var myView = new MyView({
+  model: myModel
+})
+
+myView.render();
+
+$('#content').html(myView.el)
+```
+
+This is a standard set up for defining, building, rendering, and displaying a view with Backbone. This is also what we call "boilerplate code" - code that is repeated over and over and over again, across every project and every implementation with the same functionality. It gets to be tedious and repetitious very quickly.
+
+Enter Marionette's `ItemView` - a simple way to reduce the boilerplate of defining a view.
+
+### Reducing Boilerplate With Marionette.ItemView
+
+All of Marionette's view types - with the exception of `Marionette.View` - include a built-in `render` method that handles the core rendering logic for you. By changing the `MyView` instance from `Backbone.View` then, we can take advantage of this. Instead of having to provide our own `render` method for the view, we can let Marionette render it for us. We'll still use the same Underscore.js template and rendering mechanism, but the implementation of this is hidden behind the scenes. Thus, we can reduce the amount of code needed for this view.
+
+```javascript
+var MyView = Marionette.ItemView.extend({
+  template: '#my-view-template'
+});
+```
+
+And that's it - that's all you need to get the exact same behaviour as the previous view implementation. Just replace `Backbone.View.extend` with `Marionette.ItemView.extend`, then get rid of the `render` method. You can still create the view instance with a `model`, call the `render` method on the view instance, and display the view in the DOM the same way that we did before. But the view definition has been reduced to a single line of configuration for the template.
+
+### Memory Management
+
+In addition to the reduction of code needed to define a view, Marionette includes some advanced memory management in all of its views, making the job of cleaning up a view instance and it's event handlers easy.
+
+Consider the following view implementation:
+
+```javascript
+var ZombieView = Backbone.View.extend({
+  template: '#my-view-template',
+
+  initialize: function(){
+
+    // bind the model change to re-render this view
+    this.model.on('change', this.render, this);
+
+  },
+
+  render: function(){
+
+    // This alert is going to demonstrate a problem
+    alert('We`re rendering the view');
+
+  }
+});
+```
+
+If we create two instances of this view using the same variable name for both instances, and then change a value in the model, how many times will we see the alert box? 
+
+```javascript
+var myModel = new MyModel({
+  firstName: 'Jeremy',
+  lastName: 'Ashkenas',
+  email: 'jeremy@example.com'
+});
+
+// create the first view instance
+var zombieView = new ZombieView({
+  model: myModel
+});
+
+// create a second view instance, re-using
+// the same variable name to store it
+zombieView = new ZombieView({
+  model: myModel
+});
+
+myModel.set('email', 'jeremy@gmail.com');
+```
+
+Since we're re-using the save `zombieView` variable for both instances, the first instance of the view will fall out of scope immediately after the second is created. This allows the JavaScript garbage collector to come along and clean it up, which should mean the first view instance is no longer active and no longer going to respond to the model's "change" event.
+
+But when we run this code, we end up with the alert box showing up twice!
+
+The problem is caused by the model event binding in the view's `initialize` method. Whenever we pass `this.render` as the callback method to the model's `on` event binding, the model itself is being given a direct reference to the view instance. Since the model is now holding a reference to the view instance, replacing the `zombieView` variable with a new view instance is not going to let the original view fall out of scope. The model still has a reference, therefore the view is still in scope. 
+
+Since the original view is still in scope, and the second view instance is also in scope, changing data on the model will cause both view instances to respond.
+
+Fixing this is easy, though. You just need to call `off` when the view is done with its work and ready to be closed. To do this, add a `close` method to the view.
+
+```javascript
+var ZombieView = Backbone.View.extend({
+  template: '#my-view-template',
+
+  initialize: function(){
+    // bind the model change to re-render this view
+    this.model.on('change', this.render, this);
+  },
+
+  close: function(){
+    this.model.off('change', this.render, this);
+  },
+
+  render: function(){
+
+    // This alert is going to demonstrate a problem
+    alert('We`re rendering the view');
+
+  }
+});
+```
+
+Then call `close` on the first instance when it is no longer needed, and only one view instance will remain alive.
+
+```javascript
+var myModel = new MyModel({
+  firstName: 'Jeremy',
+  lastName: 'Ashkenas',
+  email: 'jeremy@example.com'
+});
+
+// create the first view instance
+var zombieView = new ZombieView({
+  model: myModel
+})
+zombieView.close(); // double-tap the zombie
+
+// create a second view instance, re-using
+// the same variable name to store it
+zombieView = new ZombieView({
+  model: myModel
+})
+
+myModel.set('email', 'jeremy@gmail.com');
+```
+
+Now we only see once alert box when this code runs. 
+
+Rather than having to manually remove these event handlers, though, we can let Marionette do it for us.
+
+```javascript
+var ZombieView = Marionette.ItemView.extend({
+  template: '#my-view-template',
+
+  initialize: function(){
+
+    // bind the model change to re-render this view
+    this.bindTo(this.model, 'change', this.render, this);
+
+  },
+
+  render: function(){
+
+    // This alert is going to demonstrate a problem
+    alert('We`re rendering the view');
+
+  }
+});
+```
+
+Notice in this case we are using a method called `bindTo`. This method comes from Marionette's `EventBinder` object, and is added on to all of Marionette's view types. The `bindTo` method signature is similar to that of the `on` method, with the exception of passing the object that triggers the event as the first parameter. 
+
+Marionette's views also provide a `close` event, in which the event bindings that are set up with the `bindTo` are automatically removed. This means we no longer need to define a `close` method directly, and when we use the `bindTo` method, we know that our events will be removed and our views will not turn in to zombies.
+
+But how do we automate the call to `close` on a view, in the real application? When and where do we call that? Enter the `Marionette.Region` - an object that manages the lifecycle of an individual view.
+
+### Region Management
+
+After a view is created, it typically needs to be placed in the DOM so that it becomes visible. This is usually done with a jQuery selector and setting the `html()` of the resulting object:
+
+```javascript
+var myModel = new MyModel({
+  firstName: 'Jeremy',
+  lastName: 'Ashkenas',
+  email: 'jeremy@gmail.com'
+});
+
+var myView = new MyView({
+  model: myModel
+})
+
+myView.render();
+
+// show the view in the DOM
+$('#content').html(myView.el)
+```
+
+This, again, is boilerplate code. We shouldn't have to manually call `render` and manually select the DOM elements to show the view. Furthermore, this code doesn't lend itself to closing any previous view instance that might be attached to the DOM element we want to populate. And we've seen the danger of zombie views already.
+
+To solve these problems, Marionette provides a `Region` object - an object that manages the lifecycle of individual views, displayed in a particular DOM element.
+
+```javascript
+// create a region instance, telling it which DOM element to manage
+var myRegion = new Marionette.Region({
+  el: '#content'
+});
+
+// show a view in the region
+var view1 = new MyView({ /* ... */ });
+myRegion.show(view1);
+
+// somewhere else in the code,
+// show a different view
+var view2 = new MyView({ /* ... */ });
+myRegion.show(view2);
+```
+
+There are several things to note, here. First, we're telling the region what DOM element to manage by specifying an `el` in the region instance. Second, we're no longer calling the `render` method on our views. And lastly, we're not calling `close` on our view, either, though this is getting called for us. 
+
+When we use a region to manage the lifecycle of our views, and display the views in the DOM, the region itself handles these concerns. By passing a view instance in to the `show` method of the region, it will call the render method on the view for us. It will then take the resulting `el` of the view and populate the DOM element. 
+
+The next time we call the `show` method of the region, the region remembers that it is currently displaying a view. The region calls the `close` method on the view, removes it from the DOM, and then proceeds to run the render & display code for the new view that was passed in.
+
+Since the region handles calling `close` for us, and we're using the `bindTo` event binder in our view instance, we no longer have to worry about zombie views in our application.
+
+### Marionette Todo app
+
+Having learned about Marionette's high-level concepts, let's explore refactoring the Todo application we created in our first exercise to use it. The complete code for this application can be found in Derick's TodoMVC [fork](https://github.com/derickbailey/todomvc/tree/marionette/labs/architecture-examples/backbone_marionette/js).
+
+Our final implementation will be visually and functionally equivalent to the original app, as seen below.
+
+![](img/marionette_todo0.png)
+
+First, we define an application object representing our base TodoMVC app. This will contain initialization code and define the default layout regions for our app. 
+
+**TodoMVC.js:**
+
+```javascript
+var TodoMVC = new Marionette.Application();
+
+TodoMVC.addRegions({
+  header : '#header',
+  main   : '#main',
+  footer : '#footer'
+});
+
+TodoMVC.on('initialize:after', function(){
+  Backbone.history.start();
+});
+```
+
+Regions are used to manage the content that's displayed within specific elements, and the `addRegions` method on the `TodoMVC` object is just a shortcut for creating `Region` objects. We supply a jQuery selector for each region to manage (e.g., `#header`, `#main`, and `#footer`) and then tell the region to show various Backbone views within that region.
+
+![](img/marionette_todo1.png)
+
+Once the application object has been initialized, we call `Backbone.history.start()` to route the initial URL.
+
+Next, we define our Layouts. A layout is a specialized type of view that directly extends `Marionette.ItemView`. This means its intended to render a single template and may or may not have a model (or `item`) associated with the template.
+
+One of the main differences between a Layout and an `ItemView` is that the layout contains regions. When defining a Layout, we supply it with both a `template` and the regions that the template contains. After rendering the layout, we can display other views within the layout using the regions that were defined.
+
+In our TodoMVC Layout module below, we define Layouts for:
+
+* Header: where we can create new Todos
+* Footer: where we summarise how many Todos are remaining/have been completed
+
+This captures some of the view logic that was previously in our `AppView` and `TodoView`.
+
+Note that Marionette modules (such as the below) offer a simple module system which is used to create privacy and encapsulation in Marionette apps. These certainly don't have to be used however, and later on in this section we'll provide links to alternative implementations using RequireJS + AMD instead.
+
+
+**TodoMVC.Layout.js:**
+
+```javascript
+TodoMVC.module('Layout', function(Layout, App, Backbone, Marionette, $, _){
+
+  // Layout Header View
+  // ------------------
+
+  Layout.Header = Marionette.ItemView.extend({
+    template : '#template-header',
+
+    // UI bindings create cached attributes that
+    // point to jQuery selected objects
+    ui : {
+      input : '#new-todo'
+    },
+
+    events : {
+      'keypress #new-todo':   'onInputKeypress'
+    },
+
+    onInputKeypress : function(evt) {
+      var ENTER_KEY = 13;
+      var todoText = this.ui.input.val().trim();
+
+      if ( evt.which === ENTER_KEY && todoText ) {
+        this.collection.create({
+          title : todoText
+        });
+        this.ui.input.val('');
+      }
+    }
+  });
+
+  // Layout Footer View
+  // ------------------
+  
+  Layout.Footer = Marionette.Layout.extend({
+    template : '#template-footer',
+
+    // UI bindings create cached attributes that
+    // point to jQuery selected objects
+    ui : {
+      count   : '#todo-count strong',
+      filters : '#filters a'
+    },
+
+    events : {
+      'click #clear-completed' : 'onClearClick'
+    },
+
+    initialize : function() {
+      this.bindTo(App.vent, 'todoList:filter', this.updateFilterSelection, this);
+      this.bindTo(this.collection, 'all', this.updateCount, this);
+    },
+
+    onRender : function() {
+      this.updateCount();
+    },
+
+    updateCount : function() {
+      var count = this.collection.getActive().length;
+      this.ui.count.html(count);
+
+      if (count === 0) {
+        this.$el.parent().hide();
+      } else {
+        this.$el.parent().show();
+      }
+    },
+
+    updateFilterSelection : function(filter) {
+      this.ui.filters
+        .removeClass('selected')
+        .filter('[href="#' + filter + '"]')
+        .addClass('selected');
+    },
+
+    onClearClick : function() {
+      var completed = this.collection.getCompleted();
+      completed.forEach(function destroy(todo) { 
+        todo.destroy(); 
+      });
+    }
+  });
+
+});
+
+```
+
+Next, we tackle application routing and workflow, such as controlling Layouts in the page which can be shown or hidden. 
+
+Recall how Backbone routes trigger methods within the Router as shown below in our original Workspace router from our first exercise:
+
+```javascript
+  var Workspace = Backbone.Router.extend({
+    routes:{
+      '*filter': 'setFilter'
+    },
+
+    setFilter: function( param ) {
+      // Set the current filter to be used
+      app.TodoFilter = param.trim() || '';
+
+      // Trigger a collection filter event, causing hiding/unhiding
+      // of Todo view items
+      app.Todos.trigger('filter');
+    }
+  });
+
+```
+
+Marionette uses the concept of an AppRouter to simplify routing. This reduces the boilerplate for handling route events and allows routers to be configured to call methods on an object directly. We configure our AppRouter using `appRoutes` which replaces the `'*filter': 'setFilter'` route defined in our original router and invokes a method on our Controller.
+
+The TodoList Controller, also found in this next code block, handles some of the remaining visibility logic originally found in `AppView` and `TodoView`, albeit using very readable Layouts.
+
+**TodoMVC.TodoList.js:**
+
+```javascript
+TodoMVC.module('TodoList', function(TodoList, App, Backbone, Marionette, $, _){
+
+  // TodoList Router
+  // ---------------
+  //
+  // Handle routes to show the active vs complete todo items
+
+  TodoList.Router = Marionette.AppRouter.extend({
+    appRoutes : {
+      '*filter': 'filterItems'
+    }
+  });
+
+  // TodoList Controller (Mediator)
+  // ------------------------------
+  //
+  // Control the workflow and logic that exists at the application
+  // level, above the implementation detail of views and models
+  
+  TodoList.Controller = function(){
+    this.todoList = new App.Todos.TodoList();
+  };
+
+  _.extend(TodoList.Controller.prototype, {
+
+    // Start the app by showing the appropriate views
+    // and fetching the list of todo items, if there are any
+    start: function(){
+      this.showHeader(this.todoList);
+      this.showFooter(this.todoList);
+      this.showTodoList(this.todoList);
+
+      this.todoList.fetch();
+    },
+
+    showHeader: function(todoList){
+      var header = new App.Layout.Header({
+        collection: todoList
+      });
+      App.header.show(header);
+    },
+
+    showFooter: function(todoList){
+      var footer = new App.Layout.Footer({
+        collection: todoList
+      });
+      App.footer.show(footer);
+    },
+
+    showTodoList: function(todoList){
+      App.main.show(new TodoList.Views.ListView({
+        collection : todoList
+      }));
+    },
+
+    // Set the filter to show complete or all items
+    filterItems: function(filter){
+      App.vent.trigger('todoList:filter', filter.trim() || '');
+    }
+  });
+
+  // TodoList Initializer
+  // --------------------
+  //
+  // Get the TodoList up and running by initializing the mediator
+  // when the the application is started, pulling in all of the
+  // existing Todo items and displaying them.
+  
+  TodoList.addInitializer(function(){
+
+    var controller = new TodoList.Controller();
+    new TodoList.Router({
+      controller: controller
+    });
+
+    controller.start();
+
+  });
+
+});
+
+```
+
+####Controllers
+
+In this particular app, note that Controllers don't add a great deal to the overall workflow. In general, Marionette's philosophy on routers is that they should be an afterthought in the implementation of applications. Quite often, we've seen developers abuse Backbone's routing system by making it the sole controller of the entire application workflow and logic. 
+
+This inevitably leads to mashing every possible combination of code into the router methods - view creation, model loading, coordinating different parts of the app, etc. Developers such as Derick view this as a violation of the [single-responsibility principle](http://en.wikipedia.org/wiki/Single_responsibility_principle) (SRP) and separation of concerns. 
+
+Backbone's router and history exist to deal with a specific aspect of browsers - managing the forward and back buttons. Marionette's philosophy is that it should be limited to that, with the code that gets executed by the navigation being somewhere else. This allows the application to be used with or without a router. We can call a controller's "show" method from a button click, from an application event handler, or from a router, and we will end up with the same application state no matter how we called that method.
+
+Derick has written extensively about his thoughts on this topic, which you can read more about on his blog:
+
+* [http://lostechies.com/derickbailey/2011/12/27/the-responsibilities-of-the-various-pieces-of-backbone-js/](http://lostechies.com/derickbailey/2011/12/27/the-responsibilities-of-the-various-pieces-of-backbone-js/)
+* [http://lostechies.com/derickbailey/2012/01/02/reducing-backbone-routers-to-nothing-more-than-configuration/](http://lostechies.com/derickbailey/2012/01/02/reducing-backbone-routers-to-nothing-more-than-configuration/)
+* [http://lostechies.com/derickbailey/2012/02/06/3-stages-of-a-backbone-applications-startup/](http://lostechies.com/derickbailey/2012/02/06/3-stages-of-a-backbone-applications-startup/)
+
+#### CompositeView
+
+Our next task is defining the actual views for individual Todo items and lists of items in our TodoMVC application. For this, we make use of Marionette's `CompositeView`s. The idea behind a CompositeView is that it represents a visualization of a composite or hierarchical structure of leaves (or nodes) and branches. 
+
+Think of these views as being a hierarchy of parent-child models, and recursive by default. For each item in a collection that the composite view is handling the same CompositeView type will be used to render the item. For non-recursive hierarchies, we are able to override the item view by defining an `itemView` attribute.
+
+For our Todo List Item View, we define it as an ItemView, then our Todo List View is a CompositeView where we override the `itemView` setting and tell it to use the Todo List item View for each item in the collection. 
+
+TodoMVC.TodoList.Views.js
+
+```javascript
+TodoMVC.module('TodoList.Views', function(Views, App, Backbone, Marionette, $, _){
+
+  // Todo List Item View
+  // -------------------
+  //
+  // Display an individual todo item, and respond to changes
+  // that are made to the item, including marking completed.
+
+  Views.ItemView = Marionette.ItemView.extend({
+    tagName : 'li',
+      template : '#template-todoItemView',
+
+      ui : {
+        edit : '.edit'
+      },
+
+      events : {
+        'click .destroy' : 'destroy',
+        'dblclick label' : 'onEditClick',
+        'keypress .edit' : 'onEditKeypress',
+        'click .toggle'  : 'toggle'
+      },
+
+      initialize : function() {
+        this.bindTo(this.model, 'change', this.render, this);
+      },
+
+      onRender : function() {
+        this.$el.removeClass('active completed');
+        if (this.model.get('completed')) this.$el.addClass('completed');
+        else this.$el.addClass('active');
+      },
+
+      destroy : function() {
+        this.model.destroy();
+      },
+
+      toggle  : function() {
+        this.model.toggle().save();
+      },
+
+      onEditClick : function() {
+        this.$el.addClass('editing');
+        this.ui.edit.focus();
+      },
+
+      onEditKeypress : function(evt) {
+        var ENTER_KEY = 13;
+        var todoText = this.ui.edit.val().trim();
+
+        if ( evt.which === ENTER_KEY && todoText ) {
+          this.model.set('title', todoText).save();
+          this.$el.removeClass('editing');
+        }
+      }
+  });
+
+  // Item List View
+  // --------------
+  //
+  // Controls the rendering of the list of items, including the
+  // filtering of active vs completed items for display.
+
+  Views.ListView = Marionette.CompositeView.extend({
+    template : '#template-todoListCompositeView',
+      itemView : Views.ItemView,
+      itemViewContainer : '#todo-list',
+
+      ui : {
+        toggle : '#toggle-all'
+      },
+
+      events : {
+        'click #toggle-all' : 'onToggleAllClick'
+      },
+
+      initialize : function() {
+        this.bindTo(this.collection, 'all', this.update, this);
+      },
+
+      onRender : function() {
+        this.update();
+      },
+
+      update : function() {
+        function reduceCompleted(left, right) { return left && right.get('completed'); }
+        var allCompleted = this.collection.reduce(reduceCompleted,true);
+        this.ui.toggle.prop('checked', allCompleted);
+
+        if (this.collection.length === 0) {
+          this.$el.parent().hide();
+        } else {
+          this.$el.parent().show();
+        }
+      },
+
+      onToggleAllClick : function(evt) {
+        var isChecked = evt.currentTarget.checked;
+        this.collection.each(function(todo){
+          todo.save({'completed': isChecked});
+        });
+      }
+  });
+
+  // Application Event Handlers
+  // --------------------------
+  //
+  // Handler for filtering the list of items by showing and
+  // hiding through the use of various CSS classes
+  
+  App.vent.on('todoList:filter',function(filter) {
+    filter = filter || 'all';
+    $('#todoapp').attr('class', 'filter-' + filter);
+  });
+
+});
+
+```
+
+At the end of the last code block, you will also notice an event handler using `vent`. This is an event aggregator that allows us to handle `filterItem` triggers from our TodoList controller.
+
+Finally, we define the model and collection for representing our Todo items. These are semantically not very different from the original versions we used in our first exercise and have been re-written to better fit in with Derick's preferred style of coding.
+
+**Todos.js:**
+
+```javascript
+TodoMVC.module('Todos', function(Todos, App, Backbone, Marionette, $, _){
+
+  // Todo Model
+  // ----------
+  
+  Todos.Todo = Backbone.Model.extend({
+    localStorage: new Backbone.LocalStorage('todos-backbone'),
+
+    defaults: {
+      title     : '',
+      completed : false,
+      created   : 0
+    },
+
+    initialize : function() {
+      if (this.isNew()) this.set('created', Date.now());
+    },
+
+    toggle  : function() {
+      return this.set('completed', !this.isCompleted());
+    },
+
+    isCompleted: function() { 
+      return this.get('completed'); 
+    }
+  });
+
+  // Todo Collection
+  // ---------------
+
+  Todos.TodoList = Backbone.Collection.extend({
+    model: Todos.Todo,
+
+    localStorage: new Backbone.LocalStorage('todos-backbone'),
+
+    getCompleted: function() {
+      return this.filter(this._isCompleted);
+    },
+
+    getActive: function() {
+      return this.reject(this._isCompleted);
+    },
+
+    comparator: function( todo ) {
+      return todo.get('created');
+    },
+
+    _isCompleted: function(todo){
+      return todo.isCompleted();
+    }
+  });
+
+});
+
+```
+
+We finally kick-start everything off in our application index file, by calling `start` on our main application object:
+
+Initialization:
+
+```javascript
+      $(function(){
+        // Start the TodoMVC app (defined in js/TodoMVC.js)
+        TodoMVC.start();
+      });
+```
+
+And that's it!
+
+### Is the Marionette implementation of the Todo app more maintainable?
+
+Derick feels that maintainability largely comes down to modularity, separating responsibilities (Single Responsibility Principle and Separation of Concerns) by using patterns to keep concerns from being mixed together. It can, however, be difficult to simply extract things into separate modules for the sake of extraction, abstraction, or dividing the concept down into its most finite parts. 
+
+The Single Responsibility Principle (SRP) tells us quite the opposite - that we need to understand the context in which things change. What parts always change together, in _this_ system? What parts can change independently? Without knowing this, we won't know what pieces should be broken out into separate components and modules versus put together into the same module or object. 
+
+The way Derick organizes his apps into modules is by creating a breakdown of concepts at each level. A higher level module is a higher level of concern - an aggregation of responsibilities. Each responsibility is broken down into an expressive API set that is implemented by lower level modules (Dependency Inversion Principle). These are coordinated through a mediator - which he typically refers to as the Controller in a module. 
+
+The way Derick organizes his files also plays directly into maintainability and he has also written posts about the importance of keeping a sane application folder structure that I recommend reading:
+
+* [http://lostechies.com/derickbailey/2012/02/02/javascript-file-folder-structures-just-pick-one/](http://lostechies.com/derickbailey/2012/02/02/javascript-file-folder-structures-just-pick-one/)
+* [http://hilojs.codeplex.com/discussions/362875#post869640](http://hilojs.codeplex.com/discussions/362875#post869640)
+
+### Marionette And Flexibility
+
+Marionette is a flexible framework, much like Backbone itself. It offers a wide variety of tools to help create and organize an application architecture on top of Backbone, but like Backbone itself, it doesn't dictate that you have to use all of its pieces in order to use any of them. 
+
+The flexibility and versatility in Marionette is easiest to understand by examining three variations of TodoMVC implemented with it that have been created for comparison purposes:
+
+* [Simple](https://github.com/jsoverson/todomvc/tree/master/labs/architecture-examples/backbone_marionette) - by Jarrod Overson
+* [RequireJS](https://github.com/jsoverson/todomvc/tree/master/labs/dependency-examples/backbone_marionette_require) - also by Jarrod
+* [Marionette modules](https://github.com/derickbailey/todomvc/tree/marionette/labs/architecture-examples/backbone_marionette/js) - by Derick Bailey
+
+**The simple version**: This version of TodoMVC shows some raw use of Marionette's various view types, an application object, and the event aggregator. The objects that are created are added directly to the global namespace and are fairly straightforward. This is a great example of how Marionette can be used to augment existing code without having to re-write everything around Marionette.
+
+**The RequireJS version**: Using Marionette with RequireJS helps to create a modularized application architecture - a tremendously important concept in scaling JavaScript applications. RequireJS provides a powerful set of tools that can be leveraged to great advantage, making Marionette even more flexible than it already is.
+
+**The Marionette module version**: RequireJS isn't the only way to create a modularized application architecture, though. For those that wish to build applications in modules and namespaces, Marionette provides a built-in module and namespacing structure. This example application takes the simple version of the application and re-writes it in to a namespaced application architecture, with an application controller (mediator / workflow object) that brings all of the pieces together.
+
+Marionette certainly provides its share of opinions on how a Backbone application should be architected. The combination of modules, view types, event aggregator, application objects, and more, can be used to create a very powerful and flexible architecture based on these opinions. 
+
+But as you can see, Marionette isn't a completely rigid, "my way or the highway" framework. It provides many elements of an application foundation that can be mixed and matched with other architectural styles, such as AMD or namespacing, or provide simple augmentation to existing projects by reducing boilerplate code for rendering views. 
+
+This flexibility creates a much greater opportunity for Marionette to provide value to you and your projects, as it allows you to scale the use of Marionette with your application's needs.
+
+### And So Much More
+
+This is just the tip of the proverbial iceberg for Marionette, even for the `ItemView` and `Region` objects that we've explored. There is far more functionality, more features, and more flexibility and customizability that can be put to use in both of these objects. Then we have the other dozen or so components that Marionette provides, each with their own set of behaviors built in, customization and extension points, and more. 
+
+To learn more about Marionette's components, the features they provide and how to use them, check out the Marionette documentation, links to the wiki, to the source code, the project core contributors, and much more at [http://marionettejs.com](http://marionettejs.com). 
+
+
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+
+
+
+## Thorax
+
+*By Ryan Eastridge & Addy Osmani*
+
+Part of Backbone's appeal is that it provides structure but is generally un-opinionated, in particular when it comes to views. Thorax makes an opinionated decision to use Handlebars as its templating solution. Some of the patterns found in Marionette are found in Thorax as well. Marionette exposes most of these patterns as JavaScript APIs while in Thorax they are often exposed as template helpers. This chapter assumes the reader has knowledge of Handlebars. 
+
+Thorax was created by Ryan Eastridge and Kevin Decker to create Walmart's mobile web application. This chapter is limited to Thorax's templating features and patterns implemented in Thorax that you can utilize in your application regardless of whether you choose to adopt Thorax. To learn more about other features implemented in Thorax and to download boilerplate projects visit the [Thorax website](http://thoraxjs.org).
+
+### Hello World
+
+`Thorax.View` differs from `Backbone.View` in that there is no `options` object. All arguments passed to the constructor become properties of the view, which in turn become available to the `template`:
+
+```javascript
+    var view = new Thorax.View({
+        greeting: 'Hello',
+        template: Handlebars.compile('{{greeting}} World!')
+    });
+    view.appendTo('body');
+```
+
+ In most examples in this chapter a `template` property will be specified. In larger projects including the boilerplate projects provided on the Thorax website a `name` property would instead be used and a `template` of the same file name in your project would automatically be assigned to the view.
+
+ If a `model` is set on a view, its attributes also become available to the template:
+
+    var view = new Thorax.View({
+        model: new Thorax.Model({key: 'value'}),
+        template: Handlebars.compile('{{key}}')
+    });
+
+### Embedding child views
+
+The view helper allows you to embed other views within a view. Child views can be specified as properties of the view:
+
+```javascript
+    var parent = new Thorax.View({
+        child: new Thorax.View(...),
+        template: Handlebars.compile('{{view child}}')
+    });
+```
+
+Or the name of a child view to initialize (and any optional properties to pass). In this case the child view must have previously been created with `extend` and given a `name` property:
+
+```javascript
+    var ChildView = Thorax.View.extend({
+        name: 'child',
+        template: ...
+    });
+  
+    var parent = new Thorax.View({
+        template: Handlebars.compile('{{view "child" key="value"}}')
+    });
+```
+
+The view helper may also be used as a block helper, in which case the block will be assigned as the `template` property of the child view:
+
+```handlebars
+    {{#view child}}
+        child will have this block
+        set as its template property
+    {{/view}}
+```
+
+Handlebars is string based, while `Backbone.View` instances have a DOM `el`. Since we are mixing metaphors, the embedding of views works via a placeholder mechanism where the `view` helper in this case adds the view passed to the helper to a hash of `children`, then injects placeholder HTML into the template such as:
+
+```html
+    <div data-view-placeholder-cid="view2"></div>
+```
+
+Then once the parent view is rendered, we walk the DOM in search of all the placeholders we created, replacing them with the child views' `el`s:
+
+```javascript
+    this.$el.find('[data-view-placeholder-cid]').forEach(function(el) {
+        var cid = el.getAttribute('data-view-placeholder-cid'),
+            view = this.children[cid];
+        view.render();
+        $(el).replaceWith(view.el);
+    }, this);
+```
+
+### View helpers
+
+One of the most useful constructs in Thorax is `Handlebars.registerViewHelper` (not to be confused with `Handlebars.registerHelper`). This method will register a new block helper that will create and embed a `HelperView` instance with its `template` set to the captured block. A `HelperView` instance is different from that of a regular child view in that its context will be that of the parent's in the template. Like other child views it will have a `parent` property set to that of the declaring view. Many of the built-in helpers in Thorax including the `collection` helper are created in this manner.
+
+A simple example would be an `on` helper that re-rendered the generated `HelperView` instance each time an event was triggered on the declaring / parent view:
+
+    Handlebars.registerViewHelper('on', function(eventName, helperView) {
+        helperView.parent.on(eventName, function() {
+            helperView.render();
+        });
+    });
+
+An example use of this would be to have a counter that would increment each time a button was clicked. This example makes use of the `button` helper in Thorax which simply makes a button that calls a method when clicked:
+
+```handlebars
+    {{#on "incremented"}}{{i}}{/on}}
+    {{#button trigger="incremented"}}Add{{/button}}
+```
+
+And the corresponding view class:
+
+```javascript
+    new Thorax.View({
+        events: {
+            incremented: function() {
+                ++this.i;
+            }
+        },
+        initialize: function() {
+            this.i = 0;
+        },
+        template: ...
+    });
+```
+
+### collection helper
+
+The `collection` helper creates and embeds a `CollectionView` instance, creating a view for each item in a collection, updating when items are added, removed, or changed in the collection. The simplest usage of the helper would look like:
+
+```handlebars
+    {{#collection kittens}}
+      <li>{{name}}</li>
+    {{/collection}}
+```
+
+And the corresponding view:
+
+```javascript
+    new Thorax.View({
+      kittens: new Thorax.Collection(...),
+      template: ...
+    });
+```
+
+The block in this case will be assigned as the `template` for each item view created, and the context will be the `attributes` of the given model. This helper accepts options that can be arbitrary HTML attributes, a `tag` option to specify the type of tag containing the collection, or any of the following:
+
+- `item-template` - A template to display for each model. If a block is specified it will become the item-template
+- `item-view` - A view class to use when each item view is created
+- `empty-template` - A template to display when the collection is empty. If an inverse / else block is specified it will become the empty-template
+- `empty-view` - A view to display when the collection is empty
+
+Options and blocks can be used in combination, in this case creating a `KittenView` class with a `template` set to the captured block for each kitten in the collection:
+
+```handlebars
+    {{#collection kittens item-view="KittenView" tag="ul"}}
+      <li>{{name}}</li>
+    {{else}}
+      <li>No kittens!</li>
+    {{/collection}}
+```
+
+Note that multiple collections can be used per view, and collections can be nested. This is useful when there are models that contain collections that contain models that contain...
+
+```handlebars
+    {{#collection kittens}}
+      <h2>{{name}}</h2>
+      <p>Kills:</p>
+      {{#collection miceKilled tag="ul"}}
+        <li>{{name}}</li>
+      {{/collection}}
+    {{/collection}}
+```
+
+### Custom HTML data attributes
+
+Thorax makes heavy use of custom HTML data attributes to operate. While some make sense only within the context of Thorax, several are quite useful to have in any Backbone project for writing other functions against, or for general debugging. In order to add some to your views in non-Thorax projects, override the `setElement` method in your base view class:
+
+```javascript
+  MyApplication.View = Backbone.View.extend({
+    setElement: function() {
+        var response = Backbone.View.prototype.setElement.apply(this, arguments);
+        this.name && this.$el.attr('data-view-name', this.name);
+        this.$el.attr('data-view-cid', this.cid);
+        this.collection && this.$el.attr('data-collection-cid', this.collection.cid);
+        this.model && this.$el.attr('data-model-cid', this.model.cid);
+        return response;
+    }
+  });
+```
+
+In addition to making your application more immediately comprehensible in the inspector, it's now possible to extend jQuery / Zepto with functions to lookup the closest view, model, or collection to a given element. In order to make it work, save references to each view created in your base view class by overriding the `_configure` method:
+
+```javascript
+    MyApplication.View = Backbone.View.extend({
+        _configure: function() {
+            Backbone.View.prototype._configure.apply(this, arguments);
+            Thorax._viewsIndexedByCid[this.cid] = this;
+        },
+        dispose: function() {
+            Backbone.View.prototype.dispose.apply(this, arguments);
+            delete Thorax._viewsIndexedByCid[this.cid];
+        }
+    });
+```
+
+Then we can extend jQuery / Zepto:
+
+```javascript
+    $.fn.view = function() {
+        var el = $(this).closest('[data-view-cid]');
+        return el && Thorax._viewsIndexedByCid[el.attr('data-view-cid')];
+    };
+
+    $.fn.model = function(view) {
+        var $this = $(this),
+            modelElement = $this.closest('[data-model-cid]'),
+            modelCid = modelElement && modelElement.attr('[data-model-cid]');
+        if (modelCid) {
+            var view = $this.view();
+            return view && view.model;
+        }
+        return false;
+    };
+```
+
+Now instead of storing references to models randomly throughout your application to lookup when a given DOM event occurs you can use `$(element).model()`. In Thorax, this can particularly useful in conjunction with the `collection` helper which generates a view class (with a `model` property) for each `model` in the collection. An example template:
+
+```handlebars
+    {{#collection kittens tag="ul"}}
+      <li>{{name}}</li>
+    {{/collection}}
+```
+
+And the corresponding view class:
+
+```javascript
+    Thorax.View.extend({
+      events: {
+        'click li': function(event) {
+          var kitten = $(event.target).model();
+          console.log('Clicked on ' + kitten.get('name'));
+        }
+      },
+      kittens: new Thorax.Collection(...),
+      template: ...
+    });  
+```
+
+A common anti-pattern in Backbone applications is to assign a `className` to a single view class. Consider using the `data-view-name` attribute as a CSS selector instead, saving CSS classes for things that will be used multiple times: 
+
+```css
+  [data-view-name="child"] {
+
+  }
+```
+
+### Thorax Resources
+
+No Backbone-related tutorial would be complete without a todo application. A [Thorax implementation of TodoMVC](http://todomvc.com/labs/architecture-examples/thorax/) is available, in addition to this far simpler example composed of this single handlebars template:
+
+```handlebars
+  {{#collection todos tag="ul"}}
+    <li{{#if done}} class="done"{{/if}}>
+      <input type="checkbox" name="done"{{#if done}} checked="checked"{{/if}}>
+      <span>{{item}}</span>
+    </li>
+  {{/collection}}
+  <form>
+    <input type="text">
+    <input type="submit" value="Add">
+  </form>
+```
+
+and the corresponding JavaScript:
+
+```javascript
+  var todosView = Thorax.View({
+      todos: new Thorax.Collection(),
+      events: {
+          'change input[type="checkbox"]': function(event) {
+              var target = $(event.target);
+              target.model().set({done: !!target.attr('checked')});
+          },
+          'submit form': function(event) {
+              event.preventDefault();
+              var input = this.$('input[type="text"]');
+              this.todos.add({item: input.val()});
+              input.val('');
+          }
+      },
+      template: '...'
+  });
+  todosView.appendTo('body');
+```
+
+To see Thorax in action on a large scale website visit walmart.com on any Android or iOS device. For a complete list of resources visit the [Thorax website](http://thoraxjs.org).
+<p>&nbsp;</p>
+<p>&nbsp;</p>
 
 # Modular Development
 

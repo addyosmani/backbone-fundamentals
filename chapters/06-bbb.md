@@ -647,8 +647,11 @@ For more about Grunt-BBB, remember to take a look at the official project [repos
 
 ## Related Tools & Projects
 
-As we've seen, scaffolding tools can assist in expediting how quickly you can begin a new application by creating the basic files required for a project automatically. If you appreciate such tools, I'm happy to also recommend checking out [Yeoman](http://yeoman.io).
+As we've seen, scaffolding tools can assist in expediting how quickly you can begin a new application by creating the basic files required for a project automatically. 
 
-Brunch works very well with Backbone, Underscore, jQuery and CoffeeScript and is even used by companies such as Red Bull and Jim Beam. You may have to update any third party dependencies (e.g., latest jQuery or Zepto) when using it, but other than that it should be fairly stable to use right out of the box.
+If you appreciated Grunt-BBB and would like to explore similar tools for the broader app development workflow, I'm happy to also recommend checking out the [Yeoman](http://yeoman.io) and workflow [Brunch](http://brunch.io).
 
-Brunch can be installed via the nodejs package manager and is easy to get started with. If you happen to use Vim or Textmate as your editor of choice, you'll be happy to know that there are Brunch bundles available for both.
+Both projects offer application scaffolding, a file-watcher and build system however Yeoman achieves the latter through [Grunt](http://gruntjs.com) and also helps with client-side package management via [Bower](http://bower.io).
+
+
+
