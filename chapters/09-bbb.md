@@ -23,16 +23,10 @@ Notes on build steps:
 
 ### Backbone Boilerplate
 
-We can use Boilerplate to easily begin creating an application, but first, we'll need to install it. This can be done by grabbing the latest version of it by cloning the Boilerplate repo directly:
+We can use Boilerplate to easily begin creating an application, but first, we'll need to install it. This can be done by cloning the Boilerplate repo directly:
 
 ```shell
-$ git clone git://github.com/tbranyen/backbone-boilerplate.git
-```
-
-or alternatively, just fetching the latest tarball as follows:
-
-```shell
-$ curl -C - -O https://github.com/tbranyen/backbone-boilerplate/zipball/master
+git clone --q --depth 0 git@github.com:tbranyen/backbone-boilerplate.git .
 ```
 
 ### Grunt-BBB
