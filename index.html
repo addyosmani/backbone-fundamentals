@@ -6960,33 +6960,8 @@ it(<span class="ch">&#39;should contain a text value if not the default value&#3
       <span class="dt">done</span>:  <span class="kw">false</span>,
       <span class="dt">order</span>: <span class="dv">0</span>
     }</code></pre>
-<p>Next, we want to test that our model will pass attributes that are set such that retrieving the value of these attributes after initialization will be what we expect. Notice that here, in addition to testing for an expected value for <code>text</code>, we’re also testing the other default values are what we expect them to be.</p>
-<pre class="sourceCode javascript"><code class="sourceCode javascript">it(<span class="ch">&#39;Will set passed attributes on the model instance when created.&#39;</span>, <span class="kw">function</span>() {
-    <span class="kw">var</span> todo = <span class="kw">new</span> Todo({ <span class="dt">text</span>: <span class="ch">&#39;Get oil change for car.&#39;</span> });
-
-    <span class="co">// what are the values expected here for each of the</span>
-    <span class="co">// attributes in our Todo?</span>
-
-    expect(<span class="kw">todo</span>.<span class="fu">get</span>(<span class="ch">&#39;text&#39;</span>)).<span class="fu">toBe</span>(<span class="ch">&#39;Get oil change for car.&#39;&#39;);</span>
-    expect(<span class="kw">todo</span>.<span class="fu">get</span>(<span class="ch">&#39;done&#39;</span>)).<span class="fu">toBe</span>(<span class="kw">false</span>);
-    expect(<span class="kw">todo</span>.<span class="fu">get</span>(<span class="ch">&#39;order&#39;</span>)).<span class="fu">toBe</span>(<span class="dv">0</span>);
-});</code></pre>
-<p>Backbone models support a model.change() event which is triggered when the state of a model changes. In the following example, by <q>state</q> I’m referring to the value of a Todo model’s attributes. The reason changes of state are important to test are that there may be state-dependent events in your application e.g you may wish to display a confirmation view once a Todo model has been updated.</p>
-<pre class="sourceCode javascript"><code class="sourceCode javascript">it(<span class="ch">&#39;Fires a custom event when the state changes.&#39;</span>, <span class="kw">function</span>() {
-
-    <span class="kw">var</span> spy = <span class="kw">jasmine</span>.<span class="fu">createSpy</span>(<span class="ch">&#39;-change event callback-&#39;</span>);
-
-    <span class="kw">var</span> todo = <span class="kw">new</span> Todo();
-
-    <span class="co">// how do we monitor changes of state?</span>
-    <span class="kw">todo</span>.<span class="fu">on</span>(<span class="ch">&#39;change&#39;</span>, spy);
-
-    <span class="co">// what would you need to do to force a change of state?</span>
-    <span class="kw">todo</span>.<span class="fu">set</span>({ <span class="dt">text</span>: <span class="ch">&#39;Get oil change for car.&#39;</span> });
-
-    expect(spy).<span class="fu">toHaveBeenCalled</span>();
-});</code></pre>
-<p>It’s common to include validation logic in your models to ensure both the input passed from users (and other modules) in the application are <q>valid</q>. A Todo app may wish to validate the text input supplied in case it contains rude words. Similarly if we’re storing the <code>done</code> state of a Todo item using booleans, we need to validate that truthy/falsy values are passed and not just any arbitrary string.</p>
+<p>Next, it is common to include validation logic in your models to ensure both the input passed from users (and other modules) in the application are <q>valid</q>.</p>
+<p>A Todo app may wish to validate the text input supplied in case it contains rude words. Similarly if we’re storing the <code>done</code> state of a Todo item using booleans, we need to validate that truthy/falsy values are passed and not just any arbitrary string.</p>
 <p>In the following spec, we take advantage of the fact that validations which fail model.validate() trigger an <q>error</q> event. This allows us to test if validations are correctly failing when invalid input is supplied.</p>
 <p>We create an errorCallback spy using Jasmine’s built in <code>createSpy()</code> method which allows us to spy on the error event as follows:</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript">it(<span class="ch">&#39;Can contain custom validation rules, and will trigger an error event on failed validation.&#39;</span>, <span class="kw">function</span>() {

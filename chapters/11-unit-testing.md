@@ -298,41 +298,9 @@ window.Todo = Backbone.Model.extend({
 
 ```
 
-Next, we want to test that our model will pass attributes that are set such that retrieving the value of these attributes after initialization will be what we expect. Notice that here, in addition to testing for an expected value for ```text```, we're also testing the other default values are what we expect them to be.
+Next, it is common to include validation logic in your models to ensure both the input passed from users (and other modules) in the application are 'valid'. 
 
-```javascript
-it('Will set passed attributes on the model instance when created.', function() {
-    var todo = new Todo({ text: 'Get oil change for car.' });
-
-    // what are the values expected here for each of the
-    // attributes in our Todo?
-
-    expect(todo.get('text')).toBe('Get oil change for car.'');
-    expect(todo.get('done')).toBe(false);
-    expect(todo.get('order')).toBe(0);
-});
-```
-
-Backbone models support a model.change() event which is triggered when the state of a model changes. In the following example, by 'state' I'm referring to the value of a Todo model's attributes. The reason changes of state are important to test are that there may be state-dependent events in your application e.g you may wish to display a confirmation view once a Todo model has been updated.
-
-```javascript
-it('Fires a custom event when the state changes.', function() {
-
-    var spy = jasmine.createSpy('-change event callback-');
-
-    var todo = new Todo();
-
-    // how do we monitor changes of state?
-    todo.on('change', spy);
-
-    // what would you need to do to force a change of state?
-    todo.set({ text: 'Get oil change for car.' });
-
-    expect(spy).toHaveBeenCalled();
-});
-```
-
-It's common to include validation logic in your models to ensure both the input passed from users (and other modules) in the application are 'valid'. A Todo app may wish to validate the text input supplied in case it contains rude words. Similarly if we're storing the ```done``` state of a Todo item using booleans, we need to validate that truthy/falsy values are passed and not just any arbitrary string.
+A Todo app may wish to validate the text input supplied in case it contains rude words. Similarly if we're storing the ```done``` state of a Todo item using booleans, we need to validate that truthy/falsy values are passed and not just any arbitrary string.
 
 In the following spec, we take advantage of the fact that validations which fail model.validate() trigger an "error" event. This allows us to test if validations are correctly failing when invalid input is supplied.
 
