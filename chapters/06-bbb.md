@@ -235,7 +235,7 @@ For example, in the block below, we state that Backbone.js is dependent on Lodas
     }
 ```
 
-Finally, we inform RequireJS that the Backbone [LayoutManager](https://github.com/tbranyen/backbone.layoutmanager) plugin (a template and layout manager, also included) requires that Backbone be loaded before it is loaded.
+Finally, we inform RequireJS that the Backbone [LayoutManager](https://github.com/tbranyen/backbone.layoutmanager) plugin requires that Backbone be loaded before it is.
 
 ```javascript
     // Backbone.LayoutManager depends on Backbone.
@@ -387,6 +387,8 @@ function($, _, Backbone) {
 
 });
 ```
+
+Additional files have been stubbed, but for the purposes of brevity we will not be exploring them in detail. For those curious about the `backbone.layoutmanager` files added, [Backbone.LayoutManager](https://github.com/tbranyen/backbone.layoutmanager) is a Backbone plugin that provides a foundation for assembling layouts and views within Backbone. It is a Backbone Boilerplate dependency.
 
 ### Creating Backbone Boilerplate Modules
 
