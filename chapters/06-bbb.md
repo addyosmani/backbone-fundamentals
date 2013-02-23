@@ -60,7 +60,63 @@ A typical workflow for using grunt-bbb, which we can use later on is:
 
 ## Creating a new project
 
-Let's create a new folder for our project and run `bbb init` to kick things off. If everything has been correctly installed, this will stub out some project directories and files for us. Let's review what is generated.
+Let's create a new directory for our project and run `bbb init` to kick things off. A number of project sub-directories and files will be stubbed out for us, as shown below:
+
+```shell
+$ bbb init
+Running "init" task
+This task will create one or more files in the current directory, based on the
+environment and the answers to a few questions. Note that answering "?" to any
+question will show question-specific help and answering "none" to most questions
+will leave its value blank.
+
+"bbb" template notes:
+This tool will help you install, configure, build, and maintain your Backbone
+Boilerplate project.
+Writing app/app.js...OK
+Writing app/config.js...OK
+Writing app/main.js...OK
+Writing app/router.js...OK
+Writing app/styles/index.css...OK
+Writing favicon.ico...OK
+Writing grunt.js...OK
+Writing index.html...OK
+Writing package.json...OK
+Writing readme.md...OK
+Writing test/jasmine/index.html...OK
+Writing test/jasmine/spec/example.js...OK
+Writing test/jasmine/vendor/jasmine-html.js...OK
+Writing test/jasmine/vendor/jasmine.css...OK
+Writing test/jasmine/vendor/jasmine.js...OK
+Writing test/jasmine/vendor/jasmine_favicon.png...OK
+Writing test/jasmine/vendor/MIT.LICENSE...OK
+Writing test/qunit/index.html...OK
+Writing test/qunit/tests/example.js...OK
+Writing test/qunit/vendor/qunit.css...OK
+Writing test/qunit/vendor/qunit.js...OK
+Writing vendor/h5bp/css/main.css...OK
+Writing vendor/h5bp/css/normalize.css...OK
+Writing vendor/jam/backbone/backbone.js...OK
+Writing vendor/jam/backbone/package.json...OK
+Writing vendor/jam/backbone.layoutmanager/backbone.layoutmanager.js...OK
+Writing vendor/jam/backbone.layoutmanager/package.json...OK
+Writing vendor/jam/jquery/jquery.js...OK
+Writing vendor/jam/jquery/package.json...OK
+Writing vendor/jam/lodash/lodash.js...OK
+Writing vendor/jam/lodash/lodash.min.js...OK
+Writing vendor/jam/lodash/lodash.underscore.min.js...OK
+Writing vendor/jam/lodash/package.json...OK
+Writing vendor/jam/require.config.js...OK
+Writing vendor/jam/require.js...OK
+Writing vendor/js/libs/almond.js...OK
+Writing vendor/js/libs/require.js...OK
+
+Initialized from template "bbb".
+
+Done, without errors.
+```
+
+Let's review what has been generated.
 
 ### index.html
 
