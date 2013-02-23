@@ -332,8 +332,6 @@ TodoMVC.on('initialize:after', function(){
 
 Regions are used to manage the content that's displayed within specific elements, and the `addRegions` method on the `TodoMVC` object is just a shortcut for creating `Region` objects. We supply a jQuery selector for each region to manage (e.g., `#header`, `#main`, and `#footer`) and then tell the region to show various Backbone views within that region.
 
-![](img/marionette_todo1.png)
-
 Once the application object has been initialized, we call `Backbone.history.start()` to route the initial URL.
 
 Next, we define our Layouts. A layout is a specialized type of view that directly extends `Marionette.ItemView`. This means its intended to render a single template and may or may not have a model (or `item`) associated with the template.
