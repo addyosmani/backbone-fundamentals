@@ -1840,7 +1840,7 @@ Backbone has many operations and options beyond those we have covered here and i
 
 Now that we've covered fundamentals, let's write our first Backbone.js application. We'll build the Backbone Todo List application exhibited on [TodoMVC.com](http://todomvc.com). Building a Todo List is a great way to learn Backbone’s conventions. It's a relatively simple application, yet technical challenges surrounding binding, persisting model data, routing, and template rendering provide opportunities to illustrate some core Backbone features.
 
-![](img/todoapp.png)
+![](img/todos_a.png)
 
 Let's consider the application's architecture at a high level. We'll need:
 
@@ -2397,13 +2397,13 @@ So now we have two views: `AppView` and `TodoView`. The former needs to be insta
 
 Let's pause and ensure that the work we've done so far functions as intended.
 
-If you are following along, open file://*path*/index.html in your web browser and monitor its console. If all is well, you shouldn't see any JavaScript errors other than regarding the router.js file that we haven't created yet. The todo list should be blank as we haven't yet created any todos. Plus, there is some additional work we'll need to do before the user interface fully functions.
+If you are following along, open `file://*path*/index.html` in your web browser and monitor its console. If all is well, you shouldn't see any JavaScript errors other than regarding the router.js file that we haven't created yet. The todo list should be blank as we haven't yet created any todos. Plus, there is some additional work we'll need to do before the user interface fully functions.
 
 However, a few things can be tested through the JavaScript console.
 
 In the console, add a new todo item: `window.app.Todos.create({ title: 'My first Todo item'});` and hit return.
 
-![](img/todoconsole.png)
+![](img/todos_d.png)
 
 If all is functioning properly, this should log the new todo we've just added to the todos collection. The newly created todo is also saved to Local Storage and will be available on page refresh.
 
@@ -2428,15 +2428,11 @@ var secondTodo = window.app.Todos.create({ title: 'My second Todo item'});
 secondTodo instanceof app.Todo // returns true
 ```
 
-If all is working well, you should see this:
-
-![](img/todoconsole2.png)
-
 Now refresh the page and we should be able to see the fruits of our labour.
 
 The todos added through the console should still appear in the list since they are populated from the Local Storage. Also, we should be able to create a new todo by typing a title and pressing enter.
 
-![](img/todocompleted.png)
+![](img/todos_b.png)
 
 Excellent, we're making great progress, but what about completing and deleting todos?
 
@@ -2577,7 +2573,7 @@ Finally, we move on to routing, which will allow us to easily filter the list of
 #/completed
 ```
 
-![](img/todorouting.png)
+![](img/todos_e.png)
 
 When the route changes, the todo list will be filtered on a model level and the selected class on the filter links in the footer will be toggled as described above. When an item is updated while a filter is active it will be updated accordingly (e.g., if the filter is active and the item is checked, it will be hidden). The active filter is persisted on reload.
 

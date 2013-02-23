@@ -1765,7 +1765,7 @@ collection
 <h1 id="exercise-1-todos---your-first-backbone.js-app"><a href="#TOC">Exercise 1: Todos - Your First Backbone.js App</a></h1>
 <p>Now that we’ve covered fundamentals, let’s write our first Backbone.js application. We’ll build the Backbone Todo List application exhibited on <a href="http://todomvc.com">TodoMVC.com</a>. Building a Todo List is a great way to learn Backbone’s conventions. It’s a relatively simple application, yet technical challenges surrounding binding, persisting model data, routing, and template rendering provide opportunities to illustrate some core Backbone features.</p>
 <figure>
-<img src="img/todoapp.png"><figcaption></figcaption>
+<img src="img/todos_a.png"><figcaption></figcaption>
 </figure>
 <p>Let’s consider the application’s architecture at a high level. We’ll need:</p>
 <ul>
@@ -2242,11 +2242,11 @@ collection
   });</code></pre>
 <h2 id="in-action"><a href="#TOC">In action</a></h2>
 <p>Let’s pause and ensure that the work we’ve done so far functions as intended.</p>
-<p>If you are following along, open file://<em>path</em>/index.html in your web browser and monitor its console. If all is well, you shouldn’t see any JavaScript errors other than regarding the router.js file that we haven’t created yet. The todo list should be blank as we haven’t yet created any todos. Plus, there is some additional work we’ll need to do before the user interface fully functions.</p>
+<p>If you are following along, open <code>file://*path*/index.html</code> in your web browser and monitor its console. If all is well, you shouldn’t see any JavaScript errors other than regarding the router.js file that we haven’t created yet. The todo list should be blank as we haven’t yet created any todos. Plus, there is some additional work we’ll need to do before the user interface fully functions.</p>
 <p>However, a few things can be tested through the JavaScript console.</p>
 <p>In the console, add a new todo item: <code>window.app.Todos.create({ title: 'My first Todo item'});</code> and hit return.</p>
 <figure>
-<img src="img/todoconsole.png"><figcaption></figcaption>
+<img src="img/todos_d.png"><figcaption></figcaption>
 </figure>
 <p>If all is functioning properly, this should log the new todo we’ve just added to the todos collection. The newly created todo is also saved to Local Storage and will be available on page refresh.</p>
 <p><code>window.app.Todos.create()</code> executes a collection method (<code>Collection.create(attributes, [options])</code>) which instantiates a new model item of the type passed into the collection definition, in our case <code>app.Todo</code>:</p>
@@ -2261,14 +2261,10 @@ collection
 <p>Run the following in the console to check it out:</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> secondTodo = <span class="kw">window</span>.<span class="fu">app</span>.<span class="fu">Todos</span>.<span class="fu">create</span>({ <span class="dt">title</span>: <span class="ch">&#39;My second Todo item&#39;</span>});
 secondTodo instanceof <span class="kw">app</span>.<span class="fu">Todo</span> <span class="co">// returns true</span></code></pre>
-<p>If all is working well, you should see this:</p>
-<figure>
-<img src="img/todoconsole2.png"><figcaption></figcaption>
-</figure>
 <p>Now refresh the page and we should be able to see the fruits of our labour.</p>
 <p>The todos added through the console should still appear in the list since they are populated from the Local Storage. Also, we should be able to create a new todo by typing a title and pressing enter.</p>
 <figure>
-<img src="img/todocompleted.png"><figcaption></figcaption>
+<img src="img/todos_b.png"><figcaption></figcaption>
 </figure>
 <p>Excellent, we’re making great progress, but what about completing and deleting todos?</p>
 <h2 id="completing-deleting-todos"><a href="#TOC">Completing &amp; deleting todos</a></h2>
@@ -2393,7 +2389,7 @@ secondTodo instanceof <span class="kw">app</span>.<span class="fu">Todo</span> <
 #/active
 #/completed</code></pre>
 <figure>
-<img src="img/todorouting.png"><figcaption></figcaption>
+<img src="img/todos_e.png"><figcaption></figcaption>
 </figure>
 <p>When the route changes, the todo list will be filtered on a model level and the selected class on the filter links in the footer will be toggled as described above. When an item is updated while a filter is active it will be updated accordingly (e.g., if the filter is active and the item is checked, it will be hidden). The active filter is persisted on reload.</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript">
