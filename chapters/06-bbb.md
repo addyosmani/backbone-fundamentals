@@ -1,17 +1,23 @@
 # Backbone Boilerplate And Grunt-BBB
 
-[Backbone Boilerplate](https://github.com/tbranyen/backbone-boilerplate/) is an excellent set of best practices and utilities for building Backbone.js applications, created by Backbone contributor [Tim Branyen](https://github.com/tbranyen). He organized this boilerplate out of the gotchas, pitfalls and common tasks he ran into over a year of heavily using Backbone to build apps at Bocoup. This includes apps such [StartupDataTrends.com](http://startupdatatrends.com).
+[Backbone Boilerplate](https://github.com/tbranyen/backbone-boilerplate/) is an excellent set of best practices and utilities for building Backbone.js applications. It was created by Backbone contributor [Tim Branyen](https://github.com/tbranyen). 
 
-With scaffolding and built in build tasks that take care of minification, concatentation, server, template compilation and more, Backbone Boilerplate (and sister project [Grunt-BBB](https://github.com/backbone-boilerplate/grunt-bbb)) are an excellent choice for developers of all levels. I heavily recommend using them as they will give you an enormous start when it comes to getting setup for development. They also have some great inline documentation which is also another excellent time-saver.
+Tim organized this boilerplate out of the gotchas, pitfalls and common tasks he ran into over a year of heavily using Backbone to build apps at Bocoup. This includes apps such [StartupDataTrends.com](http://startupdatatrends.com). With scaffolding and built in build tasks, Backbone Boilerplate (and sister project [Grunt-BBB](https://github.com/backbone-boilerplate/grunt-bbb)) are an excellent choice for developers wishing to get started for development on a Backbone application more swiftly.
 
 By default, Backbone Boilerplate provides you with:
 
 * Backbone, [Lodash](https://github.com/bestiejs/lodash) (an [Underscore.js](http://underscorejs.org/) alternative) and [jQuery](http://jquery.com) with an [HTML5 Boilerplate](http://html5boilerplate.com) foundation
 * Boilerplate module code
-* A build tool for template precompilation and, concatenation & minification of all your libraries, application code and CSS
+* A build tool for template pre-compilation and, concatenation & minification of all your libraries, application code and stylesheets
 * Scaffolding support (via grunt-bbb - [B]ackbone [B]oilerplate [B]uild) so you have to spend minimal time writing boilerplate for modules, collections and so on.
 * A Lightweight node.js webserver
 * Numerous other Backbone.js snippets for making your life easier
+
+Notes on build steps:
+
+* Template pre-compilation: Using a template library such as Handlebars.js generally involves three steps: (1) reading a raw template, (2) compiling it into a JavaScript function and (3) running the compiled template with your desired data. Precompiling eliminates the second step from runtime, by moving this process into a build step.
+* Concatenation: This is the process of combining a number of assets (in our case, script files) into a single (or fewer number) of files to reduce the number of HTTP requests required to obtain them.
+* Minification: This is the process of removing unnecessary characters (e.g white space, new lines, comments) from code and compressing it to reduce the overall size of the scripts being served.
 
 ## Getting Started
 
