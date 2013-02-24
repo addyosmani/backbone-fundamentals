@@ -265,6 +265,10 @@ code > span.er { color: #ff0000; font-weight: bold; }
 </ul></li>
 <li><a href="#plugins">Plugins</a></li>
 </ul></li>
+<li><a href="#thorax-1"><a name="thorax">Thorax</a></a><ul>
+<li><a href="#view-helper">view helper</a></li>
+<li><a href="#creating-new-view-helpers">Creating new View helpers</a></li>
+</ul></li>
 </ul></li>
 <li><a href="#mobile-applications">Mobile Applications</a><ul>
 <li><a href="#backbone-jquery-mobile">Backbone &amp; jQuery Mobile</a><ul>
@@ -3992,7 +3996,6 @@ NewChildView = <span class="kw">Backbone.View</span>.<span class="fu">extend</sp
 <p>Unfortunately, this method would trigger a first name error each time any of the fields were blurred and only an error message next to the first name field would be presented.</p>
 <p>One potential solution to the problem could be to validate all fields and return all of the errors:</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="dt">validate</span>: <span class="kw">function</span>(attrs) {
-
   <span class="kw">var</span> errors = {};
 
   <span class="kw">if</span> (!<span class="kw">attrs</span>.<span class="fu">firstname</span>) <span class="kw">errors</span>.<span class="fu">firstname</span> = <span class="ch">&#39;first name is empty&#39;</span>;
@@ -4000,16 +4003,13 @@ NewChildView = <span class="kw">Backbone.View</span>.<span class="fu">extend</sp
   <span class="kw">if</span> (!<span class="kw">attrs</span>.<span class="fu">email</span>) <span class="kw">errors</span>.<span class="fu">email</span> = <span class="ch">&#39;email is empty&#39;</span>;
 
   <span class="kw">if</span> (!<span class="kw">_</span>.<span class="fu">isEmpty</span>(errors)) <span class="kw">return</span> errors;
-
 }</code></pre>
 <p>This can be adapted into a complete solution that defines a Field model for each input in our form and works within the parameters of our use-case as follows:</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript">
 $(<span class="kw">function</span>($) {
 
   <span class="kw">var</span> User = <span class="kw">Backbone.Model</span>.<span class="fu">extend</span>({
-
     <span class="dt">validate</span>: <span class="kw">function</span>(attrs) {
-
       <span class="kw">var</span> errors = <span class="kw">this</span>.<span class="fu">errors</span> = {};
 
       <span class="kw">if</span> (!<span class="kw">attrs</span>.<span class="fu">firstname</span>) <span class="kw">errors</span>.<span class="fu">firstname</span> = <span class="ch">&#39;firstname is required&#39;</span>;
@@ -4017,37 +4017,25 @@ $(<span class="kw">function</span>($) {
       <span class="kw">if</span> (!<span class="kw">attrs</span>.<span class="fu">email</span>) <span class="kw">errors</span>.<span class="fu">email</span> = <span class="ch">&#39;email is required&#39;</span>;
 
       <span class="kw">if</span> (!<span class="kw">_</span>.<span class="fu">isEmpty</span>(errors)) <span class="kw">return</span> errors;
-
     }
-
   });
 
   <span class="kw">var</span> Field = <span class="kw">Backbone.View</span>.<span class="fu">extend</span>({
-
     <span class="dt">events</span>: {<span class="dt">blur</span>: <span class="ch">&#39;validate&#39;</span>},
-
     <span class="dt">initialize</span>: <span class="kw">function</span>() {
-
       <span class="kw">this</span>.<span class="fu">name</span> = <span class="kw">this</span>.$<span class="fu">el</span>.<span class="fu">attr</span>(<span class="ch">&#39;name&#39;</span>);
       <span class="kw">this</span>.$<span class="fu">msg</span> = $(<span class="ch">&#39;[data-msg=&#39;</span> + <span class="kw">this</span>.<span class="fu">name</span> + <span class="ch">&#39;]&#39;</span>);
-
     },
-
     <span class="dt">validate</span>: <span class="kw">function</span>() {
-
       <span class="kw">this</span>.<span class="fu">model</span>.<span class="fu">set</span>(<span class="kw">this</span>.<span class="fu">name</span>, <span class="kw">this</span>.$<span class="fu">el</span>.<span class="fu">val</span>());
       <span class="kw">this</span>.$<span class="fu">msg</span>.<span class="fu">text</span>(<span class="kw">this</span>.<span class="fu">model</span>.<span class="fu">errors</span>[<span class="kw">this</span>.<span class="fu">name</span>] || <span class="ch">&#39;&#39;</span>);
-
     }
-
   });
 
   <span class="kw">var</span> user = <span class="kw">new</span> User;
 
   $(<span class="ch">&#39;input&#39;</span>).<span class="fu">each</span>(<span class="kw">function</span>() {
-
     <span class="kw">new</span> Field({<span class="dt">el</span>: <span class="kw">this</span>, <span class="dt">model</span>: user});
-
   });
 
 });</code></pre>
@@ -4059,8 +4047,8 @@ $(<span class="kw">function</span>($) {
 <span class="co">// Create a new User Model</span>
 <span class="kw">var</span> User = <span class="kw">Backbone.Model</span>.<span class="fu">extend</span>({
 
-  <span class="co">// RegEx Patterns</span>
-  <span class="dt">patterns</span>: {
+      <span class="co">// RegEx Patterns</span>
+      <span class="dt">patterns</span>: {
 
           <span class="dt">specialCharacters</span>: <span class="ch">&#39;[^a-zA-Z 0-9]+&#39;</span>,
 
@@ -4069,35 +4057,34 @@ $(<span class="kw">function</span>($) {
           <span class="dt">email</span>: <span class="ch">&#39;^[a-zA-Z0-9._-]+@[a-zA-Z0-9][a-zA-Z0-9.-]*[.]{1}[a-zA-Z]{2,6}$&#39;</span>
       },
 
-      <span class="kw">return</span> <span class="kw">value</span>.<span class="fu">length</span> &gt;= minLength;
+    <span class="co">// Validators</span>
+      <span class="dt">validators</span>: {
 
-    },
+      <span class="dt">minLength</span>: <span class="kw">function</span>(value, minLength) {
+            <span class="kw">return</span> <span class="kw">value</span>.<span class="fu">length</span> &gt;= minLength;
 
-    <span class="dt">maxLength</span>: <span class="kw">function</span>(value, maxLength) {
+          },
 
-      <span class="kw">return</span> <span class="kw">value</span>.<span class="fu">length</span> &lt;= maxLength;
+          <span class="dt">maxLength</span>: <span class="kw">function</span>(value, maxLength) {
+            <span class="kw">return</span> <span class="kw">value</span>.<span class="fu">length</span> &lt;= maxLength;
 
-    },
-
-    <span class="dt">isEmail</span>: <span class="kw">function</span>(value) {
+          },
 
            <span class="dt">isEmail</span>: <span class="kw">function</span>(value) {
             <span class="kw">return</span> <span class="kw">User.prototype.validators</span>.<span class="fu">pattern</span>(value, <span class="kw">User.prototype.patterns</span>.<span class="fu">email</span>);
 
-    },
+          },
 
           <span class="dt">hasSpecialCharacter</span>: <span class="kw">function</span>(value) {
             <span class="kw">return</span> <span class="kw">User.prototype.validators</span>.<span class="fu">pattern</span>(value, <span class="kw">User.prototype.patterns</span>.<span class="fu">specialCharacters</span>);
 
-<span class="er">      return User.prototype.validators.pattern(value, User.prototype.patterns.specialCharacters);</span>
-
-    },
-    ...
+          },
+         ...
 
     <span class="co">// We can determine which properties are getting validated by</span>
     <span class="co">// checking to see if properties are equal to null</span>
 
-    <span class="dt">validate</span>: <span class="kw">function</span>(attrs) {
+        <span class="dt">validate</span>: <span class="kw">function</span>(attrs) {
 
           <span class="kw">var</span> errors = <span class="kw">this</span>.<span class="fu">errors</span> = {};
 
