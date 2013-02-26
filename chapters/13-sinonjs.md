@@ -21,12 +21,12 @@ Using ```this.spy()``` without any arguments creates an anonymous spy. This is c
 ```javascript
 test('should call all subscribers for a message exactly once', function () {
     var message = getUniqueString();
-    var spy1 = this.spy();
+    var spy = this.spy();
 
     PubSub.subscribe( message, spy );
     PubSub.publishSync( message, 'Hello World' );
 
-    ok( spy1.calledOnce, 'the subscriber was called once' );
+    ok( spy.calledOnce, 'the subscriber was called once' );
 });
 ```
 
@@ -122,7 +122,7 @@ test( 'Should call a subscriber and check call counts', function () {
 
 ## Stubs and mocks
 
-SinonJS also supports two other powerful features which are useful to be aware of: stubs and mocks. Both stubs and mocks implement all of the features of the spy API, but have some added functionality.
+SinonJS also supports two other powerful features which aer useful to be aware of: stubs and mocks. Both stubs and mocks implement all of the features of the spy API, but have some added functionality.
 
 ### Stubs
 
@@ -141,7 +141,7 @@ var TodoList = Backbone.Collection.extend({
 this.todoList;
 ```
 
-Assuming our collection is instantiating new models itself, it's necessary for us to stub the models constructor function for the the test. This can be done by creating a simple stub as follows:
+Assuming our collection is instantiating new models itself, it's necessary for us to stub the model's constructor function for the the test. This can be done by creating a simple stub as follows:
 
 ```javascript
 this.todoStub = sinon.stub( window, 'Todo' );
@@ -157,7 +157,7 @@ After this, we need to alter what the constructor returns, which can be efficien
 
 
 ```javascript
-teardown: function() {
+setup: function() {
     this.model = new Backbone.Model({
       id: 2,
       title: 'Hello world'
@@ -242,7 +242,7 @@ test('should call all subscribers when exceptions', function () {
 
 We can now begin writing test specs for our Todo application, which are listed and separated by component (e.g Models, Collections etc.). It's useful to pay attention to the name of the test, the logic being tested and most importantly the assertions being made as this will give you some insight into how what we've learned can be applied to a complete application.
 
-To get the most out of this section, I recommend looking at the QUnit Koans included in the `practicals\qunit-koans` folder - this is a port of the Backbone.js Jasmine Koans over to QUnit that I converted for this post.
+To get the most out of this section, I recommend looking at the QUnit Koans included in the `practicals/qunit-koans` folder - this is a port of the Backbone.js Jasmine Koans over to QUnit.
 
 *In case you haven't had a chance to try out one of the Koans kits as yet, they are a set of unit tests using a specific testing framework that both demonstrate how a set of specs for an application may be written, but also leave some tests unfilled so that you can complete them as an exercise.*
 
@@ -583,12 +583,12 @@ module( 'About Backbone Applications' , {
     setup: function() {
         Backbone.localStorageDB = new Store('testTodos');
         $('#qunit-fixture').append('<div id="app"></div>');
-        this.App = new TodoApp({ appendTo: $('# <app') });
+        this.App = new TodoApp({ appendTo: $('#app') });
     },
 
     teardown: function() {
         this.App.todos.reset();
-        $('# <app').remove();
+        $('#app').remove();
     }
 });
 

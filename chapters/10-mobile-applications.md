@@ -20,9 +20,9 @@ $.mobile.hashListeningEnabled = false;
 
 prior to initializing any of your other code.
 
-I discovered this method looking through some jQuery Mobile commits that didn't make their way into the official docs, but am happy to see that they are now covered here http://jquerymobile.com/test/docs/api/globalconfig.html in more detail.
+I discovered this method looking through some jQuery Mobile commits that didn't make their way into the official docs, but am happy to see that they are now [covered in more detail](http://jquerymobile.com/test/docs/api/globalconfig.html).
 
-The next question that arises is, if we're preventing jQuery Mobile from listening to URL hash changes, how can we still get the benefit of being able to navigate to other sections in a document using the built-in transitions and effects supported? Good question. This can now be solve by simply calling `$.mobile.changePage()` as follows:
+The next question that arises is, if we're preventing jQuery Mobile from listening to URL hash changes, how can we still get the benefit of being able to navigate to other sections in a document using the built-in transitions and effects supported? Good question. This can be solved by simply calling `$.mobile.changePage()` as follows:
 
 ```javascript
 var url = '#about',
@@ -78,7 +78,7 @@ In the Flickly application, there are at least two unique types of data that nee
 
 **Views**
 
-The views we'll need include an application view, a search results view and a photo view. Static views or pages of the single-page application which do not require a dynamic element to them (e.g an 'about' page) can be easily coded up in your document's markup, independent of Backbone.
+The views we'll need include an application view, a search results view and a photo view. Static views or pages of the single-page application which do not require a dynamic element for them (e.g an 'about' page) can be easily coded up in your document's markup, independent of Backbone.
 
 **Routers**
 
