@@ -64,7 +64,7 @@ If however any tests fail, the test gets highlighted (and the qunit-banner at th
 
 ## Assertions
 
-QUnit supports a number of basic **assertions**, which are used in testing to verify that the result being returned by our code is what we expect. If an assertion fails, we know that a bug exists.Similar to Jasmine, QUnit can be used to easily test for regressions. Specifically, when a bug is found one can write an assertion to test the existence of the bug, write a patch and then commit both. If subsequent changes to the code break the test you'll know what was responsible and be able to address it more easily.
+QUnit supports a number of basic **assertions**, which are used in testing to verify that the result being returned by our code is what we expect. If an assertion fails, we know that a bug exists. Similar to Jasmine, QUnit can be used to easily test for regressions. Specifically, when a bug is found one can write an assertion to test the existence of the bug, write a patch and then commit both. If subsequent changes to the code break the test you'll know what was responsible and be able to address it more easily.
 
 Some of the supported QUnit assertions we're going to look at first are:
 
@@ -199,7 +199,7 @@ Here, a list of stores is created and stored on ```setup()```. A ```teardown()``
 
 ## Assertion examples
 
-Before we continue any further, let's review some more examples of how QUnits various assertions can be correctly used when writing tests:
+Before we continue any further, let's review some more examples of how QUnit's various assertions can be correctly used when writing tests:
 
 ### equal - a comparison assertion. It passes if actual == expected
 
@@ -312,7 +312,7 @@ We can either opt to place static markup in the fixture or just insert/append an
 
 Let us now go through a more complete example of using fixtures. One thing that most of us are used to doing in jQuery is working with lists - they're often used to define the markup for menus, grids and a number of other components. You may have used jQuery plugins before that manipulated a given list in a particular way and it can be useful to test that the final (manipulated) output of the plugin is what was expected.
 
-For the purposes of our next example, we're going to use Ben Alman's `$.enumerate()` plugin, which can prepend each item in a list by its index, optionally allowing us to set what the first number in the list is. The code snippet for the plugin can be found below, followed by an example of the output is generates:
+For the purposes of our next example, we're going to use Ben Alman's `$.enumerate()` plugin, which can prepend each item in a list by its index, optionally allowing us to set what the first number in the list is. The code snippet for the plugin can be found below, followed by an example of the output it generates:
 
 ```javascript
 $.fn.enumerate = function( start ) {
@@ -348,15 +348,15 @@ $.fn.enumerate = function( start ) {
 Let's now write some specs for the plugin. First, we define the markup for a list containing some sample items inside our ```qunit-fixture``` element:
 
 ```html
-&lt;div id=&quot;qunit-fixture&quot;&gt;
-    &lt;ul&gt;
-      &lt;li&gt;hello&lt;/li&gt;
-      &lt;li&gt;world&lt;/li&gt;
-      &lt;li&gt;i&lt;/li&gt;
-      &lt;li&gt;am&lt;/li&gt;
-      &lt;li&gt;foo&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/div&gt;
+<div id="qunit-fixture">
+    <ul>
+      <li>hello</li>
+      <li>world</li>
+      <li>i</li>
+      <li>am</li>
+      <li>foo</li>
+    </ul>
+  </div>
 ```
 
 Next, we need to think about what should be tested. `$.enumerate()` supports a few different use cases, including:

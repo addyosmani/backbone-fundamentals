@@ -4,11 +4,11 @@
 
 When we say an application is modular, we generally mean it's composed of a set of highly decoupled, distinct pieces of functionality stored in modules. As you probably know, loose coupling facilitates easier maintainability of apps by removing dependencies where possible. When this is implemented efficiently, it's quite easy to see how changes to one part of a system may affect another.
 
-Unlike some more traditional programming languages however, the current iteration of JavaScript (ECMA-262) doesn't provide developers with the means to import such modules of code in a clean, organized manner. It's one of the concerns with specifications that haven't required great thought until more recent years where the need for more organized JavaScript applications became apparent.
+Unlike some more traditional programming languages however, the current iteration of JavaScript (ECMA-262) doesn't provide developers with the means to import such modules of code in a clean, organized manner. It's one of the concerns with a specification that hasn't required great thought until more recent years when the need for more organized JavaScript applications has become apparent.
 
-Instead, developers at present are left to fall back on variations of the module or object literal patterns. With many of these, module scripts are strung together in the DOM with namespaces being described by a single global object where it's still possible to incur naming collisions in your architecture. There's also no clean way to handle dependency management without some manual effort or third party tools.
+Instead, developers are left to fall back on variations of the module or object literal patterns. With many of these, module scripts are strung together in the DOM with namespaces being described by a single global object where it's still possible to have name collisions. There's also no clean way to handle dependency management without some manual effort or third party tools.
 
-Whilst native solutions to these problems will be arriving in ES Harmony, the good news is that writing modular JavaScript has never been easier and you can start doing it today.
+Whilst native solutions to these problems will be arriving in ES Harmony (the next version of the official JavaScript specification), the good news is that writing modular JavaScript has never been easier and you can start doing it today.
 
 In this next part of the book, we're going to look at how to use AMD modules and RequireJS to cleanly wrap units of code in your application into manageable modules. We'll also cover an alternate approach called Lumbar which uses routes to determine when modules are loaded.
 
@@ -16,14 +16,13 @@ In this next part of the book, we're going to look at how to use AMD modules and
 
 *Partly Contributed by [Jack Franklin](https://github.com/jackfranklin)*
 
-
-[RequireJS](http://requirejs.org) is a popular script loader written by James Burke - a developer who has been quite instrumental in helping shape the AMD module format, which we'll discuss more shortly. Some of RequireJS's capabilities include helping to load multiple script files, helping define modules with or without dependencies, and loading in non-script dependencies such as text files.
+[RequireJS](http://requirejs.org) is a popular script loader written by James Burke - a developer who has been quite instrumental in helping shape the AMD module format, which we'll discuss shortly. Amongst other things RequireJS helps you to load multiple script files, define modules with or without dependencies, and load in non-script dependencies such as text files.
 
 ### Maintainability problems with multiple script files
 
-You might be thinking that there is little benefit to RequireJS. After all, you can simply load in your JavaScript files through multiple `<script>` tags, which is very straightforward. However, doing it that way has a lot of drawbacks, namely the HTTP overhead.
+You might be thinking that there is little benefit to RequireJS. After all, you can simply load in your JavaScript files through multiple `<script>` tags, which is very straightforward. However, doing it that way has a lot of drawbacks, including increasing the HTTP overhead.
 
-Everytime the browser loads in a file you've referenced in a `<script>` tag, it makes an HTTP request to load the file's contents. It has to make a new HTTP request for each file you want to load, which causes problems:
+Every time the browser loads in a file you've referenced in a `<script>` tag, it makes an HTTP request to load the file's contents. It has to make a new HTTP request for each file you want to load, which causes problems.
 
 - Browsers are limited in how many parallel requests they can make, so often it's slow to load multiple files, as it can only do a certain number at a time. This number depends on the user's settings and browser, but is usually around 4-8. When working on Backbone applications it's good to split your app into multiple JS files, so it's easy to hit that limit quickly. This can be negated by minifying your code into one file as part of a build process, but does not help with the next point.
 - Scripts are loaded synchronously. This means that the browser cannot continue page rendering while the script is loading, .
@@ -37,7 +36,7 @@ What tools like RequireJS do is load scripts asynchronously. This means we have 
 
 Dependency management is a challenging subject, in particular when writing JavaScript in the browser. The closest thing we have to dependency management by default is simply making sure we order our `<script>` tags such that code that depends on code in another file is loaded after the file it depends on. This is not a good approach. As I've already discussed, loading multiple files in that way is bad for performance; needing them to be loaded in a certain order is very brittle.
 
-Being able to load code on an as-needed basis is something RequireJS is very good at. Rather than load all our JavaScript code in during page load, a better approach is to dynamically load modules when that code is required. This avoids loading all the code when the user first hits your application, consequently speeding up initial load times.
+Being able to load code on an as-needed basis is something RequireJS is very good at. Rather than load all our JavaScript code in during initial page load, a better approach is to dynamically load modules when that code is required. This avoids loading all the code when the user first hits your application, consequently speeding up initial load times.
 
 Think about the GMail web client for a moment. When a user initially loads the page on their first visit, Google can simply hide widgets such as the chat module until the user has indicated (by clicking 'expand') that they wish to use it. Through dynamic dependency loading, Google could load up the chat module at that time, rather than forcing all users to load it when the page first initializes. This can improve performance and load times and can definitely prove useful when building larger applications. As the codebase for an application grows this becomes even more important.
 
@@ -51,7 +50,7 @@ RequireJS implements the [AMD Specification](https://github.com/amdjs/amdjs-api/
 
 ### Writing AMD modules with RequireJS
 
-As discussed above, the overall goal for the AMD format is to provide a solution for modular JavaScript that developers can use today. The two key concepts you need to be aware of when using it with a script-loader are the `define()` method for facilitating module definition and the `require()` method for handling dependency loading. `define()` is used to define named or unnamed modules based on the proposal using the following signature:
+As discussed above, the overall goal for the AMD format is to provide a solution for modular JavaScript that developers can use today. The two key concepts you need to be aware of when using it with a script-loader are the `define()` method for defining modules and the `require()` method for loading dependencies. `define()` is used to define named or unnamed modules using the following signature:
 
 ```javascript
 define(
@@ -63,7 +62,7 @@ define(
 
 As you can tell by the inline comments, the `module_id` is an optional argument which is typically only required when non-AMD concatenation tools are being used (there may be some other edge cases where it's useful too). When this argument is left out, we call the module 'anonymous'. When working with anonymous modules, RequireJS will use a module's file path as its module id, so the adage Don't Repeat Yourself (DRY) should be applied by omitting the module id in the `define()` invocation.
 
-Back to the define signature, the dependencies argument represents an array of dependencies which are required by the module you are defining and the third argument ('definition function') is a function that's executed to instantiate your module. A barebone module (compatible with RequireJS) could be defined using `define()` as follows:
+The dependencies argument is an array representing all of the other modules that this module depends on and the third argument ('definition function') is a function that's executed to instantiate your module. A barebones module (compatible with RequireJS) could be defined using `define()` as follows:
 
 ```javascript
 // A module ID has been omitted here to make the module anonymous
@@ -127,11 +126,11 @@ require( ['foo', 'bar'], function ( foo, bar ) {
 });
 ```
 
-
 Addy's post on [Writing Modular JS](http://addyosmani.com/writing-modular-js/) covers the AMD specification in much more detail. Defining and using modules will be covered in this book shortly when we look at more structured examples of using RequireJS.
 
 ### Getting Started with RequireJS
-Before using RequireJS and Backbone we will first set up a very basic RequireJS project to demonstrate how it works. The first thing to do is to [Download RequireJS](http://requirejs.org/docs/download.html#requirejs). When you load in the RequireJS script in your HTML file, you need to also tell it where your main JavaScript file is located. Typically, this will be called something like "app.js", and is the main entry point for your application. You do this by passing in a `data-main` attribute:
+
+Before using RequireJS and Backbone we will first set up a very basic RequireJS project to demonstrate how it works. The first thing to do is to [Download RequireJS](http://requirejs.org/docs/download.html#requirejs). When you load in the RequireJS script in your HTML file, you need to also tell it where your main JavaScript file is located. Typically this will be called something like "app.js", and is the main entry point for your application. You do this by adding in a `data-main` attribute to the `script` tag:
 
 ```html
 <script data-main="app.js" src="lib/require.js"></script>
@@ -141,7 +140,7 @@ Now, RequireJS will automatically load `app.js` for you.
 
 #### RequireJS Configuration
 
-In your main JavaScript file that you pass in through the `data-main` attribute, you can configure RequireJS. This is done by calling `require.config`, and passing in an object:
+In the main JavaScript file that you load with the `data-main` attribute you can configure how RequireJS loads the rest of your application. This is done by calling `require.config`, and passing in an object:
 
 ```javascript
 require.config({
@@ -152,11 +151,12 @@ require.config({
 });
 ```
 
-The main reason you'd want to configure RequireJS is for shims, which is used to allow RequireJS to work with libraries that don't use `define()` in the code, but expose themselves globally. We'll cover this shortly. To see other configuration options available to you, I recommend checking out the [RequireJS documentation](http://requirejs.org/docs/api.html#config).
+The main reason you'd want to configure RequireJS is to add shims, which we'll cover next. To see other configuration options available to you, I recommend checking out the [RequireJS documentation](http://requirejs.org/docs/api.html#config).
 
 
 ##### RequireJS Shims
-To use a library with RequireJS, ideally that library should come with AMD support. That is, it uses the `define` method to define the library as a module. However, some libraries - including Backbone and one of its dependencies, Underscore - don't do this. Fortunately RequireJS comes with a way to bypass this.
+
+Ideally, each library that we use with RequireJS will come with AMD support. That is, it uses the `define` method to define the library as a module. However, some libraries - including Backbone and one of its dependencies, Underscore - don't do this. Fortunately RequireJS comes with a way to work around this.
 
 To demonstrate this, first let's shim Underscore, and then we'll shim Backbone too. Shims are very simple to implement:
 
@@ -164,13 +164,15 @@ To demonstrate this, first let's shim Underscore, and then we'll shim Backbone t
 require.config({
     shim: {
         'lib/underscore': {
-          exports: '_'
+            exports: '_'
         }
     }
 });
 ```
 
-The important line there is `exports: '_'`. That tells RequireJS that whenever we require the file `'lib/underscore'`, it would return the global `_` object, as that's where Underscore exports itself too, it adds the `_` property to the global object. Now when we require Underscore, RequireJS will return that `_` property. Now we can set up a shim for Backbone too:
+Note that when specifying paths for RequireJS you should omit the `.js` from the end of script names.
+
+The important line here is `exports: '_'`. This line tells RequireJS that the script in `'lib/underscore.js'` creates a global variable called `_` instead of defining a module. Now when we list Underscore as a dependency RequireJS will know to give us the `_` global variable as though it was the module defined by that script. We can set up a shim for Backbone too:
 
 ```javascript
 require.config({
@@ -186,7 +188,7 @@ require.config({
 });
 ```
 
-Again, that configuration tells RequireJS to return the global `Backbone` property that Backbone exports, but also this time you'll notice that Backbone's dependencies are defined. This means whenever this:
+Again, that configuration tells RequireJS to return the global `Backbone` variable that Backbone exports, but this time you'll notice that Backbone's dependencies are defined. This means whenever this:
 
 ```javascript
 require( 'lib/backbone', function( Backbone ) {...} );
@@ -223,7 +225,7 @@ require.config({
 });
 ```
 
-Just make sure that in your shim settings, you refer to the custom path too. Now you can do:
+Just make sure that you refer to the custom path in your shim settings, too. Now you can do
 
 ```javascript
 require( ['underscore'], function(_) {
@@ -231,14 +233,14 @@ require( ['underscore'], function(_) {
 });
 ```
 
-To shim Underscore but still use a custom path.
+to shim Underscore but still use a custom path.
 
 
 ### Require.js and Backbone Examples
 
 Now that we've taken a look at how to define AMD modules, let's review how to go about wrapping components like views and collections so that they can also be easily loaded as dependencies for any parts of your application that require them. At its simplest, a Backbone model may just require Backbone and Underscore.js. These are dependencies, so we can define those when defining the new modules. Note that the following examples presume you have configured RequireJS to shim Backbone and Underscore, as discussed previously.
 
-#### Wrapping modules, views, and other components with AMD
+#### Wrapping models, views, and other components with AMD
 
 For example, here is how a model is defined.
 
@@ -280,7 +282,7 @@ define([
   ...
 ```
 
-Aliasing to the dollar-sign (`$`), once again makes it very easy to encapsulate any part of an application you wish using AMD.
+Aliasing to the dollar-sign (`$`) once again makes it very easy to encapsulate any part of an application you wish using AMD.
 
 Doing it this way makes it easy to organize your Backbone application as you like. It's recommended to separate modules into folders. For example, individual folders for models, collections, views and so on. RequireJS doesn't care about what folder structure you use; as long as you use the correct path when using `require`, it will happily pull in the file.
 
@@ -368,13 +370,11 @@ define(["lib/backbone", "models/item", "views/itemview"], function(Backbone, Ite
 
 There really is nothing to it once you've got the general pattern. Define each "object" (a model, view, collection, router or otherwise) through RequireJS, and then specify them as dependencies to other objects that need them. Again, you can find this entire application [on Github](https://github.com/javascript-playground/backbone-require-example).
 
-If you'd like to take a look at how others do it, [Pete Hawkins' Backbone Stack repository](https://github.com/phawk/Backbone-Stack) is a good example of structuring a Backbone application, using RequireJS. Greg Franko has also written [an overview of how he uses Backbone and Require](http://gregfranko.com/blog/using-backbone-dot-js-with-require-dot-js/), and [Jeremy Kahn's post](http://jeremyckahn.github.com/blog/2012/08/18/keeping-it-sane-backbone-views-and-require-dot-js/) neatly describes his approach. For a full look at a sample application, the [Backbone and Require example](https://github.com/addyosmani/todomvc/tree/gh-pages/dependency-examples/backbone_require) of the TodoMVC repository should be your starting point.
-
-
+If you'd like to take a look at how others do it, [Pete Hawkins' Backbone Stack repository](https://github.com/phawk/Backbone-Stack) is a good example of structuring a Backbone application using RequireJS. Greg Franko has also written [an overview of how he uses Backbone and Require](http://gregfranko.com/blog/using-backbone-dot-js-with-require-dot-js/), and [Jeremy Kahn's post](http://jeremyckahn.github.com/blog/2012/08/18/keeping-it-sane-backbone-views-and-require-dot-js/) neatly describes his approach. For a look at a full sample application, the [Backbone and Require version](https://github.com/addyosmani/todomvc/tree/gh-pages/dependency-examples/backbone_require) of the TodoMVC application is a good starting point.
 
 ### Keeping Your Templates External Using RequireJS And The Text Plugin
 
-Moving your [Underscore/Mustache/Handlebars] templates to external files is actually quite straight-forward. As this application makes use of RequireJS, I'll discuss how to implement external templates using this specific script loader.
+Moving your templates to external files is actually quite straight-forward, whether they are Underscore, Mustache, Handlebars or any other text-based template format. Let's look at how we do that with RequireJS.
 
 RequireJS has a special plugin called text.js which is used to load in text file dependencies. To use the text plugin, follow these steps:
 
@@ -447,7 +447,7 @@ All templating solutions will have their own custom methods for handling templat
 
 ### Optimizing Backbone apps for production with the RequireJS Optimizer
 
-As experienced developers may know, an essential final step when writing both small and large JavaScript web applications is the build process.  The majority of non-trivial apps are likely to consist of more than one or two scripts and so optimizing, minimizing and concatenating your scripts prior to pushing them to production will require your users to download a reduced number (if not just one) script file.
+As experienced developers may know, an essential final step when writing both small and large JavaScript web applications is the build process. The majority of non-trivial apps are likely to consist of many scripts and so optimizing, minimizing, and concatenating your scripts prior to pushing them to production can reduce the number of scripts your users have to download, often to just one.
 
 If this is your first time looking at build scripts, [Addy Osmani's screencast on build scripts](http://addyosmani.com/blog/client-side-build-process/) may be useful.
 
@@ -457,19 +457,23 @@ Another benefit to using RequireJS is its command line optimization tool, R.js. 
 * Optimizing CSS and stylesheets by inlining CSS files imported using @import, stripping out comments, etc.
 * The ability to run AMD projects in both Node and Rhino (more on this later)
 
-You'll notice that I mentioned the word 'specific' in the first bullet point. The RequireJS optimizer only concatenates module scripts that have been specified in arrays of string literals passed to top-level (i.e non-local) require and define calls. As clarified by the [optimizer docs](http://requirejs.org/docs/optimization.html) this means that Backbone modules defined like this:
+You'll notice that I mentioned the word 'specific' in the first bullet point. The RequireJS optimizer only concatenates module scripts that have been specified as string literals in require and define calls. As clarified by the [optimizer docs](http://requirejs.org/docs/optimization.html) this means that Backbone modules defined like this:
 
 ```javascript
-define(['jquery','backbone','underscore', 'collections/sample','views/test'],
-    function($,Backbone, _, Sample, Test){
+define(['jquery', 'backbone', 'underscore', 'collections/sample', 'views/test'],
+    function($, Backbone, _, Sample, Test){
         //...
     });
 ```
 
-will combine fine, however inline dependencies such as:
+will combine fine, however dynamic dependencies such as:
 
 ```javascript
-var models = someCondition ? ['models/ab','models/ac'] : ['models/ba','models/bc'];
+var models = someCondition ? ['models/ab', 'models/ac'] : ['models/ba', 'models/bc'];
+define(['jquery', 'backbone', 'underscore'].concat(models),
+    function($, Backbone, _, firstModel, secondModel){
+        //...
+    });
 ```
 
 will be ignored. This is by design as it ensures that dynamic dependency/module loading can still take place even after optimization.
@@ -533,7 +537,7 @@ RequireJS, the (JavaScript) module loading library, has an [optimizer](http://re
 * [Optimizing a whole project](http://requirejs.org/docs/optimization.html#wholeproject 'Optimizing a whole project')
 * [Optimizing a project in layers or packages](http://requirejs.org/docs/faq-optimization.html#priority 'Optimizing a project in layers or packages')
 
-In a complex application, organizing code into *packages* is an attractive build strategy. The build profile in this section is based on an test application currently under development (files listed below). The application framework is built with open source libraries. The main objective in this build profile is to optimize an application developed with [Backbone.js](http://documentcloud.github.com/backbone/ 'Backbone.js') using modular code, following the [Asynchronous Module Definition (AMD)](https://github.com/amdjs/amdjs-api/wiki/AMD 'Asynchronous Module Definition (AMD) wiki page') format. AMD and RequireJS provide the structure for writing modular code with dependencies. Backbone.js provides the code organization for developing models, views and collections and also interactions with a RESTful API.
+In a complex application, organizing code into *packages* is an attractive build strategy. The build profile in this section is based on a test application currently under development (files listed below). The application framework is built with open source libraries. The main objective in this build profile is to optimize an application developed with [Backbone.js](http://documentcloud.github.com/backbone/ 'Backbone.js') using modular code, following the [Asynchronous Module Definition (AMD)](https://github.com/amdjs/amdjs-api/wiki/AMD 'Asynchronous Module Definition (AMD) wiki page') format. AMD and RequireJS provide the structure for writing modular code with dependencies. Backbone.js provides the code organization for developing models, views, and collections and also interactions with a RESTful API.
 
 Below is an outline of the applications file organization, followed by the build profile to build modular (or packaged) layers a JavaScript driven application.
 
@@ -1142,7 +1146,6 @@ To see how everything ties together, feel free to grab the source by cloning thi
 
 **Note:** While this first practical doesn't use a build profile as outlined in the chapter on using the RequireJS optimizer, we will be using one in the section on building mobile Backbone applications.
 
-
 ## Route-based module loading
 
 This section will discuss a route based approach to module loading as implemented in [Lumbar](http://walmartlabs.github.com/lumbar) by Kevin Decker. Like RequireJS, Lumbar is also a modular build system, but the pattern it implements for loading routes may be used with any build system.
@@ -1334,7 +1337,9 @@ Next, we have an implementation of the facade pattern. Now the classical facade 
 
 var module = (function() {
     var _private = {
-        i:5,
+
+        i: 5,
+
         get : function() {
             console.log('current value:' + this.i);
         },
@@ -1400,7 +1405,7 @@ Found in `aura/permissions.js`
 
 In our simple permissions configuration, we support checking against subscription requests to establish whether they are allowed to clear. This enforces a flexible security layer for the application.
 
-To visually see how this works, consider changing say, permissions -> renderDone -> todoCounter to be false. This will completely disable the application from from rendering or displaying the counts component for Todo items left (because they aren't allowed to subscribe to that event notification). The rest of the Todo app can still however be used without issue.
+To visually see how this works, consider changing say, permissions -> renderDone -> todoCounter to be false. This will completely disable the application from rendering or displaying the counts component for Todo items left (because they aren't allowed to subscribe to that event notification). The rest of the Todo app can still however be used without issue.
 
 It's a very dumbed down example of the potential for application security, but imagine how powerful this might be in a large app with a significant number of visual widgets.
 
@@ -1460,8 +1465,6 @@ define([], function () {
 });
 ```
 
-
-
 **Subscribers**
 
 Found in `subscribers.js`
@@ -1472,7 +1475,7 @@ For example, when a user enters in a new piece of text for a Todo item and hits 
 
 In order to update your Backbone application to primarily use pub/sub, a lot of the work you may end up doing will be moving logic coupled inside of specific views to modules outside of it which are reactionary.
 
-Take the `todoSaver` for example - its responsibility is saving new Todo items to models once the a `notificationName` called 'newContentAvailable' has fired. If you take a look at the permissions structure in the last code sample, you'll notice that 'newContentAvailable' is present there. If I wanted to prevent subscribers from being able to subscribe to this notification, I simply set it to a boolean value of `false`.
+Take the `todoSaver` for example - its responsibility is saving new Todo items to models once the `notificationName` called 'newContentAvailable' has fired. If you take a look at the permissions structure in the last code sample, you'll notice that 'newContentAvailable' is present there. If I wanted to prevent subscribers from being able to subscribe to this notification, I simply set it to a boolean value of `false`.
 
 Again, this is a massive oversimplification of how advanced your permissions structures could get, but it's certainly one way of controlling what parts of your application can or can't be accessed by specific modules at any time.
 
@@ -1495,7 +1498,7 @@ function ($, _, facade) {
     });
 
 
-    // Save models when a user has finishes editing
+    // Save models when a user has finished editing
     // Subscribes to: endContentEditing
     facade.subscribe('todoSaver','endContentEditing', function (context) {
         try {
@@ -1590,7 +1593,7 @@ When working with a structural framework like Backbone.js, the three types of pa
 
 **Requests to a service layer (API)**- e.g query for results containing the term 'Brendan' - if 5,000 results are available only display 20 results per page (leaving us with 250 possible result pages that can be navigated to).
 
-This problem actually has quite a great deal more to it, such as maintaining persistence of other URL parameters (e.g sort, query, order) which can change based on a user's search configuration in a UI. One also had to think of a clean way of hooking views up to this pagination so you can easily navigate between pages (e.g First, Last, Next, Previous, 1,2,3), manage the number of results displayed per page and so on.
+This problem actually has quite a great deal more to it, such as maintaining persistence of other URL parameters (e.g sort, query, order) which can change based on a user's search configuration in a UI. One also has to think of a clean way of hooking views up to this pagination so you can easily navigate between pages (e.g., First, Last, Next, Previous, 1,2,3), manage the number of results displayed per page and so on.
 
 **Further client-side pagination of data returned -** e.g we've been returned a JSON response containing 100 results. Rather than displaying all 100 to the user, we only display 20 of these results within a navigable UI in the browser.
 
@@ -1604,14 +1607,12 @@ A request pager which simply appends results in a view rather than replacing on 
 
 *Paginator is a set of opinionated components for paginating collections of data using Backbone.js. It aims to provide both solutions for assisting with pagination of requests to a server (e.g an API) as well as pagination of single-loads of data, where we may wish to further paginate a collection of N results into M pages within a view.*
 
-
 ### Paginator's pieces
 
 Backbone.Paginator supports two main pagination components:
 
 * **Backbone.Paginator.requestPager**: For pagination of requests between a client and a server-side API
 * **Backbone.Paginator.clientPager**: For pagination of data returned from a server which you would like to further paginate within the UI (e.g 60 results are returned, paginate into 3 pages of 20)
-
 
 ### Live Examples
 
@@ -1685,7 +1686,8 @@ We need to tell the library how many items per page would we like to see, etc...
 
 #### 5. Configure the parameters we want to send to the server
 
-Only the base URL won't be enough for most cases, so you can pass more parameters to the server.
+The base URL on its own won't be enough for most cases, so you can pass more parameters to the server.
+
 Note how you can use functions insead of hardcoded values, and you can also refer to the values you specified in `paginator_ui`.
 
 ```javascript
@@ -1744,22 +1746,22 @@ For your convenience, the following methods are made available for use in your v
 * **Collection.requestPreviousPage( options )** - go to the previous page
 * **Collection.howManyPer( n )** - set the number of items to display per page
 
-**requestPager** collection's methods `.goTo()`, `.requestNextPage()` and `.requestPreviousPage()` are all extension of the original [Backbone Collection.fetch() method](http://documentcloud.github.com/backbone/#Collection-fetch). As so, they all can take the same option object as parameter.
+**requestPager** collection's methods `.goTo()`, `.requestNextPage()` and `.requestPreviousPage()` are all extensions of the original [Backbone Collection.fetch() method](http://documentcloud.github.com/backbone/#Collection-fetch). As such, they can all take the same option object as parameter.
 
 This option object can use `success` and `error` parameters to pass a function to be executed after server answer.
 
 ```javascript
 Collection.goTo(n, {
   success: function( collection, response ) {
-    // called is server request success
+    // called if server request succeeds
   },
   error: function( collection, response ) {
-    // called if server request fail
+    // called if server request fails
   }
 });
 ```
 
-To manage callback, you could also use the [jqXHR](http://api.jquery.com/jQuery.ajax/#jqXHR) returned by these methods to manage callback.
+You could also use the [jqXHR](http://api.jquery.com/jQuery.ajax/#jqXHR) returned by these methods to manage callbacks.
 
 ```javascript
 Collection
@@ -1838,7 +1840,8 @@ We need to tell the library how many items per page would we like to see, etc...
 
 #### 4. Configure the parameters we want to send to the server
 
-Only the base URL won't be enough for most cases, so you can pass more parameters to the server.
+The base URL on its own won't be enough for most cases, so you can pass more parameters to the server.
+
 Note how you can use functions instead of hardcoded values, and you can also refer to the values you specified in `paginator_ui`.
 
 ```javascript
@@ -1888,7 +1891,7 @@ As mentioned, your views can hook into a number of convenience methods to naviga
 * **Collection.nextPage()** - go to the next page
 * **Collection.howManyPer(n)** - set how many items to display per page
 * **Collection.setSort(sortBy, sortDirection)** - update sort on the current view. Sorting will automatically detect if you're trying to sort numbers (even if they're stored as strings) and will do the right thing.
-* **Collection.setFilter(filterFields, filterWords)** - filter the current view. Filtering supports multiple words without any specific order, so you'll basically get a full-text search ability. Also, you can pass it only one field from the model, or you can pass an array with fields and all of them will get filtered. Last option is to pass it an object containing a comparison method and rules. Currently, only ```levenshtein``` method is available.
+* **Collection.setFilter(filterFields, filterWords)** - filter the current view. Filtering supports multiple words without any specific order, so you'll basically get a full-text search ability. Also, you can pass it only one field from the model, or you can pass an array with fields and all of them will get filtered. Last option is to pass it an object containing a comparison method and rules. Currently, only the ```levenshtein``` method is available.
 
 ```javascript
   this.collection.setFilter(
@@ -1897,11 +1900,11 @@ As mentioned, your views can hook into a number of convenience methods to naviga
   );
 ```
 
-Also note that the levenshtein plugin should be loaded and enabled using the ```useLevenshteinPlugin``` variable.
+Also note that the levenshtein plug-in should be loaded and enabled using the ```useLevenshteinPlugin``` variable.
 
-Last but not less important: Performing Levenshtein comparison returns the ```distance``` between to strings. It won't let you *search* lengthy text.
+Last but not less important: Performing Levenshtein comparison returns the ```distance``` between two strings. It won't let you *search* lengthy text.
 
-The distance between two strings means the number of characters that should be added, removed or moved to the left or to the right so the strings get equal.
+The Levenshtein distance between two strings is the number of characters that should be added, removed or moved to the left or to the right to transform one string into the other.
 
 That means that comparing "Something" in "This is a test that could show something" will return 32, which is bigger than comparing "Something" and "ABCDEFG" (9).
 
@@ -1910,7 +1913,6 @@ Use levenshtein only for short texts (titles, names, etc).
 * **Collection.doFakeFilter(filterFields, filterWords)** - returns the models count after fake-applying a call to ```Collection.setFilter```.
 
 * **Collection.setFieldFilter(rules)** - filter each value of each model according to `rules` that you pass as argument. Example: You have a collection of books with 'release year' and 'author'. You can filter only the books that were released between 1999 and 2003. And then you can add another `rule` that will filter those books only to authors whose names start with 'A'. Possible rules: function, required, min, max, range, minLength, maxLength, rangeLength, oneOf, equalTo, pattern.
-
 
 ```javascript
 
