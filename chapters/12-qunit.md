@@ -12,7 +12,7 @@ We first setup a testing environment composed of three files:
 
 The latter two of these can be downloaded from the [QUnit website](http://qunitjs.com).
 
-If you would prefer, you can use a hosted version of the QUnit source files for testing purposes. The hosted URLs can be found at [http://github.com/jquery/qunit/raw/master/qunit/].
+If you would prefer, you can use a hosted version of the QUnit source files for testing purposes. The hosted URLs can be found at <http://github.com/jquery/qunit/raw/master/qunit/>.
 
 #### Sample HTML with QUnit-compatible markup:
 
