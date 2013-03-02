@@ -1057,7 +1057,7 @@ var view = new View();
 
 ## Routers
 
-In Backbone, routers help manage application state and connect URLs to application events. This is achieved using hash-tags with URL fragments, or using the browser's pushState and History API. Some examples of routes may be seen below:
+In Backbone, routers help manage application state and connect URLs to application events. This is achieved using hash marks with URL fragments, or using the browser's pushState and History API. Some examples of routes may be seen below:
 
 ```javascript
 http://example.com/#about
@@ -1140,7 +1140,7 @@ var TodoRouter = Backbone.Router.extend({
 var myTodoRouter = new TodoRouter();
 ```
 
-As of Backbone 0.5+, it's possible to opt-in for HTML5 pushState support via `window.history.pushState`. This permits you to define routes such as http://www.scriptjunkie.com/just/an/example. This will be supported with automatic degradation when a user's browser doesn't support pushState. In this discussion we'll continue using the hashtag method.
+As of Backbone 0.5+, it's possible to opt-in for HTML5 pushState support via `window.history.pushState`. This permits you to define routes such as http://www.scriptjunkie.com/just/an/example. This will be supported with automatic degradation when a user's browser doesn't support pushState. In this discussion we'll continue using the hash method.
 
 **Is there a limit to the number of routers I should be using?**
 
