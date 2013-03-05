@@ -300,18 +300,18 @@ Next, it is common to include validation logic in your models to ensure that inp
 
 A Todo app may wish to validate the text input supplied in case it contains rude words. Similarly if we're storing the ```done``` state of a Todo item using booleans, we need to validate that truthy/falsy values are passed and not just any arbitrary string.
 
-In the following spec, we take advantage of the fact that validations which fail model.validate() trigger an "error" event. This allows us to test if validations are correctly failing when invalid input is supplied.
+In the following spec, we take advantage of the fact that validations which fail model.validate() trigger an "invalid" event. This allows us to test if validations are correctly failing when invalid input is supplied.
 
-We create an errorCallback spy using Jasmine's built in ```createSpy()``` method which allows us to spy on the error event as follows:
+We create an errorCallback spy using Jasmine's built in ```createSpy()``` method which allows us to spy on the invalid event as follows:
 
 ```javascript
-it('Can contain custom validation rules, and will trigger an error event on failed validation.', function() {
+it('Can contain custom validation rules, and will trigger an invalid event on failed validation.', function() {
 
     var errorCallback = jasmine.createSpy('-error event callback-');
 
     var todo = new Todo();
 
-    todo.on('error', errorCallback);
+    todo.on('invalid', errorCallback);
 
     // What would you need to set on the todo properties to
     // cause validation to fail?
