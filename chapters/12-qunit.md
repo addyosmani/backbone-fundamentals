@@ -6,9 +6,9 @@ Luckily, getting QUnit setup is a fairly straight-forward process that will take
 
 We first setup a testing environment composed of three files:
 
-* A HTML **structure** for displaying test results,
-* The **qunit.js** file composing the testing framework and,
-* The **qunit.css** file for styling test results.
+* An HTML **structure** for displaying test results
+* The **qunit.js** file composing the testing framework
+* The **qunit.css** file for styling test results
 
 The latter two of these can be downloaded from the [QUnit website](http://qunitjs.com).
 
@@ -64,7 +64,7 @@ If however any tests fail, the test gets highlighted (and the qunit-banner at th
 
 ## Assertions
 
-QUnit supports a number of basic **assertions**, which are used in tests to verify that the result being returned by our code is what we expect. If an assertion fails, we know that a bug exists. Similar to Jasmine, QUnit can be used to easily test for regressions. Specifically, when a bug is found one can write an assertion to test the existence of the bug, write a patch and then commit both. If subsequent changes to the code break the test you'll know what was responsible and be able to address it more easily.
+QUnit supports a number of basic **assertions**, which are used in tests to verify that the result being returned by our code is what we expect. If an assertion fails, we know that a bug exists. Similar to Jasmine, QUnit can be used to easily test for regressions. Specifically, when a bug is found one can write an assertion to test the existence of the bug, write a patch, and then commit both. If subsequent changes to the code break the test you'll know what was responsible and be able to address it more easily.
 
 Some of the supported QUnit assertions we're going to look at first are:
 
@@ -195,7 +195,7 @@ test( 'test ordering', function() {
 
 ```
 
-Here, a list of stores is created and stored on ```setup()```. A ```teardown()``` callback is used to simply clear our a list of errors we might be storing within the window scope, but is otherwise not needed.
+Here, a list of stores is created and stored on ```setup()```. A ```teardown()``` callback is used to simply clear a list of errors we might be storing within the window scope, but is otherwise not needed.
 
 
 ## Assertion examples
@@ -311,7 +311,7 @@ We can either opt to place static markup in the fixture or just insert/append an
 
 ### Fixtures example:
 
-Let us now go through a more complete example of using fixtures. One thing that most of us are used to doing in jQuery is working with lists - they're often used to define the markup for menus, grids and a number of other components. You may have used jQuery plugins before that manipulated a given list in a particular way and it can be useful to test that the final (manipulated) output of the plugin is what was expected.
+Let us now go through a more complete example of using fixtures. One thing that most of us are used to doing in jQuery is working with lists - they're often used to define the markup for menus, grids, and a number of other components. You may have used jQuery plugins before that manipulated a given list in a particular way and it can be useful to test that the final (manipulated) output of the plugin is what was expected.
 
 For the purposes of our next example, we're going to use Ben Alman's `$.enumerate()` plugin, which can prepend each item in a list by its index, optionally allowing us to set what the first number in the list is. The code snippet for the plugin can be found below, followed by an example of the output it generates:
 
@@ -428,6 +428,6 @@ test('An async test', function(){
 });
 ```
 
-A jQuery ```$.ajax()``` request is used to connect to a test resource and assert that the data returned is correct. ```deepEqual()``` is used here as it allows us to compare different data types (e.g objects, arrays) and ensures that what is returned is exactly what we're expecting. We know that our Ajax request is asynchronous and so we first call ```stop()```, then run the code making the request, and finally, at the very end of our callback, inform QUnit that it is okay to continue running other tests.
+A jQuery ```$.ajax()``` request is used to connect to a test resource and assert that the data returned is correct. ```deepEqual()``` is used here as it allows us to compare different data types (e.g., objects, arrays) and ensures that what is returned is exactly what we're expecting. We know that our Ajax request is asynchronous and so we first call ```stop()```, then run the code making the request, and finally, at the very end of our callback, inform QUnit that it is okay to continue running other tests.
 
 Note: rather than including ```stop()```, we can simply exclude it and substitute ```test()``` with ```asyncTest()``` if we prefer. This improves readability when dealing with a mixture of asynchronous and synchronous tests in your suite. While this setup should work fine for many use-cases, there is no guarantee that the callback in our ```$.ajax()``` request will actually get called. To factor this into our tests, we can use ```expect()``` once again to define how many assertions we expect to see within our test. This is a healthy safety blanket as it ensures that if a test completes with an insufficient number of assertions, we know something went wrong and can fix it.
