@@ -304,7 +304,7 @@ A Todo app may wish to validate the text input supplied in case it contains rude
 
 In the following spec, we take advantage of the fact that validations which fail model.validate() trigger an "invalid" event. This allows us to test if validations are correctly failing when invalid input is supplied.
 
-We create an errorCallback spy using Jasmine's built in ```createSpy()``` method which allows us to spy on the error event as follows:
+We create an errorCallback spy using Jasmine's built in ```createSpy()``` method which allows us to spy on the invalid event as follows:
 
 ```javascript
 it('Can contain custom validation rules, and will trigger an invalid event on failed validation.', function() {
