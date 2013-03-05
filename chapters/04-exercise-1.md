@@ -191,7 +191,7 @@ Next, a `TodoList` collection is used to group our models. The collection uses t
     // Reference to this collection's model.
     model: app.Todo,
 
-    // Save all of the todo items under the `"todos"` namespace.
+    // Save all of the todo items under the `"todos-backbone"` namespace.
     localStorage: new Backbone.LocalStorage('todos-backbone'),
 
     // Filter down the list of all todo items that are finished.
