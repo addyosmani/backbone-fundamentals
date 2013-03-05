@@ -225,7 +225,7 @@ zombieView = new ZombieView({
 myModel.set('email', 'jeremy@gmail.com');
 ```
 
-Now we only see once alert box when this code runs. 
+Now we only see one alert box when this code runs. 
 
 Rather than having to manually remove these event handlers, though, we can let Marionette do it for us.
 
