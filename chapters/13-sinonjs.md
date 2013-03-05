@@ -2,7 +2,7 @@
 
 Similar to the section on testing Backbone.js apps using the Jasmine BDD framework, we're nearly ready to take what we've learned and write a number of QUnit tests for our Todo application.
 
-Before we start though, you may have noticed that QUnit doesn't support test spies. Test spies are functions which record arguments, exceptions and return values for any of their calls. They're typically used to test callbacks and how functions may be used in the application being tested. In testing frameworks, spies can usually be either anonymous functions or wrap functions which already exist.
+Before we start though, you may have noticed that QUnit doesn't support test spies. Test spies are functions which record arguments, exceptions, and return values for any of their calls. They're typically used to test callbacks and how functions may be used in the application being tested. In testing frameworks, spies usually are anonymous functions or wrappers around functions which already exist.
 
 
 ## What is SinonJS?
@@ -15,9 +15,10 @@ The framework supports three features we'll be taking advantage of for unit test
 * **Spying on existing methods**
 * **A rich inspection interface**
 
-Using ```this.spy()``` without any arguments creates an anonymous spy. This is comparable to ```jasmine.createSpy()``` and we can observe basic usage of a SinonJS spy in the following example:
+#### Basic Spies
 
-#### Basic Spies:
+Using ```this.spy()``` without any arguments creates an anonymous spy. This is comparable to ```jasmine.createSpy()```. We can observe basic usage of a SinonJS spy in the following example:
+
 ```javascript
 test('should call all subscribers for a message exactly once', function () {
     var message = getUniqueString();
@@ -30,9 +31,10 @@ test('should call all subscribers for a message exactly once', function () {
 });
 ```
 
+#### Spying On Existing Functions
+
 We can also use ```this.spy()``` to spy on existing functions (like jQuery's ```$.ajax```) in the example below. When spying on a function which already exists, the function behaves normally but we get access to data about its calls which can be very useful for testing purposes.
 
-#### Spying On Existing Functions:
 ```javascript
 test( 'should inspect the jQuery.getJSON usage of jQuery.ajax', function () {
     this.spy( jQuery, 'ajax' );
@@ -45,10 +47,12 @@ test( 'should inspect the jQuery.getJSON usage of jQuery.ajax', function () {
 });
 ```
 
-SinonJS comes with a rich spy interface which allows us to test whether a spy was called with a specific argument, if it was called a specific number of times and test against the values of arguments. A complete list of features supported in the interface can be found on [SinonJS.org](http://sinonjs.org/docs/), but let's take a look at some examples demonstrating some of the most commonly used ones:
+#### Inspection Interface
+
+SinonJS comes with a rich spy interface which allows us to test whether a spy was called with a specific argument, if it was called a specific number of times, and test against the values of arguments. A complete list of features supported in the interface can be found on [SinonJS.org](http://sinonjs.org/docs/), but let's take a look at some examples demonstrating some of the most commonly used ones:
 
 
-#### Matching arguments: test a spy was called with a specific set of arguments:
+**Matching arguments: test a spy was called with a specific set of arguments:**
 
 ```javascript
 test( 'Should call a subscriber with standard matching': function () {
@@ -61,7 +65,7 @@ test( 'Should call a subscriber with standard matching': function () {
 });
 ```
 
-#### Stricter argument matching: test a spy was called at least once with specific arguments and no others:
+**Stricter argument matching: test a spy was called at least once with specific arguments and no others:**
 
 ```javascript
 test( 'Should call a subscriber with strict matching': function () {
@@ -79,7 +83,7 @@ test( 'Should call a subscriber with strict matching': function () {
 });
 ```
 
-#### Testing call order: testing if a spy was called before or after another spy:
+**Testing call order: testing if a spy was called before or after another spy:**
 
 ```javascript
 test( 'Should call a subscriber and maintain call order': function () {
@@ -97,7 +101,7 @@ test( 'Should call a subscriber and maintain call order': function () {
 });
 ```
 
-#### Match execution counts: test a spy was called a specific number of times:
+**Match execution counts: test a spy was called a specific number of times:**
 
 ```javascript
 test( 'Should call a subscriber and check call counts', function () {
@@ -122,7 +126,7 @@ test( 'Should call a subscriber and check call counts', function () {
 
 ## Stubs and mocks
 
-SinonJS also supports two other powerful features which aer useful to be aware of: stubs and mocks. Both stubs and mocks implement all of the features of the spy API, but have some added functionality.
+SinonJS also supports two other powerful features: stubs and mocks. Both stubs and mocks implement all of the features of the spy API, but have some added functionality.
 
 ### Stubs
 
@@ -153,7 +157,7 @@ The above creates a stub of the Todo method on the window object. When stubbing 
 this.todoStub.restore();
 ```
 
-After this, we need to alter what the constructor returns, which can be efficiently done using a plain ```Backbone.Model``` constructor. Whilst this isn't a Todo model, it does still provide us an actual Backbone model.
+After this, we need to alter what the constructor returns, which can be efficiently done using a plain ```Backbone.Model``` constructor. While this isn't a Todo model, it does still provide us an actual Backbone model.
 
 
 ```javascript
@@ -172,7 +176,7 @@ The expectation here might be that this snippet would ensure our TodoList collec
 this.todoList.model = Todo;
 ```
 
-The result of this is that when our TodoList collection instantiates new Todo models, it will return our plain Backbone model instance as desired. This allows us to write a spec for testing the addition of new model literals as follows:
+The result of this is that when our TodoList collection instantiates new Todo models, it will return our plain Backbone model instance as desired. This allows us to write a test for the addition of new model literals as follows:
 
 ```javascript
 module( 'Should function when instantiated with model literals', {
@@ -190,6 +194,8 @@ module( 'Should function when instantiated with model literals', {
 
     // Let's reset the relationship to use a stub
     this.todos.model = Todo;
+    
+    // add a model
     this.todos.add({
       id: 2,
       title: 'Hello world'
@@ -215,7 +221,7 @@ test('should find a model by id', function() {
 
 ### Mocks
 
-Mocks are effectively the same as stubs, however they mock a complete API out and have some built-in expectations for how they should be used. The difference between a mock and a spy is that as the expectations for their use are pre-defined, it will fail if any of these are not met.
+Mocks are effectively the same as stubs, however they mock a complete API and have some built-in expectations for how they should be used. The difference between a mock and a spy is that as the expectations for their use are pre-defined and the test will fail if any of these are not met.
 
 Here's a snippet with sample usage of a mock based on PubSubJS. Here, we have a `clearTodo()` method as a callback and use mocks to verify its behavior.
 
@@ -240,11 +246,11 @@ test('should call all subscribers when exceptions', function () {
 
 ## Exercise
 
-We can now begin writing test specs for our Todo application, which are listed and separated by component (e.g Models, Collections etc.). It's useful to pay attention to the name of the test, the logic being tested and most importantly the assertions being made as this will give you some insight into how what we've learned can be applied to a complete application.
+We can now begin writing tests for our Todo application, which are listed and separated by component (e.g., Models, Collections, etc.). It's useful to pay attention to the name of the test, the logic being tested, and most importantly the assertions being made as this will give you some insight into how what we've learned can be applied to a complete application.
 
 To get the most out of this section, I recommend looking at the QUnit Koans included in the `practicals/qunit-koans` folder - this is a port of the Backbone.js Jasmine Koans over to QUnit.
 
-*In case you haven't had a chance to try out one of the Koans kits as yet, they are a set of unit tests using a specific testing framework that both demonstrate how a set of specs for an application may be written, but also leave some tests unfilled so that you can complete them as an exercise.*
+*In case you haven't had a chance to try out one of the Koans kits as yet, they are a set of unit tests using a specific testing framework that both demonstrate how a set of tests for an application may be written, but also leave some tests unfilled so that you can complete them as an exercise.*
 
 ### Models
 
@@ -298,13 +304,13 @@ test('Fires a custom event when the state changes.', function() {
 });
 
 
-test('Can contain custom validation rules, and will trigger an error event on failed validation.', function() {
+test('Can contain custom validation rules, and will trigger an invalid event on failed validation.', function() {
     expect( 3 );
 
     var errorCallback = this.spy();
     var todo = new Todo();
 
-    todo.on('error', errorCallback);
+    todo.on('invalid', errorCallback);
     // What would you need to set on the todo properties to cause validation to fail?
     todo.set( { done: 'not a boolean' } );
 
@@ -444,7 +450,7 @@ asyncTest('Can wire up view methods to DOM elements.', function() {
     // Hint: http://api.jquery.com/click
 
     $('#todoList li input.check').click();
-    expect( this.todoView.model.get('done'), true );
+    equal( this.todoView.model.get('done'), true );
 });
 ```
 
@@ -465,7 +471,7 @@ module( 'About Backbone.Events', {
     setup: function() {
         this.obj = {};
         _.extend( this.obj, Backbone.Events );
-        this.obj.off(); // remove all custom events before each spec is run.
+        this.obj.off(); // remove all custom events before each test is run.
     }
 });
 
@@ -576,7 +582,7 @@ test('Also can remove custom events from objects.', function() {
 
 ### App
 
-It can also be useful to write specs for any application bootstrap you may have in place. For the following module, our setup initiates and appends a TodoApp view and we can test anything from local instances of views being correctly defined to application interactions correctly resulting in changes to instances of local collections.
+It can also be useful to write tests for any application bootstrap you may have in place. For the following module, our setup instantiates and appends to a TodoApp view and we can test anything from local instances of views being correctly defined to application interactions correctly resulting in changes to instances of local collections.
 
 ```javascript
 module( 'About Backbone Applications' , {
