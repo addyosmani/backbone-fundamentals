@@ -8,4 +8,4 @@ Working on the client-side can sometimes feel like the wild west, but I hope thi
 
 ## Notes
 
-I would like to thank the Backbone.js, Stack Overflow, DailyJS (Alex Young) and JavaScript communities for their help, references and contributions to this book. This project would not be possible without you so thank you! :)
+I would like to thank the Backbone.js, Stack Overflow, DailyJS (Alex Young) and JavaScript communities for their help, references, and contributions to this book. This project would not be possible without you so thank you! :)
