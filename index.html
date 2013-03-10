@@ -6955,7 +6955,7 @@ it(<span class="ch">&#39;should contain a text value if not the default value&#3
 <p><strong><em>Note:</em></strong> Below this section of SpecRunner is code responsible for running the actual tests. Given that we won’t be covering modifying this code, I’m going to skip reviewing it. I do however encourage you to take a look through <a href="https://github.com/pivotal/jasmine/blob/master/lib/jasmine-core/example/spec/PlayerSpec.js">PlayerSpec.js</a> and <a href="https://github.com/pivotal/jasmine/blob/master/lib/jasmine-core/example/spec/SpecHelper.js">SpecHelper.js</a>. They’re a useful basic example to go through how a minimal set of tests might work.</p>
 <p>Also note that for the purposes of introduction, some of the examples in this section will be testing aspects of Backbone.js itself, just to give you a feel for how Jasmine works. You generally will not need to write testing ensuring a framework is working as expected.</p>
 <h2 id="tdd-with-backbone"><a href="#TOC">TDD With Backbone</a></h2>
-<p>When developing applications with Backbone, it can be necessary to test both individual modules of code as well as models, views, collections, and routers. Taking a TDD approach to testing, let’s review some specs for testing these Backbone components using the popular Backbone <a href="https://github.com/addyosmani/todomvc/tree/master/todo-example/backbone">Todo</a> application. For this section we will be using a modified version of Larry Myers Backbone Koans project, which can be found in the <code>practicals/jasmine-koans</code> folder.</p>
+<p>When developing applications with Backbone, it can be necessary to test both individual modules of code as well as models, views, collections, and routers. Taking a TDD approach to testing, let’s review some specs for testing these Backbone components using the popular Backbone <a href="https://github.com/addyosmani/todomvc/tree/master/todo-example/backbone">Todo</a> application.</p>
 <h2 id="models-2"><a href="#TOC">Models</a></h2>
 <p>The complexity of Backbone models can vary greatly depending on what your application is trying to achieve. In the following example, we’re going to test default values, attributes, state changes, and validation rules.</p>
 <p>First, we begin our suite for model testing using <code>describe()</code>:</p>
@@ -7211,27 +7211,13 @@ expect(<span class="ch">&#39;click&#39;</span>).<span class="fu">toHaveBeenTrigg
 <p><code>Expected '' to contain '&lt;label class=&quot;todo-content&quot;&gt;My Todo&lt;/label&gt;'.</code></p>
 <p>The reason for this is the default behavior for render() doesn’t create any markup. Let’s write a replacement for render() which fixes this:</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="dt">render</span>: <span class="kw">function</span>() {
-  <span class="kw">var</span> template = <span class="ch">&#39;&lt;label class=&quot;todo-content&quot;&gt;&lt;%= text %&gt;&lt;/label&gt;&#39;</span>;
+  <span class="kw">var</span> template = <span class="ch">&#39;&lt;label class=&quot;todo-content&quot;&gt;+++PLACEHOLDER+++&lt;/label&gt;&#39;</span>;
   <span class="kw">var</span> output = template
-    .<span class="fu">replace</span>(<span class="ch">&#39;&lt;%= text %&gt;&#39;</span>, <span class="kw">this</span>.<span class="fu">model</span>.<span class="fu">get</span>(<span class="ch">&#39;text&#39;</span>));
+    .<span class="fu">replace</span>(<span class="ch">&#39;+++PLACEHOLDER+++&#39;</span>, <span class="kw">this</span>.<span class="fu">model</span>.<span class="fu">get</span>(<span class="ch">&#39;text&#39;</span>));
   <span class="kw">this</span>.$<span class="fu">el</span>.<span class="fu">html</span>(output);
   <span class="kw">return</span> <span class="kw">this</span>;
 }</code></pre>
-<p>The above specifies an inline string template and replaces fields found in the template within the <q>&lt;% %&gt;</q> blocks with their corresponding values from the associated model. As we’re also returning the TodoView instance from the method, the first spec will still pass.</p>
-<p>It’s worth noting that there are serious drawbacks to using HTML strings in your specs to test against as we did in the above example. Even minor changes to your template (a simple tab or whitespace) would cause your spec to fail, despite the rendered output being the same. It’s also more time consuming to maintain as most templates in real-world applications are significantly more complex. A better option for testing rendered output is using jQuery to both select and inspect values.</p>
-<p>With this in mind, let’s re-write the specs, this time using some of the custom matchers offered by jasmine-jquery:</p>
-<pre class="sourceCode javascript"><code class="sourceCode javascript">describe(<span class="ch">&#39;Template&#39;</span>, <span class="kw">function</span>() {
-
-  beforeEach(<span class="kw">function</span>() {
-    <span class="kw">this</span>.<span class="fu">view</span>.<span class="fu">render</span>();
-  });
-
-  it(<span class="ch">&#39;has the correct text content&#39;</span>, <span class="kw">function</span>() {
-    expect(<span class="kw">this</span>.<span class="fu">view</span>.$(<span class="ch">&#39;.todo-content&#39;</span>))
-      .<span class="fu">toHaveText</span>(<span class="ch">&#39;My Todo&#39;</span>);
-  });
-
-});</code></pre>
+<p>The above specifies an inline string template and replaces fields found in the template within the <q>+++PLACEHOLDER+++</q> blocks with their corresponding values from the associated model. As we’re also returning the TodoView instance from the method, the first spec will still pass.</p>
 <p>It would be impossible to discuss unit testing without mentioning fixtures. Fixtures typically contain test data (e.g., HTML) that is loaded in when needed (either locally or from an external file) for unit testing. So far we’ve been establishing jQuery expectations based on the view’s el property. This works for a number of cases, however, there are instances where it may be necessary to render markup into the document. The most optimal way to handle this within specs is through using fixtures (another feature brought to us by the jasmine-jquery plugin).</p>
 <p>Re-writing the last spec to use fixtures would look as follows:</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript">describe(<span class="ch">&#39;TodoView&#39;</span>, <span class="kw">function</span>() {
@@ -7340,11 +7326,11 @@ expect(<span class="ch">&#39;click&#39;</span>).<span class="fu">toHaveBeenTrigg
 <p>This will now also pass without any issues. Remember that jasmine-jquery also supports loading external fixtures into your specs easily using its built in <code>loadFixtures()</code> and <code>readFixtures()</code> methods. For more information, see the official jasmine-jquery <a href="https://github.com/velesin/jasmine-jquery">docs</a>.</p>
 <h2 id="conclusions-1"><a href="#TOC">Conclusions</a></h2>
 <p>We have now covered how to write Jasmine tests for Backbone.js models, collections, and views. While testing routing can at times be desirable, some developers feel it can be more optimal to leave this to third-party tools such as Selenium, so do keep this in mind.</p>
-<p>James Newbery was kind enough to help me with writing the Views section above and his articles on <a href="http://tinnedfruit.com/2011/04/26/testing-backbone-apps-with-jasmine-sinon-3.html">Testing Backbone Apps With SinonJS</a> were of great inspiration (you’ll actually find some Handlebars examples of the view specs in part 3 of his article). If you would like to learn more about writing spies and mocks for Backbone using <a href="http://sinonjs.org">SinonJS</a> as well as how to test Backbone routers, do consider reading his series.</p>
 <h2 id="exercise-1"><a href="#TOC">Exercise</a></h2>
 <p>As an exercise, I recommend now trying the Jasmine Koans in <code>practicals\jasmine-koans</code> and trying to fix some of the purposefully failing tests it has to offer. This is an excellent way of not just learning how Jasmine specs and suites work, but working through the examples (without peeking back) will also put your Backbone skills to the test too.</p>
 <h2 id="further-reading-1"><a href="#TOC">Further reading</a></h2>
 <ul>
+<li><a href="http://tinnedfruit.com/2011/04/26/testing-backbone-apps-with-jasmine-sinon-3.html">Testing Backbone Apps With SinonJS</a> by James Newbry</li>
 <li><a href="http://japhr.blogspot.com/2011/11/jasmine-backbonejs-revisited.html">Jasmine + Backbone Revisited</a></li>
 <li><a href="http://japhr.blogspot.com/2011/12/phantomjs-and-backbonejs-and-requirejs.html">Backbone, PhantomJS and Jasmine</a></li>
 </ul>
