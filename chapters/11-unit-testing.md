@@ -640,15 +640,15 @@ The reason for this is the default behavior for render() doesn't create any mark
 
 ```javascript
 render: function() {
-  var template = '<label class="todo-content"><%= text %></label>';
+  var template = '<label class="todo-content">+++PLACEHOLDER+++</label>';
   var output = template
-    .replace('<%= text %>', this.model.get('text'));
+    .replace('+++PLACEHOLDER+++', this.model.get('text'));
   this.$el.html(output);
   return this;
 }
 ```
 
-The above specifies an inline string template and replaces fields found in the template within the "<% %>" blocks with their corresponding values from the associated model. As we're also returning the TodoView instance from the method, the first spec will still pass.
+The above specifies an inline string template and replaces fields found in the template within the "+++PLACEHOLDER+++" blocks with their corresponding values from the associated model. As we're also returning the TodoView instance from the method, the first spec will still pass.
 
 It's worth noting that there are serious drawbacks to using HTML strings in your specs to test against as we did in the above example. Even minor changes to your template (a simple tab or whitespace) would cause your spec to fail, despite the rendered output being the same. It's also more time consuming to maintain as most templates in real-world applications are significantly more complex. A better option for testing rendered output is using jQuery to both select and inspect values.
 
