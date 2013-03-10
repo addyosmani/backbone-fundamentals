@@ -854,7 +854,7 @@ Simply copy the value of _id to the needed id attribute. If you reload the page 
 
 Another, simpler way of making Backbone recognize _id as its unique identifier is to set the idAttribute of the model to _id.
 
-If you now try to add a new book using the form you’ll notice that it is a similar story to delete – models wont get persisted on the server. This is because Backbone.Collection.add doesn’t automatically sync, but it is easy to fix. In LibraryView in app.js, change the line reading:
+If you now try to add a new book using the form you’ll notice that it is a similar story to delete – models wont get persisted on the server. This is because Backbone.Collection.add doesn’t automatically sync, but it is easy to fix. In the LibraryView we find in `views/library.js` change the line reading:
 
 ```javascript
 this.collection.add( new Book( formData ) );
