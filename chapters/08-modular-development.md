@@ -4,11 +4,11 @@
 
 When we say an application is modular, we generally mean it's composed of a set of highly decoupled, distinct pieces of functionality stored in modules. As you probably know, loose coupling facilitates easier maintainability of apps by removing dependencies where possible. When this is implemented efficiently, it's quite easy to see how changes to one part of a system may affect another.
 
-Unlike some more traditional programming languages however, the current iteration of JavaScript (ECMA-262) doesn't provide developers with the means to import such modules of code in a clean, organized manner. It's one of the concerns with a specification that hasn't required great thought until more recent years when the need for more organized JavaScript applications has become apparent.
+Unlike some more traditional programming languages, the current iteration of JavaScript (ECMA-262) doesn't provide developers with the means to import such modules of code in a clean, organized manner. 
 
-Instead, developers are left to fall back on variations of the module or object literal patterns. With many of these, module scripts are strung together in the DOM with namespaces being described by a single global object where it's still possible to have name collisions. There's also no clean way to handle dependency management without some manual effort or third party tools.
+Instead, developers are left to fall back on variations of the module or object literal patterns combined with script tags or a script loader. With many of these, module scripts are strung together in the DOM with namespaces being described by a single global object where it's still possible to have name collisions. There's also no clean way to handle dependency management without some manual effort or third party tools.
 
-Whilst native solutions to these problems will be arriving in ES Harmony (the next version of the official JavaScript specification), the good news is that writing modular JavaScript has never been easier and you can start doing it today.
+Whilst native solutions to these problems may be arriving via [ES6](http://wiki.ecmascript.org/doku.php?id=harmony:specification_drafts) (the next version of the official JavaScript specification) [modules proposal](http://wiki.ecmascript.org/doku.php?id=harmony:modules), the good news is that writing modular JavaScript has never been easier and you can start doing it today.
 
 In this next part of the book, we're going to look at how to use AMD modules and RequireJS to cleanly wrap units of code in your application into manageable modules. We'll also cover an alternate approach called Lumbar which uses routes to determine when modules are loaded.
 
@@ -448,15 +448,17 @@ All templating solutions will have their own custom methods for handling templat
 
 ### Optimizing Backbone apps for production with the RequireJS Optimizer
 
-As experienced developers may know, an essential final step when writing both small and large JavaScript web applications is the build process. The majority of non-trivial apps are likely to consist of many scripts and so optimizing, minimizing, and concatenating your scripts prior to pushing them to production can reduce the number of scripts your users have to download, often to just one.
+Once you're written your application, the next important step is to prepare it for deployment to production. The majority of non-trivial apps are likely to consist of several scripts and so optimizing, minimizing, and concatenating your scripts prior to pushing can reduce the number of scripts your users need to download.
 
-Another benefit to using RequireJS is its command line optimization tool, R.js. This has a number of capabilities, including:
+A command-line optimization tool for RequireJS projects called r.js is available to help with this workflow. It offers a number of capabilities, including:
 
 * Concatenating specific scripts and minifying them using external tools such as UglifyJS (which is used by default) or Google's Closure Compiler for optimal browser delivery, whilst preserving the ability to dynamically load modules
 * Optimizing CSS and stylesheets by inlining CSS files imported using @import, stripping out comments, etc.
 * The ability to run AMD projects in both Node and Rhino (more on this later)
 
-You'll notice that I mentioned the word 'specific' in the first bullet point. The RequireJS optimizer only concatenates module scripts that have been specified as string literals in require and define calls. As clarified by the [optimizer docs](http://requirejs.org/docs/optimization.html) this means that Backbone modules defined like this:
+If you find yourself wanting to ship a single file with all dependencies included, r.js can help with this too. Whilst RequireJS does support lazy-loading, your application may be small enough that reducing HTTP requests to a single script file is feasible.
+
+You'll notice that I mentioned the word 'specific' in the first bullet point. The RequireJS optimizer only concatenates module scripts that have been specified as string literals in `require` and `define` calls (which you've probably used). As clarified by the [optimizer docs](http://requirejs.org/docs/optimization.html) this means that Backbone modules defined like this:
 
 ```javascript
 define(['jquery', 'backbone', 'underscore', 'collections/sample', 'views/test'],
@@ -479,49 +481,80 @@ will be ignored. This is by design as it ensures that dynamic dependency/module 
 
 Although the RequireJS optimizer works fine in both Node and Java environments, it's strongly recommended to run it under Node as it executes significantly faster there. 
 
-To get started with r.js, grab it from the [RequireJS download page](http://requirejs.org/docs/download.html#rjs) or [through NPM](http://requirejs.org/docs/optimization.html#download). Now, the RequireJS optimizer works absolutely fine for single script and CSS files, but for most cases you'll want to actually optimize an entire Backbone project. You *could* do this completely from the command-line, but a cleaner option is using build profiles.
+To get started with r.js, grab it from the [RequireJS download page](http://requirejs.org/docs/download.html#rjs) or [through NPM](http://requirejs.org/docs/optimization.html#download). To begin getting our project to build with r.js, we will need to create a new build profile.
 
-Below is an example of a build file taken from the modular jQuery Mobile app referenced later in this book. A **build profile** (commonly named `app.build.js`) informs RequireJS to copy all of the content of `appDir` to a directory defined by `dir` (in this case `../release`). This will apply all of the necessary optimizations inside the release folder. The `baseUrl` is used to resolve the paths for your modules. It should ideally be relative to `appDir`.
+Assuming the code for our application and external dependencies are in `app/libs`, our build.js build profile could simply be:
 
-Near the bottom of this sample file, you'll see an array called `modules`. This is where you specify the module names you wish to have optimized. In this case we're optimizing the main application called 'app', which maps to `appDir/app.js`. If we had set the `baseUrl` to 'scripts', it would be mapped to `appDir/scripts/app.js`.
-
-```javascript
+```
 ({
-    appDir: './',
-    baseUrl: './',
-    dir: '../release',
-    paths: {
-       'backbone':          'libs/AMDbackbone-0.5.3',
-        'underscore':       'libs/underscore-1.2.2',
-        'jquery':           'libs/jQuery-1.7.1',
-        'json2':            'libs/json2',
-        'datepicker':       'libs/jQuery.ui.datepicker',
-        'datepickermobile': 'libs/jquery.ui.datepicker.mobile',
-        'jquerymobile':     'libs/jquery.mobile-1.0'
-    },
-    optimize: 'uglify',
+  baseUrl: 'app',
+  out: 'dist/main.js',
+```
+
+The paths above are relative to the `baseUrl` for our project and in our case it would make sense to make this the `app` folder. The `out` parameter informs r.js that we want to concatenate everything into a single file. 
+
+Alternatively, we can specify `dir`, which will ensure the contents of our `app` directory are copied into this directory. e.g:
+
+```
+({
+  baseUrl: 'app',
+  dir: 'release',
+  out: 'dist/main.js'
+```
+
+Additional options that can be specified such as `modules` and `appDir` are not compatible with `out`, however let's briefly discuss them in case you do wish to use them. 
+
+`modules` is an array where we can explicitly specify the module names we would like to have optimized.
+
+
+```
     modules: [
         {
             name: 'app',
             exclude: [
-                // If you prefer not to include certain libs exclude them here
+                // If you prefer not to include certain 
+                // libs exclude them here
             ]
         }
-    ]
-})
 ```
 
-The way the build system in r.js works is that it traverses app.js (whatever modules you've passed) and resolved dependencies, concatenating them into the final `release`(dir) folder. CSS is treated the same way.
+`appDir` - when specified, our`baseUrl` is relative to this parameter. If `appDir` is not defined, `baseUrl` is simply relative to the `build.js` file.
+
+```
+    appDir: './',
+```
+
+Back to our build profile, the `main` parameter is used to specify our main module - we are making use of `include` here as we're going to take advantage of [Almond](https://github.com/jrburke/almond) - a stripped down loader for RequireJS modules which is useful should you not need to load modules in dynamically. 
+
+```
+  include: ['libs/almond', 'main'],
+  wrap: true,
+```
+
+`include` is another array which specifies the modules we want to include in the build. By specifying "main", r.js will trace over all modules main depends on and will include them. `wrap` wraps modules which RequireJS needs into a closure so that only what we export is included in the global environment. 
+
+```
+  paths: {
+    backbone: 'libs/backbone',
+    underscore: 'libs/underscore',
+    jquery: 'libs/jquery',
+    text: 'libs/text'
+  }
+})
+```
+The remainder of the build.js file would be a regular paths configuration object. We can compile our project into a target file by running:
+
+```
+node r.js -o build.js
+```
+
+which should place our compiled project into dist/main.js.
 
 The build profile is usually placed inside the 'scripts' or 'js' directory of your project. As per the docs, this file can however exist anywhere you wish, but you'll need to edit the contents of your build profile accordingly.
 
-Finally, to run the build, execute the following command once inside your `appDir` or `appDir/scripts` directory:
+That's it. As long as you have UglifyJS/Closure tools setup correctly, r.js should be able to easily optimize your entire Backbone project in just a few key-strokes. 
 
-```javascript
-node ../../r.js -o app.build.js
-```
-
-That's it. As long as you have UglifyJS/Closure tools setup correctly, r.js should be able to easily optimize your entire Backbone project in just a few key-strokes. If you would like to learn more about build profiles, James Burke has a [heavily commented sample file](https://github.com/jrburke/r.js/blob/master/build/example.build.js) with all the possible options available.
+If you would like to learn more about build profiles, James Burke has a [heavily commented sample file](https://github.com/jrburke/r.js/blob/master/build/example.build.js) with all the possible options available.
 
 
 ## Optimize and Build a Backbone.js JavaScript application with RequireJS using Packages
@@ -532,11 +565,9 @@ When a JavaScript application is too complex or too large to build into a single
 
 RequireJS, the (JavaScript) module loading library, has an [optimizer](http://requirejs.org/docs/optimization.html 'RequireJS optimizer') to build a JavaScript-based application and provides various options. A build profile is the recipe for your build, much like a build.xml file is used to build a project with ANT. The benefit of building with **r.js** not only results in speedy script loading with minified code, but also provides a way to package components of your application.
 
-* [Optimizing one JavaScript file](http://requirejs.org/docs/optimization.html#onejs 'Optimizing one JavaScript file')
-* [Optimizing a whole project](http://requirejs.org/docs/optimization.html#wholeproject 'Optimizing a whole project')
-* [Optimizing a project in layers or packages](http://requirejs.org/docs/faq-optimization.html#priority 'Optimizing a project in layers or packages')
+In a complex application, organizing code into *packages* is an attractive build strategy. The build profile in this section is based on a test application currently under development (files listed below). 
 
-In a complex application, organizing code into *packages* is an attractive build strategy. The build profile in this section is based on a test application currently under development (files listed below). The application framework is built with open source libraries. The main objective in this build profile is to optimize an application developed with [Backbone.js](http://documentcloud.github.com/backbone/ 'Backbone.js') using modular code, following the [Asynchronous Module Definition (AMD)](https://github.com/amdjs/amdjs-api/wiki/AMD 'Asynchronous Module Definition (AMD) wiki page') format. AMD and RequireJS provide the structure for writing modular code with dependencies. Backbone.js provides the code organization for developing models, views, and collections and also interactions with a RESTful API.
+The application framework is built with open source libraries. The main objective in this build profile is to optimize an application developed with [Backbone.js](http://documentcloud.github.com/backbone/ 'Backbone.js') using modular code, following the [Asynchronous Module Definition (AMD)](https://github.com/amdjs/amdjs-api/wiki/AMD 'Asynchronous Module Definition (AMD) wiki page') format. AMD and RequireJS provide the structure for writing modular code with dependencies. Backbone.js provides the code organization for developing models, views, and collections and also interactions with a RESTful API.
 
 Below is an outline of the applications file organization, followed by the build profile to build modular (or packaged) layers a JavaScript driven application.
 
@@ -623,7 +654,11 @@ Assume the following directories and file organization, with app.build.js as the
 
 The build profile can be organized to [divide parallel downloads for various sections of the application](http://requirejs.org/docs/faq-optimization.html#priority 'optimize modular dependencies in packages').
 
-This strategy demonstrated builds common or site-wide groups of (core) *models*, *views*, collections which are extended from a base.js constructor which extends the appropriate backbone method, e.g. Backbone.Model. The *packages* directory organizes code by section / responsibility, e.g. cart, checkout, etc. Notice that within the example *header* package the directory structure is similar to the app root directory file structure. A *package* (of modularized code) has dependencies from the common libraries in your application and also has specific code for the packages execution alone; other packages should not require another packages dependencies. A *utils* directory has shims, helpers, and common library code to support the application. A *syncs* directory to define persistence with your RESTful api and/or localStorage. The *vendor* libraries folder will not be built, there is no need to do so, you may decide to use a CDN (then set these paths to : *[empty:](http://requirejs.org/docs/optimization.html#empty 'empty:')*). And finally a *test* directory for [Jasmine](http://pivotal.github.com/jasmine/ 'Jasmine is a behavior-driven development framework for testing your JavaScript code') unit test specs, which may be ignored in the build as well if you choose.
+This strategy demonstrated builds common or site-wide groups of (core) *models*, *views*, collections which are extended from a base.js constructor which extends the appropriate backbone method, e.g. Backbone.Model. The *packages* directory organizes code by section / responsibility, e.g. cart, checkout, etc. Notice that within the example *header* package the directory structure is similar to the app root directory file structure. 
+
+A *package* (of modularized code) has dependencies from the common libraries in your application and also has specific code for the packages execution alone; other packages should not require another packages dependencies. A *utils* directory has shims, helpers, and common library code to support the application. A *syncs* directory to define persistence with your RESTful api and/or localStorage. 
+
+The *vendor* libraries folder will not be built, there is no need to do so, you may decide to use a CDN (then set these paths to : *[empty:](http://requirejs.org/docs/optimization.html#empty 'empty:')*). And finally a *test* directory for [Jasmine](http://pivotal.github.com/jasmine/ 'Jasmine is a behavior-driven development framework for testing your JavaScript code') unit test specs, which may be ignored in the build as well if you choose.
 
 Also notice the there are .js files named the same as the directories, these are the files listed in the paths. These are strategic to group sets of files to build, examples follow the build profile below.
 
