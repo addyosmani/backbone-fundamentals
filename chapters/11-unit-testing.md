@@ -650,27 +650,6 @@ render: function() {
 
 The above specifies an inline string template and replaces fields found in the template within the "+++PLACEHOLDER+++" blocks with their corresponding values from the associated model. As we're also returning the TodoView instance from the method, the first spec will still pass.
 
-It's worth noting that there are serious drawbacks to using HTML strings in your specs to test against as we did in the above example. Even minor changes to your template (a simple tab or whitespace) would cause your spec to fail, despite the rendered output being the same. It's also more time consuming to maintain as most templates in real-world applications are significantly more complex. A better option for testing rendered output is using jQuery to both select and inspect values.
-
-With this in mind, let's re-write the specs, this time using some of the custom matchers offered by jasmine-jquery:
-
-
-```javascript
-describe('Template', function() {
-
-  beforeEach(function() {
-    this.view.render();
-  });
-
-  it('has the correct text content', function() {
-    expect(this.view.$('.todo-content'))
-      .toHaveText('My Todo');
-  });
-
-});
-```
-
-
 It would be impossible to discuss unit testing without mentioning fixtures. Fixtures typically contain test data (e.g., HTML) that is loaded in when needed (either locally or from an external file) for unit testing. So far we've been establishing jQuery expectations based on the view's el property. This works for a number of cases, however, there are instances where it may be necessary to render markup into the document. The most optimal way to handle this within specs is through using fixtures (another feature brought to us by the jasmine-jquery plugin).
 
 Re-writing the last spec to use fixtures would look as follows:
