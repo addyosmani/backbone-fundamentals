@@ -3117,15 +3117,19 @@ index.php?option=com_todo&amp;view=books&amp;task=get  GET          Get an array
   <span class="kw">return</span> <span class="ch">&#39;index.php?option=com_todo&amp;view=books&amp;task=get&#39;</span>;
 }</code></pre>
 <p>In the view, you can define the attributes to be processed by the model.</p>
-<p>```javascript // Third party API example. this.collection.create( this.collection.model, { attrs: { bookId: this.$( <q>#book_id</q> ).val() },</p>
-<pre><code>// Wait for the answer.
-wait: true,
+<p><pre class="sourceCode javascript"><code class="sourceCode javascript">// Third party API example.
+this.collection.create( this.collection.model, {
 
-// Report if there&#39;s any error.
-error: function( model, fail, xhr ) {
+  attrs: { bookId: this.$( "#book_id" ).val() },
+
+  // Wait for the answer.
+  wait: true,
+
+  // Report if there&#39;s any error.
+  error: function( model, fail, xhr ) {
     ....
-}</code></pre>
-<p>}); ``` The final result is a POST to the defined url. In the POST body, the attributes are submitted as a JSON encoded array.</p>
+  }
+}); </code></pre></p> The final result is a POST to the defined url. In the POST body, the attributes are submitted as a JSON encoded array.</p>
 <pre class="sourceCode php"><code class="sourceCode php">$raw = file_get_contents(&#39;php://input&#39;);
 $data = json_decode($raw, true);
 $book_id = $data[&#39;bookId&#39;];</code></pre>
