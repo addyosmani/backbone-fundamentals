@@ -235,31 +235,32 @@ A standalone release of Jasmine can be [downloaded](https://github.com/pivotal/j
 
 You'll need a file called SpecRunner.html in addition to the release. It can be downloaded from https://github.com/pivotal/jasmine/tree/master/lib/jasmine-core/example or as part of a download of the complete Jasmine [repo](https://github.com/pivotal/jasmine/zipball/master). Alternatively, you can ```git clone``` the main Jasmine repository from https://github.com/pivotal/jasmine.git.
 
-Let's review [SpecRunner.html](https://github.com/pivotal/jasmine/blob/master/lib/jasmine-core/example/SpecRunner.html):
+Let's review [SpecRunner.html.jst](https://github.com/pivotal/jasmine/blob/master/lib/templates/SpecRunner.html.jst):
 
 It first includes both Jasmine and the necessary CSS required for reporting:
 
+    <link rel="stylesheet" type="text/css" href="lib/jasmine-<%= jasmineVersion %>/jasmine.css">
+    <script type="text/javascript" src="lib/jasmine-<%= jasmineVersion %>/jasmine.js"></script>
+    <script type="text/javascript" src="lib/jasmine-<%= jasmineVersion %>/jasmine-html.js"></script>
+    <script type="text/javascript" src="lib/jasmine-<%= jasmineVersion %>/boot.js"></script>
 
-	<link rel="stylesheet" type="text/css" href="lib/jasmine-1.1.0.rc1/jasmine.css"/>
-	<script type="text/javascript" src="lib/jasmine-1.1.0.rc1/jasmine.js"></script>
-	<script type="text/javascript" src="lib/jasmine-1.1.0.rc1/jasmine-html.js"></script>
+Next come the sources being tested:
 
+    <!-- include source files here... -->
+    <script type="text/javascript" src="src/Player.js"></script>
+    <script type="text/javascript" src="src/Song.js"></script>
 
-Next, some sample tests are included:
+Finally, some sample tests are included:
 
-
-	<script type="text/javascript" src="spec/SpecHelper.js"></script>
-	<script type="text/javascript" src="spec/PlayerSpec.js"></script>
-
-
-And finally the sources being tested:
-
-
-	<script type="text/javascript" src="src/Player.js"></script>
-	<script type="text/javascript" src="src/Song.js"></script>
+    <!-- include spec files here... -->
+    <script type="text/javascript" src="spec/SpecHelper.js"></script>
+    <script type="text/javascript" src="spec/PlayerSpec.js"></script>
 
 
 ***Note:*** Below this section of SpecRunner is code responsible for running the actual tests. Given that we won't be covering modifying this code, I'm going to skip reviewing it. I do however encourage you to take a look through [PlayerSpec.js](https://github.com/pivotal/jasmine/blob/master/lib/jasmine-core/example/spec/PlayerSpec.js) and [SpecHelper.js](https://github.com/pivotal/jasmine/blob/master/lib/jasmine-core/example/spec/SpecHelper.js). They're a useful basic example to go through how a minimal set of tests might work.
+
+Also note that for the purposes of introduction, some of the examples in this section will be testing aspects of Backbone.js itself, just to give you a feel for how Jasmine works. You generally will not need to write testing ensuring a framework is working as expected.
+
 
 ## TDD With Backbone
 
@@ -342,11 +343,6 @@ validate: function(attrs) {
 If you would like to review the final code for our Todo model, you can find it below:
 
 ```javascript
-var NAUGHTY_WORDS = /crap|poop|hell|frogs/gi;
-
-function sanitize(str) {
-    return str.replace(NAUGHTY_WORDS, 'rainbows');
-}
 
 window.Todo = Backbone.Model.extend({
 
@@ -357,7 +353,7 @@ window.Todo = Backbone.Model.extend({
     },
 
     initialize: function() {
-        this.set({text: sanitize(this.get('text'))}, {silent: true});
+        this.set({text: this.get('text')}, {silent: true});
     },
 
     validate: function(attrs) {

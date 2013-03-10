@@ -316,7 +316,7 @@ var TodoView = Backbone.View.extend({
 });
 
 // create a view for a todo
-var todoView = new TodoView({model: todo});
+var todoView = new TodoView({model: todo1});
 ```
 
 TodoView is defined by extending Backbone.View and is instantiated with an associated Model. In our example, the ```render()``` method uses a template to construct the HTML for the Todo item which is placed inside a li element. Each call to ```render()``` will replace the content of the li element using the current Model data. Thus, a View instance renders the content of a DOM element using the attributes of an associated Model. Later we will see how a View can bind its ```render()``` method to Model change events, causing the View to re-render whenever the Model changes.
@@ -349,7 +349,7 @@ This completes our first encounter with Backbone.js. The remainder of this book 
 
 * Users interact with Views, which usually means reading and editing Model data. For example, in our Todo application, Todo Model viewing happens in the user interface in the list of all Todo items. Within it, each Todo is rendered with its title and completed checkbox. Model editing is done through an "edit" View where a user who has selected a specific Todo edits its title in a form.
 
-* We define a ```render()``` utility within our View which is responsible for rendering the contents of the ```Model``` using a JavaScript templating engine (provided by Underscore.js) and updating the contents of our View, referenced by ```el```.
+* We define a ```render()``` utility within our View which is responsible for rendering the contents of the ```Model``` using a JavaScript templating engine (provided by Underscore.js) and updating the contents of our View, referenced by ```this.el```.
 
 * We then add our ```render()``` callback as a Model subscriber, so the View can be triggered to update when the Model changes.
 
@@ -424,7 +424,7 @@ To summarize, the separation of concerns in MVC facilitates modularization of an
 
 Right now, you likely have a basic understanding of what the MVC pattern provides, but for the curious, we'll explore it a little further.
 
-The GoF (Gang of Four) do not refer to MVC as a design pattern, but rather consider it a "set of classes to build a user interface." In their view, it's actually a variation of three other classical design patterns: the Observer (Pubish/Subscribe), Strategy, and Composite patterns. Depending on how MVC has been implemented in a framework, it may also use the Factory and Decorator patterns. I've covered some of these patterns in my other free book, "JavaScript Design Patterns For Beginners" if you would like to read about them further.
+The GoF (Gang of Four) do not refer to MVC as a design pattern, but rather consider it a "set of classes to build a user interface." In their view, it's actually a variation of three other classical design patterns: the Observer (Publish/Subscribe), Strategy, and Composite patterns. Depending on how MVC has been implemented in a framework, it may also use the Factory and Decorator patterns. I've covered some of these patterns in my other free book, "JavaScript Design Patterns For Beginners" if you would like to read about them further.
 
 As we've discussed, Models represent application data, while Views handle what the user is presented on screen. As such, MVC relies on Publish/Subscribe for some of its core communication (something that surprisingly isn't covered in many articles about the MVC pattern). When a Model is changed it "publishes" to the rest of the application that it has been updated. The "subscriber," generally a Controller, then updates the View accordingly. The observer-viewer nature of this relationship is what facilitates multiple Views being attached to the same Model.
 
@@ -1515,7 +1515,7 @@ var view = new View();
 
 ## Routers
 
-In Backbone, routers help manage application state and connect URLs to application events. This is achieved using hash-tags with URL fragments, or using the browser's pushState and History API. Some examples of routes may be seen below:
+In Backbone, routers help manage application state and connect URLs to application events. This is achieved using hash marks ("#") with URL fragments, or using the browser's pushState and History API. Some examples of routes using the hash mark may be seen below:
 
 ```javascript
 http://example.com/#about
@@ -2029,7 +2029,7 @@ Next, a `TodoList` collection is used to group our models. The collection uses t
     // Reference to this collection's model.
     model: app.Todo,
 
-    // Save all of the todo items under the `"todos"` namespace.
+    // Save all of the todo items under the `"todos-backbone"` namespace.
     localStorage: new Backbone.LocalStorage('todos-backbone'),
 
     // Filter down the list of all todo items that are finished.
@@ -3472,7 +3472,7 @@ Simply copy the value of _id to the needed id attribute. If you reload the page 
 
 Another, simpler way of making Backbone recognize _id as its unique identifier is to set the idAttribute of the model to _id.
 
-If you now try to add a new book using the form you’ll notice that it is a similar story to delete – models wont get persisted on the server. This is because Backbone.Collection.add doesn’t automatically sync, but it is easy to fix. In LibraryView in app.js, change the line reading:
+If you now try to add a new book using the form you’ll notice that it is a similar story to delete – models wont get persisted on the server. This is because Backbone.Collection.add doesn’t automatically sync, but it is easy to fix. In the LibraryView we find in `views/library.js` change the line reading:
 
 ```javascript
 this.collection.add( new Book( formData ) );
@@ -3823,7 +3823,7 @@ zombieView = new ZombieView({
 myModel.set('email', 'jeremy@gmail.com');
 ```
 
-Now we only see once alert box when this code runs. 
+Now we only see one alert box when this code runs. 
 
 Rather than having to manually remove these event handlers, though, we can let Marionette do it for us.
 
@@ -5647,46 +5647,45 @@ var Note = Backbone.Model.extend({
 
 ## Introduction
 
-When we say an application is modular, we generally mean it's composed of a set of highly decoupled, distinct pieces of functionality stored in modules. As you probably know, loose coupling facilitates easier maintainability of apps by removing dependencies where possible. When this is implemented efficiently, its quite easy to see how changes to one part of a system may affect another.
+When we say an application is modular, we generally mean it's composed of a set of highly decoupled, distinct pieces of functionality stored in modules. As you probably know, loose coupling facilitates easier maintainability of apps by removing dependencies where possible. When this is implemented efficiently, it's quite easy to see how changes to one part of a system may affect another.
 
-Unlike some more traditional programming languages however, the current iteration of JavaScript (ECMA-262) doesn't provide developers with the means to import such modules of code in a clean, organized manner. It's one of the concerns with specifications that haven't required great thought until more recent years where the need for more organized JavaScript applications became apparent.
+Unlike some more traditional programming languages however, the current iteration of JavaScript (ECMA-262) doesn't provide developers with the means to import such modules of code in a clean, organized manner. It's one of the concerns with a specification that hasn't required great thought until more recent years when the need for more organized JavaScript applications has become apparent.
 
-Instead, developers at present are left to fall back on variations of the module or object literal patterns. With many of these, module scripts are strung together in the DOM with namespaces being described by a single global object where it's still possible to incur naming collisions in your architecture. There's also no clean way to handle dependency management without some manual effort or third party tools.
+Instead, developers are left to fall back on variations of the module or object literal patterns. With many of these, module scripts are strung together in the DOM with namespaces being described by a single global object where it's still possible to have name collisions. There's also no clean way to handle dependency management without some manual effort or third party tools.
 
-Whilst native solutions to these problems will be arriving in ES Harmony, the good news is that writing modular JavaScript has never been easier and you can start doing it today.
+Whilst native solutions to these problems will be arriving in ES Harmony (the next version of the official JavaScript specification), the good news is that writing modular JavaScript has never been easier and you can start doing it today.
 
-In this next part of the book, we're going to look at how to use AMD modules and RequireJS for cleanly wrapping units of code in your application into manageable modules, and an alternate approach using routes to determine when modules are loaded.
+In this next part of the book, we're going to look at how to use AMD modules and RequireJS to cleanly wrap units of code in your application into manageable modules. We'll also cover an alternate approach called Lumbar which uses routes to determine when modules are loaded.
 
 ## Organizing modules with RequireJS and AMD
 
 *Partly Contributed by [Jack Franklin](https://github.com/jackfranklin)*
 
-
-[RequireJS](http://requirejs.org) is a popular script loader written by James Burke - a developer who has been quite instrumental in helping shape the AMD module format, which we'll discuss more shortly. Some of RequireJS's capabilities include helping to load multiple script files, helping define modules with or without dependencies and loading in non-script dependencies such as text files.
+[RequireJS](http://requirejs.org) is a popular script loader written by James Burke - a developer who has been quite instrumental in helping shape the AMD module format, which we'll discuss shortly. Amongst other things RequireJS helps you to load multiple script files, define modules with or without dependencies, and load in non-script dependencies such as text files.
 
 ### Maintainability problems with multiple script files
 
-You might be thinking that there is little benefit to RequireJS. After all, you can simply load in your JavaScript files through multiple `<script>` tags, which is very straightforward. However, doing it that way has a lot of drawbacks, namely the HTTP overhead.
+You might be thinking that there is little benefit to RequireJS. After all, you can simply load in your JavaScript files through multiple `<script>` tags, which is very straightforward. However, doing it that way has a lot of drawbacks, including increasing the HTTP overhead.
 
-Everytime the browser loads in a file you've referenced in a `<script>` tag, it makes a HTTP request to load the file's contents. It has to make a new HTTP request for each file you want to load, which causes problems.
+Every time the browser loads in a file you've referenced in a `<script>` tag, it makes an HTTP request to load the file's contents. It has to make a new HTTP request for each file you want to load, which causes problems.
 
 - Browsers are limited in how many parallel requests they can make, so often it's slow to load multiple files, as it can only do a certain number at a time. This number depends on the user's settings and browser, but is usually around 4-8. When working on Backbone applications it's good to split your app into multiple JS files, so it's easy to hit that limit quickly. This can be negated by minifying your code into one file as part of a build process, but does not help with the next point.
-- When a script is loaded it is done so synchronously. This means that while it's being loaded, the browser cannot continue rendering the page.
+- Scripts are loaded synchronously. This means that the browser cannot continue page rendering while the script is loading, .
 
-What tools like RequireJS do is load in scripts asynchronously. This means we have to adjust our code slightly, you can't just swap out `<script>` elements for a small piece of RequireJS code, but the benefits are very worthwhile.
+What tools like RequireJS do is load scripts asynchronously. This means we have to adjust our code slightly, you can't just swap out `<script>` elements for a small piece of RequireJS code, but the benefits are very worthwhile:
 
-- Loading in the scripts asynchronously means they are non-blocking. The browser can continue to render the rest of the page as the scripts are being loaded, speeding up the initial load time.
-- We can load modules in more intelligently, having more control over when they are loaded; along with making sure modules that have dependencies are loaded in the right order so all dependencies are met.
+- Loading the scripts asynchronously means the load process is non-blocking. The browser can continue to render the rest of the page as the scripts are being loaded, speeding up the initial load time.
+- We can load modules in more intelligently, having more control over when they are loaded and ensuring that modules which have dependencies are loaded in the right order.
 
 ### Need for better dependency management
 
-Dependency management is a challenging subject, in particular when writing JavaScript in the browser. The closest thing we have to dependency management by default is simply making sure we order our `<script>` tags such that code that depends on code in another file is loaded after. This is not a good approach. As I've already discussed, loading multiple files in that way is bad for performance; needing them to be loaded in a certain order is very brittle.
+Dependency management is a challenging subject, in particular when writing JavaScript in the browser. The closest thing we have to dependency management by default is simply making sure we order our `<script>` tags such that code that depends on code in another file is loaded after the file it depends on. This is not a good approach. As I've already discussed, loading multiple files in that way is bad for performance; needing them to be loaded in a certain order is very brittle.
 
-Being able to load different code in only when needed is something RequireJS is very good at. Rather than load all our JavaScript code in at run-time, often a better approach is to dynamically load modules at run-time, only when that code is required. This avoids loading all the code in when the user first hits your application, consequently speeding up the initial load times.
+Being able to load code on an as-needed basis is something RequireJS is very good at. Rather than load all our JavaScript code in during initial page load, a better approach is to dynamically load modules when that code is required. This avoids loading all the code when the user first hits your application, consequently speeding up initial load times.
 
-Think about the GMail web-client for a moment. When users initially load up the page on their first visit, Google can simply hide widgets such as the chat module until a user has indicated (by clicking 'expand') that they wish to use it. Through dynamic dependency loading, Google could load up the chat module only then, rather than forcing all users to load it when the page first initializes. This can improve performance and load times and can definitely prove useful when building larger applications. As the codebase for an application grows this becomes even more important.
+Think about the GMail web client for a moment. When a user initially loads the page on their first visit, Google can simply hide widgets such as the chat module until the user has indicated (by clicking 'expand') that they wish to use it. Through dynamic dependency loading, Google could load up the chat module at that time, rather than forcing all users to load it when the page first initializes. This can improve performance and load times and can definitely prove useful when building larger applications. As the codebase for an application grows this becomes even more important.
 
-The important thing to note here is that while it's absolutely fine to develop applications without a script loader, there are significant benefits to utilising tools like RequireJS in your application.
+The important thing to note here is that while it's absolutely fine to develop applications without a script loader, there are significant benefits to utilizing tools like RequireJS in your application.
 
 ### Asynchronous Module Definition (AMD)
 
@@ -5696,7 +5695,7 @@ RequireJS implements the [AMD Specification](https://github.com/amdjs/amdjs-api/
 
 ### Writing AMD modules with RequireJS
 
-As discussed above, the overall goal for the AMD format is to provide a solution for modular JavaScript that developers can use today. The two key concepts you need to be aware of when using it with a script-loader are a `define()` method for facilitating module definition and a `require()` method for handling dependency loading. `define()` is used to define named or unnamed modules based on the proposal using the following signature:
+As discussed above, the overall goal for the AMD format is to provide a solution for modular JavaScript that developers can use today. The two key concepts you need to be aware of when using it with a script-loader are the `define()` method for defining modules and the `require()` method for loading dependencies. `define()` is used to define named or unnamed modules using the following signature:
 
 ```javascript
 define(
@@ -5706,9 +5705,9 @@ define(
 );
 ```
 
-As you can tell by the inline comments, the `module_id` is an optional argument which is typically only required when non-AMD concatenation tools are being used (there may be some other edge cases where it's useful too). When this argument is left out, we call the module 'anonymous'. When working with anonymous modules, the idea of a module's identity is DRY, making it trivial to avoid duplication of filenames and code.
+As you can tell by the inline comments, the `module_id` is an optional argument which is typically only required when non-AMD concatenation tools are being used (there may be some other edge cases where it's useful too). When this argument is left out, we call the module 'anonymous'. When working with anonymous modules, RequireJS will use a module's file path as its module id, so the adage Don't Repeat Yourself (DRY) should be applied by omitting the module id in the `define()` invocation.
 
-Back to the define signature, the dependencies argument represents an array of dependencies which are required by the module you are defining and the third argument ('definition function') is a function that's executed to instantiate your module. A barebone module (compatible with RequireJS) could be defined using `define()` as follows:
+The dependencies argument is an array representing all of the other modules that this module depends on and the third argument ('definition function') is a function that's executed to instantiate your module. A barebones module (compatible with RequireJS) could be defined using `define()` as follows:
 
 ```javascript
 // A module ID has been omitted here to make the module anonymous
@@ -5772,21 +5771,21 @@ require( ['foo', 'bar'], function ( foo, bar ) {
 });
 ```
 
-
 Addy's post on [Writing Modular JS](http://addyosmani.com/writing-modular-js/) covers the AMD specification in much more detail. Defining and using modules will be covered in this book shortly when we look at more structured examples of using RequireJS.
 
 ### Getting Started with RequireJS
-Before using RequireJS and Backbone we will first set up a very basic RequireJS project to demonstrate how it works. The first thing to do is to [Download RequireJS](http://requirejs.org/docs/download.html#requirejs). When you load in the RequireJS script in your HTML file, you need to also tell it where your main JavaScript file exists. Typically this will be called something like "app.js", and is the main entry point for your application. You do this by passing in a `data-main` attribute:
+
+Before using RequireJS and Backbone we will first set up a very basic RequireJS project to demonstrate how it works. The first thing to do is to [Download RequireJS](http://requirejs.org/docs/download.html#requirejs). When you load in the RequireJS script in your HTML file, you need to also tell it where your main JavaScript file is located. Typically this will be called something like "app.js", and is the main entry point for your application. You do this by adding in a `data-main` attribute to the `script` tag:
 
 ```html
 <script data-main="app.js" src="lib/require.js"></script>
 ```
 
-Now, RequireJS will automatically load in `app.js` for you.
+Now, RequireJS will automatically load `app.js` for you.
 
 #### RequireJS Configuration
 
-In your main JavaScript file that you pass in through the `data-main` attribute, you can configure RequireJS. This is done by calling `require.config`, and passing in an object:
+In the main JavaScript file that you load with the `data-main` attribute you can configure how RequireJS loads the rest of your application. This is done by calling `require.config`, and passing in an object:
 
 ```javascript
 require.config({
@@ -5797,11 +5796,12 @@ require.config({
 });
 ```
 
-The main reason you'd want to configure RequireJS is for shims, which is used to allow RequireJS to work with libraries that don't use `define()` in the code, but expose themselves globally. We'll cover this shortly. To see other configuration options available to you, I recommend checking out the [RequireJS documentation](http://requirejs.org/docs/api.html#config).
+The main reason you'd want to configure RequireJS is to add shims, which we'll cover next. To see other configuration options available to you, I recommend checking out the [RequireJS documentation](http://requirejs.org/docs/api.html#config).
 
 
 ##### RequireJS Shims
-To use a library with RequireJS, ideally that library should come with AMD support. That is, it uses the `define` method to define the library as a module. However, some libraries - including Backbone and one of its dependencies, Underscore - don't do this. Fortunately RequireJS comes with a way to bypass this.
+
+Ideally, each library that we use with RequireJS will come with AMD support. That is, it uses the `define` method to define the library as a module. However, some libraries - including Backbone and one of its dependencies, Underscore - don't do this. Fortunately RequireJS comes with a way to work around this.
 
 To demonstrate this, first let's shim Underscore, and then we'll shim Backbone too. Shims are very simple to implement:
 
@@ -5809,13 +5809,15 @@ To demonstrate this, first let's shim Underscore, and then we'll shim Backbone t
 require.config({
     shim: {
         'lib/underscore': {
-          exports: '_'
+            exports: '_'
         }
     }
 });
 ```
 
-The important line there is `exports: '_'`. That tells RequireJS that whenever we require the file `'lib/underscore'`, it would return the global `_` object, as that's where Underscore exports itself too, it adds the `_` property to the global object. Now when we require Underscore, RequireJS will return that `_` property. Now we can set up a shim for Backbone too:
+Note that when specifying paths for RequireJS you should omit the `.js` from the end of script names.
+
+The important line here is `exports: '_'`. This line tells RequireJS that the script in `'lib/underscore.js'` creates a global variable called `_` instead of defining a module. Now when we list Underscore as a dependency RequireJS will know to give us the `_` global variable as though it was the module defined by that script. We can set up a shim for Backbone too:
 
 ```javascript
 require.config({
@@ -5831,7 +5833,7 @@ require.config({
 });
 ```
 
-Again, that configuration tells RequireJS to return the global `Backbone` property that Backbone exports, but also this time you'll notice that Backbone's dependencies are defined. This means whenever this:
+Again, that configuration tells RequireJS to return the global `Backbone` variable that Backbone exports, but this time you'll notice that Backbone's dependencies are defined. This means whenever this:
 
 ```javascript
 require( 'lib/backbone', function( Backbone ) {...} );
@@ -5868,7 +5870,7 @@ require.config({
 });
 ```
 
-Just make sure that in your shim settings, you refer to the custom path too. Now you can do:
+Just make sure that you refer to the custom path in your shim settings, too. Now you can do
 
 ```javascript
 require( ['underscore'], function(_) {
@@ -5876,14 +5878,14 @@ require( ['underscore'], function(_) {
 });
 ```
 
-To shim Underscore but still use a custom path.
+to shim Underscore but still use a custom path.
 
 
 ### Require.js and Backbone Examples
 
 Now that we've taken a look at how to define AMD modules, let's review how to go about wrapping components like views and collections so that they can also be easily loaded as dependencies for any parts of your application that require them. At its simplest, a Backbone model may just require Backbone and Underscore.js. These are dependencies, so we can define those when defining the new modules. Note that the following examples presume you have configured RequireJS to shim Backbone and Underscore, as discussed previously.
 
-#### Wrapping modules, views and other components with AMD
+#### Wrapping models, views, and other components with AMD
 
 For example, here is how a model is defined.
 
@@ -5925,11 +5927,11 @@ define([
   ...
 ```
 
-Aliasing to the dollar-sign (`$`), once again makes it very easy to encapsulate any part of an application you wish using AMD.
+Aliasing to the dollar-sign (`$`) once again makes it very easy to encapsulate any part of an application you wish using AMD.
 
-Doing it this way makes it easy to organise your Backbone application as you like. It's recommended to separate modules into folders. For example, individual folders for models, collections, views and so on. RequireJS doesn't care about what folder structure you use; as long as you use the correct path when using `require`, it will happily pull in the file.
+Doing it this way makes it easy to organize your Backbone application as you like. It's recommended to separate modules into folders. For example, individual folders for models, collections, views and so on. RequireJS doesn't care about what folder structure you use; as long as you use the correct path when using `require`, it will happily pull in the file.
 
-As part of this chapter I've made a very simple [Backbone application with RequireJS that you can find on Github](https://github.com/javascript-playground/backbone-require-example). This application is incredibly simple. It is a stock application for a manager of a shop. They can add new items and filter down the items based on price, but nothing more. Because it's so simple it's easier to focus purely on the RequireJS part of the implementation, rather than deal with complex JavaScript and Backbone logic too.
+As part of this chapter I've made a very simple [Backbone application with RequireJS that you can find on Github](https://github.com/javascript-playground/backbone-require-example). It is a stock application for a manager of a shop. They can add new items and filter down the items based on price, but nothing more. Because it's so simple it's easier to focus purely on the RequireJS part of the implementation, rather than deal with complex JavaScript and Backbone logic too.
 
 At the base of this application is the `Item` model, which describes a single item in the stock. Its implementation is very straight forward:
 
@@ -5982,7 +5984,7 @@ define(["lib/backbone", "models/item"], function(Backbone, Item) {
 });
 ```
 
-I've called this collection `Cart`, as it's a group of items. As the `Item` model is the second dependency, I can bind the variable `Item` too it by declaring it as the second argument to the callback function. I can then refer to this within my collection implementation.
+I've called this collection `Cart`, as it's a group of items. As the `Item` model is the second dependency, I can bind the variable `Item` to it by declaring it as the second argument to the callback function. I can then refer to this within my collection implementation.
 
 Finally, let's have a look at the view for this collection. (This file is much bigger in the application, but I've taken some bits out so it's easier to examine).
 
@@ -6013,15 +6015,13 @@ define(["lib/backbone", "models/item", "views/itemview"], function(Backbone, Ite
 
 There really is nothing to it once you've got the general pattern. Define each "object" (a model, view, collection, router or otherwise) through RequireJS, and then specify them as dependencies to other objects that need them. Again, you can find this entire application [on Github](https://github.com/javascript-playground/backbone-require-example).
 
-If you'd like to take a look at how others do it, [Pete Hawkins' Backbone Stack repository](https://github.com/phawk/Backbone-Stack) is a good example of structuring a Backbone application, using RequireJS. Greg Franko has also written [an overview of how he uses Backbone and Require](http://gregfranko.com/blog/using-backbone-dot-js-with-require-dot-js/), and [Jeremy Kahn's post](http://jeremyckahn.github.com/blog/2012/08/18/keeping-it-sane-backbone-views-and-require-dot-js/) neatly describes his approach. For a full look at a sample application, the [Backbone and Require example](https://github.com/addyosmani/todomvc/tree/gh-pages/dependency-examples/backbone_require) of the TodoMVC repository should be your starting point.
-
-
+If you'd like to take a look at how others do it, [Pete Hawkins' Backbone Stack repository](https://github.com/phawk/Backbone-Stack) is a good example of structuring a Backbone application using RequireJS. Greg Franko has also written [an overview of how he uses Backbone and Require](http://gregfranko.com/blog/using-backbone-dot-js-with-require-dot-js/), and [Jeremy Kahn's post](http://jeremyckahn.github.com/blog/2012/08/18/keeping-it-sane-backbone-views-and-require-dot-js/) neatly describes his approach. For a look at a full sample application, the [Backbone and Require version](https://github.com/addyosmani/todomvc/tree/gh-pages/dependency-examples/backbone_require) of the TodoMVC application is a good starting point.
 
 ### Keeping Your Templates External Using RequireJS And The Text Plugin
 
-Moving your [Underscore/Mustache/Handlebars] templates to external files is actually quite straight-forward. As this application makes use of RequireJS, I'll discuss how to implement external templates using this specific script loader.
+Moving your templates to external files is actually quite straight-forward, whether they are Underscore, Mustache, Handlebars or any other text-based template format. Let's look at how we do that with RequireJS.
 
-RequireJS has a special plugin called text.js which is used to load in text file dependencies. To use the text plugin, simply follow these simple steps:
+RequireJS has a special plugin called text.js which is used to load in text file dependencies. To use the text plugin, follow these steps:
 
 1. Download the plugin from http://requirejs.org/docs/download.html#text and place it in either the same directory as your application's main JS file or a suitable sub-directory.
 
@@ -6068,7 +6068,7 @@ JS:
 var compiled_template = _.template( $('#mainViewTemplate').html() );
 ```
 
-With RequireJS and the text plugin however, it's as simple as saving your template into an external text file (say, `mainView.html`) and doing the following:
+With RequireJS and the text plugin however, it's as simple as saving the same template into an external text file (say, `mainView.html`) and doing the following:
 
 ```javascript
 require(['js/app', 'text!templates/mainView.html'],
@@ -6092,29 +6092,33 @@ All templating solutions will have their own custom methods for handling templat
 
 ### Optimizing Backbone apps for production with the RequireJS Optimizer
 
-As experienced developers may know, an essential final step when writing both small and large JavaScript web applications is the build process.  The majority of non-trivial apps are likely to consist of more than one or two scripts and so optimizing, minimizing and concatenating your scripts prior to pushing them to production will require your users to download a reduced number (if not just one) script file.
+As experienced developers may know, an essential final step when writing both small and large JavaScript web applications is the build process. The majority of non-trivial apps are likely to consist of many scripts and so optimizing, minimizing, and concatenating your scripts prior to pushing them to production can reduce the number of scripts your users have to download, often to just one.
 
 If this is your first time looking at build scripts, [Addy Osmani's screencast on build scripts](http://addyosmani.com/blog/client-side-build-process/) may be useful.
 
 Another benefit to using RequireJS is its command line optimization tool, R.js. This has a number of capabilities, including:
 
 * Concatenating specific scripts and minifying them using external tools such as UglifyJS (which is used by default) or Google's Closure Compiler for optimal browser delivery, whilst preserving the ability to dynamically load modules
-* Optimizing CSS and stylesheets by inlining CSS files imported using @import, stripping out comments etc.
+* Optimizing CSS and stylesheets by inlining CSS files imported using @import, stripping out comments, etc.
 * The ability to run AMD projects in both Node and Rhino (more on this later)
 
-You'll notice that I mentioned the word 'specific' in the first bullet point. The RequireJS optimizer only concatenates module scripts that have been specified in arrays of string literals passed to top-level (i.e non-local) require and define calls. As clarified by the [optimizer docs](http://requirejs.org/docs/optimization.html) this means that Backbone modules defined like this:
+You'll notice that I mentioned the word 'specific' in the first bullet point. The RequireJS optimizer only concatenates module scripts that have been specified as string literals in require and define calls. As clarified by the [optimizer docs](http://requirejs.org/docs/optimization.html) this means that Backbone modules defined like this:
 
 ```javascript
-define(['jquery','backbone','underscore', 'collections/sample','views/test'],
-    function($,Backbone, _, Sample, Test){
+define(['jquery', 'backbone', 'underscore', 'collections/sample', 'views/test'],
+    function($, Backbone, _, Sample, Test){
         //...
     });
 ```
 
-will combine fine, however inline dependencies such as:
+will combine fine, however dynamic dependencies such as:
 
 ```javascript
-var models = someCondition ? ['models/ab','models/ac'] : ['models/ba','models/bc'];
+var models = someCondition ? ['models/ab', 'models/ac'] : ['models/ba', 'models/bc'];
+define(['jquery', 'backbone', 'underscore'].concat(models),
+    function($, Backbone, _, firstModel, secondModel){
+        //...
+    });
 ```
 
 will be ignored. This is by design as it ensures that dynamic dependency/module loading can still take place even after optimization.
@@ -6170,7 +6174,7 @@ That's it. As long as you have UglifyJS/Closure tools setup correctly, r.js shou
 
 *Contributed by [Bill Heaton](https://github.com/pixelhandler)*
 
-When a JavaScript application is too complex or large to build in a single file, grouping the application’s components into packages allows for script dependencies to download in parallel, and facilitates only loading **packaged** and other modular code as the site experience requires the specific set of dependencies.
+When a JavaScript application is too complex or too large to build into a single file, grouping the application's components into packages allows for script dependencies to download in parallel, and facilitates only loading **packaged** and other modular code as the site experience requires the specific set of dependencies.
 
 RequireJS, the (JavaScript) module loading library, has an [optimizer](http://requirejs.org/docs/optimization.html 'RequireJS optimizer') to build a JavaScript-based application and provides various options. A build profile is the recipe for your build, much like a build.xml file is used to build a project with ANT. The benefit of building with **r.js** not only results in speedy script loading with minified code, but also provides a way to package components of your application.
 
@@ -6178,7 +6182,7 @@ RequireJS, the (JavaScript) module loading library, has an [optimizer](http://re
 * [Optimizing a whole project](http://requirejs.org/docs/optimization.html#wholeproject 'Optimizing a whole project')
 * [Optimizing a project in layers or packages](http://requirejs.org/docs/faq-optimization.html#priority 'Optimizing a project in layers or packages')
 
-In a complex application, organizing code into *packages* is an attractive build strategy. The build profile in this article is based on an test application currently under development (files list below). The application framework is built with open source libraries. The main objective in this build profile is to optimize an application developed with [Backbone.js](http://documentcloud.github.com/backbone/ 'Backbone.js') using modular code, following the [Asynchronous Module Definition (AMD)](https://github.com/amdjs/amdjs-api/wiki/AMD 'Asynchronous Module Definition (AMD) wiki page') format. AMD and RequireJS provide the structure for writing modular code with dependencies. Backbone.js provides the code organization for developing models, views and collections and also interactions with a RESTful API.
+In a complex application, organizing code into *packages* is an attractive build strategy. The build profile in this section is based on a test application currently under development (files listed below). The application framework is built with open source libraries. The main objective in this build profile is to optimize an application developed with [Backbone.js](http://documentcloud.github.com/backbone/ 'Backbone.js') using modular code, following the [Asynchronous Module Definition (AMD)](https://github.com/amdjs/amdjs-api/wiki/AMD 'Asynchronous Module Definition (AMD) wiki page') format. AMD and RequireJS provide the structure for writing modular code with dependencies. Backbone.js provides the code organization for developing models, views, and collections and also interactions with a RESTful API.
 
 Below is an outline of the applications file organization, followed by the build profile to build modular (or packaged) layers a JavaScript driven application.
 
@@ -6267,7 +6271,7 @@ The build profile can be organized to [divide parallel downloads for various sec
 
 This strategy demonstrated builds common or site-wide groups of (core) *models*, *views*, collections which are extended from a base.js constructor which extends the appropriate backbone method, e.g. Backbone.Model. The *packages* directory organizes code by section / responsibility, e.g. cart, checkout, etc. Notice that within the example *header* package the directory structure is similar to the app root directory file structure. A *package* (of modularized code) has dependencies from the common libraries in your application and also has specific code for the packages execution alone; other packages should not require another packages dependencies. A *utils* directory has shims, helpers, and common library code to support the application. A *syncs* directory to define persistence with your RESTful api and/or localStorage. The *vendor* libraries folder will not be built, there is no need to do so, you may decide to use a CDN (then set these paths to : *[empty:](http://requirejs.org/docs/optimization.html#empty 'empty:')*). And finally a *test* directory for [Jasmine](http://pivotal.github.com/jasmine/ 'Jasmine is a behavior-driven development framework for testing your JavaScript code') unit test specs, which may be ignored in the build as well if you choose.
 
-Also notice the there are .js files named the same as the directories, these are the files listed in the paths. these are strategic to group sets of files to build, examples follow the build profile below.
+Also notice the there are .js files named the same as the directories, these are the files listed in the paths. These are strategic to group sets of files to build, examples follow the build profile below.
 
 ```javascript
 ({
@@ -6385,9 +6389,9 @@ function (Branding,          Section) {
 
 #### A quick note on code standards
 
-Notice that in the above examples the parameters may begin with lower or upper case characters. The variable names uses in the parameters that begin with *Uppercase* are *Constructors* and the *lowercase* variable names are not, they may be instances created by a constructor, or perhaps an object or function that is not meant to used with *new*.
+Notice that in the above examples the parameters may begin with lower or upper case characters. The variable names uses in the parameters that begin with *uppercase* are *constructors* and the *lowercase* variable names are not, they may be instances created by a constructor, or perhaps an object or function that is not meant to used with *new*.
 
-The convention recommended is to use Upper CamelCase for constructors and lower camelCase for others.
+The convention recommended is to use upper camel-case for constructors and lower camel-case for others.
 
 #### Common Pitfall when organizing code in modules
 
@@ -6402,7 +6406,7 @@ Then when another packages requires a common model you can access the models obj
     define([ 'models', 'utils' ], function (models, utils) {
     var branding = models.branding, debug = utils.debug;
 
-Perhaps after using the model a few times you get into the habit of requiring "model". Later you need add another common model with extends a model you already defined. So the pitfall begins, you add a new model inside your models directory and add a reference this same model in the model.js:
+Perhaps after using the model a few times you get into the habit of requiring "model". Later you need add another common model which extends a model you already defined. So the pitfall begins, you add a new model inside your models directory and add a reference to this same model in the model.js:
 
     define([ 'models/branding', 'models/section', 'models/section-b' ], function (branding, section)
     // ...
@@ -6787,14 +6791,13 @@ To see how everything ties together, feel free to grab the source by cloning thi
 
 **Note:** While this first practical doesn't use a build profile as outlined in the chapter on using the RequireJS optimizer, we will be using one in the section on building mobile Backbone applications.
 
-
-## Route based module loading
+## Route-based module loading
 
 This section will discuss a route based approach to module loading as implemented in [Lumbar](http://walmartlabs.github.com/lumbar) by Kevin Decker. Like RequireJS, Lumbar is also a modular build system, but the pattern it implements for loading routes may be used with any build system.
 
 The specifics of the Lumbar build tool are not discussed in this book. To see a complete Lumbar based project with the loader and build system see [Thorax](http://thoraxjs.org) which provides boilerplate projects for various environments including Lumbar.
 
-### JSON based module configuration
+### JSON-based module configuration
 
 RequireJS defines dependencies per file, while Lumbar defines a list of files for each module in a central JSON configuration file, outputting a single JavaScript file for each defined module. Lumbar requires that each module (except the base module) define a single router and a list of routes. An example file might look like:
 
@@ -6872,7 +6875,7 @@ A sample implementation is provided below. The `config` object would need to con
 
 ### Using NodeJS to handle pushState
 
-`window.history.pushState` support (serving Backbone routes without a hashtag) requires that the server be aware of what URLs your Backbone application will handle, since the user should be able to enter the app at any of those routes (or hit reload after navigating to a pushState URL).
+`window.history.pushState` support (serving Backbone routes without a hash mark) requires that the server be aware of what URLs your Backbone application will handle, since the user should be able to enter the app at any of those routes (or hit reload after navigating to a pushState URL).
 
 Another advantage to defining all routes in a single location is that the same JSON configuration file provided above could be loaded by the server, listening to each route. A sample implementation in NodeJS and Express:
 
@@ -6979,7 +6982,9 @@ Next, we have an implementation of the facade pattern. Now the classical facade 
 
 var module = (function() {
     var _private = {
-        i:5,
+
+        i: 5,
+
         get : function() {
             console.log('current value:' + this.i);
         },
@@ -7045,7 +7050,7 @@ Found in `aura/permissions.js`
 
 In our simple permissions configuration, we support checking against subscription requests to establish whether they are allowed to clear. This enforces a flexible security layer for the application.
 
-To visually see how this works, consider changing say, permissions -> renderDone -> todoCounter to be false. This will completely disable the application from from rendering or displaying the counts component for Todo items left (because they aren't allowed to subscribe to that event notification). The rest of the Todo app can still however be used without issue.
+To visually see how this works, consider changing say, permissions -> renderDone -> todoCounter to be false. This will completely disable the application from rendering or displaying the counts component for Todo items left (because they aren't allowed to subscribe to that event notification). The rest of the Todo app can still however be used without issue.
 
 It's a very dumbed down example of the potential for application security, but imagine how powerful this might be in a large app with a significant number of visual widgets.
 
@@ -7105,8 +7110,6 @@ define([], function () {
 });
 ```
 
-
-
 **Subscribers**
 
 Found in `subscribers.js`
@@ -7117,7 +7120,7 @@ For example, when a user enters in a new piece of text for a Todo item and hits 
 
 In order to update your Backbone application to primarily use pub/sub, a lot of the work you may end up doing will be moving logic coupled inside of specific views to modules outside of it which are reactionary.
 
-Take the `todoSaver` for example - its responsibility is saving new Todo items to models once the a `notificationName` called 'newContentAvailable' has fired. If you take a look at the permissions structure in the last code sample, you'll notice that 'newContentAvailable' is present there. If I wanted to prevent subscribers from being able to subscribe to this notification, I simply set it to a boolean value of `false`.
+Take the `todoSaver` for example - its responsibility is saving new Todo items to models once the `notificationName` called 'newContentAvailable' has fired. If you take a look at the permissions structure in the last code sample, you'll notice that 'newContentAvailable' is present there. If I wanted to prevent subscribers from being able to subscribe to this notification, I simply set it to a boolean value of `false`.
 
 Again, this is a massive oversimplification of how advanced your permissions structures could get, but it's certainly one way of controlling what parts of your application can or can't be accessed by specific modules at any time.
 
@@ -7140,7 +7143,7 @@ function ($, _, facade) {
     });
 
 
-    // Save models when a user has finishes editing
+    // Save models when a user has finished editing
     // Subscribes to: endContentEditing
     facade.subscribe('todoSaver','endContentEditing', function (context) {
         try {
@@ -7235,7 +7238,7 @@ When working with a structural framework like Backbone.js, the three types of pa
 
 **Requests to a service layer (API)**- e.g query for results containing the term 'Brendan' - if 5,000 results are available only display 20 results per page (leaving us with 250 possible result pages that can be navigated to).
 
-This problem actually has quite a great deal more to it, such as maintaining persistence of other URL parameters (e.g sort, query, order) which can change based on a user's search configuration in a UI. One also had to think of a clean way of hooking views up to this pagination so you can easily navigate between pages (e.g First, Last, Next, Previous, 1,2,3), manage the number of results displayed per page and so on.
+This problem actually has quite a great deal more to it, such as maintaining persistence of other URL parameters (e.g sort, query, order) which can change based on a user's search configuration in a UI. One also has to think of a clean way of hooking views up to this pagination so you can easily navigate between pages (e.g., First, Last, Next, Previous, 1,2,3), manage the number of results displayed per page and so on.
 
 **Further client-side pagination of data returned -** e.g we've been returned a JSON response containing 100 results. Rather than displaying all 100 to the user, we only display 20 of these results within a navigable UI in the browser.
 
@@ -7249,14 +7252,12 @@ A request pager which simply appends results in a view rather than replacing on 
 
 *Paginator is a set of opinionated components for paginating collections of data using Backbone.js. It aims to provide both solutions for assisting with pagination of requests to a server (e.g an API) as well as pagination of single-loads of data, where we may wish to further paginate a collection of N results into M pages within a view.*
 
-
 ### Paginator's pieces
 
 Backbone.Paginator supports two main pagination components:
 
 * **Backbone.Paginator.requestPager**: For pagination of requests between a client and a server-side API
 * **Backbone.Paginator.clientPager**: For pagination of data returned from a server which you would like to further paginate within the UI (e.g 60 results are returned, paginate into 3 pages of 20)
-
 
 ### Live Examples
 
@@ -7330,7 +7331,8 @@ We need to tell the library how many items per page would we like to see, etc...
 
 #### 5. Configure the parameters we want to send to the server
 
-Only the base URL won't be enough for most cases, so you can pass more parameters to the server.
+The base URL on its own won't be enough for most cases, so you can pass more parameters to the server.
+
 Note how you can use functions insead of hardcoded values, and you can also refer to the values you specified in `paginator_ui`.
 
 ```javascript
@@ -7389,22 +7391,22 @@ For your convenience, the following methods are made available for use in your v
 * **Collection.requestPreviousPage( options )** - go to the previous page
 * **Collection.howManyPer( n )** - set the number of items to display per page
 
-**requestPager** collection's methods `.goTo()`, `.requestNextPage()` and `.requestPreviousPage()` are all extension of the original [Backbone Collection.fetch() method](http://documentcloud.github.com/backbone/#Collection-fetch). As so, they all can take the same option object as parameter.
+**requestPager** collection's methods `.goTo()`, `.requestNextPage()` and `.requestPreviousPage()` are all extensions of the original [Backbone Collection.fetch() method](http://documentcloud.github.com/backbone/#Collection-fetch). As such, they can all take the same option object as parameter.
 
 This option object can use `success` and `error` parameters to pass a function to be executed after server answer.
 
 ```javascript
 Collection.goTo(n, {
   success: function( collection, response ) {
-    // called is server request success
+    // called if server request succeeds
   },
   error: function( collection, response ) {
-    // called if server request fail
+    // called if server request fails
   }
 });
 ```
 
-To manage callback, you could also use the [jqXHR](http://api.jquery.com/jQuery.ajax/#jqXHR) returned by these methods to manage callback.
+You could also use the [jqXHR](http://api.jquery.com/jQuery.ajax/#jqXHR) returned by these methods to manage callbacks.
 
 ```javascript
 Collection
@@ -7483,7 +7485,8 @@ We need to tell the library how many items per page would we like to see, etc...
 
 #### 4. Configure the parameters we want to send to the server
 
-Only the base URL won't be enough for most cases, so you can pass more parameters to the server.
+The base URL on its own won't be enough for most cases, so you can pass more parameters to the server.
+
 Note how you can use functions instead of hardcoded values, and you can also refer to the values you specified in `paginator_ui`.
 
 ```javascript
@@ -7533,7 +7536,7 @@ As mentioned, your views can hook into a number of convenience methods to naviga
 * **Collection.nextPage()** - go to the next page
 * **Collection.howManyPer(n)** - set how many items to display per page
 * **Collection.setSort(sortBy, sortDirection)** - update sort on the current view. Sorting will automatically detect if you're trying to sort numbers (even if they're stored as strings) and will do the right thing.
-* **Collection.setFilter(filterFields, filterWords)** - filter the current view. Filtering supports multiple words without any specific order, so you'll basically get a full-text search ability. Also, you can pass it only one field from the model, or you can pass an array with fields and all of them will get filtered. Last option is to pass it an object containing a comparison method and rules. Currently, only ```levenshtein``` method is available.
+* **Collection.setFilter(filterFields, filterWords)** - filter the current view. Filtering supports multiple words without any specific order, so you'll basically get a full-text search ability. Also, you can pass it only one field from the model, or you can pass an array with fields and all of them will get filtered. Last option is to pass it an object containing a comparison method and rules. Currently, only the ```levenshtein``` method is available.
 
 ```javascript
   this.collection.setFilter(
@@ -7542,11 +7545,11 @@ As mentioned, your views can hook into a number of convenience methods to naviga
   );
 ```
 
-Also note that the levenshtein plugin should be loaded and enabled using the ```useLevenshteinPlugin``` variable.
+Also note that the levenshtein plug-in should be loaded and enabled using the ```useLevenshteinPlugin``` variable.
 
-Last but not less important: Performing Levenshtein comparison returns the ```distance``` between to strings. It won't let you *search* lengthy text.
+Last but not less important: Performing Levenshtein comparison returns the ```distance``` between two strings. It won't let you *search* lengthy text.
 
-The distance between two strings means the number of characters that should be added, removed or moved to the left or to the right so the strings get equal.
+The Levenshtein distance between two strings is the number of characters that should be added, removed or moved to the left or to the right to transform one string into the other.
 
 That means that comparing "Something" in "This is a test that could show something" will return 32, which is bigger than comparing "Something" and "ABCDEFG" (9).
 
@@ -7555,7 +7558,6 @@ Use levenshtein only for short texts (titles, names, etc).
 * **Collection.doFakeFilter(filterFields, filterWords)** - returns the models count after fake-applying a call to ```Collection.setFilter```.
 
 * **Collection.setFieldFilter(rules)** - filter each value of each model according to `rules` that you pass as argument. Example: You have a collection of books with 'release year' and 'author'. You can filter only the books that were released between 1999 and 2003. And then you can add another `rule` that will filter those books only to authors whose names start with 'A'. Possible rules: function, required, min, max, range, minLength, maxLength, rangeLength, oneOf, equalTo, pattern.
-
 
 ```javascript
 
@@ -8277,9 +8279,9 @@ $.mobile.hashListeningEnabled = false;
 
 prior to initializing any of your other code.
 
-I discovered this method looking through some jQuery Mobile commits that didn't make their way into the official docs, but am happy to see that they are now covered here http://jquerymobile.com/test/docs/api/globalconfig.html in more detail.
+I discovered this method looking through some jQuery Mobile commits that didn't make their way into the official docs, but am happy to see that they are now [covered in more detail](http://jquerymobile.com/test/docs/api/globalconfig.html).
 
-The next question that arises is, if we're preventing jQuery Mobile from listening to URL hash changes, how can we still get the benefit of being able to navigate to other sections in a document using the built-in transitions and effects supported? Good question. This can now be solve by simply calling `$.mobile.changePage()` as follows:
+The next question that arises is, if we're preventing jQuery Mobile from listening to URL hash changes, how can we still get the benefit of being able to navigate to other sections in a document using the built-in transitions and effects supported? Good question. This can be solved by simply calling `$.mobile.changePage()` as follows:
 
 ```javascript
 var url = '#about',
@@ -8335,7 +8337,7 @@ In the Flickly application, there are at least two unique types of data that nee
 
 **Views**
 
-The views we'll need include an application view, a search results view and a photo view. Static views or pages of the single-page application which do not require a dynamic element to them (e.g an 'about' page) can be easily coded up in your document's markup, independent of Backbone.
+The views we'll need include an application view, a search results view and a photo view. Static views or pages of the single-page application which do not require a dynamic element for them (e.g an 'about' page) can be easily coded up in your document's markup, independent of Backbone.
 
 **Routers**
 
@@ -8366,50 +8368,52 @@ The takeaway here is just to remember that if you're not (already) going through
 
 ## Introduction
 
-One definition of unit testing is the process of taking the smallest piece of testable code in an application, isolating it from the remainder of your codebase and determining if it behaves exactly as expected. In this section, we'll be taking a look at how to unit test Backbone applications using a popular JavaScript testing framework called [Jasmine](http://pivotal.github.com/jasmine/) from Pivotal Labs.
+One definition of unit testing is the process of taking the smallest piece of testable code in an application, isolating it from the remainder of your codebase, and determining if it behaves exactly as expected. In this section, we'll be taking a look at how to unit test Backbone applications using a popular JavaScript testing framework called [Jasmine](http://pivotal.github.com/jasmine/) from Pivotal Labs.
 
-For an application to be considered 'well'-tested, distinct functionality should ideally have its own separate unit tests where it's tested against the different conditions you expect it to work under. All tests must pass before functionality is considered 'complete'. This allows developers to both modify a unit of code and its dependencies with a level of confidence about whether these changes have caused any breakage.
+For an application to be considered 'well-tested', each function should ideally have its own separate unit tests where it's tested against the different conditions you expect it to handle. All tests must pass before functionality is considered 'complete'. This allows developers to both modify a unit of code and its dependencies with a level of confidence about whether these changes have caused any breakage.
 
-As a basic example of unit testing is where a developer may wish to assert whether passing specific values through to a sum function results in the correct output being returned. For an example more relevant to this book, we may wish to assert whether a user adding a new Todo item to a list correctly adds a Model of a specific type to a Todos Collection.
+A basic example of unit testing is where a developer asserts that passing specific values to a sum function results in the correct value being returned. For an example more relevant to this book, we may wish to assert that adding a new Todo item to a list correctly adds a Model of a specific type to a Todos Collection.
 
-When building modern web-applications, it's typically considered best-practice to include automated unit testing as a part of your development process. Whilst we'll be focusing on Jasmine as a solution for this, there are a number of other alternatives worth considering, including QUnit.
+When building modern web-applications, it's typically considered best-practice to include automated unit testing as a part of your development process. While we'll be focusing on Jasmine as a solution in this chapter, there are a number of other alternatives worth considering, including QUnit which will be covered in the next chapter.
+
+## Behavior-Driven Development
 
 Jasmine describes itself as a behavior-driven development (BDD) framework for testing JavaScript code. Before we jump into how the framework works, it's useful to understand exactly what [BDD](http://en.wikipedia.org/wiki/Behavior_Driven_Development) is.
 
-BDD is a second-generation testing approach first described by [Dan North](http://dannorth.net/introducing-bdd/) (the authority on BDD) which attempts to test the behavior of software. It's considered second-generation as it came out of merging ideas from Domain driven design (DDD) and lean software development, helping teams to deliver high quality software by answering many of the more confusing questions early on in the agile process. Such questions commonly include those concerning documentation and testing.
+BDD is a second-generation testing approach first described by [Dan North](http://dannorth.net/introducing-bdd/) (the authority on BDD) which attempts to test the behavior of software. It's considered second-generation as it came out of merging ideas from Domain driven design (DDD) and lean software development. BDD helps teams deliver high-quality software by answering many of the more confusing questions early on in the agile process. Such questions commonly include those concerning documentation and testing.
 
-If you were to read a book on BDD, it's likely to also be described as being 'outside-in and pull-based'. The reason for this is that it borrows the idea of pulling features from Lean manufacturing which effectively ensures that the right software solutions are being written by a) focusing on expected outputs of the system and b) ensuring these outputs are achieved.
+If you were to read a book on BDD, it's likely that it would be described as being 'outside-in and pull-based'. The reason for this is that it borrows the idea of 'pulling features' from Lean manufacturing which effectively ensures that the right software solutions are being written by a) focusing on the expected outputs of the system and b) ensuring these outputs are achieved.
 
-BDD recognizes that there are usually multiple stakeholders in a project and not a single amorphous user of the system. These different groups will be affected by the software being written in differing ways and will have a varying opinion of what quality in the system means to them. It's for this reason that it's important to understand who the software will be bringing value you and exactly what in it will be valuable to them.
+BDD recognizes that there are usually multiple stakeholders in a project and not a single amorphous user of the system. These different groups will be affected by the software being written in differing ways and will have varying opinions of what quality in the system means to them. It's for this reason that it's important to understand who the software will be bringing value to and exactly what in it will be valuable to them.
 
-Finally, BDD relies on automation. Once you've defined the quality expected, your team will likely want to check on the functionality of the solution being built regularly and compare it to the results they expect. In order to facilitate this efficiently, the process has to be automated. BDD relies heavily on the automation of specification-testing and Jasmine is a tool which can assist with this.
+Finally, BDD relies on automation. Once you've defined the quality expected, your team will want to check on the functionality of the solution being built regularly and compare it to the results they expect. In order to facilitate this efficiently, the process has to be automated. BDD relies heavily on the automation of specification-testing and Jasmine is a tool which can assist with this.
 
 BDD helps both developers and non-technical stakeholders:
 
 
 * Better understand and represent the models of the problems being solved
-* Explain supported tests cases in a language that non-developers can read
+* Explain supported test cases in a language that non-developers can read
 * Focus on minimizing translation of the technical code being written and the domain language spoken by the business
 
 What this means is that developers should be able to show Jasmine unit tests to a project stakeholder and (at a high level, thanks to a common vocabulary being used) they'll ideally be able to understand what the code supports.
 
-Developers often implement BDD in unison with another testing paradigm known as [TDD](http://en.wikipedia.org/wiki/Test-driven_development) (test-driven development). The main idea behind TDD is:
+Developers often implement BDD in unison with another testing paradigm known as [TDD](http://en.wikipedia.org/wiki/Test-driven_development) (test-driven development). The main idea behind TDD is using the following development process:
 
-* Write unit tests which describe the functionality you would like your code to support
-* Watch these tests fail (as the code to support them hasn't yet been written)
-* Write code to make the tests pass
-* Rinse, repeat and refactor
+1. Write unit tests which describe the functionality you would like your code to support
+2. Watch these tests fail (as the code to support them hasn't yet been written)
+3. Write code to make the tests pass
+4. Rinse, repeat, and refactor
 
-In this chapter we're going to use both BDD (with TDD) to write unit tests for a Backbone application.
+In this chapter we're going to use BDD (with TDD) to write unit tests for a Backbone application.
 
-***Note:*** I've seen a lot of developers also opt for writing tests to validate behavior of their code after having written it. While this is fine, note that it can come with pitfalls such as only testing for behavior your code currently supports, rather than behavior the problem needs to be supported.
+***Note:*** I've seen a lot of developers also opt for writing tests to validate behavior of their code after having written it. While this is fine, note that it can come with pitfalls such as only testing for behavior your code currently supports, rather than the behavior needed to fully solve the problem.
 
 
-## Suites, Specs & Spies
+## Suites, Specs, & Spies
 
-When using Jasmine, you'll be writing suites and specifications (specs). Suites basically describe scenarios whilst specs describe what can be done in these scenarios.
+When using Jasmine, you'll be writing suites and specifications (specs). Suites basically describe scenarios while specs describe what can be done in these scenarios.
 
-Each spec is a JavaScript function, described with a call to ```it()``` using a description string and a function. The description should describe the behaviour the particular unit of code should exhibit and keeping in mind BDD, it should ideally be meaningful. Here's an example of a basic spec:
+Each spec is a JavaScript function, described with a call to ```it()``` using a description string and a function. The description should describe the behaviour the particular unit of code should exhibit and, keeping in mind BDD, it should ideally be meaningful. Here's an example of a basic spec:
 
 ```javascript
 it('should be incrementing in value', function(){
@@ -8418,7 +8422,7 @@ it('should be incrementing in value', function(){
 });
 ```
 
-On its own, a spec isn't particularly useful until expectations are set about the behavior of the code. Expectations in specs are defined using the ```expect()``` function and an [expectation matcher](https://github.com/pivotal/jasmine/wiki/Matchers) (e.g ```toEqual()```, ```toBeTruthy()```, ```toContain()```). A revised example using an expectation matcher would look like:
+On its own, a spec isn't particularly useful until expectations are set about the behavior of the code. Expectations in specs are defined using the ```expect()``` function and an [expectation matcher](https://github.com/pivotal/jasmine/wiki/Matchers) (e.g., ```toEqual()```, ```toBeTruthy()```, ```toContain()```). A revised example using an expectation matcher would look like:
 
 ```javascript
 it('should be incrementing in value', function(){
@@ -8428,11 +8432,11 @@ it('should be incrementing in value', function(){
 });
 ```
 
-The above code passes our behavioral expectation as ```counter``` equals 1. Notice how easy this was to read the expectation on the last line (you probably grokked it without any explanation).
+The above code passes our behavioral expectation as ```counter``` equals 1. Notice how easy it was to read the expectation on the last line (you probably grokked it without any explanation).
 
-Specs are grouped into suites which we describe using Jasmine's ```describe()``` function, again passing a string as a description and a function. The name/description for your suite is typically that of the component or module you're testing.
+Specs are grouped into suites which we describe using Jasmine's ```describe()``` function, again passing a string as a description and a function as we did for ```it()```. The name/description for your suite is typically that of the component or module you're testing.
 
-Jasmine will use it as the group name when it reports the results of the specs you've asked it to run. A simple suite containing our sample spec could look like:
+Jasmine will use the description as the group name when it reports the results of the specs you've asked it to run. A simple suite containing our sample spec could look like:
 
 ```javascript
 describe('Stats', function(){
@@ -8446,7 +8450,7 @@ describe('Stats', function(){
 });
 ```
 
-Suites also share a functional scope and so it's possible to declare variables and functions inside a describe block which are accessible within specs:
+Suites also share a functional scope, so it's possible to declare variables and functions inside a describe block which are accessible within specs:
 
 ```javascript
 describe('Stats', function(){
@@ -8468,9 +8472,9 @@ describe('Stats', function(){
 
 ***Note:*** Suites are executed in the order in which they are described, which can be useful to know if you would prefer to see test results for specific parts of your application reported first.
 
-Jasmine also supports **spies** - a way to mock, spy and fake behavior in our unit tests. Spies replace the function they're spying on, allowing us to simulate behavior we would like to mock (i.e test free of the actual implementation).
+Jasmine also supports **spies** - a way to mock, spy, and fake behavior in our unit tests. Spies replace the function they're spying on, allowing us to simulate behavior we would like to mock (i.e., test without using the actual implementation).
 
-In the below example, we're spying on the ```setComplete``` method of a dummy Todo function to test that arguments can be passed to it as expected.
+In the example below, we're spying on the ```setComplete``` method of a dummy Todo function to test that arguments can be passed to it as expected.
 
 ```javascript
 var Todo = function(){
@@ -8499,10 +8503,10 @@ describe('a simple spy', function(){
 
 What you're more likely to use spies for is testing [asynchronous](http://en.wikipedia.org/wiki/Asynchronous_communication) behavior in your application such as AJAX requests. Jasmine supports:
 
-* Writing tests which can mock AJAX requests using spies. This allows us to test code which runs before an AJAX request and right after. It's also possible to mock/fake responses the server can return and the benefit of this type of testing is that it's faster as no real calls are being made to a server
+* Writing tests which can mock AJAX requests using spies. This allows us to test both the code that initiates the AJAX request and the code executed upon its completion. It's also possible to mock/fake the server responses. The benefit of this type of testing is that it's faster as no real calls are being made to a server.
 * Asynchronous tests which don't rely on spies
 
-For the first kind of test, it's possible to both fake an AJAX request and verify that the request was both calling the correct URL and executed a callback where one was provided.
+This example of the first kind of test shows how to fake an AJAX request and verify that the request was both calling the correct URL and executed a callback where one was provided.
 
 ```javascript
 it('the callback should be executed on success', function () {
@@ -8561,11 +8565,11 @@ function getTodo(id, callback) {
 }
 ```
 
-***Note:*** It's useful to remember that when making real requests to a web server in your unit tests, this has the potential to massively slow down the speed at which tests run (due to many factors including server latency). As this also introduces an external dependency that can (and should) be minimized in your unit testing, it is strongly recommended that you opt for spies to remove the need for a web server to be used here.
+***Note:*** It's useful to remember that when making real requests to a web server in your unit tests, this has the potential to massively slow down the speed at which tests run (due to many factors including server latency). As this also introduces an external dependency that can (and should) be minimized in your unit testing, it is strongly recommended that you opt for spies to remove the dependency on a web server.
 
-## beforeEach and afterEach()
+## beforeEach() and afterEach()
 
-Jasmine also supports specifying code that can be run before each (```beforeEach()```) and after each (```afterEach```) test. This is useful for enforcing consistent conditions (such as resetting variables that may be required by specs). In the following example, ```beforeEach()``` is used to create a new sample Todo model specs can use for testing attributes.
+Jasmine also supports specifying code that can be run before each (```beforeEach()```) and after each (```afterEach()```) test. This is useful for enforcing consistent conditions (such as resetting variables that may be required by specs). In the following example, ```beforeEach()``` is used to create a new sample Todo model which specs can use for testing attributes.
 
 ```javascript
 beforeEach(function(){
@@ -8584,50 +8588,51 @@ Each nested ```describe()``` in your tests can have their own ```beforeEach()```
 
 ## Shared scope
 
-In the previous section you may have noticed that we initially declared a variable ```this.todo``` in our ```beforeEach()``` call and were then able to continue using this in ```afterEach()```. This is thanks to a powerful feature of Jasmine known as shared  functional scope. Shared scope allows ```this``` properties to be common to all blocks (including ```runs()```), but not declared variables (i.e ```var```s).
+In the previous section you may have noticed that we initially declared a variable ```this.todo``` in our ```beforeEach()``` call and were then able to continue using this in ```afterEach()```. This is thanks to a powerful feature of Jasmine known as shared functional scope. Shared scope allows ```this``` properties to be common to all blocks (including ```runs()```), but not declared variables (i.e., ```var```s).
 
 
-## Getting setup
+## Getting set up
 
-Now that we've reviewed some fundamentals, let's go through downloading Jasmine and getting everything setup to write tests.
+Now that we've reviewed some fundamentals, let's go through downloading Jasmine and getting everything set up to write tests.
 
 A standalone release of Jasmine can be [downloaded](https://github.com/pivotal/jasmine/downloads) from the official release page.
 
-You'll need a file called SpecRunner.html in addition to the release. It can be downloaded from https://github.com/pivotal/jasmine/tree/master/lib/jasmine-core/example or as part of a download of the complete Jasmine [repo](https://github.com/pivotal/jasmine/zipball/master).Alternatively, you can ```git clone``` the main Jasmine repository from https://github.com/pivotal/jasmine.git.
+You'll need a file called SpecRunner.html in addition to the release. It can be downloaded from https://github.com/pivotal/jasmine/tree/master/lib/jasmine-core/example or as part of a download of the complete Jasmine [repo](https://github.com/pivotal/jasmine/zipball/master). Alternatively, you can ```git clone``` the main Jasmine repository from https://github.com/pivotal/jasmine.git.
 
-Let's review [SpecRunner.html](https://github.com/pivotal/jasmine/blob/master/lib/jasmine-core/example/SpecRunner.html):
+Let's review [SpecRunner.html.jst](https://github.com/pivotal/jasmine/blob/master/lib/templates/SpecRunner.html.jst):
 
 It first includes both Jasmine and the necessary CSS required for reporting:
 
+    <link rel="stylesheet" type="text/css" href="lib/jasmine-<%= jasmineVersion %>/jasmine.css">
+    <script type="text/javascript" src="lib/jasmine-<%= jasmineVersion %>/jasmine.js"></script>
+    <script type="text/javascript" src="lib/jasmine-<%= jasmineVersion %>/jasmine-html.js"></script>
+    <script type="text/javascript" src="lib/jasmine-<%= jasmineVersion %>/boot.js"></script>
 
-	<link rel="stylesheet" type="text/css" href="lib/jasmine-1.1.0.rc1/jasmine.css"/>
-	<script type="text/javascript" src="lib/jasmine-1.1.0.rc1/jasmine.js"></script>
-	<script type="text/javascript" src="lib/jasmine-1.1.0.rc1/jasmine-html.js"></script>
+Next come the sources being tested:
 
+    <!-- include source files here... -->
+    <script type="text/javascript" src="src/Player.js"></script>
+    <script type="text/javascript" src="src/Song.js"></script>
 
-Next, some sample tests are included:
+Finally, some sample tests are included:
 
-
-	<script type="text/javascript" src="spec/SpecHelper.js"></script>
-	<script type="text/javascript" src="spec/PlayerSpec.js"></script>
-
-
-And finally the sources being tested:
-
-
-	<script type="text/javascript" src="src/Player.js"></script>
-	<script type="text/javascript" src="src/Song.js"></script>
+    <!-- include spec files here... -->
+    <script type="text/javascript" src="spec/SpecHelper.js"></script>
+    <script type="text/javascript" src="spec/PlayerSpec.js"></script>
 
 
 ***Note:*** Below this section of SpecRunner is code responsible for running the actual tests. Given that we won't be covering modifying this code, I'm going to skip reviewing it. I do however encourage you to take a look through [PlayerSpec.js](https://github.com/pivotal/jasmine/blob/master/lib/jasmine-core/example/spec/PlayerSpec.js) and [SpecHelper.js](https://github.com/pivotal/jasmine/blob/master/lib/jasmine-core/example/spec/SpecHelper.js). They're a useful basic example to go through how a minimal set of tests might work.
 
+Also note that for the purposes of introduction, some of the examples in this section will be testing aspects of Backbone.js itself, just to give you a feel for how Jasmine works. You generally will not need to write testing ensuring a framework is working as expected.
+
+
 ## TDD With Backbone
 
-When developing applications with Backbone, it can be necessary to test both individual modules of code as well as modules, views, collections and routers. Taking a TDD approach to testing, let's review some specs for testing these Backbone components using the popular Backbone [Todo](https://github.com/addyosmani/todomvc/tree/master/todo-example/backbone) application. For this section we will be using a modified version of Larry Myers Backbone Koans project, which can be found in the `practicals\jasmine-koans` folder.
+When developing applications with Backbone, it can be necessary to test both individual modules of code as well as models, views, collections, and routers. Taking a TDD approach to testing, let's review some specs for testing these Backbone components using the popular Backbone [Todo](https://github.com/addyosmani/todomvc/tree/master/todo-example/backbone) application. For this section we will be using a modified version of Larry Myers Backbone Koans project, which can be found in the `practicals/jasmine-koans` folder.
 
 ## Models
 
-The complexity of Backbone models can vary greatly depending on what your application is trying to achieve. In the following example, we're going to test default values, attributes, state changes and validation rules.
+The complexity of Backbone models can vary greatly depending on what your application is trying to achieve. In the following example, we're going to test default values, attributes, state changes, and validation rules.
 
 First, we begin our suite for model testing using ```describe()```:
 
@@ -8635,9 +8640,9 @@ First, we begin our suite for model testing using ```describe()```:
 describe('Tests for Todo', function() {
 ```
 
-Models should ideally have default values for attributes. This helps ensure that when creating instances without a value set for any specific attribute, a default one (e.g '') is used instead. The idea here is to allow your application to interact with models without any unexpected behavior.
+Models should ideally have default values for attributes. This helps ensure that when creating instances without a value set for any specific attribute, a default one (e.g., an empty string) is used instead. The idea here is to allow your application to interact with models without any unexpected behavior.
 
-In the following spec, we create a new Todo without any attributes passed then check to find out what the value of the ```text``` attribute is. As no value has been set, we expect a default value of ```''``` to be returned.
+In the following spec, we create a new Todo without any attributes passed then check to find out what the value of the ```text``` attribute is. As no value has been set, we expect a default value of `''` to be returned.
 
 ```javascript
 it('Can be created with default values for its attributes.', function() {
@@ -8646,10 +8651,9 @@ it('Can be created with default values for its attributes.', function() {
 });
 ```
 
-If testing this spec before your models have been written, you'll incur a failing test, as expected. What's required for the spec to pass is a default value for the attribute ```text```. We can implement this default value with some other useful defaults (which we'll be using shortly) in our Todo model as follows:
+If testing this spec before your models have been written, you'll incur a failing test, as expected. What's required for the spec to pass is a default value for the attribute ```text```. We can set this and some other useful defaults (which we'll be using shortly) in our Todo model as follows:
 
 ```javascript
-
 window.Todo = Backbone.Model.extend({
 
     defaults: {
@@ -8657,30 +8661,29 @@ window.Todo = Backbone.Model.extend({
       done:  false,
       order: 0
     }
-
 ```
 
-Next, it is common to include validation logic in your models to ensure both the input passed from users (and other modules) in the application are 'valid'. 
+Next, it is common to include validation logic in your models to ensure that input passed from users or other modules in the application are valid.
 
 A Todo app may wish to validate the text input supplied in case it contains rude words. Similarly if we're storing the ```done``` state of a Todo item using booleans, we need to validate that truthy/falsy values are passed and not just any arbitrary string.
 
-In the following spec, we take advantage of the fact that validations which fail model.validate() trigger an "error" event. This allows us to test if validations are correctly failing when invalid input is supplied.
+In the following spec, we take advantage of the fact that validations which fail model.validate() trigger an "invalid" event. This allows us to test if validations are correctly failing when invalid input is supplied.
 
-We create an errorCallback spy using Jasmine's built in ```createSpy()``` method which allows us to spy on the error event as follows:
+We create an errorCallback spy using Jasmine's built in ```createSpy()``` method which allows us to spy on the invalid event as follows:
 
 ```javascript
-it('Can contain custom validation rules, and will trigger an error event on failed validation.', function() {
+it('Can contain custom validation rules, and will trigger an invalid event on failed validation.', function() {
 
-    var errorCallback = jasmine.createSpy('-error event callback-');
+    var errorCallback = jasmine.createSpy('-invalid event callback-');
 
     var todo = new Todo();
 
-    todo.on('error', errorCallback);
+    todo.on('invalid', errorCallback);
 
     // What would you need to set on the todo properties to
     // cause validation to fail?
 
-    todo.set({done:'a non-integer value'});
+    todo.set({done:'a non-boolean value'});
 
     var errorArgs = errorCallback.mostRecentCall.args;
 
@@ -8691,7 +8694,7 @@ it('Can contain custom validation rules, and will trigger an error event on fail
 
 ```
 
-The code to make the above failing test support validation is relatively simple. In our model, we override the validate() method (as recommended in the Backbone docs), checking to make sure a model both has a 'done' property and is a valid boolean before allowing it to pass.
+The code to make the above failing test support validation is relatively simple. In our model, we override the validate() method (as recommended in the Backbone docs), checking to make sure a model both has a 'done' property and that its value is a valid boolean before allowing it to pass.
 
 ```javascript
 validate: function(attrs) {
@@ -8704,11 +8707,6 @@ validate: function(attrs) {
 If you would like to review the final code for our Todo model, you can find it below:
 
 ```javascript
-var NAUGHTY_WORDS = /crap|poop|hell|frogs/gi;
-
-function sanitize(str) {
-    return str.replace(NAUGHTY_WORDS, 'rainbows');
-}
 
 window.Todo = Backbone.Model.extend({
 
@@ -8719,7 +8717,7 @@ window.Todo = Backbone.Model.extend({
     },
 
     initialize: function() {
-        this.set({text: sanitize(this.get('text'))}, {silent: true});
+        this.set({text: this.get('text')}, {silent: true});
     },
 
     validate: function(attrs) {
@@ -8738,7 +8736,7 @@ window.Todo = Backbone.Model.extend({
 
 ## Collections
 
-We now need to define specs to tests a Backbone collection of Todo models (a TodoList). Collections are responsible for a number of list tasks including managing order and filtering.
+We now need to define specs to test a Backbone collection of Todo models (a TodoList). Collections are responsible for a number of list tasks including managing order and filtering.
 
 A few specific specs that come to mind when working with collections are:
 
@@ -8746,9 +8744,9 @@ A few specific specs that come to mind when working with collections are:
 * Attribute testing to make sure attributes such as the base URL of the collection are values we expect
 * Purposefully adding items with a status of ```done:true``` and checking against how many items the collection thinks have been completed vs. those that are remaining
 
-In this section we're going to cover the first two of these with the third left as an extended exercise I recommend trying out.
+In this section we're going to cover the first two of these with the third left as an extended exercise you can try on your own.
 
-Testing Todo models can be added to a collection as objects or arrays is relatively trivial. First, we initialize a new TodoList collection and check to make sure its length (i.e the number of Todo models it contains) is 0. Next, we add new Todos, both as objects and arrays, checking the length property of the collection at each stage to ensure the overall count is what we expect:
+Testing that Todo models can be added to a collection as objects or arrays is relatively trivial. First, we initialize a new TodoList collection and check to make sure its length (i.e., the number of Todo models it contains) is 0. Next, we add new Todos, both as objects and arrays, checking the length property of the collection at each stage to ensure the overall count is what we expect:
 
 ```javascript
 describe('Tests for TodoList', function() {
@@ -8774,7 +8772,7 @@ describe('Tests for TodoList', function() {
 ...
 ```
 
-Similar to model attributes, it's also quite straight-forward to test attributes in collections. Here we have a spec that ensures the collection.url (i.e the url reference to the collection's location on the server) is what we expect it to be:
+Similar to model attributes, it's also quite straight-forward to test attributes in collections. Here we have a spec that ensures the collection url (i.e., the url reference to the collection's location on the server) is what we expect it to be:
 
 ```javascript
 it('Can have a url property to define the basic url structure for all contained models.', function() {
@@ -8786,7 +8784,7 @@ it('Can have a url property to define the basic url structure for all contained 
 
 ```
 
-For the third spec, it's useful to remember that the implementation for our collection will have methods for filtering how many Todo items are done and how many are remaining - we can call these ```done()``` and ```remaining()```. Consider writing a spec which creates a new collection and adds one new model that has a preset ```done``` state of ```true``` and two others that have the default ```done``` state of ```false```. Testing the length of what's returned using ```done()``` and ```remaining()``` should allow us to know whether the state management in our application is working or needs a little tweaking.
+For the third spec (which you will write as an exercise), note that the implementation for our collection will have methods for filtering how many Todo items are done and how many are remaining - we'll call these ```done()``` and ```remaining()```. Consider writing a spec which creates a new collection and adds one new model that has a preset ```done``` state of ```true``` and two others that have the default ```done``` state of ```false```. Testing the length of what's returned using ```done()``` and ```remaining()``` will tell us whether the state management in our application is working or needs a little tweaking.
 
 The final implementation for our TodoList collection can be found below:
 
@@ -8828,13 +8826,13 @@ Before we take a look at testing Backbone views, let's briefly review a jQuery p
 
 **The Jasmine jQuery Plugin**
 
-As we know our Todo application will be using jQuery for DOM manipulation, there's a useful jQuery plugin called [jasmine-jquery](https://github.com/velesin/jasmine-jquery) we can use to help simplify BDD testing rendered elements that our views may produce.
+As we know our Todo application will be using jQuery for DOM manipulation, there's a useful jQuery plugin called [jasmine-jquery](https://github.com/velesin/jasmine-jquery) we can use to help simplify BDD testing of the rendering performed by our views.
 
-The plugin provides a number of additional Jasmine [matchers](https://github.com/pivotal/jasmine/wiki/Matchers) to help test jQuery wrapped sets such as:
+The plugin provides a number of additional Jasmine [matchers](https://github.com/pivotal/jasmine/wiki/Matchers) to help test jQuery-wrapped sets such as:
 
-* ```toBe(jQuerySelector)``` e.g ```expect($('<div id="some-id"></div>')).toBe('div#some-id')```
-* ```toBeChecked()``` e.g ```expect($('<input type="checkbox" checked="checked"/>')).toBeChecked()```
-* ```toBeSelected()``` e.g ```expect($('<option selected="selected"></option>')).toBeSelected()```
+* ```toBe(jQuerySelector)``` e.g., ```expect($('<div id="some-id"></div>')).toBe('div#some-id')```
+* ```toBeChecked()``` e.g., ```expect($('<input type="checkbox" checked="checked"/>')).toBeChecked()```
+* ```toBeSelected()``` e.g., ```expect($('<option selected="selected"></option>')).toBeSelected()```
 
 and [many others](https://github.com/velesin/jasmine-jquery). The complete list of matchers supported can be found on the project homepage. It's useful to know that similar to the standard Jasmine matchers, the custom matchers above can be inverted using the .not prefix (i.e ```expect(x).not.toBe(y)```):
 
@@ -8842,14 +8840,14 @@ and [many others](https://github.com/velesin/jasmine-jquery). The complete list 
 expect($('<div>I am an example</div>')).not.toHaveText(/other/)
 ```
 
-jasmine-jquery also includes a fixtures model, allowing us to load in arbitrary HTML content we may wish to use in our tests. Fixtures can be used as follows:
+jasmine-jquery also includes a fixtures module that can be used to load arbitrary HTML content we wish to use in our tests. Fixtures can be used as follows:
 
 Include some HTML in an external fixtures file:
 
 some.fixture.html:
 ```<div id="sample-fixture">some HTML content</div>```
 
-Next, inside our actual test we would load it as follows:
+Then inside our actual test we would load it as follows:
 
 ```javascript
 loadFixtures('some.fixture.html')
@@ -8857,9 +8855,9 @@ $('some-fixture').myTestedPlugin();
 expect($('#some-fixture')).to<the rest of your matcher would go here>
 ```
 
-The jasmine-jquery plugin is by default setup to load fixtures from a specific directory: spec/javascripts/fixtures. If you wish to configure this path you can do so by initially setting ```jasmine.getFixtures().fixturesPath = 'your custom path'```.
+The jasmine-jquery plugin loads fixtures from a directory named spec/javascripts/fixtures by default. If you wish to configure this path you can do so by initially setting ```jasmine.getFixtures().fixturesPath = 'your custom path'```.
 
-Finally, jasmine-jquery includes support for spying on jQuery events without the need for any extra plumbing work. This can be done using the ```spyOnEvent()``` and ```assert(eventName).toHaveBeenTriggered(selector)``` functions. An example of usage may look as follows:
+Finally, jasmine-jquery includes support for spying on jQuery events without the need for any extra plumbing work. This can be done using the ```spyOnEvent()``` and ```assert(eventName).toHaveBeenTriggered(selector)``` functions. For example:
 
 ```javascript
 spyOnEvent($('#el'), 'click');
@@ -8867,15 +8865,15 @@ $('#el').click();
 expect('click').toHaveBeenTriggeredOn($('#el'));
 ```
 
-**View testing**
+### View testing
 
-In this section we will review three dimensions to writing specs for Backbone Views: initial setup, view rendering and finally templating. The latter two of these are the most commonly tested, however we'll review shortly why writing specs for the initialization of your views can also be of benefit.
+In this section we will review the three dimensions of specs writing for Backbone Views: initial setup, view rendering, and templating. The latter two of these are the most commonly tested, however we'll see shortly why writing specs for the initialization of your views can also be of benefit.
 
-## Initial setup
+#### Initial setup
 
-At their most basic, specs for Backbone views should validate that they are being correctly tied to specific DOM elements and are backed by valid data models. The reason to consider doing this is that failures to such specs can trip up more complex tests later on and they're fairly simple to write, given the overall value offered.
+At their most basic, specs for Backbone views should validate that they are being correctly tied to specific DOM elements and are backed by valid data models. The reason to consider doing this is that these specs can identify issues which will trip up more complex tests later on. Also, they're fairly simple to write given the overall value offered.
 
-To help ensure a consistent testing setup for our specs, we use ```beforeEach()``` to append both an empty ```UL``` (#todoList) to the DOM and initialize a new instance of a TodoView using an empty Todo model. ```afterEach()``` is used to remove the previous #todoList  ```UL``` as well as the previous instance of the view.
+To help ensure a consistent testing setup for our specs, we use ```beforeEach()``` to append both an empty ```<ul>``` (#todoList) to the DOM and initialize a new instance of a TodoView using an empty Todo model. ```afterEach()``` is used to remove the previous #todoList  ```<ul>``` as well as the previous instance of the view.
 
 ```javascript
 describe('Tests for TodoView', function() {
@@ -8913,7 +8911,7 @@ var todoView = Backbone.View.extend({
 });
 ```
 
-If instead of testing against the ```tagName``` you would prefer to use a className instead, we can take advantage of jasmine-jquery's ```toHaveClass()``` matcher to cater for this.
+If instead of testing against the ```tagName``` you would prefer to use a className instead, we can take advantage of jasmine-jquery's ```toHaveClass()``` matcher:
 
 ```
 it('Should have a class of "todos"'), function(){
@@ -8921,9 +8919,9 @@ it('Should have a class of "todos"'), function(){
 });
 ```
 
-The ```toHaveClass()``` matcher operates on jQuery objects and if the plugin hadn't been used, an exception would have been incurred (it is of course also possible to test for the className by accessing el.className if not opting to use jasmine-jquery).
+The ```toHaveClass()``` matcher operates on jQuery objects and if the plugin hadn't been used, an exception would have been thrown. It is of course also possible to test for the className by accessing el.className if you don't use jasmine-jquery.
 
-You may have noticed that in ```beforeEach()```, we passed our view an initial (albeit unfilled) Todo model. Views should be backed by a model instance which provides data. As this is quite important to our view's ability to function, we can write a spec to ensure a model is both defined (using the ```toBeDefined()``` matcher) and then test attributes of the model to ensure defaults both exist and are the value we expect them to be.
+You may have noticed that in ```beforeEach()```, we passed our view an initial (albeit unfilled) Todo model. Views should be backed by a model instance which provides data. As this is quite important to our view's ability to function, we can write a spec to ensure a model is defined (using the ```toBeDefined()``` matcher) and then test attributes of the model to ensure defaults both exist and are the values we expect them to be.
 
 ```javascript
 it('Is backed by a model instance, which provides the data.', function() {
@@ -8935,16 +8933,16 @@ it('Is backed by a model instance, which provides the data.', function() {
 });
 ```
 
-## View rendering
+#### View rendering
 
 
 Next we're going to take a look at writing specs for view rendering. Specifically, we want to test that our TodoView elements are actually rendering as expected.
 
-In smaller applications, those new to BDD might argue that visual confirmation of view rendering could replace unit testing of views. The reality is that when dealing with applications that might grow to multiple-views, it often makes sense to automate this process as much as possible from the get-go. There are also aspects of rendering that require verification beyond what is visually presented on-screen (which we'll see very shortly).
+In smaller applications, those new to BDD might argue that visual confirmation of view rendering could replace unit testing of views. The reality is that when dealing with applications that might grow to a large number of views, it makes sense to automate this process as much as possible from the get-go. There are also aspects of rendering that require verification beyond what is visually presented on-screen (which we'll see very shortly).
 
 We're going to begin testing views by writing two specs. The first spec will check that the view's ```render()``` method is correctly returning the view instance, which is necessary for chaining. Our second spec will check that the HTML produced is exactly what we expect based on the properties of the model instance that's been associated with our TodoView.
 
-Unlike some of the previous specs we've covered, this section will make greater use of ```beforeEach()``` to both demonstrate how to use nested suites and also ensure a consistent set of conditions for our specs. In our first view spec for TodoView, we're simply going to create a sample model (based on Todo) and instantiate a TodoView which associates it with the model.
+Unlike some of the previous specs we've covered, this section will make greater use of ```beforeEach()``` to both demonstrate how to use nested suites and also ensure a consistent set of conditions for our specs. In our first example we're simply going to create a sample model (based on Todo) and instantiate a TodoView with it.
 
 ```javascript
 describe('TodoView', function() {
@@ -8979,7 +8977,7 @@ describe('TodoView', function() {
 ```
 
 
-Once these specs are run, only the second one ('produces the correct HTML') fails. Our first spec ('returns the view object'), which is testing that the TodoView instance is returned from ```render()```, only passed as this is Backbone's default behavior. We haven't yet overwritten the ```render()``` method with our own version.
+When these specs are run, only the second one ('produces the correct HTML') fails. Our first spec ('returns the view object'), which is testing that the TodoView instance is returned from ```render()```, passes since this is Backbone's default behavior and we haven't overwritten the ```render()``` method with our own version yet.
 
 **Note:** For the purposes of maintaining readability, all template examples in this section will use a minimal version of the following Todo view template. As it's relatively trivial to expand this, please feel free to refer to this sample if needed:
 
@@ -9014,7 +9012,9 @@ render: function() {
 }
 ```
 
-The above specifies an inline string template and replaces fields found in the template within the "<% %>" blocks with their corresponding values from the associated model. As we're now also returning the TodoView instance from the method, the first spec will also pass. It's worth noting that there are serious drawbacks to using HTML strings in your specs to test against like this. Even minor changes to your template (a simple tab or whitespace) would cause your spec to fail, despite the rendered output being the same. It's also more time consuming to maintain as most templates in real-world applications are significantly more complex. A better option for testing rendered output is using jQuery to both select and inspect values.
+The above specifies an inline string template and replaces fields found in the template within the "<% %>" blocks with their corresponding values from the associated model. As we're also returning the TodoView instance from the method, the first spec will still pass.
+
+It's worth noting that there are serious drawbacks to using HTML strings in your specs to test against as we did in the above example. Even minor changes to your template (a simple tab or whitespace) would cause your spec to fail, despite the rendered output being the same. It's also more time consuming to maintain as most templates in real-world applications are significantly more complex. A better option for testing rendered output is using jQuery to both select and inspect values.
 
 With this in mind, let's re-write the specs, this time using some of the custom matchers offered by jasmine-jquery:
 
@@ -9035,7 +9035,7 @@ describe('Template', function() {
 ```
 
 
-It would be impossible to discuss unit testing without mentioning fixtures. Fixtures typically contain test data (e.g HTML) that is loaded in when needed (either locally or from an external file) for unit testing. So far we've been establishing jQuery expectations based on the view's el property. This works for a number of cases, however, there are instances where it may be necessary to render markup into the document. The most optimal way to handle this within specs is through using fixtures (another feature brought to us by the jasmine-jquery plugin).
+It would be impossible to discuss unit testing without mentioning fixtures. Fixtures typically contain test data (e.g., HTML) that is loaded in when needed (either locally or from an external file) for unit testing. So far we've been establishing jQuery expectations based on the view's el property. This works for a number of cases, however, there are instances where it may be necessary to render markup into the document. The most optimal way to handle this within specs is through using fixtures (another feature brought to us by the jasmine-jquery plugin).
 
 Re-writing the last spec to use fixtures would look as follows:
 
@@ -9069,12 +9069,12 @@ describe('TodoView', function() {
 What we're now doing in the above spec is appending the rendered todo item into the fixture. We then set expectations against the fixture, which may be something desirable when a view is setup against an element which already exists in the DOM. It would be necessary to provide both the fixture and test the ```el``` property correctly picking up the element expected when the view is instantiated.
 
 
-## Rendering with a templating system
+#### Rendering with a templating system
 
 
-JavaScript templating systems (such as Handlebars, Mustache and even Underscore's own Micro-templating) support conditional logic in template strings. What this effectively means is that we can add if/else/ternery expressions inline which can then be evaluated as needed, allowing us to build even more powerful templates.
+JavaScript templating systems (such as Handlebars, Mustache, and Underscore's own Micro-templating) support conditional logic in template strings. What this effectively means is that we can add if/else/ternery expressions inline which can then be evaluated as needed, allowing us to build even more powerful templates.
 
-In our case, when a user sets a Todo item to be complete (done), we may wish to provide them with visual feedback (such as a striked line through the text) to differentiate the item from those that are remaining. This can be done by attaching a new class to the item. Let's begin by writing a test we would ideally like to work:
+In our case, when a user marks a Todo item as complete (done), we may wish to provide them with visual feedback (such as a striked line through the text) to differentiate the item from those that are remaining. This can be done by attaching a new class to the item. Let's begin by writing a test:
 
 
 ```javascript
@@ -9117,7 +9117,7 @@ render: function() {
 ```
 
 
-This can however get unwieldily fairly quickly. As the logic in our templates increases, so does the complexity involved. This is where templates libraries can help. As mentioned earlier, there are a number of popular options available, but for the purposes of this chapter we're going to stick to using Underscore's built-in Microtemplating. Whilst there are more advanced options you're free to explore, the benefit of this is that no additional files are required and we can easily change the existing Jasmine specs without too much adjustment.
+However, this can get unwieldily fairly quickly. As the logic in our templates increases, so does the complexity involved. This is where templates libraries can help. As mentioned earlier, there are a number of popular options available, but for the purposes of this chapter we're going to stick to using Underscore's built-in Microtemplating. While there are more advanced options you're free to explore, the benefit of this is that no additional files are required and we can easily change the existing Jasmine specs without too much adjustment.
 
 The TodoView object modified to use Underscore templating would look as follows:
 
@@ -9141,9 +9141,9 @@ var TodoView = Backbone.View.extend({
 ```
 
 
-Above, the initialize() method compiles a supplied Underscore template (using the _.template() function) in the instantiation. A more common way of referencing templates is placing them in a script tag using a custom script type (e.g type="text/template"). As this isn't a script type any browser understands, it's simply ignored, however referencing the script by an id attribute allows the template to be kept separate to other parts of the page which wish to use it. In real world applications, it's preferable to either do this or load in templates stored in external files for testing.
+Above, the initialize() method compiles a supplied Underscore template (using the _.template() function) in the instantiation. A more common way of referencing templates is placing them in a script tag using a custom script type (e.g., type="text/template"). As this isn't a script type any browser understands, it's simply ignored, however referencing the script by an id attribute allows the template to be kept separate to other parts of the page which wish to use it. In real world applications, it's preferable to either do this or load in templates stored in external files for testing.
 
-For testing purposes, we're going to continue using the string injection approach to keep things simple. There is however a useful trick that can be applied to automatically create or extend templates in the Jasmine scope for each test. By creating a new directory (say, 'templates') in the 'spec' folder and adding a new script file with the following contents, to jasmine.yml or SpecRunner.html, we can add a todo property which contains the Underscore template we wish to use:
+For testing purposes, we're going to continue using the string injection approach to keep things simple. There is however a useful trick that can be applied to automatically create or extend templates in the Jasmine scope for each test. By creating a new directory (say, 'templates') in the 'spec' folder and including a new script file with the following contents into jasmine.yml or SpecRunner.html, we can add a todo property which contains the Underscore template we wish to use:
 
 ```javascript
 beforeEach(function() {
@@ -9187,18 +9187,18 @@ beforeEach(function() {
 });
 ```
 
-This will now also pass without any issues. Remember that jasmine-jquery also supports loading external fixtures into your specs easily using its build in ```loadFixtures()``` and ```readFixtures()``` methods. For more information, consider reading the official jasmine-jquery [docs](https://github.com/velesin/jasmine-jquery).
+This will now also pass without any issues. Remember that jasmine-jquery also supports loading external fixtures into your specs easily using its built in ```loadFixtures()``` and ```readFixtures()``` methods. For more information, see the official jasmine-jquery [docs](https://github.com/velesin/jasmine-jquery).
 
 
 ## Conclusions
 
-We have now covered how to write Jasmine tests for models, views and collections with Backbone.js. Whilst testing routing can at times be desirable, some developers feel it can be more optimal to leave this to third-party tools such as Selenium, so do keep this in mind.
+We have now covered how to write Jasmine tests for Backbone.js models, collections, and views. While testing routing can at times be desirable, some developers feel it can be more optimal to leave this to third-party tools such as Selenium, so do keep this in mind.
 
 James Newbery was kind enough to help me with writing the Views section above and his articles on [Testing Backbone Apps With SinonJS](http://tinnedfruit.com/2011/04/26/testing-backbone-apps-with-jasmine-sinon-3.html) were of great inspiration (you'll actually find some Handlebars examples of the view specs in part 3 of his article). If you would like to learn more about writing spies and mocks for Backbone using [SinonJS](http://sinonjs.org) as well as how to test Backbone routers, do consider reading his series.
 
 ## Exercise
 
-As an exercise, I recommend now trying the Jasmine Koans in `practicals\jasmine-joans` and trying to fix some of the purposefully failing tests it has to offer. This is an excellent way of not just learning how Jasmine specs and suites work, but working through the examples (without peeking back) will also put your Backbone skills to test too.
+As an exercise, I recommend now trying the Jasmine Koans in `practicals\jasmine-koans` and trying to fix some of the purposefully failing tests it has to offer. This is an excellent way of not just learning how Jasmine specs and suites work, but working through the examples (without peeking back) will also put your Backbone skills to the test too.
 
 
 ## Further reading
@@ -9224,13 +9224,13 @@ Luckily, getting QUnit setup is a fairly straight-forward process that will take
 
 We first setup a testing environment composed of three files:
 
-* A HTML **structure** for displaying test results,
-* The **qunit.js** file composing the testing framework and,
-* The **qunit.css** file for styling test results.
+* An HTML **structure** for displaying test results
+* The **qunit.js** file composing the testing framework
+* The **qunit.css** file for styling test results
 
 The latter two of these can be downloaded from the [QUnit website](http://qunitjs.com).
 
-If you would prefer, you can use a hosted version of the QUnit source files for testing purposes. The hosted URLs can be found at [http://github.com/jquery/qunit/raw/master/qunit/].
+If you would prefer, you can use a hosted version of the QUnit source files for testing purposes. The hosted URLs can be found at <http://github.com/jquery/qunit/raw/master/qunit/>.
 
 #### Sample HTML with QUnit-compatible markup:
 
@@ -9282,7 +9282,7 @@ If however any tests fail, the test gets highlighted (and the qunit-banner at th
 
 ## Assertions
 
-QUnit supports a number of basic **assertions**, which are used in testing to verify that the result being returned by our code is what we expect. If an assertion fails, we know that a bug exists.Similar to Jasmine, QUnit can be used to easily test for regressions. Specifically, when a bug is found one can write an assertion to test the existence of the bug, write a patch and then commit both. If subsequent changes to the code break the test you'll know what was responsible and be able to address it more easily.
+QUnit supports a number of basic **assertions**, which are used in tests to verify that the result being returned by our code is what we expect. If an assertion fails, we know that a bug exists. Similar to Jasmine, QUnit can be used to easily test for regressions. Specifically, when a bug is found one can write an assertion to test the existence of the bug, write a patch, and then commit both. If subsequent changes to the code break the test you'll know what was responsible and be able to address it more easily.
 
 Some of the supported QUnit assertions we're going to look at first are:
 
@@ -9293,9 +9293,9 @@ Some of the supported QUnit assertions we're going to look at first are:
 *   `strictEqual( actual, expected, message)` - offers a much stricter comparison than `equal()` and is considered the preferred method of checking equality as it avoids stumbling on subtle coercion bugs
 *   `deepEqual( actual, expected, message )` - similar to `strictEqual`, comparing the contents (with `===`) of the given objects, arrays and primitives.
 
-Creating new test cases with QUnit is relatively straight-forward and can be done using ```test()```, which constructs a test where the first argument is the ```name``` of the test to be displayed in our results and the second is a ```callback``` function containing all of our assertions. This is called as soon as QUnit is running.
+#### Basic test case using test( name, callback )
 
-#### Basic test case using test( name, callback ):
+Creating new test cases with QUnit is relatively straight-forward and can be done using ```test()```, which constructs a test where the first argument is the ```name``` of the test to be displayed in our results and the second is a ```callback``` function containing all of our assertions. This is called as soon as QUnit is running.
 
 ```javascript
 var myString = 'Hello Backbone.js';
@@ -9313,11 +9313,11 @@ test( 'Our first QUnit test - asserting results', function(){
 
 What we're doing in the above is defining a variable with a specific value and then testing to ensure the value was what we expected it to be. This was done using the comparison assertion, ```equal()```, which expects its first argument to be a value being tested and the second argument to be the expected value. We also used ```ok()```, which allows us to easily test against functions or variables that evaluate to booleans.
 
-Note: Optionally in our test case, we could have passed an 'expected' value to ```test()``` defining the number of assertions we expect to run. This takes the form: `test( name, [expected], test );` or by manually settings the expectation at the top of the test function, like so: `expect( 1 )`. I recommend you to make it a habit and always define how many assertions you expect. More on this later.
+Note: Optionally in our test case, we could have passed an 'expected' value to ```test()``` defining the number of assertions we expect to run. This takes the form: `test( name, [expected], test );` or by manually settings the expectation at the top of the test function, like so: `expect( 1 )`. I recommend you make a habit of always defining how many assertions you expect. More on this later.
+
+#### Comparing the actual output of a function against the expected output
 
 As testing a simple static variable is fairly trivial, we can take this further to test actual functions. In the following example we test the output of a function that reverses a string to ensure that the output is correct using ```equal()``` and ```notEqual()```:
-
-#### Comparing the actual output of a function against the expected output:
 
 ```javascript
 function reverseString( str ){
@@ -9334,12 +9334,12 @@ test( 'reverseString()', function() {
 })
 ```
 
-Running these tests in the QUnit test runner (which you would see when your HTML test page was loaded) we would find that four of the assertions pass whilst the last one does not. The reason the test against `'double'` fails is because it was purposefully written incorrectly. In your own projects if a test fails to pass and your assertions are correct, you've probably just found a bug!
+Running these tests in the QUnit test runner (which you would see when your HTML test page was loaded) we would find that four of the assertions pass while the last one does not. The reason the test against `'double'` fails is because it was purposefully written incorrectly. In your own projects if a test fails to pass and your assertions are correct, you've probably just found a bug!
 
 
 ## Adding structure to assertions
 
-Housing all of our assertions in one test case can quickly become difficult to maintain, but luckily QUnit supports structuring blocks of assertions more cleanly. This can be done using ```module()``` - a method that allows us to easily group tests together. A typical approach to grouping might be keeping multiple tests testing a specific method as part of the same group (module).
+Housing all of our assertions in one test case can quickly become difficult to maintain, but luckily QUnit supports structuring blocks of assertions more cleanly. This can be done using ```module()``` - a method that allows us to easily group tests together. A typical approach to grouping might be keeping multiple tests for a specific method as part of the same group (module).
 
 #### Basic QUnit Modules:
 ```javascript
@@ -9356,7 +9356,7 @@ test( 'third test', function() {} );
 test( 'another test', function() {} );
 ```
 
-We can take this further by introducing ```setup()``` and ```teardown()``` callbacks to our modules, where ```setup()``` is run before each test whilst ```teardown()``` is run after each test.
+We can take this further by introducing ```setup()``` and ```teardown()``` callbacks to our modules, where ```setup()``` is run before each test and ```teardown()``` is run after each test.
 
 #### Using setup() and teardown() :
 ```javascript
@@ -9374,9 +9374,10 @@ test('first test', function() {
 });
 ```
 
-These callbacks can be used to define (or clear) any components we wish to instantiate for use in one or more of our tests. As we'll see shortly, this is ideal for defining new instances of views, collections, models or routers from a project that we can then reference across multiple tests.
+These callbacks can be used to define (or clear) any components we wish to instantiate for use in one or more of our tests. As we'll see shortly, this is ideal for defining new instances of views, collections, models, or routers from a project that we can then reference across multiple tests.
 
-#### Using setup() and teardown() for instantiation and clean-up:
+#### Using setup() and teardown() for instantiation and clean-up
+
 ```javascript
 // Define a simple model and collection modeling a store and
 // list of stores
@@ -9412,12 +9413,12 @@ test( 'test ordering', function() {
 
 ```
 
-Here, a list of stores is created and stored on ```setup()```. A ```teardown()``` callback is used to simply clear our a list of errors we might be storing within the window scope, but is otherwise not needed.
+Here, a list of stores is created and stored on ```setup()```. A ```teardown()``` callback is used to simply clear a list of errors we might be storing within the window scope, but is otherwise not needed.
 
 
 ## Assertion examples
 
-Before we continue any further, let's review some more examples of how QUnits various assertions can be correctly used when writing tests:
+Before we continue any further, let's review some more examples of how QUnit's various assertions can be correctly used when writing tests:
 
 ### equal - a comparison assertion. It passes if actual == expected
 
@@ -9528,9 +9529,9 @@ We can either opt to place static markup in the fixture or just insert/append an
 
 ### Fixtures example:
 
-Let us now go through a more complete example of using fixtures. One thing that most of us are used to doing in jQuery is working with lists - they're often used to define the markup for menus, grids and a number of other components. You may have used jQuery plugins before that manipulated a given list in a particular way and it can be useful to test that the final (manipulated) output of the plugin is what was expected.
+Let us now go through a more complete example of using fixtures. One thing that most of us are used to doing in jQuery is working with lists - they're often used to define the markup for menus, grids, and a number of other components. You may have used jQuery plugins before that manipulated a given list in a particular way and it can be useful to test that the final (manipulated) output of the plugin is what was expected.
 
-For the purposes of our next example, we're going to use Ben Alman's `$.enumerate()` plugin, which can prepend each item in a list by its index, optionally allowing us to set what the first number in the list is. The code snippet for the plugin can be found below, followed by an example of the output is generates:
+For the purposes of our next example, we're going to use Ben Alman's `$.enumerate()` plugin, which can prepend each item in a list by its index, optionally allowing us to set what the first number in the list is. The code snippet for the plugin can be found below, followed by an example of the output it generates:
 
 ```javascript
 $.fn.enumerate = function( start ) {
@@ -9544,7 +9545,7 @@ $.fn.enumerate = function( start ) {
 
       } else {
         // Since no `start` value was provided, function as a
-        // getter, returing the appropriate value from the first
+        // getter, returning the appropriate value from the first
         // selected element.
 
         var val = this.eq( 0 ).children( 'b' ).eq( 0 ).text();
@@ -9563,25 +9564,25 @@ $.fn.enumerate = function( start ) {
 */
 ```
 
-Let's now write some specs for the plugin. First, we define the markup for a list containing some sample items inside our ```qunit-fixture``` element:
+Let's now write some tests for the plugin. First, we define the markup for a list containing some sample items inside our ```qunit-fixture``` element:
 
 ```html
-&lt;div id=&quot;qunit-fixture&quot;&gt;
-    &lt;ul&gt;
-      &lt;li&gt;hello&lt;/li&gt;
-      &lt;li&gt;world&lt;/li&gt;
-      &lt;li&gt;i&lt;/li&gt;
-      &lt;li&gt;am&lt;/li&gt;
-      &lt;li&gt;foo&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/div&gt;
+<div id="qunit-fixture">
+    <ul>
+      <li>hello</li>
+      <li>world</li>
+      <li>i</li>
+      <li>am</li>
+      <li>foo</li>
+    </ul>
+ </div>
 ```
 
 Next, we need to think about what should be tested. `$.enumerate()` supports a few different use cases, including:
 
-* **No arguments passed** - i.e ```$(el).enumerate()```
-* **0 passed as an argument** - i.e ```$(el).enumerate(0)```
-* **1 passed as an argument** - i.e ```$(el).enumerate(1)```
+* **No arguments passed** - i.e., ```$(el).enumerate()```
+* **0 passed as an argument** - i.e., ```$(el).enumerate(0)```
+* **1 passed as an argument** - i.e., ```$(el).enumerate(1)```
 
 As the text value for each list item is of the form "n. item-text" and we only require this to test against the expected output, we can simply access the content using ```$(el).eq(index).text()``` (for more information on .eq() see [here](http://api.jquery.com/eq/)).
 
@@ -9621,7 +9622,7 @@ test( '1 passed as an argument', 3, function() {
 
 ## Asynchronous code
 
-As with Jasmine, the effort required to run synchronous tests with QUnit is fairly straight-forward. That said, what about tests that require asynchronous callbacks (such as expensive processes, Ajax requests and so on)? When we're dealing with asynchronous code, rather than letting QUnit control when the next test runs, we can inform that we need it to stop running and wait until it's okay to continue once again.
+As with Jasmine, the effort required to run synchronous tests with QUnit is fairly minimal. That said, what about tests that require asynchronous callbacks (such as expensive processes, Ajax requests, and so on)? When we're dealing with asynchronous code, rather than letting QUnit control when the next test runs, we can tell it that we need it to stop running and wait until it's okay to continue once again.
 
 Remember: running asynchronous code without any special considerations can cause incorrect assertions to appear in other tests, so we want to make sure we get it right.
 
@@ -9645,15 +9646,15 @@ test('An async test', function(){
 });
 ```
 
-A jQuery ```$.ajax()``` request is used to connect to a test resource and assert that the data returned is correct. ```deepEqual()``` is used here as it allows us to compare different data types (e.g objects, arrays) and ensures that what is returned is exactly what we're expecting. We know that our Ajax request is asynchronous and so we first call ```stop()```, run the code making the request and finally at the very end of our callback, inform QUnit that it is okay to continue running other tests.
+A jQuery ```$.ajax()``` request is used to connect to a test resource and assert that the data returned is correct. ```deepEqual()``` is used here as it allows us to compare different data types (e.g., objects, arrays) and ensures that what is returned is exactly what we're expecting. We know that our Ajax request is asynchronous and so we first call ```stop()```, then run the code making the request, and finally, at the very end of our callback, inform QUnit that it is okay to continue running other tests.
 
-Note: rather than including ```stop()```, we can simply exclude it and substitute ```test()``` with ```asyncTest()``` if we prefer. This improves readability when dealing with a mixture of asynchronous and synchronous tests in your suite. Whilst this setup should work fine for many use-cases, there is no guarantee that the callback in our ```$.ajax()``` request will actually get called. To factor this into our tests, we can use ```expect()``` once again to define how many assertions we expect to see within our test. This is a healthy safety blanket as it ensures that if a test completes with an insufficient number of assertions, we know something went wrong and fix it.
+Note: rather than including ```stop()```, we can simply exclude it and substitute ```test()``` with ```asyncTest()``` if we prefer. This improves readability when dealing with a mixture of asynchronous and synchronous tests in your suite. While this setup should work fine for many use-cases, there is no guarantee that the callback in our ```$.ajax()``` request will actually get called. To factor this into our tests, we can use ```expect()``` once again to define how many assertions we expect to see within our test. This is a healthy safety blanket as it ensures that if a test completes with an insufficient number of assertions, we know something went wrong and can fix it.
 
 # SinonJS
 
 Similar to the section on testing Backbone.js apps using the Jasmine BDD framework, we're nearly ready to take what we've learned and write a number of QUnit tests for our Todo application.
 
-Before we start though, you may have noticed that QUnit doesn't support test spies. Test spies are functions which record arguments, exceptions and return values for any of their calls. They're typically used to test callbacks and how functions may be used in the application being tested. In testing frameworks, spies can usually be either anonymous functions or wrap functions which already exist.
+Before we start though, you may have noticed that QUnit doesn't support test spies. Test spies are functions which record arguments, exceptions, and return values for any of their calls. They're typically used to test callbacks and how functions may be used in the application being tested. In testing frameworks, spies usually are anonymous functions or wrappers around functions which already exist.
 
 
 ## What is SinonJS?
@@ -9666,24 +9667,26 @@ The framework supports three features we'll be taking advantage of for unit test
 * **Spying on existing methods**
 * **A rich inspection interface**
 
-Using ```this.spy()``` without any arguments creates an anonymous spy. This is comparable to ```jasmine.createSpy()``` and we can observe basic usage of a SinonJS spy in the following example:
+#### Basic Spies
 
-#### Basic Spies:
+Using ```this.spy()``` without any arguments creates an anonymous spy. This is comparable to ```jasmine.createSpy()```. We can observe basic usage of a SinonJS spy in the following example:
+
 ```javascript
 test('should call all subscribers for a message exactly once', function () {
     var message = getUniqueString();
-    var spy1 = this.spy();
+    var spy = this.spy();
 
     PubSub.subscribe( message, spy );
     PubSub.publishSync( message, 'Hello World' );
 
-    ok( spy1.calledOnce, 'the subscriber was called once' );
+    ok( spy.calledOnce, 'the subscriber was called once' );
 });
 ```
 
+#### Spying On Existing Functions
+
 We can also use ```this.spy()``` to spy on existing functions (like jQuery's ```$.ajax```) in the example below. When spying on a function which already exists, the function behaves normally but we get access to data about its calls which can be very useful for testing purposes.
 
-#### Spying On Existing Functions:
 ```javascript
 test( 'should inspect the jQuery.getJSON usage of jQuery.ajax', function () {
     this.spy( jQuery, 'ajax' );
@@ -9696,10 +9699,12 @@ test( 'should inspect the jQuery.getJSON usage of jQuery.ajax', function () {
 });
 ```
 
-SinonJS comes with a rich spy interface which allows us to test whether a spy was called with a specific argument, if it was called a specific number of times and test against the values of arguments. A complete list of features supported in the interface can be found on [SinonJS.org](http://sinonjs.org/docs/), but let's take a look at some examples demonstrating some of the most commonly used ones:
+#### Inspection Interface
+
+SinonJS comes with a rich spy interface which allows us to test whether a spy was called with a specific argument, if it was called a specific number of times, and test against the values of arguments. A complete list of features supported in the interface can be found on [SinonJS.org](http://sinonjs.org/docs/), but let's take a look at some examples demonstrating some of the most commonly used ones:
 
 
-#### Matching arguments: test a spy was called with a specific set of arguments:
+**Matching arguments: test a spy was called with a specific set of arguments:**
 
 ```javascript
 test( 'Should call a subscriber with standard matching': function () {
@@ -9712,7 +9717,7 @@ test( 'Should call a subscriber with standard matching': function () {
 });
 ```
 
-#### Stricter argument matching: test a spy was called at least once with specific arguments and no others:
+**Stricter argument matching: test a spy was called at least once with specific arguments and no others:**
 
 ```javascript
 test( 'Should call a subscriber with strict matching': function () {
@@ -9730,7 +9735,7 @@ test( 'Should call a subscriber with strict matching': function () {
 });
 ```
 
-#### Testing call order: testing if a spy was called before or after another spy:
+**Testing call order: testing if a spy was called before or after another spy:**
 
 ```javascript
 test( 'Should call a subscriber and maintain call order': function () {
@@ -9748,7 +9753,7 @@ test( 'Should call a subscriber and maintain call order': function () {
 });
 ```
 
-#### Match execution counts: test a spy was called a specific number of times:
+**Match execution counts: test a spy was called a specific number of times:**
 
 ```javascript
 test( 'Should call a subscriber and check call counts', function () {
@@ -9773,7 +9778,7 @@ test( 'Should call a subscriber and check call counts', function () {
 
 ## Stubs and mocks
 
-SinonJS also supports two other powerful features which are useful to be aware of: stubs and mocks. Both stubs and mocks implement all of the features of the spy API, but have some added functionality.
+SinonJS also supports two other powerful features: stubs and mocks. Both stubs and mocks implement all of the features of the spy API, but have some added functionality.
 
 ### Stubs
 
@@ -9792,7 +9797,7 @@ var TodoList = Backbone.Collection.extend({
 this.todoList;
 ```
 
-Assuming our collection is instantiating new models itself, it's necessary for us to stub the models constructor function for the the test. This can be done by creating a simple stub as follows:
+Assuming our collection is instantiating new models itself, it's necessary for us to stub the model's constructor function for the the test. This can be done by creating a simple stub as follows:
 
 ```javascript
 this.todoStub = sinon.stub( window, 'Todo' );
@@ -9804,11 +9809,11 @@ The above creates a stub of the Todo method on the window object. When stubbing 
 this.todoStub.restore();
 ```
 
-After this, we need to alter what the constructor returns, which can be efficiently done using a plain ```Backbone.Model``` constructor. Whilst this isn't a Todo model, it does still provide us an actual Backbone model.
+After this, we need to alter what the constructor returns, which can be efficiently done using a plain ```Backbone.Model``` constructor. While this isn't a Todo model, it does still provide us an actual Backbone model.
 
 
 ```javascript
-teardown: function() {
+setup: function() {
     this.model = new Backbone.Model({
       id: 2,
       title: 'Hello world'
@@ -9823,7 +9828,7 @@ The expectation here might be that this snippet would ensure our TodoList collec
 this.todoList.model = Todo;
 ```
 
-The result of this is that when our TodoList collection instantiates new Todo models, it will return our plain Backbone model instance as desired. This allows us to write a spec for testing the addition of new model literals as follows:
+The result of this is that when our TodoList collection instantiates new Todo models, it will return our plain Backbone model instance as desired. This allows us to write a test for the addition of new model literals as follows:
 
 ```javascript
 module( 'Should function when instantiated with model literals', {
@@ -9841,6 +9846,8 @@ module( 'Should function when instantiated with model literals', {
 
     // Let's reset the relationship to use a stub
     this.todos.model = Todo;
+    
+    // add a model
     this.todos.add({
       id: 2,
       title: 'Hello world'
@@ -9866,7 +9873,7 @@ test('should find a model by id', function() {
 
 ### Mocks
 
-Mocks are effectively the same as stubs, however they mock a complete API out and have some built-in expectations for how they should be used. The difference between a mock and a spy is that as the expectations for their use are pre-defined, it will fail if any of these are not met.
+Mocks are effectively the same as stubs, however they mock a complete API and have some built-in expectations for how they should be used. The difference between a mock and a spy is that as the expectations for their use are pre-defined and the test will fail if any of these are not met.
 
 Here's a snippet with sample usage of a mock based on PubSubJS. Here, we have a `clearTodo()` method as a callback and use mocks to verify its behavior.
 
@@ -9891,11 +9898,11 @@ test('should call all subscribers when exceptions', function () {
 
 ## Exercise
 
-We can now begin writing test specs for our Todo application, which are listed and separated by component (e.g Models, Collections etc.). It's useful to pay attention to the name of the test, the logic being tested and most importantly the assertions being made as this will give you some insight into how what we've learned can be applied to a complete application.
+We can now begin writing tests for our Todo application, which are listed and separated by component (e.g., Models, Collections, etc.). It's useful to pay attention to the name of the test, the logic being tested, and most importantly the assertions being made as this will give you some insight into how what we've learned can be applied to a complete application.
 
-To get the most out of this section, I recommend looking at the QUnit Koans included in the `practicals\qunit-koans` folder - this is a port of the Backbone.js Jasmine Koans over to QUnit that I converted for this post.
+To get the most out of this section, I recommend looking at the QUnit Koans included in the `practicals/qunit-koans` folder - this is a port of the Backbone.js Jasmine Koans over to QUnit.
 
-*In case you haven't had a chance to try out one of the Koans kits as yet, they are a set of unit tests using a specific testing framework that both demonstrate how a set of specs for an application may be written, but also leave some tests unfilled so that you can complete them as an exercise.*
+*In case you haven't had a chance to try out one of the Koans kits as yet, they are a set of unit tests using a specific testing framework that both demonstrate how a set of tests for an application may be written, but also leave some tests unfilled so that you can complete them as an exercise.*
 
 ### Models
 
@@ -9949,13 +9956,13 @@ test('Fires a custom event when the state changes.', function() {
 });
 
 
-test('Can contain custom validation rules, and will trigger an error event on failed validation.', function() {
+test('Can contain custom validation rules, and will trigger an invalid event on failed validation.', function() {
     expect( 3 );
 
     var errorCallback = this.spy();
     var todo = new Todo();
 
-    todo.on('error', errorCallback);
+    todo.on('invalid', errorCallback);
     // What would you need to set on the todo properties to cause validation to fail?
     todo.set( { done: 'not a boolean' } );
 
@@ -10095,7 +10102,7 @@ asyncTest('Can wire up view methods to DOM elements.', function() {
     // Hint: http://api.jquery.com/click
 
     $('#todoList li input.check').click();
-    expect( this.todoView.model.get('done'), true );
+    equal( this.todoView.model.get('done'), true );
 });
 ```
 
@@ -10116,7 +10123,7 @@ module( 'About Backbone.Events', {
     setup: function() {
         this.obj = {};
         _.extend( this.obj, Backbone.Events );
-        this.obj.off(); // remove all custom events before each spec is run.
+        this.obj.off(); // remove all custom events before each test is run.
     }
 });
 
@@ -10227,19 +10234,19 @@ test('Also can remove custom events from objects.', function() {
 
 ### App
 
-It can also be useful to write specs for any application bootstrap you may have in place. For the following module, our setup initiates and appends a TodoApp view and we can test anything from local instances of views being correctly defined to application interactions correctly resulting in changes to instances of local collections.
+It can also be useful to write tests for any application bootstrap you may have in place. For the following module, our setup instantiates and appends to a TodoApp view and we can test anything from local instances of views being correctly defined to application interactions correctly resulting in changes to instances of local collections.
 
 ```javascript
 module( 'About Backbone Applications' , {
     setup: function() {
         Backbone.localStorageDB = new Store('testTodos');
         $('#qunit-fixture').append('<div id="app"></div>');
-        this.App = new TodoApp({ appendTo: $('# <app') });
+        this.App = new TodoApp({ appendTo: $('#app') });
     },
 
     teardown: function() {
         this.App.todos.reset();
-        $('# <app').remove();
+        $('#app').remove();
     }
 });
 
@@ -10279,13 +10286,13 @@ That's it for this section on testing applications with QUnit and SinonJS. I enc
 * [Recipes With Backbone](http://recipeswithbackbone.com/)
 * [Backbone Patterns](http://ricostacruz.com/backbone-patterns/)
 * [Backbone On Rails](https://learn.thoughtbot.com/products/1-backbone-js-on-rails)
-* [MVC In JavaScript With Backbone](https://github.com/Integralist/Blog-Posts/blob/master/MVC%20in%20JavaScript%20with%20Backbone.md)
+* [MVC In JavaScript With Backbone](https://github.com/Integralist/Blog-Posts/blob/master/2012-08-16-MVC-in-JavaScript-with-Backbone.md)
 * [Backbone Tutorials](http://backbonetutorials.com/)
 * [Derick Baileys Resources For Learning Backbone](http://lostechies.com/derickbailey/2011/09/13/resources-for-and-how-i-learned-backbone-js/)
 
 ## Extensions/Libraries
 
-* [MarionetteJS](https://github.com/derickbailey/backbone.marionette)
+* [MarionetteJS](http://marionettejs.com/)
 * [AuraJS](https://github.com/aurajs/aura)
 * [Thorax](http://thoraxjs.org)
 * [Lumbar](http://walmartlabs.github.com/lumbar)
@@ -10298,15 +10305,15 @@ That's it for this section on testing applications with QUnit and SinonJS. I enc
 
 # Conclusions
 
-This concludes our voyage into the wondrous world of Backbone.js, but hopefully marks the beginning of your next journey as a user. What you have hopefully learned is that, beyond an accessible API there actually isn’t a great deal to the library. Much of its elegance lies in its simplicity and that is why many developers use it. 
+This concludes our voyage into the wondrous world of Backbone.js, but hopefully marks the beginning of your next journey as a user. What you have hopefully learned is that, beyond an accessible API there actually isn’t a great deal to the library. Much of its elegance lies in its simplicity and that is why many developers use it.
 
-For the simplest of applications, you are unlikely to need more than what is prescribed out of the box. For those developing complex applications however, the Backbone.js classes are straightforward to extend, providing an easy path to building (or using a pre-made) extension layer on top of it. We’ve experienced this first hand in the chapters on MarionetteJS and Thorax.
+For the simplest of applications, you are unlikely to need more than what is prescribed out of the box. For those developing complex applications however, the Backbone.js classes are straightforward to extend, providing an easy path for building and sharing extension layers on top of it. We’ve experienced this first hand in the chapters on MarionetteJS and Thorax.
 
 Working on the client-side can sometimes feel like the wild west, but I hope this book has introduced you to sound advice and concepts that will help you keep your code both tamed and a little more maintainable. Until next time, the very best of luck creating your own front-end masterpieces.
 
 ## Notes
 
-I would like to thank the Backbone.js, Stack Overflow, DailyJS (Alex Young) and JavaScript communities for their help, references and contributions to this book. This project would not be possible without you so thank you! :)
+I would like to thank the Backbone.js, Stack Overflow, DailyJS (Alex Young) and JavaScript communities for their help, references, and contributions to this book. This project would not be possible without you so thank you! :)
 
 # Appendix
 
