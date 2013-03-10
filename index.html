@@ -248,10 +248,6 @@ code > span.er { color: #ff0000; font-weight: bold; }
 </ul></li>
 <li><a href="#plugins">Plugins</a></li>
 </ul></li>
-<li><a href="#thorax-1"><a name="thorax">Thorax</a></a><ul>
-<li><a href="#view-helper">view helper</a></li>
-<li><a href="#creating-new-view-helpers">Creating new View helpers</a></li>
-</ul></li>
 </ul></li>
 <li><a href="#backbone-boilerplate-and-grunt-bbb">Backbone Boilerplate And Grunt-BBB</a><ul>
 <li><a href="#getting-started">Getting Started</a><ul>
@@ -4734,7 +4730,8 @@ $(<span class="kw">function</span>($) {
     definition <span class="kw">function</span> <span class="co">/*function for instantiating the module or object*/</span>
 );</code></pre>
 <p>As you can tell by the inline comments, the <code>module_id</code> is an optional argument which is typically only required when non-AMD concatenation tools are being used (there may be some other edge cases where it’s useful too). When this argument is left out, we call the module <q>anonymous</q>. When working with anonymous modules, RequireJS will use a module’s file path as its module id, so the adage Don’t Repeat Yourself (DRY) should be applied by omitting the module id in the <code>define()</code> invocation.</p>
-<p>The dependencies argument is an array representing all of the other modules that this module depends on and the third argument (<q>definition function</q>) is a function that’s executed to instantiate your module. A barebones module (compatible with RequireJS) could be defined using <code>define()</code> as follows:</p>
+<p>The dependencies argument is an array representing all of the other modules that this module depends on and the third argument is a factory that can either be a function that should be executed to instantiate the module or an object.</p>
+<p>A barebones module (compatible with RequireJS) could be defined using <code>define()</code> as follows:</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="co">// A module ID has been omitted here to make the module anonymous</span>
 
 define([<span class="ch">&#39;foo&#39;</span>, <span class="ch">&#39;bar&#39;</span>],
@@ -4753,6 +4750,7 @@ define([<span class="ch">&#39;foo&#39;</span>, <span class="ch">&#39;bar&#39;</s
 
         <span class="kw">return</span> myModule;
 });</code></pre>
+<p><em>Note: RequireJS is intelligent enough to automatically infer the ’.js’ extension to your script file names. As such, this extension is generally omitted when specifying dependencies.</em></p>
 <h4 id="alternate-syntax"><a href="#TOC">Alternate syntax</a></h4>
 <p>There is also a <a href="http://requirejs.org/docs/whyamd.html#sugar">sugared version</a> of <code>define()</code> available that allows you to declare your dependencies as local variables using <code>require()</code>. This will feel familiar to anyone who’s used node, and can be easier to add or remove dependencies. Here is the previous snippet using the alternate syntax:</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="co">// A module ID has been omitted here to make the module anonymous</span>
@@ -4994,10 +4992,8 @@ require( [<span class="ch">&#39;foo&#39;</span>, <span class="ch">&#39;bar&#39;<
 <p>That’s it! Now you can apply your template to a view in Backbone with something like:</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">collection.someview</span>.$<span class="fu">el</span>.<span class="fu">html</span>( compiled_template( { <span class="dt">results</span>: <span class="kw">collection</span>.<span class="fu">models</span> } ) );</code></pre>
 <p>All templating solutions will have their own custom methods for handling template compilation, but if you understand the above, substituting Underscore’s micro-templating for any other solution should be fairly trivial.</p>
-<p><strong>Note:</strong> You may also be interested in looking at <a href="https://github.com/ZeeAgency/requirejs-tpl">RequireJS tpl</a>. It’s an AMD-compatible version of the Underscore templating system that also includes support for optimization (pre-compiled templates) which can lead to better performance and no evals. I have yet to use it myself, but it comes as a recommended resource.</p>
 <h3 id="optimizing-backbone-apps-for-production-with-the-requirejs-optimizer"><a href="#TOC">Optimizing Backbone apps for production with the RequireJS Optimizer</a></h3>
 <p>As experienced developers may know, an essential final step when writing both small and large JavaScript web applications is the build process. The majority of non-trivial apps are likely to consist of many scripts and so optimizing, minimizing, and concatenating your scripts prior to pushing them to production can reduce the number of scripts your users have to download, often to just one.</p>
-<p>If this is your first time looking at build scripts, <a href="http://addyosmani.com/blog/client-side-build-process/">Addy Osmani’s screencast on build scripts</a> may be useful.</p>
 <p>Another benefit to using RequireJS is its command line optimization tool, R.js. This has a number of capabilities, including:</p>
 <ul>
 <li>Concatenating specific scripts and minifying them using external tools such as UglifyJS (which is used by default) or Google’s Closure Compiler for optimal browser delivery, whilst preserving the ability to dynamically load modules</li>
@@ -5016,7 +5012,7 @@ define([<span class="ch">&#39;jquery&#39;</span>, <span class="ch">&#39;backbone
         <span class="co">//...</span>
     });</code></pre>
 <p>will be ignored. This is by design as it ensures that dynamic dependency/module loading can still take place even after optimization.</p>
-<p>Although the RequireJS optimizer works fine in both Node and Java environments, it’s strongly recommended to run it under Node as it executes significantly faster there. In my experience, it’s a piece of cake to get setup with either environment, so go for whichever you feel most comfortable with.</p>
+<p>Although the RequireJS optimizer works fine in both Node and Java environments, it’s strongly recommended to run it under Node as it executes significantly faster there.</p>
 <p>To get started with r.js, grab it from the <a href="http://requirejs.org/docs/download.html#rjs">RequireJS download page</a> or <a href="http://requirejs.org/docs/optimization.html#download">through NPM</a>. Now, the RequireJS optimizer works absolutely fine for single script and CSS files, but for most cases you’ll want to actually optimize an entire Backbone project. You <em>could</em> do this completely from the command-line, but a cleaner option is using build profiles.</p>
 <p>Below is an example of a build file taken from the modular jQuery Mobile app referenced later in this book. A <strong>build profile</strong> (commonly named <code>app.build.js</code>) informs RequireJS to copy all of the content of <code>appDir</code> to a directory defined by <code>dir</code> (in this case <code>../release</code>). This will apply all of the necessary optimizations inside the release folder. The <code>baseUrl</code> is used to resolve the paths for your modules. It should ideally be relative to <code>appDir</code>.</p>
 <p>Near the bottom of this sample file, you’ll see an array called <code>modules</code>. This is where you specify the module names you wish to have optimized. In this case we’re optimizing the main application called <q>app</q>, which maps to <code>appDir/app.js</code>. If we had set the <code>baseUrl</code> to <q>scripts</q>, it would be mapped to <code>appDir/scripts/app.js</code>.</p>
@@ -6188,51 +6184,6 @@ Backbone.history.start({
     <span class="dt">initialize</span>: <span class="kw">function</span>(){
       <span class="kw">this</span>.<span class="fu">useDiacriticsPlugin</span> = <span class="kw">true</span>; <span class="co">// use diacritics plugin if available</span>
     ...</code></pre>
-<h2 id="thorax-1"><a href="#TOC"><a name="thorax">Thorax</a></a></h2>
-<p><em>By Ryan Eastridge &amp; Addy Osmani</em></p>
-<h3 id="view-helper"><a href="#TOC">view helper</a></h3>
-<h3 id="creating-new-view-helpers"><a href="#TOC">Creating new View helpers</a></h3>
-<p>Note that this differs from <code>Handlebars.registerHelper</code>. Registers a helper that will create and append a new <code>HelperView</code> instance, with its <code>template</code> attribute set to the value of the captured block. <code>callback</code> will receive any arguments passed to the helper followed by a <code>HelperView</code> instance. Named arguments to the helper will be present on <code>options</code> attribute of the <code>HelperView</code> instance.</p>
-<p>A <code>HelperView</code> instance differs from a regular view instance in that it has a <code>parent</code> attribute which is always set to the declaring view, and a <code>context</code> which always returns the value of the <code>parent</code>’s context method. The <code>collection</code>, <code>empty</code> and other built in block view helpers are created with <code>registerViewHelper</code>.</p>
-<p>A helper that re-rendered a <code>HelperView</code> every time an event was triggered on the declaring / parent view could be implemented as:</p>
-<pre><code>Handlebars.registerViewHelper(&#39;on&#39;, function(eventName, helperView) {
-  // register a handler on the parent view, which will be automatically
-  // unregistered when helperView is destroyed
-  helperView.on(helperView.parent, eventName, function() {
-    helperView.render();
-  });
-});</code></pre>
-<p>An example use of this would be to have a counter that would increment each time a button was clicked. In Handlebars:</p>
-<pre><code>{{#on &quot;incremented&quot;}}{{i}}{/on}}
-{{#button trigger=&quot;incremented&quot;}}Add{{/button}}</code></pre>
-<p>And the corresponding view class:</p>
-<pre><code>new Thorax.View({
-    events: {
-        incremented: function() {
-            ++this.i;
-        }
-    },
-    initialize: function() {
-        this.i = 0;
-    },
-    template: ...
-});</code></pre>
-<ul>
-<li>$.view, $.model, $.collection</li>
-</ul>
-<hr>
-<ul>
-<li>registry</li>
-<li>template helper</li>
-<li>straight embed</li>
-<li>yield</li>
-<li>view helper</li>
-<li>registerViewHelper</li>
-<li>collection helper</li>
-<li>layout and view lifecycle</li>
-<li>bindToRoute</li>
-<li>mobile</li>
-</ul>
 <h1 id="backbone-boilerplate-and-grunt-bbb"><a href="#TOC">Backbone Boilerplate And Grunt-BBB</a></h1>
 <p><a href="https://github.com/tbranyen/backbone-boilerplate/">Backbone Boilerplate</a> (or just BB) is an excellent set of best practices and utilities for building Backbone.js applications. It was created by Backbone contributor <a href="https://github.com/tbranyen">Tim Branyen</a> out of the gotchas, pitfalls and common tasks he ran into while heavily using Backbone to build apps at Bocoup.</p>
 <p><a href="https://github.com/backbone-boilerplate/grunt-bbb">Grunt-BBB or Boilerplate Build Buddy</a> is the companion tool to BB, which offers scaffolding, file watcher and build capabilities. Used together with BB it provides an excellent base for quickly starting new Backbone applications.</p>

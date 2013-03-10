@@ -62,7 +62,9 @@ define(
 
 As you can tell by the inline comments, the `module_id` is an optional argument which is typically only required when non-AMD concatenation tools are being used (there may be some other edge cases where it's useful too). When this argument is left out, we call the module 'anonymous'. When working with anonymous modules, RequireJS will use a module's file path as its module id, so the adage Don't Repeat Yourself (DRY) should be applied by omitting the module id in the `define()` invocation.
 
-The dependencies argument is an array representing all of the other modules that this module depends on and the third argument ('definition function') is a function that's executed to instantiate your module. A barebones module (compatible with RequireJS) could be defined using `define()` as follows:
+The dependencies argument is an array representing all of the other modules that this module depends on and the third argument is a factory that can either be a function that should be executed to instantiate the module or an object. 
+
+A barebones module (compatible with RequireJS) could be defined using `define()` as follows:
 
 ```javascript
 // A module ID has been omitted here to make the module anonymous
@@ -84,6 +86,8 @@ define(['foo', 'bar'],
         return myModule;
 });
 ```
+
+*Note: RequireJS is intelligent enough to automatically infer the '.js' extension to your script file names. As such, this extension is generally omitted when specifying dependencies.*
 
 #### Alternate syntax
 There is also a [sugared version](http://requirejs.org/docs/whyamd.html#sugar) of `define()` available that allows you to declare your dependencies as local variables using `require()`. This will feel familiar to anyone who's used node, and can be easier to add or remove dependencies.
@@ -439,17 +443,12 @@ That's it! Now you can apply your template to a view in Backbone with something 
 collection.someview.$el.html( compiled_template( { results: collection.models } ) );
 ```
 
-
 All templating solutions will have their own custom methods for handling template compilation, but if you understand the above, substituting Underscore's micro-templating for any other solution should be fairly trivial.
-
-**Note:** You may also be interested in looking at [RequireJS tpl](https://github.com/ZeeAgency/requirejs-tpl). It's an AMD-compatible version of the Underscore templating system that also includes support for optimization (pre-compiled templates) which can lead to better performance and no evals. I have yet to use it myself, but it comes as a recommended resource.
 
 
 ### Optimizing Backbone apps for production with the RequireJS Optimizer
 
 As experienced developers may know, an essential final step when writing both small and large JavaScript web applications is the build process. The majority of non-trivial apps are likely to consist of many scripts and so optimizing, minimizing, and concatenating your scripts prior to pushing them to production can reduce the number of scripts your users have to download, often to just one.
-
-If this is your first time looking at build scripts, [Addy Osmani's screencast on build scripts](http://addyosmani.com/blog/client-side-build-process/) may be useful.
 
 Another benefit to using RequireJS is its command line optimization tool, R.js. This has a number of capabilities, including:
 
@@ -478,7 +477,7 @@ define(['jquery', 'backbone', 'underscore'].concat(models),
 
 will be ignored. This is by design as it ensures that dynamic dependency/module loading can still take place even after optimization.
 
-Although the RequireJS optimizer works fine in both Node and Java environments, it's strongly recommended to run it under Node as it executes significantly faster there. In my experience, it's a piece of cake to get setup with either environment, so go for whichever you feel most comfortable with.
+Although the RequireJS optimizer works fine in both Node and Java environments, it's strongly recommended to run it under Node as it executes significantly faster there. 
 
 To get started with r.js, grab it from the [RequireJS download page](http://requirejs.org/docs/download.html#rjs) or [through NPM](http://requirejs.org/docs/optimization.html#download). Now, the RequireJS optimizer works absolutely fine for single script and CSS files, but for most cases you'll want to actually optimize an entire Backbone project. You *could* do this completely from the command-line, but a cleaner option is using build profiles.
 
@@ -1983,62 +1982,3 @@ Paginator.clientPager = Backbone.Collection.extend({
  [5]: http://addyosmani.github.com/backbone.paginator/examples/netflix-infinite-paging/index.html
  [6]: http://github.com/addyosmani/backbone.paginator/issues
  [7]: https://github.com/cowboy/grunt
-
-## <a name="thorax">Thorax</a>
-
-*By Ryan Eastridge & Addy Osmani*
-
-
-### view helper
-
-### Creating new View helpers
-
-Note that this differs from `Handlebars.registerHelper`. Registers a helper that will create and append a new `HelperView` instance, with its `template` attribute set to the value of the captured block. `callback` will receive any arguments passed to the helper followed by a `HelperView` instance. Named arguments to the helper will be present on `options` attribute of the `HelperView` instance.
-
-A `HelperView` instance differs from a regular view instance in that it has a `parent` attribute which is always set to the declaring view, and a `context` which always returns the value of the `parent`'s context method. The `collection`, `empty` and other built in block view helpers are created with `registerViewHelper`.
-
-A helper that re-rendered a `HelperView` every time an event was triggered on the declaring / parent view could be implemented as:
-
-    Handlebars.registerViewHelper('on', function(eventName, helperView) {
-      // register a handler on the parent view, which will be automatically
-      // unregistered when helperView is destroyed
-      helperView.on(helperView.parent, eventName, function() {
-        helperView.render();
-      });
-    });
-
-An example use of this would be to have a counter that would increment each time a button was clicked. In Handlebars:
-
-    {{#on "incremented"}}{{i}}{/on}}
-    {{#button trigger="incremented"}}Add{{/button}}
-
-And the corresponding view class:
-
-    new Thorax.View({
-        events: {
-            incremented: function() {
-                ++this.i;
-            }
-        },
-        initialize: function() {
-            this.i = 0;
-        },
-        template: ...
-    });
-
-
-- $.view, $.model, $.collection
-
-
---------
-
-- registry
-- template helper
-  - straight embed
-  - yield
-- view helper
-- registerViewHelper
-- collection helper
-- layout and view lifecycle
-- bindToRoute
-- mobile
