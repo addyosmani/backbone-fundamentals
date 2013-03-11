@@ -1057,7 +1057,7 @@ var view = new View();
 
 ## Routers
 
-In Backbone, routers help manage application state and connect URLs to application events. This is achieved using hash-tags with URL fragments, or using the browser's pushState and History API. Some examples of routes may be seen below:
+In Backbone, routers help manage application state and connect URLs to application events. This is achieved using hash marks ("#") with URL fragments, or using the browser's pushState and History API. Some examples of routes using the hash mark may be seen below:
 
 ```javascript
 http://example.com/#about

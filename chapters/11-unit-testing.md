@@ -139,7 +139,7 @@ describe('a simple spy', function(){
 
 What you're more likely to use spies for is testing [asynchronous](http://en.wikipedia.org/wiki/Asynchronous_communication) behavior in your application such as AJAX requests. Jasmine supports:
 
-* Writing tests which can mock AJAX requests using spies. This allows us to test both the code that initiates the AJAX request and the code executed upon its completion. It's also possible to mock/fake the server responses. The benefit of this type of testing is that it's faster as no real calls are being made to a server.
+* Writing tests which can mock AJAX requests using spies. This allows us to test both the code that initiates the AJAX request and the code executed upon its completion. It's also possible to mock/fake the server responses. The benefit of this type of testing is that it's faster as no real calls are being made to a server. The ability to simulate any response from the server is also of great benefit.
 * Asynchronous tests which don't rely on spies
 
 This example of the first kind of test shows how to fake an AJAX request and verify that the request was both calling the correct URL and executed a callback where one was provided.
@@ -235,35 +235,36 @@ A standalone release of Jasmine can be [downloaded](https://github.com/pivotal/j
 
 You'll need a file called SpecRunner.html in addition to the release. It can be downloaded from https://github.com/pivotal/jasmine/tree/master/lib/jasmine-core/example or as part of a download of the complete Jasmine [repo](https://github.com/pivotal/jasmine/zipball/master). Alternatively, you can ```git clone``` the main Jasmine repository from https://github.com/pivotal/jasmine.git.
 
-Let's review [SpecRunner.html](https://github.com/pivotal/jasmine/blob/master/lib/jasmine-core/example/SpecRunner.html):
+Let's review [SpecRunner.html.jst](https://github.com/pivotal/jasmine/blob/master/lib/templates/SpecRunner.html.jst):
 
 It first includes both Jasmine and the necessary CSS required for reporting:
 
+    <link rel="stylesheet" type="text/css" href="lib/jasmine-<%= jasmineVersion %>/jasmine.css">
+    <script type="text/javascript" src="lib/jasmine-<%= jasmineVersion %>/jasmine.js"></script>
+    <script type="text/javascript" src="lib/jasmine-<%= jasmineVersion %>/jasmine-html.js"></script>
+    <script type="text/javascript" src="lib/jasmine-<%= jasmineVersion %>/boot.js"></script>
 
-	<link rel="stylesheet" type="text/css" href="lib/jasmine-1.1.0.rc1/jasmine.css"/>
-	<script type="text/javascript" src="lib/jasmine-1.1.0.rc1/jasmine.js"></script>
-	<script type="text/javascript" src="lib/jasmine-1.1.0.rc1/jasmine-html.js"></script>
+Next come the sources being tested:
 
+    <!-- include source files here... -->
+    <script type="text/javascript" src="src/Player.js"></script>
+    <script type="text/javascript" src="src/Song.js"></script>
 
-Next, some sample tests are included:
+Finally, some sample tests are included:
 
-
-	<script type="text/javascript" src="spec/SpecHelper.js"></script>
-	<script type="text/javascript" src="spec/PlayerSpec.js"></script>
-
-
-And finally the sources being tested:
-
-
-	<script type="text/javascript" src="src/Player.js"></script>
-	<script type="text/javascript" src="src/Song.js"></script>
+    <!-- include spec files here... -->
+    <script type="text/javascript" src="spec/SpecHelper.js"></script>
+    <script type="text/javascript" src="spec/PlayerSpec.js"></script>
 
 
 ***Note:*** Below this section of SpecRunner is code responsible for running the actual tests. Given that we won't be covering modifying this code, I'm going to skip reviewing it. I do however encourage you to take a look through [PlayerSpec.js](https://github.com/pivotal/jasmine/blob/master/lib/jasmine-core/example/spec/PlayerSpec.js) and [SpecHelper.js](https://github.com/pivotal/jasmine/blob/master/lib/jasmine-core/example/spec/SpecHelper.js). They're a useful basic example to go through how a minimal set of tests might work.
 
+Also note that for the purposes of introduction, some of the examples in this section will be testing aspects of Backbone.js itself, just to give you a feel for how Jasmine works. You generally will not need to write testing ensuring a framework is working as expected.
+
+
 ## TDD With Backbone
 
-When developing applications with Backbone, it can be necessary to test both individual modules of code as well as models, views, collections, and routers. Taking a TDD approach to testing, let's review some specs for testing these Backbone components using the popular Backbone [Todo](https://github.com/addyosmani/todomvc/tree/master/todo-example/backbone) application. For this section we will be using a modified version of Larry Myers Backbone Koans project, which can be found in the `practicals/jasmine-koans` folder.
+When developing applications with Backbone, it can be necessary to test both individual modules of code as well as models, views, collections, and routers. Taking a TDD approach to testing, let's review some specs for testing these Backbone components using the popular Backbone [Todo](https://github.com/addyosmani/todomvc/tree/master/todo-example/backbone) application. 
 
 ## Models
 
@@ -342,11 +343,6 @@ validate: function(attrs) {
 If you would like to review the final code for our Todo model, you can find it below:
 
 ```javascript
-var NAUGHTY_WORDS = /crap|poop|hell|frogs/gi;
-
-function sanitize(str) {
-    return str.replace(NAUGHTY_WORDS, 'rainbows');
-}
 
 window.Todo = Backbone.Model.extend({
 
@@ -357,7 +353,7 @@ window.Todo = Backbone.Model.extend({
     },
 
     initialize: function() {
-        this.set({text: sanitize(this.get('text'))}, {silent: true});
+        this.set({text: this.get('text')}, {silent: true});
     },
 
     validate: function(attrs) {
@@ -644,36 +640,15 @@ The reason for this is the default behavior for render() doesn't create any mark
 
 ```javascript
 render: function() {
-  var template = '<label class="todo-content"><%= text %></label>';
+  var template = '<label class="todo-content">+++PLACEHOLDER+++</label>';
   var output = template
-    .replace('<%= text %>', this.model.get('text'));
+    .replace('+++PLACEHOLDER+++', this.model.get('text'));
   this.$el.html(output);
   return this;
 }
 ```
 
-The above specifies an inline string template and replaces fields found in the template within the "<% %>" blocks with their corresponding values from the associated model. As we're also returning the TodoView instance from the method, the first spec will still pass.
-
-It's worth noting that there are serious drawbacks to using HTML strings in your specs to test against as we did in the above example. Even minor changes to your template (a simple tab or whitespace) would cause your spec to fail, despite the rendered output being the same. It's also more time consuming to maintain as most templates in real-world applications are significantly more complex. A better option for testing rendered output is using jQuery to both select and inspect values.
-
-With this in mind, let's re-write the specs, this time using some of the custom matchers offered by jasmine-jquery:
-
-
-```javascript
-describe('Template', function() {
-
-  beforeEach(function() {
-    this.view.render();
-  });
-
-  it('has the correct text content', function() {
-    expect(this.view.$('.todo-content'))
-      .toHaveText('My Todo');
-  });
-
-});
-```
-
+The above specifies an inline string template and replaces fields found in the template within the "+++PLACEHOLDER+++" blocks with their corresponding values from the associated model. As we're also returning the TodoView instance from the method, the first spec will still pass.
 
 It would be impossible to discuss unit testing without mentioning fixtures. Fixtures typically contain test data (e.g., HTML) that is loaded in when needed (either locally or from an external file) for unit testing. So far we've been establishing jQuery expectations based on the view's el property. This works for a number of cases, however, there are instances where it may be necessary to render markup into the document. The most optimal way to handle this within specs is through using fixtures (another feature brought to us by the jasmine-jquery plugin).
 
@@ -712,7 +687,7 @@ What we're now doing in the above spec is appending the rendered todo item into 
 #### Rendering with a templating system
 
 
-JavaScript templating systems (such as Handlebars, Mustache, and Underscore's own Micro-templating) support conditional logic in template strings. What this effectively means is that we can add if/else/ternery expressions inline which can then be evaluated as needed, allowing us to build even more powerful templates.
+JavaScript templating systems (such as [Handlebars](http://handlebarsjs.com/), [Mustache](http://mustache.github.com/), and Underscore's own [micro-templating](http://underscorejs.org/#template)) support conditional logic in template strings. What this effectively means is that we can add if/else/ternery expressions inline which can then be evaluated as needed, allowing us to build even more powerful templates.
 
 In our case, when a user marks a Todo item as complete (done), we may wish to provide them with visual feedback (such as a striked line through the text) to differentiate the item from those that are remaining. This can be done by attaching a new class to the item. Let's begin by writing a test:
 
@@ -783,7 +758,7 @@ var TodoView = Backbone.View.extend({
 
 Above, the initialize() method compiles a supplied Underscore template (using the _.template() function) in the instantiation. A more common way of referencing templates is placing them in a script tag using a custom script type (e.g., type="text/template"). As this isn't a script type any browser understands, it's simply ignored, however referencing the script by an id attribute allows the template to be kept separate to other parts of the page which wish to use it. In real world applications, it's preferable to either do this or load in templates stored in external files for testing.
 
-For testing purposes, we're going to continue using the string injection approach to keep things simple. There is however a useful trick that can be applied to automatically create or extend templates in the Jasmine scope for each test. By creating a new directory (say, 'templates') in the 'spec' folder and including a new script file with the following contents into jasmine.yml or SpecRunner.html, we can add a todo property which contains the Underscore template we wish to use:
+For testing purposes, we're going to continue using the string injection approach to keep things simple. There is however a useful trick that can be applied to automatically create or extend templates in the Jasmine scope for each test. By creating a new directory (say, 'templates') in the 'spec' folder and including a new script file with the following contents into SpecRunner.html, we can add a todo property which contains the Underscore template we wish to use:
 
 ```javascript
 beforeEach(function() {
@@ -834,14 +809,13 @@ This will now also pass without any issues. Remember that jasmine-jquery also su
 
 We have now covered how to write Jasmine tests for Backbone.js models, collections, and views. While testing routing can at times be desirable, some developers feel it can be more optimal to leave this to third-party tools such as Selenium, so do keep this in mind.
 
-James Newbery was kind enough to help me with writing the Views section above and his articles on [Testing Backbone Apps With SinonJS](http://tinnedfruit.com/2011/04/26/testing-backbone-apps-with-jasmine-sinon-3.html) were of great inspiration (you'll actually find some Handlebars examples of the view specs in part 3 of his article). If you would like to learn more about writing spies and mocks for Backbone using [SinonJS](http://sinonjs.org) as well as how to test Backbone routers, do consider reading his series.
-
 ## Exercise
 
 As an exercise, I recommend now trying the Jasmine Koans in `practicals\jasmine-koans` and trying to fix some of the purposefully failing tests it has to offer. This is an excellent way of not just learning how Jasmine specs and suites work, but working through the examples (without peeking back) will also put your Backbone skills to the test too.
 
 
 ## Further reading
+* [Testing Backbone Apps With SinonJS](http://tinnedfruit.com/2011/04/26/testing-backbone-apps-with-jasmine-sinon-3.html) by James Newbry
 * [Jasmine + Backbone Revisited](http://japhr.blogspot.com/2011/11/jasmine-backbonejs-revisited.html)
 * [Backbone, PhantomJS and Jasmine](http://japhr.blogspot.com/2011/12/phantomjs-and-backbonejs-and-requirejs.html)
 
