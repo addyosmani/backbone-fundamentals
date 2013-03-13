@@ -2,20 +2,31 @@
 
 While our first application gave us a good taste of how Backbone.js applications are made, most real-world applications will want to communicate with a back-end of some sort. Let's reinforce what we have already learned with another example, but this time we will also create a RESTful API for our application to talk to.
 
-In this exercise we will build a library application for managing digital books using Backbone. For each book we will store the title, author, date of release and some keywords. We'll also show a picture of the cover.
+In this exercise we will build a library application for managing digital books using Backbone. For each book we will store the title, author, date of release, and some keywords. We'll also show a picture of the cover.
 
 
 ##Setting up
 
-First we need to create a folder structure for our project. To keep the front- and back-end seperate, we will create a folder called site in the project root. Within here we can create the directories css, img and js.
+First we need to create a folder structure for our project. To keep the front-end and back-end separate, we will create a folder called *site* for our client in the project root. Within it we will create css, img, and js directories.
 
-As with the last example we will split our JavaScript files by their function, so under the js directory create new folders lib, models, collections and views.
+As with the last example we will split our JavaScript files by their function, so under the js directory create folders named lib, models, collections, and views. Your directory hierarchy should look like this:
 
-Download the Backbone, Underscore and jQuery libraries and copy them to your js/lib folder. We need a placeholder image for the book covers. Save this image to your site/img folder:
+```
+site/
+    css/
+    img/
+    js/
+        collections/
+        lib/
+        models/
+        views/
+```
+
+Download the Backbone, Underscore, and jQuery libraries and copy them to your js/lib folder. We need a placeholder image for the book covers. Save this image to your site/img folder:
 
 ![](img/placeholder.png)
 
-Just like before we need to load all of our dependencies in the site/index.html file
+Just like before we need to load all of our dependencies in the site/index.html file:
 
 ```html
 <!DOCTYPE html>
@@ -39,7 +50,7 @@ Just like before we need to load all of our dependencies in the site/index.html 
 
 ```
 
-We should also add in the HTML for the user interface. We'll want a form for adding a new book
+We should also add in the HTML for the user interface. We'll want a form for adding a new book so add the following immediately inside the `body` element:
 
 ```html
 <div id="books">
@@ -56,7 +67,7 @@ We should also add in the HTML for the user interface. We'll want a form for add
 </div>
 ```
 
-and a template for displaying each book
+and we'll need a template for displaying each book which should be placed before the `script` tags:
 
 ```html
 <script id="bookTemplate" type="text/template">
@@ -72,7 +83,7 @@ and a template for displaying each book
 </script>
 ```
 
-To see what this will look like with some data in it, go ahead and add a manually filled in book to the books div.
+To see what this will look like with some data in it, go ahead and add a manually filled-in book to the *books* div.
 
 ```html
 <div class="bookContainer">
@@ -92,7 +103,7 @@ Open this file in a browser and it should look something like this:
 
 ![](img/chapter5-1.png)
 
-Not so great. This is not a CSS tutorial, but we still need to do some formatting. Create a file screen.css in your site/css folder
+Not so great. This is not a CSS tutorial, but we still need to do some formatting. Create a file named screen.css in your site/css folder:
 
 ```css
 body {
@@ -168,6 +179,10 @@ Now it looks a bit better:
 
 So this is what we want the final result to look like, but with more books. Go ahead and copy the bookContainer div a few more times if you would like to see what it looks like. Now we are ready to start developing the actual application.
 
+#### Creating the Model, Collection, Views, and App
+
+First, we'll need a model of a book and a collection to hold the list. These are both very simple, with the model only declaring some defaults:
+
 ```javascript
 // site/js/models/book.js
 
@@ -194,7 +209,7 @@ app.Library = Backbone.Collection.extend({
 });
 ```
 
-This is our model of a book and collection to hold the list. These are both very simple, with the model only declaring some defaults. In order to display books we need a view.
+Next, in order to display books we'll need a view:
 
 ```javascript
 // site/js/views/book.js
@@ -218,7 +233,7 @@ app.BookView = Backbone.View.extend({
 });
 ```
 
-We'll also need a view for the list itself.
+We'll also need a view for the list itself:
 
 ```javascript
 // site/js/views/library.js
@@ -233,12 +248,15 @@ app.LibraryView = Backbone.View.extend({
 		this.render();
 	},
 
+	// render library by rendering each book in its collection
 	render: function() {
-		_.each( this.collection.models, function( item ) {
+		this.collection.each(function( item ) {
 			this.renderBook( item );
 		}, this );
 	},
 
+	// render a book by creating a BookView and appending the
+	// element it renders to the library's element
 	renderBook: function( item ) {
 		var bookView = new app.BookView({
 			model: item
@@ -248,7 +266,7 @@ app.LibraryView = Backbone.View.extend({
 });
 ```
 
-Note that in the initialize function we accept an array of data that we pass to the app.Library constructor. We'll use this to populate our collection with some sample data so that we can see everything is working correctly. We wrap up with the entry point to our code, with the sample data.
+Note that in the initialize function we accept an array of data that we pass to the app.Library constructor. We'll use this to populate our collection with some sample data so that we can see everything is working correctly. Finally, we have the entry point for our code, along with the sample data:
 
 ```javascript
 // site/js/app.js
@@ -268,6 +286,8 @@ $(function() {
 });
 ```
 
+Our app just passes the sample data to a new instance of app.LibraryView that it creates. Since the `initialize()` constructor in LibraryView invokes the view's `render()` method, all the books in the library will be displayed. Since we are passing our entry point as a callback to jQuery (in the form of its $ alias), the function will execute when the DOM is ready.
+
 If you view index.html in a browser you should see something like this:
 
 ![](img/chapter5-3.png)
@@ -280,7 +300,7 @@ Now we'll add some functionality to the useless form at the top and the delete b
 
 ###Adding models
 
-When the user clicks the add button we want to take the data in the form and use it to create a new model. In the LibraryView we need to add an event handler for the click event.
+When the user clicks the add button we want to take the data in the form and use it to create a new model. In the LibraryView we need to add an event handler for the click event:
 
 ```javascript
 events:{
@@ -305,12 +325,12 @@ addBook: function( e ) {
 
 We select all the input elements of the form that have a value and iterate over them using jQuery's each. Since we used the same names for ids in our form as the keys on our Book model we can simply store them directly in the formData object. We then create a new Book from the data and add it to the collection. We skip fields without a value so that the defaults will be applied.
 
-By default, Backbone will send an event object as parameter to the function. This is useful for us in this case since we dont want the form to actually submit and reload the page. Adding a preventDefault to the addBook function sorts this out for us.
+Backbone passes an event object as a parameter to the event-handling function. This is useful for us in this case since we don't want the form to actually submit and reload the page. Adding a call to `preventDefault` on the event in the `addBook` function takes care of this for us.
 
-Now we just need to make the view render again when a new model is added. We put
+Now we just need to make the view render again when a new model is added. To do this, we put
 
 ```javascript
-this.collection.on( 'add', this.renderBook, this );
+this.listenTo( this.collection, 'add', this.renderBook );
 ```
 
 in the initialize function of LibraryView.
@@ -323,7 +343,7 @@ You may notice that the file input for the cover image isn’t working, but that
 
 ###Removing models
 
-Now we need to wire up the delete button. Set up the event handler in the BookView
+Next, we need to wire up the delete button. Set up the event handler in the BookView:
 
 ```javascript
 	events: {
@@ -356,17 +376,17 @@ url             HTTP Method  Operation
 
 The outline for this section looks like this:
 
-* Install node.js, npm and MongoDB
+* Install node.js, npm, and MongoDB
 * Install node modules
 * Create a simple web server
 * Connect to the database
 * Create the REST API
 
-###Install node.js, npm and MongoDB
+###Install node.js, npm, and MongoDB
 
 Download and install node.js from nodejs.org. The node package manager (npm) will be installed as well.
 
-Download and install MongoDB from mongodb.org. There are detailed installation guides [on the website](http://docs.mongodb.org/manual/installation/)
+Download and install MongoDB from mongodb.org. There are detailed installation guides [on the website](http://docs.mongodb.org/manual/installation/).
 
 ###Install node modules
 
@@ -407,13 +427,12 @@ site/
   img/
   js/
   index.html
-server.js
 package.json
 ```
 
 ###Create a simple web server
 
-Open server.js and enter the following:
+Create a file named server.js in the project root containing the following code:
 
 ```javascript
 // Module dependencies.
@@ -450,7 +469,7 @@ app.listen( port, function() {
 });
 ```
 
-We start off by loading the modules required for this project: Express for creating the HTTP server, Path for dealing with file paths and mongoose for connecting with the database. We then create an express server and configure it using an anonymous function. This is a pretty standard configuration and for our application we don’t actually need the methodOverride part. It is used for issuing PUT and DELETE HTTP requests directly from a form, since forms normally only support GET and POST. Finally I start the server by running the listen function. The port number used, in this case 4711, could be any free port on your system. I simply used 4711 since it is unlikely to have been used by anything else. We are now ready to run our first server:
+We start off by loading the modules required for this project: Express for creating the HTTP server, Path for dealing with file paths, and mongoose for connecting with the database. We then create an Express server and configure it using an anonymous function. This is a pretty standard configuration and for our application we don’t actually need the methodOverride part. It is used for issuing PUT and DELETE HTTP requests directly from a form, since forms normally only support GET and POST. Finally, we start the server by running the listen function. The port number used, in this case 4711, could be any free port on your system. I simply used 4711 since it is unlikely to have been used by anything else. We are now ready to run our first server:
 
 ```javascript
 node server.js
@@ -460,7 +479,7 @@ If you open a browser on http://localhost:4711 you should see something like thi
 
 ![](img/chapter5-5.png)
 
-This is where we left off in Part 2, but we are now running on a server instead of directly from the files. Great job! We can now start defining routes (URLs) that the server should react to. This will be our REST API. Routes are defined by using app followed by one of the HTTP verbs get, put, post and delete, which corresponds to Create, Read, Update and Delete. Let us go back to server.js and define a simple route:
+This is where we left off in Part 2, but we are now running on a server instead of directly from the files. Great job! We can now start defining routes (URLs) that the server should react to. This will be our REST API. Routes are defined by using app followed by one of the HTTP verbs get, put, post, and delete, which corresponds to Create, Read, Update and Delete. Let us go back to server.js and define a simple route:
 
 ```javascript
 // Routes
@@ -469,13 +488,13 @@ app.get( '/api', function( request, response ) {
 });
 ```
 
-The get function takes a URL as first parameter and a function as second. The function will be called with request and response objects. Now you can restart node and go to our specified URL:
+The get function takes a URL as the first parameter and a function as the second. The function will be called with request and response objects. Now you can restart node and go to our specified URL:
 
 ![](img/chapter5-6.png)
 
-###Connect to database
+###Connect to the database
 
-Fantastic. Now since we want to store our data in MongoDB we need to define a schema. Add this to server.js:
+Fantastic. Now, since we want to store our data in MongoDB, we need to define a schema. Add this to server.js:
 
 ```javascript
 //Connect to database
@@ -492,7 +511,7 @@ var Book = new mongoose.Schema({
 var BookModel = mongoose.model( 'Book', Book );
 ```
 
-As you can see, schema definitions are quite straight forward. They can be more advanced, but this will do for us. I also extracted a model (BookModel) from Mongo. This is what we will be working with. Next up we define a GET operation for the REST API that will return all books:
+As you can see, schema definitions are quite straight forward. They can be more advanced, but this will do for us. I also extracted a model (BookModel) from Mongo. This is what we will be working with. Next up, we define a GET operation for the REST API that will return all books:
 
 ```javascript
 //Get a list of all books
@@ -507,7 +526,7 @@ app.get( '/api/books', function( request, response ) {
 });
 ```
 
-The find function of Model is defined like this: function find (conditions, fields, options, callback) – but since we want a function that returns all books we only need the callback parameter. The callback will be called with an error object and an array of found objects. If there was no error we return the array of objects to the client using the send function of the result object, otherwise we log the error to the console.
+The find function of Model is defined like this: `function find (conditions, fields, options, callback)` – but since we want a function that returns all books we only need the callback parameter. The callback will be called with an error object and an array of found objects. If there was no error we return the array of objects to the client using the `send` function of the response object, otherwise we log the error to the console.
 
 To test our API we need to do a little typing in a JavaScript console. Restart node and go to localhost:4711 in your browser. Open up the JavaScript console. If you are using Google Chrome, go to View->Developer->JavaScript Console. If you are using Firefox, install Firebug and go to View->Firebug. Most other browsers will have a similar console. In the console type the following:
 
@@ -545,9 +564,9 @@ app.post( '/api/books', function( request, response ) {
 });
 ```
 
-We start by creating a new BookModel passing an object with title, author and releaseDate attributes. The data are collected from request.body. This means that anyone calling this operation in the API needs to supply a JSON object containing the title, author and releaseDate attributes. Actually, the caller can omit any or all attributes since we have not made any of them mandatory.
+We start by creating a new BookModel, passing an object with title, author, and releaseDate attributes. The data are collected from request.body. This means that anyone calling this operation in the API needs to supply a JSON object containing the title, author, and releaseDate attributes. Actually, the caller can omit any or all attributes since we have not made any of them mandatory.
 
-We then call the save function on the BookModel passing in a callback in the same way as with the previous get route. Finally we return the saved BookModel. The reason we return the BookModel and not just “success” or similar string is that when the BookModel is saved it will get an _id attribute from MongoDB, which the client needs when updating or deleting a specific book. Lets try it out again, restart node and go back to the console and type:
+We then call the save function on the BookModel passing in a callback in the same way as with the previous get route. Finally, we return the saved BookModel. The reason we return the BookModel and not just “success” or similar string is that when the BookModel is saved it will get an _id attribute from MongoDB, which the client needs when updating or deleting a specific book. Let's try it out again. Restart node and go back to the console and type:
 
 ```javascript
 jQuery.post( '/api/books', {
@@ -573,7 +592,7 @@ jQuery.get( '/api/books/', function( data, textStatus, jqXHR ) {
 });
 ```
 
-You should now get an array of size 1 back from our server. You may wonder about this line:
+You should now get a one-element array back from our server. You may wonder about this line:
 
 ```javascript
 'releaseDate': new Date(2008, 4, 1).getTime()
@@ -599,7 +618,7 @@ app.get( '/api/books/:id', function( request, response ) {
 });
 ```
 
-Here we use colon notation (:id) to tell express that this part of the route is dynamic. We also use the findById function on BookModel to get a single result. Now you can get a single book by adding its id to the URL like this:
+Here we use colon notation (:id) to tell Express that this part of the route is dynamic. We also use the `findById` function on BookModel to get a single result. If you restart node, you can get a single book by adding the id previously returned to the URL like this:
 
 ```javascript
 jQuery.get( '/api/books/4f95a8cb1baa9b8a1b000006', function( data, textStatus, jqXHR ) {
@@ -633,9 +652,9 @@ app.put( '/api/books/:id', function( request, response ) {
 });
 ```
 
-This is a little larger than previous ones, but should be pretty straight forward – we find a book by id, update its properties, save it and send it back to the client.
+This is a little larger than previous ones, but is also pretty straight forward – we find a book by id, update its properties, save it, and send it back to the client.
 
-To test this we need to use the more general jQuery ajax function. In these examples you will need to replace the id property with one that matches an item in your own database:
+To test this we need to use the more general jQuery ajax function. Again, in these examples you will need to replace the id property with one that matches an item in your own database:
 
 ```javascript
 jQuery.ajax({
@@ -689,7 +708,7 @@ jQuery.ajax({
 });
 ```
 
-So now our REST API is complete – we have support for all HTTP verbs. What next? Well, until now I have left out the keywords part of our books. This is a bit more complicated since a book could have several keywords and we don’t want to represent them as a string, but rather an array of strings. To do that we need another schema. Add a Keywords schema right above our Book schema:
+So now our REST API is complete – we have support for all four HTTP verbs. What's next? Well, until now I have left out the keywords part of our books. This is a bit more complicated since a book could have several keywords and we don’t want to represent them as a string, but rather an array of strings. To do that we need another schema. Add a Keywords schema right above our Book schema:
 
 ```javascript
 //Schemas
@@ -705,11 +724,11 @@ var Book = new mongoose.Schema({
 	title: String,
 	author: String,
 	releaseDate: Date,
-	keywords: [ Keywords ]
+	keywords: [ Keywords ]                       // NEW
 });
 ```
 
-Also update POST and PUT
+Also update POST and PUT:
 
 ```javascript
 //Insert a new book
@@ -718,7 +737,7 @@ app.post( '/api/books', function( request, response ) {
 		title: request.body.title,
 		author: request.body.author,
 		releaseDate: request.body.releaseDate,
-		keywords: request.body.keywords
+		keywords: request.body.keywords       // NEW
 	});
 	book.save( function( err ) {
 		if( !err ) {
@@ -737,7 +756,7 @@ app.put( '/api/books/:id', function( request, response ) {
 		book.title = request.body.title;
 		book.author = request.body.author;
 		book.releaseDate = request.body.releaseDate;
-		book.keywords = request.body.keywords;
+		book.keywords = request.body.keywords; // NEW
 
 		return book.save( function( err ) {
 			if( !err ) {
@@ -770,24 +789,25 @@ jQuery.post( '/api/books', {
 });
 ```
 
-You should now have a fully functional REST server. We can now hook into this from our front-end.
+You now have a fully functional REST server that we can hook into from our front-end.
 
 ##Talking to the server
 
 In this part we will cover connecting our Backbone application to the server through the REST API.
 
-As we mentioned in chapter 3 we can retrieve models from a server using collection.fetch() if we set collection.url to be the URL of the API end-point. Let's update the Library collection to do that now
+As we mentioned in chapter 3 *Backbone Basics*, we can retrieve models from a server using `collection.fetch()` by setting `collection.url` to be the URL of the API endpoint. Let's update the Library collection to do that now:
 
 ```javascript
 var app = app || {};
 
 app.Library = Backbone.Collection.extend({
 	model: app.Book,
-	url: '/api/books'
+	url: '/api/books'     // NEW
 });
 ```
 
-The default implementation of Backbone.sync will assume that the API looks like this:
+This results in the default implementation of Backbone.sync assuming that the API looks like this:
+
 ```
 url             HTTP Method  Operation
 /api/books      GET          Get an array of all books
@@ -795,23 +815,34 @@ url             HTTP Method  Operation
 /api/books      POST         Add a new book and return the book with an id attribute added
 /api/books/:id  PUT          Update the book with id of :id
 /api/books/:id  DELETE       Delete the book with id of :id
-
 ```
 
-To make our application get the Book models from the server on page load we need to update the LibraryView. It is recommended in the Backbone documentation to insert all models when the page is generated on the server side, rather than fetching them from the client side once the page is loaded. Since this chapter is trying to give you a more complete picture of how to communicate with a server, we will go ahead and ignore that recommendation. Go to the LibraryView declaration and update the initialize function as follows:
+To have our application retrieve the Book models from the server on page load we need to update the LibraryView. The Backbone documentation recommends inserting all models when the page is generated on the server side, rather than fetching them from the client side once the page is loaded. Since this chapter is trying to give you a more complete picture of how to communicate with a server, we will go ahead and ignore that recommendation. Go to the LibraryView declaration and update the initialize function as follows:
 
 ```javascript
 initialize: function() {
 	this.collection = new app.Library();
-	this.collection.fetch();
+	this.collection.fetch(); // NEW
 	this.render();
 
-	this.collection.on( 'add', this.renderBook, this );
-	this.collection.on( 'reset', this.render, this );
+	this.listenTo( this.collection, 'add', this.renderBook );
+	this.listenTo( this.collection, 'reset', this.render ); // NEW
 },
 ```
 
-The initialize function no longer takes a set of sample data as an argument, so doesn't pass anything to the app.Library constructor. You can now remove the sample data from site/js/app.js. Instead we will populate our Library from the database with `this.collection.fetch()`. I have also added a listener on the reset event. We need to do this since the fetching of models is asynchronous and happens after the page is rendered. When the fetching is finished, Backbone will fire the reset event, which we listen to and re-render the view. If you reload the page now you should see all books that are stored on the server:
+Now that we are populating our Library from the database using `this.collection.fetch()`, the `initialize()` function no longer takes a set of sample data as an argument and doesn't pass anything to the app.Library constructor. You can now remove the sample data from site/js/app.js, which should reduce it to a single statement which creates the LibraryView:
+
+```javascript
+// site/js/app.js
+
+var app = app || {};
+
+$(function() {
+	new app.LibraryView();
+});
+```
+
+We have also added a listener on the reset event. We need to do this since the models are fetched asynchronously after the page is rendered. When the fetch completes, Backbone fires the reset event and our listener re-renders the view. If you reload the page now you should see all books that are stored on the server:
 
 ![](img/chapter5-9.png)
 
@@ -833,7 +864,7 @@ Now the date on the page should look a bit better. How about the keywords? Since
 <li><% _.each( keywords, function( keyobj ) {%> <%= keyobj.keyword %><% } ); %></li>
 ```
 
-Here I iterate over the keywords array using the each function and print out every single keyword. Note that I display the keyword using the <%= tag. This will display the keywords with a space between.
+Here I iterate over the keywords array using the Underscore `each` function and print out every single keyword. Note that I display the keyword using the <%= tag. This will display the keywords with spaces between them.
 
 Reloading the page again should look quite decent:
 
@@ -841,7 +872,7 @@ Reloading the page again should look quite decent:
 
 Now go ahead and delete a book and then reload the page: Tadaa! the deleted book is back! Not cool, why is this? This happens because when we get the BookModels from the server they have an _id attribute (notice the underscore), but Backbone expects an id attribute (no underscore). Since no id attribute is present, Backbone sees this model as new and deleting a new model doesn’t need any synchronization.
 
-To fix this we could use the parse function of Backbone.Model. The parse function lets you edit the server response before it is passed to the Model constructor. Add a parse method to the Book model:
+To fix this we can use the parse function of Backbone.Model. The parse function let's you edit the server response before it is passed to the Model constructor. Add a parse method to the Book model:
 
 ```javascript
 parse: function( response ) {
@@ -854,7 +885,11 @@ Simply copy the value of _id to the needed id attribute. If you reload the page 
 
 Another, simpler way of making Backbone recognize _id as its unique identifier is to set the idAttribute of the model to _id.
 
+<<<<<<< HEAD
+If you now try to add a new book using the form you’ll notice that it is a similar story to delete – models won't get persisted on the server because Backbone.Collection.add doesn’t automatically sync, but it is easy to fix. In `LibraryView.addBook()`, change the line reading:
+=======
 If you now try to add a new book using the form you’ll notice that it is a similar story to delete – models wont get persisted on the server. This is because Backbone.Collection.add doesn’t automatically sync, but it is easy to fix. In the LibraryView we find in `views/library.js` change the line reading:
+>>>>>>> upstream/gh-pages
 
 ```javascript
 this.collection.add( new Book( formData ) );
@@ -866,12 +901,12 @@ this.collection.add( new Book( formData ) );
 this.collection.create( formData );
 ```
 
-Now newly created books will get persisted. Actually, they probably wont if you enter a date. The server expects a date in UNIX timestamp format (milliseconds since Jan 1, 1970). Also any keywords you enter wont be stored since the server expects an array of objects with the attribute ‘keyword’.
+Now newly created books will get persisted. Actually, they probably won't if you enter a date. The server expects a date in UNIX timestamp format (milliseconds since Jan 1, 1970). Also, any keywords you enter won't be stored since the server expects an array of objects with the attribute ‘keyword’.
 
-We start with fixing the date issue. We don’t really want the users to enter a date into a specific format manually so we’ll use the standard datepicker from jQuery UI. Go ahead and create a custom jQuery UI download containing datepicker from [here](http://jqueryui.com/download/). Add the css theme to site/css/ and the JavaScript to site/js/lib. Link to them in index.html:
+We'll start by fixing the date issue. We don’t really want the users to manually enter a date in a specific format, so we’ll use the standard datepicker from jQuery UI. Go ahead and create a custom jQuery UI download containing datepicker from [here](http://jqueryui.com/download/). Add the css theme to site/css/ and the JavaScript to site/js/lib. Link to them in index.html:
 
 ```html
-<link rel="stylesheet" href="css/cupertino/jquery-ui-1.8.19.custom.css">
+<link rel="stylesheet" href="css/cupertino/jquery-ui-1.10.0.custom.css">
 ```
 
 "cupertino" is the name of the style I chose when downloading jQuery UI.
@@ -927,20 +962,23 @@ addBook: function( e ) {
 
 ```
 
-Here I check if the current element is the releaseDate input field, in which case I use datePicker(“getDate”) which will give me a Date object and then use the getTime function on that to get the time in milliseconds. Then I check if the current element is the keywords input field, in which case I split the string on each space and create an array with keyword objects. Now you should be able to add new books with both release date and keywords!
+Our change adds two checks to the form input fields. First, we're checking if the current element is the keywords input field, in which case we're splitting the string on each space and creating an array of keyword objects.
+Then we're checking if the current element is the releaseDate input field, in which case we're calling `datePicker(“getDate”)` which returns a Date object. We then use the `getTime` function on that to get the time in milliseconds.
+
+Now you should be able to add new books with both a release date and keywords!
 
 ![](img/chapter5-12.png)
 
-### Connecting with a third party API
+### Connecting with a third-party API
 
-In a real world scenario, the model and the view can be adapted to connect a third party API. For example:
+In a real-world scenario, the model and the view can be adapted to conform to a third party API. For example:
 
 ```
 url                                            HTTP Method  Operation
 index.php?option=com_todo&view=books&task=get  GET          Get an array of all books
 ```
 
-In the model, you can define the third party API URL via url definition.
+In the model, you can define the third party API URL via url definition:
 
 ```javascript
 url : function() {
@@ -948,7 +986,7 @@ url : function() {
 }
 ```
 
-In the view, you can define the attributes to be processed by the model.
+In the view, you can define the attributes to be processed by the model:
 
 ```javascript
 // Third party API example.
@@ -957,16 +995,17 @@ this.collection.create( this.collection.model, {
        bookId: this.$( '#book_id' ).val()
     },
 
-    // Wait for the answer.
+    // Wait for the answer before updating the collection.
     wait: true,
 
-    // Report if there's any error.
-	error: function( model, fail, xhr ) {
-	    ....
+    // Report if there's an error.
+    error: function( model, fail, xhr ) {
+        ....
     }
 });
 ```
-The final result is a POST to the defined url. In the POST body, the attributes are submitted as a JSON encoded array. 
+
+The final result is a POST to the defined url. In the POST body, the attributes are submitted as a JSON-encoded array which could be processed by a PHP server as follows:
 
 ```php
 $raw = file_get_contents('php://input');
