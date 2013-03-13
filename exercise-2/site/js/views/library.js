@@ -8,8 +8,8 @@ app.LibraryView = Backbone.View.extend({
 		this.collection.fetch();
 		this.render();
 
-		this.collection.on( 'add', this.renderBook, this );
-		this.collection.on( 'reset', this.render, this );
+		this.listenTo( this.collection, 'add', this.renderBook );
+		this.listenTo( this.collection, 'reset', this.render );
 	},
 
 	events: {
@@ -40,12 +40,15 @@ app.LibraryView = Backbone.View.extend({
 		this.collection.create( formData );
 	},
 
+	// render library by rendering each book in its collection
 	render: function() {
-		_.each( this.collection.models, function( item ) {
+		this.collection.each(function( item ) {
 			this.renderBook( item );
 		}, this );
 	},
 
+	// render a book by creating a BookView and appending the
+	// element it renders to the library's element
 	renderBook: function( item ) {
 		var bookView = new app.BookView({
 			model: item
