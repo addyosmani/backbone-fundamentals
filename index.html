@@ -6822,21 +6822,33 @@ describe(<span class="ch">&#39;a simple spy&#39;</span>, <span class="kw">functi
 
     });
 });</code></pre>
-<p>What you’re more likely to use spies for is testing <a href="http://en.wikipedia.org/wiki/Asynchronous_communication">asynchronous</a> behavior in your application such as AJAX requests. Jasmine supports:</p>
+<p>You are more likely to use spies for testing <a href="http://en.wikipedia.org/wiki/Asynchronous_communication">asynchronous</a> behavior in your application such as AJAX requests. Jasmine supports:</p>
 <ul>
 <li>Writing tests which can mock AJAX requests using spies. This allows us to test both the code that initiates the AJAX request and the code executed upon its completion. It’s also possible to mock/fake the server responses. The benefit of this type of testing is that it’s faster as no real calls are being made to a server. The ability to simulate any response from the server is also of great benefit.</li>
 <li>Asynchronous tests which don’t rely on spies</li>
 </ul>
 <p>This example of the first kind of test shows how to fake an AJAX request and verify that the request was both calling the correct URL and executed a callback where one was provided.</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript">it(<span class="ch">&#39;the callback should be executed on success&#39;</span>, <span class="kw">function</span> () {
+
+    <span class="co">// `andCallFake()` calls a passed function when a spy</span>
+    <span class="co">// has been called</span>
     spyOn($, <span class="ch">&#39;ajax&#39;</span>).<span class="fu">andCallFake</span>(<span class="kw">function</span>(options) {
         <span class="kw">options</span>.<span class="fu">success</span>();
     });
 
+    <span class="co">// Create a new spy</span>
     <span class="kw">var</span> callback = <span class="kw">jasmine</span>.<span class="fu">createSpy</span>();
+
+    <span class="co">// Exexute the spy callback if the</span>
+    <span class="co">// request for Todo 15 is successful</span>
     getTodo(<span class="dv">15</span>, callback);
 
+    <span class="co">// Verify that the URL of the most recent call</span>
+    <span class="co">// matches our expected Todo item.</span>
     expect($.<span class="fu">ajax</span>.<span class="fu">mostRecentCall</span>.<span class="fu">args</span>[<span class="dv">0</span>][<span class="ch">&#39;url&#39;</span>]).<span class="fu">toEqual</span>(<span class="ch">&#39;/todos/15&#39;</span>);
+
+    <span class="co">// `expect(x).toHaveBeenCalled()` will pass if `x` is a</span>
+    <span class="co">// spy and was called.</span>
     expect(callback).<span class="fu">toHaveBeenCalled</span>();
 });
 
@@ -6848,22 +6860,31 @@ describe(<span class="ch">&#39;a simple spy&#39;</span>, <span class="kw">functi
         <span class="dt">success</span>: callback
     });
 }</code></pre>
-<p>If you feel lost having seen matchers like <code>andCallFake()</code> and <code>toHaveBeenCalled()</code>, don’t worry. All of these are Spy-specific matchers and are documented on the Jasmine <a href="https://github.com/pivotal/jasmine/wiki/Spies">wiki</a>.</p>
+<p>All of these are Spy-specific matchers and are documented on the Jasmine <a href="https://github.com/pivotal/jasmine/wiki/Spies">wiki</a>.</p>
 <p>For the second type of test (asynchronous tests), we can take the above further by taking advantage of three other methods Jasmine supports:</p>
 <ul>
-<li>runs(function) - a block which runs as if it was directly called</li>
-<li>waits(timeout) - a native timeout before the next block is run</li>
-<li>waitsFor(function, optional message, optional timeout) - a way to pause specs until some other work has completed. Jasmine waits until the supplied function returns true here before it moves on to the next block.</li>
+<li><a href="https://github.com/pivotal/jasmine/wiki/Asynchronous-specs">waits(timeout)</a> - a native timeout before the next block is run</li>
+<li><a href="https://github.com/pivotal/jasmine/wiki/Asynchronous-specs">waitsFor(function, optional message, optional timeout)</a> - a way to pause specs until some other work has completed. Jasmine waits until the supplied function returns true here before it moves on to the next block.</li>
+<li><a href="https://github.com/pivotal/jasmine/wiki/Asynchronous-specs">runs(function)</a> - a block which runs as if it was directly called. They exist so that we can test asynchronous processes.</li>
 </ul>
 <pre class="sourceCode javascript"><code class="sourceCode javascript">it(<span class="ch">&#39;should make an actual AJAX request to a server&#39;</span>, <span class="kw">function</span> () {
 
+    <span class="co">// Create a new spy</span>
     <span class="kw">var</span> callback = <span class="kw">jasmine</span>.<span class="fu">createSpy</span>();
+
+    <span class="co">// Exexute the spy callback if the</span>
+    <span class="co">// request for Todo 16 is successful</span>
     getTodo(<span class="dv">16</span>, callback);
 
+    <span class="co">// Pause the spec until the callback count is</span>
+    <span class="co">// greater than 0</span>
     waitsFor(<span class="kw">function</span>() {
         <span class="kw">return</span> <span class="kw">callback</span>.<span class="fu">callCount</span> &gt; <span class="dv">0</span>;
     });
 
+    <span class="co">// Once the wait is complete, our runs() block</span>
+    <span class="co">// will check to ensure our spy callback has been</span>
+    <span class="co">// called</span>
     runs(<span class="kw">function</span>() {
         expect(callback).<span class="fu">toHaveBeenCalled</span>();
     });
@@ -6890,9 +6911,104 @@ describe(<span class="ch">&#39;a simple spy&#39;</span>, <span class="kw">functi
 it(<span class="ch">&#39;should contain a text value if not the default value&#39;</span>, <span class="kw">function</span>(){
    expect(<span class="kw">this</span>.<span class="fu">todo</span>.<span class="fu">get</span>(<span class="ch">&#39;text&#39;</span>)).<span class="fu">toEqual</span>(<span class="ch">&#39;Buy some more groceries&#39;</span>);
 });</code></pre>
-<p>Each nested <code>describe()</code> in your tests can have their own <code>beforeEach()</code> and <code>afterEach()</code> methods which support including setup and teardown methods relevant to a particular suite. We’ll be using <code>beforeEach()</code> in practice a little later.</p>
+<p>Each nested <code>describe()</code> in your tests can have their own <code>beforeEach()</code> and <code>afterEach()</code> methods which support including setup and teardown methods relevant to a particular suite.</p>
+<p><code>beforeEach()</code> and <code>afterEach()</code> can be used together to write tests verifying that our Backbone routes are being correctly triggered when we navigate to the URL. We can start with the <code>index</code> action:</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript">describe(<span class="ch">&#39;Todo routes&#39;</span>, <span class="kw">function</span>(){
+
+   beforeEach(<span class="kw">function</span>(){
+
+        <span class="co">// Create a new router</span>
+        <span class="kw">this</span>.<span class="fu">router</span> = <span class="kw">new</span> <span class="kw">App</span>.<span class="fu">TodoRouter</span>();
+
+        <span class="co">// Create a new spy</span>
+        <span class="kw">this</span>.<span class="fu">routerSpy</span> = <span class="kw">sinon</span>.<span class="fu">spy</span>();
+
+        <span class="co">// Begin monitoring hashchange events</span>
+        <span class="kw">try</span>{
+            <span class="kw">Backbone.history</span>.<span class="fu">start</span>({
+                <span class="dt">silent</span>:<span class="kw">true</span>,
+                <span class="dt">pushState</span>: <span class="kw">true</span>
+            });
+        }<span class="kw">catch</span>(e){
+           <span class="co">// ...</span>
+        }
+
+        <span class="co">// Navigate to a URL</span>
+        <span class="kw">this</span>.<span class="fu">router</span>.<span class="fu">navigate</span>(<span class="ch">&#39;/js/spec/SpecRunner.html&#39;</span>);
+   }); 
+
+   afterEach(<span class="kw">function</span>(){
+
+        <span class="co">// Navigate back to the URL</span>
+        <span class="kw">this</span>.<span class="fu">router</span>.<span class="fu">navigate</span>(<span class="ch">&#39;/js/spec/SpecRunner.html&#39;</span>);
+
+        <span class="co">// Disable Backbone.history temporarily.</span>
+        <span class="co">// Note that this is not really useful in real apps but is</span>
+        <span class="co">// good for testing routers</span>
+        <span class="kw">Backbone.history</span>.<span class="fu">stop</span>();
+   });
+
+   it(<span class="ch">&#39;should call the index route correctly&#39;</span>, <span class="kw">function</span>(){
+        <span class="kw">this</span>.<span class="fu">router</span>.<span class="fu">bind</span>(<span class="ch">&#39;route:index&#39;</span>, <span class="kw">this</span>.<span class="fu">routerSpy</span>, <span class="kw">this</span>);
+        <span class="kw">this</span>.<span class="fu">router</span>.<span class="fu">navigate</span>(<span class="ch">&#39;&#39;</span>, {<span class="dt">trigger</span>: <span class="kw">true</span>});
+
+        <span class="co">// If everything in our beforeEach() and afterEach()</span>
+        <span class="co">// calls have been correctly executed, the following</span>
+        <span class="co">// should now pass.</span>
+        expect(<span class="kw">this</span>.<span class="fu">routerSpy</span>).<span class="fu">toHaveBeenCalledOnce</span>();
+        expect(<span class="kw">this</span>.<span class="fu">routerSpy</span>).<span class="fu">toHaveBeenCalledWith</span>();
+   });
+
+});</code></pre>
+<p>The actual TodoRouter for that would make the above test pass looks like:</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> App = App || {};
+<span class="kw">App</span>.<span class="fu">TodoRouter</span> = <span class="kw">Backbone.Router</span>.<span class="fu">extend</span>({
+    <span class="dt">routes</span>:{
+        <span class="ch">&#39;&#39;</span>: <span class="ch">&#39;index&#39;</span>
+    },
+    <span class="dt">index</span>: <span class="kw">function</span>(){
+        <span class="co">//...</span>
+    }
+});</code></pre>
 <h2 id="shared-scope"><a href="#TOC">Shared scope</a></h2>
-<p>In the previous section you may have noticed that we initially declared a variable <code>this.todo</code> in our <code>beforeEach()</code> call and were then able to continue using this in <code>afterEach()</code>. This is thanks to a powerful feature of Jasmine known as shared functional scope. Shared scope allows <code>this</code> properties to be common to all blocks (including <code>runs()</code>), but not declared variables (i.e., <code>var</code>s).</p>
+<p>Let’s imagine we have a Suite where we wish to check for the existence of a new Todo item instance. This could be done by duplicating the spec as follows:</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript">describe(<span class="st">&quot;Todo tests&quot;</span>, <span class="kw">function</span>(){
+   
+   <span class="co">// Spec</span>
+   it(<span class="st">&quot;Should be defined when we create it&quot;</span>, <span class="kw">function</span>(){
+        <span class="co">// A Todo item we are testing</span>
+        <span class="kw">var</span> todo = <span class="kw">new</span> Todo(<span class="st">&quot;Get the milk&quot;</span>, <span class="st">&quot;Tuesday&quot;</span>);
+        expect(todo).<span class="fu">toBeDefined</span>();
+   }); 
+
+   it(<span class="st">&quot;Should have the correct title&quot;</span>, <span class="kw">function</span>(){
+        <span class="co">// Where we introduce code duplication</span>
+        <span class="kw">var</span> todo = <span class="kw">new</span> Todo(<span class="st">&quot;Get the milk&quot;</span>, <span class="st">&quot;Tuesday&quot;</span>);
+        expect(<span class="kw">todo</span>.<span class="fu">title</span>).<span class="fu">toBe</span>(<span class="st">&quot;Get the milk&quot;</span>);
+   });
+
+});</code></pre>
+<p>As you can see, we’ve introduced duplication that should ideally be refactored into something cleaner. We can do this using Jasmine’s Suite (Shared) Functional Scope.</p>
+<p>All of the specs within the same Suite share the same functional scope, meaning that variables declared within the Suite itself are available to all of the Specs in that suite. This gives us a way to work around our duplication problem by moving the creation of our Todo objects into the common functional scope:</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript">describe(<span class="st">&quot;Todo tests&quot;</span>, <span class="kw">function</span>(){
+    
+    <span class="co">// The instance of Todo, the object we wish to test</span>
+    <span class="co">// is now in the shared functional scope</span>
+    <span class="kw">var</span> todo = <span class="kw">new</span> Todo(<span class="st">&quot;Get the milk&quot;</span>, <span class="st">&quot;Tuesday&quot;</span>);
+
+    <span class="co">// Spec</span>
+    it(<span class="st">&quot;should be correctly defined&quot;</span>, <span class="kw">function</span>(){
+        expect(todo).<span class="fu">toBeDefined</span>();
+    });
+
+    it(<span class="st">&quot;should have the correct title&quot;</span>, <span class="kw">function</span>(){
+        expect(<span class="kw">todo</span>.<span class="fu">title</span>).<span class="fu">toBe</span>(<span class="st">&quot;Get the milk&quot;</span>);
+    });
+
+});</code></pre>
+<p>In the previous section you may have noticed that we initially declared <code>this.todo</code> within the scope of our <code>beforeEach()</code> call and were then able to continue using this reference in <code>afterEach()</code>.</p>
+<p>This is again down to shared function scope, which allows such declaractions to be common to all blocks (including <code>runs()</code>).</p>
+<p>Variables declared outside of the shared scope (i.e within the local scope <code>var todo=...</code>) will however not be shared.</p>
 <h2 id="getting-set-up"><a href="#TOC">Getting set up</a></h2>
 <p>Now that we’ve reviewed some fundamentals, let’s go through downloading Jasmine and getting everything set up to write tests.</p>
 <p>A standalone release of Jasmine can be <a href="https://github.com/pivotal/jasmine/downloads">downloaded</a> from the official release page.</p>
@@ -7145,8 +7261,8 @@ expect(<span class="ch">&#39;click&#39;</span>).<span class="fu">toHaveBeenTrigg
     it(<span class="ch">&#39;produces the correct HTML&#39;</span>, <span class="kw">function</span>() {
       <span class="kw">this</span>.<span class="fu">view</span>.<span class="fu">render</span>();
 
-      <span class="co">//let&#39;s use jasmine-jquery&#39;s toContain() to avoid</span>
-      <span class="co">//testing for the complete content of a todo&#39;s markup</span>
+      <span class="co">// let&#39;s use jasmine-jquery&#39;s toContain() to avoid</span>
+      <span class="co">// testing for the complete content of a todo&#39;s markup</span>
       expect(<span class="kw">this</span>.<span class="fu">view</span>.<span class="fu">el</span>.<span class="fu">innerHTML</span>)
         .<span class="fu">toContain</span>(<span class="ch">&#39;&lt;label class=&quot;todo-content&quot;&gt;My Todo&lt;/label&gt;&#39;</span>);
     });

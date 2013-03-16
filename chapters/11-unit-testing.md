@@ -247,7 +247,7 @@ Each nested ```describe()``` in your tests can have their own ```beforeEach()```
 
 `beforeEach()` and `afterEach()` can be used together to write tests verifying that our Backbone routes are being correctly triggered when we navigate to the URL. We can start with the `index` action:
 
-```
+```javascript
 describe('Todo routes', function(){
 
    beforeEach(function(){
@@ -299,7 +299,7 @@ describe('Todo routes', function(){
 
 The actual TodoRouter for that would make the above test pass looks like:
 
-```
+```javascript
 var App = App || {};
 App.TodoRouter = Backbone.Router.extend({
     routes:{
@@ -313,8 +313,55 @@ App.TodoRouter = Backbone.Router.extend({
 
 ## Shared scope
 
-In the previous section you may have noticed that we initially declared a variable ```this.todo``` in our ```beforeEach()``` call and were then able to continue using this in ```afterEach()```. This is thanks to a powerful feature of Jasmine known as shared functional scope. Shared scope allows ```this``` properties to be common to all blocks (including ```runs()```), but not declared variables (i.e., ```var```s).
+Let's imagine we have a Suite where we wish to check for the existence of a new Todo item instance. This could be done by duplicating the spec as follows:
 
+```javascript
+describe("Todo tests", function(){
+   
+   // Spec
+   it("Should be defined when we create it", function(){
+        // A Todo item we are testing
+        var todo = new Todo("Get the milk", "Tuesday");
+        expect(todo).toBeDefined();
+   }); 
+
+   it("Should have the correct title", function(){
+        // Where we introduce code duplication
+        var todo = new Todo("Get the milk", "Tuesday");
+        expect(todo.title).toBe("Get the milk");
+   });
+
+});
+```
+
+As you can see, we've introduced duplication that should ideally be refactored into something cleaner. We can do this using Jasmine's Suite (Shared) Functional Scope.
+
+All of the specs within the same Suite share the same functional scope, meaning that variables declared within the Suite itself are available to all of the Specs in that suite. This gives us a way to work around our duplication problem by moving the creation of our Todo objects into the common functional scope:
+
+```javascript
+describe("Todo tests", function(){
+    
+    // The instance of Todo, the object we wish to test
+    // is now in the shared functional scope
+    var todo = new Todo("Get the milk", "Tuesday");
+
+    // Spec
+    it("should be correctly defined", function(){
+        expect(todo).toBeDefined();
+    });
+
+    it("should have the correct title", function(){
+        expect(todo.title).toBe("Get the milk");
+    });
+
+});
+```
+
+In the previous section you may have noticed that we initially declared ```this.todo``` within the scope of our ```beforeEach()``` call and were then able to continue using this reference in ```afterEach()```. 
+
+This is again down to shared function scope, which allows such declaractions to be common to all blocks (including ```runs()```). 
+
+Variables declared outside of the shared scope (i.e within the local scope `var todo=...`) will however not be shared.
 
 ## Getting set up
 

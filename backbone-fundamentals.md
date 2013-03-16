@@ -8483,7 +8483,7 @@ describe('a simple spy', function(){
 });
 ```
 
-What you're more likely to use spies for is testing [asynchronous](http://en.wikipedia.org/wiki/Asynchronous_communication) behavior in your application such as AJAX requests. Jasmine supports:
+You are more likely to use spies for testing [asynchronous](http://en.wikipedia.org/wiki/Asynchronous_communication) behavior in your application such as AJAX requests. Jasmine supports:
 
 * Writing tests which can mock AJAX requests using spies. This allows us to test both the code that initiates the AJAX request and the code executed upon its completion. It's also possible to mock/fake the server responses. The benefit of this type of testing is that it's faster as no real calls are being made to a server. The ability to simulate any response from the server is also of great benefit.
 * Asynchronous tests which don't rely on spies
@@ -8492,14 +8492,26 @@ This example of the first kind of test shows how to fake an AJAX request and ver
 
 ```javascript
 it('the callback should be executed on success', function () {
+
+    // `andCallFake()` calls a passed function when a spy
+    // has been called
     spyOn($, 'ajax').andCallFake(function(options) {
         options.success();
     });
 
+    // Create a new spy
     var callback = jasmine.createSpy();
+
+    // Exexute the spy callback if the
+    // request for Todo 15 is successful
     getTodo(15, callback);
 
+    // Verify that the URL of the most recent call
+    // matches our expected Todo item.
     expect($.ajax.mostRecentCall.args[0]['url']).toEqual('/todos/15');
+
+    // `expect(x).toHaveBeenCalled()` will pass if `x` is a
+    // spy and was called.
     expect(callback).toHaveBeenCalled();
 });
 
@@ -8513,25 +8525,33 @@ function getTodo(id, callback) {
 }
 ```
 
-If you feel lost having seen matchers like ```andCallFake()``` and ```toHaveBeenCalled()```, don't worry. All of these are Spy-specific matchers and are documented on the Jasmine [wiki](https://github.com/pivotal/jasmine/wiki/Spies).
+All of these are Spy-specific matchers and are documented on the Jasmine [wiki](https://github.com/pivotal/jasmine/wiki/Spies).
 
 For the second type of test (asynchronous tests), we can take the above further by taking advantage of three other methods Jasmine supports:
 
-* runs(function) - a block which runs as if it was directly called
-* waits(timeout) - a native timeout before the next block is run
-* waitsFor(function, optional message, optional timeout) - a way to pause specs until some other work has completed. Jasmine waits until the supplied function returns true here before it moves on to the next block.
-
+* [waits(timeout)](https://github.com/pivotal/jasmine/wiki/Asynchronous-specs) - a native timeout before the next block is run
+* [waitsFor(function, optional message, optional timeout)](https://github.com/pivotal/jasmine/wiki/Asynchronous-specs) - a way to pause specs until some other work has completed. Jasmine waits until the supplied function returns true here before it moves on to the next block.
+* [runs(function)](https://github.com/pivotal/jasmine/wiki/Asynchronous-specs) - a block which runs as if it was directly called. They exist so that we can test asynchronous processes. 
 
 ```javascript
 it('should make an actual AJAX request to a server', function () {
 
+    // Create a new spy
     var callback = jasmine.createSpy();
+
+    // Exexute the spy callback if the
+    // request for Todo 16 is successful
     getTodo(16, callback);
 
+    // Pause the spec until the callback count is
+    // greater than 0
     waitsFor(function() {
         return callback.callCount > 0;
     });
 
+    // Once the wait is complete, our runs() block
+    // will check to ensure our spy callback has been
+    // called
     runs(function() {
         expect(callback).toHaveBeenCalled();
     });
@@ -8566,12 +8586,128 @@ it('should contain a text value if not the default value', function(){
 });
 ```
 
-Each nested ```describe()``` in your tests can have their own ```beforeEach()``` and ```afterEach()``` methods which support including setup and teardown methods relevant to a particular suite. We'll be using ```beforeEach()``` in practice a little later.
+Each nested ```describe()``` in your tests can have their own ```beforeEach()``` and ```afterEach()``` methods which support including setup and teardown methods relevant to a particular suite. 
+
+
+
+
+`beforeEach()` and `afterEach()` can be used together to write tests verifying that our Backbone routes are being correctly triggered when we navigate to the URL. We can start with the `index` action:
+
+```javascript
+describe('Todo routes', function(){
+
+   beforeEach(function(){
+
+        // Create a new router
+        this.router = new App.TodoRouter();
+
+        // Create a new spy
+        this.routerSpy = sinon.spy();
+
+        // Begin monitoring hashchange events
+        try{
+            Backbone.history.start({
+                silent:true,
+                pushState: true
+            });
+        }catch(e){
+           // ...
+        }
+
+        // Navigate to a URL
+        this.router.navigate('/js/spec/SpecRunner.html');
+   }); 
+
+   afterEach(function(){
+
+        // Navigate back to the URL
+        this.router.navigate('/js/spec/SpecRunner.html');
+
+        // Disable Backbone.history temporarily.
+        // Note that this is not really useful in real apps but is
+        // good for testing routers
+        Backbone.history.stop();
+   });
+
+   it('should call the index route correctly', function(){
+        this.router.bind('route:index', this.routerSpy, this);
+        this.router.navigate('', {trigger: true});
+
+        // If everything in our beforeEach() and afterEach()
+        // calls have been correctly executed, the following
+        // should now pass.
+        expect(this.routerSpy).toHaveBeenCalledOnce();
+        expect(this.routerSpy).toHaveBeenCalledWith();
+   });
+
+});
+```
+
+The actual TodoRouter for that would make the above test pass looks like:
+
+```javascript
+var App = App || {};
+App.TodoRouter = Backbone.Router.extend({
+    routes:{
+        '': 'index'
+    },
+    index: function(){
+        //...
+    }
+});
+```
 
 ## Shared scope
 
-In the previous section you may have noticed that we initially declared a variable ```this.todo``` in our ```beforeEach()``` call and were then able to continue using this in ```afterEach()```. This is thanks to a powerful feature of Jasmine known as shared functional scope. Shared scope allows ```this``` properties to be common to all blocks (including ```runs()```), but not declared variables (i.e., ```var```s).
+Let's imagine we have a Suite where we wish to check for the existence of a new Todo item instance. This could be done by duplicating the spec as follows:
 
+```javascript
+describe("Todo tests", function(){
+   
+   // Spec
+   it("Should be defined when we create it", function(){
+        // A Todo item we are testing
+        var todo = new Todo("Get the milk", "Tuesday");
+        expect(todo).toBeDefined();
+   }); 
+
+   it("Should have the correct title", function(){
+        // Where we introduce code duplication
+        var todo = new Todo("Get the milk", "Tuesday");
+        expect(todo.title).toBe("Get the milk");
+   });
+
+});
+```
+
+As you can see, we've introduced duplication that should ideally be refactored into something cleaner. We can do this using Jasmine's Suite (Shared) Functional Scope.
+
+All of the specs within the same Suite share the same functional scope, meaning that variables declared within the Suite itself are available to all of the Specs in that suite. This gives us a way to work around our duplication problem by moving the creation of our Todo objects into the common functional scope:
+
+```javascript
+describe("Todo tests", function(){
+    
+    // The instance of Todo, the object we wish to test
+    // is now in the shared functional scope
+    var todo = new Todo("Get the milk", "Tuesday");
+
+    // Spec
+    it("should be correctly defined", function(){
+        expect(todo).toBeDefined();
+    });
+
+    it("should have the correct title", function(){
+        expect(todo.title).toBe("Get the milk");
+    });
+
+});
+```
+
+In the previous section you may have noticed that we initially declared ```this.todo``` within the scope of our ```beforeEach()``` call and were then able to continue using this reference in ```afterEach()```. 
+
+This is again down to shared function scope, which allows such declaractions to be common to all blocks (including ```runs()```). 
+
+Variables declared outside of the shared scope (i.e within the local scope `var todo=...`) will however not be shared.
 
 ## Getting set up
 
@@ -8947,8 +9083,8 @@ describe('TodoView', function() {
     it('produces the correct HTML', function() {
       this.view.render();
 
-      //let's use jasmine-jquery's toContain() to avoid
-      //testing for the complete content of a todo's markup
+      // let's use jasmine-jquery's toContain() to avoid
+      // testing for the complete content of a todo's markup
       expect(this.view.el.innerHTML)
         .toContain('<label class="todo-content">My Todo</label>');
     });
