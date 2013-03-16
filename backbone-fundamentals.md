@@ -8346,19 +8346,19 @@ The takeaway here is just to remember that if you're not (already) going through
 
 # Unit Testing
 
-# Jasmine
-
-## Introduction
-
-One definition of unit testing is the process of taking the smallest piece of testable code in an application, isolating it from the remainder of your codebase, and determining if it behaves exactly as expected. In this section, we'll be taking a look at how to unit test Backbone applications using a popular JavaScript testing framework called [Jasmine](http://pivotal.github.com/jasmine/) from Pivotal Labs.
+One definition of unit testing is the process of taking the smallest piece of testable code in an application, isolating it from the remainder of your codebase, and determining if it behaves exactly as expected.
 
 For an application to be considered 'well-tested', each function should ideally have its own separate unit tests where it's tested against the different conditions you expect it to handle. All tests must pass before functionality is considered 'complete'. This allows developers to both modify a unit of code and its dependencies with a level of confidence about whether these changes have caused any breakage.
 
 A basic example of unit testing is where a developer asserts that passing specific values to a sum function results in the correct value being returned. For an example more relevant to this book, we may wish to assert that adding a new Todo item to a list correctly adds a Model of a specific type to a Todos Collection.
 
-When building modern web-applications, it's typically considered best-practice to include automated unit testing as a part of your development process. While we'll be focusing on Jasmine as a solution in this chapter, there are a number of other alternatives worth considering, including QUnit which will be covered in the next chapter.
+When building modern web-applications, it's typically considered best-practice to include automated unit testing as a part of your development process. In this chapter we are going to look at three different solutions for unit testing your Backbone.js apps - Jasmine, QUnit and SinonJS.
+
+# Jasmine
 
 ## Behavior-Driven Development
+
+In this section, we'll be taking a look at how to unit test Backbone applications using a popular JavaScript testing framework called [Jasmine](http://pivotal.github.com/jasmine/) from Pivotal Labs.
 
 Jasmine describes itself as a behavior-driven development (BDD) framework for testing JavaScript code. Before we jump into how the framework works, it's useful to understand exactly what [BDD](http://en.wikipedia.org/wiki/Behavior_Driven_Development) is.
 
