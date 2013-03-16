@@ -83,8 +83,8 @@ render : function () {
 onRender : function () {
     this.innerView1 = new Subview();
     this.innerView2 = new Subview();
-    this.innerView1.setElement('.some-element').render();
-    this.innerView2.setElement('.some-element').render();
+    this.innerView1.setElement('.some-element1').render();
+    this.innerView2.setElement('.some-element2').render();
 }
 ```
 
@@ -236,7 +236,7 @@ ViewB = Backbone.View.extend({
 });
 ```
 
-Then in your application initialization code , you would initiate ViewA and place its element inside the body element.
+Then in your application initialization code, you would initialize ViewA and place its element inside the body element.
 
 An alternative approach is to use an extension called [Backbone-Forms](https://github.com/powmedia/backbone-forms). Using a similar schema to what we wrote earlier, nesting could be achieved as follows:
 
@@ -276,7 +276,7 @@ How would one render a Parent View from one of its Children?
 
 **Solution**
 
-If you say, have a view which contains another view (e.g., a main view containing a modal view) and  would like to render or re-render the parent view from the child, this is extremely straight-forward.
+If you say, have a view which contains another view (e.g., a main view containing a modal view) and would like to render or re-render the parent view from the child, this is extremely straight-forward.
 
 In such a scenario, you would most likely want to execute the rendering when a particular event has occurred. For the sake of example, let us call this event 'somethingHappened'. The parent view can bind notifications on the child view to know when the event has occurred. It can then render itself.
 
@@ -360,9 +360,10 @@ How do you cleanly dispose Views to avoid memory leaks?
 
 **Solution**
 
-As your application grows, keeping live views around which aren't being used can quickly become difficult to maintain. Instead, you may find it more optimal to destroy views that are no longer required and simply create new ones as the need arises.
+As your application grows, keeping live views around which aren't being used can quickly become difficult to maintain. Instead, you may find it better to destroy views that are no longer required and simply create new ones as the need arises.
 
-A solution to help with this is to create a BaseView from which the rest of your views inherit from. The idea here is that your view will maintain a reference to all of the events to which its subscribed to so that when it is time to dispose of a view, all of those bindings will be automatically unbound.
+A solution to help with this is to create a new BaseView that extends Backbone.View that will maintain a reference to all of the events to which it is subscribed to. Then when you dispose of a view, all of those bindings will be automatically unbound.
+
 
 Here is a sample implementation of this:
 
@@ -426,7 +427,7 @@ sampleView.dispose();
 
 **Problem**
 
-In the last question, we looked at how to effectively dispose views to decrease memory usage.
+In the last question, we looked at how to effectively dispose of views to decrease memory usage.
 
 Where your application is setup with multiple Parent and Child Views, it is also common to desire removing any DOM elements associated with such views as well as unbinding any event handlers tied to child elements when you no longer require them.
 
@@ -476,15 +477,16 @@ In most cases, the view removal should not affect any associated models. For exa
 
 **Problem**
 
-Let us say you have a Collection, where each item in the Collection could itself be a Collection. You can render each item in the Collection, and indeed can render any items which themselves are Collections. The problem you might have is how to render this structure where the HTML reflects the hierarchical nature of the data structure.
+Let us say you have a Collection, where each item in the Collection could itself be a Collection. You can render each item in the Collection, and indeed can render any items which themselves are Collections. The problem you might have is how to render HTML that reflects the hierarchical nature of the data structure.
 
 **Solution**
 
-The most straight-forward way to approach this problem is to use a framework like Derick Baileys [Backbone.Marionette](https://github.com/marionettejs/backbone.marionette). In this framework is a type of view called a CompositeView.
+The most straight-forward way to approach this problem is to use a framework like Derick Bailey's [Backbone.Marionette](https://github.com/marionettejs/backbone.marionette). In this framework is a type of view called a CompositeView.
 
 The basic idea of a CompositeView is that it can render a model and a collection within the same view.
 
-It can render a single model with a template. It can also take a collection from that model and for each model in that collection, render a view. By default it uses the same composite view type that you've defined, to render each of the models in the collection. All you have to do is tell the view instance where the collection is, via the initialize method, and you'll get a recursive hierarchy rendered.
+It can render a single model with a template. It can also take a collection from that model and for each model in that collection, render a view. By default it uses the same composite view type that you've defined to render each of the models in the collection. All you have to do is tell the view instance where the collection is, via the initialize method, and you'll get a recursive hierarchy rendered.
+
 
 There is a working demo of this in action available [online](http://jsfiddle.net/derickbailey/AdWjU/).
 
