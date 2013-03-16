@@ -240,9 +240,76 @@ it('should contain a text value if not the default value', function(){
 });
 ```
 
-Each nested ```describe()``` in your tests can have their own ```beforeEach()``` and ```afterEach()``` methods which support including setup and teardown methods relevant to a particular suite. We'll be using ```beforeEach()``` in practice a little later.
+Each nested ```describe()``` in your tests can have their own ```beforeEach()``` and ```afterEach()``` methods which support including setup and teardown methods relevant to a particular suite. 
 
 
+
+
+`beforeEach()` and `afterEach()` can be used together to write tests verifying that our Backbone routes are being correctly triggered when we navigate to the URL. We can start with the `index` action:
+
+```
+describe('Todo routes', function(){
+
+   beforeEach(function(){
+
+        // Create a new router
+        this.router = new App.TodoRouter();
+
+        // Create a new spy
+        this.routerSpy = sinon.spy();
+
+        // Begin monitoring hashchange events
+        try{
+            Backbone.history.start({
+                silent:true,
+                pushState: true
+            });
+        }catch(e){
+           // ...
+        }
+
+        // Navigate to a URL
+        this.router.navigate('/js/spec/SpecRunner.html');
+   }); 
+
+   afterEach(function(){
+
+        // Navigate back to the URL
+        this.router.navigate('/js/spec/SpecRunner.html');
+
+        // Disable Backbone.history temporarily.
+        // Note that this is not really useful in real apps but is
+        // good for testing routers
+        Backbone.history.stop();
+   });
+
+   it('should call the index route correctly', function(){
+        this.router.bind('route:index', this.routerSpy, this);
+        this.router.navigate('', {trigger: true});
+
+        // If everything in our beforeEach() and afterEach()
+        // calls have been correctly executed, the following
+        // should now pass.
+        expect(this.routerSpy).toHaveBeenCalledOnce();
+        expect(this.routerSpy).toHaveBeenCalledWith();
+   });
+
+});
+```
+
+The actual TodoRouter for that would make the above test pass looks like:
+
+```
+var App = App || {};
+App.TodoRouter = Backbone.Router.extend({
+    routes:{
+        '': 'index'
+    },
+    index: function(){
+        //...
+    }
+});
+```
 
 ## Shared scope
 
