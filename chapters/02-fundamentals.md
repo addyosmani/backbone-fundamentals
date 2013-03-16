@@ -91,9 +91,9 @@ Our example will need a div element to which we can attach a list of Todo's. It 
       <%- title %>
     </div>
   </script>
+  <script src="jquery-min.js"></script>
   <script src="underscore-min.js"></script>
   <script src="backbone-min.js"></script>
-  <script src="jquery-min.js"></script>
   <script src="example.js"></script>
 </body>
 </html>
