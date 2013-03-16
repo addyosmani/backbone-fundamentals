@@ -885,11 +885,7 @@ Simply copy the value of _id to the needed id attribute. If you reload the page 
 
 Another, simpler way of making Backbone recognize _id as its unique identifier is to set the idAttribute of the model to _id.
 
-<<<<<<< HEAD
-If you now try to add a new book using the form you’ll notice that it is a similar story to delete – models won't get persisted on the server because Backbone.Collection.add doesn’t automatically sync, but it is easy to fix. In `LibraryView.addBook()`, change the line reading:
-=======
 If you now try to add a new book using the form you’ll notice that it is a similar story to delete – models wont get persisted on the server. This is because Backbone.Collection.add doesn’t automatically sync, but it is easy to fix. In the LibraryView we find in `views/library.js` change the line reading:
->>>>>>> upstream/gh-pages
 
 ```javascript
 this.collection.add( new Book( formData ) );
@@ -963,55 +959,12 @@ addBook: function( e ) {
 ```
 
 Our change adds two checks to the form input fields. First, we're checking if the current element is the keywords input field, in which case we're splitting the string on each space and creating an array of keyword objects.
+
 Then we're checking if the current element is the releaseDate input field, in which case we're calling `datePicker(“getDate”)` which returns a Date object. We then use the `getTime` function on that to get the time in milliseconds.
 
 Now you should be able to add new books with both a release date and keywords!
 
 ![](img/chapter5-12.png)
-
-### Connecting with a third-party API
-
-In a real-world scenario, the model and the view can be adapted to conform to a third party API. For example:
-
-```
-url                                            HTTP Method  Operation
-index.php?option=com_todo&view=books&task=get  GET          Get an array of all books
-```
-
-In the model, you can define the third party API URL via url definition:
-
-```javascript
-url : function() {
-  return 'index.php?option=com_todo&view=books&task=get';
-}
-```
-
-In the view, you can define the attributes to be processed by the model:
-
-```javascript
-// Third party API example.
-this.collection.create( this.collection.model, {
-    attrs: {
-       bookId: this.$( '#book_id' ).val()
-    },
-
-    // Wait for the answer before updating the collection.
-    wait: true,
-
-    // Report if there's an error.
-    error: function( model, fail, xhr ) {
-        ....
-    }
-});
-```
-
-The final result is a POST to the defined url. In the POST body, the attributes are submitted as a JSON-encoded array which could be processed by a PHP server as follows:
-
-```php
-$raw = file_get_contents('php://input');
-$data = json_decode($raw, true);
-$book_id = $data['bookId'];
-```
 
 ### Summary
 
