@@ -1,4 +1,4 @@
-# Exercise 2: Book Library - Your first RESTful Backbone.js app
+# Exercise 2: Book Library - Your First RESTful Backbone.js App
 
 While our first application gave us a good taste of how Backbone.js applications are made, most real-world applications will want to communicate with a back-end of some sort. Let's reinforce what we have already learned with another example, but this time we will also create a RESTful API for our application to talk to.
 

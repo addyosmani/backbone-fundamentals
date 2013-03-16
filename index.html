@@ -130,7 +130,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <li><a href="#todo-routing">Todo routing</a></li>
 <li><a href="#summary-2">Summary</a></li>
 </ul></li>
-<li><a href="#exercise-2-book-library---your-first-restful-backbone.js-app">Exercise 2: Book Library - Your first RESTful Backbone.js app</a><ul>
+<li><a href="#exercise-2-book-library---your-first-restful-backbone.js-app">Exercise 2: Book Library - Your First RESTful Backbone.js App</a><ul>
 <li><a href="#setting-up">Setting up</a><ul>
 <li><a href="#creating-the-model-collection-views-and-app">Creating the Model, Collection, Views, and App</a></li>
 </ul></li>
@@ -211,16 +211,17 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <li><a href="#common-pitfall-when-organizing-code-in-modules">Common Pitfall when organizing code in modules</a></li>
 <li><a href="#executing-the-build-with-r.js">Executing the Build with r.js</a></li>
 </ul></li>
-<li><a href="#exercise-building-a-modular-backbone-app-with-amd-requirejs">Exercise: Building a modular Backbone app with AMD &amp; RequireJS</a><ul>
+</ul></li>
+<li><a href="#exercise-your-first-modular-backbone-requirejs-app">Exercise: Your First Modular Backbone + RequireJS App</a><ul>
 <li><a href="#overview">Overview</a></li>
 <li><a href="#markup">Markup</a></li>
 <li><a href="#configuration-options">Configuration options</a></li>
 <li><a href="#modularizing-our-models-views-and-collections">Modularizing our models, views and collections</a></li>
-</ul></li>
 <li><a href="#route-based-module-loading">Route-based module loading</a><ul>
 <li><a href="#json-based-module-configuration">JSON-based module configuration</a></li>
 <li><a href="#module-loader-router">Module loader Router</a></li>
 <li><a href="#using-nodejs-to-handle-pushstate">Using NodeJS to handle pushState</a></li>
+</ul></li>
 </ul></li>
 <li><a href="#decoupling-backbone-with-the-mediator-and-facade-patterns">Decoupling Backbone with the Mediator and Facade Patterns</a><ul>
 <li><a href="#summary-4">Summary</a></li>
@@ -248,7 +249,6 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <li><a href="#implementation-notes">Implementation notes:</a></li>
 </ul></li>
 <li><a href="#plugins">Plugins</a></li>
-</ul></li>
 </ul></li>
 <li><a href="#backbone-boilerplate-and-grunt-bbb">Backbone Boilerplate And Grunt-BBB</a><ul>
 <li><a href="#getting-started">Getting Started</a><ul>
@@ -2418,7 +2418,7 @@ secondTodo instanceof <span class="kw">app</span>.<span class="fu">Todo</span> <
 <h2 id="summary-2"><a href="#TOC">Summary</a></h2>
 <p>We’ve now built our first complete Backbone.js application. The latest version of the full app can be viewed online at any time and the sources are readily available via <a href="http://www.todomvc.com">TodoMVC</a>.</p>
 <p>Later on in the book, we’ll learn how to further modularize this application using RequireJS, swap out our persistence layer to a database back-end, and finally unit test the application with a few different testing frameworks.</p>
-<h1 id="exercise-2-book-library---your-first-restful-backbone.js-app"><a href="#TOC">Exercise 2: Book Library - Your first RESTful Backbone.js app</a></h1>
+<h1 id="exercise-2-book-library---your-first-restful-backbone.js-app"><a href="#TOC">Exercise 2: Book Library - Your First RESTful Backbone.js App</a></h1>
 <p>While our first application gave us a good taste of how Backbone.js applications are made, most real-world applications will want to communicate with a back-end of some sort. Let’s reinforce what we have already learned with another example, but this time we will also create a RESTful API for our application to talk to.</p>
 <p>In this exercise we will build a library application for managing digital books using Backbone. For each book we will store the title, author, date of release, and some keywords. We’ll also show a picture of the cover.</p>
 <h2 id="setting-up"><a href="#TOC">Setting up</a></h2>
@@ -5265,12 +5265,11 @@ var section = models.section;</code></pre>
 <pre><code>&gt; npm install requirejs</code></pre>
 <p>…you can execute the build on the command line:</p>
 <pre><code>&gt; r.js -o app.build.js</code></pre>
-<h2 id="exercise-building-a-modular-backbone-app-with-amd-requirejs"><a href="#TOC">Exercise: Building a modular Backbone app with AMD &amp; RequireJS</a></h2>
-<p>In this chapter, we’ll look at our first practical Backbone &amp; RequireJS project - how to build a modular Todo application. The application will allow us to add new todos, edit new todos and clear todo items that have been marked as completed. For a more advanced practical, see the section on mobile Backbone development.</p>
+<h1 id="exercise-your-first-modular-backbone-requirejs-app"><a href="#TOC">Exercise: Your First Modular Backbone + RequireJS App</a></h1>
+<p>In this chapter, we’ll look at our first practical Backbone &amp; RequireJS project - how to build a modular Todo application. Similar to exercise 1, the application will allow us to add new todos, edit new todos and clear todo items that have been marked as completed. For a more advanced practical, see the section on mobile Backbone development.</p>
 <p>The complete code for the application can can be found in the <code>practicals/modular-todo-app</code> folder of this repo (thanks to Thomas Davis and Jérôme Gravel-Niquet). Alternatively grab a copy of my side-project <a href="https://github.com/addyosmani/todomvc">TodoMVC</a> which contains the sources to both AMD and non-AMD versions.</p>
-<p><strong>Note:</strong> Thomas may be covering a practical on this exercise in more detail on <a href="http://backbonetutorials.com">backbonetutorials.com</a> at some point soon, but for this section I’ll be covering what I consider the core concepts.</p>
 <h3 id="overview"><a href="#TOC">Overview</a></h3>
-<p>Writing a <q>modular</q> Backbone application can be a straight-forward process. There are however, some key conceptual differences to be aware of if opting to use AMD as your module format of choice:</p>
+<p>Writing a modular Backbone application can be a straight-forward process. There are however, some key conceptual differences to be aware of if opting to use AMD as your module format of choice:</p>
 <ul>
 <li>As AMD isn’t a standard native to JavaScript or the browser, it’s necessary to use a script loader (such as RequireJS or curl.js) in order to support defining components and modules using this module format. As we’ve already reviewed, there are a number of advantages to using the AMD as well as RequireJS to assist here.</li>
 <li>Models, views, controllers and routers need to be encapsulated <em>using</em> the AMD-format. This allows each component of our Backbone application to cleanly manage dependencies (e.g collections required by a view) in the same way that AMD allows non-Backbone modules to.</li>
@@ -5644,7 +5643,7 @@ Backbone.history.start({
   pushState: true,
   root: &#39;/&#39;
 });</code></pre>
-<h2 id="decoupling-backbone-with-the-mediator-and-facade-patterns"><a href="#TOC">Decoupling Backbone with the Mediator and Facade Patterns</a></h2>
+<h1 id="decoupling-backbone-with-the-mediator-and-facade-patterns"><a href="#TOC">Decoupling Backbone with the Mediator and Facade Patterns</a></h1>
 <p>In this section we’ll discuss applying some of the concepts I cover in my article on <a href="http://addyosmani.com/largescalejavascript">Large-scale JavaScript Application development</a> to Backbone.</p>
 <p><em>After, you may be interested in taking a look At <a href="http://github.com/aurajs/aura">Aura</a> - my popular widget-based Backbone.js extension framework based on many of the concepts we will be covering in this section.</em></p>
 <h3 id="summary-4"><a href="#TOC">Summary</a></h3>
@@ -5918,7 +5917,7 @@ Backbone.history.start({
 
 });</code></pre>
 <p>That’s it for this section. If you’ve been intrigued by some of the concepts covered, I encourage you to consider taking a look at my <a href="http://addyosmani.com/blog/large-scale-javascript-application-architecture/">slides</a> on Large-scale JS from the jQuery Summit or my longer post on the topic <a href="http://addyosmani.com/largescalejavascript">here</a> for more information.</p>
-<h2 id="paginating-backbone.js-requests-collections"><a href="#TOC">Paginating Backbone.js Requests &amp; Collections</a></h2>
+<h1 id="paginating-backbone.js-requests-collections"><a href="#TOC">Paginating Backbone.js Requests &amp; Collections</a></h1>
 <p>Pagination is a ubiquitous problem we often find ourselves needing to solve on the web. Perhaps most predominantly when working with back-end APIs and JavaScript-heavy clients which consume them.</p>
 <p>On this topic, we’re going to go through a set of <strong>pagination components</strong> I wrote for Backbone.js, which should hopefully come in useful if you’re working on applications which need to tackle this problem. They’re part of an extension called <a href="http://github.com/addyosmani/backbone.paginator">Backbone.Paginator</a>.</p>
 <p>When working with a structural framework like Backbone.js, the three types of pagination we are most likely to run into are:</p>
