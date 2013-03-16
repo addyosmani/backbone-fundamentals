@@ -7320,8 +7320,7 @@ expect(<span class="ch">&#39;click&#39;</span>).<span class="fu">toHaveBeenTrigg
 });</code></pre>
 <p>What we’re now doing in the above spec is appending the rendered todo item into the fixture. We then set expectations against the fixture, which may be something desirable when a view is setup against an element which already exists in the DOM. It would be necessary to provide both the fixture and test the <code>el</code> property correctly picking up the element expected when the view is instantiated.</p>
 <h4 id="rendering-with-a-templating-system"><a href="#TOC">Rendering with a templating system</a></h4>
-<p>JavaScript templating systems (such as <a href="http://handlebarsjs.com/">Handlebars</a>, <a href="http://mustache.github.com/">Mustache</a>, and Underscore’s own <a href="http://underscorejs.org/#template">micro-templating</a>) support conditional logic in template strings. What this effectively means is that we can add if/else/ternery expressions inline which can then be evaluated as needed, allowing us to build even more powerful templates.</p>
-<p>In our case, when a user marks a Todo item as complete (done), we may wish to provide them with visual feedback (such as a striked line through the text) to differentiate the item from those that are remaining. This can be done by attaching a new class to the item. Let’s begin by writing a test:</p>
+<p>When a user marks a Todo item as complete (done), we may wish to provide them with visual feedback (such as a striked line through the text) to differentiate the item from those that are remaining. This can be done by attaching a new class to the item. Let’s begin by writing a test:</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript">describe(<span class="ch">&#39;When a todo is done&#39;</span>, <span class="kw">function</span>() {
 
   beforeEach(<span class="kw">function</span>() {
@@ -7349,14 +7348,30 @@ expect(<span class="ch">&#39;click&#39;</span>).<span class="fu">toHaveBeenTrigg
   }
   <span class="kw">return</span> <span class="kw">this</span>;
 }</code></pre>
-<p>However, this can get unwieldily fairly quickly. As the logic in our templates increases, so does the complexity involved. This is where templates libraries can help. As mentioned earlier, there are a number of popular options available, but for the purposes of this chapter we’re going to stick to using Underscore’s built-in Microtemplating. While there are more advanced options you’re free to explore, the benefit of this is that no additional files are required and we can easily change the existing Jasmine specs without too much adjustment.</p>
-<p>The TodoView object modified to use Underscore templating would look as follows:</p>
+<p>However, this can get unwieldily fairly quickly. As the level of complexity and logic in our templates increase, so do the challenges associated with testing them. We can ease this process by taking advantage of modern templating libraries, many of which have already been demonstrated to work well with testing solutions such as Jasmine.</p>
+<p>JavaScript templating systems (such as <a href="http://handlebarsjs.com/">Handlebars</a>, <a href="http://mustache.github.com/">Mustache</a>, and Underscore’s own <a href="http://underscorejs.org/#template">micro-templating</a>) support conditional logic in template strings. What this effectively means is that we can add if/else/ternery expressions inline which can then be evaluated as needed, allowing us to build even more powerful templates.</p>
+<p>In our case, we are going to use the micro-templating found in Underscore.js as no additional files are required to use it and we can easily modify our existing specs to use it without a great deal of effort.</p>
+<p>Assuming our template is defined using a script tag of ID <code>myTemplate</code>:</p>
+<pre><code>&lt;script type=&quot;text/template&quot; id=&quot;myTemplate&quot;&gt;
+    &lt;div class=&quot;todo &lt;%= done ? &#39;done&#39; : &#39;&#39; %&gt;&quot;&gt;
+            &lt;div class=&quot;display&quot;&gt;
+              &lt;input class=&quot;check&quot; type=&quot;checkbox&quot; &lt;%= done ? &#39;checked=&quot;checked&quot;&#39; : &#39;&#39; %&gt; /&gt;
+              &lt;label class=&quot;todo-content&quot;&gt;&lt;%= text %&gt;&lt;/label&gt;
+              &lt;span class=&quot;todo-destroy&quot;&gt;&lt;/span&gt;
+            &lt;/div&gt;
+            &lt;div class=&quot;edit&quot;&gt;
+              &lt;input class=&quot;todo-input&quot; type=&quot;text&quot; value=&quot;&lt;%= content %&gt;&quot; /&gt;
+            &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/script&gt;</code></pre>
+<p>Our TodoView can be modified to use Underscore templating as follows:</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> TodoView = <span class="kw">Backbone.View</span>.<span class="fu">extend</span>({
 
   <span class="dt">tagName</span>: <span class="ch">&#39;li&#39;</span>,
+  <span class="dt">template</span>: <span class="kw">_</span>.<span class="fu">template</span>($(<span class="ch">&#39;#myTemplate&#39;</span>).<span class="fu">html</span>()),
 
   <span class="dt">initialize</span>: <span class="kw">function</span>(options) {
-    <span class="kw">this</span>.<span class="fu">template</span> = <span class="kw">_</span>.<span class="fu">template</span>(<span class="kw">options</span>.<span class="fu">template</span> || <span class="ch">&#39;&#39;</span>);
+    <span class="co">// ...</span>
   },
 
   <span class="dt">render</span>: <span class="kw">function</span>() {
@@ -7367,8 +7382,11 @@ expect(<span class="ch">&#39;click&#39;</span>).<span class="fu">toHaveBeenTrigg
   ...
 
 });</code></pre>
-<p>Above, the initialize() method compiles a supplied Underscore template (using the _.template() function) in the instantiation. A more common way of referencing templates is placing them in a script tag using a custom script type (e.g., type=<q>text/template</q>). As this isn’t a script type any browser understands, it’s simply ignored, however referencing the script by an id attribute allows the template to be kept separate to other parts of the page which wish to use it. In real world applications, it’s preferable to either do this or load in templates stored in external files for testing.</p>
-<p>For testing purposes, we’re going to continue using the string injection approach to keep things simple. There is however a useful trick that can be applied to automatically create or extend templates in the Jasmine scope for each test. By creating a new directory (say, <q>templates</q>) in the <q>spec</q> folder and including a new script file with the following contents into SpecRunner.html, we can add a todo property which contains the Underscore template we wish to use:</p>
+<p>So, what’s going on here? We’re first defining our template in a script tag with a custom script type (e.g., type=<q>text/template</q>). As this isn’t a script type any browser understands, it’s simply ignored, however referencing the script by an id attribute allows the template to be kept separate to other parts of the page.</p>
+<p>In our view, we’re the using the Underscore <code>_.template()</code> method to compile our template into a function that we can easily pass model data to later on. In the line <code>this.model.toJSON()</code> we are simply returning a copy of the model’s attributes for JSON stringification to the <code>template</code> method, creating a block of HTML that can now be appended to the DOM.</p>
+<p>Note: Ideally all of your template logic should exist outside of your specs, either in individual template files or embedded using script tags within your SpecRunner. This is generally more maintainable.</p>
+<p>If you are working with much smaller templates and are not doing this, there is however a useful trick that can be applied to automatically create or extend templates in the Jasmine shared functional scope for each test.</p>
+<p>By creating a new directory (say, <q>templates</q>) in the <q>spec</q> folder and including a new script file with the following contents into SpecRunner.html, we can manually add custom attributes representing smaller templates we wish to use:</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript">beforeEach(<span class="kw">function</span>() {
   <span class="kw">this</span>.<span class="fu">templates</span> = <span class="kw">_</span>.<span class="fu">extend</span>(<span class="kw">this</span>.<span class="fu">templates</span> || {}, {
     <span class="dt">todo</span>: <span class="ch">&#39;&lt;label class=&quot;todo-content&quot;&gt;&#39;</span> +
@@ -7376,7 +7394,7 @@ expect(<span class="ch">&#39;click&#39;</span>).<span class="fu">toHaveBeenTrigg
           <span class="ch">&#39;&lt;/label&gt;&#39;</span>
   });
 });</code></pre>
-<p>To finish this off, we simply update our existing spec to reference the template when instantiating the TodoView object:</p>
+<p>To finish this off, we simply update our existing spec to reference the template when instantiating the TodoView:</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript">describe(<span class="ch">&#39;TodoView&#39;</span>, <span class="kw">function</span>() {
 
   beforeEach(<span class="kw">function</span>() {
@@ -7398,7 +7416,7 @@ expect(<span class="ch">&#39;click&#39;</span>).<span class="fu">toHaveBeenTrigg
           <span class="ch">&#39;&lt;/label&gt;&#39;</span>
   });
 });</code></pre>
-<p>This will now also pass without any issues. Remember that jasmine-jquery also supports loading external fixtures into your specs easily using its built in <code>loadFixtures()</code> and <code>readFixtures()</code> methods. For more information, see the official jasmine-jquery <a href="https://github.com/velesin/jasmine-jquery">docs</a>.</p>
+<p>This will now also pass without any issues, however as mentioned, this last approach probably only makes sense if you’re working with smaller, highly dynamic templates.</p>
 <h2 id="conclusions-1"><a href="#TOC">Conclusions</a></h2>
 <p>We have now covered how to write Jasmine tests for Backbone.js models, collections, and views. While testing routing can at times be desirable, some developers feel it can be more optimal to leave this to third-party tools such as Selenium, so do keep this in mind.</p>
 <h2 id="exercise-1"><a href="#TOC">Exercise</a></h2>

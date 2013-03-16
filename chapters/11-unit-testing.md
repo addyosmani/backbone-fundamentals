@@ -823,9 +823,7 @@ What we're now doing in the above spec is appending the rendered todo item into 
 #### Rendering with a templating system
 
 
-JavaScript templating systems (such as [Handlebars](http://handlebarsjs.com/), [Mustache](http://mustache.github.com/), and Underscore's own [micro-templating](http://underscorejs.org/#template)) support conditional logic in template strings. What this effectively means is that we can add if/else/ternery expressions inline which can then be evaluated as needed, allowing us to build even more powerful templates.
-
-In our case, when a user marks a Todo item as complete (done), we may wish to provide them with visual feedback (such as a striked line through the text) to differentiate the item from those that are remaining. This can be done by attaching a new class to the item. Let's begin by writing a test:
+When a user marks a Todo item as complete (done), we may wish to provide them with visual feedback (such as a striked line through the text) to differentiate the item from those that are remaining. This can be done by attaching a new class to the item. Let's begin by writing a test:
 
 
 ```javascript
@@ -868,17 +866,39 @@ render: function() {
 ```
 
 
-However, this can get unwieldily fairly quickly. As the logic in our templates increases, so does the complexity involved. This is where templates libraries can help. As mentioned earlier, there are a number of popular options available, but for the purposes of this chapter we're going to stick to using Underscore's built-in Microtemplating. While there are more advanced options you're free to explore, the benefit of this is that no additional files are required and we can easily change the existing Jasmine specs without too much adjustment.
+However, this can get unwieldily fairly quickly. As the level of complexity and logic in our templates increase, so do the challenges associated with testing them. We can ease this process by taking advantage of modern templating libraries, many of which have already been demonstrated to work well with testing solutions such as Jasmine. 
 
-The TodoView object modified to use Underscore templating would look as follows:
+JavaScript templating systems (such as [Handlebars](http://handlebarsjs.com/), [Mustache](http://mustache.github.com/), and Underscore's own [micro-templating](http://underscorejs.org/#template)) support conditional logic in template strings. What this effectively means is that we can add if/else/ternery expressions inline which can then be evaluated as needed, allowing us to build even more powerful templates.
+
+In our case, we are going to use the micro-templating found in Underscore.js as no additional files are required to use it and we can easily modify our existing specs to use it without a great deal of effort.
+
+Assuming our template is defined using a script tag of ID `myTemplate`:
+
+```
+<script type="text/template" id="myTemplate">
+    <div class="todo <%= done ? 'done' : '' %>">
+            <div class="display">
+              <input class="check" type="checkbox" <%= done ? 'checked="checked"' : '' %> />
+              <label class="todo-content"><%= text %></label>
+              <span class="todo-destroy"></span>
+            </div>
+            <div class="edit">
+              <input class="todo-input" type="text" value="<%= content %>" />
+            </div>
+    </div>
+</script>
+```
+
+Our TodoView can be modified to use Underscore templating as follows:
 
 ```javascript
 var TodoView = Backbone.View.extend({
 
   tagName: 'li',
+  template: _.template($('#myTemplate').html()),
 
   initialize: function(options) {
-    this.template = _.template(options.template || '');
+    // ...
   },
 
   render: function() {
@@ -891,10 +911,15 @@ var TodoView = Backbone.View.extend({
 });
 ```
 
+So, what's going on here? We're first defining our template in a script tag with a custom script type (e.g., type="text/template"). As this isn't a script type any browser understands, it's simply ignored, however referencing the script by an id attribute allows the template to be kept separate to other parts of the page.
 
-Above, the initialize() method compiles a supplied Underscore template (using the _.template() function) in the instantiation. A more common way of referencing templates is placing them in a script tag using a custom script type (e.g., type="text/template"). As this isn't a script type any browser understands, it's simply ignored, however referencing the script by an id attribute allows the template to be kept separate to other parts of the page which wish to use it. In real world applications, it's preferable to either do this or load in templates stored in external files for testing.
+In our view, we're the using the Underscore `_.template()` method to compile our template into a function that we can easily pass model data to later on. In the line `this.model.toJSON()` we are simply returning a copy of the model's attributes for JSON stringification to the `template` method, creating a block of HTML that can now be appended to the DOM.
 
-For testing purposes, we're going to continue using the string injection approach to keep things simple. There is however a useful trick that can be applied to automatically create or extend templates in the Jasmine scope for each test. By creating a new directory (say, 'templates') in the 'spec' folder and including a new script file with the following contents into SpecRunner.html, we can add a todo property which contains the Underscore template we wish to use:
+Note: Ideally all of your template logic should exist outside of your specs, either in individual template files or embedded using script tags within your SpecRunner. This is generally more maintainable.
+
+If you are working with much smaller templates and are not doing this, there is however a useful trick that can be applied to automatically create or extend templates in the Jasmine shared functional scope for each test. 
+
+By creating a new directory (say, 'templates') in the 'spec' folder and including a new script file with the following contents into SpecRunner.html, we can manually add custom attributes representing smaller templates we wish to use:
 
 ```javascript
 beforeEach(function() {
@@ -906,8 +931,7 @@ beforeEach(function() {
 });
 ```
 
-To finish this off, we simply update our existing spec to reference the template when instantiating the TodoView object:
-
+To finish this off, we simply update our existing spec to reference the template when instantiating the TodoView:
 
 ```javascript
 describe('TodoView', function() {
@@ -925,7 +949,6 @@ describe('TodoView', function() {
 });
 ```
 
-
 The existing specs we've looked at would continue to pass using this approach, leaving us free to adjust the template with some additional conditional logic for Todos with a status of 'done':
 
 ```javascript
@@ -938,7 +961,7 @@ beforeEach(function() {
 });
 ```
 
-This will now also pass without any issues. Remember that jasmine-jquery also supports loading external fixtures into your specs easily using its built in ```loadFixtures()``` and ```readFixtures()``` methods. For more information, see the official jasmine-jquery [docs](https://github.com/velesin/jasmine-jquery).
+This will now also pass without any issues, however as mentioned, this last approach probably only makes sense if you're working with smaller, highly dynamic templates. 
 
 
 ## Conclusions
