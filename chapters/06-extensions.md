@@ -66,7 +66,6 @@ Consider the code that it typically requires to render a view with Backbone and 
     <span><%= email %></span>
   </div>
 </script>
-</pre>
 ```
 
 ```javascript
