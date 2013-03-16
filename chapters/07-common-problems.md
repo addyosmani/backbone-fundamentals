@@ -11,9 +11,41 @@ Perhaps the most frequent of these questions surround how to do more with Views.
 
 What is the best approach for rendering and appending Subviews in Backbone.js?
 
-**Solution**
+**Solution 1**
 
-Since web pages are composed of nested elements and Backbone views correspond to elements within the page, nesting views is an intuitive approach to managing a hierarchy of elements. As a beginner, one might try writing a very simple setup with subviews (e.g inner views) as follows:
+Since pages are composed of nested elements and Backbone views correspond to elements within the page, nesting views is an intuitive approach to managing a hierarchy of elements.
+
+The best way to combine views is simply using:
+
+```
+this.$('.someContainer').append(innerView.el);
+```
+
+which just relies on jQuery. We could use this in a real example as follows:
+
+```javascript
+...
+initialize : function () { 
+    //...
+},
+
+render : function () {
+
+    this.$el.empty();
+
+    this.innerView1 = new Subview({options});
+    this.innerView2 = new Subview({options});
+
+    this.$('.inner-view-container')
+        .append(this.innerView1.el)
+        .append(this.innerView2.el);
+}
+```
+
+**Solution 2**
+
+Beginners sometimes also try using `setElement` to solve tis problem, however keep in mind that using this method is an easy way to shoot yourself in the foot. Try to avoid if possible:
+
 
 ```javascript
 
@@ -36,59 +68,18 @@ render : function () {
 }
 ```
 
-Here we are creating subviews in the parent view's `initialize()` method and rendering the subviews in the parent's `render()` method. The elements managed by the subviews exist in the parent's template and the `View.setElement()` method is used to re-assign the element associated with each subview. `setElement()` changes a view's element, including re-delegating event handlers by removing them from the old element and binding them to the new element. Note that `setElement()` returns the view, allowing us to chain the call to `render()`.
+Here we are creating subviews in the parent view's `initialize()` method and rendering the subviews in the parent's `render()` method. The elements managed by the subviews exist in the parent's template and the `View.setElement()` method is used to re-assign the element associated with each subview. 
 
-This works and has some positive qualities: you don't need to worry about maintaining the order of your DOM elements when appending, views are initialized early, and the render() method doesn't need to take on too many responsibilities at once. Unfortunately, downsides are that you can't set the `tagName` property of subviews and events need to be re-delegated.
+`setElement()` changes a view's element, including re-delegating event handlers by removing them from the old element and binding them to the new element. Note that `setElement()` returns the view, allowing us to chain the call to `render()`.
 
-An alternative approach which doesn't suffer from the re-delegation problem can be written as follows:
+This works and has some positive qualities: you don't need to worry about maintaining the order of your DOM elements when appending, views are initialized early, and the render() method doesn't need to take on too many responsibilities at once. 
 
-```javascript
-
-initialize : function () {
-
-},
-
-render : function () {
-
-    this.$el.empty();
-
-    this.innerView1 = new Subview({options});
-    this.innerView2 = new Subview({options});
+Unfortunately, downsides are that you can't set the `tagName` property of subviews and events need to be re-delegated. The first solution doesn't suffer from this problem.
 
 
-    this.$el.append(this.innerView1.render().el, this.innerView2.render().el);
-}
+**Solution 3**
 
-```
-
-In this version, we are creating new instances of the subviews, rendering them, and appending their elements to an empty parent element each time the parent is rendered. Each subview is responsible for creating and rendering its own element, so we don't need a template containing empty placeholders and the issue with `tagName`s is solved as they are defined by the subviews once again.
-
-Yet another variation which moves logic into an `onRender` event, could be written with only a few subtle changes:
-
-```javascript
-
-initialize : function () {
-    this.on('render', this.onRender);
-},
-
-render : function () {
-
-    this.$el.html(this.template);
-
-    // more logic
-
-    return this.trigger('render');
-},
-
-onRender : function () {
-    this.innerView1 = new Subview();
-    this.innerView2 = new Subview();
-    this.innerView1.setElement('.some-element1').render();
-    this.innerView2.setElement('.some-element2').render();
-}
-```
-
-If you find yourself nesting views in your application, there are more optimal approaches possible for initializing, rendering, and appending your subviews. One such solution could be written:
+One more possible solution to this problem could be written:
 
 ```javascript
 
@@ -121,7 +112,9 @@ This tackles a few specific design decisions:
 
 Note that InnerView needs to call `View.delegateEvents()` to bind its event handlers to its new DOM since it is replacing the content of its element.
 
-A second potential solution is this, which may appear cleaner but in reality has a tendency to affect performance:
+**Solution 4**
+
+A better solution, which is more clean but has the potential to affect performance is:
 
 ```javascript
 
@@ -171,7 +164,7 @@ var OuterView = Backbone.View.extend({
 
 ```
 
-Generally speaking, more developers opt for the first solution as:
+Generally speaking, more developers opt for Solution 1 or 5 as:
 
 * The majority of their views may already rely on being in the DOM in their render() method
 * When the OuterView is re-rendered, views don't have to be re-initialized where re-initialization has the potential to cause memory leaks and issues with existing bindings
@@ -276,9 +269,13 @@ How would one render a Parent View from one of its Children?
 
 **Solution**
 
-If you say, have a view which contains another view (e.g., a main view containing a modal view) and would like to render or re-render the parent view from the child, this is extremely straight-forward.
+In a scenario where you have a view containing another view, such as a photo gallery containing a larger view modal, you may find that you need to render or re-render the parent view from the child. The good news is that solving this problem is quite straight-forward.
 
-In such a scenario, you would most likely want to execute the rendering when a particular event has occurred. For the sake of example, let us call this event 'somethingHappened'. The parent view can bind notifications on the child view to know when the event has occurred. It can then render itself.
+The simplest solution is to just use `this.parentView.render();`.
+
+If however inversion of control is desired, events may be used to provide an equally valid solution. 
+
+Say we wish to begin rendering when a particular event has occurred. For the sake of example, let us call this event 'somethingHappened'. The parent view can bind notifications on the child view to know when the event has occurred. It can then render itself.
 
 In the parent view:
 
@@ -350,78 +347,6 @@ var ApplicationViewA = Backbone.View.extend({
 This way your ApplicationViewA doesn't care if it is an ApplicationViewB or FooView that publishes the 'selected' event, only that the event occurred. As a result, you may find it a maintainable way to manage events between parts of your application, not just views.
 
 (Thanks to [John McKim](http://stackoverflow.com/users/937577/john-mckim) for this tip and for referencing my Large Scale JavaScript Patterns article).
-
-
-#### Disposing Views cleanly
-
-**Problem**
-
-How do you cleanly dispose Views to avoid memory leaks?
-
-**Solution**
-
-As your application grows, keeping live views around which aren't being used can quickly become difficult to maintain. Instead, you may find it better to destroy views that are no longer required and simply create new ones as the need arises.
-
-A solution to help with this is to create a new BaseView that extends Backbone.View that will maintain a reference to all of the events to which it is subscribed to. Then when you dispose of a view, all of those bindings will be automatically unbound.
-
-
-Here is a sample implementation of this:
-
-```javascript
-var BaseView = function (options) {
-
-    this.bindings = [];
-    Backbone.View.apply(this, [options]);
-};
-
-_.extend(BaseView.prototype, Backbone.View.prototype, {
-
-    bindTo: function (model, ev, callback) {
-
-        model.bind(ev, callback, this);
-        this.bindings.push({ model: model, ev: ev, callback: callback });
-    },
-
-    unbindFromAll: function () {
-        _.each(this.bindings, function (binding) {
-            binding.model.unbind(binding.ev, binding.callback);
-        });
-        this.bindings = [];
-    },
-
-    dispose: function () {
-        this.unbindFromAll(); // this will unbind all events that this view has bound to
-        this.unbind(); // this will unbind all listeners to events from this view. This is probably not necessary because this view will be garbage collected.
-        this.remove(); // uses the default Backbone.View.remove() method which removes this.el from the DOM and removes DOM events.
-    }
-
-});
-```
-
-```javascript
-BaseView.extend = Backbone.View.extend;
-```
-
-Then, whenever a view has the need to bind to an event on a model or a collection, you would use the bindTo method. e.g:
-
-```
-var SampleView = BaseView.extend({
-
-    initialize: function(){
-        this.bindTo(this.model, 'change', this.render);
-        this.bindTo(this.collection, 'reset', this.doSomething);
-    }
-});
-```
-
-When you remove a view, simply call the dispose() method which will clean everything up for you automatically:
-
-```javascript
-var sampleView = new SampleView({model: some_model, collection: some_collection});
-sampleView.dispose();
-```
-
-(Thanks to [JohnnyO](http://stackoverflow.com/users/188740/johnnyo) for this tip).
 
 #### Disposing View hierarchies
 
@@ -503,6 +428,14 @@ By default, when we define a custom `validate` method, Backbone passes all of a 
 This means that it can be a challenge to determine which specific fields are being set or validated without being concerned about the others that aren't being set at the same time.
 
 **Solution**
+
+The most optimal solution to this problem probably isn't to stick validation in your model attributes. Instead, have a function specifically designed for validating that particular form. There are many good JavaScript form validation libraries out there. If you want to stick it on your model, just make it a class function:
+
+```javascript
+User.validate = function(formElement) {
+  //...
+};
+```
 
 To illustrate this problem better, let us look at a typical registration form use case that:
 
@@ -785,17 +718,6 @@ Model.extend = Collection.extend = Router.extend = View.extend = extend;
 ```
 
 Most development with Backbone is based around inheriting from these objects, and they're designed to mimic a classical object-oriented implementation.
-
-If this sounds familiar, it's because `extend` is an Underscore.js utility, although Backbone itself does a lot more with this. See below for Underscore's `extend`:
-
-```javascript
-each(slice.call(arguments, 1), function(source) {
-  for (var prop in source) {
-    obj[prop] = source[prop];
-  }
-});
-return obj;
-```
 
 The above isn't quite the same as ECMAScript 5's `Object.create`, as it's actually copying properties (methods and values) from one object to another. As this isn't enough to support Backbone's inheritance and class model, the following steps are performed:
 

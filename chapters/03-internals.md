@@ -424,7 +424,11 @@ Presto! This populates the template, giving you a data-complete set of markup in
 
 The Backbone `events` attribute allows us to attach event listeners to either `el`-relative custom selectors, or directly to `el` if no selector is provided. An event takes the form `{'eventName selector': 'callbackFunction'}` and a number of DOM event-types are supported, including `click`, `submit`, `mouseover`, `dblclick` and more.
 
-What isn't instantly obvious is that while Backbone uses jQuery's `.delegate()` underneath, it goes further by extending it so that `this` always refers to the current view object within callback functions. The only thing to really keep in mind is that any string callback supplied to the events attribute must have a corresponding function with the same name within the scope of your view. In our TodoView example, the edit callback is invoked when the user double-clicks a label element within the `el` element, updateOnEnter is called for each keypress in an element with class 'edit', and close executes when an element with class 'edit' loses focus. Each of these callback functions can use `this` to refer to the TodoView object.
+What isn't instantly obvious is that while Backbone uses jQuery's `.delegate()` underneath, it goes further by extending it so that `this` always refers to the current view object within callback functions. The only thing to really keep in mind is that any string callback supplied to the events attribute must have a corresponding function with the same name within the scope of your view. 
+
+The declarative, delegated jQuery events means that you don't have to worry about whether a particular element has been rendered to the DOM yet or not. Usually with jQuery you have to worry about "presence or absence in the DOM" all the time when binding events.
+
+In our TodoView example, the edit callback is invoked when the user double-clicks a label element within the `el` element, updateOnEnter is called for each keypress in an element with class 'edit', and close executes when an element with class 'edit' loses focus. Each of these callback functions can use `this` to refer to the TodoView object.
 
 
 ## Collections
@@ -623,7 +627,7 @@ TodosCollection.reset([
 console.log('Collection size: ' + TodosCollection.length); // Collection size: 1
 ```
 
-Note that using `Collection.reset()` doesn't fire any `add` or `remove` events. A `reset` event is fired instead as shown in the example.
+Note that using `Collection.reset()` doesn't fire any `add` or `remove` events. A `reset` event is fired instead as shown in the example. The reason you might want to use this is to perform super-optimized rendering in extreme cases where individual events are too expensive.
 
 #### RESTful Persistence
 
@@ -711,19 +715,21 @@ See the Backbone.js documentation for full descriptions of the supported options
 
 #### Underscore utility functions
 
-As Backbone requires Underscore as a hard dependency, we're able to use many of the utilities it has to offer to aid with our application development. Here's an example of how Underscore's `forEach` method can be used for iterating over collections and its `sortBy()` method can be used to sort a collection of todos based on a particular attribute.
+As Backbone requires Underscore as a hard dependency, we're able to use many of the utilities it has to offer to aid with our application development. 
+
+##### `forEach` can be used for iterating over collections 
 
 ```javascript
-var TodosCollection = new Backbone.Collection();
+var Todos = new Backbone.Collection();
 
-TodosCollection.add([
+Todos.add([
   { title: 'go to Belgium.', completed: false },
   { title: 'go to China.', completed: false },
   { title: 'go to Austria.', completed: true }
 ]);
 
 // iterate over models in the collection
-TodosCollection.forEach(function(model){
+Todos.forEach(function(model){
   console.log(model.get('title'));
 });
 // Above logs:
@@ -731,8 +737,12 @@ TodosCollection.forEach(function(model){
 // go to China.
 // go to Austria.
 
+
+#####`sortBy()` can be used to sort a collection on a specific attribute.
+
+```javascript
 // sort collection
-var sortedByAlphabet = TodosCollection.sortBy(function (todo) {
+var sortedByAlphabet = Todos.sortBy(function (todo) {
     return todo.get("title").toLowerCase();
 });
 
@@ -747,7 +757,88 @@ sortedByAlphabet.forEach(function(model){
 // go to China.
 ```
 
-The complete list of what Underscore can do is beyond the scope of this book, but can be found in its official [docs](http://documentcloud.github.com/underscore/).
+##### Map can iterate through a collection, mapping each value through a transformation function
+
+```javascript
+Todos.map(function(model){
+  return model.get('label').join(' ');
+});
+```
+
+#### Retrieve the item in a collection with the min or max value of an attributea
+
+```javascript
+Todos.max(function(model){
+  return model.id;
+}).id;
+
+Todos.min(function(model){
+  return model.id;
+}).id;
+```
+
+##### Filter a collection using the filter method
+
+*Filter by a specific attribute name*
+
+```javascript
+var captions = Todos.map(function(model){
+  return model.get('caption');
+});
+```
+
+*Filter by an array of model IDs*
+
+```javascript
+var Todos = Backbone.Collection.extend({
+  model: Todo,
+  filterById: function(ids){
+    return this.models.filter(
+      function(c) { 
+        return _.contains(ids, c.id); 
+      })
+  }
+});
+```
+
+##### Return the item at a particular index within a collection
+
+```javascript
+Todos.indexOf(5);
+```
+
+##### Confirm if all of the values in a collection pass an iterator truth test
+
+```javascript
+Todos.any(function(model){
+  return model.id === 100;
+});
+```
+
+##### Return the size of a collection
+
+```javascript
+Todos.size();
+```
+
+##### Confirm whether a collection is empty or not using isEmpty
+
+```javascript
+var isEmpty = Todos.isEmpty();
+```
+
+#### Use groupBy to group a collection into groups of like items
+
+```javascript
+_.groupBy(Todos, 'id');
+
+// or
+_.groupBy(Todos, function(row){
+    return row.id;
+});
+```
+
+The complete list of what Underscore can do can be found in its official [docs](http://documentcloud.github.com/underscore/).
 
 #### Chainable API
 
@@ -788,7 +879,11 @@ console.log(names); // logs: ['John', 'Harry', 'Steve']
 
 ## Events
 
-We've seen how actions on Models and Collections can trigger events and how functions can be bound to these events and those raised by the DOM. Events are the standard way of dealing with user interface actions. Mastering events is one of the quickest ways to become more productive with Backbone, so let's take a closer look at Backbone's event model.
+Events are a basic inversion of control, where instead of having a function call another function by name, the second function registers interest in being called whenever the first "event" occurs.
+
+The part of your application that has to know how to call the other part of your app has been inverted. This is the core thing that makes it possible for your business logic to not have to know about how your user interface works and is the most powerful thing about the Backbone Events system.
+
+Mastering events is one of the quickest ways to become more productive with Backbone, so let's take a closer look at Backbone's event model.
 
 `Backbone.Events` is mixed into the other Backbone "classes", including:
 
@@ -999,7 +1094,21 @@ c.trigger('everything');
 
 `stopListening()` can also be used to selectively stop listening based on the event, model, or callback handler.
 
-`listenTo()` is especially useful with Views since removing a View without unbinding its handlers can result in memory leaks and other application bugs. The default implementation of `View.remove()` makes a call to `stopListening()`, ensuring that any listeners bound using `listenTo()` are unbound before the view is destroyed.
+If you remove views at the same time that their corresponding models are also removed, there are generally no problems. If however the model sticks around after a round of garbage collection and continues to a call a View's event handler (that you've forgotten to remove), you might have cause for concern as this can result in memory leaks.
+
+Practically, every `on` called on an object also requires an `off` to be called in order for the garbage collector to do its job. `listenTo()` changes that, allowing Views to bind to Model notifications and unbind from all of them with just one call - `stopListening()`.
+
+The default implementation of `View.remove()` makes a call to `stopListening()`, ensuring that any listeners bound using `listenTo()` are unbound before the view is destroyed.
+
+```javascript
+var a = _.extend({}, Backbone.Events);
+var b = _.extend({}, Backbone.Events);
+a.listenTo(b, 'all', function(){ console.log(true); });
+b.trigger('anything');
+a.listenTo(b, 'all', function(){ console.log(false); });
+a.stopListening();
+b.trigger('anything');
+```
 
 #### Events and Views
 
@@ -1057,7 +1166,11 @@ var view = new View();
 
 ## Routers
 
-In Backbone, routers help manage application state and connect URLs to application events. This is achieved using hash marks ("#") with URL fragments, or using the browser's pushState and History API. Some examples of routes using the hash mark may be seen below:
+In Backbone, routers provide a way for you to connect URLs (either hash fragments, or
+real) to parts of your application. Any piece of your application that you want
+to be bookmarkable, shareable, and back-button-able, needs a URL.
+
+Some examples of routes using the hash mark may be seen below:
 
 ```javascript
 http://example.com/#about
@@ -1140,7 +1253,7 @@ var TodoRouter = Backbone.Router.extend({
 var myTodoRouter = new TodoRouter();
 ```
 
-As of Backbone 0.5+, it's possible to opt-in for HTML5 pushState support via `window.history.pushState`. This permits you to define routes such as http://www.scriptjunkie.com/just/an/example. This will be supported with automatic degradation when a user's browser doesn't support pushState. In this discussion we'll continue using the hashtag method.
+Backbone offers an opt-in for HTML5 pushState support via `window.history.pushState`. This permits you to define routes such as http://backbonejs.org/just/an/example. This will be supported with automatic degradation when a user's browser doesn't support pushState. Note that it is vastly preferred that you're capable of also supporting pushState on the server side, although it is a little mroe difficult to implement.
 
 **Is there a limit to the number of routers I should be using?**
 

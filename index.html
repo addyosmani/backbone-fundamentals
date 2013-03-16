@@ -99,7 +99,19 @@ code > span.er { color: #ff0000; font-weight: bold; }
 </ul></li>
 <li><a href="#collections">Collections</a><ul>
 <li><a href="#restful-persistence">RESTful Persistence</a></li>
-<li><a href="#underscore-utility-functions">Underscore utility functions</a></li>
+<li><a href="#underscore-utility-functions">Underscore utility functions</a><ul>
+<li><a href="#foreach-can-be-used-for-iterating-over-collections"><code>forEach</code> can be used for iterating over collections</a></li>
+<li><a href="#sortby-can-be-used-to-sort-a-collection-on-a-specific-attribute."><code>sortBy()</code> can be used to sort a collection on a specific attribute.</a></li>
+<li><a href="#map-can-iterate-through-a-collection-mapping-each-value-through-a-transformation-function">Map can iterate through a collection, mapping each value through a transformation function</a></li>
+</ul></li>
+<li><a href="#retrieve-the-item-in-a-collection-with-the-min-or-max-value-of-an-attributea">Retrieve the item in a collection with the min or max value of an attributea</a><ul>
+<li><a href="#filter-a-collection-using-the-filter-method">Filter a collection using the filter method</a></li>
+<li><a href="#return-the-item-at-a-particular-index-within-a-collection">Return the item at a particular index within a collection</a></li>
+<li><a href="#confirm-if-all-of-the-values-in-a-collection-pass-an-iterator-truth-test">Confirm if all of the values in a collection pass an iterator truth test</a></li>
+<li><a href="#return-the-size-of-a-collection">Return the size of a collection</a></li>
+<li><a href="#confirm-whether-a-collection-is-empty-or-not-using-isempty">Confirm whether a collection is empty or not using isEmpty</a></li>
+</ul></li>
+<li><a href="#use-groupby-to-group-a-collection-into-groups-of-like-items">Use groupBy to group a collection into groups of like items</a></li>
 <li><a href="#chainable-api">Chainable API</a></li>
 </ul></li>
 <li><a href="#events">Events</a><ul>
@@ -176,7 +188,6 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <li><a href="#what-is-the-best-way-to-manage-models-in-nested-views">What is the best way to manage models in nested Views?</a></li>
 <li><a href="#rendering-parent-view-from-child">Rendering Parent View from Child</a></li>
 <li><a href="#triggering-updates-in-other-views">Triggering updates in other Views</a></li>
-<li><a href="#disposing-views-cleanly">Disposing Views cleanly</a></li>
 <li><a href="#disposing-view-hierarchies">Disposing View hierarchies</a></li>
 <li><a href="#rendering-view-hierarchies">Rendering View hierarchies</a></li>
 <li><a href="#better-model-property-validation">Better Model Property Validation</a></li>
@@ -1010,7 +1021,9 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <p>Presto! This populates the template, giving you a data-complete set of markup in just a few short lines of code.</p>
 <p><strong>The <code>events</code> attribute</strong></p>
 <p>The Backbone <code>events</code> attribute allows us to attach event listeners to either <code>el</code>-relative custom selectors, or directly to <code>el</code> if no selector is provided. An event takes the form <code>{'eventName selector': 'callbackFunction'}</code> and a number of DOM event-types are supported, including <code>click</code>, <code>submit</code>, <code>mouseover</code>, <code>dblclick</code> and more.</p>
-<p>What isn’t instantly obvious is that while Backbone uses jQuery’s <code>.delegate()</code> underneath, it goes further by extending it so that <code>this</code> always refers to the current view object within callback functions. The only thing to really keep in mind is that any string callback supplied to the events attribute must have a corresponding function with the same name within the scope of your view. In our TodoView example, the edit callback is invoked when the user double-clicks a label element within the <code>el</code> element, updateOnEnter is called for each keypress in an element with class <q>edit</q>, and close executes when an element with class <q>edit</q> loses focus. Each of these callback functions can use <code>this</code> to refer to the TodoView object.</p>
+<p>What isn’t instantly obvious is that while Backbone uses jQuery’s <code>.delegate()</code> underneath, it goes further by extending it so that <code>this</code> always refers to the current view object within callback functions. The only thing to really keep in mind is that any string callback supplied to the events attribute must have a corresponding function with the same name within the scope of your view.</p>
+<p>The declarative, delegated jQuery events means that you don’t have to worry about whether a particular element has been rendered to the DOM yet or not. Usually with jQuery you have to worry about <q>presence or absence in the DOM</q> all the time when binding events.</p>
+<p>In our TodoView example, the edit callback is invoked when the user double-clicks a label element within the <code>el</code> element, updateOnEnter is called for each keypress in an element with class <q>edit</q>, and close executes when an element with class <q>edit</q> loses focus. Each of these callback functions can use <code>this</code> to refer to the TodoView object.</p>
 <h2 id="collections"><a href="#TOC">Collections</a></h2>
 <p>Collections are sets of Models and are created by extending <code>Backbone.Collection</code>.</p>
 <p>Normally, when creating a collection you’ll also want to define a property specifying the type of model that your collection will contain, along with any instance properties required.</p>
@@ -1168,7 +1181,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <span class="co">// Above logs &#39;Collection reset.&#39;</span>
 
 <span class="kw">console</span>.<span class="fu">log</span>(<span class="ch">&#39;Collection size: &#39;</span> + <span class="kw">TodosCollection</span>.<span class="fu">length</span>); <span class="co">// Collection size: 1</span></code></pre>
-<p>Note that using <code>Collection.reset()</code> doesn’t fire any <code>add</code> or <code>remove</code> events. A <code>reset</code> event is fired instead as shown in the example.</p>
+<p>Note that using <code>Collection.reset()</code> doesn’t fire any <code>add</code> or <code>remove</code> events. A <code>reset</code> event is fired instead as shown in the example. The reason you might want to use this is to perform super-optimized rendering in extreme cases where individual events are too expensive.</p>
 <h4 id="restful-persistence"><a href="#TOC">RESTful Persistence</a></h4>
 <p>Thus far, all of our example data has been created in the browser. For most single page applications, the models are derived from a data set residing on a server. This is an area in which Backbone dramatically simplifies the code you need to write to perform RESTful synchronization with a server through a simple API on its models and collections.</p>
 <p><strong>Fetching models from the server</strong></p>
@@ -1233,26 +1246,14 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <p>Each RESTful API method accepts a variety of options. Most importantly, all methods accept success and error callbacks which can be used to customize the handling of server responses. Specifying the <code>{patch: true}</code> option to <code>Model.save()</code> will cause it to use HTTP PATCH to send only the changed attributes to the server instead of the entire model. Similarly, passing the <code>{update: true}</code> option to <code>Collection.fetch()</code> will result in the merger of the retrieved data into the existing collection using adds, updates, and removes.</p>
 <p>See the Backbone.js documentation for full descriptions of the supported options.</p>
 <h4 id="underscore-utility-functions"><a href="#TOC">Underscore utility functions</a></h4>
-<p>As Backbone requires Underscore as a hard dependency, we’re able to use many of the utilities it has to offer to aid with our application development. Here’s an example of how Underscore’s <code>forEach</code> method can be used for iterating over collections and its <code>sortBy()</code> method can be used to sort a collection of todos based on a particular attribute.</p>
-<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> TodosCollection = <span class="kw">new</span> <span class="kw">Backbone</span>.<span class="fu">Collection</span>();
-
-<span class="kw">TodosCollection</span>.<span class="fu">add</span>([
-  { <span class="dt">title</span>: <span class="ch">&#39;go to Belgium.&#39;</span>, <span class="dt">completed</span>: <span class="kw">false</span> },
-  { <span class="dt">title</span>: <span class="ch">&#39;go to China.&#39;</span>, <span class="dt">completed</span>: <span class="kw">false</span> },
-  { <span class="dt">title</span>: <span class="ch">&#39;go to Austria.&#39;</span>, <span class="dt">completed</span>: <span class="kw">true</span> }
-]);
-
-<span class="co">// iterate over models in the collection</span>
-<span class="kw">TodosCollection</span>.<span class="fu">forEach</span>(<span class="kw">function</span>(model){
-  <span class="kw">console</span>.<span class="fu">log</span>(<span class="kw">model</span>.<span class="fu">get</span>(<span class="ch">&#39;title&#39;</span>));
-});
-<span class="co">// Above logs:</span>
-<span class="co">// go to Belgium.</span>
-<span class="co">// go to China.</span>
-<span class="co">// go to Austria.</span>
-
-<span class="co">// sort collection</span>
-<span class="kw">var</span> sortedByAlphabet = <span class="kw">TodosCollection</span>.<span class="fu">sortBy</span>(<span class="kw">function</span> (todo) {
+<p>As Backbone requires Underscore as a hard dependency, we’re able to use many of the utilities it has to offer to aid with our application development.</p>
+<h5 id="foreach-can-be-used-for-iterating-over-collections"><a href="#TOC"><code>forEach</code> can be used for iterating over collections</a></h5>
+<p>```javascript var Todos = new Backbone.Collection();</p>
+<p>Todos.add([ { title: <q>go to Belgium.</q>, completed: false }, { title: <q>go to China.</q>, completed: false }, { title: <q>go to Austria.</q>, completed: true } ]);</p>
+<p>// iterate over models in the collection Todos.forEach(function(model){ console.log(model.get(<q>title</q>)); }); // Above logs: // go to Belgium. // go to China. // go to Austria.</p>
+<h5 id="sortby-can-be-used-to-sort-a-collection-on-a-specific-attribute."><a href="#TOC"><code>sortBy()</code> can be used to sort a collection on a specific attribute.</a></h5>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="co">// sort collection</span>
+<span class="kw">var</span> sortedByAlphabet = <span class="kw">Todos</span>.<span class="fu">sortBy</span>(<span class="kw">function</span> (todo) {
     <span class="kw">return</span> <span class="kw">todo</span>.<span class="fu">get</span>(<span class="st">&quot;title&quot;</span>).<span class="fu">toLowerCase</span>();
 });
 
@@ -1265,7 +1266,51 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <span class="co">// go to Austria.</span>
 <span class="co">// go to Belgium.</span>
 <span class="co">// go to China.</span></code></pre>
-<p>The complete list of what Underscore can do is beyond the scope of this book, but can be found in its official <a href="http://documentcloud.github.com/underscore/">docs</a>.</p>
+<h5 id="map-can-iterate-through-a-collection-mapping-each-value-through-a-transformation-function"><a href="#TOC">Map can iterate through a collection, mapping each value through a transformation function</a></h5>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">Todos</span>.<span class="fu">map</span>(<span class="kw">function</span>(model){
+  <span class="kw">return</span> <span class="kw">model</span>.<span class="fu">get</span>(<span class="ch">&#39;label&#39;</span>).<span class="fu">join</span>(<span class="ch">&#39; &#39;</span>);
+});</code></pre>
+<h4 id="retrieve-the-item-in-a-collection-with-the-min-or-max-value-of-an-attributea"><a href="#TOC">Retrieve the item in a collection with the min or max value of an attributea</a></h4>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">Todos</span>.<span class="fu">max</span>(<span class="kw">function</span>(model){
+  <span class="kw">return</span> <span class="kw">model</span>.<span class="fu">id</span>;
+}).<span class="fu">id</span>;
+
+<span class="kw">Todos</span>.<span class="fu">min</span>(<span class="kw">function</span>(model){
+  <span class="kw">return</span> <span class="kw">model</span>.<span class="fu">id</span>;
+}).<span class="fu">id</span>;</code></pre>
+<h5 id="filter-a-collection-using-the-filter-method"><a href="#TOC">Filter a collection using the filter method</a></h5>
+<p><em>Filter by a specific attribute name</em></p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> captions = <span class="kw">Todos</span>.<span class="fu">map</span>(<span class="kw">function</span>(model){
+  <span class="kw">return</span> <span class="kw">model</span>.<span class="fu">get</span>(<span class="ch">&#39;caption&#39;</span>);
+});</code></pre>
+<p><em>Filter by an array of model IDs</em></p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> Todos = <span class="kw">Backbone.Collection</span>.<span class="fu">extend</span>({
+  <span class="dt">model</span>: Todo,
+  <span class="dt">filterById</span>: <span class="kw">function</span>(ids){
+    <span class="kw">return</span> <span class="kw">this</span>.<span class="fu">models</span>.<span class="fu">filter</span>(
+      <span class="kw">function</span>(c) { 
+        <span class="kw">return</span> <span class="kw">_</span>.<span class="fu">contains</span>(ids, <span class="kw">c</span>.<span class="fu">id</span>); 
+      })
+  }
+});</code></pre>
+<h5 id="return-the-item-at-a-particular-index-within-a-collection"><a href="#TOC">Return the item at a particular index within a collection</a></h5>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">Todos</span>.<span class="fu">indexOf</span>(<span class="dv">5</span>);</code></pre>
+<h5 id="confirm-if-all-of-the-values-in-a-collection-pass-an-iterator-truth-test"><a href="#TOC">Confirm if all of the values in a collection pass an iterator truth test</a></h5>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">Todos</span>.<span class="fu">any</span>(<span class="kw">function</span>(model){
+  <span class="kw">return</span> <span class="kw">model</span>.<span class="fu">id</span> === <span class="dv">100</span>;
+});</code></pre>
+<h5 id="return-the-size-of-a-collection"><a href="#TOC">Return the size of a collection</a></h5>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">Todos</span>.<span class="fu">size</span>();</code></pre>
+<h5 id="confirm-whether-a-collection-is-empty-or-not-using-isempty"><a href="#TOC">Confirm whether a collection is empty or not using isEmpty</a></h5>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> isEmpty = <span class="kw">Todos</span>.<span class="fu">isEmpty</span>();</code></pre>
+<h4 id="use-groupby-to-group-a-collection-into-groups-of-like-items"><a href="#TOC">Use groupBy to group a collection into groups of like items</a></h4>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">_</span>.<span class="fu">groupBy</span>(Todos, <span class="ch">&#39;id&#39;</span>);
+
+<span class="co">// or</span>
+<span class="kw">_</span>.<span class="fu">groupBy</span>(Todos, <span class="kw">function</span>(row){
+    <span class="kw">return</span> <span class="kw">row</span>.<span class="fu">id</span>;
+});</code></pre>
+<p>The complete list of what Underscore can do can be found in its official <a href="http://documentcloud.github.com/underscore/">docs</a>.</p>
 <h4 id="chainable-api"><a href="#TOC">Chainable API</a></h4>
 <p>Speaking of utility methods, another bit of sugar in Backbone is its support for Underscore’s <code>chain()</code> method. Chaining is a common idiom in object-oriented languages; a chain is a sequence of method calls on the same object that are performed in a single statement. While Backbone makes Underscore’s array manipulation operations available as methods of Collection objects, they cannot be directly chained since they return arrays rather than the original Collection.</p>
 <p>Fortunately, the inclusion of Underscore’s <code>chain()</code> method enables you to chain calls to these methods on Collections. The <code>chain()</code> method returns an object that has all of the Underscore array operations attached as methods which return that object. The chain ends with a call to the <code>value()</code> method which simply returns the resulting array value. In case you haven’t seen it before, the chainable API looks like this:</p>
@@ -1293,7 +1338,9 @@ collection
 
 <span class="kw">console</span>.<span class="fu">log</span>(names); <span class="co">// logs: [&#39;John&#39;, &#39;Harry&#39;, &#39;Steve&#39;]</span></code></pre>
 <h2 id="events"><a href="#TOC">Events</a></h2>
-<p>We’ve seen how actions on Models and Collections can trigger events and how functions can be bound to these events and those raised by the DOM. Events are the standard way of dealing with user interface actions. Mastering events is one of the quickest ways to become more productive with Backbone, so let’s take a closer look at Backbone’s event model.</p>
+<p>Events are a basic inversion of control, where instead of having a function call another function by name, the second function registers interest in being called whenever the first <q>event</q> occurs.</p>
+<p>The part of your application that has to know how to call the other part of your app has been inverted. This is the core thing that makes it possible for your business logic to not have to know about how your user interface works and is the most powerful thing about the Backbone Events system.</p>
+<p>Mastering events is one of the quickest ways to become more productive with Backbone, so let’s take a closer look at Backbone’s event model.</p>
 <p><code>Backbone.Events</code> is mixed into the other Backbone <q>classes</q>, including:</p>
 <ul>
 <li>Backbone</li>
@@ -1459,7 +1506,16 @@ collection
 <span class="kw">b</span>.<span class="fu">trigger</span>(<span class="ch">&#39;anything&#39;</span>);
 <span class="kw">c</span>.<span class="fu">trigger</span>(<span class="ch">&#39;everything&#39;</span>);</code></pre>
 <p><code>stopListening()</code> can also be used to selectively stop listening based on the event, model, or callback handler.</p>
-<p><code>listenTo()</code> is especially useful with Views since removing a View without unbinding its handlers can result in memory leaks and other application bugs. The default implementation of <code>View.remove()</code> makes a call to <code>stopListening()</code>, ensuring that any listeners bound using <code>listenTo()</code> are unbound before the view is destroyed.</p>
+<p>If you remove views at the same time that their corresponding models are also removed, there are generally no problems. If however the model sticks around after a round of garbage collection and continues to a call a View’s event handler (that you’ve forgotten to remove), you might have cause for concern as this can result in memory leaks.</p>
+<p>Practically, every <code>on</code> called on an object also requires an <code>off</code> to be called in order for the garbage collector to do its job. <code>listenTo()</code> changes that, allowing Views to bind to Model notifications and unbind from all of them with just one call - <code>stopListening()</code>.</p>
+<p>The default implementation of <code>View.remove()</code> makes a call to <code>stopListening()</code>, ensuring that any listeners bound using <code>listenTo()</code> are unbound before the view is destroyed.</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> a = <span class="kw">_</span>.<span class="fu">extend</span>({}, <span class="kw">Backbone</span>.<span class="fu">Events</span>);
+<span class="kw">var</span> b = <span class="kw">_</span>.<span class="fu">extend</span>({}, <span class="kw">Backbone</span>.<span class="fu">Events</span>);
+<span class="kw">a</span>.<span class="fu">listenTo</span>(b, <span class="ch">&#39;all&#39;</span>, <span class="kw">function</span>(){ <span class="kw">console</span>.<span class="fu">log</span>(<span class="kw">true</span>); });
+<span class="kw">b</span>.<span class="fu">trigger</span>(<span class="ch">&#39;anything&#39;</span>);
+<span class="kw">a</span>.<span class="fu">listenTo</span>(b, <span class="ch">&#39;all&#39;</span>, <span class="kw">function</span>(){ <span class="kw">console</span>.<span class="fu">log</span>(<span class="kw">false</span>); });
+<span class="kw">a</span>.<span class="fu">stopListening</span>();
+<span class="kw">b</span>.<span class="fu">trigger</span>(<span class="ch">&#39;anything&#39;</span>);</code></pre>
 <h4 id="events-and-views"><a href="#TOC">Events and Views</a></h4>
 <p>Within a View, there are two types of events you can listen for: DOM events and events triggered using the Event API. It is important to understand the differences in how views bind to these events and the context in which their callbacks are invoked.</p>
 <p>DOM events can be bound to using the View’s <code>events</code> property or using <code>jQuery.on()</code>. Within callbacks bound using the <code>events</code> property, <code>this</code> refers to the View object; whereas any callbacks bound directly using jQuery will have <code>this</code> set to the handling DOM element by jQuery. All DOM event callbacks are passed an <code>event</code> object by jQuery. See <code>delegateEvents()</code> in the Backbone documentation for additional details.</p>
@@ -1504,7 +1560,8 @@ collection
 
 <span class="kw">var</span> view = <span class="kw">new</span> View();</code></pre>
 <h2 id="routers"><a href="#TOC">Routers</a></h2>
-<p>In Backbone, routers help manage application state and connect URLs to application events. This is achieved using hash marks (<q>#</q>) with URL fragments, or using the browser’s pushState and History API. Some examples of routes using the hash mark may be seen below:</p>
+<p>In Backbone, routers provide a way for you to connect URLs (either hash fragments, or real) to parts of your application. Any piece of your application that you want to be bookmarkable, shareable, and back-button-able, needs a URL.</p>
+<p>Some examples of routes using the hash mark may be seen below:</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="dt">http</span>:<span class="co">//example.com/#about</span>
 <span class="dt">http</span>:<span class="co">//example.com/#search/seasonal-horns/page2</span></code></pre>
 <p>An application will usually have at least one route mapping a URL route to a function that determines what happens when a user reaches that route. This relationship is defined as follows:</p>
@@ -1574,7 +1631,7 @@ collection
 <span class="co">/* Now that we have a router setup, we need to instantiate it */</span>
 
 <span class="kw">var</span> myTodoRouter = <span class="kw">new</span> TodoRouter();</code></pre>
-<p>As of Backbone 0.5+, it’s possible to opt-in for HTML5 pushState support via <code>window.history.pushState</code>. This permits you to define routes such as http://www.scriptjunkie.com/just/an/example. This will be supported with automatic degradation when a user’s browser doesn’t support pushState. In this discussion we’ll continue using the hashtag method.</p>
+<p>Backbone offers an opt-in for HTML5 pushState support via <code>window.history.pushState</code>. This permits you to define routes such as http://backbonejs.org/just/an/example. This will be supported with automatic degradation when a user’s browser doesn’t support pushState. Note that it is vastly preferred that you’re capable of also supporting pushState on the server side, although it is a little mroe difficult to implement.</p>
 <p><strong>Is there a limit to the number of routers I should be using?</strong></p>
 <p>Andrew de Andrade has pointed out that DocumentCloud, the creators of Backbone, usually only use a single router in most of their applications. You’re very likely to not require more than one or two routers in your own projects; the majority of your application routing can be kept organized in a single router without it getting unwieldy.</p>
 <h4 id="backbone.history"><a href="#TOC">Backbone.history</a></h4>
@@ -3188,8 +3245,7 @@ $(<span class="kw">function</span>() {
     &lt;label&gt;Email:&lt;/label&gt;
     &lt;span&gt;&lt;%= email %&gt;&lt;/span&gt;
   &lt;/div&gt;
-&lt;/script&gt;
-&lt;/pre&gt;</code></pre>
+&lt;/script&gt;</code></pre>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> MyView = <span class="kw">Backbone.View</span>.<span class="fu">extend</span>({
   <span class="dt">template</span>: $(<span class="ch">&#39;#my-view-template&#39;</span>).<span class="fu">html</span>(),
 
@@ -4014,8 +4070,29 @@ To see Thorax in action on a large scale website visit walmart.com on any Androi
 <h4 id="view-nesting"><a href="#TOC">View Nesting</a></h4>
 <p><strong>Problem</strong></p>
 <p>What is the best approach for rendering and appending Subviews in Backbone.js?</p>
-<p><strong>Solution</strong></p>
-<p>Since web pages are composed of nested elements and Backbone views correspond to elements within the page, nesting views is an intuitive approach to managing a hierarchy of elements. As a beginner, one might try writing a very simple setup with subviews (e.g inner views) as follows:</p>
+<p><strong>Solution 1</strong></p>
+<p>Since pages are composed of nested elements and Backbone views correspond to elements within the page, nesting views is an intuitive approach to managing a hierarchy of elements.</p>
+<p>The best way to combine views is simply using:</p>
+<pre><code>this.$(&#39;.someContainer&#39;).append(innerView.el);</code></pre>
+<p>which just relies on jQuery. We could use this in a real example as follows:</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript">...
+<span class="fu">initialize</span> : <span class="kw">function</span> () { 
+    <span class="co">//...</span>
+},
+
+<span class="dt">render </span>: <span class="kw">function</span> () {
+
+    <span class="kw">this</span>.$<span class="fu">el</span>.<span class="fu">empty</span>();
+
+    <span class="kw">this</span>.<span class="fu">innerView1</span> = <span class="kw">new</span> Subview({options});
+    <span class="kw">this</span>.<span class="fu">innerView2</span> = <span class="kw">new</span> Subview({options});
+
+    <span class="kw">this</span>.$(<span class="ch">&#39;.inner-view-container&#39;</span>)
+        .<span class="fu">append</span>(<span class="kw">this</span>.<span class="fu">innerView1</span>.<span class="fu">el</span>)
+        .<span class="fu">append</span>(<span class="kw">this</span>.<span class="fu">innerView2</span>.<span class="fu">el</span>);
+}</code></pre>
+<p><strong>Solution 2</strong></p>
+<p>Beginners sometimes also try using <code>setElement</code> to solve tis problem, however keep in mind that using this method is an easy way to shoot yourself in the foot. Try to avoid if possible:</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript">
 <span class="co">// Where we have previously defined a View, SubView</span>
 <span class="co">// in a parent View we could do:</span>
@@ -4034,47 +4111,12 @@ To see Thorax in action on a large scale website visit walmart.com on any Androi
     <span class="kw">this</span>.<span class="fu">innerView1</span>.<span class="fu">setElement</span>(<span class="ch">&#39;.some-element1&#39;</span>).<span class="fu">render</span>();
     <span class="kw">this</span>.<span class="fu">innerView2</span>.<span class="fu">setElement</span>(<span class="ch">&#39;.some-element2&#39;</span>).<span class="fu">render</span>();
 }</code></pre>
-<p>Here we are creating subviews in the parent view’s <code>initialize()</code> method and rendering the subviews in the parent’s <code>render()</code> method. The elements managed by the subviews exist in the parent’s template and the <code>View.setElement()</code> method is used to re-assign the element associated with each subview. <code>setElement()</code> changes a view’s element, including re-delegating event handlers by removing them from the old element and binding them to the new element. Note that <code>setElement()</code> returns the view, allowing us to chain the call to <code>render()</code>.</p>
-<p>This works and has some positive qualities: you don’t need to worry about maintaining the order of your DOM elements when appending, views are initialized early, and the render() method doesn’t need to take on too many responsibilities at once. Unfortunately, downsides are that you can’t set the <code>tagName</code> property of subviews and events need to be re-delegated.</p>
-<p>An alternative approach which doesn’t suffer from the re-delegation problem can be written as follows:</p>
-<pre class="sourceCode javascript"><code class="sourceCode javascript">
-<span class="dt">initialize </span>: <span class="kw">function</span> () {
-
-},
-
-<span class="dt">render </span>: <span class="kw">function</span> () {
-
-    <span class="kw">this</span>.$<span class="fu">el</span>.<span class="fu">empty</span>();
-
-    <span class="kw">this</span>.<span class="fu">innerView1</span> = <span class="kw">new</span> Subview({options});
-    <span class="kw">this</span>.<span class="fu">innerView2</span> = <span class="kw">new</span> Subview({options});
-
-
-    <span class="kw">this</span>.$<span class="fu">el</span>.<span class="fu">append</span>(<span class="kw">this</span>.<span class="fu">innerView1</span>.<span class="fu">render</span>().<span class="fu">el</span>, <span class="kw">this</span>.<span class="fu">innerView2</span>.<span class="fu">render</span>().<span class="fu">el</span>);
-}</code></pre>
-<p>In this version, we are creating new instances of the subviews, rendering them, and appending their elements to an empty parent element each time the parent is rendered. Each subview is responsible for creating and rendering its own element, so we don’t need a template containing empty placeholders and the issue with <code>tagName</code>s is solved as they are defined by the subviews once again.</p>
-<p>Yet another variation which moves logic into an <code>onRender</code> event, could be written with only a few subtle changes:</p>
-<pre class="sourceCode javascript"><code class="sourceCode javascript">
-<span class="dt">initialize </span>: <span class="kw">function</span> () {
-    <span class="kw">this</span>.<span class="fu">on</span>(<span class="ch">&#39;render&#39;</span>, <span class="kw">this</span>.<span class="fu">onRender</span>);
-},
-
-<span class="dt">render </span>: <span class="kw">function</span> () {
-
-    <span class="kw">this</span>.$<span class="fu">el</span>.<span class="fu">html</span>(<span class="kw">this</span>.<span class="fu">template</span>);
-
-    <span class="co">// more logic</span>
-
-    <span class="kw">return</span> <span class="kw">this</span>.<span class="fu">trigger</span>(<span class="ch">&#39;render&#39;</span>);
-},
-
-<span class="dt">onRender </span>: <span class="kw">function</span> () {
-    <span class="kw">this</span>.<span class="fu">innerView1</span> = <span class="kw">new</span> Subview();
-    <span class="kw">this</span>.<span class="fu">innerView2</span> = <span class="kw">new</span> Subview();
-    <span class="kw">this</span>.<span class="fu">innerView1</span>.<span class="fu">setElement</span>(<span class="ch">&#39;.some-element1&#39;</span>).<span class="fu">render</span>();
-    <span class="kw">this</span>.<span class="fu">innerView2</span>.<span class="fu">setElement</span>(<span class="ch">&#39;.some-element2&#39;</span>).<span class="fu">render</span>();
-}</code></pre>
-<p>If you find yourself nesting views in your application, there are more optimal approaches possible for initializing, rendering, and appending your subviews. One such solution could be written:</p>
+<p>Here we are creating subviews in the parent view’s <code>initialize()</code> method and rendering the subviews in the parent’s <code>render()</code> method. The elements managed by the subviews exist in the parent’s template and the <code>View.setElement()</code> method is used to re-assign the element associated with each subview.</p>
+<p><code>setElement()</code> changes a view’s element, including re-delegating event handlers by removing them from the old element and binding them to the new element. Note that <code>setElement()</code> returns the view, allowing us to chain the call to <code>render()</code>.</p>
+<p>This works and has some positive qualities: you don’t need to worry about maintaining the order of your DOM elements when appending, views are initialized early, and the render() method doesn’t need to take on too many responsibilities at once.</p>
+<p>Unfortunately, downsides are that you can’t set the <code>tagName</code> property of subviews and events need to be re-delegated. The first solution doesn’t suffer from this problem.</p>
+<p><strong>Solution 3</strong></p>
+<p>One more possible solution to this problem could be written:</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript">
 <span class="kw">var</span> OuterView = <span class="kw">Backbone.View</span>.<span class="fu">extend</span>({
     <span class="dt">initialize</span>: <span class="kw">function</span>() {
@@ -4101,7 +4143,8 @@ To see Thorax in action on a large scale website visit walmart.com on any Androi
 <li>render() is called after the InnerView element has been placed into the DOM. This is useful if your InnerView’s render() method is sizing itself on the page based on the dimensions of another element. This is a common use case.</li>
 </ul>
 <p>Note that InnerView needs to call <code>View.delegateEvents()</code> to bind its event handlers to its new DOM since it is replacing the content of its element.</p>
-<p>A second potential solution is this, which may appear cleaner but in reality has a tendency to affect performance:</p>
+<p><strong>Solution 4</strong></p>
+<p>A better solution, which is more clean but has the potential to affect performance is:</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript">
 <span class="kw">var</span> OuterView = <span class="kw">Backbone.View</span>.<span class="fu">extend</span>({
     <span class="dt">initialize</span>: <span class="kw">function</span>() {
@@ -4141,7 +4184,7 @@ To see Thorax in action on a large scale website visit walmart.com on any Androi
         }, <span class="kw">this</span>);
     }
 };</code></pre>
-<p>Generally speaking, more developers opt for the first solution as:</p>
+<p>Generally speaking, more developers opt for Solution 1 or 5 as:</p>
 <ul>
 <li>The majority of their views may already rely on being in the DOM in their render() method</li>
 <li>When the OuterView is re-rendered, views don’t have to be re-initialized where re-initialization has the potential to cause memory leaks and issues with existing bindings</li>
@@ -4222,8 +4265,10 @@ ViewB = <span class="kw">Backbone.View</span>.<span class="fu">extend</span>({
 <p><strong>Problem</strong></p>
 <p>How would one render a Parent View from one of its Children?</p>
 <p><strong>Solution</strong></p>
-<p>If you say, have a view which contains another view (e.g., a main view containing a modal view) and would like to render or re-render the parent view from the child, this is extremely straight-forward.</p>
-<p>In such a scenario, you would most likely want to execute the rendering when a particular event has occurred. For the sake of example, let us call this event <q>somethingHappened</q>. The parent view can bind notifications on the child view to know when the event has occurred. It can then render itself.</p>
+<p>In a scenario where you have a view containing another view, such as a photo gallery containing a larger view modal, you may find that you need to render or re-render the parent view from the child. The good news is that solving this problem is quite straight-forward.</p>
+<p>The simplest solution is to just use <code>this.parentView.render();</code>.</p>
+<p>If however inversion of control is desired, events may be used to provide an equally valid solution.</p>
+<p>Say we wish to begin rendering when a particular event has occurred. For the sake of example, let us call this event <q>somethingHappened</q>. The parent view can bind notifications on the child view to know when the event has occurred. It can then render itself.</p>
 <p>In the parent view:</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="co">// Parent initialize</span>
 <span class="kw">this</span>.<span class="fu">listenTo</span>(<span class="kw">this</span>.<span class="fu">childView</span>, <span class="ch">&#39;somethingHappened&#39;</span>, <span class="kw">this</span>.<span class="fu">render</span>);
@@ -4270,54 +4315,6 @@ ViewB = <span class="kw">Backbone.View</span>.<span class="fu">extend</span>({
 });</code></pre>
 <p>This way your ApplicationViewA doesn’t care if it is an ApplicationViewB or FooView that publishes the <q>selected</q> event, only that the event occurred. As a result, you may find it a maintainable way to manage events between parts of your application, not just views.</p>
 <p>(Thanks to <a href="http://stackoverflow.com/users/937577/john-mckim">John McKim</a> for this tip and for referencing my Large Scale JavaScript Patterns article).</p>
-<h4 id="disposing-views-cleanly"><a href="#TOC">Disposing Views cleanly</a></h4>
-<p><strong>Problem</strong></p>
-<p>How do you cleanly dispose Views to avoid memory leaks?</p>
-<p><strong>Solution</strong></p>
-<p>As your application grows, keeping live views around which aren’t being used can quickly become difficult to maintain. Instead, you may find it better to destroy views that are no longer required and simply create new ones as the need arises.</p>
-<p>A solution to help with this is to create a new BaseView that extends Backbone.View that will maintain a reference to all of the events to which it is subscribed to. Then when you dispose of a view, all of those bindings will be automatically unbound.</p>
-<p>Here is a sample implementation of this:</p>
-<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> BaseView = <span class="kw">function</span> (options) {
-
-    <span class="kw">this</span>.<span class="fu">bindings</span> = [];
-    <span class="kw">Backbone.View</span>.<span class="fu">apply</span>(<span class="kw">this</span>, [options]);
-};
-
-<span class="kw">_</span>.<span class="fu">extend</span>(<span class="kw">BaseView</span>.<span class="fu">prototype</span>, <span class="kw">Backbone.View</span>.<span class="fu">prototype</span>, {
-
-    <span class="dt">bindTo</span>: <span class="kw">function</span> (model, ev, callback) {
-
-        <span class="kw">model</span>.<span class="fu">bind</span>(ev, callback, <span class="kw">this</span>);
-        <span class="kw">this</span>.<span class="fu">bindings</span>.<span class="fu">push</span>({ <span class="dt">model</span>: model, <span class="dt">ev</span>: ev, <span class="dt">callback</span>: callback });
-    },
-
-    <span class="dt">unbindFromAll</span>: <span class="kw">function</span> () {
-        <span class="kw">_</span>.<span class="fu">each</span>(<span class="kw">this</span>.<span class="fu">bindings</span>, <span class="kw">function</span> (binding) {
-            <span class="kw">binding.model</span>.<span class="fu">unbind</span>(<span class="kw">binding</span>.<span class="fu">ev</span>, <span class="kw">binding</span>.<span class="fu">callback</span>);
-        });
-        <span class="kw">this</span>.<span class="fu">bindings</span> = [];
-    },
-
-    <span class="dt">dispose</span>: <span class="kw">function</span> () {
-        <span class="kw">this</span>.<span class="fu">unbindFromAll</span>(); <span class="co">// this will unbind all events that this view has bound to</span>
-        <span class="kw">this</span>.<span class="fu">unbind</span>(); <span class="co">// this will unbind all listeners to events from this view. This is probably not necessary because this view will be garbage collected.</span>
-        <span class="kw">this</span>.<span class="fu">remove</span>(); <span class="co">// uses the default Backbone.View.remove() method which removes this.el from the DOM and removes DOM events.</span>
-    }
-
-});</code></pre>
-<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">BaseView</span>.<span class="fu">extend</span> = <span class="kw">Backbone.View</span>.<span class="fu">extend</span>;</code></pre>
-<p>Then, whenever a view has the need to bind to an event on a model or a collection, you would use the bindTo method. e.g:</p>
-<pre><code>var SampleView = BaseView.extend({
-
-    initialize: function(){
-        this.bindTo(this.model, &#39;change&#39;, this.render);
-        this.bindTo(this.collection, &#39;reset&#39;, this.doSomething);
-    }
-});</code></pre>
-<p>When you remove a view, simply call the dispose() method which will clean everything up for you automatically:</p>
-<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> sampleView = <span class="kw">new</span> SampleView({<span class="dt">model</span>: some_model, <span class="dt">collection</span>: some_collection});
-<span class="kw">sampleView</span>.<span class="fu">dispose</span>();</code></pre>
-<p>(Thanks to <a href="http://stackoverflow.com/users/188740/johnnyo">JohnnyO</a> for this tip).</p>
 <h4 id="disposing-view-hierarchies"><a href="#TOC">Disposing View hierarchies</a></h4>
 <p><strong>Problem</strong></p>
 <p>In the last question, we looked at how to effectively dispose of views to decrease memory usage.</p>
@@ -4371,6 +4368,10 @@ NewChildView = <span class="kw">Backbone.View</span>.<span class="fu">extend</sp
 <p>By default, when we define a custom <code>validate</code> method, Backbone passes all of a Model’s attributes through this validation each time, regardless of which model attributes are being set.</p>
 <p>This means that it can be a challenge to determine which specific fields are being set or validated without being concerned about the others that aren’t being set at the same time.</p>
 <p><strong>Solution</strong></p>
+<p>The most optimal solution to this problem probably isn’t to stick validation in your model attributes. Instead, have a function specifically designed for validating that particular form. There are many good JavaScript form validation libraries out there. If you want to stick it on your model, just make it a class function:</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">User</span>.<span class="fu">validate</span> = <span class="kw">function</span>(formElement) {
+  <span class="co">//...</span>
+};</code></pre>
 <p>To illustrate this problem better, let us look at a typical registration form use case that:</p>
 <ul>
 <li>Validates form fields using the blur event</li>
@@ -4579,13 +4580,6 @@ $(<span class="kw">function</span>($) {
 <p>Following on from this, for inheritance purposes all of Backbone’s objects contain an <code>extend</code> method as follows:</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">Model</span>.<span class="fu">extend</span> = <span class="kw">Collection</span>.<span class="fu">extend</span> = <span class="kw">Router</span>.<span class="fu">extend</span> = <span class="kw">View</span>.<span class="fu">extend</span> = extend;</code></pre>
 <p>Most development with Backbone is based around inheriting from these objects, and they’re designed to mimic a classical object-oriented implementation.</p>
-<p>If this sounds familiar, it’s because <code>extend</code> is an Underscore.js utility, although Backbone itself does a lot more with this. See below for Underscore’s <code>extend</code>:</p>
-<pre class="sourceCode javascript"><code class="sourceCode javascript">each(<span class="kw">slice</span>.<span class="fu">call</span>(arguments, <span class="dv">1</span>), <span class="kw">function</span>(source) {
-  <span class="kw">for</span> (<span class="kw">var</span> prop <span class="kw">in</span> source) {
-    obj[prop] = source[prop];
-  }
-});
-<span class="kw">return</span> obj;</code></pre>
 <p>The above isn’t quite the same as ECMAScript 5’s <code>Object.create</code>, as it’s actually copying properties (methods and values) from one object to another. As this isn’t enough to support Backbone’s inheritance and class model, the following steps are performed:</p>
 <ul>
 <li>The instance methods are checked to see if there’s a constructor property. If so, the class’s constructor is used, otherwise the parent’s constructor is used (i.e., Backbone.Model)</li>
@@ -8755,7 +8749,7 @@ Backbone.sync = function(method, model, options) {
       ...</code></pre>
 <p><code>Backbone.History.stop</code> similarly uses your DOM manipulation library to unbind these event listeners.</p>
 <h2 id="upgrading-to-backbone-0.9.10"><a href="#TOC">Upgrading to Backbone 0.9.10</a></h2>
-<p><em>Developing Backbone.js Applications</em> is currently based on Backbone 0.9.2. If you are transitioning from this version to 0.9.10 or above, the following is a guide of <a href="http://backbonejs.org/#changelog">changes</a> grouped by classes, where applicable.</p>
+<p><em>Developing Backbone.js Applications</em> is currently based on Backbone 0.9.10. If you are transitioning from 0.9.2 to 0.9.10 or above, the following is a guide of <a href="http://backbonejs.org/#changelog">changes</a> grouped by classes, where applicable.</p>
 <p><strong>Note:</strong> We aim to update the entirety of this book to Backbone 1.0 once it has been tagged.</p>
 <h3 id="model"><a href="#TOC">Model</a></h3>
 <ul>
