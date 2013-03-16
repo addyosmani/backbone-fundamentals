@@ -600,7 +600,7 @@ From the source for `Backbone.history.start`:
 ## Upgrading to Backbone 0.9.10
 
 
-*Developing Backbone.js Applications* is currently based on Backbone 0.9.2. If you are transitioning from this version to 0.9.10 or above, the following is a guide of [changes](http://backbonejs.org/#changelog) grouped by classes, where applicable. 
+*Developing Backbone.js Applications* is currently based on Backbone 0.9.10. If you are transitioning from 0.9.2 to 0.9.10 or above, the following is a guide of [changes](http://backbonejs.org/#changelog) grouped by classes, where applicable. 
 
 **Note:** We aim to update the entirety of this book to Backbone 1.0 once it has been tagged.
 
