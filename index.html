@@ -293,10 +293,9 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <li><a href="#conclusions-1">Conclusions</a></li>
 <li><a href="#exercise-1">Exercise</a></li>
 <li><a href="#further-reading-1">Further reading</a></li>
-<li><a href="#unit-testing-backbone-applications-with-qunit-and-sinonjs">Unit Testing Backbone Applications With QUnit And SinonJS</a></li>
-<li><a href="#introduction-2">Introduction</a></li>
 </ul></li>
 <li><a href="#qunit">QUnit</a><ul>
+<li><a href="#introduction-2">Introduction</a></li>
 <li><a href="#getting-setup">Getting Setup</a><ul>
 <li><a href="#sample-html-with-qunit-compatible-markup">Sample HTML with QUnit-compatible markup:</a></li>
 </ul></li>
@@ -7427,12 +7426,11 @@ expect(<span class="ch">&#39;click&#39;</span>).<span class="fu">toHaveBeenTrigg
 <li><a href="http://japhr.blogspot.com/2011/11/jasmine-backbonejs-revisited.html">Jasmine + Backbone Revisited</a></li>
 <li><a href="http://japhr.blogspot.com/2011/12/phantomjs-and-backbonejs-and-requirejs.html">Backbone, PhantomJS and Jasmine</a></li>
 </ul>
-<h2 id="unit-testing-backbone-applications-with-qunit-and-sinonjs"><a href="#TOC">Unit Testing Backbone Applications With QUnit And SinonJS</a></h2>
+<h1 id="qunit"><a href="#TOC">QUnit</a></h1>
 <h2 id="introduction-2"><a href="#TOC">Introduction</a></h2>
 <p>QUnit is a powerful JavaScript test suite written by jQuery team member <a href="http://bassistance.de/">Jörn Zaefferer</a> and used by many large open-source projects (such as jQuery and Backbone.js) to test their code. It’s both capable of testing standard JavaScript code in the browser as well as code on the server-side (where environments supported include Rhino, V8 and SpiderMonkey). This makes it a robust solution for a large number of use-cases.</p>
 <p>Quite a few Backbone.js contributors feel that QUnit is a better introductory framework for testing if you don’t wish to start off with Jasmine and BDD right away. As we’ll see later on in this chapter, QUnit can also be combined with third-party solutions such as SinonJS to produce an even more powerful testing solution supporting spies and mocks, which some say is preferable over Jasmine.</p>
 <p>My personal recommendation is that it’s worth comparing both frameworks and opting for the solution that you feel the most comfortable with.</p>
-<h1 id="qunit"><a href="#TOC">QUnit</a></h1>
 <h2 id="getting-setup"><a href="#TOC">Getting Setup</a></h2>
 <p>Luckily, getting QUnit setup is a fairly straight-forward process that will take less than 5 minutes.</p>
 <p>We first setup a testing environment composed of three files:</p>

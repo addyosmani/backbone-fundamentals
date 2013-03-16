@@ -1,5 +1,13 @@
 # QUnit
 
+## Introduction
+
+QUnit is a powerful JavaScript test suite written by jQuery team member [Jörn Zaefferer](http://bassistance.de/) and used by many large open-source projects (such as jQuery and Backbone.js) to test their code. It's both capable of testing standard JavaScript code in the browser as well as code on the server-side (where environments supported include Rhino, V8 and SpiderMonkey). This makes it a robust solution for a large number of use-cases.
+
+Quite a few Backbone.js contributors feel that QUnit is a better introductory framework for testing if you don't wish to start off with Jasmine and BDD right away. As we'll see later on in this chapter, QUnit can also be combined with third-party solutions such as SinonJS to produce an even more powerful testing solution supporting spies and mocks, which some say is preferable over Jasmine.
+
+My personal recommendation is that it's worth comparing both frameworks and opting for the solution that you feel the most comfortable with.
+
 ## Getting Setup
 
 Luckily, getting QUnit setup is a fairly straight-forward process that will take less than 5 minutes.
