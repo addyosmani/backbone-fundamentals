@@ -475,19 +475,20 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <p>Topics will include MVC theory and how to build applications using Backbone’s Models, Views, Collections, and Routers. I’ll also be taking you through advanced topics like modular development with Backbone.js and AMD (via RequireJS), solutions to common problems like nested views, how to solve routing problems with Backbone and jQuery Mobile, and much more.</p>
 <p>Here is a peek at what you will be learning in each chapter:</p>
 <p><i>Chapter 2, Fundamentals</i> traces the history of the MVC design pattern and introduces how it is implemented by Backbone.js and other JavaScript frameworks.</p>
-<p><i>Chapter 3, Backbone Basics</i> covers the major features of the core Backbone.js framework and technologies and techniques you will need to know in order to apply it.</p>
+<p><i>Chapter 3, Internals</i> covers the major features of the core Backbone.js framework and technologies and techniques you will need to know in order to apply it.</p>
 <p><i>Chapter 4, Exercise 1: Todos - Your First Backbone.js App</i> takes you step-by-step through development of a simple client-side Todo List application.</p>
 <p><i>Chapter 5, Exercise 2: Book Library - Your First RESTful Backbone.js App</i> walks you through development of a Book Library application which persists its model to a server using a REST API.</p>
-<p><i>Chapter 6, Backbone Boilerplate And Grunt BBB</i> introduces powerful tools you can use to bootstrap a new Backbone.js application with boilerplate code.</p>
+<p><i>Chapter 6, Backbone Extensions</i> describes Backbone.Marionette and Thorax, two extension frameworks which add features to Backbone.js that are useful for developing large-scale applications.</p>
 <p><i>Chapter 7, Common Problems and Solutions</i> reviews common issues you may encounter when using Backbone.js and ways of addressing them.</p>
-<p><i>Chapter 8, Backbone Extensions</i> describes Backbone.Marionette and Thorax, two extension frameworks which add features to Backbone.js that are useful for developing large-scale applications.</p>
-<p><i>Chapter 9, Modular Development</i> looks at how AMD modules and RequireJS can be used to modularize your code.</p>
+<p><i>Chapter 8, Modular Development</i> looks at how AMD modules and RequireJS can be used to modularize your code.</p>
+<p><i>Chapter 9, Backbone Boilerplate And Grunt BBB</i> introduces powerful tools you can use to bootstrap a new Backbone.js application with boilerplate code.</p>
 <p><i>Chapter 10, Mobile Applications</i> addresses the issues that arise when using Backbone with jQuery Mobile.</p>
-<p><i>Chapter 11, Unit Testing</i> covers how to unit test Backbone code using the Jasmine test framework.</p>
-<p><i>Chapter 12, Unit Testing Backbone Applications with QUnit and SinonJS</i> discusses how to use the QUnit and SinonJS frameworks for unit testing.</p>
-<p><i>Chapter 13, Resources</i> provides references to additional Backbone-related resources.</p>
-<p><i>Chapter 14, Conclusions</i> wraps up the our tour through the world of Backbone.js development.</p>
-<p><i>Chapter 15, Appendix</i> returns to our design pattern discussion by contrasting MVC with the Model-View-Presenter (MVP) pattern and examines how Backbone.js relates to the two patterns. It also provides useful information for existing Backbone users who may be upgrading from Backbone 0.9.2 to version 0.9.10 and beyond.</p>
+<p><i>Chapter 11, Jasmine</i> covers how to unit test Backbone code using the Jasmine test framework.</p>
+<p><i>Chapter 12, QUnit</i> discusses how to use the QUnit for unit testing.</p>
+<p><i>Chapter 13, SinonJS</i> discusses how to use SinonJS for unit testing your Backbone apps.</p>
+<p><i>Chapter 14, Resources</i> provides references to additional Backbone-related resources.</p>
+<p><i>Chapter 15, Conclusions</i> wraps up the our tour through the world of Backbone.js development.</p>
+<p><i>Chapter 16, Appendix</i> returns to our design pattern discussion by contrasting MVC with the Model-View-Presenter (MVP) pattern and examines how Backbone.js relates to the two patterns. It also provides useful information for existing Backbone users who may be upgrading from Backbone 0.9.2 to version 0.9.10 and beyond.</p>
 <h1 id="fundamentals"><a href="#TOC">Fundamentals</a></h1>
 <p>Design patterns are proven solutions to common development problems that can help us improve the organization and structure of our applications. By using patterns, we benefit from the collective experience of skilled developers who have repeatedly solved similar problems.</p>
 <p>Historically, developers creating desktop and server-class applications have had a wealth of design patterns available for them to lean on, but it’s only been in the past few years that such patterns have been applied to client-side development.</p>
@@ -1631,7 +1632,7 @@ collection
 <span class="co">/* Now that we have a router setup, we need to instantiate it */</span>
 
 <span class="kw">var</span> myTodoRouter = <span class="kw">new</span> TodoRouter();</code></pre>
-<p>Backbone offers an opt-in for HTML5 pushState support via <code>window.history.pushState</code>. This permits you to define routes such as http://backbonejs.org/just/an/example. This will be supported with automatic degradation when a user’s browser doesn’t support pushState. Note that it is vastly preferred that you’re capable of also supporting pushState on the server side, although it is a little mroe difficult to implement.</p>
+<p>Backbone offers an opt-in for HTML5 pushState support via <code>window.history.pushState</code>. This permits you to define routes such as http://backbonejs.org/just/an/example. This will be supported with automatic degradation when a user’s browser doesn’t support pushState. Note that it is vastly preferred that you’re capable of also supporting pushState on the server side, although it is a little more difficult to implement.</p>
 <p><strong>Is there a limit to the number of routers I should be using?</strong></p>
 <p>Andrew de Andrade has pointed out that DocumentCloud, the creators of Backbone, usually only use a single router in most of their applications. You’re very likely to not require more than one or two routers in your own projects; the majority of your application routing can be kept organized in a single router without it getting unwieldy.</p>
 <h4 id="backbone.history"><a href="#TOC">Backbone.history</a></h4>
