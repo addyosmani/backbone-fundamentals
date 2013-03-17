@@ -1112,6 +1112,20 @@ var todo2 = todos.get(2);
 console.log(todo2 === myTodo); // true
 ```
 
+Anytime you're working with data between the client and server, you will need a way to uniquely identify each model you are working with. In Backbone, it's useful to be aware of three identifiers for this purpose - the `id`, `cid` and `idAttribute`. 
+
+### What are the differences between the ID, CID and idAttribute?
+
+Each model in Backbone has an id representing an arbitrary string (intenger or UUID). The `id` and `cid` are identifiers that should be unique for a model and can be used to retrieve it from a collection. 
+
+The main difference between them is that the `cid` is decided by Backbone, but is helpful if you don't have a true id - this may be the case if your model has yet to be saved to the server or you aren't saving it to a database.
+
+The `idAttribute` is the id of the model returned from the server (i.e the `id` in your database). This tells Backbone which data field from the server-side should be used to update the `id` attribute (think of it as a mapper). By default, it assumes `id`, but this can be customized as needed.
+
+A model should get a new id when it is saved to the server. After this point you shoulnd't need to set it manually, unless further control is required. 
+
+### Getters and setters in Collections (continued)
+
 Internally, `Backbone.Collection` contains an array of models enumerated by their `id` property, if the model instances happen to have one. When `collection.get(id)` is called this array is checked for existence of the model instance with the corresponding `id`.
 
 Sometimes you may also want to get a model based on its client id. The client id is a property that Backbone automatically assigns to models that have not yet been saved. You can get a model's client id from its `.cid` property.
