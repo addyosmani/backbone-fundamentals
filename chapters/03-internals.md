@@ -1084,7 +1084,7 @@ ourObject.trigger('dance', 'our event');
 
 If you're familiar with jQuery custom events or the concept of Publish/Subscribe, `Backbone.Events` provides a system that is very similar with `on` being analogous to `subscribe` and `trigger` being similar to `publish`.
 
-`on` binds a callback function to an object, as we've done with `dance` in the above example. The callback is invoked whenever the event is triggered.
+`on` binds a callback function to an event, as we've done with `dance` in the above example. The callback is invoked whenever the event is triggered.
 
 The official Backbone.js documentation recommends namespacing event names using colons if you end up using quite a few of these on your page. e.g.:
 
