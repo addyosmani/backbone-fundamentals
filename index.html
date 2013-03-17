@@ -1325,7 +1325,9 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <span class="co">// Above logs &#39;Collection reset.&#39;</span>
 
 <span class="kw">console</span>.<span class="fu">log</span>(<span class="ch">&#39;Collection size: &#39;</span> + <span class="kw">TodosCollection</span>.<span class="fu">length</span>); <span class="co">// Collection size: 1</span></code></pre>
-<p>Note that using <code>Collection.reset()</code> doesn’t fire any <code>add</code> or <code>remove</code> events. A <code>reset</code> event is fired instead as shown in the example. The reason you might want to use this is to perform super-optimized rendering in extreme cases where individual events are too expensive.</p>
+<p>Another useful tip is to use <code>reset</code> with no arguments to clear out a collection completely. This is handy when dynamically loading a new age of results where you want to blank out the current page of results.</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">myCollection</span>.<span class="fu">reset</span>();</code></pre>
+<p>Note that using <code>Collection.reset()</code> doesn’t fire any <code>add</code> or <code>remove</code> events. A <code>reset</code> event is fired instead as shown in the previous example. The reason you might want to use this is to perform super-optimized rendering in extreme cases where individual events are too expensive.</p>
 <h4 id="restful-persistence"><a href="#TOC">RESTful Persistence</a></h4>
 <p>Thus far, all of our example data has been created in the browser. For most single page applications, the models are derived from a data set residing on a server. This is an area in which Backbone dramatically simplifies the code you need to write to perform RESTful synchronization with a server through a simple API on its models and collections.</p>
 <p><strong>Fetching models from the server</strong></p>

@@ -1282,7 +1282,14 @@ TodosCollection.reset([
 console.log('Collection size: ' + TodosCollection.length); // Collection size: 1
 ```
 
-Note that using `Collection.reset()` doesn't fire any `add` or `remove` events. A `reset` event is fired instead as shown in the example. The reason you might want to use this is to perform super-optimized rendering in extreme cases where individual events are too expensive.
+Another useful tip is to use `reset` with no arguments to clear out a collection completely. This is handy when dynamically loading a new age of results where you want to blank out the current page of results.
+
+```javascript
+myCollection.reset();
+```
+
+Note that using `Collection.reset()` doesn't fire any `add` or `remove` events. A `reset` event is fired instead as shown in the previous example. The reason you might want to use this is to perform super-optimized rendering in extreme cases where individual events are too expensive.
+
 
 #### RESTful Persistence
 
