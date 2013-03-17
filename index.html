@@ -1087,6 +1087,51 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <p>The <code>_.template</code> method in Underscore compiles JavaScript templates into functions which can be evaluated for rendering. In the TodoView, I’m passing the markup from the template with id <code>item-template</code> to <code>_.template()</code> to be compiled and stored in the todoTpl property when the view is created.</p>
 <p>The <code>render()</code> method uses this template by passing it the <code>toJSON()</code> encoding of the attributes of the model associated with the view. The template returns its markup after using the model’s title and completed flag to evaluate the expressions containing them. I then set this markup as the HTML content of the <code>el</code> DOM element using the <code>$el</code> property.</p>
 <p>Presto! This populates the template, giving you a data-complete set of markup in just a few short lines of code.</p>
+<p>A common Backbone convention is to return <code>this</code> at the end of <code>render()</code>. This is useful for a number of reasons, including:</p>
+<ul>
+<li>Making views easily reusable in other parent views</li>
+<li>Creating a list of elements without rendering and painting each of them individually, only to be drawn once the entire list is populated.</li>
+</ul>
+<p>Let’s try to implement the latter of these. The <code>render</code>method of a simple ListView which doesn’t use an ItemView for each item could be written:</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript">
+<span class="kw">var</span> ListView = <span class="kw">Backbone.View</span>.<span class="fu">extend</span>({
+  <span class="dt">render</span>: <span class="kw">function</span>(){
+    <span class="kw">this</span>.$<span class="fu">el</span>.<span class="fu">html</span>(<span class="kw">this</span>.<span class="fu">model</span>.<span class="fu">toJSON</span>());
+  }
+});</code></pre>
+<p>Simple enough. Let’s now assume a decision is made to construct the items using an ItemView to provide enhanced behaviour to our list. The ItemView could be written:</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript">
+<span class="kw">var</span> ItemView = <span class="kw">Backbone.View</span>.<span class="fu">extend</span>({
+  <span class="dt">events</span>: {},
+  <span class="dt">render</span>: <span class="kw">function</span>(){
+    <span class="kw">this</span>.$<span class="fu">el</span>.<span class="fu">html</span>(<span class="kw">this</span>.<span class="fu">model</span>.<span class="fu">toJSON</span>());
+    <span class="kw">return</span> <span class="kw">this</span>;
+  }
+});</code></pre>
+<p>Note the usage of <code>return this;</code> at the end of <code>render</code>. This common pattern enables us to reuse the view as a sub-view. We can also use it to prerender the view prior to rendering. Using this requires that we make a change to our ListView’s <code>render</code> method as follows:</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript">
+<span class="kw">var</span> ListView = <span class="kw">Backbone.View</span>.<span class="fu">extend</span>({
+  <span class="dt">render</span>: <span class="kw">function</span>(){
+
+    <span class="co">// Assume our model exposes the items we will</span>
+    <span class="co">// display in our list</span>
+    <span class="kw">var</span> items = <span class="kw">this</span>.<span class="fu">model</span>.<span class="fu">get</span>(<span class="ch">&#39;items&#39;</span>);
+
+    <span class="co">// Loop through each our items using the Underscore</span>
+    <span class="co">// _.each iterator</span>
+    <span class="kw">_</span>.<span class="fu">each</span>(items, <span class="kw">function</span>(item){
+
+      <span class="co">// Create a new instance of the ItemView, passing </span>
+      <span class="co">// it a specific model item</span>
+      <span class="kw">var</span> itemView = <span class="kw">new</span> ItemView({ <span class="dt">model</span>: item });
+      <span class="co">// The itemView&#39;s DOM element is appended after it</span>
+      <span class="co">// has been rendered. Here, the &#39;return this&#39; is helpful</span>
+      <span class="co">// as the itemView renders its model. Later, we ask for </span>
+      <span class="co">// it&#39;s output (&quot;el&quot;)</span>
+      <span class="kw">this</span>.$<span class="fu">el</span>.<span class="fu">append</span>( <span class="kw">itemView</span>.<span class="fu">render</span>().<span class="fu">el</span> );
+    }, <span class="kw">this</span>);
+  }
+});</code></pre>
 <p><strong>The <code>events</code> attribute</strong></p>
 <p>The Backbone <code>events</code> attribute allows us to attach event listeners to either <code>el</code>-relative custom selectors, or directly to <code>el</code> if no selector is provided. An event takes the form <code>{'eventName selector': 'callbackFunction'}</code> and a number of DOM event-types are supported, including <code>click</code>, <code>submit</code>, <code>mouseover</code>, <code>dblclick</code> and more.</p>
 <p>What isn’t instantly obvious is that while Backbone uses jQuery’s <code>.delegate()</code> underneath, it goes further by extending it so that <code>this</code> always refers to the current view object within callback functions. The only thing to really keep in mind is that any string callback supplied to the events attribute must have a corresponding function with the same name within the scope of your view.</p>

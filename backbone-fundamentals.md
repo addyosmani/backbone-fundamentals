@@ -971,6 +971,66 @@ The `render()` method uses this template by passing it the `toJSON()` encoding o
 
 Presto! This populates the template, giving you a data-complete set of markup in just a few short lines of code.
 
+
+
+A common Backbone convention is to return `this` at the end of `render()`. This is useful for a number of reasons, including:
+
+* Making views easily reusable in other parent views
+* Creating a list of elements without rendering and painting each of them individually, only to be drawn once the entire list is populated.
+
+Let's try to implement the latter of these. The `render`method of a simple ListView which doesn't use an ItemView for each item could be written:
+
+```javascript
+
+var ListView = Backbone.View.extend({
+  render: function(){
+    this.$el.html(this.model.toJSON());
+  }
+});
+```
+
+Simple enough. Let's now assume a decision is made to construct the items using an ItemView to provide enhanced behaviour to our list. The ItemView could be written:
+
+```javascript
+
+var ItemView = Backbone.View.extend({
+  events: {},
+  render: function(){
+    this.$el.html(this.model.toJSON());
+    return this;
+  }
+});
+
+```
+
+Note the usage of `return this;` at the end of `render`. This common pattern enables us to reuse the view as a sub-view. We can also use it to prerender the view prior to rendering. Using this requires that we make a change to our ListView's `render` method as follows:
+
+```javascript
+
+var ListView = Backbone.View.extend({
+  render: function(){
+
+    // Assume our model exposes the items we will
+    // display in our list
+    var items = this.model.get('items');
+
+    // Loop through each our items using the Underscore
+    // _.each iterator
+    _.each(items, function(item){
+
+      // Create a new instance of the ItemView, passing 
+      // it a specific model item
+      var itemView = new ItemView({ model: item });
+      // The itemView's DOM element is appended after it
+      // has been rendered. Here, the 'return this' is helpful
+      // as the itemView renders its model. Later, we ask for 
+      // it's output ("el")
+      this.$el.append( itemView.render().el );
+    }, this);
+  }
+});
+```
+
 **The `events` attribute**
 
 The Backbone `events` attribute allows us to attach event listeners to either `el`-relative custom selectors, or directly to `el` if no selector is provided. An event takes the form `{'eventName selector': 'callbackFunction'}` and a number of DOM event-types are supported, including `click`, `submit`, `mouseover`, `dblclick` and more.
