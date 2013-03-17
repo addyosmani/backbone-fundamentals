@@ -441,15 +441,13 @@ When reviewing a new JavaScript MVC/MV* framework, remember - it can be useful t
 
 ### Further reading
 
-If you are interested in learning more about the variation of MVC which Backbone.js is better categorized under, please see the MVP (Model-View-Presenter) section in the appendix.
-
+If you are interested in learning more about the variation of MVC which Backbone.js uses, please see the MVP (Model-View-Presenter) section in the appendix.
 
 ## Fast facts
 
 ### Backbone.js
 
 * Core components: Model, View, Collection, Router. Enforces its own flavor of MV*
-* Used by large companies such as SoundCloud and Foursquare to build non-trivial applications
 * Event-driven communication between Views and Models. As we'll see, it's relatively straight-forward to add event listeners to any attribute in a Model, giving developers fine-grained control over what changes in the View
 * Supports data bindings through manual events or a separate Key-value observing (KVO) library
 * Support for RESTful interfaces out of the box, so Models can be easily tied to a backend
@@ -458,6 +456,49 @@ If you are interested in learning more about the variation of MVC which Backbone
 * Agnostic about templating frameworks, however Underscore's micro-templating is available by default. Backbone works well with libraries like Handlebars
 * Doesn't support deeply nested Models, though there are Backbone plugins such as [Backbone-relational](https://github.com/PaulUithol/Backbone-relational) which can help
 * Clear and flexible conventions for structuring applications. Backbone doesn't force usage of all of its components and can work with only those needed.
+
+### Used by
+
+*Disqus*
+
+Disqus chose Backbone.js to power the latest version of their commenting widget. They felt it was the right choice for their distributed web app, given Backbone's small footprint and ease of extensibility.
+
+![](img/disqus.png)
+
+
+*Khan Academy*
+
+Offering a web app that aims to provide free world-class education to anyone anywhere, Khan use Backbone to keep their frontend code both modular and organized.
+
+![](img/khan-academy.png)
+
+
+*MetaLab*
+
+MetaLab created Flow, a task management app for teams using Backbone. Their workspace uses Backbone to create task views, activities, accounts, tags and more.
+
+![](img/flow.png)
+
+*Walmart Mobile*
+
+Walmart chose Backbone to power their mobile web applications, creating two new extension frameworks in the process - Thorax and Lumbar. We'll be discussing both of these later in the book.
+
+![](img/walmart-mobile.png)
+
+
+*AirBnb*
+
+Airbnb developed their mobile web app using Backbone and now use it across many of their products.
+
+![](img/airbnb.png)
+
+
+*Code School*
+
+Code School's course challenge app is built from the ground up using Backbone, taking advantage of all the pieces it has to offer: routers, collections, models and complex event handling.
+
+![](img/code-school.png)
+
 
 # Backbone Basics
 
@@ -629,7 +670,12 @@ console.log('Completed: ' + myTodo.get('completed')); // Completed: true
 
 **Direct access**
 
-Models store attributes internally in the `Model.attributes` object which can be accessed directly if necessary. But remember it is best practice to use Model.get(), Model.set(), or direct instantiation as explained above.
+Models expose an `.attributes` attribute which represents an internal hash containing the state of that model. This is generally in the form of a JSON object similar to the model data you might find on the server but can take other forms.
+
+Setting values through the `.attributes` attribute on a model bypasses triggers bound to the model. Additionally you can pass `{silent: true}`, which silences individual "change:attr" events entirely, but can build up and then hit in unexpected ways later on.
+
+Remember where possible it is best practice to use `Model.set()`, or direct instantiation as explained earlier.
+
 
 #### Listening for changes to your model
 
@@ -711,6 +757,7 @@ console.log('Todo set as completed: ' + myTodo.get('completed'));
 // Title value for this model has changed.
 // Todo set as completed: true
 ```
+
 
 #### Validation
 
@@ -845,6 +892,49 @@ var todosView = new TodosView({el: $('#footer')});
 
 View logic often needs to invoke jQuery or Zepto functions on the `el` element and elements nested within it. Backbone makes it easy to do so by defining the `$el` property and `$()` function. The `view.$el` property is equivalent to `$(view.el)` and `view.$(selector)` is equivalent to `$(view.el).find(selector)`. In our TodosView example's render method, we see `this.$el` used to set the HTML of the element and `this.$()` used to find subelements of class 'edit'.
 
+**setElement*
+
+If you need to apply an existing Backbone view to a different DOM element `setElement` can be used for this purpose. Overriding this.el needs to both change the DOM reference and re-bind events to the new element (and unbind from the old). 
+
+`setElement` will create a cached `$el` reference for you, moving the delegated events for a view from the old element to the new one.
+
+```javascript
+
+// We create two DOM elements representing buttons
+// which could easily be containers or something else
+var button1 = $('<button></button>');
+var button2 = $('<button></button>');
+
+// Define a new view
+var View = Backbone.View.extend({
+      events: {
+        click: function(e) {
+          console.log(view.el === e.target);
+        }
+      }
+    });
+
+// Create a new instance of the view, applying it
+// to button1
+var view = new View({el: button1});
+
+// Apply the view to button2 using setElement
+view.setElement(button2);
+
+button1.trigger('click'); 
+button2.trigger('click'); // returns true
+```
+
+The "el" property represents the markup portion of the view that will be rendered and so, to get the view to actually render to the page, you need to add it as a new element or append it to an existing element.
+
+```javascript
+
+// We can also provide raw markup to setElement
+// as follows (just to demonstrate it can be done):
+var view = new Backbone.View;
+view.setElement('<p><a><b>test</b></a></p>');
+view.$('a b').html(); // outputs "test"
+```
 
 **Understanding `render()`**
 

@@ -84,6 +84,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 </ul></li>
 <li><a href="#fast-facts">Fast facts</a><ul>
 <li><a href="#backbone.js">Backbone.js</a></li>
+<li><a href="#used-by">Used by</a></li>
 </ul></li>
 </ul></li>
 <li><a href="#backbone-basics">Backbone Basics</a><ul>
@@ -677,12 +678,11 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <p>Having reviewed the classical MVC pattern, you should now understand how it allows developers to cleanly separate concerns in an application. You should also now appreciate how JavaScript MVC frameworks may differ in their interpretation of MVC, and how they share some of the fundamental concepts of the original pattern.</p>
 <p>When reviewing a new JavaScript MVC/MV* framework, remember - it can be useful to step back and consider how it’s opted to approach Models, Views, Controllers or other alternatives, as this can better help you understand how the framework is intended to be used.</p>
 <h3 id="further-reading"><a href="#TOC">Further reading</a></h3>
-<p>If you are interested in learning more about the variation of MVC which Backbone.js is better categorized under, please see the MVP (Model-View-Presenter) section in the appendix.</p>
+<p>If you are interested in learning more about the variation of MVC which Backbone.js uses, please see the MVP (Model-View-Presenter) section in the appendix.</p>
 <h2 id="fast-facts"><a href="#TOC">Fast facts</a></h2>
 <h3 id="backbone.js"><a href="#TOC">Backbone.js</a></h3>
 <ul>
 <li>Core components: Model, View, Collection, Router. Enforces its own flavor of MV*</li>
-<li>Used by large companies such as SoundCloud and Foursquare to build non-trivial applications</li>
 <li>Event-driven communication between Views and Models. As we’ll see, it’s relatively straight-forward to add event listeners to any attribute in a Model, giving developers fine-grained control over what changes in the View</li>
 <li>Supports data bindings through manual events or a separate Key-value observing (KVO) library</li>
 <li>Support for RESTful interfaces out of the box, so Models can be easily tied to a backend</li>
@@ -692,6 +692,37 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <li>Doesn’t support deeply nested Models, though there are Backbone plugins such as <a href="https://github.com/PaulUithol/Backbone-relational">Backbone-relational</a> which can help</li>
 <li>Clear and flexible conventions for structuring applications. Backbone doesn’t force usage of all of its components and can work with only those needed.</li>
 </ul>
+<h3 id="used-by"><a href="#TOC">Used by</a></h3>
+<p><em>Disqus</em></p>
+<p>Disqus chose Backbone.js to power the latest version of their commenting widget. They felt it was the right choice for their distributed web app, given Backbone’s small footprint and ease of extensibility.</p>
+<figure>
+<img src="img/disqus.png"><figcaption></figcaption>
+</figure>
+<p><em>Khan Academy</em></p>
+<p>Offering a web app that aims to provide free world-class education to anyone anywhere, Khan use Backbone to keep their frontend code both modular and organized.</p>
+<figure>
+<img src="img/khan-academy.png"><figcaption></figcaption>
+</figure>
+<p><em>MetaLab</em></p>
+<p>MetaLab created Flow, a task management app for teams using Backbone. Their workspace uses Backbone to create task views, activities, accounts, tags and more.</p>
+<figure>
+<img src="img/flow.png"><figcaption></figcaption>
+</figure>
+<p><em>Walmart Mobile</em></p>
+<p>Walmart chose Backbone to power their mobile web applications, creating two new extension frameworks in the process - Thorax and Lumbar. We’ll be discussing both of these later in the book.</p>
+<figure>
+<img src="img/walmart-mobile.png"><figcaption></figcaption>
+</figure>
+<p><em>AirBnb</em></p>
+<p>Airbnb developed their mobile web app using Backbone and now use it across many of their products.</p>
+<figure>
+<img src="img/airbnb.png"><figcaption></figcaption>
+</figure>
+<p><em>Code School</em></p>
+<p>Code School’s course challenge app is built from the ground up using Backbone, taking advantage of all the pieces it has to offer: routers, collections, models and complex event handling.</p>
+<figure>
+<img src="img/code-school.png"><figcaption></figcaption>
+</figure>
 <h1 id="backbone-basics"><a href="#TOC">Backbone Basics</a></h1>
 <p>In this section, you’ll learn the essentials of Backbone’s models, views, collections, events, and routers. This isn’t meant as a replacement for the official documentation, but it will help you understand many of the core concepts behind Backbone before you start building applications with it.</p>
 <h2 id="models-1"><a href="#TOC">Models</a></h2>
@@ -828,7 +859,9 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <span class="kw">console</span>.<span class="fu">log</span>(<span class="ch">&#39;Todo title: &#39;</span> + <span class="kw">myTodo</span>.<span class="fu">get</span>(<span class="ch">&#39;title&#39;</span>)); <span class="co">// Todo title: Both attributes set through Model.set().</span>
 <span class="kw">console</span>.<span class="fu">log</span>(<span class="ch">&#39;Completed: &#39;</span> + <span class="kw">myTodo</span>.<span class="fu">get</span>(<span class="ch">&#39;completed&#39;</span>)); <span class="co">// Completed: true</span></code></pre>
 <p><strong>Direct access</strong></p>
-<p>Models store attributes internally in the <code>Model.attributes</code> object which can be accessed directly if necessary. But remember it is best practice to use Model.get(), Model.set(), or direct instantiation as explained above.</p>
+<p>Models expose an <code>.attributes</code> attribute which represents an internal hash containing the state of that model. This is generally in the form of a JSON object similar to the model data you might find on the server but can take other forms.</p>
+<p>Setting values through the <code>.attributes</code> attribute on a model bypasses triggers bound to the model. Additionally you can pass <code>{silent: true}</code>, which silences individual <q>change:attr</q> events entirely, but can build up and then hit in unexpected ways later on.</p>
+<p>Remember where possible it is best practice to use <code>Model.set()</code>, or direct instantiation as explained earlier.</p>
 <h4 id="listening-for-changes-to-your-model"><a href="#TOC">Listening for changes to your model</a></h4>
 <p>If you want to receive a notification when a Backbone model changes you can bind a listener to the model for its change event. A convenient place to add listeners is in the <code>initialize()</code> function as shown below:</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> Todo = <span class="kw">Backbone.Model</span>.<span class="fu">extend</span>({
@@ -993,6 +1026,40 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> todosView = <span class="kw">new</span> TodosView({<span class="dt">el</span>: $(<span class="ch">&#39;#footer&#39;</span>)});</code></pre>
 <p><strong>$el and $()</strong></p>
 <p>View logic often needs to invoke jQuery or Zepto functions on the <code>el</code> element and elements nested within it. Backbone makes it easy to do so by defining the <code>$el</code> property and <code>$()</code> function. The <code>view.$el</code> property is equivalent to <code>$(view.el)</code> and <code>view.$(selector)</code> is equivalent to <code>$(view.el).find(selector)</code>. In our TodosView example’s render method, we see <code>this.$el</code> used to set the HTML of the element and <code>this.$()</code> used to find subelements of class <q>edit</q>.</p>
+<p>*<em>setElement</em></p>
+<p>If you need to apply an existing Backbone view to a different DOM element <code>setElement</code> can be used for this purpose. Overriding this.el needs to both change the DOM reference and re-bind events to the new element (and unbind from the old).</p>
+<p><code>setElement</code> will create a cached <code>$el</code> reference for you, moving the delegated events for a view from the old element to the new one.</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript">
+<span class="co">// We create two DOM elements representing buttons</span>
+<span class="co">// which could easily be containers or something else</span>
+<span class="kw">var</span> button1 = $(<span class="ch">&#39;&lt;button&gt;&lt;/button&gt;&#39;</span>);
+<span class="kw">var</span> button2 = $(<span class="ch">&#39;&lt;button&gt;&lt;/button&gt;&#39;</span>);
+
+<span class="co">// Define a new view</span>
+<span class="kw">var</span> View = <span class="kw">Backbone.View</span>.<span class="fu">extend</span>({
+      <span class="dt">events</span>: {
+        <span class="dt">click</span>: <span class="kw">function</span>(e) {
+          <span class="kw">console</span>.<span class="fu">log</span>(<span class="kw">view</span>.<span class="fu">el</span> === <span class="kw">e</span>.<span class="fu">target</span>);
+        }
+      }
+    });
+
+<span class="co">// Create a new instance of the view, applying it</span>
+<span class="co">// to button1</span>
+<span class="kw">var</span> view = <span class="kw">new</span> View({<span class="dt">el</span>: button1});
+
+<span class="co">// Apply the view to button2 using setElement</span>
+<span class="kw">view</span>.<span class="fu">setElement</span>(button2);
+
+<span class="kw">button1</span>.<span class="fu">trigger</span>(<span class="ch">&#39;click&#39;</span>); 
+<span class="kw">button2</span>.<span class="fu">trigger</span>(<span class="ch">&#39;click&#39;</span>); <span class="co">// returns true</span></code></pre>
+<p>The <q>el</q> property represents the markup portion of the view that will be rendered and so, to get the view to actually render to the page, you need to add it as a new element or append it to an existing element.</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript">
+<span class="co">// We can also provide raw markup to setElement</span>
+<span class="co">// as follows (just to demonstrate it can be done):</span>
+<span class="kw">var</span> view = <span class="kw">new</span> <span class="kw">Backbone</span>.<span class="fu">View</span>;
+<span class="kw">view</span>.<span class="fu">setElement</span>(<span class="ch">&#39;&lt;p&gt;&lt;a&gt;&lt;b&gt;test&lt;/b&gt;&lt;/a&gt;&lt;/p&gt;&#39;</span>);
+<span class="kw">view</span>.$(<span class="ch">&#39;a b&#39;</span>).<span class="fu">html</span>(); <span class="co">// outputs &quot;test&quot;</span></code></pre>
 <p><strong>Understanding <code>render()</code></strong></p>
 <p><code>render()</code> is an optional function that defines the logic for rendering a template. We’ll use Underscore’s micro-templating in these examples, but remember you can use other templating frameworks if you prefer. Our example will reference the following HTML markup:</p>
 <pre class="sourceCode html"><code class="sourceCode html"><span class="er">&lt;</span>!doctype html&gt;

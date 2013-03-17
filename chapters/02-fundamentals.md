@@ -280,15 +280,13 @@ When reviewing a new JavaScript MVC/MV* framework, remember - it can be useful t
 
 ### Further reading
 
-If you are interested in learning more about the variation of MVC which Backbone.js is better categorized under, please see the MVP (Model-View-Presenter) section in the appendix.
-
+If you are interested in learning more about the variation of MVC which Backbone.js uses, please see the MVP (Model-View-Presenter) section in the appendix.
 
 ## Fast facts
 
 ### Backbone.js
 
 * Core components: Model, View, Collection, Router. Enforces its own flavor of MV*
-* Used by large companies such as SoundCloud and Foursquare to build non-trivial applications
 * Event-driven communication between Views and Models. As we'll see, it's relatively straight-forward to add event listeners to any attribute in a Model, giving developers fine-grained control over what changes in the View
 * Supports data bindings through manual events or a separate Key-value observing (KVO) library
 * Support for RESTful interfaces out of the box, so Models can be easily tied to a backend
@@ -297,3 +295,46 @@ If you are interested in learning more about the variation of MVC which Backbone
 * Agnostic about templating frameworks, however Underscore's micro-templating is available by default. Backbone works well with libraries like Handlebars
 * Doesn't support deeply nested Models, though there are Backbone plugins such as [Backbone-relational](https://github.com/PaulUithol/Backbone-relational) which can help
 * Clear and flexible conventions for structuring applications. Backbone doesn't force usage of all of its components and can work with only those needed.
+
+### Used by
+
+*Disqus*
+
+Disqus chose Backbone.js to power the latest version of their commenting widget. They felt it was the right choice for their distributed web app, given Backbone's small footprint and ease of extensibility.
+
+![](img/disqus.png)
+
+
+*Khan Academy*
+
+Offering a web app that aims to provide free world-class education to anyone anywhere, Khan use Backbone to keep their frontend code both modular and organized.
+
+![](img/khan-academy.png)
+
+
+*MetaLab*
+
+MetaLab created Flow, a task management app for teams using Backbone. Their workspace uses Backbone to create task views, activities, accounts, tags and more.
+
+![](img/flow.png)
+
+*Walmart Mobile*
+
+Walmart chose Backbone to power their mobile web applications, creating two new extension frameworks in the process - Thorax and Lumbar. We'll be discussing both of these later in the book.
+
+![](img/walmart-mobile.png)
+
+
+*AirBnb*
+
+Airbnb developed their mobile web app using Backbone and now use it across many of their products.
+
+![](img/airbnb.png)
+
+
+*Code School*
+
+Code School's course challenge app is built from the ground up using Backbone, taking advantage of all the pieces it has to offer: routers, collections, models and complex event handling.
+
+![](img/code-school.png)
+

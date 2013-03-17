@@ -168,7 +168,12 @@ console.log('Completed: ' + myTodo.get('completed')); // Completed: true
 
 **Direct access**
 
-Models store attributes internally in the `Model.attributes` object which can be accessed directly if necessary. But remember it is best practice to use Model.get(), Model.set(), or direct instantiation as explained above.
+Models expose an `.attributes` attribute which represents an internal hash containing the state of that model. This is generally in the form of a JSON object similar to the model data you might find on the server but can take other forms.
+
+Setting values through the `.attributes` attribute on a model bypasses triggers bound to the model. Additionally you can pass `{silent: true}`, which silences individual "change:attr" events entirely, but can build up and then hit in unexpected ways later on.
+
+Remember where possible it is best practice to use `Model.set()`, or direct instantiation as explained earlier.
+
 
 #### Listening for changes to your model
 
@@ -250,6 +255,7 @@ console.log('Todo set as completed: ' + myTodo.get('completed'));
 // Title value for this model has changed.
 // Todo set as completed: true
 ```
+
 
 #### Validation
 
@@ -384,6 +390,49 @@ var todosView = new TodosView({el: $('#footer')});
 
 View logic often needs to invoke jQuery or Zepto functions on the `el` element and elements nested within it. Backbone makes it easy to do so by defining the `$el` property and `$()` function. The `view.$el` property is equivalent to `$(view.el)` and `view.$(selector)` is equivalent to `$(view.el).find(selector)`. In our TodosView example's render method, we see `this.$el` used to set the HTML of the element and `this.$()` used to find subelements of class 'edit'.
 
+**setElement*
+
+If you need to apply an existing Backbone view to a different DOM element `setElement` can be used for this purpose. Overriding this.el needs to both change the DOM reference and re-bind events to the new element (and unbind from the old). 
+
+`setElement` will create a cached `$el` reference for you, moving the delegated events for a view from the old element to the new one.
+
+```javascript
+
+// We create two DOM elements representing buttons
+// which could easily be containers or something else
+var button1 = $('<button></button>');
+var button2 = $('<button></button>');
+
+// Define a new view
+var View = Backbone.View.extend({
+      events: {
+        click: function(e) {
+          console.log(view.el === e.target);
+        }
+      }
+    });
+
+// Create a new instance of the view, applying it
+// to button1
+var view = new View({el: button1});
+
+// Apply the view to button2 using setElement
+view.setElement(button2);
+
+button1.trigger('click'); 
+button2.trigger('click'); // returns true
+```
+
+The "el" property represents the markup portion of the view that will be rendered and so, to get the view to actually render to the page, you need to add it as a new element or append it to an existing element.
+
+```javascript
+
+// We can also provide raw markup to setElement
+// as follows (just to demonstrate it can be done):
+var view = new Backbone.View;
+view.setElement('<p><a><b>test</b></a></p>');
+view.$('a b').html(); // outputs "test"
+```
 
 **Understanding `render()`**
 
