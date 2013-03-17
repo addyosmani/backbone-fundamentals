@@ -1253,7 +1253,7 @@ var TodoRouter = Backbone.Router.extend({
 var myTodoRouter = new TodoRouter();
 ```
 
-Backbone offers an opt-in for HTML5 pushState support via `window.history.pushState`. This permits you to define routes such as http://backbonejs.org/just/an/example. This will be supported with automatic degradation when a user's browser doesn't support pushState. Note that it is vastly preferred that you're capable of also supporting pushState on the server side, although it is a little mroe difficult to implement.
+Backbone offers an opt-in for HTML5 pushState support via `window.history.pushState`. This permits you to define routes such as http://backbonejs.org/just/an/example. This will be supported with automatic degradation when a user's browser doesn't support pushState. Note that it is vastly preferred that you're capable of also supporting pushState on the server side, although it is a little more difficult to implement.
 
 **Is there a limit to the number of routers I should be using?**
 
