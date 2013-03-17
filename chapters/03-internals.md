@@ -529,15 +529,45 @@ var ListView = Backbone.View.extend({
 });
 ```
 
-**The `events` attribute**
+**The `events` hash**
 
-The Backbone `events` attribute allows us to attach event listeners to either `el`-relative custom selectors, or directly to `el` if no selector is provided. An event takes the form `{'eventName selector': 'callbackFunction'}` and a number of DOM event-types are supported, including `click`, `submit`, `mouseover`, `dblclick` and more.
+
+The Backbone `events` hash allows us to attach event listeners to either `el`-relative custom selectors, or directly to `el` if no selector is provided. An event takes the form of a key-value pair `'eventName selector': 'callbackFunction'` and a number of DOM event-types are supported, including `click`, `submit`, `mouseover`, `dblclick` and more.
+
+```javascript
+
+// A sample view
+var TodoView = Backbone.View.extend({
+  tagName:  'li',
+
+  // with an events hash containing DOM events
+  // specific to an item:
+  events: {
+    'click .toggle': 'toggleCompleted',
+    'dblclick label': 'edit',
+    'click .destroy': 'clear',
+    'blur .edit': 'close'
+  },
+```
 
 What isn't instantly obvious is that while Backbone uses jQuery's `.delegate()` underneath, it goes further by extending it so that `this` always refers to the current view object within callback functions. The only thing to really keep in mind is that any string callback supplied to the events attribute must have a corresponding function with the same name within the scope of your view. 
 
 The declarative, delegated jQuery events means that you don't have to worry about whether a particular element has been rendered to the DOM yet or not. Usually with jQuery you have to worry about "presence or absence in the DOM" all the time when binding events.
 
 In our TodoView example, the edit callback is invoked when the user double-clicks a label element within the `el` element, updateOnEnter is called for each keypress in an element with class 'edit', and close executes when an element with class 'edit' loses focus. Each of these callback functions can use `this` to refer to the TodoView object.
+
+Note that you can also bind methods yourself using `_.bind(this.viewEvent, this)`, which is effectively what the value in each event's key-value pair is doing. Below we use `_.bind` to re-render our view when a model changes.
+
+```javascript
+
+var TodoView = Backbone.View.extrend({
+  initialize: function() {
+    this.model.bind('change', _.bind(this.render, this));
+  }
+});
+```
+
+`_.bind` only works on one method at a time, but supports currying and as it returns the bound function means that you can use `_.bind` on an anonymous function.
 
 
 ## Collections

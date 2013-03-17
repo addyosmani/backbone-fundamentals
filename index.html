@@ -1132,11 +1132,32 @@ code > span.er { color: #ff0000; font-weight: bold; }
     }, <span class="kw">this</span>);
   }
 });</code></pre>
-<p><strong>The <code>events</code> attribute</strong></p>
-<p>The Backbone <code>events</code> attribute allows us to attach event listeners to either <code>el</code>-relative custom selectors, or directly to <code>el</code> if no selector is provided. An event takes the form <code>{'eventName selector': 'callbackFunction'}</code> and a number of DOM event-types are supported, including <code>click</code>, <code>submit</code>, <code>mouseover</code>, <code>dblclick</code> and more.</p>
+<p><strong>The <code>events</code> hash</strong></p>
+<p>The Backbone <code>events</code> hash allows us to attach event listeners to either <code>el</code>-relative custom selectors, or directly to <code>el</code> if no selector is provided. An event takes the form of a key-value pair <code>'eventName selector': 'callbackFunction'</code> and a number of DOM event-types are supported, including <code>click</code>, <code>submit</code>, <code>mouseover</code>, <code>dblclick</code> and more.</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript">
+<span class="co">// A sample view</span>
+<span class="kw">var</span> TodoView = <span class="kw">Backbone.View</span>.<span class="fu">extend</span>({
+  <span class="dt">tagName</span>:  <span class="ch">&#39;li&#39;</span>,
+
+  <span class="co">// with an events hash containing DOM events</span>
+  <span class="co">// specific to an item:</span>
+  <span class="dt">events</span>: {
+    <span class="ch">&#39;click .toggle&#39;</span>: <span class="ch">&#39;toggleCompleted&#39;</span>,
+    <span class="ch">&#39;dblclick label&#39;</span>: <span class="ch">&#39;edit&#39;</span>,
+    <span class="ch">&#39;click .destroy&#39;</span>: <span class="ch">&#39;clear&#39;</span>,
+    <span class="ch">&#39;blur .edit&#39;</span>: <span class="ch">&#39;close&#39;</span>
+  },</code></pre>
 <p>What isn’t instantly obvious is that while Backbone uses jQuery’s <code>.delegate()</code> underneath, it goes further by extending it so that <code>this</code> always refers to the current view object within callback functions. The only thing to really keep in mind is that any string callback supplied to the events attribute must have a corresponding function with the same name within the scope of your view.</p>
 <p>The declarative, delegated jQuery events means that you don’t have to worry about whether a particular element has been rendered to the DOM yet or not. Usually with jQuery you have to worry about <q>presence or absence in the DOM</q> all the time when binding events.</p>
 <p>In our TodoView example, the edit callback is invoked when the user double-clicks a label element within the <code>el</code> element, updateOnEnter is called for each keypress in an element with class <q>edit</q>, and close executes when an element with class <q>edit</q> loses focus. Each of these callback functions can use <code>this</code> to refer to the TodoView object.</p>
+<p>Note that you can also bind methods yourself using <code>_.bind(this.viewEvent, this)</code>, which is effectively what the value in each event’s key-value pair is doing. Below we use <code>_.bind</code> to re-render our view when a model changes.</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript">
+<span class="kw">var</span> TodoView = <span class="kw">Backbone.View</span>.<span class="fu">extrend</span>({
+  <span class="dt">initialize</span>: <span class="kw">function</span>() {
+    <span class="kw">this</span>.<span class="fu">model</span>.<span class="fu">bind</span>(<span class="ch">&#39;change&#39;</span>, <span class="kw">_</span>.<span class="fu">bind</span>(<span class="kw">this</span>.<span class="fu">render</span>, <span class="kw">this</span>));
+  }
+});</code></pre>
+<p><code>_.bind</code> only works on one method at a time, but supports currying and as it returns the bound function means that you can use <code>_.bind</code> on an anonymous function.</p>
 <h2 id="collections"><a href="#TOC">Collections</a></h2>
 <p>Collections are sets of Models and are created by extending <code>Backbone.Collection</code>.</p>
 <p>Normally, when creating a collection you’ll also want to define a property specifying the type of model that your collection will contain, along with any instance properties required.</p>
