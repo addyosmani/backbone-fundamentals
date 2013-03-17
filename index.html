@@ -4314,7 +4314,7 @@ To see Thorax in action on a large scale website visit walmart.com on any Androi
     }
 });</code></pre>
 <p>If multiple views need to be nested at particular locations in a template, a hash of child views indexed by child view cids’ should be created. In the template, use a custom HTML attribute named <code>data-view-cid</code> to create placeholder elements for each view to embed. Once the template has been rendered and its output appended to the parent view’s <code>$el</code>, each placeholder can be queried for and replaced with the child view’s <code>el</code>.</p>
-<p>A sample implementation containing a single child view:</p>
+<p>A sample implementation containing a single child view could be written:</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript">
 <span class="kw">var</span> OuterView = <span class="kw">Backbone.View</span>.<span class="fu">extend</span>({
     <span class="dt">initialize</span>: <span class="kw">function</span>() {
@@ -4330,6 +4330,7 @@ To see Thorax in action on a large scale website visit walmart.com on any Androi
         }, <span class="kw">this</span>);
     }
 };</code></pre>
+<p>The use of <code>cid</code>s (client ids) here is useful because it illustrates separating a model and its views by having views referenced by their instances and not their attributes. It’s quite common to ask for all views that satisfy an attribute on their models, but if you have recursive subviews or repeated views (a common occurrance), you can’t simply ask for views by attributes. That is, unless you specify additional attributes that separate duplicates. Using <code>cid</code>s solves this problem as it allows for direct references to views.</p>
 <p>Generally speaking, more developers opt for Solution 1 or 5 as:</p>
 <ul>
 <li>The majority of their views may already rely on being in the DOM in their render() method</li>
@@ -6346,7 +6347,6 @@ Backbone.history.start({
 <li>Boilerplate and scaffolding support, allowing us to spend minimal time writing boilerplate for modules, collections and so on.</li>
 <li>A build tool for template pre-compilation and, concatenation &amp; minification of all our libraries, application code and stylesheets</li>
 <li>A Lightweight node.js webserver</li>
-<li>Numerous other Backbone.js snippets for making our development experience more pain-free</li>
 </ul>
 <p>Notes on build tool steps:</p>
 <ul>
@@ -8667,6 +8667,8 @@ test( <span class="ch">&#39;Should bind Collection events to View creation.&#39;
 <span class="kw">todoController</span>.<span class="fu">initialize</span>();
 
 <span class="kw">todo1</span>.<span class="fu">set</span>({ <span class="dt">title</span>: <span class="st">&quot;Due to this change Model will notify View and it will re-render&quot;</span>});</code></pre>
+<p>Samuel Clay, one of the authors of the first version of Backbone.js says of cranium.js: <q>Unsurprisingly, it looks a whole lot like the beginnings of Backbone. Views are dumb, so they get very little boilerplate and setup. Models are responsible for their attributes and announcing changes to those models.</q></p>
+<p>I hope you’ve found this implementation helpful in understanding how one would go about writing their own library like Backbone from scratch, but moreso that it encourages you to take advantage of mature existing solutions where possible but never be afraid to explore deeper down into what makes them tick.</p>
 <h2 id="mvp"><a href="#TOC">MVP</a></h2>
 <p>Model-View-Presenter (MVP) is a derivative of the MVC design pattern which focuses on improving presentation logic. It originated at a company named <a href="http://en.wikipedia.org/wiki/Taligent">Taligent</a> in the early 1990s while they were working on a model for a C++ CommonPoint environment. Whilst both MVC and MVP target the separation of concerns across multiple components, there are some fundamental differences between them.</p>
 <p>For the purposes of this summary we will focus on the version of MVP most suitable for web-based architectures.</p>
@@ -8684,7 +8686,7 @@ test( <span class="ch">&#39;Should bind Collection events to View creation.&#39;
 <p>At the end of the day, the underlying concerns you may have with MVC will likely hold true for MVP given that the differences between them are mainly semantic. As long as you are cleanly separating concerns into models, views and controllers (or presenters) you should be achieving most of the same benefits regardless of the pattern you opt for.</p>
 <h2 id="mvc-mvp-and-backbone.js"><a href="#TOC">MVC, MVP and Backbone.js</a></h2>
 <p>There are very few, if any architectural JavaScript frameworks that claim to implement the MVC or MVP patterns in their classical form as many JavaScript developers don’t view MVC and MVP as being mutually exclusive (we are actually more likely to see MVP strictly implemented when looking at web frameworks such as ASP.NET or GWT). This is because it’s possible to have additional presenter/view logic in your application and yet still consider it a flavor of MVC.</p>
-<p>Backbone contributor <a href="http://ireneros.com/">Irene Ros</a> subscribes to this way of thinking as when she separates Backbone views out into their own distinct components, she needs something to actually assemble them for her. This could either be a controller route (such as a <code>Backbone.Router</code>, covered later in the book) or a callback in response to data being fetched.</p>
+<p>Backbone contributor <a href="http://ireneros.com/">Irene Ros</a> subscribes to this way of thinking as when she separates Backbone views out into their own distinct components, she needs something to actually assemble them for her. This could either be a controller route (such as a <code>Backbone.Router</code>) or a callback in response to data being fetched.</p>
 <p>That said, some developers do however feel that Backbone.js better fits the description of MVP than it does MVC . Their view is that:</p>
 <ul>
 <li>The presenter in MVP better describes the <code>Backbone.View</code> (the layer between View templates and the data bound to it) than a controller does</li>
@@ -8832,6 +8834,18 @@ test( <span class="ch">&#39;Should bind Collection events to View creation.&#39;
 <span class="co">// special models</span>
 <span class="kw">todoApp.model.special</span>.<span class="fu">Admin</span> = <span class="kw">Backbone.Model</span>.<span class="fu">extend</span>({});</code></pre>
 <p>This is readable, clearly organized, and is a relatively safe way of namespacing your Backbone application. The only real caveat however is that it requires your browser’s JavaScript engine to first locate the todoApp object, then dig down until it gets to the function you’re calling. However, developers such as Juriy Zaytsev (kangax) have tested and found the performance differences between single object namespacing vs the <q>nested</q> approach to be quite negligible.</p>
+<p><strong>What does DocumentCloud use?</strong></p>
+<p>In case you were wondering, here is the original DocumentCloud (remember those guys that created Backbone?) workspace that uses namespacing in a necessary way. This approach makes sense as their documents (and annotations and document lists) are embedded on third-party news sites.</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript">
+<span class="co">// Provide top-level namespaces for our javascript.</span>
+(<span class="kw">function</span>() {
+  <span class="kw">window</span>.<span class="fu">dc</span> = {};
+  <span class="kw">dc</span>.<span class="fu">controllers</span> = {};
+  <span class="kw">dc</span>.<span class="fu">model</span> = {};
+  <span class="kw">dc</span>.<span class="fu">app</span> = {};
+  <span class="kw">dc</span>.<span class="fu">ui</span> = {};
+})();</code></pre>
+<p>As you can see, they opt for declaring a top-level namespace on the <code>window</code> called <code>dc</code>, a short-form name of their app, followed by nested namesapces for the controllers, models, UI and other pieces of their application.</p>
 <p><strong>Recommendation</strong></p>
 <p>Reviewing the namespace patterns above, the option that I prefer when writing Backbone applications is nested object namespacing with the object literal pattern.</p>
 <p>Single global variables may work fine for applications that are relatively trivial. However, larger codebases requiring both namespaces and deep sub-namespaces require a succinct solution that’s both readable and scalable. I feel this pattern achieves both of these objectives and is a good choice for most Backbone development.</p>

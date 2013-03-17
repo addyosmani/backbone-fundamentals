@@ -143,7 +143,7 @@ var InnerView = Backbone.View.extend({
 
 If multiple views need to be nested at particular locations in a template, a hash of child views indexed by child view cids' should be created. In the template, use a custom HTML attribute named `data-view-cid` to create placeholder elements for each view to embed. Once the template has been rendered and its output appended to the parent view's `$el`, each placeholder can be queried for and replaced with the child view's `el`.
 
-A sample implementation containing a single child view:
+A sample implementation containing a single child view could be written:
 
 ```javascript
 
@@ -163,6 +163,10 @@ var OuterView = Backbone.View.extend({
 };
 
 ```
+
+
+The use of `cid`s (client ids) here is useful because it illustrates separating a model and its views by having views referenced by their instances and not their attributes. It's quite common to ask for all views that satisfy an attribute on their models, but if you have recursive subviews or repeated views (a common occurrance), you can't simply ask for views by attributes. That is, unless you specify additional attributes that separate duplicates. Using `cid`s solves this problem as it allows for direct references to views.
+
 
 Generally speaking, more developers opt for Solution 1 or 5 as:
 

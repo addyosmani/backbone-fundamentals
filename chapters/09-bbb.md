@@ -18,7 +18,6 @@ Out of the box, BB and Grunt-BBB provide provide us with:
 * Boilerplate and scaffolding support, allowing us to spend minimal time writing boilerplate for modules, collections and so on.
 * A build tool for template pre-compilation and, concatenation & minification of all our libraries, application code and stylesheets
 * A Lightweight node.js webserver
-* Numerous other Backbone.js snippets for making our development experience more pain-free
 
 Notes on build tool steps:
 
