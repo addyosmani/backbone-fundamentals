@@ -7186,6 +7186,23 @@ This assumes that index.html will be serving out your Backbone application. The 
       root: '/'
     });
 
+
+## An asset package alternative for dependency management
+
+For more than trivial views, DocumentCloud have a home-built asset packager called [Jammit](https://github.com/documentcloud/jammit), which has easy integration with Underscore.js templates and can also be used for dependency management.
+
+Jammit expects your JavaScript templates (JST) to live alongside any ERB templates you're using in the form of .jst files. It packages the templates into a global JST object which can be used to render templates into strings. Making Jammit aware of your templates is straight-forward - just add an entry for something like `views/**/*.jst` to your app package in assets.yml.
+
+To provide Jammit dependencies you simply write out an assets.yml file that either listed the dependencies in order or used a combination of free capture directories (for example: /**/*.js, templates/*.js, and specific files). 
+
+A template using Jammit can derive it's data from the collection object that is passed to it:
+
+```
+this.$el.html(JST.myTemplate({ collection: this.collection }));
+```
+
+
+
 # Decoupling Backbone with the Mediator and Facade Patterns
 
 In this section we'll discuss applying some of the concepts I cover in my article on [Large-scale JavaScript Application development](http://addyosmani.com/largescalejavascript) to Backbone.

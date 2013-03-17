@@ -237,6 +237,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <li><a href="#module-loader-router">Module loader Router</a></li>
 <li><a href="#using-nodejs-to-handle-pushstate">Using NodeJS to handle pushState</a></li>
 </ul></li>
+<li><a href="#an-asset-package-alternative-for-dependency-management">An asset package alternative for dependency management</a></li>
 </ul></li>
 <li><a href="#decoupling-backbone-with-the-mediator-and-facade-patterns">Decoupling Backbone with the Mediator and Facade Patterns</a><ul>
 <li><a href="#summary-4">Summary</a></li>
@@ -5782,6 +5783,12 @@ Backbone.history.start({
   pushState: true,
   root: &#39;/&#39;
 });</code></pre>
+<h2 id="an-asset-package-alternative-for-dependency-management"><a href="#TOC">An asset package alternative for dependency management</a></h2>
+<p>For more than trivial views, DocumentCloud have a home-built asset packager called <a href="https://github.com/documentcloud/jammit">Jammit</a>, which has easy integration with Underscore.js templates and can also be used for dependency management.</p>
+<p>Jammit expects your JavaScript templates (JST) to live alongside any ERB templates you’re using in the form of .jst files. It packages the templates into a global JST object which can be used to render templates into strings. Making Jammit aware of your templates is straight-forward - just add an entry for something like <code>views/**/*.jst</code> to your app package in assets.yml.</p>
+<p>To provide Jammit dependencies you simply write out an assets.yml file that either listed the dependencies in order or used a combination of free capture directories (for example: /<em><em>/</em>.js, templates/</em>.js, and specific files).</p>
+<p>A template using Jammit can derive it’s data from the collection object that is passed to it:</p>
+<pre><code>this.$el.html(JST.myTemplate({ collection: this.collection }));</code></pre>
 <h1 id="decoupling-backbone-with-the-mediator-and-facade-patterns"><a href="#TOC">Decoupling Backbone with the Mediator and Facade Patterns</a></h1>
 <p>In this section we’ll discuss applying some of the concepts I cover in my article on <a href="http://addyosmani.com/largescalejavascript">Large-scale JavaScript Application development</a> to Backbone.</p>
 <p><em>After, you may be interested in taking a look At <a href="http://github.com/aurajs/aura">Aura</a> - my popular widget-based Backbone.js extension framework based on many of the concepts we will be covering in this section.</em></p>
