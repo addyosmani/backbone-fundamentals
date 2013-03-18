@@ -937,14 +937,12 @@ Todos.min(function(model){
 }).id;
 ```
 
-##### Filter a collection using the filter method
+##### Filter a collection using the pluck method
 
-*Filter by a specific attribute name*
+*Filter out a specific attribute*
 
 ```javascript
-var captions = Todos.map(function(model){
-  return model.get('caption');
-});
+var captions = Todos.pluck('caption');
 ```
 
 *Filter by an array of model IDs*
@@ -967,10 +965,15 @@ var Todos = Backbone.Collection.extend({
 Todos.indexOf(5);
 ```
 
-##### Confirm if all of the values in a collection pass an iterator truth test
+##### Confirm if some of the values in a collection pass an iterator truth test
 
 ```javascript
 Todos.any(function(model){
+  return model.id === 100;
+});
+
+// or
+Todos.some(function(model){
   return model.id === 100;
 });
 ```
@@ -979,6 +982,9 @@ Todos.any(function(model){
 
 ```javascript
 Todos.size();
+
+// or
+Todos.length;
 ```
 
 ##### Confirm whether a collection is empty or not using isEmpty
@@ -1016,7 +1022,7 @@ var collection = new Backbone.Collection([
 
 var filteredNames = collection.chain() // start chain, returns wrapper around collection's models
   .filter(function(item) { return item.get('age') > 10; }) // returns wrapped array excluding Tim
-  .map(function(item) { return item.get('name'); }) // returns wrapped array containing remaining names
+  .pluck('name') // returns wrapped array containing remaining names
   .value(); // terminates the chain and returns the resulting array
 
 console.log(filteredNames); // logs: ['Ida', 'Rob']
@@ -1084,7 +1090,7 @@ ourObject.trigger('dance', 'our event');
 
 If you're familiar with jQuery custom events or the concept of Publish/Subscribe, `Backbone.Events` provides a system that is very similar with `on` being analogous to `subscribe` and `trigger` being similar to `publish`.
 
-`on` binds a callback function to an object, as we've done with `dance` in the above example. The callback is invoked whenever the event is triggered.
+`on` binds a callback function to an event, as we've done with `dance` in the above example. The callback is invoked whenever the event is triggered.
 
 The official Backbone.js documentation recommends namespacing event names using colons if you end up using quite a few of these on your page. e.g.:
 
@@ -1254,7 +1260,7 @@ c.trigger('everything');
 
 `stopListening()` can also be used to selectively stop listening based on the event, model, or callback handler.
 
-If you remove views at the same time that their corresponding models are also removed, there are generally no problems. If however the model sticks around after a round of garbage collection and continues to a call a View's event handler (that you've forgotten to remove), you might have cause for concern as this can result in memory leaks.
+If you remove views at the same time that their corresponding models are also removed, there are generally no problems. But a problem arises when you remove a view that had registered to be notified about events on a model, but you don't inform the model about the view's removal. The problem is that the model keeps having a reference to the view's callback function which, even though is no longer useful since the view is gone, prohibits javascript's garbage collector from removing the view from memory. This is called a "ghost view" and is a form of memory leak which is common since the models generally tend to outlive the corresponding views during an application's lifecycle. For details on the topic and a solution, check this [excellent article](http://lostechies.com/derickbailey/2011/09/15/zombies-run-managing-page-transitions-in-backbone-apps/) by Derick Bailey. 
 
 Practically, every `on` called on an object also requires an `off` to be called in order for the garbage collector to do its job. `listenTo()` changes that, allowing Views to bind to Model notifications and unbind from all of them with just one call - `stopListening()`.
 
