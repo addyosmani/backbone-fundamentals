@@ -226,7 +226,7 @@ Next, a `TodoList` collection is used to group our models. The collection uses t
 
 ```
 
-The collection's `completed()` and `remaining()` methods return an array of unfinished and finished todos, respectively.
+The collection's `completed()` and `remaining()` methods return an array of finished and unfinished todos, respectively.
 
 A `nextOrder()` method implements a sequence generator while a `comparator()` sorts items by their insertion order.
 
