@@ -1,0 +1,13 @@
+<div class="ui-grid-a" >
+    <div class="ui-block-a singleTodoCompletedToggle">
+        <select name="completed" class="toggle" data-role="slider" style="">
+            <option value="Todo" {{#if completed}}selected="selected"{{/if}}>Todo</option>
+            <option value="Done" {{#if completed}}selected="selected"{{/if}}>Done</option>
+        </select>
+    </div>
+    <div class="ui-block-b singleTodoDescription" >
+        <label name="todo_description">
+            <a href="#editTodo/{{id}}" data-rel="popup">{{title}}</a>
+        </label>
+    </div>
+</div>

@@ -1,0 +1,342 @@
+.TH OPTIPNG 1 "2012-Oct-21" "OptiPNG version 0.7.4"
+
+.SH NAME
+.B OptiPNG
+\- Optimize Portable Network Graphics files
+
+.SH SYNOPSIS
+.B optipng
+[\fB\-?\fP | \fB\-h\fP | \fB\-help\fP]
+.br
+.B optipng
+[\fIoptions...\fP] \fIfiles...\fP
+
+.SH DESCRIPTION
+The
+.B OptiPNG
+program shall attempt to \fIoptimize\fP PNG files, i.e. reduce their size to
+a minimum, without losing semantic information. In addition, this program shall
+perform a suite of auxiliary functions like integrity checks, metadata recovery
+and pixmap-to-PNG conversion.
+.P
+The optimization attempts are not guaranteed to succeed. Valid PNG files that
+cannot be optimized by this program are normally left intact; their size will
+not grow. The user may request to override this default behavior.
+
+.SH FILES
+The input files are raster image files encoded either in PNG format (the native
+format), or in an external format. The currently supported external formats are
+GIF, BMP, PNM and TIFF.
+.P
+.B OptiPNG
+processes each image file given in the command line as follows:
+.P
+\- If the image is in PNG format:
+.IP
+Attempts to optimize the given file in-place. If optimization is successful, or
+if the option \fB\-force\fP is enabled, replaces the original file with its
+optimized version. The original file is backed up if the option \fB\-keep\fP
+is enabled.
+.P
+\- If the image is in an external format:
+.IP
+Creates an optimized PNG version of the given file. The output file name is
+composed from the original file name and the \fC.png\fP extension.
+.P
+Existing files are \fInot\fP overwritten, unless the option \fB\-clobber\fP is
+enabled.
+
+.SH OPTIONS
+.SS "General options"
+.TP
+\fB\-?\fP, \fB\-h\fP, \fB\-help\fP
+Show a complete summary of options.
+.TP
+\fB\-backup\fP, \fB\-keep\fP
+Keep a backup of the modified files.
+.TP
+\fB\-clobber\fP
+Overwrite the existing output and backup files.
+.br
+Under this option, if the option \fB\-backup\fP is not enabled, the old backups
+of the overwritten files are deleted.
+.TP
+\fB\-dir\fP \fIdirectory\fP
+Write the output files to \fIdirectory\fP.
+.TP
+\fB\-fix\fP
+Enable error recovery. This option has no effect on valid input files.
+.br
+The program will spend a reasonable amount of effort to recover as much data as
+possible, without increasing the output file size, but the success cannot be
+generally guaranteed. The program may even increase the file size, e.g., by
+reconstructing missing critical data. Under this option, integrity shall take
+precedence over file size.
+.br
+When this option is not used, the invalid input files are left unprocessed.
+.TP
+\fB\-force\fP
+Enforce writing of a new output file.
+.br
+This option overrides the program's decision not to write such file, e.g. when
+the PNG input is digitally signed (using dSIG), or when the PNG output becomes
+larger than the PNG input.
+.TP
+\fB\-log\fP \fIfile\fP
+Log messages to \fIfile\fP.
+For safety reasons, \fIfile\fP must have the extension \fC.log\fP.
+.br
+This option is deprecated and will be removed eventually. Use shell
+redirection.
+.TP
+\fB\-out\fP \fIfile\fP
+Write output file to \fIfile\fP.
+The command line must contain exactly one input file.
+.TP
+\fB\-preserve\fP
+Preserve file attributes (time stamps, file access rights, etc.) where
+applicable.
+.TP
+\fB\-quiet\fP, \fB\-silent\fP
+Run in quiet mode.
+.br
+The messages are still written to the log file if the option \fB\-log\fP is
+enabled.
+.TP
+\fB\-simulate\fP
+Run in simulation mode: perform the trials, but do not create output files.
+.TP
+\fB\-v\fP
+Enable the options \fB\-verbose\fP and \fB\-version\fP.
+.TP
+\fB\-verbose\fP
+Run in verbose mode.
+.TP
+\fB\-version\fP
+Show copyright, version and build info.
+.TP
+\fB\-\-\fP
+Stop option switch parsing.
+.SS "PNG encoding and optimization options"
+.TP
+\fB\-o\fP \fIlevel\fP
+Select the optimization level.
+.br
+The optimization level 0 enables a set of optimization operations that require
+minimal effort. There will be no changes to image attributes like bit depth
+or color type, and no recompression of existing IDAT datastreams.
+.br
+The optimization level 1 enables a single IDAT compression trial. The trial
+chosen is what \fBOptiPNG\fP \fIthinks\fP it's probably the most effective.
+.br
+The optimization levels 2 and higher enable multiple IDAT compression trials;
+the higher the level, the more trials.
+.br
+The behavior and the default value of this option may change across different
+program versions. Use the option \fB\-h\fP to see the details pertaining to
+your specific version.
+.TP
+\fB\-f\fP \fIfilters\fP
+Select the PNG delta filters.
+.br
+The \fIfilters\fP argument is specified as a rangeset (e.g. \fB\-f0\-5\fP),
+and the default \fIfilters\fP value depends on the optimization level set by
+the option \fB\-o\fP.
+.br
+The filter values 0, 1, 2, 3 and 4 indicate static filtering, and correspond to
+the standard PNG filter codes (\fINone\fP, \fILeft\fP, \fIUp\fP, \fIAverage\fP
+and \fIPaeth\fP, respectively). The filter value 5 indicates adaptive filtering,
+whose effect is defined by the \fBlibpng\fP(3) library used by \fBOptiPNG\fP.
+.TP
+\fB\-full\fP
+Produce a full report on IDAT.
+This option might slow down the trials.
+.TP
+\fB\-i\fP \fItype\fP
+Select the interlace type (0\-1).
+.br
+If the interlace type 0 is selected, the output image shall be non-interlaced
+(i.e. progressive-scanned). If the interlace type 1 is selected, the output
+image shall be interlaced using the \fIAdam7\fP method.
+.br
+By default, the output shall have the same interlace type as the input.
+.TP
+\fB\-nb\fP
+Do not apply bit depth reduction.
+.TP
+\fB\-nc\fP
+Do not apply color type reduction.
+.TP
+\fB\-np\fP
+Do not apply palette reduction.
+.TP
+\fB\-nx\fP
+Do not apply any lossless image reduction:
+enable the options \fB\-nb\fP, \fB\-nc\fP and \fB\-np\fP.
+.TP
+\fB\-nz\fP
+Do not recode IDAT datastreams.
+.br
+The IDAT optimization operations that do not require recoding (e.g. IDAT
+chunk concatenation) are still performed.
+.br
+This option has effect on PNG input files only.
+.TP
+\fB\-zc\fP \fIlevels\fP
+Select the zlib compression levels used in IDAT compression.
+.br
+The \fIlevels\fP argument is specified as a rangeset (e.g. \fB\-zc6\-9\fP),
+and the default \fIlevels\fP value depends on the optimization level set by
+the option \fB\-o\fP.
+.br
+The effect of this option is defined by the \fBzlib\fP(3) library used by
+\fBOptiPNG\fP.
+.TP
+\fB\-zm\fP \fIlevels\fP
+Select the zlib memory levels used in IDAT compression.
+.br
+The \fIlevels\fP argument is specified as a rangeset (e.g. \fB\-zm8\-9\fP),
+and the default \fIlevels\fP value depends on the optimization level set by
+the option \fB\-o\fP.
+.br
+The effect of this option is defined by the \fBzlib\fP(3) library used by
+\fBOptiPNG\fP.
+.TP
+\fB\-zs\fP \fIstrategies\fP
+Select the zlib compression strategies used in IDAT compression.
+.br
+The \fIstrategies\fP argument is specified as a rangeset (e.g. \fB\-zs0\-3\fP),
+and the default \fIstrategies\fP value depends on the optimization level set by
+the option \fB\-o\fP.
+.br
+The effect of this option is defined by the \fBzlib\fP(3) library used by
+\fBOptiPNG\fP.
+.TP
+\fB\-zw\fP \fIsize\fP
+Select the zlib window size (32k,16k,8k,4k,2k,1k,512,256) used in IDAT
+compression.
+.br
+The \fIsize\fP argument can be specified either in bytes (e.g. 16384) or
+kilobytes (e.g. 16k). The default \fIsize\fP value is set to the lowest
+window size that yields an IDAT output as big as if yielded by the value 32768.
+.br
+The effect of this option is defined by the \fBzlib\fP(3) library used by
+\fBOptiPNG\fP.
+.SS "Editing options"
+.TP
+\fB\-snip\fP
+Cut one image out of multi-image, animation or video files.
+.br
+Depending on the input format, this may be either the first or the most
+relevant (e.g. the largest) image.
+.TP
+\fB\-strip\fP \fIobjects\fP
+Strip metadata objects from a PNG file.
+.br
+PNG metadata is the information stored in any ancillary chunk except tRNS.
+(tRNS represents the alpha channel, which, even if ignored in rendering, is
+still a proper image channel in the RGBA color space.)
+.br
+The only option currently supported is \fB\-strip all\fP.
+.SS "Notes"
+Options may come in any order (except for \fB\-\-\fP), before, after, or
+alternating with file names. Option names are case-insensitive and may be
+abbreviated to their shortest unique prefix.
+.P
+Some options may have arguments that follow the option name, separated by
+whitespace or the equal sign ('\fB=\fP'). If the option argument is a number
+or a rangeset, the separator may be omitted. For example:
+.IP
+\fB\-out\fP \fCnewfile.png\fP \ <=> \ \fB\-out=\fP\fCnewfile.png\fP
+.br
+\fB\-o3\fP \ <=> \ \fB\-o 3\fP \ <=> \ \fB\-o=3\fP
+.br
+\fB\-f0,3\-5\fP \ <=> \ \fB\-f 0,3\-5\fP \ <=> \ \fB\-f=0,3\-5\fP
+.P
+Rangeset arguments are cumulative; e.g.
+.IP
+\fB\-f0 \-f3\-5\fP \ <=> \ \fB\-f0,3\-5\fP
+.br
+\fB\-zs0 \-zs1 \-zs2\-3\fP \ <=> \ \fB\-zs0,1,2,3\fP \ <=> \ \fB\-zs0\-3\fP
+
+.SH "EXTENDED DESCRIPTION"
+The PNG optimization algorithm consists of the following steps:
+.TP 4
+1.
+Reduce the bit depth, the color type and the color palette of the image.
+This step may reduce the size of the uncompressed image, which, indirectly, may
+reduce the size of the compressed image (i.e. the size of the output PNG file).
+.TP 4
+2.
+Run a suite of compression methods and strategies and select the compression
+parameters that yield the smallest output file.
+.TP 4
+3.
+Store all IDAT contents into a single chunk, eliminating the overhead
+incurred by repeated IDAT headers and CRCs.
+.TP 4
+4.
+Set the zlib window size inside IDAT to a mininum that does not affect the
+compression ratio, reducing the memory requirements of PNG decoders.
+.P
+Not all of the above steps need to be executed. The behavior depends on the
+actual input files and user options.
+.P
+Step 1 may be customized via the no-reduce options \fB\-nb\fP, \fB\-nc\fP,
+\fB\-np\fP and \fB\-nx\fP. Step 2 may be customized via the \fB\-o\fP option,
+and may be fine-tuned via the options \fB\-zc\fP, \fB\-zm\fP, \fB\-zs\fP and
+\fB\-zw\fP. Step 3 is always executed. Step 4 is executed only if a new IDAT is
+being created, and may be fine-tuned via the option \fB\-zw\fP.
+.P
+Extremely exhaustive searches are not generally expected to yield significant
+improvements in compression ratio, and are recommended to advanced users only.
+
+.SH EXAMPLES
+\fCoptipng file.png \ \ \ \ \ \fP# default speed
+.br
+\fCoptipng -o5 file.png \ \fP# slow
+.br
+\fCoptipng -o7 file.png \ \fP# very slow
+
+.SH BUGS
+Lossless image reductions are not completely implemented.
+(This does \fInot\fP affect the integrity of the output files.)
+Here are the missing pieces:
+.IP
+\- The color palette reductions are implemented only partially.
+.br
+\- The bit depth reductions below 8, for grayscale images, are not implemented
+yet.
+.P
+Encoding of images whose total IDAT size exceeds 2GB is not supported.
+.P
+TIFF support is limited to uncompressed, PNG-compatible (grayscale, RGB and
+RGBA) images.
+.P
+Metadata is not imported from the external image formats.
+.P
+There is no support for pipes or streams.
+
+.SH "SEE ALSO"
+\fBpng\fP(5),
+\fBlibpng\fP(3),
+\fBzlib\fP(3),
+\fBpngcrush\fP(1),
+\fBpngrewrite\fP(1).
+
+.SH STANDARDS
+The files produced by \fBOptiPNG\fP are compliant with \fBPNG\-2003\fP:
+.br
+Glenn Randers-Pehrson et al.
+\fIPortable Network Graphics (PNG) Specification, Second Edition\fP.
+.br
+W3C Recommendation 10 November 2003; ISO/IEC IS 15948:2003 (E).
+.br
+\fChttp://www.w3.org/TR/PNG/\fP
+
+.SH AUTHOR
+\fBOptiPNG\fP is written and maintained by Cosmin Truta.
+.PP
+This manual page was originally written by Nelson A. de Oliveira
+for the Debian Project. It was later updated by Cosmin Truta,
+and is now part of the \fBOptiPNG\fP distribution.

@@ -1,0 +1,12 @@
+if [ "$1" = "" -o "$2" = "" ]; then
+	echo USAGE: $0 \<correct MD5 sum\> \<file\>
+	exit 1
+fi
+
+echo "$1  $2" >md5sum.txt
+if [ ! -f $2 ]; then
+	echo $2 does not exist!
+	exit 1
+fi
+md5sum --check md5sum.txt || exit 1
+rm md5sum.txt

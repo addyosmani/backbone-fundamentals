@@ -1,0 +1,16 @@
+Index: libpng-1.2.46/Makefile.am
+===================================================================
+--- libpng-1.2.46.orig/Makefile.am	2011-08-30 14:48:43.039223476 +0400
++++ libpng-1.2.46/Makefile.am	2011-08-30 15:02:18.775861919 +0400
+@@ -49,7 +49,11 @@
+ 
+ if HAVE_LD_VERSION_SCRIPT
+   # Versioned symbols and restricted exports
++if HAVE_SOLARIS_LD
++  libpng@PNGLIB_MAJOR@@PNGLIB_MINOR@_la_LDFLAGS += -Wl,-M Wl,libpng.vers
++else
++  libpng@PNGLIB_MAJOR@@PNGLIB_MINOR@_la_LDFLAGS += -Wl,--version-script=libpng.vers
++endif
+   libpng@PNGLIB_MAJOR@@PNGLIB_MINOR@_la_DEPENDENCIES = libpng.vers
+ else
+   # Only restricted exports when possible
