@@ -1,6 +1,6 @@
 ## Backbone & jQuery Mobile
 
-### Mobile app development with JavaScript
+### Mobile app development with jQuery Mobile
 
 The mobile web is huge and it is continuing to grow at an impressive rate. Along with the massive growth of the mobile internet comes a striking diversity of devices and browsers. As a result, making your applications cross-platform and mobile-ready is both important and challenging.
 Creating native apps is expensive.
@@ -18,7 +18,7 @@ For this reason jQMobile follows two main principles, we first need to understan
 
 
 
-#### 1. Principle of progressive widget enhancement
+#### 1. The Principle of progressive widget enhancement by jQMobile
 
 JQuery Mobile follows a "progressive enhancement" and responsive web design principle by HTML-5 markup-driven definitions and configurations.
 
@@ -43,31 +43,33 @@ A initial HTML page would look like:
 <body>
 
 <div data-role="page">
-
-	<div data-role="header">
-		<h1>Page Title</h1>
-	</div>
-	<div data-role="content">
-		<p>Page content goes here.</p>
-              <form>
-                   <label for="slider-1">Slider with tooltip:</label>
-                   <input type="range" name="slider-1" id="slider-1" min="0" max="100" value="50" data-popup-enabled="true">
-              </form>
- 	</div>
-	<div data-role="footer">
-		<h4>Page Footer</h4>
-	</div>
+  <div data-role="header">
+    <h1>Page Title</h1>
+  </div>
+  <div data-role="content">
+     <p>Page content goes here.</p>
+     <form>
+       <label for="slider-1">Slider with tooltip:</label>
+       <input type="range" name="slider-1" id="slider-1" min="0" max="100" value="50" 
+        data-popup-enabled="true">
+     </form>
+  </div>
+  <div data-role="footer">
+     <h4>Page Footer</h4>
+  </div>
 </div>
 </body>
 </html>
 ```
 
+
 JQuery Mobiles will transform the written HTML definition by the progressive widget enhancement API. See the results below:
+
 ![](../img/chapter10-1-1-1.png)
 
+<i>Default HTML view in comparison to
 
-
-#### 2. Principle of the navigation system.
+#### 2. Understand the navigation of jQueryMobile
 
 
 The navigation system controls its application lifecycle by automatically 'hijacking' standard links and form submissions and turning them into an AJAX request.
@@ -84,22 +86,37 @@ The chapter "Intercept jQuery Mobile events" explains, goes into detail, how to 
 To e.g. navigate to the "secondpage" with the appearance of a modal dialog with fade-transition, the data-rel="dialog", data-transition="fade" and href="index.html#secondpage" attributes can be added to the anchor tag.
 Via the multi-page templating feature, you can add as many pages as you want to the same HTML file within the body-tag, by defining a div with a data-role "page" or "dialog" and the id, being the value of the link after the hashbang like 
 
+
 ```html
-<div data-role="dialog" id="secondpage"> ... </div>
+<html>
+  <head>...</head>
+  <body>
+  ...
+  <div data-role="page" id="firstpage">
+    ...
+   <div data-role="content"> 
+     <a href="#secondpage">go to secondpage</a>
+   </div>
+  </div>
+  <div data-role="page" id="secondpage">
+    ...
+    <div data-role="content" >
+       <a href="#firstdialog" data-rel="dialog" >open a page as a dialog</a>
+    </div>
+  </div>
+  <div data-role="dialog" id="firstdialog">
+    ...
+     <div data-role="content">
+       <a href="#firstpage">leave dialog and go to first page</a>
+     </div>
+  </div>
+</body>
+</html>
 ```
 
 
 
-Throughout "Developing Backbone.js Applications" content, we learned how to use and benefit from the Backbone-Router, -Views, -Events and -Model, such as advanced plugins and customized JavaScript programming.
-
-The first major hurdle developers typically run into when building applications with jQuery Mobile and a M* framework is that they will have their own opinions about how to handle application navigation.
-The same is true for Backbone.
-
-To combine Backbone and jQuery Mobile, we first need to disable the navigation system and the progressive enhancement of jQuery Mobile.
-The second step will be to make usage of the custom API of jQM to apply configurations and enhance components by different techniques in the application lifecycle of Backbone.
-
-
-For a further introduction and explanation about jQuery Mobile basics visit:
+For further introduction and explanations about jQuery Mobile visit:
 
 http://view.jquerymobile.com/1.3.0/docs/intro/
 http://view.jquerymobile.com/1.3.0/docs/widgets/pages/
@@ -107,14 +124,27 @@ http://view.jquerymobile.com/1.3.0/docs/intro/rwd.php
 
 ### Basic Backbone app setup for jQuery Mobile
 
-![](../img/chapter10-1-1.png)
+Throughout "Developing Backbone.js Applications" content, we learned how to use and benefit from the Backbone-Router, -Views, -Events and -Model, such as advanced plugins and customized JavaScript programming.
+
+The first major hurdle developers typically run into when building applications with jQuery Mobile and a M* framework is that they have their own opinions about how to handle application navigation.
+The same is true for Backbone.
+
+To combine Backbone and jQuery Mobile, we first need to disable the navigation system and the progressive enhancement of jQuery Mobile.
+The second step will be to make usage of the custom API of jQM to apply configurations and enhance components by different techniques in the application lifecycle of Backbone.
+
 
 The mobile app example presented in the following is build upon the existing codebase of the "TodoMVC Backbone-Require.js” of the chapter "Modular Development" and is enhanced to support jQuery Mobile.
 
-Apart from that it makes use of Grunt-BBB ( see the chapter ackbone Boilerplate and Grunt-BBB) and Handlebars.js like explained in the "Throrax"-chapter. Additional utilities useful for mobile applications will be provided, which can be easily combined and extended.
+![](../img/chapter10-1-1.png)
+
+<i>Screenshot of the TodoMVC app with jQuery Mobile</i>
+
+Apart from that it makes use of Grunt-BBB ( see chapter "Backbone Boilerplate & Grunt-BBB") as well as Handlebars.js (see the "Throrax"-chapter). Additional utilities useful for mobile applications will be provided, which can be easily combined and extended.
 
 
 ![](../img/chapter10-1-2.png)
+
+<i>Workspace of the TodoMVC app with jQueryMobile and Backbone</i>
 
 
 The initial load of the files to load by Require.js is as follows:
@@ -170,7 +200,7 @@ which is being used by all Todo-MVC apps, and the "index.css" for some project s
 
 
 
-### Delegating jQuery Mobile navigation to Backbone
+### The workflow with Backbone and jQueryMobile
 
 
 
@@ -181,9 +211,9 @@ Some of the ideas that have been previously proposed to work-around this problem
 
 The solution demonstrated below, will not only simplify the handling of the jQuery Mobile component initialization event-cycle, but also enables the usage of the existing Backbone’s Router functionalities.
 
-To adopt the navigation control from jQuery Mobile to Backbone, we first need to apply some specific setting to the mobileinit event, after the framework was loaded to e.g. disable the jQM navigation controller (Flow of Component interactions, Step 1).
+To adopt the navigation control from jQuery Mobile to Backbone, we first need to apply some specific setting to the mobileinit event, after the framework was loaded to e.g. let the Backbonerouter decide, which page to load.
 
-A suggested configuration with its descriptions is listed below:
+A suggested configuration with its descriptions to delegate jQM navigation and enable manual widget creation triggering to Backbone is listed below:
 
 ```javascript
 $(document).bind("mobileinit", function(){
@@ -208,13 +238,16 @@ $.mobile.page.prototype.options.degradeInputs.date = true;
 });
 ```
 
+The new workflow:
+
 ![](../img/chapter10-2-1.png)
+
+<i>Workflow of Backbone and jQueryMobile</i>
 
 Whenever the hash URL was changed, e.g. by clicking the link, the configuration prevented jQM to trigger its events. Instead, the Backbone Router listens to the hash changes and decides which view to request.
 
 However, experience has shown that,  it is a good practice for mobile pages, to create prototypes(superclasses) for various situations like the usage of the jQuery Validation Plugin or popups with jQM.
-Then it becomes much easier to exchange device specific view logics, at runtime, and adopt general strategies- This would also help to add syntax and to support multi chaining of prototype inheritance with JavaScript and Backbone. The “Backbone_Super”(see https://github.com/lukasolson/Backbone-Super) function is loaded by Require.js. A parent function can be called with this._super('save', arguments);
-
+Then it becomes much easier to exchange device specific view logics, at runtime, and adopt general strategies- This would also help to add syntax and to support multi chaining of prototype inheritance with JavaScript and Backbone.
 By creating a “BasicView” of superclass, we enable all inherited-view-pages to share a common way to handle jQM specific view handling and the common usage of a template engine.
 
 ```javascript
