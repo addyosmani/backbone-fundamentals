@@ -543,7 +543,7 @@ jQuery.get( '/api/books/', function( data, textStatus, jqXHR ) {
 
 ![](img/chapter5-7.png)
 
-Here I used jQuery to make the call to our REST API, since it was already loaded on the page. The returned array is obviously empty, since we have not put anything into the database yet. Lets go and create a POST route that enables adding new items in server.js:
+Here I used jQuery to make the call to our REST API, since it was already loaded on the page. The returned array is obviously empty, since we have not put anything into the database yet. Let's go and create a POST route that enables adding new items in server.js:
 
 ```javascript
 //Insert a new book
@@ -603,7 +603,7 @@ MongoDB expects dates in UNIX time format (milliseconds from the start of Jan 1s
 ![](img/chapter5-8.png)
 
 
-Lets move on to creating a GET request that retrieves a single book in server.js:
+Let's move on to creating a GET request that retrieves a single book in server.js:
 
 ```javascript
 //Get a single book by id
@@ -629,7 +629,7 @@ jQuery.get( '/api/books/4f95a8cb1baa9b8a1b000006', function( data, textStatus, j
 });
 ```
 
-Lets create the PUT (update) function next:
+Let's create the PUT (update) function next:
 
 ```javascript
 //Update a book
@@ -885,7 +885,7 @@ Simply copy the value of _id to the needed id attribute. If you reload the page 
 
 Another, simpler way of making Backbone recognize _id as its unique identifier is to set the idAttribute of the model to _id.
 
-If you now try to add a new book using the form you’ll notice that it is a similar story to delete – models wont get persisted on the server. This is because Backbone.Collection.add doesn’t automatically sync, but it is easy to fix. In the LibraryView we find in `views/library.js` change the line reading:
+If you now try to add a new book using the form you’ll notice that it is a similar story to delete – models won't get persisted on the server. This is because Backbone.Collection.add doesn’t automatically sync, but it is easy to fix. In the LibraryView we find in `views/library.js` change the line reading:
 
 ```javascript
 this.collection.add( new Book( formData ) );

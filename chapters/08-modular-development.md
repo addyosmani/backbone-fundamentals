@@ -308,7 +308,7 @@ define( ["lib/backbone"], function ( Backbone ) {
 
 Converting an individual model, collection, view or similar into an AMD, RequireJS compliant one is typically very straight forward. Usually all that's needed is the first line, calling `define`, and to make sure that once you've defined your object - in this case, the `Item` model, to return it.
 
-Lets now set up a view for that individual item:
+Let's now set up a view for that individual item:
 
 ```javascript
 define( ["lib/backbone"], function ( Backbone ) {
@@ -326,7 +326,7 @@ define( ["lib/backbone"], function ( Backbone ) {
 });
 ```
 
-This view doesn't actually depend on the model it will be used with, so again the only dependency is Backbone. Other than that it's just a regular Backbone view. There's nothing special going on here, other than returning the object and using `define` so RequireJS can pick it up. Now lets make a collection to view a list of items. This time we will need to reference the `Item` model, so we add it as a dependency:
+This view doesn't actually depend on the model it will be used with, so again the only dependency is Backbone. Other than that it's just a regular Backbone view. There's nothing special going on here, other than returning the object and using `define` so RequireJS can pick it up. Now let's make a collection to view a list of items. This time we will need to reference the `Item` model, so we add it as a dependency:
 
 ```javascript
 define(["lib/backbone", "models/item"], function(Backbone, Item) {
