@@ -1,14 +1,14 @@
 # Backbone Extensions
 
 
-## Backbone.Marionette
+## MarionetteJS (Backbone.Marionette)
 
 *By Derick Bailey & Addy Osmani*
 
 As we've seen, Backbone provides a great set of building blocks for our JavaScript applications. It gives us the core constructs that are needed to build small to mid-sized apps, organize jQuery DOM events, or create single page apps that support mobile devices and large scale enterprise needs. But Backbone is not a complete framework. It's a set of building blocks that leaves much of the application design, architecture, and scalability to the developer, including memory management, view management, and more.
 
 
-[Backbone.Marionette](http://marionettejs.com) (or just "Marionette") provides many of the features that the non-trivial application developer needs, above what Backbone itself provides. It is a composite application library that aims to simplify the construction of large scale applications. It does this by providing a collection of common design and implementation patterns found in the applications that the creator, [Derick Bailey](http://lostechies.com/derickbailey/), and many other [contributors](https://github.com/marionettejs/backbone.marionette/graphs/contributors) have been using to build Backbone apps.
+[MarionetteJS](http://marionettejs.com) (a.k.a Backbone.Marionette) provides many of the features that the non-trivial application developer needs, above what Backbone itself provides. It is a composite application library that aims to simplify the construction of large scale applications. It does this by providing a collection of common design and implementation patterns found in the applications that the creator, [Derick Bailey](http://lostechies.com/derickbailey/), and many other [contributors](https://github.com/marionettejs/backbone.marionette/graphs/contributors) have been using to build Backbone apps.
  
 
 Marionette's key benefits include:
@@ -28,24 +28,9 @@ Marionette's key benefits include:
 
 Marionette follows a similar philosophy to Backbone in that it provides a suite of components that can be used independently of each other, or used together to create a significant advantages for us as developers. But it steps above the structural components of Backbone and provides an application layer, with more than a dozen components and building blocks.
 
-Marionette's components range greatly in the features they provide, but they all work together to create a composite application layer that can both reduce boilerplate code and provide a much needed application structure. Its core components include:
+Marionette's components range greatly in the features they provide, but they all work together to create a composite application layer that can both reduce boilerplate code and provide a much needed application structure. Its core components include various and specialized view types that take the boilerplate out of rendering common Backbone.Model and Backbone.Collection scenarios; an Application object and Module architecture to scale applications across sub-applications, features and files; integration of a command pattern, event aggregator, and request/response mechanism; and many more object types that can be extended in a myriad of ways to create an architecture that facilitates an application's specific needs. 
 
-* [**Marionette.Application**](https://github.com/marionettejs/backbone.marionette/blob/master/docs/marionette.application.md): An application object that starts your app via initializers, and more
-* [**Marionette.Application.module**](https://github.com/marionettejs/backbone.marionette/blob/master/docs/marionette.application.module.md): Create modules and sub-modules within the application
-* [**Marionette.AppRouter**](https://github.com/marionettejs/backbone.marionette/blob/master/docs/marionette.approuter.md): Reduce your routers to nothing more than configuration
-* [**Marionette.View**](https://github.com/marionettejs/backbone.marionette/blob/master/docs/marionette.view.md): The base View type that other Marionette views extend from (not intended to be used directly)
-* [**Marionette.ItemView**](https://github.com/marionettejs/backbone.marionette/blob/master/docs/marionette.itemview.md): A view that renders a single item
-* [**Marionette.CollectionView**](https://github.com/marionettejs/backbone.marionette/blob/master/docs/marionette.collectionview.md): A view that iterates over a collection, and renders individual `ItemView` instances for each model
-* [**Marionette.CompositeView**](https://github.com/marionettejs/backbone.marionette/blob/master/docs/marionette.compositeview.md): A collection view and item view, for rendering leaf-branch/composite model hierarchies
-* [**Marionette.Region**](https://github.com/marionettejs/backbone.marionette/blob/master/docs/marionette.region.md): Manage visual regions of your application, including display and removal of content
-* [**Marionette.Layout**](https://github.com/marionettejs/backbone.marionette/blob/master/docs/marionette.layout.md): A view that renders a layout and creates region managers to manage areas within it
-* [**Marionette.EventAggregator**](https://github.com/marionettejs/backbone.marionette/blob/master/docs/marionette.eventaggregator.md): An extension of Backbone.Events, to be used as an event-driven or pub-sub tool
-* [**Marionette.EventBinder**](https://github.com/marionettejs/backbone.marionette/blob/master/docs/marionette.eventbinder.md): An event binding manager, to facilitate binding and unbinding of events
-* [**Marionette.Renderer**](https://github.com/marionettejs/backbone.marionette/blob/master/docs/marionette.renderer.md): Render templates with or without data, in a consistent and common manner
-* [**Marionette.TemplateCache**](https://github.com/marionettejs/backbone.marionette/blob/master/docs/marionette.templatecache.md): Cache templates that are stored in `<script>` blocks, for faster subsequent access
-* [**Marionette.Callbacks**](https://github.com/marionettejs/backbone.marionette/blob/master/docs/marionette.callbacks.md): Manage a collection of callback methods, and execute them as needed
-
-But like Backbone itself, you're not required to use all of Marionette's components just because you want to use some of them. You can pick and choose which features you want to use and when. This allows you to work with other Backbone frameworks and plugins very easily. It also means that you are not required to engage in an all-or-nothing migration to begin using Marionette.
+In spite of the large number of constructs that Marionette provides, though, you're not required to use all of it just because you want to use some of it. Much like Backbone itself, you can pick and choose which features you want to use and when. This allows you to work with other Backbone frameworks and plugins very easily. It also means that you are not required to engage in an all-or-nothing migration to begin using Marionette.
 
 ### Boilerplate Rendering Code
 
@@ -93,7 +78,7 @@ Once this is in place, you need to create an instance of your view and pass your
 var myModel = new MyModel({
   firstName: 'Derick',
   lastName: 'Bailey',
-  email: 'derickbailey@gmail.com'
+  email: 'derickbailey@example.com'
 });
 
 var myView = new MyView({
@@ -153,9 +138,9 @@ If we create two instances of this view using the same variable name for both in
 
 ```javascript
 var myModel = new MyModel({
-  firstName: 'Jeremy',
-  lastName: 'Ashkenas',
-  email: 'jeremy@example.com'
+  firstName: 'Derick',
+  lastName: 'Bailey',
+  email: 'derick@example.com'
 });
 
 // create the first view instance
@@ -169,7 +154,7 @@ zombieView = new ZombieView({
   model: myModel
 });
 
-myModel.set('email', 'jeremy@gmail.com');
+myModel.set('email', 'derickbailey@example.com');
 ```
 
 Since we're re-using the same `zombieView` variable for both instances, the first instance of the view will fall out of scope immediately after the second is created. This allows the JavaScript garbage collector to come along and clean it up, which should mean the first view instance is no longer active and no longer going to respond to the model's "change" event.
@@ -188,11 +173,12 @@ var ZombieView = Backbone.View.extend({
 
   initialize: function(){
     // bind the model change to re-render this view
-    this.model.on('change', this.render, this);
+    this.listenTo(this.model, 'change', this.render, this);
   },
 
   close: function(){
-    this.model.off('change', this.render, this);
+    // unbind the events that this view is listening to
+    this.stopListening();
   },
 
   render: function(){
@@ -204,7 +190,7 @@ var ZombieView = Backbone.View.extend({
 });
 ```
 
-Then call `close` on the first instance when it is no longer needed, and only one view instance will remain alive.
+Then call `close` on the first instance when it is no longer needed, and only one view instance will remain alive. For more information about the `listenTo` and `stopListening` functions, see [the Backbone documentation](http://backbonejs.org/#Events-listenTo), and my blog post on [Managing Events As Relationships, Not Just Resources](http://lostechies.com/derickbailey/2013/02/06/managing-events-as-relationships-not-just-references/).
 
 ```javascript
 var myModel = new MyModel({
@@ -225,7 +211,7 @@ zombieView = new ZombieView({
   model: myModel
 })
 
-myModel.set('email', 'jeremy@gmail.com');
+myModel.set('email', 'jeremyashkenas@example.com');
 ```
 
 Now we only see one alert box when this code runs. 
@@ -239,7 +225,7 @@ var ZombieView = Marionette.ItemView.extend({
   initialize: function(){
 
     // bind the model change to re-render this view
-    this.bindTo(this.model, 'change', this.render, this);
+    this.listenTo(this.model, 'change', this.render, this);
 
   },
 
@@ -252,9 +238,9 @@ var ZombieView = Marionette.ItemView.extend({
 });
 ```
 
-Notice in this case we are using a method called `bindTo`. This method comes from Marionette's `EventBinder` object, and is added on to all of Marionette's view types. The `bindTo` method signature is similar to that of the `on` method, with the exception of passing the object that triggers the event as the first parameter. 
+Notice in this case we are using a method called `listenTo`. This method comes from Backbone.Events, and is available in all objects that mix in Backbone.Events - including most Marionette objects. The `listenTo` method signature is similar to that of the `on` method, with the exception of passing the object that triggers the event as the first parameter. 
 
-Marionette's views also provide a `close` event, in which the event bindings that are set up with the `bindTo` are automatically removed. This means we no longer need to define a `close` method directly, and when we use the `bindTo` method, we know that our events will be removed and our views will not turn in to zombies.
+Marionette's views also provide a `close` event, in which the event bindings that are set up with the `listenTo` are automatically removed. This means we no longer need to define a `close` method directly, and when we use the `listenTo` method, we know that our events will be removed and our views will not turn in to zombies.
 
 But how do we automate the call to `close` on a view, in the real application? When and where do we call that? Enter the `Marionette.Region` - an object that manages the lifecycle of an individual view.
 
@@ -264,9 +250,9 @@ After a view is created, it typically needs to be placed in the DOM so that it b
 
 ```javascript
 var myModel = new MyModel({
-  firstName: 'Jeremy',
-  lastName: 'Ashkenas',
-  email: 'jeremy@gmail.com'
+  firstName: 'Joe',
+  lastName: 'Bob',
+  email: 'joebob@example.com'
 });
 
 var myView = new MyView({
@@ -303,10 +289,11 @@ There are several things to note, here. First, we're telling the region what DOM
 
 When we use a region to manage the lifecycle of our views, and display the views in the DOM, the region itself handles these concerns. By passing a view instance in to the `show` method of the region, it will call the render method on the view for us. It will then take the resulting `el` of the view and populate the DOM element.
 
-
 The next time we call the `show` method of the region, the region remembers that it is currently displaying a view. The region calls the `close` method on the view, removes it from the DOM, and then proceeds to run the render & display code for the new view that was passed in.
 
-Since the region handles calling `close` for us, and we're using the `bindTo` event binder in our view instance, we no longer have to worry about zombie views in our application.
+Since the region handles calling `close` for us, and we're using the `listenTo` event binder in our view instance, we no longer have to worry about zombie views in our application.
+
+Regions are not limited to just Marionette views, though. Any valid Backbone.View can be managed by a Marionette.Region. If your view happens to have a `close` method, it will be called when the view is closed. If not, the Backbone.View built-in method, `remove`, will be called instead. If neither of these methods exist, nothing will be called and you will be responsible for cleaning up the events and other bits, yourself.
 
 ### Marionette Todo app
 
@@ -406,8 +393,8 @@ TodoMVC.module('Layout', function(Layout, App, Backbone, Marionette, $, _){
     },
 
     initialize : function() {
-      this.bindTo(App.vent, 'todoList:filter', this.updateFilterSelection, this);
-      this.bindTo(this.collection, 'all', this.updateCount, this);
+      this.listenTo(App.vent, 'todoList:filter', this.updateFilterSelection, this);
+      this.listenTo(this.collection, 'all', this.updateCount, this);
     },
 
     onRender : function() {
@@ -607,7 +594,7 @@ TodoMVC.module('TodoList.Views', function(Views, App, Backbone, Marionette, $, _
       },
 
       initialize : function() {
-        this.bindTo(this.model, 'change', this.render, this);
+        this.listenTo(this.model, 'change', this.render, this);
       },
 
       onRender : function() {
@@ -660,7 +647,7 @@ TodoMVC.module('TodoList.Views', function(Views, App, Backbone, Marionette, $, _
       },
 
       initialize : function() {
-        this.bindTo(this.collection, 'all', this.update, this);
+        this.listenTo(this.collection, 'all', this.update, this);
       },
 
       onRender : function() {
