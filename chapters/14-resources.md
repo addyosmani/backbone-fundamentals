@@ -9,7 +9,7 @@
 * [Backbone On Rails](https://learn.thoughtbot.com/products/1-backbone-js-on-rails)
 * [MVC In JavaScript With Backbone](https://github.com/Integralist/Blog-Posts/blob/master/2012-08-16-MVC-in-JavaScript-with-Backbone.md)
 * [Backbone Tutorials](http://backbonetutorials.com/)
-* [Derick Baileys Resources For Learning Backbone](http://lostechies.com/derickbailey/2011/09/13/resources-for-and-how-i-learned-backbone-js/)
+* [Derick Bailey's Resources For Learning Backbone](http://lostechies.com/derickbailey/2011/09/13/resources-for-and-how-i-learned-backbone-js/)
 
 ## Extensions/Libraries
 
