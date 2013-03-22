@@ -10421,15 +10421,23 @@ That's it for this section on testing applications with QUnit and SinonJS. I enc
 
 # Conclusions
 
-This concludes our voyage into the wondrous world of Backbone.js, but hopefully marks the beginning of your next journey as a user. What you have hopefully learned is that, beyond an accessible API there actually isn’t a great deal to the library. Much of its elegance lies in its simplicity and that is why many developers use it.
+I hope that you've found this walkthrough of Backbone.js of value. 
 
-For the simplest of applications, you are unlikely to need more than what is prescribed out of the box. For those developing complex applications however, the Backbone.js classes are straightforward to extend, providing an easy path for building and sharing extension layers on top of it. We’ve experienced this first hand in the chapters on MarionetteJS and Thorax.
+In the words of Jeremy Ashkenas, "The essential premise at the heart of Backbone has always been to try and discover the minimal set of data-structuring (Models and Collections) and user interface (Views and URLs) primitives that are useful when building web applications with JavaScript. "
 
-Working on the client-side can sometimes feel like the wild west, but I hope this book has introduced you to sound advice and concepts that will help you keep your code both tamed and a little more maintainable. Until next time, the very best of luck creating your own front-end masterpieces.
+Building a single-page application using nothing more than a DOM manipulation library (such as jQuery) is certainly possible, however it is difficult to build anything non-trivial without any formal structure in place. Your nested pile of jQuery callbacks and DOM elements are unlikely to scale and they can be very difficult to maintain as your application grows.
 
-## Notes
+The beauty of Backbone.js is it's simplicity. It's very small given the functionality and flexibility it provides, which is evident if you begin to study the Backbone.js source. It's core only contains five components: Events, Model, Collection, View and Router. Backbone just helps you improve the structure of your applications, helping you better separate concerns. There isn't anything more to it than that.
 
-I would like to thank the Backbone.js, Stack Overflow, DailyJS (Alex Young) and JavaScript communities for their help, references, and contributions to this book. This project would not be possible without you so thank you! :)
+To summarize what we've learned, Backbone offers models with key-value bindings and events, collectiions with an API of rich enumerable methods, declarative views with event handling and a simple way to connect an existing API to your client-side application over a RESTful JSON interface. Use it and you can abstract away data into sane models and your DOM manipulation into views, binding together using nothing more than events.
+
+Almost any developer working on JavaScript applications for a while will ultimately come to creating a similar solution to it on their own if they value architecture and maintainability. That said, rather than re-inventing the wheel there are many advantages to structuring your application using a solution based on the collective knowledge and experience of an entire community. 
+
+In addition to helping provide sane structure to your applications, Backbone is highly extensible supporting more custom architecture should you require more than what is prescribed out of the box. This is evident by the number of extensions and plugins which have been released for it over the past year, including those which we have touched upon such as Backbone.Marionette and Thorax. 
+
+These days Backbone.js powers many complex web applications, ranging from the LinkedIn mobile app to popular RSS readers such as NewsBlur and beyond, to social commentary widgets such as Disqus. This small library of simple, but sane abstractions has helped to create a new generation of rich web applications, and I and my collaborators hope that in time it can help you too. 
+
+Backbone is neither difficult to learn nor use, however the time and effort you spend learning how to structure applications using it will be well worth it. Whilst reading this book will equip you with the fundamentals needed to understand the library, the best way to learn is to try building your own real-world applications. You will hopefully find that the end product is cleaner, better organized and more maintainable code.
 
 # Appendix
 
