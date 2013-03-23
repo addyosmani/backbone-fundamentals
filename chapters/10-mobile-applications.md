@@ -217,38 +217,152 @@ A suggested configuration with its descriptions to delegate jQM navigation and e
 
 ```javascript
 $(document).bind("mobileinit", function(){
-// Disable jQM routing and component creation events
-// disable hash-routing
-$.mobile.hashListeningEnabled = false;
-// disable anchor-control
-$.mobile.linkBindingEnabled = false;
-// can cause calling object creation twice and back button issues are solved
-$.mobile.ajaxEnabled = false;
-// Otherwise after mobileinit, it tries to load a landing page
-$.mobile.autoInitializePage = false;
-// we want to handle caching and cleaning the DOM ourselves
-     	$.mobile.page.prototype.options.domCache = false;
+
+// Disable jQM routing and component creation events   
+   // disable hash-routing
+   $.mobile.hashListeningEnabled = false;
+   // disable anchor-control
+   $.mobile.linkBindingEnabled = false;
+   // can cause calling object creation twice and back button issues are solved
+   $.mobile.ajaxEnabled = false;
+   // Otherwise after mobileinit, it tries to load a landing page
+   $.mobile.autoInitializePage = false;
+   // we want to handle caching and cleaning the DOM ourselves
+   $.mobile.page.prototype.options.domCache = false;
+
 // consider due to compatibility issues
-// not supported by all browsers
-$.mobile.pushStateEnabled = false;
-// Solves phonegap issues with the back-button
-$.mobile.phonegapNavigationEnabled = true;
-//no native datepicker will conflict with the jQM component
-$.mobile.page.prototype.options.degradeInputs.date = true;
+   // not supported by all browsers
+   $.mobile.pushStateEnabled = false;
+   // Solves phonegap issues with the back-button
+   $.mobile.phonegapNavigationEnabled = true;
+   //no native datepicker will conflict with the jQM component
+   $.mobile.page.prototype.options.degradeInputs.date = true;
 });
 ```
 
-The new workflow:
+The new workflow will look like:
 
 ![](../img/chapter10-2-1.png)
 
 <i>Workflow of Backbone and jQueryMobile</i>
 
+####Routing to a concrete View-page
+
 Whenever the hash URL was changed, e.g. by clicking the link, the configuration prevented jQM to trigger its events. Instead, the Backbone Router listens to the hash changes and decides which view to request.
 
-However, experience has shown that,  it is a good practice for mobile pages, to create prototypes(superclasses) for various situations like the usage of the jQuery Validation Plugin or popups with jQM.
+However, experience has shown that, it is a good practice for mobile pages, to create prototypes(superclasses) for various situations like the usage of the jQuery Validation Plugin or popups with jQM.
 Then it becomes much easier to exchange device specific view logics, at runtime, and adopt general strategies- This would also help to add syntax and to support multi chaining of prototype inheritance with JavaScript and Backbone.
-By creating a “BasicView” of superclass, we enable all inherited-view-pages to share a common way to handle jQM specific view handling and the common usage of a template engine.
+By creating a “BasicView” of superclass, we enable all inherited-view-pages to share a common way to handle jQM the common usage of a template engine and specific view handling.
+
+
+#### Management of templates
+
+A concrete View-page, you can override properties for static values and functions to return dynamic values of the super class "BasicView".
+These values will be later on processed by the BasicView to construct the HTML of a jQuery Mobile page with the help of Handlebars.
+
+Additional dynamic template parameters e.g. Backbone Model information, will be taken from the specific View and merged with the ones from the BasicView.
+
+A concrete View might look like:
+
+```javascript
+define([
+    "backbone", "modules/view/abstract/BasicView"],
+    function (Backbone, BasicView) {
+        return BasicView.extend({
+            id : "editTodoView", 
+            getHeaderTitle : function () {
+                return "Edit Todo";
+            },
+            getSpecificTemplateValues : function () {
+                return this.model.toJSON();
+            },
+            events : function () {
+                return _.extend({
+                    'click #saveDescription' : 'saveDescription'
+                }, this.constructor.__super__.events);
+            },
+            saveDescription : function (clickEvent) {
+                this.model.save({
+                    title : $("#todoDescription", this.el).val()
+                });
+                return true;
+            }
+        });
+    });
+```
+
+<i>Sample of a concrete View of "EditTodoPage.js"</i>
+
+
+By default, the BasicView uses the <b>basic_page_simple.template</b> as the template.
+The <b>getTemplateID</b> is meant to be overriden, if you need a custom template, being used only once, 
+or to create a new Super-abstract-View, like the basic_page_simple.
+
+```javascript
+getTemplateID : function(){
+  return "custom_page_template"
+}
+```
+
+By convention, the overridden <b>id</b>-attribute will be taken as the id of the jQM page
+as well as the filename of the corresponding template-file to be inserted as a partial.
+In the case of the <b>EditTodoPage</b>-View, the name of the file will be <b>editTodoPage.template_partial</b>.
+Every concrete page is meant to be a partial, which will be inserted in the <b>data-role="content"</b> element,
+where the parameter <b>templatePartialPageID</b> is located.
+
+The <b>getHeaderTitle</b> from the <b>EditTodoPage<b> will be replaced in the abstract template with <b>headerTitle</b>.
+
+
+```javascript
+<div data-role="header">
+        {{whatis "Specific loaded Handlebars parameters:"}}
+        {{whatis this}}
+        <h2>{{headerTitle}}</h2>
+        <a id="backButton" href="href="javascript:history.go(-1);" data-icon="star" data-rel="back" >back</a>
+    </div>
+    <div data-role="content">
+        {{whatis "Template page trying to load:"}}
+        {{whatis templatePartialPageID}}
+        {{> templatePartialPageID}}
+    </div>
+    <div data-role="footer">
+        {{footerContent}}
+</div>
+```
+
+<i>Code of basic_page_simple.template</i>
+
+
+The <b>whatis</b> Handlebars View helper does simple logging of parameters.
+
+
+All the additional parameters being returned by <b>getSpecificTemplateValues</b> 
+will be replaced in the concrete template <b>editTodoPage.template_partial</b>.
+Because footerContent is used rarely, it can be returned in <b>getSpecificTemplateValues</b>.
+In the case of the EditTodoPage View, all the model information is being returned,
+where <b>title</b> is used in the concrete partial page.
+
+
+```html
+<div data-role="fieldcontain">
+    <label for="todoDescription">Todo Description</label>
+    <input type="text" name="todoDescription" id="todoDescription" value="{{title}}" />
+</div>
+    <a id="saveDescription" href="#" data-role="button" data-mini="true">Save</a>
+```
+
+<i>editTodoView.template_partial</i>
+
+
+
+The Grunt Handlebars plugin in the <b>grunt.js</b> file is configured to compile and merge files with the postfix <b>.template</b> and <b>.template_partial</b>.
+
+
+#### DOM management and $.mobile.changePage
+
+TODO
+The previous jQuery Mobile page from the DOM should be removed prior to the triggering of 'render'; this is done in order to avoid any duplication.
+TODO
 
 ```javascript
 define([
@@ -328,71 +442,42 @@ function (_, Backbone, Handlebars) {
 });
 ```
 
-The previous jQuery Mobile page from the DOM should be removed prior to the triggering of 'render'; this is done in order to avoid any duplication.
 
-JQuery Mobile supports the concept of Multipage Templates( see http://view.jquerymobile.com/1.3.0/docs/widgets/pages/), where you can organize your entire markup into a single HTML page body.
-To follow the DRY(Don’t repeat yourself) concept, it is advised to register the basic anatomy of jQM pages, popups and dialogs in a separate HTML template file.
+
+As explained before, JQuery Mobile supports the concept of Multipages, where you can organize your entire markup into a single HTML page body.
+To follow the DRY(Don’t repeat yourself) concept, it is advised to register the basic anatomy of jQM pages, popups and dialogs 
+as well as the concrete View implementations in a separate HTML template file.
 In the build progress of Grunt/Yeoman, the semantic templates will be compiled by Handlebar.js and the AMDs template files are combined into a single file.
+By merging all page definitions into a single-file-app, it becomes offline capable, which is more important for mobile app.
 
-In the next step, the 'basic_page_simple' template, consisting of a common jQM page anatomy, will be loaded. ( see line _ of code).
+In the next step, the "basic_page_simple" template, consisting of a common jQM page anatomy, will be loaded.
 As you can see, it also contains a manual implementation to handle the back buttons action as well as some console outputs for development.
 
-```javascript
-<div data-role="header">
-        {{whatis "Specific loaded Handlebars parameters:"}}
-        {{whatis this}}
-        <h2>{{headerTitle}}</h2>
-        <a id="backButton" href="href="javascript:history.go(-1);" data-icon="star" data-rel="back" >back</a>
-    </div>
-    <div data-role="content">
-        {{whatis "Template page trying to load:"}}
-        {{whatis templatePartialPageID}}
-        {{> templatePartialPageID}}
-    </div>
-    <div data-role="footer">
-        {{footerContent}}
-</div>
-```
 
-The overridden 'id'-attribute in the concrete view will be taken as the id of the jQM page as well as the templatePartialPageID of the file.
-In the case of the 'EditTodoPage”-View( see Image: 'Todo Editing View' ) the name of the templatePartialPageID file is by convention:
-'editTodoPage.template_partial'.
-This can be changed in the grunt handlebars plugin configurations in the “grunt.js” file.
+Always make sure to progress component enrichment of a newly added HTML-fragment into the DOM, to guarantee correct appearance of the mobile components.
 
-Some commonly used parameters, such as headerTitle, footer description and the “data-role”-attribute (e.g. “page”, “dialog”, or  popup) will be placed in the template as well.
 
-Additional dynamic template parameters e.g. Backbone Model information, will be taken from the specific View and merged with the ones from the BasicView.
-
-As a result, a concrete View might look like:
-
-```javascript
-define([
-    "backbone", "modules/view/abstract/BasicView"],
-    function (Backbone, BasicView) {
-        return BasicView.extend({
-            id : "editTodoView",
-            getHeaderTitle : function () {
-                return "Edit Todo";
-            },
-            getSpecificTemplateValues : function () {
-                return this.model.toJSON();
-            },
-            events : function () {
-                return _.extend({
-                    'click #saveDescription' : 'saveDescription'
-                }, this.constructor.__super__.events);
-            },
-            saveDescription : function (clickEvent) {
-                this.model.save({
-                    title : $("#todoDescription", this.el).val()
-                });
-                return true;
-            }
-        });
-    });
-```
 
 After the dynamic HTML is added to the DOM( step _), “$.mobile.changePage” has to be applied. It is the most important API call, because it triggers the jQuery Mobile component creation of the current page and displays it.
+
+Consider the following HTML declaration of the editing Todo page, the input looks like follows:
+
+```javascript
+<a id="saveDescription" href="#" data-role="button" data-mini="true">Save</a>
+```
+
+will be translated to the HTML below with additional CSS.
+
+```javascript
+<a data-mini="true" data-role="button" href="#" id="saveDescription"   data-corners="true" data-shadow="true" data-iconshadow="true" data-wrapperels="span" data-theme="c" class="ui-btn ui-shadow ui-btn-corner-all ui-mini ui-btn-up-c">
+    <span class="ui-btn-inner">
+         <span class="ui-btn-text">Save</span>
+     </span>
+</a>
+```
+
+![](../img/chapter10-2-2.png)
+
 
 This is done in the enhanceJQMComponentsAPI function
 
@@ -405,22 +490,7 @@ $.mobile.changePage("#" + this.id, {
 
 To retain control of hash routing, “changeHash” has to be set to false as well as the proper “role”-parameter to guarantee right page appearance.
 
-Always make sure to progress component enrichment of a newly added HTML-fragment into the DOM, to guarantee correct appearance of the mobile components.
 
-![](../img/chapter10-2-2.png)
-
-Consider the following HTML declaration of the editing Todo page, the input looks like follows:
-
-```javascript
-<a id="saveDescription" href="#" data-role="button" data-mini="true">Save</a>
-```
-will be translated to the HTML below with additional CSS.
-```javascript
-<a data-mini="true" data-role="button" href="#" id="saveDescription"   data-corners="true" data-shadow="true" data-iconshadow="true" data-wrapperels="span" data-theme="c" class="ui-btn ui-shadow ui-btn-corner-all ui-mini ui-btn-up-c">
-    <span class="ui-btn-inner">
-         <span class="ui-btn-text">Save</span>
-     </span>
-</a>
 ```
 
 For the basic use cases, it is advised, always to render the complete page by calling $.mobile.changePage on component enhancements.
@@ -436,7 +506,7 @@ The solution described above solves the issues of handling routing with Backbone
 
 The second tricky part with jQuery Mobile is to dynamically manipulate specific DOM contents (e.g. after loading in content with Ajax). We suggest you use this technique, only if there is evidence for an appreciable performance gain.
 With the current version 1.3, jQM provides three ways, documented and explained below in the official API, on forums and blogs.
-( for further information see http://stackoverflow.com/questions/14468659/jquery-mobile-document-ready-vs-page-events/ and http://jquerymobile.com/test/docs/pages/page-scripting.html)
+
 
 * <b>$(“pageId”).trigger(“pagecreate”)</b>
   <p>Creates markup of header, content as well as footer</p>
@@ -450,8 +520,14 @@ With the current version 1.3, jQM provides three ways, documented and explained 
     $('#mylist').listview().listview('refresh')
     </p>
 
-To see more details and enhancements for further scripting pages of JQM it’s worth to read their API and follow the release notes, frequently.
-( e.g. http://stackoverflow.com/questions/14550396/jquery-mobile-markup-enhancement-of-dynamically-added-content
+To see more details and enhancements for further scripting pages of JQM read their API and follow the release notes, frequently.
+
+http://jquerymobile.com/test/docs/pages/page-scripting.html
+
+http://stackoverflow.com/questions/14468659/jquery-mobile-document-ready-vs-page-events/ 
+
+http://stackoverflow.com/questions/14550396/jquery-mobile-markup-enhancement-of-dynamically-added-content
+
 
 #### Model-Binding with jQuery Mobile
 
@@ -464,8 +540,9 @@ In the case of a Listview, you would need to call the following function to upda
 
 $('#mylist').listview()
 
-You need to come up with a detection of the component type to decide which plugin method needs to be called. The jQuery Mobile Angular.js Adapter provides such a strategy and solution as well.( see
-https://github.com/tigbro/jquery-mobile-angular-adapter/blob/master/src/main/webapp/integration/jqmWidgetPatches.js)
+You need to come up with a detection of the component type to decide which plugin method needs to be called. The jQuery Mobile Angular.js Adapter provides such a strategy and solution as well.
+
+( https://github.com/tigbro/jquery-mobile-angular-adapter/blob/master/src/main/webapp/integration/jqmWidgetPatches.js)
 
 #### Intercept jQuery Mobile events
 
@@ -495,8 +572,6 @@ If you intend to use it, consider 'Backbone.js Custom Builds' to exclude the rou
 
 Performance is a sensible topic on mobile devices.
 jQuery Mobile provides various tools, to create performance logs, which gives you a good overview about the actual time spend to routing logic, component enhancement, and visual effects.
-(check https://github.com/jquery/jquery-mobile/tree/master/tools and http://www.objectpartners.com/2012/11/02/use-jquery-mobile%E2%80%99s-tools-suite-to-help-you-debug-and-improve-your-jquery-mobile-application/)
-
 
 Depending on the device, the time spend on transitions can take up to 90% load time. To disable transitions all over, you can eighter pass the transition ‘none’ to $.mobile.changePage(), or add settings in the configuration code block:
 
@@ -510,7 +585,7 @@ $.mobile.defaultDialogTransition = "none";
   })
 ```
 
-To have a more finegrained configuration consider platform dependant settings ( see http://backbonefu.com/2012/01/jquery-mobile-and-backbone-js-the-ugly/ for further information:
+
 
 ```javascript
 var iosDevice =((navigator.userAgent.match(/iPhone/i))
@@ -523,6 +598,15 @@ var iosDevice =((navigator.userAgent.match(/iPhone/i))
     defaultDialogTransition:(iosDevice) ? "slide" : "none"
   });
 ```
+
+Further information
+
+http://backbonefu.com/2012/01/jquery-mobile-and-backbone-js-the-ugly/ 
+
+https://github.com/jquery/jquery-mobile/tree/master/tools
+
+http://www.objectpartners.com/2012/11/02/use-jquery-mobile%E2%80%99s-tools-suite-to-help-you-debug-and-improve-your-jquery-mobile-application/)
+
 
 #### Multi platform support management
 The reality is that we don't always have the scope to create per-device experiences, so today's application will attempt to optimize the devices or browsers most likely to access it.
