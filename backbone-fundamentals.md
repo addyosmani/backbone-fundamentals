@@ -10361,7 +10361,7 @@ I hope that you've found this introduction to Backbone.js of value. What you've 
 
 The beauty of Backbone.js is it's simplicity. It's very small given the functionality and flexibility it provides, which is evident if you begin to study the Backbone.js source. In the words of Jeremy Ashkenas, "The essential premise at the heart of Backbone has always been to try and discover the minimal set of data-structuring (Models and Collections) and user interface (Views and URLs) primitives that are useful when building web applications with JavaScript." It just helps you improve the structure of your applications, helping you better separate concerns. There isn't anything more to it than that.
 
-Backbone offers models with key-value bindings and events, collectiions with an API of rich enumerable methods, declarative views with event handling and a simple way to connect an existing API to your client-side application over a RESTful JSON interface. Use it and you can abstract away data into sane models and your DOM manipulation into views, binding together using nothing more than events.
+Backbone offers Models with key-value bindings and events, Collections with an API of rich enumerable methods, declarative Views with event handling and a simple way to connect an existing API to your client-side application over a RESTful JSON interface. Use it and you can abstract away data into sane models and your DOM manipulation into views, binding together using nothing more than events.
 
 Almost any developer working on JavaScript applications for a while will ultimately come to creating a similar solution to it on their own if they value architecture and maintainability. The alternative to using it or something similar is rolling your own - often a process that involves glueing together a diverse set of libraries that weren't built to work together. You might use jQuery BBQ for history management and Handlebars for templating, whilst writing abstracts for organizing and testing code by yourself. 
 
@@ -10369,7 +10369,7 @@ Contrast this with Backbone, which has [literate](http://en.wikipedia.org/wiki/L
 
 In addition to helping provide sane structure to your applications, Backbone is highly extensible supporting more custom architecture should you require more than what is prescribed out of the box. This is evident by the number of extensions and plugins which have been released for it over the past year, including those which we have touched upon such as MarionetteJS and Thorax. 
 
-These days Backbone.js powers many complex web applications, ranging from the LinkedIn mobile app to popular RSS readers such as NewsBlur through to social commentary widgets such as Disqus. This small library of simple, but sane abstractions has helped to create a new generation of rich web applications, and I and my collaborators hope that in time it can help you too. 
+These days Backbone.js powers many complex web applications, ranging from the LinkedIn [mobile app](http://touch.www.linkedin.com/mobile.html) to popular RSS readers such as [NewsBlur](http://newsblur.com) through to social commentary widgets such as [Disqus](http://disqus.com/). This small library of simple, but sane abstractions has helped to create a new generation of rich web applications, and I and my collaborators hope that in time it can help you too. 
 
 If you're wondering whether it is worth using Backbone on a project, ask yourself whether what you are building is complex enough to merit using it. Are you hitting the limits of your ability to organize your code? Will your application have regular changes to what is displayed in the UI without a trip back to the server for new pages? Would you benefit from a separation of concerns? If so, a solution like Backbone may be able to help.
 
@@ -10379,7 +10379,7 @@ That said, Backbone won't be able to help if you're plannong on building somethi
 
 Backbone is neither difficult to learn nor use, however the time and effort you spend learning how to structure applications using it will be well worth it. Whilst reading this book will equip you with the fundamentals needed to understand the library, the best way to learn is to try building your own real-world applications. You will hopefully find that the end product is cleaner, better organized and more maintainable code.
 
-With that, I wish you the very best with your onward journey into the world of Backbone and will leave you with a quote from American writer Henry Miller -  “One’s destination is never a place, but a new way of seeing things.” 
+With that, I wish you the very best with your onward journey into the world of Backbone and will leave you with a quote from American writer [Henry Miller](http://en.wikipedia.org/wiki/Henry_Miller) -  “One’s destination is never a place, but a new way of seeing things.” 
 
 
 # Appendix
