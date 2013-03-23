@@ -1150,7 +1150,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <p>In our TodoView example, the edit callback is invoked when the user double-clicks a label element within the <code>el</code> element, updateOnEnter is called for each keypress in an element with class <q>edit</q>, and close executes when an element with class <q>edit</q> loses focus. Each of these callback functions can use <code>this</code> to refer to the TodoView object.</p>
 <p>Note that you can also bind methods yourself using <code>_.bind(this.viewEvent, this)</code>, which is effectively what the value in each event’s key-value pair is doing. Below we use <code>_.bind</code> to re-render our view when a model changes.</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript">
-<span class="kw">var</span> TodoView = <span class="kw">Backbone.View</span>.<span class="fu">extrend</span>({
+<span class="kw">var</span> TodoView = <span class="kw">Backbone.View</span>.<span class="fu">extend</span>({
   <span class="dt">initialize</span>: <span class="kw">function</span>() {
     <span class="kw">this</span>.<span class="fu">model</span>.<span class="fu">bind</span>(<span class="ch">&#39;change&#39;</span>, <span class="kw">_</span>.<span class="fu">bind</span>(<span class="kw">this</span>.<span class="fu">render</span>, <span class="kw">this</span>));
   }

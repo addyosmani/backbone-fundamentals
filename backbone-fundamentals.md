@@ -1062,7 +1062,7 @@ Note that you can also bind methods yourself using `_.bind(this.viewEvent, this)
 
 ```javascript
 
-var TodoView = Backbone.View.extrend({
+var TodoView = Backbone.View.extend({
   initialize: function() {
     this.model.bind('change', _.bind(this.render, this));
   }
