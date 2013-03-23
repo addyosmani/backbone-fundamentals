@@ -2381,7 +2381,7 @@ Next, a `TodoList` collection is used to group our models. The collection uses t
 
 ```
 
-The collection's `completed()` and `remaining()` methods return an array of unfinished and finished todos, respectively.
+The collection's `completed()` and `remaining()` methods return an array of finished and unfinished todos, respectively.
 
 A `nextOrder()` method implements a sequence generator while a `comparator()` sorts items by their insertion order.
 
@@ -3478,7 +3478,7 @@ jQuery.get( '/api/books/', function( data, textStatus, jqXHR ) {
 
 ![](img/chapter5-7.png)
 
-Here I used jQuery to make the call to our REST API, since it was already loaded on the page. The returned array is obviously empty, since we have not put anything into the database yet. Lets go and create a POST route that enables adding new items in server.js:
+Here I used jQuery to make the call to our REST API, since it was already loaded on the page. The returned array is obviously empty, since we have not put anything into the database yet. Let's go and create a POST route that enables adding new items in server.js:
 
 ```javascript
 //Insert a new book
@@ -3538,7 +3538,7 @@ MongoDB expects dates in UNIX time format (milliseconds from the start of Jan 1s
 ![](img/chapter5-8.png)
 
 
-Lets move on to creating a GET request that retrieves a single book in server.js:
+Let's move on to creating a GET request that retrieves a single book in server.js:
 
 ```javascript
 //Get a single book by id
@@ -3564,7 +3564,7 @@ jQuery.get( '/api/books/4f95a8cb1baa9b8a1b000006', function( data, textStatus, j
 });
 ```
 
-Lets create the PUT (update) function next:
+Let's create the PUT (update) function next:
 
 ```javascript
 //Update a book
@@ -3820,7 +3820,7 @@ Simply copy the value of _id to the needed id attribute. If you reload the page 
 
 Another, simpler way of making Backbone recognize _id as its unique identifier is to set the idAttribute of the model to _id.
 
-If you now try to add a new book using the form you’ll notice that it is a similar story to delete – models wont get persisted on the server. This is because Backbone.Collection.add doesn’t automatically sync, but it is easy to fix. In the LibraryView we find in `views/library.js` change the line reading:
+If you now try to add a new book using the form you’ll notice that it is a similar story to delete – models won't get persisted on the server. This is because Backbone.Collection.add doesn’t automatically sync, but it is easy to fix. In the LibraryView we find in `views/library.js` change the line reading:
 
 ```javascript
 this.collection.add( new Book( formData ) );
@@ -6204,7 +6204,7 @@ define( ["lib/backbone"], function ( Backbone ) {
 
 Converting an individual model, collection, view or similar into an AMD, RequireJS compliant one is typically very straight forward. Usually all that's needed is the first line, calling `define`, and to make sure that once you've defined your object - in this case, the `Item` model, to return it.
 
-Lets now set up a view for that individual item:
+Let's now set up a view for that individual item:
 
 ```javascript
 define( ["lib/backbone"], function ( Backbone ) {
@@ -6222,7 +6222,7 @@ define( ["lib/backbone"], function ( Backbone ) {
 });
 ```
 
-This view doesn't actually depend on the model it will be used with, so again the only dependency is Backbone. Other than that it's just a regular Backbone view. There's nothing special going on here, other than returning the object and using `define` so RequireJS can pick it up. Now lets make a collection to view a list of items. This time we will need to reference the `Item` model, so we add it as a dependency:
+This view doesn't actually depend on the model it will be used with, so again the only dependency is Backbone. Other than that it's just a regular Backbone view. There's nothing special going on here, other than returning the object and using `define` so RequireJS can pick it up. Now let's make a collection to view a list of items. This time we will need to reference the `Item` model, so we add it as a dependency:
 
 ```javascript
 define(["lib/backbone", "models/item"], function(Backbone, Item) {
@@ -6451,270 +6451,6 @@ The build profile is usually placed inside the 'scripts' or 'js' directory of yo
 That's it. As long as you have UglifyJS/Closure tools setup correctly, r.js should be able to easily optimize your entire Backbone project in just a few key-strokes. 
 
 If you would like to learn more about build profiles, James Burke has a [heavily commented sample file](https://github.com/jrburke/r.js/blob/master/build/example.build.js) with all the possible options available.
-
-
-## Optimize and Build a Backbone.js JavaScript application with RequireJS using Packages
-
-*Contributed by [Bill Heaton](https://github.com/pixelhandler)*
-
-When a JavaScript application is too complex or too large to build into a single file, grouping the application's components into packages allows for script dependencies to download in parallel, and facilitates only loading **packaged** and other modular code as the site experience requires the specific set of dependencies.
-
-RequireJS, the (JavaScript) module loading library, has an [optimizer](http://requirejs.org/docs/optimization.html 'RequireJS optimizer') to build a JavaScript-based application and provides various options. A build profile is the recipe for your build, much like a build.xml file is used to build a project with ANT. The benefit of building with **r.js** not only results in speedy script loading with minified code, but also provides a way to package components of your application.
-
-In a complex application, organizing code into *packages* is an attractive build strategy. The build profile in this section is based on a test application currently under development (files listed below). 
-
-The application framework is built with open source libraries. The main objective in this build profile is to optimize an application developed with [Backbone.js](http://documentcloud.github.com/backbone/ 'Backbone.js') using modular code, following the [Asynchronous Module Definition (AMD)](https://github.com/amdjs/amdjs-api/wiki/AMD 'Asynchronous Module Definition (AMD) wiki page') format. AMD and RequireJS provide the structure for writing modular code with dependencies. Backbone.js provides the code organization for developing models, views, and collections and also interactions with a RESTful API.
-
-Below is an outline of the applications file organization, followed by the build profile to build modular (or packaged) layers a JavaScript driven application.
-
-#### File organization
-
-Assume the following directories and file organization, with app.build.js as the build profile (a sibling to both source and release directories). Note that the files in the list below named *section* can be any component of the application, e.g. *header*, *login*)
-
-```text
-.-- app.build.js
-|-- app-release
-`-- app-src
-    |-- collections
-    |   |-- base.js
-    |   |-- sections-segments.js
-    |   `-- sections.js
-    |-- docs
-    |   `--docco.css
-    |-- models
-    |   |-- base.js
-    |   |-- branding.js
-    |   `-- section.js
-    |-- packages
-    |   |-- header
-    |   |   |-- models
-    |   |   |   |-- nav.js
-    |   |   |   `-- link.js
-    |   |   |-- templates
-    |   |   |   |-- branding.js
-    |   |   |   |-- nav.js
-    |   |   |   `-- links.js
-    |   |   `-- views
-    |   |       |-- nav.js
-    |   |       |-- branding.js
-    |   |       `-- link.js
-    |   |-- header.js
-    |   `-- ... more packages here e.g. cart, checkout ...
-    |-- syncs
-    |   |-- rest
-    |   |   `-- sections.js
-    |   |-- factory.js
-    |   `-- localstorage.js
-    |-- test
-    |   |-- fixtures
-    |   |   `-- sections.json
-    |   |-- header
-    |   |   |-- index.html
-    |   |   `-- spec.js
-    |   |-- lib
-    |   |   `-- Jasmine
-    |   |-- models
-    |   |-- utils
-    |   |-- global-spec.js
-    |-- utils
-    |   |-- ajax.js
-    |   |-- baselib.js
-    |   |-- debug.js
-    |   |-- localstorage.js
-    |   `-- shims.js
-    |-- vendor
-    |-- |-- backbone-min.js
-    |   |-- jquery.min.js
-    |   |-- jquery.mobile-1.0.min.js
-    |   |-- json2.js
-    |   |-- modernizr.min.js
-    |   |-- mustache.js
-    |   |-- require.js
-    |   |-- text.js
-    |   `-- underscore.js
-    |-- views
-    |   |-- base.js
-    |   `-- collection.js
-    |-- application.js
-    |-- collections.js
-    |-- index.html
-    |-- main.js
-    |-- models.js
-    |-- syncs.js
-    |-- utils.js
-    |-- vendor.js
-    `-- views.js
-```
-
-#### Build profile to optimize modular dependencies with code organized in packages
-
-The build profile can be organized to [divide parallel downloads for various sections of the application](http://requirejs.org/docs/faq-optimization.html#priority 'optimize modular dependencies in packages').
-
-This strategy demonstrated builds common or site-wide groups of (core) *models*, *views*, collections which are extended from a base.js constructor which extends the appropriate backbone method, e.g. Backbone.Model. The *packages* directory organizes code by section / responsibility, e.g. cart, checkout, etc. Notice that within the example *header* package the directory structure is similar to the app root directory file structure. 
-
-A *package* (of modularized code) has dependencies from the common libraries in your application and also has specific code for the packages execution alone; other packages should not require another packages dependencies. A *utils* directory has shims, helpers, and common library code to support the application. A *syncs* directory to define persistence with your RESTful api and/or localStorage. 
-
-The *vendor* libraries folder will not be built, there is no need to do so, you may decide to use a CDN (then set these paths to : *[empty:](http://requirejs.org/docs/optimization.html#empty 'empty:')*). And finally a *test* directory for [Jasmine](http://pivotal.github.com/jasmine/ 'Jasmine is a behavior-driven development framework for testing your JavaScript code') unit test specs, which may be ignored in the build as well if you choose.
-
-Also notice the there are .js files named the same as the directories, these are the files listed in the paths. These are strategic to group sets of files to build, examples follow the build profile below.
-
-```javascript
-({
-    appDir: './app-src',
-    baseUrl: './',
-    dir: './app-build',
-    optimize: 'uglify',
-    paths: {
-        // will not build 3rd party code, it's already built
-        'text'         : 'vendor/text',
-        'json2'        : 'vendor/json2.min',
-        'modernizr'    : 'vendor/modernizr.min',
-        'jquery'       : 'vendor/jquery-1.7.1',
-        'jquerymobile' : 'vendor/jquery.mobile.min.js',
-        'underscore'   : 'vendor/underscore',
-        'mustache'     : 'vendor/mustache',
-        'backbone'     : 'vendor/backbone',
-        // files that define dependencies...
-        // ignore vendor libraries, but need a group to do so
-        'vendor'       : 'vendor',
-        // application modules/packages these files define dependencies
-        // and may also group modules into objects if needed to require
-        // by groups rather than individual files
-        'utils'        : 'utils',
-        'models'       : 'models',
-        'views'        : 'views',
-        'collections'  : 'collections',
-        // packages to build
-        'header'       : 'packages/header'
-        //... more packages
-    },
-    modules: [
-        // Common libraries, Utilities, Syncs, Models, Views, Collections
-        {
-            name: 'utils',
-            exclude: ['vendor']
-        },
-        {
-            name: 'syncs',
-            exclude: ['vendor', 'utils']
-        },
-        {
-            name: 'models',
-            exclude: ['vendor', 'utils', 'syncs']
-        },
-        {
-            name: 'views',
-            exclude: ['vendor', 'utils', 'syncs', 'models']
-        },
-        {
-            name: 'collections',
-            exclude: ['vendor', 'utils', 'syncs', 'models', 'views']
-        },
-        // Packages
-        {
-            name: 'header',
-            exclude: ['vendor', 'utils', 'syncs', 'models', 'views', 'collections']
-        }
-        // ... and so much more ...
-    ]
-})
-```
-
-The above build profile is designed for balancing scalability and performance.
-
-**Examples of the grouped sets of code dependencies**
-
-The contents of the vendor.js which is not built into a package may use some *no conflict* calls as well.
-
-```javascript
-// List of vendor libraries, e.g. jQuery, Underscore, Backbone, etc.
-// this module is used with the r.js optimizer tool during build
-// @see <http://requirejs.org/docs/faq-optimization.html>
-define([ 'jquery', 'underscore', 'backbone', 'modernizr', 'mustache' ],
-function ($,        _,            Backbone,   Modernizr,   Mustache) {
-    // call no conflicts so if needed you can use multiple versions of $
-    $.noConflict();
-    _.noConflict();
-    Backbone.noConflict();
-});
-```
-
-For your application common library code.
-
-```javascript
-// List of utility libraries,
-define([ 'utils/ajax', 'utils/baselib', 'utils/localstorage', 'utils/debug', 'utils/shims' ],
-function (ajax,         baselib,         localstorage,         debug) {
-    return {
-        'ajax' : ajax,
-        'baselib' : baselib,
-        'localstorage' : localstorage,
-        'debug' : debug
-    };
-    // the shim only extend JavaScript when needed, e.g. Object.create
-});
-```
-
-An example where you intend to use require the common models in another package file.
-
-```javascript
-// List of models
-// models in this directory are intended for site-wide usage
-// grouping site-wide models in this module (object)
-// optimizes the performance and keeps dependencies organized
-// when the (build) optimizer is run.
-define([ 'models/branding', 'models/section' ],
-function (Branding,          Section) {
-    return {
-        'Branding' : Branding,
-        'Section'  : Section
-    };
-});
-```
-
-#### A quick note on code standards
-
-Notice that in the above examples the parameters may begin with lower or upper case characters. The variable names uses in the parameters that begin with *uppercase* are *constructors* and the *lowercase* variable names are not, they may be instances created by a constructor, or perhaps an object or function that is not meant to used with *new*.
-
-The convention recommended is to use upper camel-case for constructors and lower camel-case for others.
-
-#### Common Pitfall when organizing code in modules
-
-Be careful not define circular dependencies. For example, in a common *models* package (models.js) dependencies are listed for the files in your models directory
-
-    define([ 'models/branding', 'models/section' ], function (branding, section)
-    // ...
-    return { 'branding' : branding, 'section', section }
-
-Then when another packages requires a common model you can access the models objects returned from your common models.js file like so...
-
-    define([ 'models', 'utils' ], function (models, utils) {
-    var branding = models.branding, debug = utils.debug;
-
-Perhaps after using the model a few times you get into the habit of requiring "model". Later you need add another common model which extends a model you already defined. So the pitfall begins, you add a new model inside your models directory and add a reference to this same model in the model.js:
-
-    define([ 'models/branding', 'models/section', 'models/section-b' ], function (branding, section)
-    // ...
-    return { 'branding' : branding, 'section', section, 'section-b' : section-b }
-
-However in your *models/section-b.js* file you define a dependency using the model.js which returns the models in an object like so...
-
-    define([ 'models' ], function (models, utils) {
-    var section = models.section;
-
-Above is the mistake in models.js a dependency was added for models/section-b and in section-b a dependency is defined for model. The new models/section-b.js requires *model* and model.js requires *models/section-b.js* - a circular dependency. This should result in a load timeout error from RequireJS, but not tell you about the circular dependency.
-
-For other common mistakes see the [COMMON ERRORS](http://requirejs.org/docs/errors.html 'RequireJS common errors page') page on the RequireJS site.
-
-#### Executing the Build with r.js
-
-If you intalled r.js with Node's npm (package manager) like so...
-
-    > npm install requirejs
-
-...you can execute the build on the command line:
-
-    > r.js -o app.build.js
 
 
 # Exercise: Your First Modular Backbone + RequireJS App
@@ -10668,7 +10404,7 @@ That's it for this section on testing applications with QUnit and SinonJS. I enc
 * [Backbone On Rails](https://learn.thoughtbot.com/products/1-backbone-js-on-rails)
 * [MVC In JavaScript With Backbone](https://github.com/Integralist/Blog-Posts/blob/master/2012-08-16-MVC-in-JavaScript-with-Backbone.md)
 * [Backbone Tutorials](http://backbonetutorials.com/)
-* [Derick Baileys Resources For Learning Backbone](http://lostechies.com/derickbailey/2011/09/13/resources-for-and-how-i-learned-backbone-js/)
+* [Derick Bailey's Resources For Learning Backbone](http://lostechies.com/derickbailey/2011/09/13/resources-for-and-how-i-learned-backbone-js/)
 
 ## Extensions/Libraries
 
@@ -10685,15 +10421,23 @@ That's it for this section on testing applications with QUnit and SinonJS. I enc
 
 # Conclusions
 
-This concludes our voyage into the wondrous world of Backbone.js, but hopefully marks the beginning of your next journey as a user. What you have hopefully learned is that, beyond an accessible API there actually isn’t a great deal to the library. Much of its elegance lies in its simplicity and that is why many developers use it.
+I hope that you've found this walkthrough of Backbone.js of value. 
 
-For the simplest of applications, you are unlikely to need more than what is prescribed out of the box. For those developing complex applications however, the Backbone.js classes are straightforward to extend, providing an easy path for building and sharing extension layers on top of it. We’ve experienced this first hand in the chapters on MarionetteJS and Thorax.
+In the words of Jeremy Ashkenas, "The essential premise at the heart of Backbone has always been to try and discover the minimal set of data-structuring (Models and Collections) and user interface (Views and URLs) primitives that are useful when building web applications with JavaScript. "
 
-Working on the client-side can sometimes feel like the wild west, but I hope this book has introduced you to sound advice and concepts that will help you keep your code both tamed and a little more maintainable. Until next time, the very best of luck creating your own front-end masterpieces.
+Building a single-page application using nothing more than a DOM manipulation library (such as jQuery) is certainly possible, however it is difficult to build anything non-trivial without any formal structure in place. Your nested pile of jQuery callbacks and DOM elements are unlikely to scale and they can be very difficult to maintain as your application grows.
 
-## Notes
+The beauty of Backbone.js is it's simplicity. It's very small given the functionality and flexibility it provides, which is evident if you begin to study the Backbone.js source. It's core only contains five components: Events, Model, Collection, View and Router. Backbone just helps you improve the structure of your applications, helping you better separate concerns. There isn't anything more to it than that.
 
-I would like to thank the Backbone.js, Stack Overflow, DailyJS (Alex Young) and JavaScript communities for their help, references, and contributions to this book. This project would not be possible without you so thank you! :)
+To summarize what we've learned, Backbone offers models with key-value bindings and events, collectiions with an API of rich enumerable methods, declarative views with event handling and a simple way to connect an existing API to your client-side application over a RESTful JSON interface. Use it and you can abstract away data into sane models and your DOM manipulation into views, binding together using nothing more than events.
+
+Almost any developer working on JavaScript applications for a while will ultimately come to creating a similar solution to it on their own if they value architecture and maintainability. That said, rather than re-inventing the wheel there are many advantages to structuring your application using a solution based on the collective knowledge and experience of an entire community. 
+
+In addition to helping provide sane structure to your applications, Backbone is highly extensible supporting more custom architecture should you require more than what is prescribed out of the box. This is evident by the number of extensions and plugins which have been released for it over the past year, including those which we have touched upon such as Backbone.Marionette and Thorax. 
+
+These days Backbone.js powers many complex web applications, ranging from the LinkedIn mobile app to popular RSS readers such as NewsBlur and beyond, to social commentary widgets such as Disqus. This small library of simple, but sane abstractions has helped to create a new generation of rich web applications, and I and my collaborators hope that in time it can help you too. 
+
+Backbone is neither difficult to learn nor use, however the time and effort you spend learning how to structure applications using it will be well worth it. Whilst reading this book will equip you with the fundamentals needed to understand the library, the best way to learn is to try building your own real-world applications. You will hopefully find that the end product is cleaner, better organized and more maintainable code.
 
 # Appendix
 
