@@ -6,7 +6,7 @@ For an application to be considered 'well-tested', each function should ideally 
 
 A basic example of unit testing is where a developer asserts that passing specific values to a sum function results in the correct value being returned. For an example more relevant to this book, we may wish to assert that adding a new Todo item to a list correctly adds a Model of a specific type to a Todos Collection.
 
-When building modern web-applications, it's typically considered best-practice to include automated unit testing as a part of your development process. In this chapter we are going to look at three different solutions for unit testing your Backbone.js apps - Jasmine, QUnit and SinonJS.
+When building modern web-applications, it's typically considered best-practice to include automated unit testing as a part of your development process. In the following chapters we are going to look at three different solutions for unit testing your Backbone.js apps - Jasmine, QUnit and SinonJS.
 
 # Jasmine
 
