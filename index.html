@@ -349,7 +349,6 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <li><a href="#models-3">Models</a></li>
 <li><a href="#collections-2">Collections</a></li>
 <li><a href="#views-3">Views</a></li>
-<li><a href="#event">Event</a></li>
 <li><a href="#app">App</a></li>
 </ul></li>
 <li><a href="#further-reading-resources">Further Reading &amp; Resources</a></li>
@@ -7974,126 +7973,6 @@ asyncTest(<span class="ch">&#39;Can wire up view methods to DOM elements.&#39;</
 
     $(<span class="ch">&#39;#todoList li input.check&#39;</span>).<span class="fu">click</span>();
     equal( <span class="kw">this</span>.<span class="fu">todoView</span>.<span class="fu">model</span>.<span class="fu">get</span>(<span class="ch">&#39;done&#39;</span>), <span class="kw">true</span> );
-});</code></pre>
-<h3 id="event"><a href="#TOC">Event</a></h3>
-<p>For events, we may want to test a few different use cases:</p>
-<ul>
-<li>Extending plain objects to support custom events</li>
-<li>Binding and triggering custom events on objects</li>
-<li>Passing along arguments to callbacks when events are triggered</li>
-<li>Binding a passed context to an event callback</li>
-<li>Removing custom events</li>
-</ul>
-<p>and a few others that will be detailed in our module below:</p>
-<pre class="sourceCode javascript"><code class="sourceCode javascript">module( <span class="ch">&#39;About Backbone.Events&#39;</span>, {
-    <span class="dt">setup</span>: <span class="kw">function</span>() {
-        <span class="kw">this</span>.<span class="fu">obj</span> = {};
-        <span class="kw">_</span>.<span class="fu">extend</span>( <span class="kw">this</span>.<span class="fu">obj</span>, <span class="kw">Backbone</span>.<span class="fu">Events</span> );
-        <span class="kw">this</span>.<span class="fu">obj</span>.<span class="fu">off</span>(); <span class="co">// remove all custom events before each test is run.</span>
-    }
-});
-
-test(<span class="ch">&#39;Can extend JavaScript objects to support custom events.&#39;</span>, <span class="kw">function</span>() {
-    expect(<span class="dv">3</span>);
-
-    <span class="kw">var</span> basicObject = {};
-
-    <span class="co">// How would you give basicObject these functions?</span>
-    <span class="kw">_</span>.<span class="fu">extend</span>( basicObject, <span class="kw">Backbone</span>.<span class="fu">Events</span> );
-
-    equal( <span class="kw">typeof</span> <span class="kw">basicObject</span>.<span class="fu">on</span>, <span class="ch">&#39;function&#39;</span> );
-    equal( <span class="kw">typeof</span> <span class="kw">basicObject</span>.<span class="fu">off</span>, <span class="ch">&#39;function&#39;</span> );
-    equal( <span class="kw">typeof</span> <span class="kw">basicObject</span>.<span class="fu">trigger</span>, <span class="ch">&#39;function&#39;</span> );
-});
-
-test(<span class="ch">&#39;Allows us to bind and trigger custom named events on an object.&#39;</span>, <span class="kw">function</span>() {
-    expect( <span class="dv">1</span> );
-
-    <span class="kw">var</span> callback = <span class="kw">this</span>.<span class="fu">spy</span>();
-
-    <span class="kw">this</span>.<span class="fu">obj</span>.<span class="fu">on</span>( <span class="ch">&#39;basic event&#39;</span>, callback );
-    <span class="kw">this</span>.<span class="fu">obj</span>.<span class="fu">trigger</span>( <span class="ch">&#39;basic event&#39;</span> );
-
-    <span class="co">// How would you cause the callback for this custom event to be called?</span>
-    ok( <span class="kw">callback</span>.<span class="fu">called</span> );
-});
-
-test(<span class="ch">&#39;Also passes along any arguments to the callback when an event is triggered.&#39;</span>, <span class="kw">function</span>() {
-    expect( <span class="dv">1</span> );
-
-    <span class="kw">var</span> passedArgs = [];
-
-    <span class="kw">this</span>.<span class="fu">obj</span>.<span class="fu">on</span>(<span class="ch">&#39;some event&#39;</span>, <span class="kw">function</span>() {
-        <span class="kw">for</span> (<span class="kw">var</span> i = <span class="dv">0</span>; i &lt; <span class="kw">arguments</span>.<span class="fu">length</span>; i++) {
-            <span class="kw">passedArgs</span>.<span class="fu">push</span>( arguments[i] );
-        }
-    });
-
-    <span class="kw">this</span>.<span class="fu">obj</span>.<span class="fu">trigger</span>( <span class="ch">&#39;some event&#39;</span>, <span class="ch">&#39;arg1&#39;</span>, <span class="ch">&#39;arg2&#39;</span> );
-
-    deepEqual( passedArgs, [<span class="ch">&#39;arg1&#39;</span>, <span class="ch">&#39;arg2&#39;</span>] );
-});
-
-
-test(<span class="ch">&#39;Can also bind the passed context to the event callback.&#39;</span>, <span class="kw">function</span>() {
-    expect( <span class="dv">1</span> );
-
-    <span class="kw">var</span> foo = { <span class="dt">color</span>: <span class="ch">&#39;blue&#39;</span> };
-    <span class="kw">var</span> changeColor = <span class="kw">function</span>() {
-        <span class="kw">this</span>.<span class="fu">color</span> = <span class="ch">&#39;red&#39;</span>;
-    };
-
-    <span class="co">// How would you get &#39;this.color&#39; to refer to &#39;foo&#39; in the changeColor function?</span>
-    <span class="kw">this</span>.<span class="fu">obj</span>.<span class="fu">on</span>( <span class="ch">&#39;an event&#39;</span>, changeColor, foo );
-    <span class="kw">this</span>.<span class="fu">obj</span>.<span class="fu">trigger</span>( <span class="ch">&#39;an event&#39;</span> );
-
-    equal( <span class="kw">foo</span>.<span class="fu">color</span>, <span class="ch">&#39;red&#39;</span> );
-});
-
-test( <span class="ch">&#39;Uses `all` as a special event name to capture all events bound to the object.&#39;</span>, <span class="kw">function</span>() {
-    expect( <span class="dv">2</span> );
-
-    <span class="kw">var</span> callback = <span class="kw">this</span>.<span class="fu">spy</span>();
-
-    <span class="kw">this</span>.<span class="fu">obj</span>.<span class="fu">on</span>( <span class="ch">&#39;all&#39;</span>, callback );
-    <span class="kw">this</span>.<span class="fu">obj</span>.<span class="fu">trigger</span>( <span class="ch">&#39;custom event 1&#39;</span> );
-    <span class="kw">this</span>.<span class="fu">obj</span>.<span class="fu">trigger</span>( <span class="ch">&#39;custom event 2&#39;</span> );
-
-    equal( <span class="kw">callback</span>.<span class="fu">callCount</span>, <span class="dv">2</span> );
-    equal( <span class="kw">callback</span>.<span class="fu">getCall</span>(<span class="dv">0</span>).<span class="fu">args</span>[<span class="dv">0</span>], <span class="ch">&#39;custom event 1&#39;</span> );
-});
-
-test(<span class="ch">&#39;Also can remove custom events from objects.&#39;</span>, <span class="kw">function</span>() {
-    expect( <span class="dv">5</span> );
-
-    <span class="kw">var</span> spy1 = <span class="kw">this</span>.<span class="fu">spy</span>();
-    <span class="kw">var</span> spy2 = <span class="kw">this</span>.<span class="fu">spy</span>();
-    <span class="kw">var</span> spy3 = <span class="kw">this</span>.<span class="fu">spy</span>();
-
-    <span class="kw">this</span>.<span class="fu">obj</span>.<span class="fu">on</span>( <span class="ch">&#39;foo&#39;</span>, spy1 );
-    <span class="kw">this</span>.<span class="fu">obj</span>.<span class="fu">on</span>( <span class="ch">&#39;bar&#39;</span>, spy1 );
-    <span class="kw">this</span>.<span class="fu">obj</span>.<span class="fu">on</span>( <span class="ch">&#39;foo&#39;</span>, spy2 );
-    <span class="kw">this</span>.<span class="fu">obj</span>.<span class="fu">on</span>( <span class="ch">&#39;foo&#39;</span>, spy3 );
-
-    <span class="co">// How do you unbind just a single callback for the event?</span>
-    <span class="kw">this</span>.<span class="fu">obj</span>.<span class="fu">off</span>( <span class="ch">&#39;foo&#39;</span>, spy1 );
-    <span class="kw">this</span>.<span class="fu">obj</span>.<span class="fu">trigger</span>( <span class="ch">&#39;foo&#39;</span> );
-
-    ok( <span class="kw">spy2</span>.<span class="fu">called</span> );
-
-    <span class="co">// How do you unbind all callbacks tied to the event with a single method</span>
-    <span class="kw">this</span>.<span class="fu">obj</span>.<span class="fu">off</span>( <span class="ch">&#39;foo&#39;</span> );
-    <span class="kw">this</span>.<span class="fu">obj</span>.<span class="fu">trigger</span>( <span class="ch">&#39;foo&#39;</span> );
-
-    ok( <span class="kw">spy2</span>.<span class="fu">callCount</span>, <span class="dv">1</span> );
-    ok( <span class="kw">spy2</span>.<span class="fu">calledOnce</span>, <span class="ch">&#39;Spy 2 called once&#39;</span> );
-    ok( <span class="kw">spy3</span>.<span class="fu">calledOnce</span>, <span class="ch">&#39;Spy 3 called once&#39;</span> );
-
-    <span class="co">// How do you unbind all callbacks and events tied to the object with a single method?</span>
-    <span class="kw">this</span>.<span class="fu">obj</span>.<span class="fu">off</span>( <span class="ch">&#39;bar&#39;</span> );
-    <span class="kw">this</span>.<span class="fu">obj</span>.<span class="fu">trigger</span>( <span class="ch">&#39;bar&#39;</span> );
-
-    equal( <span class="kw">spy1</span>.<span class="fu">callCount</span>, <span class="dv">0</span> );
 });</code></pre>
 <h3 id="app"><a href="#TOC">App</a></h3>
 <p>It can also be useful to write tests for any application bootstrap you may have in place. For the following module, our setup instantiates and appends to a TodoApp view and we can test anything from local instances of views being correctly defined to application interactions correctly resulting in changes to instances of local collections.</p>
