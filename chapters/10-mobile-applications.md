@@ -149,11 +149,11 @@ Apart from that it makes use of Grunt-BBB ( see chapter "Backbone Boilerplate & 
 
 The initial load of the files to load by Require.js is as follows:
 
-1. "jQuery"
-2. "Underscore/Lodash"
-3. "handlebars.compiled"
-   By opening the console in the project directory and running the Grunt-Backbone command "bbb watch" in the console, 
-   it will combine and compile all template files to dist/debug/handlebars_packaged.
+1. <b>jQuery</b>
+2. <b>Underscore/Lodash</b>
+3. <b>handlebars.compiled</b>
+   By opening the console in the project directory and running the Grunt-Backbone command <b>bbb handlebars</b> or <b>bbb watch</b> in the console, 
+   it will combine and compile all template files to <b>dist/debug/handlebars_packaged</b>.
 4. TodoRouter (instantiates specific views)
 5. "jQueryMobile"
 6. "JqueryMobileCustomInitConfig"
@@ -240,22 +240,34 @@ $(document).bind("mobileinit", function(){
 });
 ```
 
-The new workflow will look like:
+The behaviour and usage of the new workflow will be explained, grouped by its functionalities:
+<b>Routing to a concrete View-page</b>, <b>Management of mobile page templates</b> and <b>DOM management and $.mobile.changePage</b>.
+For an overview and understanding the chronological order, have a look on the diagram below.
+In the following, the steps 1-11 are attached to the text and refer to the new workflow diagram of the mobile application.
 
 ![](../img/chapter10-2-1.png)
 
 <i>Workflow of Backbone and jQueryMobile</i>
 
-####Routing to a concrete View-page
+####Routing to a concrete View-page, inherited by BasicView
 
-Whenever the hash URL was changed, e.g. by clicking the link, the configuration prevented jQM to trigger its events. Instead, the Backbone Router listens to the hash changes and decides which view to request.
+Whenever the hash URL has changed, e.g. by clicking the link, the configuration prevented jQM to trigger its events. Instead, the Backbone Router listens to the hash changes and decides which view to request.
 
 However, experience has shown that, it is a good practice for mobile pages, to create prototypes(superclasses) for various situations like the usage of the jQuery Validation Plugin or popups with jQM.
 Then it becomes much easier to exchange device specific view logics, at runtime, and adopt general strategies- This would also help to add syntax and to support multi chaining of prototype inheritance with JavaScript and Backbone.
 By creating a “BasicView” of superclass, we enable all inherited-view-pages to share a common way to handle jQM the common usage of a template engine and specific view handling.
 
+TODO
+TODO
+TODO
+As explained before, JQuery Mobile supports the concept of Multipages, where you can organize your entire markup into a single HTML page body.
+To follow the DRY(Don’t repeat yourself) concept, it is advised to register the basic anatomy of jQM pages, popups and dialogs 
+as well as the concrete View implementations in a separate HTML template file.
+In the build progress of Grunt/Yeoman, the semantic templates will be compiled by Handlebar.js and the AMDs template files are combined into a single file.
+By merging all page definitions into a single-file-app, it becomes offline capable, which is important for mobile app.
 
-#### Management of templates
+
+#### Management of mobile page templates
 
 A concrete View-page, you can override properties for static values and functions to return dynamic values of the super class "BasicView".
 These values will be later on processed by the BasicView to construct the HTML of a jQuery Mobile page with the help of Handlebars.
@@ -291,26 +303,26 @@ define([
     });
 ```
 
-<i>Sample of a concrete View of "EditTodoPage.js"</i>
+<i>Sample of a concrete View of <b>EditTodoPage.js</b></i>
 
 
-By default, the BasicView uses the <b>basic_page_simple.template</b> as the template.
-The <b>getTemplateID</b> is meant to be overriden, if you need a custom template, being used only once, 
-or to create a new Super-abstract-View, like the basic_page_simple.
+By default, the BasicView uses the <b>basic_page_simple.template</b> as the Handlebars template.
+if you need a custom template, being used only once, 
+or in the case you want to create a new Super-abstract-View, like the basic_page_simple, override the <b>getTemplateID</b>.
 
 ```javascript
 getTemplateID : function(){
-  return "custom_page_template"
+  return "custom_page_template";
 }
 ```
 
 By convention, the overridden <b>id</b>-attribute will be taken as the id of the jQM page
-as well as the filename of the corresponding template-file to be inserted as a partial.
+as well as the filename of the corresponding template-file to be inserted as a partial in the <b>basic_page_simple</b> template.
 In the case of the <b>EditTodoPage</b>-View, the name of the file will be <b>editTodoPage.template_partial</b>.
 Every concrete page is meant to be a partial, which will be inserted in the <b>data-role="content"</b> element,
 where the parameter <b>templatePartialPageID</b> is located.
 
-The <b>getHeaderTitle</b> from the <b>EditTodoPage<b> will be replaced in the abstract template with <b>headerTitle</b>.
+The <b>getHeaderTitle</b> function from the <b>EditTodoPage</b> will be replaced in the abstract template with <b>headerTitle</b>.
 
 
 ```javascript
@@ -330,7 +342,7 @@ The <b>getHeaderTitle</b> from the <b>EditTodoPage<b> will be replaced in the ab
 </div>
 ```
 
-<i>Code of basic_page_simple.template</i>
+<i>Code of <b>basic_page_simple.template</b></i>
 
 
 The <b>whatis</b> Handlebars View helper does simple logging of parameters.
@@ -338,7 +350,7 @@ The <b>whatis</b> Handlebars View helper does simple logging of parameters.
 
 All the additional parameters being returned by <b>getSpecificTemplateValues</b> 
 will be replaced in the concrete template <b>editTodoPage.template_partial</b>.
-Because footerContent is used rarely, it can be returned in <b>getSpecificTemplateValues</b>.
+Because <b>footerContent</b> is expected to be used rarely, it can be returned in <b>getSpecificTemplateValues</b>.
 In the case of the EditTodoPage View, all the model information is being returned,
 where <b>title</b> is used in the concrete partial page.
 
@@ -355,100 +367,108 @@ where <b>title</b> is used in the concrete partial page.
 
 
 
-The Grunt Handlebars plugin in the <b>grunt.js</b> file is configured to compile and merge files with the postfix <b>.template</b> and <b>.template_partial</b>.
-
-
 #### DOM management and $.mobile.changePage
 
-TODO
-The previous jQuery Mobile page from the DOM should be removed prior to the triggering of 'render'; this is done in order to avoid any duplication.
-TODO
+When <b>render</b> is triggered, BasicView will clean up the DOM, by removing the previous page(Line 70).
+<b>$.remove</b> cannot be used, but <b>$previousEl.detach()</b> to delete the elements from the DOM,
+but not its attached events and data. This is important, because jQuery Mobile still needs information to e.g.
+trigger transition effects when switching to the next page. 
+To only remove the old page having the same id than the current from the DOM, when it was already requested before,
+is also a working strategy of preventing DOM duplication. Depending on what fits best to your application needs,
+it is also possible a one-banana problem to exchange it with a caching mechanism.
+
+
+Next, BasicView will collect all template parameters
+and inserts the HTML of the requested View into the DOM (Steps 4, 5, 6 and 7).
+
+
 
 ```javascript
-define([
-    "lodash",
-    "backbone",
-    "handlebars",
-    "handlebars_helpers"
-],
-
-function (_, Backbone, Handlebars) {
-    var BasicView = Backbone.View.extend({
-        initialize: function () {
-            _.bindAll();
-            this.render();
-        },
-        events: {
-            "click #backButton": "goBackInHistory"
-        },
-        role: "page",
-        attributes: function () {
-            return {
-                "data-role": this.role
-            };
-        },
-        getHeaderTitle: function () {
-            return this.getSpecificTemplateValues().headerTitle;
-        },
-        getTemplateID: function () {
-            return "basic_page_simple";
-        },
-        goBackInHistory: function (clickEvent) {
-            history.go(-1);
-            return false;
-        },
-        getTemplateResult: function (templateDefinitionID, templateValues) {
-            return window.JST[templateDefinitionID](templateValues);
-        },
-        getBasicPageTemplateResult: function () {
-            var templateValues = {
-                templatePartialPageID: this.id,
-                headerTitle: this.getHeaderTitle()
-            };
-            var specific = this.getSpecificTemplateValues();
-            $.extend(templateValues, this.getSpecificTemplateValues());
-            return this.getTemplateResult(this.getTemplateID(), templateValues);
-        },
-        getRequestedPageTemplateResult: function () {
-            this.getBasicPageTemplateResult();
-        },
-        render: function () {
-            this.cleanupPossiblePageDuplicationInDOM();
-            $(this.el).html(this.getBasicPageTemplateResult());
-            this.addPageToDOMAndRenderJQM();
-            this.enhanceJQMComponentsAPI();
-        },
-        enhanceJQMComponentsAPI: function () {
-            $.mobile.changePage("#" + this.id, {
-                changeHash: false,
-                role: this.role
-            });
-        },
-        addPageToDOMAndRenderJQM: function () {
-            $("body").append($(this.el));
-            $("#" + this.id).page();
-        },
-        // Instead you could move it to the event "pagehide": or "onPageHide"
-        cleanupPossiblePageDuplicationInDOM: function () {
-            var $previousEl = $("#" + this.id);
-            var alreadyInDom = $previousEl.length >= 0;
-            if (alreadyInDom) {
-                $previousEl.detach();
-            }
-        }
-    });
-
-    return BasicView;
-});
+ 1 define([
+ 2     "lodash",
+ 3     "backbone",
+ 4     "handlebars",
+ 5     "handlebars_helpers"
+ 6 ],
+ 7 
+ 8 function (_, Backbone, Handlebars) {
+ 9     var BasicView = Backbone.View.extend({
+10         initialize: function () {
+11             _.bindAll();
+12             this.render();
+13         },
+14         events: {
+15             "click #backButton": "goBackInHistory"
+16         },
+17         role: "page",
+18         attributes: function () {
+19             return {
+20                 "data-role": this.role
+21             };
+22         },
+23         getHeaderTitle: function () {
+24             return this.getSpecificTemplateValues().headerTitle;
+25         },
+26         getTemplateID: function () {
+27             return "basic_page_simple";
+28         },
+29         render: function () {
+30             this.cleanupPossiblePageDuplicationInDOM();
+31             $(this.el).html(this.getBasicPageTemplateResult());
+32             this.addPageToDOMAndRenderJQM();
+33             this.enhanceJQMComponentsAPI();
+34         },
+35 // Generate HTML by the Handlebars templates
+36         getTemplateResult: function (templateDefinitionID, templateValues) {
+37             return window.JST[templateDefinitionID](templateValues);
+38         },
+39 // Collect all template paramters and merge them
+40         getBasicPageTemplateResult: function () {
+41             var templateValues = {
+42                 templatePartialPageID: this.id,
+43                 headerTitle: this.getHeaderTitle()
+44             };
+45             var specific = this.getSpecificTemplateValues();
+46             $.extend(templateValues, this.getSpecificTemplateValues());
+47             return this.getTemplateResult(this.getTemplateID(), templateValues);
+48         },
+49         getRequestedPageTemplateResult: function () {
+50             this.getBasicPageTemplateResult();
+51         },
+52         enhanceJQMComponentsAPI: function () {
+53 // changePage
+54             $.mobile.changePage("#" + this.id, {
+55                 changeHash: false,
+56                 role: this.role
+57             });
+58         },
+59 // Add page to DOM
+60         addPageToDOMAndRenderJQM: function () {
+61             $("body").append($(this.el));
+62             $("#" + this.id).page();
+63         },
+64 // Cleanup DOM strategy
+65         cleanupPossiblePageDuplicationInDOM: function () {
+66         // Can also be moved to the event "pagehide": or "onPageHide"
+67             var $previousEl = $("#" + this.id);
+68             var alreadyInDom = $previousEl.length >= 0;
+69             if (alreadyInDom) {
+70                 $previousEl.detach();
+71             }
+72         },
+73 // Strategy to always support back button with disabled navigation
+74         goBackInHistory: function (clickEvent) {
+75             history.go(-1);
+76             return false;
+77         }
+78     });
+79 
+80     return BasicView;
+81 });
 ```
 
 
 
-As explained before, JQuery Mobile supports the concept of Multipages, where you can organize your entire markup into a single HTML page body.
-To follow the DRY(Don’t repeat yourself) concept, it is advised to register the basic anatomy of jQM pages, popups and dialogs 
-as well as the concrete View implementations in a separate HTML template file.
-In the build progress of Grunt/Yeoman, the semantic templates will be compiled by Handlebar.js and the AMDs template files are combined into a single file.
-By merging all page definitions into a single-file-app, it becomes offline capable, which is more important for mobile app.
 
 In the next step, the "basic_page_simple" template, consisting of a common jQM page anatomy, will be loaded.
 As you can see, it also contains a manual implementation to handle the back buttons action as well as some console outputs for development.
