@@ -7562,12 +7562,12 @@ test( <span class="ch">&#39;test ordering&#39;</span>, <span class="kw">function
 <pre class="sourceCode javascript"><code class="sourceCode javascript">module(<span class="ch">&#39;jQuery#enumerate&#39;</span>);
 
 test( <span class="ch">&#39;No arguments passed&#39;</span>, <span class="dv">5</span>, <span class="kw">function</span>() {
-  <span class="kw">var</span> items = $(<span class="ch">&#39;#qunit-fixture li&#39;</span>).<span class="fu">enumerate</span>();
-  equal( <span class="kw">items</span>.<span class="fu">eq</span>(<span class="dv">0</span>).<span class="fu">text</span>(), <span class="ch">&#39;1. hello&#39;</span>, <span class="ch">&#39;first item should have index 1&#39;</span> );
-  equal( <span class="kw">items</span>.<span class="fu">eq</span>(<span class="dv">1</span>).<span class="fu">text</span>(), <span class="ch">&#39;2. world&#39;</span>, <span class="ch">&#39;second item should have index 2&#39;</span> );
-  equal( <span class="kw">items</span>.<span class="fu">eq</span>(<span class="dv">2</span>).<span class="fu">text</span>(), <span class="ch">&#39;3. i&#39;</span>, <span class="ch">&#39;third item should have index 3&#39;</span> );
-  equal( <span class="kw">items</span>.<span class="fu">eq</span>(<span class="dv">3</span>).<span class="fu">text</span>(), <span class="ch">&#39;4. am&#39;</span>, <span class="ch">&#39;fourth item should have index 4&#39;</span> );
-  equal( <span class="kw">items</span>.<span class="fu">eq</span>(<span class="dv">4</span>).<span class="fu">text</span>(), <span class="ch">&#39;5. foo&#39;</span>, <span class="ch">&#39;fifth item should have index 5&#39;</span> );
+  <span class="kw">var</span> items = $(<span class="ch">&#39;#qunit-fixture li&#39;</span>).<span class="fu">enumerate</span>(); <span class="co">// 0</span>
+  equal( <span class="kw">items</span>.<span class="fu">eq</span>(<span class="dv">0</span>).<span class="fu">text</span>(), <span class="ch">&#39;0. hello&#39;</span>, <span class="ch">&#39;first item should have index 0&#39;</span> );
+  equal( <span class="kw">items</span>.<span class="fu">eq</span>(<span class="dv">1</span>).<span class="fu">text</span>(), <span class="ch">&#39;1. world&#39;</span>, <span class="ch">&#39;second item should have index 1&#39;</span> );
+  equal( <span class="kw">items</span>.<span class="fu">eq</span>(<span class="dv">2</span>).<span class="fu">text</span>(), <span class="ch">&#39;2. i&#39;</span>, <span class="ch">&#39;third item should have index 2&#39;</span> );
+  equal( <span class="kw">items</span>.<span class="fu">eq</span>(<span class="dv">3</span>).<span class="fu">text</span>(), <span class="ch">&#39;3. am&#39;</span>, <span class="ch">&#39;fourth item should have index 3&#39;</span> );
+  equal( <span class="kw">items</span>.<span class="fu">eq</span>(<span class="dv">4</span>).<span class="fu">text</span>(), <span class="ch">&#39;4. foo&#39;</span>, <span class="ch">&#39;fifth item should have index 4&#39;</span> );
 });
 
 test( <span class="ch">&#39;0 passed as an argument&#39;</span>, <span class="dv">5</span>, <span class="kw">function</span>() {
@@ -7602,6 +7602,7 @@ test( <span class="ch">&#39;1 passed as an argument&#39;</span>, <span class="dv
                <span class="dt">topic</span>: <span class="ch">&#39;hello&#39;</span>,
                <span class="dt">message</span>: <span class="ch">&#39;hi there!&#39;&#39;</span>
             });
+            ok(<span class="kw">true</span>, <span class="ch">&#39;Asynchronous test passed!&#39;</span>);
             start();
         }
     });
@@ -7797,18 +7798,17 @@ test(<span class="ch">&#39;Can be created with default values for its attributes
     expect( <span class="dv">1</span> );
 
     <span class="kw">var</span> todo = <span class="kw">new</span> Todo();
-
     equal( <span class="kw">todo</span>.<span class="fu">get</span>(<span class="ch">&#39;text&#39;</span>), <span class="ch">&#39;&#39;</span> );
+    equal( <span class="kw">todo</span>.<span class="fu">get</span>(<span class="ch">&#39;done&#39;</span>), <span class="kw">false</span> );
+    equal( <span class="kw">todo</span>.<span class="fu">get</span>(<span class="ch">&#39;order&#39;</span>), <span class="dv">0</span> );
 });
 
 test(<span class="ch">&#39;Will set attributes on the model instance when created.&#39;</span>, <span class="kw">function</span>() {
     expect( <span class="dv">3</span> );
 
     <span class="kw">var</span> todo = <span class="kw">new</span> Todo( { <span class="dt">text</span>: <span class="ch">&#39;Get oil change for car.&#39;</span> } );
-
     equal( <span class="kw">todo</span>.<span class="fu">get</span>(<span class="ch">&#39;text&#39;</span>), <span class="ch">&#39;Get oil change for car.&#39;</span> );
-    equal( <span class="kw">todo</span>.<span class="fu">get</span>(<span class="ch">&#39;done&#39;</span>), <span class="kw">false</span> );
-    equal( <span class="kw">todo</span>.<span class="fu">get</span>(<span class="ch">&#39;order&#39;</span>), <span class="dv">0</span> );
+
 });
 
 test(<span class="ch">&#39;Will call a custom initialize function on the model instance when created.&#39;</span>, <span class="kw">function</span>() {
@@ -7826,7 +7826,6 @@ test(<span class="ch">&#39;Fires a custom event when the state changes.&#39;</sp
 
     <span class="kw">todo</span>.<span class="fu">on</span>( <span class="ch">&#39;change&#39;</span>, spy );
     <span class="co">// How would you update a property on the todo here?</span>
-    <span class="co">// Hint: http://documentcloud.github.com/backbone/#Model-set</span>
     <span class="kw">todo</span>.<span class="fu">set</span>( { <span class="dt">text</span>: <span class="ch">&#39;new text&#39;</span> } );
 
     ok( <span class="kw">spy</span>.<span class="fu">calledOnce</span>, <span class="ch">&#39;A change event callback was correctly triggered&#39;</span> );
@@ -7851,55 +7850,68 @@ test(<span class="ch">&#39;Can contain custom validation rules, and will trigger
 <h3 id="collections-2"><a href="#TOC">Collections</a></h3>
 <p>For our collection we’ll want to test that:</p>
 <ul>
-<li>New model instances can be added as both objects and arrays</li>
-<li>Changes to models result in any necessary custom events being fired</li>
-<li>A <code>url</code> property for defining the URL structure for models is correctly defined</li>
+<li>The Collection has a Todo Model</li>
+<li>Uses localStorage for syncing</li>
+<li>That done(), remaining() and clear() work as expected</li>
+<li>The order for Todos is numerically correct</li>
 </ul>
-<pre class="sourceCode javascript"><code class="sourceCode javascript">module( <span class="ch">&#39;About Backbone.Collection&#39;</span>);
+<pre class="sourceCode javascript"><code class="sourceCode javascript">  describe(<span class="ch">&#39;Test Collection&#39;</span>, <span class="kw">function</span>() {
 
-test( <span class="ch">&#39;Can add Model instances as objects and arrays.&#39;</span>, <span class="kw">function</span>() {
-    expect( <span class="dv">3</span> );
+    beforeEach(<span class="kw">function</span>() {
 
-    <span class="kw">var</span> todos = <span class="kw">new</span> TodoList();
-    equal( <span class="kw">todos</span>.<span class="fu">length</span>, <span class="dv">0</span> );
+      <span class="co">// Define new todos</span>
+      <span class="kw">this</span>.<span class="fu">todoOne</span> = <span class="kw">new</span> Todo;
+      <span class="kw">this</span>.<span class="fu">todoTwo</span> = <span class="kw">new</span> Todo({
+        <span class="dt">title</span>: <span class="st">&quot;Buy some milk&quot;</span>
+      });
 
-    <span class="kw">todos</span>.<span class="fu">add</span>( { <span class="dt">text</span>: <span class="ch">&#39;Clean the kitchen&#39;</span> } );
-    equal( <span class="kw">todos</span>.<span class="fu">length</span>, <span class="dv">1</span> );
+      <span class="co">// Create a new collection of todos for testing</span>
+      <span class="kw">return</span> <span class="kw">this</span>.<span class="fu">todos</span> = <span class="kw">new</span> TodoList([<span class="kw">this</span>.<span class="fu">todoOne</span>, <span class="kw">this</span>.<span class="fu">todoTwo</span>]);
+    });
 
-    <span class="kw">todos</span>.<span class="fu">add</span>([
-        { <span class="dt">text</span>: <span class="ch">&#39;Do the laundry&#39;</span>, <span class="dt">done</span>: <span class="kw">true</span> },
-        { <span class="dt">text</span>: <span class="ch">&#39;Go to the gym&#39;</span> }
-    ]);
+    it(<span class="ch">&#39;Has the Todo model&#39;</span>, <span class="kw">function</span>() {
+      <span class="kw">return</span> expect(<span class="kw">this</span>.<span class="fu">todos</span>.<span class="fu">model</span>).<span class="fu">toBe</span>(Todo);
+    });
 
-    equal( <span class="kw">todos</span>.<span class="fu">length</span>, <span class="dv">3</span> );
-});
+    it(<span class="ch">&#39;Uses local storage&#39;</span>, <span class="kw">function</span>() {
+      <span class="kw">return</span> expect(<span class="kw">this</span>.<span class="fu">todos</span>.<span class="fu">localStorage</span>).<span class="fu">toEqual</span>(<span class="kw">new</span> Store(<span class="ch">&#39;todos-backbone&#39;</span>));
+    });
 
-test( <span class="ch">&#39;Can have a url property to define the basic url structure for all contained models.&#39;</span>, <span class="kw">function</span>() {
-    expect( <span class="dv">1</span> );
-    <span class="kw">var</span> todos = <span class="kw">new</span> TodoList();
-    equal( <span class="kw">todos</span>.<span class="fu">url</span>, <span class="ch">&#39;/todos/&#39;</span> );
-});
+    describe(<span class="ch">&#39;done&#39;</span>, <span class="kw">function</span>() {
+      <span class="kw">return</span> it(<span class="ch">&#39;returns an array of the todos that are done&#39;</span>, <span class="kw">function</span>() {
+        <span class="kw">this</span>.<span class="fu">todoTwo</span>.<span class="fu">done</span> = <span class="kw">true</span>;
+        <span class="kw">return</span> expect(<span class="kw">this</span>.<span class="fu">todos</span>.<span class="fu">done</span>()).<span class="fu">toEqual</span>([<span class="kw">this</span>.<span class="fu">todoTwo</span>]);
+      });
+    });
 
-test(<span class="ch">&#39;Fires custom named events when the models change.&#39;</span>, <span class="kw">function</span>() {
-    expect(<span class="dv">2</span>);
+    describe(<span class="ch">&#39;remaining&#39;</span>, <span class="kw">function</span>() {
+      <span class="kw">return</span> it(<span class="ch">&#39;returns an array of the todos that are not done&#39;</span>, <span class="kw">function</span>() {
+        <span class="kw">this</span>.<span class="fu">todoTwo</span>.<span class="fu">done</span> = <span class="kw">true</span>;
+        <span class="kw">return</span> expect(<span class="kw">this</span>.<span class="fu">todos</span>.<span class="fu">remaining</span>()).<span class="fu">toEqual</span>([<span class="kw">this</span>.<span class="fu">todoOne</span>]);
+      });
+    });
 
-    <span class="kw">var</span> todos = <span class="kw">new</span> TodoList();
-    <span class="kw">var</span> addModelCallback = <span class="kw">this</span>.<span class="fu">spy</span>();
-    <span class="kw">var</span> removeModelCallback = <span class="kw">this</span>.<span class="fu">spy</span>();
+    describe(<span class="ch">&#39;clear&#39;</span>, <span class="kw">function</span>() {
+      <span class="kw">return</span> it(<span class="ch">&#39;destroys the current todo from local storage&#39;</span>, <span class="kw">function</span>() {
+        expect(<span class="kw">this</span>.<span class="fu">todos</span>.<span class="fu">models</span>).<span class="fu">toEqual</span>([<span class="kw">this</span>.<span class="fu">todoOne</span>, <span class="kw">this</span>.<span class="fu">todoTwo</span>]);
+        <span class="kw">this</span>.<span class="fu">todos</span>.<span class="fu">clear</span>(<span class="kw">this</span>.<span class="fu">todoOne</span>);
+        <span class="kw">return</span> expect(<span class="kw">this</span>.<span class="fu">todos</span>.<span class="fu">models</span>).<span class="fu">toEqual</span>([<span class="kw">this</span>.<span class="fu">todoTwo</span>]);
+      });
+    });
 
-    <span class="kw">todos</span>.<span class="fu">on</span>( <span class="ch">&#39;add&#39;</span>, addModelCallback );
-    <span class="kw">todos</span>.<span class="fu">on</span>( <span class="ch">&#39;remove&#39;</span>, removeModelCallback );
+    <span class="kw">return</span> describe(<span class="ch">&#39;Order sets the order on todos ascending numerically&#39;</span>, <span class="kw">function</span>() {
+      it(<span class="ch">&#39;defaults to one when there arent any items in the collection&#39;</span>, <span class="kw">function</span>() {
+        <span class="kw">this</span>.<span class="fu">emptyTodos</span> = <span class="kw">new</span> <span class="kw">TodoApp.Collections</span>.<span class="fu">TodoList</span>;
+        <span class="kw">return</span> expect(<span class="kw">this</span>.<span class="fu">emptyTodos</span>.<span class="fu">order</span>()).<span class="fu">toEqual</span>(<span class="dv">0</span>);
+      });
 
-    <span class="co">// How would you get the &#39;add&#39; event to trigger?</span>
-    <span class="kw">todos</span>.<span class="fu">add</span>( {<span class="dt">text</span>:<span class="ch">&#39;New todo&#39;</span>} );
+      <span class="kw">return</span> it(<span class="ch">&#39;Increments the order by one each time&#39;</span>, <span class="kw">function</span>() {
+        expect(<span class="kw">this</span>.<span class="fu">todos</span>.<span class="fu">order</span>(<span class="kw">this</span>.<span class="fu">todoOne</span>)).<span class="fu">toEqual</span>(<span class="dv">1</span>);
+        <span class="kw">return</span> expect(<span class="kw">this</span>.<span class="fu">todos</span>.<span class="fu">order</span>(<span class="kw">this</span>.<span class="fu">todoTwo</span>)).<span class="fu">toEqual</span>(<span class="dv">2</span>);
+      });
+    });
 
-    ok( <span class="kw">addModelCallback</span>.<span class="fu">called</span> );
-
-    <span class="co">// How would you get the &#39;remove&#39; callback to trigger?</span>
-    <span class="kw">todos</span>.<span class="fu">remove</span>( <span class="kw">todos</span>.<span class="fu">last</span>() );
-
-    ok( <span class="kw">removeModelCallback</span>.<span class="fu">called</span> );
-});</code></pre>
+  });</code></pre>
 <h3 id="views-3"><a href="#TOC">Views</a></h3>
 <p>For our views we want to ensure:</p>
 <ul>
@@ -7934,10 +7946,8 @@ test(<span class="ch">&#39;Can render, after which the DOM representation of the
    <span class="kw">this</span>.<span class="fu">todoView</span>.<span class="fu">render</span>();
 
     <span class="co">// Hint: render() just builds the DOM representation of the view, but doesn&#39;t insert it into the DOM.</span>
-    <span class="co">//       How would you append it to the ul#todoList?</span>
-    <span class="co">//       How do you access the view&#39;s DOM representation?</span>
-    <span class="co">//</span>
-    <span class="co">// Hint: http://documentcloud.github.com/backbone/#View-el</span>
+    <span class="co">// How would you append it to the ul#todoList?</span>
+    <span class="co">// How do you access the view&#39;s DOM representation?</span>
 
     $(<span class="ch">&#39;ul#todoList&#39;</span>).<span class="fu">append</span>(<span class="kw">this</span>.<span class="fu">todoView</span>.<span class="fu">el</span>);
     equal($(<span class="ch">&#39;#todoList&#39;</span>).<span class="fu">find</span>(<span class="ch">&#39;li&#39;</span>).<span class="fu">length</span>, <span class="dv">1</span>);
@@ -7960,9 +7970,7 @@ asyncTest(<span class="ch">&#39;Can wire up view methods to DOM elements.&#39;</
 
 
     <span class="co">// Hint: How would you trigger the view, via a DOM Event, to toggle the &#39;done&#39; status.</span>
-    <span class="co">//       (See todos.js line 70, where the events hash is defined.)</span>
-    <span class="co">//</span>
-    <span class="co">// Hint: http://api.jquery.com/click</span>
+    <span class="co">// (See todos.js line 70, where the events hash is defined.)</span>
 
     $(<span class="ch">&#39;#todoList li input.check&#39;</span>).<span class="fu">click</span>();
     equal( <span class="kw">this</span>.<span class="fu">todoView</span>.<span class="fu">model</span>.<span class="fu">get</span>(<span class="ch">&#39;done&#39;</span>), <span class="kw">true</span> );
@@ -7991,7 +7999,6 @@ test(<span class="ch">&#39;Can extend JavaScript objects to support custom event
     <span class="kw">var</span> basicObject = {};
 
     <span class="co">// How would you give basicObject these functions?</span>
-    <span class="co">// Hint: http://documentcloud.github.com/backbone/#Events</span>
     <span class="kw">_</span>.<span class="fu">extend</span>( basicObject, <span class="kw">Backbone</span>.<span class="fu">Events</span> );
 
     equal( <span class="kw">typeof</span> <span class="kw">basicObject</span>.<span class="fu">on</span>, <span class="ch">&#39;function&#39;</span> );

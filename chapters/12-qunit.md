@@ -382,12 +382,12 @@ and finally, here are our test cases:
 module('jQuery#enumerate');
 
 test( 'No arguments passed', 5, function() {
-  var items = $('#qunit-fixture li').enumerate();
-  equal( items.eq(0).text(), '1. hello', 'first item should have index 1' );
-  equal( items.eq(1).text(), '2. world', 'second item should have index 2' );
-  equal( items.eq(2).text(), '3. i', 'third item should have index 3' );
-  equal( items.eq(3).text(), '4. am', 'fourth item should have index 4' );
-  equal( items.eq(4).text(), '5. foo', 'fifth item should have index 5' );
+  var items = $('#qunit-fixture li').enumerate(); // 0
+  equal( items.eq(0).text(), '0. hello', 'first item should have index 0' );
+  equal( items.eq(1).text(), '1. world', 'second item should have index 1' );
+  equal( items.eq(2).text(), '2. i', 'third item should have index 2' );
+  equal( items.eq(3).text(), '3. am', 'fourth item should have index 3' );
+  equal( items.eq(4).text(), '4. foo', 'fifth item should have index 4' );
 });
 
 test( '0 passed as an argument', 5, function() {
@@ -430,6 +430,7 @@ test('An async test', function(){
                topic: 'hello',
                message: 'hi there!''
             });
+            ok(true, 'Asynchronous test passed!');
             start();
         }
     });

@@ -9644,12 +9644,12 @@ and finally, here are our test cases:
 module('jQuery#enumerate');
 
 test( 'No arguments passed', 5, function() {
-  var items = $('#qunit-fixture li').enumerate();
-  equal( items.eq(0).text(), '1. hello', 'first item should have index 1' );
-  equal( items.eq(1).text(), '2. world', 'second item should have index 2' );
-  equal( items.eq(2).text(), '3. i', 'third item should have index 3' );
-  equal( items.eq(3).text(), '4. am', 'fourth item should have index 4' );
-  equal( items.eq(4).text(), '5. foo', 'fifth item should have index 5' );
+  var items = $('#qunit-fixture li').enumerate(); // 0
+  equal( items.eq(0).text(), '0. hello', 'first item should have index 0' );
+  equal( items.eq(1).text(), '1. world', 'second item should have index 1' );
+  equal( items.eq(2).text(), '2. i', 'third item should have index 2' );
+  equal( items.eq(3).text(), '3. am', 'fourth item should have index 3' );
+  equal( items.eq(4).text(), '4. foo', 'fifth item should have index 4' );
 });
 
 test( '0 passed as an argument', 5, function() {
@@ -9692,6 +9692,7 @@ test('An async test', function(){
                topic: 'hello',
                message: 'hi there!''
             });
+            ok(true, 'Asynchronous test passed!');
             start();
         }
     });
@@ -9972,18 +9973,17 @@ test('Can be created with default values for its attributes.', function() {
     expect( 1 );
 
     var todo = new Todo();
-
     equal( todo.get('text'), '' );
+    equal( todo.get('done'), false );
+    equal( todo.get('order'), 0 );
 });
 
 test('Will set attributes on the model instance when created.', function() {
     expect( 3 );
 
     var todo = new Todo( { text: 'Get oil change for car.' } );
-
     equal( todo.get('text'), 'Get oil change for car.' );
-    equal( todo.get('done'), false );
-    equal( todo.get('order'), 0 );
+
 });
 
 test('Will call a custom initialize function on the model instance when created.', function() {
@@ -10001,7 +10001,6 @@ test('Fires a custom event when the state changes.', function() {
 
     todo.on( 'change', spy );
     // How would you update a property on the todo here?
-    // Hint: http://documentcloud.github.com/backbone/#Model-set
     todo.set( { text: 'new text' } );
 
     ok( spy.calledOnce, 'A change event callback was correctly triggered' );
@@ -10030,57 +10029,69 @@ test('Can contain custom validation rules, and will trigger an invalid event on 
 
 For our collection we'll want to test that:
 
-* New model instances can be added as both objects and arrays
-* Changes to models result in any necessary custom events being fired
-* A `url` property for defining the URL structure for models is correctly defined
-
+* The Collection has a Todo Model
+* Uses localStorage for syncing
+* That done(), remaining() and clear() work as expected
+* The order for Todos is numerically correct
 
 ```javascript
-module( 'About Backbone.Collection');
+  describe('Test Collection', function() {
 
-test( 'Can add Model instances as objects and arrays.', function() {
-    expect( 3 );
+    beforeEach(function() {
 
-    var todos = new TodoList();
-    equal( todos.length, 0 );
+      // Define new todos
+      this.todoOne = new Todo;
+      this.todoTwo = new Todo({
+        title: "Buy some milk"
+      });
 
-    todos.add( { text: 'Clean the kitchen' } );
-    equal( todos.length, 1 );
+      // Create a new collection of todos for testing
+      return this.todos = new TodoList([this.todoOne, this.todoTwo]);
+    });
 
-    todos.add([
-        { text: 'Do the laundry', done: true },
-        { text: 'Go to the gym' }
-    ]);
+    it('Has the Todo model', function() {
+      return expect(this.todos.model).toBe(Todo);
+    });
 
-    equal( todos.length, 3 );
-});
+    it('Uses local storage', function() {
+      return expect(this.todos.localStorage).toEqual(new Store('todos-backbone'));
+    });
 
-test( 'Can have a url property to define the basic url structure for all contained models.', function() {
-    expect( 1 );
-    var todos = new TodoList();
-    equal( todos.url, '/todos/' );
-});
+    describe('done', function() {
+      return it('returns an array of the todos that are done', function() {
+        this.todoTwo.done = true;
+        return expect(this.todos.done()).toEqual([this.todoTwo]);
+      });
+    });
 
-test('Fires custom named events when the models change.', function() {
-    expect(2);
+    describe('remaining', function() {
+      return it('returns an array of the todos that are not done', function() {
+        this.todoTwo.done = true;
+        return expect(this.todos.remaining()).toEqual([this.todoOne]);
+      });
+    });
 
-    var todos = new TodoList();
-    var addModelCallback = this.spy();
-    var removeModelCallback = this.spy();
+    describe('clear', function() {
+      return it('destroys the current todo from local storage', function() {
+        expect(this.todos.models).toEqual([this.todoOne, this.todoTwo]);
+        this.todos.clear(this.todoOne);
+        return expect(this.todos.models).toEqual([this.todoTwo]);
+      });
+    });
 
-    todos.on( 'add', addModelCallback );
-    todos.on( 'remove', removeModelCallback );
+    return describe('Order sets the order on todos ascending numerically', function() {
+      it('defaults to one when there arent any items in the collection', function() {
+        this.emptyTodos = new TodoApp.Collections.TodoList;
+        return expect(this.emptyTodos.order()).toEqual(0);
+      });
 
-    // How would you get the 'add' event to trigger?
-    todos.add( {text:'New todo'} );
+      return it('Increments the order by one each time', function() {
+        expect(this.todos.order(this.todoOne)).toEqual(1);
+        return expect(this.todos.order(this.todoTwo)).toEqual(2);
+      });
+    });
 
-    ok( addModelCallback.called );
-
-    // How would you get the 'remove' callback to trigger?
-    todos.remove( todos.last() );
-
-    ok( removeModelCallback.called );
-});
+  });
 ```
 
 
@@ -10123,10 +10134,8 @@ test('Can render, after which the DOM representation of the view will be visible
    this.todoView.render();
 
     // Hint: render() just builds the DOM representation of the view, but doesn't insert it into the DOM.
-    //       How would you append it to the ul#todoList?
-    //       How do you access the view's DOM representation?
-    //
-    // Hint: http://documentcloud.github.com/backbone/#View-el
+    // How would you append it to the ul#todoList?
+    // How do you access the view's DOM representation?
 
     $('ul#todoList').append(this.todoView.el);
     equal($('#todoList').find('li').length, 1);
@@ -10149,9 +10158,7 @@ asyncTest('Can wire up view methods to DOM elements.', function() {
 
 
     // Hint: How would you trigger the view, via a DOM Event, to toggle the 'done' status.
-    //       (See todos.js line 70, where the events hash is defined.)
-    //
-    // Hint: http://api.jquery.com/click
+    // (See todos.js line 70, where the events hash is defined.)
 
     $('#todoList li input.check').click();
     equal( this.todoView.model.get('done'), true );
@@ -10185,7 +10192,6 @@ test('Can extend JavaScript objects to support custom events.', function() {
     var basicObject = {};
 
     // How would you give basicObject these functions?
-    // Hint: http://documentcloud.github.com/backbone/#Events
     _.extend( basicObject, Backbone.Events );
 
     equal( typeof basicObject.on, 'function' );
