@@ -5961,6 +5961,202 @@ var Note = Backbone.Model.extend({
 });
 ```
 
+#### Event Aggregators And Mediators
+
+**Problem** 
+
+How do I channel multiple event sources through a single object?**
+
+**Solution**
+
+Using an Event Aggregator. It's common for developers to think of Mediators when faced with this problem, so let's explore what an Event Aggregator is, what the Mediator pattern is and how they differ.
+
+Design patterns often differ only in semantics and intent. That is, the language used to describe the pattern is what sets it apart, more than an implementation of that specific pattern. It often comes down to squares vs rectangles vs polygons. You can create the same end result with all three, given the constraints of a square are still met – or you can use polygons to create an infinitely larger and more complex set of things.
+
+When it comes to the Mediator and Event Aggregator patterns, there are some times where it may look like the patterns are interchangeable due to implementation similarities. However, the semantics and intent of these patterns are very different. And even if the implementations both use some of the same core constructs, I believe there is a distinct difference between them. I also believe they should not be interchanged or confused in communication because of the differences.
+
+#####Event Aggregator
+
+The core idea of the Event Aggregator, according to Martin Fowler, is to channel multiple event sources through a single object so that other objects needing to subscribe to the events don’t need to know about every event source.
+
+######Backbone’s Event Aggregator
+
+The easiest event aggregator to show is that of Backbone.js – it’s built in to the Backbone object directly.
+
+```javascript
+var View1 = Backbone.View.extend({
+  // ...
+
+  events: {
+    "click .foo": "doIt"
+  },
+
+  doIt: function(){
+    // trigger an event through the event aggregator
+    Backbone.trigger("some:event");
+  }
+});
+
+var View2 = Backbone.View.extend({
+  // ...
+
+  initialize: function(){
+    // subscribe to the event aggregator's event
+    Backbone.on("some:event", this.doStuff, this);
+  },
+
+  doStuff: function(){
+    // ...
+  }
+})
+```
+
+In this example, the first view is triggering an event when a DOM element is clicked. The event is triggered through Backbone’s built-in event aggregator – the Backbone object. Of course, it’s trivial to create your own event aggregator in Backbone, and there are some key things that we need to keep in mind when using an event aggregator, to keep our code simple.
+
+#######jQuery’s Event Aggregator
+
+Did you know that jQuery has a built-in event aggregator? They don’t call it this, but it’s in there and it’s scoped to DOM events. It also happens to look like Backbone’s event aggregator:
+
+```
+$("#mainArticle").on("click", function(e){
+
+  // handle the event that any element underneath of our #mainArticle element
+
+});
+```
+
+This code sets up an event handler function that waits for an unknown number of event sources to trigger a “click” event, and it allows any number of listeners to attach to the events of those event publishers. jQuery just happens to scope this event aggregator to the DOM.
+
+#####Mediator
+
+A Mediator is an object that coordinates interactions (logic and behavior) between multiple objects. It makes decisions on when to call which objects, based on the actions (or in-action) of other objects and input.
+
+**A Mediator For Backbone**
+
+Backbone doesn’t have the idea of a mediator built in to it like a lot of other MV* frameworks do. But that doesn’t mean you can’t write one in 1 line of code:
+
+```javascript
+var mediator = {};
+```
+
+Yes, of course this is just an object literal in JavaScript. Once again, we’re talking about semantics here. The purpose of the mediator is to control the workflow between objects and we really don’t need anything more than an object literal to do this.
+
+```javascript
+var orgChart = {
+
+  addNewEmployee: function(){
+
+    // getEmployeeDetail provides a view that users interact with
+    var employeeDetail = this.getEmployeeDetail();
+
+    // when the employee detail is complete, the mediator (the 'orgchart' object)
+    // decides what should happen next
+    employeeDetail.on("complete", function(employee){
+
+      // set up additional objects that have additional events, which are used
+      // by the mediator to do additional things
+      var managerSelector = this.selectManager(employee);
+      managerSelector.on("save", function(employee){
+        employee.save();
+      });
+
+    });
+  },
+
+  // ...
+}
+```
+
+This example shows a very basic implementation of a mediator object with Backbone based objects that can trigger and subscribe to events. I’ve often referred to this type of object as a “workflow” object in the past, but the truth is that it is a mediator. It is an object that handles the workflow between many other objects, aggregating the responsibility of that workflow knowledge in to a single object. The result is workflow that is easier to understand and maintain.
+
+#####Similarities And Differences
+
+There are, without a doubt, similarities between the event aggregator and mediator examples that I’ve shown here. The similarities boil down to two primary items: events and third-party objects. These differences are superficial at best, though. When we dig in to the intent of the pattern and see that the implementations can be dramatically different, the nature of the patterns become more apparent.
+
+######Events
+
+Both the event aggregator and mediator use events, in the above examples. An event aggregator obviously deals with events – it’s in the name after all. The mediator only uses events because it makes life easy when dealing with Backbone, though. There is nothing that says a mediator must be built with events. You can build a mediator with callback methods, by handing the mediator reference to the child object, or by any of a number of other means.
+
+The difference, then, is why these two patterns are both using events. The event aggregator, as a pattern, is designed to deal with events. The mediator, though, only uses them because it’s convenient.
+
+######Third-Party Objects
+
+Both the event aggregator and mediator, by design, use a third-party object to facilitate things. The event aggregator itself is a third-party to the event publisher and the event subscriber. It acts as a central hub for events to pass through. The mediator is also a third party to other objects, though. So where is the difference? Why don’t we call an event aggregator a mediator? The answer largely comes down to where the application logic and workflow is coded.
+
+In the case of an event aggregator, the third party object is there only to facilitate the pass-through of events from an unknown number of sources to an unknown number of handlers. All workflow and business logic that needs to be kicked off is put directly in to the the object that triggers the events and the objects that handle the events.
+
+In the case of the mediator, though, the business logic and workflow is aggregated in to the mediator itself. The mediator decides when an object should have it’s methods called and attributes updated based on factors that the mediator knows about. It encapsulates the workflow and process, coordinating multiple objects to produce the desired system behaviour. The individual objects involved in this workflow each know how to perform their own task. But it’s the mediator that tells the objects when to perform the tasks by making decisions at a higher level than the individual objects.
+
+An event aggregator facilitates a “fire and forget” model of communication. The object triggering the event doesn’t care if there are any subscribers. It just fires the event and moves on. A mediator, though, might use events to make decisions, but it is definitely not “fire and forget”. A mediator pays attention to a known set of input or activities so that it can facilitate and coordinate additional behavior with a known set of actors (objects).
+
+#####Relationships: When To Use Which
+
+Understanding the similarities and differences between an event aggregator and mediator is important for semantic reasons. It’s equally as important to understand when to use which pattern, though. The basic semantics and intent of the patterns does inform the question of when, but actual experience in using the patterns will help you understand the more subtle points and nuanced decisions that have to be made.
+
+######Event Aggregator Use
+
+In general, an event aggregator is uses when you either have too many objects to listen to directly, or you have objects that are unrelated entirely.
+
+When two objects have a direct relationship already – say, a parent view and child view – then there might be little benefit in using an event aggregator. Have the child view trigger an event and the parent view can handle the event. This is most commonly seen in Backbone’s Collection and Model, where all Model events are bubbled up to and through it’s parent Collection. A Collection often uses model events to modify the state of itself or other models. Handling “selected” items in a collection is a good example of this.
+
+jQuery’s on method as an event aggregator is a great example of too many objects to listen to. If you have 10, 20 or 200 DOM elements that can trigger a “click” event, it might be a bad idea to set up a listener on all of them individually. This could quickly deteriorate performance of the application and user experience. Instead, using jQuery’s on method allows us to aggregate all of the events and reduce the overhead of 10, 20, or 200 event handlers down to 1.
+
+Indirect relationships are also a great time to use event aggregators. In Backbone applications, it is very common to have multiple view objects that need to communicate, but have no direct relationship. For example, a menu system might have a view that handles the menu item clicks. But we don’t want the menu to be directly tied to the content views that show all of the details and information when a menu item is clicked. Having the content and menu coupled together would make the code very difficult to maintain, in the long run. Instead, we can use an event aggregator to trigger “menu:click:foo” events, and have a “foo” object handle the click event to show it’s content on the screen.
+
+######Mediator Use
+
+A mediator is best applied when two or more objects have an indirect working relationship, and business logic or workflow needs to dictate the interactions and coordination of these objects.
+
+A wizard interface is a good example of this, as shown with the “orgChart” example, above. There are multiple views that facilitate the entire workflow of the wizard. Rather than tightly coupling the view together by having them reference each other directly, we can decouple them and more explicitly model the workflow between them by introducing a mediator.
+
+The mediator extracts the workflow from the implementation details and creates a more natural abstraction at a higher level, showing us at a much faster glance what that workflow is. We no longer have to dig in to the details of each view in the workflow, to see what the workflow actually is.
+
+#####Event Aggregator And Mediator Together
+
+The crux of the difference between an event aggregator and a mediator, and why these pattern names should not be interchanged with each other, is illustrated best by showing how they can be used together. The menu example for an event aggregator is the perfect place to introduce a mediator as well.
+
+Clicking a menu item may trigger a series of changes throughout an application. Some of these changes will be independent of others, and using an event aggregator for this makes sense. Some of these changes may be internally related to each other, though, and may use a mediator to enact those changes. A mediator, then, could be set up to listen to the event aggregator. It could run it’s logic and process to facilitate and coordinate many objects that are related to each other, but unrelated to the original event source.
+
+```javascript
+var MenuItem = Backbone.View.extend({
+
+  events: {
+    "click .thatThing": "clickedIt"
+  },
+
+  clickedIt: function(e){
+    e.preventDefault();
+
+    // assume this triggers "menu:click:foo"
+    Backbone.trigger("menu:click:" + this.model.get("name"));
+  }
+
+});
+
+// ... somewhere else in the app
+
+var MyWorkflow = function(){
+  Backbone.on("menu:click:foo", this.doStuff, this);
+};
+
+MyWorkflow.prototype.doStuff = function(){
+  // instantiate multiple objects here.
+  // set up event handlers for those objects.
+  // coordinate all of the objects in to a meaningful workflow.
+};
+```
+
+In this example, when the MenuItem with the right model is clicked, the `“menu:click:foo”` event will be triggered. An instance of the “MyWorkflow” object, assuming one is already instantiated, will handle this specific event and will coordinate all of the objects that it knows about, to create the desired user experience and workflow.
+
+An event aggregator and a mediator have been combined to create a much more meaningful experience in both the code and the application itself. We now have a clean separation between the menu and the workflow through an event aggregator. And we are still keeping the workflow itself clean and maintainable through the use of a mediator.
+
+#####Pattern Language: Semantics
+
+There is one overriding point to make in all of this discussion: semantics. Communicating intent and semantics through the use of named patterns is only viable and only valid when all parties in a communication medium understand the language in the same way.
+
+If I say “apple”, what am I talking about? Am I talking about a fruit? Or am I talking about a technology and consumer products company? As Sharon Cichelli says: “semantics will continue to be important, until we learn how to communicate in something other than language”.
+
+
 # Modular Development
 
 ## Introduction
@@ -7003,333 +7199,6 @@ A template using Jammit can derive it's data from the collection object that is 
 ```
 this.$el.html(JST.myTemplate({ collection: this.collection }));
 ```
-
-
-
-# Decoupling Backbone with the Mediator and Facade Patterns
-
-In this section we'll discuss applying some of the concepts I cover in my article on [Large-scale JavaScript Application development](http://addyosmani.com/largescalejavascript) to Backbone.
-
-*After, you may be interested in taking a look At [Aura](http://github.com/aurajs/aura) - my popular widget-based Backbone.js extension framework based on many of the concepts we will be covering in this section.*
-
-### Summary
-
-At a high-level, one architecture that works for such applications is something which is:
-
-* **Highly decoupled**: encouraging modules to only publish and subscribe to events of interest rather than directly communicating with each other. This helps us to build applications who's units of code aren't highly tied (coupled) together and can thus be reused more easily.
-* **Supports module-level security**: whereby modules are only able to execute behavior they've been permitted to. Application security is an area which is often overlooked in JavaScript applications, but can be quite easily implemented in a flexible manner.
-* **Supports failover**: allowing an application continuing to function even if particular modules fail. The typical example I give of this is the GMail chat widget. Imagine being able to build applications in a way that if one widget on the page fails (e.g chat), the rest of your application (mail) can continue to function without being affected.
-
-This is an architecture which has been implemented by a number of different companies in the past, including Yahoo! (for their modularized homepage.)
-
-The three design patterns that make this architecture possible are the:
-
-* **Module pattern**: used for encapsulating unique blocks of code, where functions and variables can be kept either public or private. ('private' in the simulation of privacy sense, as of course don't have true privacy in JavaScript)
-* **Mediator pattern**: used when the communication between modules may be complex, but is still well defined. If it appears a system may have too many relationships between modules in your code, it may be time to have a central point of control, which is where the pattern fits in.
-* **Facade pattern**: used for providing a convenient higher-level interface to a larger body of code, hiding its true underlying complexity
-
-Their specific roles in this architecture can be found below.
-
-* **Modules**: There are almost two concepts of what defines a module. As AMD is being used as a module wrapper, technically each model, view and collection can be considered a module. We then have the concept of modules being distinct blocks of code outside of just MVC/MV*. For the latter, these types of 'modules' are primarily concerned with broadcasting and subscribing to events of interest rather than directly communicating with each other.They are made possible through the Mediator pattern.
-* **Mediator**: The mediator has a varying role depending on just how you wish to implement it. In my article, I mention using it as a module manager with the ability to start and stop modules at will, however when it comes to Backbone, I feel that simplifying it down to the role of a central 'controller' that provides pub/sub capabilities should suffice. One can of course go all out in terms of building a module system that supports module starting, stopping, pausing etc, however the scope of this is outside of this chapter.
-* **Facade**: This acts as a secure middle-layer that both abstracts an application core (Mediator) and relays messages from the modules back to the Mediator so they don't touch it directly. The Facade also performs the duty of application security guard; it checks event notifications from modules against a configuration (permissions.js, which we will look at later) to ensure requests from modules are only processed if they are permitted to execute the behavior passed.
-
-
-### Exercise
-
-For the practical section of this chapter, we'll be extending the well-known Backbone Todo application using the three patterns mentioned above.
-
-The application is broken down into AMD modules that cover everything from Backbone models through to application-level modules. The views publish events of interest to the rest of the application and modules can then subscribe to these event notifications.
-
-All subscriptions from modules go through a facade (or sandbox). What this does is check against the subscriber name and the 'channel/notification' it's attempting to subscribe to. If a channel *doesn't* have permissions to be subscribed to (something established through permissions.js), the subscription isn't permitted.
-
-
-**Mediator**
-
-Found in `aura/mediator.js`
-
-Below is a very simple AMD-wrapped implementation of the mediator pattern, based on prior work by Ryan Florence. It accepts as its input an object, to which it attaches `publish()` and `subscribe()` methods. In a larger application, the mediator can contain additional utilities, such as handlers for initializing, starting and stopping modules, but for demonstration purposes, these two methods should work fine for our needs.
-
-```javascript
-define([], function(obj){
-
-  var channels = {};
-  if (!obj) obj = {};
-
-  obj.subscribe = function (channel, subscription) {
-    if (!channels[channel]) channels[channel] = [];
-    channels[channel].push(subscription);
-  };
-
-  obj.publish = function (channel) {
-    if (!channels[channel]) return;
-    var args = [].slice.call(arguments, 1);
-    for (var i = 0, l = channels[channel].length; i < l; i++) {
-      channels[channel][i].apply(this, args);
-    }
-  };
-
-  return obj;
-
-});
-```
-
-
-**Facade**
-
-Found in `aura/facade.js`
-
-Next, we have an implementation of the facade pattern. Now the classical facade pattern applied to JavaScript would probably look a little like this:
-
-```javascript
-
-var module = (function() {
-    var _private = {
-
-        i: 5,
-
-        get : function() {
-            console.log('current value:' + this.i);
-        },
-        set : function( val ) {
-            this.i = val;
-        },
-        run : function() {
-            console.log('running');
-        },
-        jump: function(){
-            console.log('jumping');
-        }
-    };
-    return {
-        facade : function( args ) {
-            _private.set(args.val);
-            _private.get();
-            if ( args.run ) {
-                _private.run();
-            }
-        }
-    }
-}());
-
-module.facade({run: true, val:10});
-//outputs current value: 10, running
-```
-
-It's effectively a variation of the module pattern, where instead of simply returning an interface of supported methods, your API can completely hide the true implementation powering it, returning something simpler. This allows the logic being performed in the background to be as complex as necessary, whilst all the end-user experiences is a simplified API they pass options to (note how in our case, a single method abstraction is exposed). This is a beautiful way of providing APIs that can be easily consumed.
-
-That said, to keep things simple, our implementation of an AMD-compatible facade will act a little more like a proxy. Modules will communicate directly through the facade to access the mediator's `publish()` and `subscribe()` methods, however, they won't as such touch the mediator directly.This enables the facade to provide application-level validation of any subscriptions and publications made.
-
-It also allows us to implement a simple, but flexible, permissions checker (as seen below) which will validate subscriptions made against a permissions configuration to see whether it's permitted or not.
-
-
-```javascript
-define([ '../aura/mediator' , '../aura/permissions' ], function (mediator, permissions) {
-
-    var facade = facade || {};
-
-    facade.subscribe = function(subscriber, channel, callback){
-
-        // Note: Handling permissions/security is optional here
-        // The permissions check can be removed
-        // to just use the mediator directly.
-
-        if(permissions.validate(subscriber, channel)){
-            mediator.subscribe( channel, callback );
-        }
-    }
-
-    facade.publish = function(channel){
-        mediator.publish( channel );
-    }
-    return facade;
-
-});
-```
-
-**Permissions**
-
-Found in `aura/permissions.js`
-
-In our simple permissions configuration, we support checking against subscription requests to establish whether they are allowed to clear. This enforces a flexible security layer for the application.
-
-To visually see how this works, consider changing say, permissions -> renderDone -> todoCounter to be false. This will completely disable the application from rendering or displaying the counts component for Todo items left (because they aren't allowed to subscribe to that event notification). The rest of the Todo app can still however be used without issue.
-
-It's a very dumbed down example of the potential for application security, but imagine how powerful this might be in a large app with a significant number of visual widgets.
-
-```javascript
-define([], function () {
-
-    // Permissions
-
-    // A permissions structure can support checking
-    // against subscriptions prior to allowing them
-    // to clear. This enforces a flexible security
-    // layer for your application.
-
-    var permissions = {
-
-        newContentAvailable: {
-            contentUpdater:true
-        },
-
-        endContentEditing:{
-            todoSaver:true
-        },
-
-        beginContentEditing:{
-            editFocus:true
-        },
-
-        addingNewTodo:{
-            todoTooltip:true
-        },
-
-        clearContent:{
-            garbageCollector:true
-        },
-
-        renderDone:{
-            todoCounter:true //switch to false to see what happens :)
-        },
-
-        destroyContent:{
-            todoRemover:true
-        },
-
-        createWhenEntered:{
-            keyboardManager:true
-        }
-
-    };
-
-    permissions.validate = function(subscriber, channel){
-        var test = permissions[channel][subscriber];
-        return test===undefined? false: test;
-    };
-
-    return permissions;
-
-});
-```
-
-**Subscribers**
-
-Found in `subscribers.js`
-
-Subscriber 'modules' communicate through the facade back to the mediator and perform actions when a notification event of a particular name is published.
-
-For example, when a user enters in a new piece of text for a Todo item and hits 'enter' the application publishes a notification saying two things: a) a new Todo item is available and b) the text content of the new item is X. It's then left up to the rest of the application to do with this information whatever it wishes.
-
-In order to update your Backbone application to primarily use pub/sub, a lot of the work you may end up doing will be moving logic coupled inside of specific views to modules outside of it which are reactionary.
-
-Take the `todoSaver` for example - its responsibility is saving new Todo items to models once the `notificationName` called 'newContentAvailable' has fired. If you take a look at the permissions structure in the last code sample, you'll notice that 'newContentAvailable' is present there. If I wanted to prevent subscribers from being able to subscribe to this notification, I simply set it to a boolean value of `false`.
-
-Again, this is a massive oversimplification of how advanced your permissions structures could get, but it's certainly one way of controlling what parts of your application can or can't be accessed by specific modules at any time.
-
-```javascript
-define(['jquery', 'underscore', 'aura/facade'],
-function ($, _, facade) {
-
-    // Subscription 'modules' for our views. These take the
-    // the form facade.subscribe( subscriberName, notificationName , callBack )
-
-    // Update view with latest todo content
-    // Subscribes to: newContentAvailable
-
-    facade.subscribe('contentUpdater', 'newContentAvailable', function (context) {
-        var content = context.model.get('content');
-        context.$('.todo-content').text(content);
-        context.input = context.$('.todo-input');
-        context.input.bind('blur', context.close);
-        context.input.val(content);
-    });
-
-
-    // Save models when a user has finished editing
-    // Subscribes to: endContentEditing
-    facade.subscribe('todoSaver','endContentEditing', function (context) {
-        try {
-            context.model.save({
-                content: context.input.val()
-            });
-            context.$el.removeClass('editing');
-        } catch (e) {
-            //console.log(e);
-        }
-    });
-
-
-    // Delete a todo when the user no longer needs it
-    // Subscribes to: destroyContent
-    facade.subscribe('todoRemover','destroyContent', function (context) {
-        try {
-            context.model.clear();
-        } catch (e) {
-            //console.log(e);
-        }
-    });
-
-
-    // When a user is adding a new entry, display a tooltip
-    // Subscribes to: addingNewTodo
-    facade.subscribe('todoTooltip','addingNewTodo', function (context, todo) {
-        var tooltip = context.$('.ui-tooltip-top');
-        var val = context.input.val();
-        tooltip.fadeOut();
-        if (context.tooltipTimeout) clearTimeout(context.tooltipTimeout);
-        if (val == '' || val == context.input.attr('placeholder')) return;
-        var show = function () {
-                tooltip.show().fadeIn();
-            };
-        context.tooltipTimeout = _.delay(show, 1000);
-    });
-
-
-    // Update editing UI on switching mode to editing content
-    // Subscribes to: beginContentEditing
-    facade.subscribe('editFocus','beginContentEditing', function (context) {
-        context.$el.addClass('editing');
-        context.input.focus();
-    });
-
-
-    // Create a new todo entry
-    // Subscribes to: createWhenEntered
-    facade.subscribe('keyboardManager','createWhenEntered', function (context, e, todos) {
-        if (e.keyCode != 13) return;
-        todos.create(context.newAttributes());
-        context.input.val('');
-    });
-
-
-
-    // A Todo and remaining entry counter
-    // Subscribes to: renderDone
-    facade.subscribe('todoCounter','renderDone', function (context, Todos) {
-        var done = Todos.done().length;
-        context.$('#todo-stats').html(context.statsTemplate({
-            total: Todos.length,
-            done: Todos.done().length,
-            remaining: Todos.remaining().length
-        }));
-    });
-
-
-    // Clear all completed todos when clearContent is dispatched
-    // Subscribes to: clearContent
-    facade.subscribe('garbageCollector','clearContent', function (Todos) {
-        _.each(Todos.done(), function (todo) {
-            todo.clear();
-        });
-    });
-
-
-});
-```
-
-That's it for this section. If you've been intrigued by some of the concepts covered, I encourage you to consider taking a look at my [slides](http://addyosmani.com/blog/large-scale-javascript-application-architecture/) on Large-scale JS from the jQuery Summit or my longer post on the topic [here](http://addyosmani.com/largescalejavascript) for more information.
-
 
 # Paginating Backbone.js Requests & Collections
 

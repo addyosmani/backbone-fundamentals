@@ -186,6 +186,24 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <li><a href="#better-model-property-validation">Better Model Property Validation</a></li>
 <li><a href="#multiple-backbone-versions">Multiple Backbone versions</a></li>
 <li><a href="#building-model-and-view-hierarchies">Building Model and View hierarchies</a></li>
+<li><a href="#event-aggregators-and-mediators">Event Aggregators And Mediators</a><ul>
+<li><a href="#event-aggregator">Event Aggregator</a><ul>
+<li><a href="#backbones-event-aggregator">Backbone’s Event Aggregator</a><ul>
+<li><a href="#jquerys-event-aggregator">jQuery’s Event Aggregator</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#mediator">Mediator</a></li>
+<li><a href="#similarities-and-differences">Similarities And Differences</a><ul>
+<li><a href="#events-1">Events</a></li>
+<li><a href="#third-party-objects">Third-Party Objects</a></li>
+</ul></li>
+<li><a href="#relationships-when-to-use-which">Relationships: When To Use Which</a><ul>
+<li><a href="#event-aggregator-use">Event Aggregator Use</a></li>
+<li><a href="#mediator-use">Mediator Use</a></li>
+</ul></li>
+<li><a href="#event-aggregator-and-mediator-together">Event Aggregator And Mediator Together</a></li>
+<li><a href="#pattern-language-semantics">Pattern Language: Semantics</a></li>
+</ul></li>
 </ul></li>
 <li><a href="#modular-development">Modular Development</a><ul>
 <li><a href="#introduction-1">Introduction</a></li>
@@ -220,10 +238,6 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <li><a href="#using-nodejs-to-handle-pushstate">Using NodeJS to handle pushState</a></li>
 </ul></li>
 <li><a href="#an-asset-package-alternative-for-dependency-management">An asset package alternative for dependency management</a></li>
-</ul></li>
-<li><a href="#decoupling-backbone-with-the-mediator-and-facade-patterns">Decoupling Backbone with the Mediator and Facade Patterns</a><ul>
-<li><a href="#summary-4">Summary</a></li>
-<li><a href="#exercise">Exercise</a></li>
 </ul></li>
 <li><a href="#paginating-backbone.js-requests-collections">Paginating Backbone.js Requests &amp; Collections</a><ul>
 <li><a href="#paginators-pieces">Paginator’s pieces</a></li>
@@ -289,7 +303,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 </ul></li>
 </ul></li>
 <li><a href="#conclusions-1">Conclusions</a></li>
-<li><a href="#exercise-1">Exercise</a></li>
+<li><a href="#exercise">Exercise</a></li>
 <li><a href="#further-reading-1">Further reading</a></li>
 </ul></li>
 <li><a href="#qunit">QUnit</a><ul>
@@ -331,7 +345,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <li><a href="#stubs">Stubs</a></li>
 <li><a href="#mocks">Mocks</a></li>
 </ul></li>
-<li><a href="#exercise-2">Exercise</a><ul>
+<li><a href="#exercise-1">Exercise</a><ul>
 <li><a href="#models-3">Models</a></li>
 <li><a href="#collections-2">Collections</a></li>
 <li><a href="#views-3">Views</a></li>
@@ -371,7 +385,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <li><a href="#model">Model</a></li>
 <li><a href="#collection">Collection</a></li>
 <li><a href="#view">View</a></li>
-<li><a href="#events-1">Events</a></li>
+<li><a href="#events-2">Events</a></li>
 <li><a href="#routers-1">Routers</a></li>
 <li><a href="#sync">Sync</a></li>
 <li><a href="#other">Other</a></li>
@@ -4879,6 +4893,136 @@ $(<span class="kw">function</span>($) {
     <span class="co">// ...</span>
   }
 });</code></pre>
+<h4 id="event-aggregators-and-mediators"><a href="#TOC">Event Aggregators And Mediators</a></h4>
+<p><strong>Problem</strong></p>
+<p>How do I channel multiple event sources through a single object?**</p>
+<p><strong>Solution</strong></p>
+<p>Using an Event Aggregator. It’s common for developers to think of Mediators when faced with this problem, so let’s explore what an Event Aggregator is, what the Mediator pattern is and how they differ.</p>
+<p>Design patterns often differ only in semantics and intent. That is, the language used to describe the pattern is what sets it apart, more than an implementation of that specific pattern. It often comes down to squares vs rectangles vs polygons. You can create the same end result with all three, given the constraints of a square are still met – or you can use polygons to create an infinitely larger and more complex set of things.</p>
+<p>When it comes to the Mediator and Event Aggregator patterns, there are some times where it may look like the patterns are interchangeable due to implementation similarities. However, the semantics and intent of these patterns are very different. And even if the implementations both use some of the same core constructs, I believe there is a distinct difference between them. I also believe they should not be interchanged or confused in communication because of the differences.</p>
+<h5 id="event-aggregator"><a href="#TOC">Event Aggregator</a></h5>
+<p>The core idea of the Event Aggregator, according to Martin Fowler, is to channel multiple event sources through a single object so that other objects needing to subscribe to the events don’t need to know about every event source.</p>
+<h6 id="backbones-event-aggregator"><a href="#TOC">Backbone’s Event Aggregator</a></h6>
+<p>The easiest event aggregator to show is that of Backbone.js – it’s built in to the Backbone object directly.</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> View1 = <span class="kw">Backbone.View</span>.<span class="fu">extend</span>({
+  <span class="co">// ...</span>
+
+  <span class="dt">events</span>: {
+    <span class="st">&quot;click .foo&quot;</span>: <span class="st">&quot;doIt&quot;</span>
+  },
+
+  <span class="dt">doIt</span>: <span class="kw">function</span>(){
+    <span class="co">// trigger an event through the event aggregator</span>
+    <span class="kw">Backbone</span>.<span class="fu">trigger</span>(<span class="st">&quot;some:event&quot;</span>);
+  }
+});
+
+<span class="kw">var</span> View2 = <span class="kw">Backbone.View</span>.<span class="fu">extend</span>({
+  <span class="co">// ...</span>
+
+  <span class="dt">initialize</span>: <span class="kw">function</span>(){
+    <span class="co">// subscribe to the event aggregator&#39;s event</span>
+    <span class="kw">Backbone</span>.<span class="fu">on</span>(<span class="st">&quot;some:event&quot;</span>, <span class="kw">this</span>.<span class="fu">doStuff</span>, <span class="kw">this</span>);
+  },
+
+  <span class="dt">doStuff</span>: <span class="kw">function</span>(){
+    <span class="co">// ...</span>
+  }
+})</code></pre>
+<p>In this example, the first view is triggering an event when a DOM element is clicked. The event is triggered through Backbone’s built-in event aggregator – the Backbone object. Of course, it’s trivial to create your own event aggregator in Backbone, and there are some key things that we need to keep in mind when using an event aggregator, to keep our code simple.</p>
+<p id="jquerys-event-aggregator"><a href="#TOC">jQuery’s Event Aggregator</a></p>
+<p>Did you know that jQuery has a built-in event aggregator? They don’t call it this, but it’s in there and it’s scoped to DOM events. It also happens to look like Backbone’s event aggregator:</p>
+<pre><code>$(&quot;#mainArticle&quot;).on(&quot;click&quot;, function(e){
+
+  // handle the event that any element underneath of our #mainArticle element
+
+});</code></pre>
+<p>This code sets up an event handler function that waits for an unknown number of event sources to trigger a <q>click</q> event, and it allows any number of listeners to attach to the events of those event publishers. jQuery just happens to scope this event aggregator to the DOM.</p>
+<h5 id="mediator"><a href="#TOC">Mediator</a></h5>
+<p>A Mediator is an object that coordinates interactions (logic and behavior) between multiple objects. It makes decisions on when to call which objects, based on the actions (or in-action) of other objects and input.</p>
+<p><strong>A Mediator For Backbone</strong></p>
+<p>Backbone doesn’t have the idea of a mediator built in to it like a lot of other MV* frameworks do. But that doesn’t mean you can’t write one in 1 line of code:</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> mediator = {};</code></pre>
+<p>Yes, of course this is just an object literal in JavaScript. Once again, we’re talking about semantics here. The purpose of the mediator is to control the workflow between objects and we really don’t need anything more than an object literal to do this.</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> orgChart = {
+
+  <span class="dt">addNewEmployee</span>: <span class="kw">function</span>(){
+
+    <span class="co">// getEmployeeDetail provides a view that users interact with</span>
+    <span class="kw">var</span> employeeDetail = <span class="kw">this</span>.<span class="fu">getEmployeeDetail</span>();
+
+    <span class="co">// when the employee detail is complete, the mediator (the &#39;orgchart&#39; object)</span>
+    <span class="co">// decides what should happen next</span>
+    <span class="kw">employeeDetail</span>.<span class="fu">on</span>(<span class="st">&quot;complete&quot;</span>, <span class="kw">function</span>(employee){
+
+      <span class="co">// set up additional objects that have additional events, which are used</span>
+      <span class="co">// by the mediator to do additional things</span>
+      <span class="kw">var</span> managerSelector = <span class="kw">this</span>.<span class="fu">selectManager</span>(employee);
+      <span class="kw">managerSelector</span>.<span class="fu">on</span>(<span class="st">&quot;save&quot;</span>, <span class="kw">function</span>(employee){
+        <span class="kw">employee</span>.<span class="fu">save</span>();
+      });
+
+    });
+  },
+
+  <span class="co">// ...</span>
+}</code></pre>
+<p>This example shows a very basic implementation of a mediator object with Backbone based objects that can trigger and subscribe to events. I’ve often referred to this type of object as a <q>workflow</q> object in the past, but the truth is that it is a mediator. It is an object that handles the workflow between many other objects, aggregating the responsibility of that workflow knowledge in to a single object. The result is workflow that is easier to understand and maintain.</p>
+<h5 id="similarities-and-differences"><a href="#TOC">Similarities And Differences</a></h5>
+<p>There are, without a doubt, similarities between the event aggregator and mediator examples that I’ve shown here. The similarities boil down to two primary items: events and third-party objects. These differences are superficial at best, though. When we dig in to the intent of the pattern and see that the implementations can be dramatically different, the nature of the patterns become more apparent.</p>
+<h6 id="events-1"><a href="#TOC">Events</a></h6>
+<p>Both the event aggregator and mediator use events, in the above examples. An event aggregator obviously deals with events – it’s in the name after all. The mediator only uses events because it makes life easy when dealing with Backbone, though. There is nothing that says a mediator must be built with events. You can build a mediator with callback methods, by handing the mediator reference to the child object, or by any of a number of other means.</p>
+<p>The difference, then, is why these two patterns are both using events. The event aggregator, as a pattern, is designed to deal with events. The mediator, though, only uses them because it’s convenient.</p>
+<h6 id="third-party-objects"><a href="#TOC">Third-Party Objects</a></h6>
+<p>Both the event aggregator and mediator, by design, use a third-party object to facilitate things. The event aggregator itself is a third-party to the event publisher and the event subscriber. It acts as a central hub for events to pass through. The mediator is also a third party to other objects, though. So where is the difference? Why don’t we call an event aggregator a mediator? The answer largely comes down to where the application logic and workflow is coded.</p>
+<p>In the case of an event aggregator, the third party object is there only to facilitate the pass-through of events from an unknown number of sources to an unknown number of handlers. All workflow and business logic that needs to be kicked off is put directly in to the the object that triggers the events and the objects that handle the events.</p>
+<p>In the case of the mediator, though, the business logic and workflow is aggregated in to the mediator itself. The mediator decides when an object should have it’s methods called and attributes updated based on factors that the mediator knows about. It encapsulates the workflow and process, coordinating multiple objects to produce the desired system behaviour. The individual objects involved in this workflow each know how to perform their own task. But it’s the mediator that tells the objects when to perform the tasks by making decisions at a higher level than the individual objects.</p>
+<p>An event aggregator facilitates a <q>fire and forget</q> model of communication. The object triggering the event doesn’t care if there are any subscribers. It just fires the event and moves on. A mediator, though, might use events to make decisions, but it is definitely not <q>fire and forget</q>. A mediator pays attention to a known set of input or activities so that it can facilitate and coordinate additional behavior with a known set of actors (objects).</p>
+<h5 id="relationships-when-to-use-which"><a href="#TOC">Relationships: When To Use Which</a></h5>
+<p>Understanding the similarities and differences between an event aggregator and mediator is important for semantic reasons. It’s equally as important to understand when to use which pattern, though. The basic semantics and intent of the patterns does inform the question of when, but actual experience in using the patterns will help you understand the more subtle points and nuanced decisions that have to be made.</p>
+<h6 id="event-aggregator-use"><a href="#TOC">Event Aggregator Use</a></h6>
+<p>In general, an event aggregator is uses when you either have too many objects to listen to directly, or you have objects that are unrelated entirely.</p>
+<p>When two objects have a direct relationship already – say, a parent view and child view – then there might be little benefit in using an event aggregator. Have the child view trigger an event and the parent view can handle the event. This is most commonly seen in Backbone’s Collection and Model, where all Model events are bubbled up to and through it’s parent Collection. A Collection often uses model events to modify the state of itself or other models. Handling <q>selected</q> items in a collection is a good example of this.</p>
+<p>jQuery’s on method as an event aggregator is a great example of too many objects to listen to. If you have 10, 20 or 200 DOM elements that can trigger a <q>click</q> event, it might be a bad idea to set up a listener on all of them individually. This could quickly deteriorate performance of the application and user experience. Instead, using jQuery’s on method allows us to aggregate all of the events and reduce the overhead of 10, 20, or 200 event handlers down to 1.</p>
+<p>Indirect relationships are also a great time to use event aggregators. In Backbone applications, it is very common to have multiple view objects that need to communicate, but have no direct relationship. For example, a menu system might have a view that handles the menu item clicks. But we don’t want the menu to be directly tied to the content views that show all of the details and information when a menu item is clicked. Having the content and menu coupled together would make the code very difficult to maintain, in the long run. Instead, we can use an event aggregator to trigger <q>menu:click:foo</q> events, and have a <q>foo</q> object handle the click event to show it’s content on the screen.</p>
+<h6 id="mediator-use"><a href="#TOC">Mediator Use</a></h6>
+<p>A mediator is best applied when two or more objects have an indirect working relationship, and business logic or workflow needs to dictate the interactions and coordination of these objects.</p>
+<p>A wizard interface is a good example of this, as shown with the <q>orgChart</q> example, above. There are multiple views that facilitate the entire workflow of the wizard. Rather than tightly coupling the view together by having them reference each other directly, we can decouple them and more explicitly model the workflow between them by introducing a mediator.</p>
+<p>The mediator extracts the workflow from the implementation details and creates a more natural abstraction at a higher level, showing us at a much faster glance what that workflow is. We no longer have to dig in to the details of each view in the workflow, to see what the workflow actually is.</p>
+<h5 id="event-aggregator-and-mediator-together"><a href="#TOC">Event Aggregator And Mediator Together</a></h5>
+<p>The crux of the difference between an event aggregator and a mediator, and why these pattern names should not be interchanged with each other, is illustrated best by showing how they can be used together. The menu example for an event aggregator is the perfect place to introduce a mediator as well.</p>
+<p>Clicking a menu item may trigger a series of changes throughout an application. Some of these changes will be independent of others, and using an event aggregator for this makes sense. Some of these changes may be internally related to each other, though, and may use a mediator to enact those changes. A mediator, then, could be set up to listen to the event aggregator. It could run it’s logic and process to facilitate and coordinate many objects that are related to each other, but unrelated to the original event source.</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> MenuItem = <span class="kw">Backbone.View</span>.<span class="fu">extend</span>({
+
+  <span class="dt">events</span>: {
+    <span class="st">&quot;click .thatThing&quot;</span>: <span class="st">&quot;clickedIt&quot;</span>
+  },
+
+  <span class="dt">clickedIt</span>: <span class="kw">function</span>(e){
+    <span class="kw">e</span>.<span class="fu">preventDefault</span>();
+
+    <span class="co">// assume this triggers &quot;menu:click:foo&quot;</span>
+    <span class="kw">Backbone</span>.<span class="fu">trigger</span>(<span class="st">&quot;menu:click:&quot;</span> + <span class="kw">this</span>.<span class="fu">model</span>.<span class="fu">get</span>(<span class="st">&quot;name&quot;</span>));
+  }
+
+});
+
+<span class="co">// ... somewhere else in the app</span>
+
+<span class="kw">var</span> MyWorkflow = <span class="kw">function</span>(){
+  <span class="kw">Backbone</span>.<span class="fu">on</span>(<span class="st">&quot;menu:click:foo&quot;</span>, <span class="kw">this</span>.<span class="fu">doStuff</span>, <span class="kw">this</span>);
+};
+
+<span class="kw">MyWorkflow.prototype</span>.<span class="fu">doStuff</span> = <span class="kw">function</span>(){
+  <span class="co">// instantiate multiple objects here.</span>
+  <span class="co">// set up event handlers for those objects.</span>
+  <span class="co">// coordinate all of the objects in to a meaningful workflow.</span>
+};</code></pre>
+<p>In this example, when the MenuItem with the right model is clicked, the <code>“menu:click:foo”</code> event will be triggered. An instance of the <q>MyWorkflow</q> object, assuming one is already instantiated, will handle this specific event and will coordinate all of the objects that it knows about, to create the desired user experience and workflow.</p>
+<p>An event aggregator and a mediator have been combined to create a much more meaningful experience in both the code and the application itself. We now have a clean separation between the menu and the workflow through an event aggregator. And we are still keeping the workflow itself clean and maintainable through the use of a mediator.</p>
+<h5 id="pattern-language-semantics"><a href="#TOC">Pattern Language: Semantics</a></h5>
+<p>There is one overriding point to make in all of this discussion: semantics. Communicating intent and semantics through the use of named patterns is only viable and only valid when all parties in a communication medium understand the language in the same way.</p>
+<p>If I say <q>apple</q>, what am I talking about? Am I talking about a fruit? Or am I talking about a technology and consumer products company? As Sharon Cichelli says: <q>semantics will continue to be important, until we learn how to communicate in something other than language</q>.</p>
 <h1 id="modular-development"><a href="#TOC">Modular Development</a></h1>
 <h2 id="introduction-1"><a href="#TOC">Introduction</a></h2>
 <p>When we say an application is modular, we generally mean it’s composed of a set of highly decoupled, distinct pieces of functionality stored in modules. As you probably know, loose coupling facilitates easier maintainability of apps by removing dependencies where possible. When this is implemented efficiently, it’s quite easy to see how changes to one part of a system may affect another.</p>
@@ -5620,280 +5764,6 @@ Backbone.history.start({
 <p>To provide Jammit dependencies you simply write out an assets.yml file that either listed the dependencies in order or used a combination of free capture directories (for example: /<em><em>/</em>.js, templates/</em>.js, and specific files).</p>
 <p>A template using Jammit can derive it’s data from the collection object that is passed to it:</p>
 <pre><code>this.$el.html(JST.myTemplate({ collection: this.collection }));</code></pre>
-<h1 id="decoupling-backbone-with-the-mediator-and-facade-patterns"><a href="#TOC">Decoupling Backbone with the Mediator and Facade Patterns</a></h1>
-<p>In this section we’ll discuss applying some of the concepts I cover in my article on <a href="http://addyosmani.com/largescalejavascript">Large-scale JavaScript Application development</a> to Backbone.</p>
-<p><em>After, you may be interested in taking a look At <a href="http://github.com/aurajs/aura">Aura</a> - my popular widget-based Backbone.js extension framework based on many of the concepts we will be covering in this section.</em></p>
-<h3 id="summary-4"><a href="#TOC">Summary</a></h3>
-<p>At a high-level, one architecture that works for such applications is something which is:</p>
-<ul>
-<li><strong>Highly decoupled</strong>: encouraging modules to only publish and subscribe to events of interest rather than directly communicating with each other. This helps us to build applications who’s units of code aren’t highly tied (coupled) together and can thus be reused more easily.</li>
-<li><strong>Supports module-level security</strong>: whereby modules are only able to execute behavior they’ve been permitted to. Application security is an area which is often overlooked in JavaScript applications, but can be quite easily implemented in a flexible manner.</li>
-<li><strong>Supports failover</strong>: allowing an application continuing to function even if particular modules fail. The typical example I give of this is the GMail chat widget. Imagine being able to build applications in a way that if one widget on the page fails (e.g chat), the rest of your application (mail) can continue to function without being affected.</li>
-</ul>
-<p>This is an architecture which has been implemented by a number of different companies in the past, including Yahoo! (for their modularized homepage.)</p>
-<p>The three design patterns that make this architecture possible are the:</p>
-<ul>
-<li><strong>Module pattern</strong>: used for encapsulating unique blocks of code, where functions and variables can be kept either public or private. (<q>private</q> in the simulation of privacy sense, as of course don’t have true privacy in JavaScript)</li>
-<li><strong>Mediator pattern</strong>: used when the communication between modules may be complex, but is still well defined. If it appears a system may have too many relationships between modules in your code, it may be time to have a central point of control, which is where the pattern fits in.</li>
-<li><strong>Facade pattern</strong>: used for providing a convenient higher-level interface to a larger body of code, hiding its true underlying complexity</li>
-</ul>
-<p>Their specific roles in this architecture can be found below.</p>
-<ul>
-<li><strong>Modules</strong>: There are almost two concepts of what defines a module. As AMD is being used as a module wrapper, technically each model, view and collection can be considered a module. We then have the concept of modules being distinct blocks of code outside of just MVC/MV*. For the latter, these types of <q>modules</q> are primarily concerned with broadcasting and subscribing to events of interest rather than directly communicating with each other.They are made possible through the Mediator pattern.</li>
-<li><strong>Mediator</strong>: The mediator has a varying role depending on just how you wish to implement it. In my article, I mention using it as a module manager with the ability to start and stop modules at will, however when it comes to Backbone, I feel that simplifying it down to the role of a central <q>controller</q> that provides pub/sub capabilities should suffice. One can of course go all out in terms of building a module system that supports module starting, stopping, pausing etc, however the scope of this is outside of this chapter.</li>
-<li><strong>Facade</strong>: This acts as a secure middle-layer that both abstracts an application core (Mediator) and relays messages from the modules back to the Mediator so they don’t touch it directly. The Facade also performs the duty of application security guard; it checks event notifications from modules against a configuration (permissions.js, which we will look at later) to ensure requests from modules are only processed if they are permitted to execute the behavior passed.</li>
-</ul>
-<h3 id="exercise"><a href="#TOC">Exercise</a></h3>
-<p>For the practical section of this chapter, we’ll be extending the well-known Backbone Todo application using the three patterns mentioned above.</p>
-<p>The application is broken down into AMD modules that cover everything from Backbone models through to application-level modules. The views publish events of interest to the rest of the application and modules can then subscribe to these event notifications.</p>
-<p>All subscriptions from modules go through a facade (or sandbox). What this does is check against the subscriber name and the <q>channel/notification</q> it’s attempting to subscribe to. If a channel <em>doesn’t</em> have permissions to be subscribed to (something established through permissions.js), the subscription isn’t permitted.</p>
-<p><strong>Mediator</strong></p>
-<p>Found in <code>aura/mediator.js</code></p>
-<p>Below is a very simple AMD-wrapped implementation of the mediator pattern, based on prior work by Ryan Florence. It accepts as its input an object, to which it attaches <code>publish()</code> and <code>subscribe()</code> methods. In a larger application, the mediator can contain additional utilities, such as handlers for initializing, starting and stopping modules, but for demonstration purposes, these two methods should work fine for our needs.</p>
-<pre class="sourceCode javascript"><code class="sourceCode javascript">define([], <span class="kw">function</span>(obj){
-
-  <span class="kw">var</span> channels = {};
-  <span class="kw">if</span> (!obj) obj = {};
-
-  <span class="kw">obj</span>.<span class="fu">subscribe</span> = <span class="kw">function</span> (channel, subscription) {
-    <span class="kw">if</span> (!channels[channel]) channels[channel] = [];
-    channels[channel].<span class="fu">push</span>(subscription);
-  };
-
-  <span class="kw">obj</span>.<span class="fu">publish</span> = <span class="kw">function</span> (channel) {
-    <span class="kw">if</span> (!channels[channel]) <span class="kw">return</span>;
-    <span class="kw">var</span> args = [].<span class="fu">slice</span>.<span class="fu">call</span>(arguments, <span class="dv">1</span>);
-    <span class="kw">for</span> (<span class="kw">var</span> i = <span class="dv">0</span>, l = channels[channel].<span class="fu">length</span>; i &lt; l; i++) {
-      channels[channel][i].<span class="fu">apply</span>(<span class="kw">this</span>, args);
-    }
-  };
-
-  <span class="kw">return</span> obj;
-
-});</code></pre>
-<p><strong>Facade</strong></p>
-<p>Found in <code>aura/facade.js</code></p>
-<p>Next, we have an implementation of the facade pattern. Now the classical facade pattern applied to JavaScript would probably look a little like this:</p>
-<pre class="sourceCode javascript"><code class="sourceCode javascript">
-<span class="kw">var</span> module = (<span class="kw">function</span>() {
-    <span class="kw">var</span> _private = {
-
-        <span class="dt">i</span>: <span class="dv">5</span>,
-
-        <span class="dt">get </span>: <span class="kw">function</span>() {
-            <span class="kw">console</span>.<span class="fu">log</span>(<span class="ch">&#39;current value:&#39;</span> + <span class="kw">this</span>.<span class="fu">i</span>);
-        },
-        <span class="dt">set </span>: <span class="kw">function</span>( val ) {
-            <span class="kw">this</span>.<span class="fu">i</span> = val;
-        },
-        <span class="dt">run </span>: <span class="kw">function</span>() {
-            <span class="kw">console</span>.<span class="fu">log</span>(<span class="ch">&#39;running&#39;</span>);
-        },
-        <span class="dt">jump</span>: <span class="kw">function</span>(){
-            <span class="kw">console</span>.<span class="fu">log</span>(<span class="ch">&#39;jumping&#39;</span>);
-        }
-    };
-    <span class="kw">return</span> {
-        <span class="dt">facade </span>: <span class="kw">function</span>( args ) {
-            <span class="kw">_private</span>.<span class="fu">set</span>(<span class="kw">args</span>.<span class="fu">val</span>);
-            <span class="kw">_private</span>.<span class="fu">get</span>();
-            <span class="kw">if</span> ( <span class="kw">args</span>.<span class="fu">run</span> ) {
-                <span class="kw">_private</span>.<span class="fu">run</span>();
-            }
-        }
-    }
-}());
-
-<span class="kw">module</span>.<span class="fu">facade</span>({<span class="dt">run</span>: <span class="kw">true</span>, <span class="dt">val</span>:<span class="dv">10</span>});
-<span class="co">//outputs current value: 10, running</span></code></pre>
-<p>It’s effectively a variation of the module pattern, where instead of simply returning an interface of supported methods, your API can completely hide the true implementation powering it, returning something simpler. This allows the logic being performed in the background to be as complex as necessary, whilst all the end-user experiences is a simplified API they pass options to (note how in our case, a single method abstraction is exposed). This is a beautiful way of providing APIs that can be easily consumed.</p>
-<p>That said, to keep things simple, our implementation of an AMD-compatible facade will act a little more like a proxy. Modules will communicate directly through the facade to access the mediator’s <code>publish()</code> and <code>subscribe()</code> methods, however, they won’t as such touch the mediator directly.This enables the facade to provide application-level validation of any subscriptions and publications made.</p>
-<p>It also allows us to implement a simple, but flexible, permissions checker (as seen below) which will validate subscriptions made against a permissions configuration to see whether it’s permitted or not.</p>
-<pre class="sourceCode javascript"><code class="sourceCode javascript">define([ <span class="ch">&#39;../aura/mediator&#39;</span> , <span class="ch">&#39;../aura/permissions&#39;</span> ], <span class="kw">function</span> (mediator, permissions) {
-
-    <span class="kw">var</span> facade = facade || {};
-
-    <span class="kw">facade</span>.<span class="fu">subscribe</span> = <span class="kw">function</span>(subscriber, channel, callback){
-
-        <span class="co">// Note: Handling permissions/security is optional here</span>
-        <span class="co">// The permissions check can be removed</span>
-        <span class="co">// to just use the mediator directly.</span>
-
-        <span class="kw">if</span>(<span class="kw">permissions</span>.<span class="fu">validate</span>(subscriber, channel)){
-            <span class="kw">mediator</span>.<span class="fu">subscribe</span>( channel, callback );
-        }
-    }
-
-    <span class="kw">facade</span>.<span class="fu">publish</span> = <span class="kw">function</span>(channel){
-        <span class="kw">mediator</span>.<span class="fu">publish</span>( channel );
-    }
-    <span class="kw">return</span> facade;
-
-});</code></pre>
-<p><strong>Permissions</strong></p>
-<p>Found in <code>aura/permissions.js</code></p>
-<p>In our simple permissions configuration, we support checking against subscription requests to establish whether they are allowed to clear. This enforces a flexible security layer for the application.</p>
-<p>To visually see how this works, consider changing say, permissions -&gt; renderDone -&gt; todoCounter to be false. This will completely disable the application from rendering or displaying the counts component for Todo items left (because they aren’t allowed to subscribe to that event notification). The rest of the Todo app can still however be used without issue.</p>
-<p>It’s a very dumbed down example of the potential for application security, but imagine how powerful this might be in a large app with a significant number of visual widgets.</p>
-<pre class="sourceCode javascript"><code class="sourceCode javascript">define([], <span class="kw">function</span> () {
-
-    <span class="co">// Permissions</span>
-
-    <span class="co">// A permissions structure can support checking</span>
-    <span class="co">// against subscriptions prior to allowing them</span>
-    <span class="co">// to clear. This enforces a flexible security</span>
-    <span class="co">// layer for your application.</span>
-
-    <span class="kw">var</span> permissions = {
-
-        <span class="dt">newContentAvailable</span>: {
-            <span class="dt">contentUpdater</span>:<span class="kw">true</span>
-        },
-
-        <span class="dt">endContentEditing</span>:{
-            <span class="dt">todoSaver</span>:<span class="kw">true</span>
-        },
-
-        <span class="dt">beginContentEditing</span>:{
-            <span class="dt">editFocus</span>:<span class="kw">true</span>
-        },
-
-        <span class="dt">addingNewTodo</span>:{
-            <span class="dt">todoTooltip</span>:<span class="kw">true</span>
-        },
-
-        <span class="dt">clearContent</span>:{
-            <span class="dt">garbageCollector</span>:<span class="kw">true</span>
-        },
-
-        <span class="dt">renderDone</span>:{
-            <span class="dt">todoCounter</span>:<span class="kw">true</span> <span class="co">//switch to false to see what happens :)</span>
-        },
-
-        <span class="dt">destroyContent</span>:{
-            <span class="dt">todoRemover</span>:<span class="kw">true</span>
-        },
-
-        <span class="dt">createWhenEntered</span>:{
-            <span class="dt">keyboardManager</span>:<span class="kw">true</span>
-        }
-
-    };
-
-    <span class="kw">permissions</span>.<span class="fu">validate</span> = <span class="kw">function</span>(subscriber, channel){
-        <span class="kw">var</span> test = permissions[channel][subscriber];
-        <span class="kw">return</span> test===undefined? <span class="dt">false</span>: test;
-    };
-
-    <span class="kw">return</span> permissions;
-
-});</code></pre>
-<p><strong>Subscribers</strong></p>
-<p>Found in <code>subscribers.js</code></p>
-<p>Subscriber <q>modules</q> communicate through the facade back to the mediator and perform actions when a notification event of a particular name is published.</p>
-<p>For example, when a user enters in a new piece of text for a Todo item and hits <q>enter</q> the application publishes a notification saying two things: a) a new Todo item is available and b) the text content of the new item is X. It’s then left up to the rest of the application to do with this information whatever it wishes.</p>
-<p>In order to update your Backbone application to primarily use pub/sub, a lot of the work you may end up doing will be moving logic coupled inside of specific views to modules outside of it which are reactionary.</p>
-<p>Take the <code>todoSaver</code> for example - its responsibility is saving new Todo items to models once the <code>notificationName</code> called <q>newContentAvailable</q> has fired. If you take a look at the permissions structure in the last code sample, you’ll notice that <q>newContentAvailable</q> is present there. If I wanted to prevent subscribers from being able to subscribe to this notification, I simply set it to a boolean value of <code>false</code>.</p>
-<p>Again, this is a massive oversimplification of how advanced your permissions structures could get, but it’s certainly one way of controlling what parts of your application can or can’t be accessed by specific modules at any time.</p>
-<pre class="sourceCode javascript"><code class="sourceCode javascript">define([<span class="ch">&#39;jquery&#39;</span>, <span class="ch">&#39;underscore&#39;</span>, <span class="ch">&#39;aura/facade&#39;</span>],
-<span class="kw">function</span> ($, _, facade) {
-
-    <span class="co">// Subscription &#39;modules&#39; for our views. These take the</span>
-    <span class="co">// the form facade.subscribe( subscriberName, notificationName , callBack )</span>
-
-    <span class="co">// Update view with latest todo content</span>
-    <span class="co">// Subscribes to: newContentAvailable</span>
-
-    <span class="kw">facade</span>.<span class="fu">subscribe</span>(<span class="ch">&#39;contentUpdater&#39;</span>, <span class="ch">&#39;newContentAvailable&#39;</span>, <span class="kw">function</span> (context) {
-        <span class="kw">var</span> content = <span class="kw">context.model</span>.<span class="fu">get</span>(<span class="ch">&#39;content&#39;</span>);
-        <span class="kw">context</span>.$(<span class="ch">&#39;.todo-content&#39;</span>).<span class="fu">text</span>(content);
-        <span class="kw">context</span>.<span class="fu">input</span> = <span class="kw">context</span>.$(<span class="ch">&#39;.todo-input&#39;</span>);
-        <span class="kw">context.input</span>.<span class="fu">bind</span>(<span class="ch">&#39;blur&#39;</span>, <span class="kw">context</span>.<span class="fu">close</span>);
-        <span class="kw">context.input</span>.<span class="fu">val</span>(content);
-    });
-
-
-    <span class="co">// Save models when a user has finished editing</span>
-    <span class="co">// Subscribes to: endContentEditing</span>
-    <span class="kw">facade</span>.<span class="fu">subscribe</span>(<span class="ch">&#39;todoSaver&#39;</span>,<span class="ch">&#39;endContentEditing&#39;</span>, <span class="kw">function</span> (context) {
-        <span class="kw">try</span> {
-            <span class="kw">context.model</span>.<span class="fu">save</span>({
-                <span class="dt">content</span>: <span class="kw">context.input</span>.<span class="fu">val</span>()
-            });
-            <span class="kw">context</span>.$<span class="fu">el</span>.<span class="fu">removeClass</span>(<span class="ch">&#39;editing&#39;</span>);
-        } <span class="kw">catch</span> (e) {
-            <span class="co">//console.log(e);</span>
-        }
-    });
-
-
-    <span class="co">// Delete a todo when the user no longer needs it</span>
-    <span class="co">// Subscribes to: destroyContent</span>
-    <span class="kw">facade</span>.<span class="fu">subscribe</span>(<span class="ch">&#39;todoRemover&#39;</span>,<span class="ch">&#39;destroyContent&#39;</span>, <span class="kw">function</span> (context) {
-        <span class="kw">try</span> {
-            <span class="kw">context.model</span>.<span class="fu">clear</span>();
-        } <span class="kw">catch</span> (e) {
-            <span class="co">//console.log(e);</span>
-        }
-    });
-
-
-    <span class="co">// When a user is adding a new entry, display a tooltip</span>
-    <span class="co">// Subscribes to: addingNewTodo</span>
-    <span class="kw">facade</span>.<span class="fu">subscribe</span>(<span class="ch">&#39;todoTooltip&#39;</span>,<span class="ch">&#39;addingNewTodo&#39;</span>, <span class="kw">function</span> (context, todo) {
-        <span class="kw">var</span> tooltip = <span class="kw">context</span>.$(<span class="ch">&#39;.ui-tooltip-top&#39;</span>);
-        <span class="kw">var</span> val = <span class="kw">context.input</span>.<span class="fu">val</span>();
-        <span class="kw">tooltip</span>.<span class="fu">fadeOut</span>();
-        <span class="kw">if</span> (<span class="kw">context</span>.<span class="fu">tooltipTimeout</span>) clearTimeout(<span class="kw">context</span>.<span class="fu">tooltipTimeout</span>);
-        <span class="kw">if</span> (val == <span class="ch">&#39;&#39;</span> || val == <span class="kw">context.input</span>.<span class="fu">attr</span>(<span class="ch">&#39;placeholder&#39;</span>)) <span class="kw">return</span>;
-        <span class="kw">var</span> show = <span class="kw">function</span> () {
-                <span class="kw">tooltip</span>.<span class="fu">show</span>().<span class="fu">fadeIn</span>();
-            };
-        <span class="kw">context</span>.<span class="fu">tooltipTimeout</span> = <span class="kw">_</span>.<span class="fu">delay</span>(show, <span class="dv">1000</span>);
-    });
-
-
-    <span class="co">// Update editing UI on switching mode to editing content</span>
-    <span class="co">// Subscribes to: beginContentEditing</span>
-    <span class="kw">facade</span>.<span class="fu">subscribe</span>(<span class="ch">&#39;editFocus&#39;</span>,<span class="ch">&#39;beginContentEditing&#39;</span>, <span class="kw">function</span> (context) {
-        <span class="kw">context</span>.$<span class="fu">el</span>.<span class="fu">addClass</span>(<span class="ch">&#39;editing&#39;</span>);
-        <span class="kw">context.input</span>.<span class="fu">focus</span>();
-    });
-
-
-    <span class="co">// Create a new todo entry</span>
-    <span class="co">// Subscribes to: createWhenEntered</span>
-    <span class="kw">facade</span>.<span class="fu">subscribe</span>(<span class="ch">&#39;keyboardManager&#39;</span>,<span class="ch">&#39;createWhenEntered&#39;</span>, <span class="kw">function</span> (context, e, todos) {
-        <span class="kw">if</span> (<span class="kw">e</span>.<span class="fu">keyCode</span> != <span class="dv">13</span>) <span class="kw">return</span>;
-        <span class="kw">todos</span>.<span class="fu">create</span>(<span class="kw">context</span>.<span class="fu">newAttributes</span>());
-        <span class="kw">context.input</span>.<span class="fu">val</span>(<span class="ch">&#39;&#39;</span>);
-    });
-
-
-
-    <span class="co">// A Todo and remaining entry counter</span>
-    <span class="co">// Subscribes to: renderDone</span>
-    <span class="kw">facade</span>.<span class="fu">subscribe</span>(<span class="ch">&#39;todoCounter&#39;</span>,<span class="ch">&#39;renderDone&#39;</span>, <span class="kw">function</span> (context, Todos) {
-        <span class="kw">var</span> done = <span class="kw">Todos</span>.<span class="fu">done</span>().<span class="fu">length</span>;
-        <span class="kw">context</span>.$(<span class="ch">&#39;#todo-stats&#39;</span>).<span class="fu">html</span>(<span class="kw">context</span>.<span class="fu">statsTemplate</span>({
-            <span class="dt">total</span>: <span class="kw">Todos</span>.<span class="fu">length</span>,
-            <span class="dt">done</span>: <span class="kw">Todos</span>.<span class="fu">done</span>().<span class="fu">length</span>,
-            <span class="dt">remaining</span>: <span class="kw">Todos</span>.<span class="fu">remaining</span>().<span class="fu">length</span>
-        }));
-    });
-
-
-    <span class="co">// Clear all completed todos when clearContent is dispatched</span>
-    <span class="co">// Subscribes to: clearContent</span>
-    <span class="kw">facade</span>.<span class="fu">subscribe</span>(<span class="ch">&#39;garbageCollector&#39;</span>,<span class="ch">&#39;clearContent&#39;</span>, <span class="kw">function</span> (Todos) {
-        <span class="kw">_</span>.<span class="fu">each</span>(<span class="kw">Todos</span>.<span class="fu">done</span>(), <span class="kw">function</span> (todo) {
-            <span class="kw">todo</span>.<span class="fu">clear</span>();
-        });
-    });
-
-
-});</code></pre>
-<p>That’s it for this section. If you’ve been intrigued by some of the concepts covered, I encourage you to consider taking a look at my <a href="http://addyosmani.com/blog/large-scale-javascript-application-architecture/">slides</a> on Large-scale JS from the jQuery Summit or my longer post on the topic <a href="http://addyosmani.com/largescalejavascript">here</a> for more information.</p>
 <h1 id="paginating-backbone.js-requests-collections"><a href="#TOC">Paginating Backbone.js Requests &amp; Collections</a></h1>
 <p>Pagination is a ubiquitous problem we often find ourselves needing to solve on the web. Perhaps most predominantly when working with back-end APIs and JavaScript-heavy clients which consume them.</p>
 <p>On this topic, we’re going to go through a set of <strong>pagination components</strong> I wrote for Backbone.js, which should hopefully come in useful if you’re working on applications which need to tackle this problem. They’re part of an extension called <a href="http://github.com/addyosmani/backbone.paginator">Backbone.Paginator</a>.</p>
@@ -7399,7 +7269,7 @@ expect(<span class="ch">&#39;click&#39;</span>).<span class="fu">toHaveBeenTrigg
 <p>This will now also pass without any issues, however as mentioned, this last approach probably only makes sense if you’re working with smaller, highly dynamic templates.</p>
 <h2 id="conclusions-1"><a href="#TOC">Conclusions</a></h2>
 <p>We have now covered how to write Jasmine tests for Backbone.js models, collections, and views. While testing routing can at times be desirable, some developers feel it can be more optimal to leave this to third-party tools such as Selenium, so do keep this in mind.</p>
-<h2 id="exercise-1"><a href="#TOC">Exercise</a></h2>
+<h2 id="exercise"><a href="#TOC">Exercise</a></h2>
 <p>As an exercise, I recommend now trying the Jasmine Koans in <code>practicals\jasmine-koans</code> and trying to fix some of the purposefully failing tests it has to offer. This is an excellent way of not just learning how Jasmine specs and suites work, but working through the examples (without peeking back) will also put your Backbone skills to the test too.</p>
 <h2 id="further-reading-1"><a href="#TOC">Further reading</a></h2>
 <ul>
@@ -7909,7 +7779,7 @@ test(<span class="ch">&#39;should find a model by id&#39;</span>, <span class="k
     <span class="kw">mock</span>.<span class="fu">verify</span>();
     ok( <span class="kw">spy</span>.<span class="fu">calledOnce</span> );
 });</code></pre>
-<h2 id="exercise-2"><a href="#TOC">Exercise</a></h2>
+<h2 id="exercise-1"><a href="#TOC">Exercise</a></h2>
 <p>We can now begin writing tests for our Todo application, which are listed and separated by component (e.g., Models, Collections, etc.). It’s useful to pay attention to the name of the test, the logic being tested, and most importantly the assertions being made as this will give you some insight into how what we’ve learned can be applied to a complete application.</p>
 <p>To get the most out of this section, I recommend looking at the QUnit Koans included in the <code>practicals/qunit-koans</code> folder - this is a port of the Backbone.js Jasmine Koans over to QUnit.</p>
 <p><em>In case you haven’t had a chance to try out one of the Koans kits as yet, they are a set of unit tests using a specific testing framework that both demonstrate how a set of tests for an application may be written, but also leave some tests unfilled so that you can complete them as an exercise.</em></p>
@@ -8860,7 +8730,7 @@ Backbone.sync = function(method, model, options) {
 <li><code>View#make</code> has been removed. You’ll need to use <code>$</code> directly to construct DOM elements now.</li>
 <li>When declaring a View, <code>options</code>, <code>el</code>, <code>tagName</code>, <code>id</code> and <code>className</code> may now be defined as functions, if you want their values to be determined at runtime.</li>
 </ul>
-<h3 id="events-1"><a href="#TOC">Events</a></h3>
+<h3 id="events-2"><a href="#TOC">Events</a></h3>
 <ul>
 <li>Backbone events now support jQuery-style event maps <code>obj.on({click: action})</code>. This is clearer than needing three separate calls to <code>.on</code> and should align better with the events hash used in Views:</li>
 </ul>
