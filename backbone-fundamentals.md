@@ -4062,14 +4062,14 @@ var MyView = Backbone.View.extend({
 Once this is in place, you need to create an instance of your view and pass your model in to it. Then you can take the view's `el` and append it to the DOM in order to display the view.
 
 ```javascript
-var myModel = new MyModel({
+var Derick = new Person({
   firstName: 'Derick',
   lastName: 'Bailey',
   email: 'derickbailey@example.com'
 });
 
 var myView = new MyView({
-  model: myModel
+  model: Derick
 })
 
 myView.render();
@@ -4124,24 +4124,34 @@ If we create two instances of this view using the same variable name for both in
 
 
 ```javascript
-var myModel = new MyModel({
+
+var Person = Backbone.Model.extend({
+  defaults: {
+    "firstName": "Jeremy",
+    "lastName": "Ashkenas",
+    "email":    "jeremy@example.com"
+  }
+});
+
+var Derick = new Person({
   firstName: 'Derick',
   lastName: 'Bailey',
   email: 'derick@example.com'
 });
 
+
 // create the first view instance
 var zombieView = new ZombieView({
-  model: myModel
+  model: Person
 });
 
 // create a second view instance, re-using
 // the same variable name to store it
 zombieView = new ZombieView({
-  model: myModel
+  model: Person
 });
 
-myModel.set('email', 'derickbailey@example.com');
+Person.set('email', 'derickbailey@example.com');
 ```
 
 Since we're re-using the same `zombieView` variable for both instances, the first instance of the view will fall out of scope immediately after the second is created. This allows the JavaScript garbage collector to come along and clean it up, which should mean the first view instance is no longer active and no longer going to respond to the model's "change" event.
@@ -4180,7 +4190,7 @@ var ZombieView = Backbone.View.extend({
 Then call `close` on the first instance when it is no longer needed, and only one view instance will remain alive. For more information about the `listenTo` and `stopListening` functions, see [the Backbone documentation](http://backbonejs.org/#Events-listenTo), and my blog post on [Managing Events As Relationships, Not Just Resources](http://lostechies.com/derickbailey/2013/02/06/managing-events-as-relationships-not-just-references/).
 
 ```javascript
-var myModel = new MyModel({
+var Jeremy = new Person({
   firstName: 'Jeremy',
   lastName: 'Ashkenas',
   email: 'jeremy@example.com'
@@ -4188,17 +4198,17 @@ var myModel = new MyModel({
 
 // create the first view instance
 var zombieView = new ZombieView({
-  model: myModel
+  model: Person
 })
 zombieView.close(); // double-tap the zombie
 
 // create a second view instance, re-using
 // the same variable name to store it
 zombieView = new ZombieView({
-  model: myModel
+  model: Person
 })
 
-myModel.set('email', 'jeremyashkenas@example.com');
+Person.set('email', 'jeremyashkenas@example.com');
 ```
 
 Now we only see one alert box when this code runs. 
@@ -4236,14 +4246,14 @@ But how do we automate the call to `close` on a view, in the real application? W
 After a view is created, it typically needs to be placed in the DOM so that it becomes visible. This is usually done with a jQuery selector and setting the `html()` of the resulting object:
 
 ```javascript
-var myModel = new MyModel({
+var Joe = new Person({
   firstName: 'Joe',
   lastName: 'Bob',
   email: 'joebob@example.com'
 });
 
 var myView = new MyView({
-  model: myModel
+  model: Joe
 })
 
 myView.render();

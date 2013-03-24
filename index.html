@@ -3459,14 +3459,14 @@ $(<span class="kw">function</span>() {
   }
 });</code></pre>
 <p>Once this is in place, you need to create an instance of your view and pass your model in to it. Then you can take the view’s <code>el</code> and append it to the DOM in order to display the view.</p>
-<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> myModel = <span class="kw">new</span> MyModel({
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> Derick = <span class="kw">new</span> Person({
   <span class="dt">firstName</span>: <span class="ch">&#39;Derick&#39;</span>,
   <span class="dt">lastName</span>: <span class="ch">&#39;Bailey&#39;</span>,
   <span class="dt">email</span>: <span class="ch">&#39;derickbailey@example.com&#39;</span>
 });
 
 <span class="kw">var</span> myView = <span class="kw">new</span> MyView({
-  <span class="dt">model</span>: myModel
+  <span class="dt">model</span>: Derick
 })
 
 <span class="kw">myView</span>.<span class="fu">render</span>();
@@ -3501,24 +3501,34 @@ $(<span class="ch">&#39;#content&#39;</span>).<span class="fu">html</span>(<span
   }
 });</code></pre>
 <p>If we create two instances of this view using the same variable name for both instances, and then change a value in the model, how many times will we see the alert box?</p>
-<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> myModel = <span class="kw">new</span> MyModel({
+<pre class="sourceCode javascript"><code class="sourceCode javascript">
+<span class="kw">var</span> Person = <span class="kw">Backbone.Model</span>.<span class="fu">extend</span>({
+  <span class="dt">defaults</span>: {
+    <span class="st">&quot;firstName&quot;</span>: <span class="st">&quot;Jeremy&quot;</span>,
+    <span class="st">&quot;lastName&quot;</span>: <span class="st">&quot;Ashkenas&quot;</span>,
+    <span class="st">&quot;email&quot;</span>:    <span class="st">&quot;jeremy@example.com&quot;</span>
+  }
+});
+
+<span class="kw">var</span> Derick = <span class="kw">new</span> Person({
   <span class="dt">firstName</span>: <span class="ch">&#39;Derick&#39;</span>,
   <span class="dt">lastName</span>: <span class="ch">&#39;Bailey&#39;</span>,
   <span class="dt">email</span>: <span class="ch">&#39;derick@example.com&#39;</span>
 });
 
+
 <span class="co">// create the first view instance</span>
 <span class="kw">var</span> zombieView = <span class="kw">new</span> ZombieView({
-  <span class="dt">model</span>: myModel
+  <span class="dt">model</span>: Person
 });
 
 <span class="co">// create a second view instance, re-using</span>
 <span class="co">// the same variable name to store it</span>
 zombieView = <span class="kw">new</span> ZombieView({
-  <span class="dt">model</span>: myModel
+  <span class="dt">model</span>: Person
 });
 
-<span class="kw">myModel</span>.<span class="fu">set</span>(<span class="ch">&#39;email&#39;</span>, <span class="ch">&#39;derickbailey@example.com&#39;</span>);</code></pre>
+<span class="kw">Person</span>.<span class="fu">set</span>(<span class="ch">&#39;email&#39;</span>, <span class="ch">&#39;derickbailey@example.com&#39;</span>);</code></pre>
 <p>Since we’re re-using the same <code>zombieView</code> variable for both instances, the first instance of the view will fall out of scope immediately after the second is created. This allows the JavaScript garbage collector to come along and clean it up, which should mean the first view instance is no longer active and no longer going to respond to the model’s <q>change</q> event.</p>
 <p>But when we run this code, we end up with the alert box showing up twice!</p>
 <p>The problem is caused by the model event binding in the view’s <code>initialize</code> method. Whenever we pass <code>this.render</code> as the callback method to the model’s <code>on</code> event binding, the model itself is being given a direct reference to the view instance. Since the model is now holding a reference to the view instance, replacing the <code>zombieView</code> variable with a new view instance is not going to let the original view fall out of scope. The model still has a reference, therefore the view is still in scope.</p>
@@ -3545,7 +3555,7 @@ zombieView = <span class="kw">new</span> ZombieView({
   }
 });</code></pre>
 <p>Then call <code>close</code> on the first instance when it is no longer needed, and only one view instance will remain alive. For more information about the <code>listenTo</code> and <code>stopListening</code> functions, see <a href="http://backbonejs.org/#Events-listenTo">the Backbone documentation</a>, and my blog post on <a href="http://lostechies.com/derickbailey/2013/02/06/managing-events-as-relationships-not-just-references/">Managing Events As Relationships, Not Just Resources</a>.</p>
-<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> myModel = <span class="kw">new</span> MyModel({
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> Jeremy = <span class="kw">new</span> Person({
   <span class="dt">firstName</span>: <span class="ch">&#39;Jeremy&#39;</span>,
   <span class="dt">lastName</span>: <span class="ch">&#39;Ashkenas&#39;</span>,
   <span class="dt">email</span>: <span class="ch">&#39;jeremy@example.com&#39;</span>
@@ -3553,17 +3563,17 @@ zombieView = <span class="kw">new</span> ZombieView({
 
 <span class="co">// create the first view instance</span>
 <span class="kw">var</span> zombieView = <span class="kw">new</span> ZombieView({
-  <span class="dt">model</span>: myModel
+  <span class="dt">model</span>: Person
 })
 <span class="kw">zombieView</span>.<span class="fu">close</span>(); <span class="co">// double-tap the zombie</span>
 
 <span class="co">// create a second view instance, re-using</span>
 <span class="co">// the same variable name to store it</span>
 zombieView = <span class="kw">new</span> ZombieView({
-  <span class="dt">model</span>: myModel
+  <span class="dt">model</span>: Person
 })
 
-<span class="kw">myModel</span>.<span class="fu">set</span>(<span class="ch">&#39;email&#39;</span>, <span class="ch">&#39;jeremyashkenas@example.com&#39;</span>);</code></pre>
+<span class="kw">Person</span>.<span class="fu">set</span>(<span class="ch">&#39;email&#39;</span>, <span class="ch">&#39;jeremyashkenas@example.com&#39;</span>);</code></pre>
 <p>Now we only see one alert box when this code runs.</p>
 <p>Rather than having to manually remove these event handlers, though, we can let Marionette do it for us.</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> ZombieView = <span class="kw">Marionette.ItemView</span>.<span class="fu">extend</span>({
@@ -3588,14 +3598,14 @@ zombieView = <span class="kw">new</span> ZombieView({
 <p>But how do we automate the call to <code>close</code> on a view, in the real application? When and where do we call that? Enter the <code>Marionette.Region</code> - an object that manages the lifecycle of an individual view.</p>
 <h3 id="region-management"><a href="#TOC">Region Management</a></h3>
 <p>After a view is created, it typically needs to be placed in the DOM so that it becomes visible. This is usually done with a jQuery selector and setting the <code>html()</code> of the resulting object:</p>
-<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> myModel = <span class="kw">new</span> MyModel({
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> Joe = <span class="kw">new</span> Person({
   <span class="dt">firstName</span>: <span class="ch">&#39;Joe&#39;</span>,
   <span class="dt">lastName</span>: <span class="ch">&#39;Bob&#39;</span>,
   <span class="dt">email</span>: <span class="ch">&#39;joebob@example.com&#39;</span>
 });
 
 <span class="kw">var</span> myView = <span class="kw">new</span> MyView({
-  <span class="dt">model</span>: myModel
+  <span class="dt">model</span>: Joe
 })
 
 <span class="kw">myView</span>.<span class="fu">render</span>();
