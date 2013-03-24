@@ -5431,6 +5431,8 @@ In most cases, the view removal should not affect any associated models. For exa
 
 (Thanks to [dira](http://stackoverflow.com/users/906136/dira) for this tip)
 
+Note: You may also be interested in reading the about Marionette Composite Views in the Extensions part of the book.
+
 #### Rendering View hierarchies
 
 **Problem**
@@ -5707,7 +5709,7 @@ Backbone.noConflict = function() {
 };
 ```
 
-Multiple versions of Backbone can be used on the same page by calling noConflict like this:
+Multiple versions of Backbone can be used on the same page by calling `noConflict` like this:
 
 ```javascript
 var Backbone19 = Backbone.noConflict();
@@ -5716,16 +5718,6 @@ var Backbone19 = Backbone.noConflict();
 // loaded version
 ```
 
-This initial configuration code also supports CommonJS modules so Backbone can be used in Node projects:
-
-```javascript
-var Backbone;
-if (typeof exports !== 'undefined') {
-  Backbone = exports;
-} else {
-  Backbone = root.Backbone = {};
-}
-```
 
 #### Building Model and View hierarchies
 

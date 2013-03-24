@@ -4504,6 +4504,7 @@ NewChildView = <span class="kw">Backbone.View</span>.<span class="fu">extend</sp
 <p>Here, a close() method for views is implemented which disposes of a view when it is no longer needed or needs to be reset.</p>
 <p>In most cases, the view removal should not affect any associated models. For example, if you are working on a blogging application and you remove a view with comments, perhaps another view in your app shows a selection of comments and resetting the collection would affect those views as well.</p>
 <p>(Thanks to <a href="http://stackoverflow.com/users/906136/dira">dira</a> for this tip)</p>
+<p>Note: You may also be interested in reading the about Marionette Composite Views in the Extensions part of the book.</p>
 <h4 id="rendering-view-hierarchies"><a href="#TOC">Rendering View hierarchies</a></h4>
 <p><strong>Problem</strong></p>
 <p>Let us say you have a Collection, where each item in the Collection could itself be a Collection. You can render each item in the Collection, and indeed can render any items which themselves are Collections. The problem you might have is how to render HTML that reflects the hierarchical nature of the data structure.</p>
@@ -4708,18 +4709,11 @@ $(<span class="kw">function</span>($) {
   <span class="kw">root</span>.<span class="fu">Backbone</span> = previousBackbone;
   <span class="kw">return</span> <span class="kw">this</span>;
 };</code></pre>
-<p>Multiple versions of Backbone can be used on the same page by calling noConflict like this:</p>
+<p>Multiple versions of Backbone can be used on the same page by calling <code>noConflict</code> like this:</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> Backbone19 = <span class="kw">Backbone</span>.<span class="fu">noConflict</span>();
 <span class="co">// Backbone19 refers to the most recently loaded version,</span>
 <span class="co">// and `window.Backbone` will be restored to the previously</span>
 <span class="co">// loaded version</span></code></pre>
-<p>This initial configuration code also supports CommonJS modules so Backbone can be used in Node projects:</p>
-<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> Backbone;
-<span class="kw">if</span> (<span class="kw">typeof</span> exports !== <span class="ch">&#39;undefined&#39;</span>) {
-  Backbone = exports;
-} <span class="kw">else</span> {
-  Backbone = <span class="kw">root</span>.<span class="fu">Backbone</span> = {};
-}</code></pre>
 <h4 id="building-model-and-view-hierarchies"><a href="#TOC">Building Model and View hierarchies</a></h4>
 <p><strong>Problem</strong></p>
 <p>How does inheritence work with Backbone? How can I share code between similar models and views? How can I call methods that have been overridden?</p>
