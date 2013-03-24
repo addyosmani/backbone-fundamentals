@@ -5381,53 +5381,6 @@ The child will trigger a "somethingHappened" event and the parent's render funct
 (Thanks to Tal [Bereznitskey](http://stackoverflow.com/users/269666/tal-bereznitskey) for this tip)
 
 
-#### Triggering updates in other Views
-
-**Problem**
-
-How can a View trigger an update in an unrelated View?
-
-**Solution**
-
-The Mediator pattern is an excellent option for implementing a solution to this problem.
-
-Without going into too much detail about the pattern, a mediator can effectively be used as an event manager that lets you to subscribe to and publish events. So an ApplicationViewA could subscribe to an event, (e.g., 'selected') and then the ApplicationViewB would publish the 'selected' event.
-
-The reason I like this is it allows you to send events between views, without the views being directly bound together.
-
-For Example:
-
-```javascript
-
-// See http://addyosmani.com/largescalejavascript/#mediatorpattern
-// for an implementation or alternatively for a more thorough one
-// http://thejacklawson.com/Mediator.js/
-
-var mediator = new Mediator();
-
-var ApplicationViewB = Backbone.View.extend({
-    toggle_select: function() {
-        ...
-        mediator.publish('selected', any, data, you, want);
-        return this;
-    }
-});
-
-var ApplicationViewA = Backbone.View.extend({
-    initialize: function() {
-        mediator.subscribe('selected', this.delete_selected)
-    },
-
-    delete_selected: function(any, data, you, want) {
-        ... do something ...
-    },
-});
-```
-
-This way your ApplicationViewA doesn't care if it is an ApplicationViewB or FooView that publishes the 'selected' event, only that the event occurred. As a result, you may find it a maintainable way to manage events between parts of your application, not just views.
-
-(Thanks to [John McKim](http://stackoverflow.com/users/937577/john-mckim) for this tip and for referencing my Large Scale JavaScript Patterns article).
-
 #### Disposing View hierarchies
 
 **Problem**

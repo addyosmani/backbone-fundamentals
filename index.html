@@ -180,7 +180,6 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <li><a href="#view-nesting">View Nesting</a></li>
 <li><a href="#what-is-the-best-way-to-manage-models-in-nested-views">What is the best way to manage models in nested Views?</a></li>
 <li><a href="#rendering-parent-view-from-child">Rendering Parent View from Child</a></li>
-<li><a href="#triggering-updates-in-other-views">Triggering updates in other Views</a></li>
 <li><a href="#disposing-view-hierarchies">Disposing View hierarchies</a></li>
 <li><a href="#rendering-view-hierarchies">Rendering View hierarchies</a></li>
 <li><a href="#better-model-property-validation">Better Model Property Validation</a></li>
@@ -4467,40 +4466,6 @@ ViewB = <span class="kw">Backbone.View</span>.<span class="fu">extend</span>({
 <span class="kw">this</span>.<span class="fu">trigger</span>(<span class="ch">&#39;somethingHappened&#39;</span>);</code></pre>
 <p>The child will trigger a <q>somethingHappened</q> event and the parent’s render function will be called.</p>
 <p>(Thanks to Tal <a href="http://stackoverflow.com/users/269666/tal-bereznitskey">Bereznitskey</a> for this tip)</p>
-<h4 id="triggering-updates-in-other-views"><a href="#TOC">Triggering updates in other Views</a></h4>
-<p><strong>Problem</strong></p>
-<p>How can a View trigger an update in an unrelated View?</p>
-<p><strong>Solution</strong></p>
-<p>The Mediator pattern is an excellent option for implementing a solution to this problem.</p>
-<p>Without going into too much detail about the pattern, a mediator can effectively be used as an event manager that lets you to subscribe to and publish events. So an ApplicationViewA could subscribe to an event, (e.g., <q>selected</q>) and then the ApplicationViewB would publish the <q>selected</q> event.</p>
-<p>The reason I like this is it allows you to send events between views, without the views being directly bound together.</p>
-<p>For Example:</p>
-<pre class="sourceCode javascript"><code class="sourceCode javascript">
-<span class="co">// See http://addyosmani.com/largescalejavascript/#mediatorpattern</span>
-<span class="co">// for an implementation or alternatively for a more thorough one</span>
-<span class="co">// http://thejacklawson.com/Mediator.js/</span>
-
-<span class="kw">var</span> mediator = <span class="kw">new</span> Mediator();
-
-<span class="kw">var</span> ApplicationViewB = <span class="kw">Backbone.View</span>.<span class="fu">extend</span>({
-    <span class="dt">toggle_select</span>: <span class="kw">function</span>() {
-        ...
-        <span class="kw">mediator</span>.<span class="fu">publish</span>(<span class="ch">&#39;selected&#39;</span>, any, data, you, want);
-        <span class="kw">return</span> <span class="kw">this</span>;
-    }
-});
-
-<span class="kw">var</span> ApplicationViewA = <span class="kw">Backbone.View</span>.<span class="fu">extend</span>({
-    <span class="dt">initialize</span>: <span class="kw">function</span>() {
-        <span class="kw">mediator</span>.<span class="fu">subscribe</span>(<span class="ch">&#39;selected&#39;</span>, <span class="kw">this</span>.<span class="fu">delete</span>_<span class="fu">selected</span>)
-    },
-
-    <span class="dt">delete_selected</span>: <span class="kw">function</span>(any, data, you, want) {
-        ... <span class="kw">do</span> something ...
-    },
-});</code></pre>
-<p>This way your ApplicationViewA doesn’t care if it is an ApplicationViewB or FooView that publishes the <q>selected</q> event, only that the event occurred. As a result, you may find it a maintainable way to manage events between parts of your application, not just views.</p>
-<p>(Thanks to <a href="http://stackoverflow.com/users/937577/john-mckim">John McKim</a> for this tip and for referencing my Large Scale JavaScript Patterns article).</p>
 <h4 id="disposing-view-hierarchies"><a href="#TOC">Disposing View hierarchies</a></h4>
 <p><strong>Problem</strong></p>
 <p>In the last question, we looked at how to effectively dispose of views to decrease memory usage.</p>
