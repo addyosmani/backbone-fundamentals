@@ -61,21 +61,17 @@ Maturity in software (framework) development isn't simply about how long a frame
 
 ### Why Consider Backbone.js?
 
-Does the following describe you?:
+Backbone provides a minimal set of data-structuring (Models, Collections) and user interface (Views, URLs) primities that are helpful when building dynamic applications using JavaScript. It's not opinionated, meaning you have the freedom and flexibility to build the best experience for your web application how you see fit. You can either use the prescribed architecture it offers out of the box or extend it to meet your requirements.
 
-"I want a flexible library which allows me to cleanly separate concerns in my application. It should support a persistence layer and RESTful sync, models, views, event-driven communication and routing. I’d like some decisions about the architecture left up to me."
+The library doesn't focus on widgets or replacing the way you structure objects - it just supplies you with utilities for manipulating and querying data in your application. It also doesn't prescribe a specific template engine - whilst you are free to use the Microt-emplating offered by Underscore.js (one of it's dependencies), views can bind to HTML constructured using your templating solution of choice.
 
-As I may be building something complex, I’d like there to be an active extension community around the framework that is already addressing issues I may run into down the road. Ideally, there are also scaffolding tools available for the solution."
+Looking at the [large](http://backbonejs.org/#examples) number of applications built with Backbone, it's clear that it scales well. Backbone also works quite well with other libraries, meaning you can embed Backbone widgets in an application written with AngularJS, use it with TypeScript or just use an individual class (like Models) as a data backer for simpler apps.
 
-If so, continue reading.
+There are no performance drawbacks to using Backbone to structure your application. It avoids run loops, two-way binding and constant polling of your data structures for updates and tries to keep things simple where possible. That said, should you wish to go against the grain, you can of course implement such things on top of it. Backbone won't stop you.
 
-Backbone's main benefits, regardless of your target platform or device, include helping:
+With a vibrant community of plugin and extension authors, there's a liklihood that if you're looking to achieve some behavior Backbone is lacking, a complementary project exists that works well with it. This is made simpler by Backbone offering literate documentation of it's source code, allowing anyone an opportunity to easily understand what is going on behind the scenes.
 
-* Organize the structure to your application
-* Simplify server-side persistence
-* Decouple the DOM from your page's data
-* Model data, views, and routers in a succinct manner
-* Provide DOM, model, and collection synchronization
+Having been refined over two and a half years of development, Backbone is a mature library that will continue to offer a minimalist solution for building better web applications. I regularly use it and hope that you find it as useful an addition to your toolbelt as I have.
 
 
 ### Setting Expectations
