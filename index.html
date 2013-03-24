@@ -4393,7 +4393,7 @@ To see Thorax in action on a large scale website visit walmart.com on any Androi
 <p>The Backbone extensions <a href="#marionette">Marionette</a> and <a href="#thorax">Thorax</a> provide logic for nesting views, and rendering collections where each item has an associated view. Marionette provides APIs in JavaScript while Thorax provides APIs via Handlebars template helpers. We will examine both of these in an upcoming chapter.</p>
 <p>(Thanks to <a href="http://stackoverflow.com/users/299189/lukas">Lukas</a> and <a href="http://stackoverflow.com/users/154765/ian-storm-taylor">Ian Taylor</a> for these tips).</p>
 <h4 id="what-is-the-best-way-to-manage-models-in-nested-views"><a href="#TOC">What is the best way to manage models in nested Views?</a></h4>
-<p>In order to reach attributes on related models in a nested setup, the models involved need to have some prior knowledge about which models this refers to. Backbone.js doesn’t implicitly handle relations or nesting, meaning it’s up to us to ensure models have a knowledge of each other.</p>
+<p>In order to reach attributes on related models in a nested setup, models require some prior knowledge of each other, something which Backbone doesn’t implicitly handle out of the box.</p>
 <p>One approach is to make sure each child model has a <q>parent</q> attribute. This way you can traverse the nesting first up to the parent and then down to any siblings that you know of. So, assuming we have models modelA, modelB and modelC:</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript">
 <span class="co">// When initializing modelA, I would suggest setting a link to the parent</span>
@@ -4408,60 +4408,45 @@ ModelA = <span class="kw">Backbone.Model</span>.<span class="fu">extend</span>({
         <span class="kw">this</span>.<span class="fu">modelC</span>.<span class="fu">parent</span> = <span class="kw">this</span>;
     }
 }</code></pre>
-<p>This allows you to reach the parent model in any child model function by calling this.parent.</p>
-<p>When you have a need to nest Backbone.js views, you might find it easier to let each view represent a single HTML tag using the tagName option of the View. This may be written as:</p>
-<pre class="sourceCode javascript"><code class="sourceCode javascript">ViewA = <span class="kw">Backbone.View</span>.<span class="fu">extend</span>({
-
-    <span class="dt">tagName</span>: <span class="ch">&#39;div&#39;</span>,
-    <span class="dt">id</span>: <span class="ch">&#39;new&#39;</span>,
+<p>This allows you to reach the parent model in any child model function through <code>this.parent</code>.</p>
+<p>Now, we have already discussed a few options for how to construct nested Views using Backbone. For the sake of simplicity, let us imagine that we are creating a new child view <code>ViewB</code> from within the <code>initialize()</code> method of <code>ViewA</code> below. <code>ViewB</code> can reach out over the <code>ViewA</code> model and listen out for changes on any of its nested models.</p>
+<p>See inline for comments on exactly what each step is enabling:</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript">
+<span class="co">// Define View A</span>
+ViewA = <span class="kw">Backbone.View</span>.<span class="fu">extend</span>({
 
     <span class="dt">initialize</span>: <span class="kw">function</span>(){
+       <span class="co">// Create an instance of View B</span>
        <span class="kw">this</span>.<span class="fu">viewB</span> = <span class="kw">new</span> ViewB();
+
+       <span class="co">// Create a reference back to this (parent) view</span>
        <span class="kw">this</span>.<span class="fu">viewB</span>.<span class="fu">parentView</span> = <span class="kw">this</span>;
+
+       <span class="co">// Append ViewB to ViewA</span>
        $(<span class="kw">this</span>.<span class="fu">el</span>).<span class="fu">append</span>(<span class="kw">this</span>.<span class="fu">viewB</span>.<span class="fu">el</span>);
     }
 });
 
+<span class="co">// Define View B</span>
 ViewB = <span class="kw">Backbone.View</span>.<span class="fu">extend</span>({
 
-    <span class="dt">tagName</span>: <span class="ch">&#39;h1&#39;</span>,
+    <span class="co">//...,</span>
 
-    <span class="dt">render</span>: <span class="kw">function</span>(){
-        $(<span class="kw">this</span>.<span class="fu">el</span>).<span class="fu">html</span>(<span class="ch">&#39;Header text&#39;</span>); <span class="co">// or use this.options.headerText or equivalent</span>
-    },
+    <span class="dt">initialize</span>: <span class="kw">function</span>(){
+        <span class="co">// Listen for changes to the nested models in our parent ViewA</span>
+        <span class="kw">this</span>.<span class="fu">listenTo</span>(<span class="kw">this</span>.<span class="fu">model</span>.<span class="fu">parent</span>.<span class="fu">modelB</span>, <span class="st">&quot;change&quot;</span>, <span class="kw">this</span>.<span class="fu">render</span>);
+        <span class="kw">this</span>.<span class="fu">listenTo</span>(<span class="kw">this</span>.<span class="fu">model</span>.<span class="fu">parent</span>.<span class="fu">modelC</span>, <span class="st">&quot;change&quot;</span>, <span class="kw">this</span>.<span class="fu">render</span>);
 
-    <span class="dt">funcB1</span>: <span class="kw">function</span>(){
-        <span class="kw">this</span>.<span class="fu">model</span>.<span class="fu">parent</span>.<span class="fu">doSomethingOnParent</span>();
-        <span class="kw">this</span>.<span class="fu">model</span>.<span class="fu">parent</span>.<span class="fu">modelC</span>.<span class="fu">doSomethingOnSibling</span>();
-        $(<span class="kw">this</span>.<span class="fu">parentView</span>.<span class="fu">el</span>).<span class="fu">shakeViolently</span>();
+        <span class="co">// We can also call any method on our parent view if it is defined</span>
+        <span class="co">// $(this.parentView.el).shake();</span>
     }
 
-});</code></pre>
-<p>Then in your application initialization code, you would initialize ViewA and place its element inside the body element.</p>
-<p>An alternative approach is to use an extension called <a href="https://github.com/powmedia/backbone-forms">Backbone-Forms</a>. Using a similar schema to what we wrote earlier, nesting could be achieved as follows:</p>
-<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> ModelB = <span class="kw">Backbone.Model</span>.<span class="fu">extend</span>({
-    <span class="dt">schema</span>: {
-        <span class="dt">attributeB1</span>: <span class="ch">&#39;Text&#39;</span>,
-        <span class="dt">attributeB2</span>: <span class="ch">&#39;Text&#39;</span>
-    }
 });
 
-<span class="kw">var</span> ModelC = <span class="kw">Backbone.Model</span>.<span class="fu">extend</span>({
-    <span class="dt">schema</span>: {
-        <span class="dt">attributeC</span>: <span class="ch">&#39;Text&#39;</span>,
-    }
-});
-
-<span class="kw">var</span> ModelA = <span class="kw">Backbone.Model</span>.<span class="fu">extend</span>({
-    <span class="dt">schema</span>: {
-        <span class="dt">attributeA1</span>: <span class="ch">&#39;Text&#39;</span>,
-        <span class="dt">attributeA2</span>: <span class="ch">&#39;Text&#39;</span>,
-        <span class="dt">refToModelB</span>: { <span class="dt">type</span>: <span class="ch">&#39;NestedModel&#39;</span>, <span class="dt">model</span>: ModelB, <span class="dt">template</span>: <span class="ch">&#39;templateB&#39;</span> },
-        <span class="dt">refToModelC</span>: { <span class="dt">type</span>: <span class="ch">&#39;NestedModel&#39;</span>, <span class="dt">model</span>: ModelC, <span class="dt">template</span>: <span class="ch">&#39;templateC&#39;</span> }
-    }
-});</code></pre>
-<p>There is more information about this technique available on <a href="https://github.com/powmedia/backbone-forms#customising-templates">GitHub</a>.</p>
-<p>(Thanks to <a href="http://stackoverflow.com/users/100952/jens-alm">Jens Alm</a> and <a href="http://stackoverflow.com/users/801466/artem-oboturov">Artem Oboturov</a> for these tips)</p>
+<span class="co">// Create an instance of ViewA with ModelA</span>
+<span class="co">// viewA will create its own instance of ViewB</span>
+<span class="co">// from inside the initialize() method</span>
+<span class="kw">var</span> viewA = <span class="kw">new</span> ViewA({ <span class="dt">model</span>: ModelA });</code></pre>
 <h4 id="rendering-parent-view-from-child"><a href="#TOC">Rendering Parent View from Child</a></h4>
 <p><strong>Problem</strong></p>
 <p>How would one render a Parent View from one of its Children?</p>

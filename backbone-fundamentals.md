@@ -5274,7 +5274,7 @@ The Backbone extensions [Marionette](#marionette) and [Thorax](#thorax) provide 
 
 #### What is the best way to manage models in nested Views?
 
-In order to reach attributes on related models in a nested setup, the models involved need to have some prior knowledge about which models this refers to. Backbone.js doesn't implicitly handle relations or nesting, meaning it's up to us to ensure models have a knowledge of each other.
+In order to reach attributes on related models in a nested setup, models require some prior knowledge of each other, something which Backbone doesn't implicitly handle out of the box.
 
 One approach is to make sure each child model has a 'parent' attribute. This way you can traverse the nesting first up to the parent and then down to any siblings that you know of. So, assuming we have models modelA, modelB and modelC:
 
@@ -5294,71 +5294,52 @@ ModelA = Backbone.Model.extend({
 }
 ```
 
-This allows you to reach the parent model in any child model function by calling this.parent.
+This allows you to reach the parent model in any child model function through `this.parent`. 
 
-When you have a need to nest Backbone.js views, you might find it easier to let each view represent a single HTML tag using the tagName option of the View. This may be written as:
+Now, we have already discussed a few options for how to construct nested Views using Backbone. For the sake of simplicity, let us imagine that we are creating a new child view `ViewB` from within the `initialize()` method of `ViewA` below. `ViewB` can reach out over the `ViewA` model and listen out for changes on any of its nested models. 
+
+See inline for comments on exactly what each step is enabling:
+
 
 ```javascript
+
+// Define View A
 ViewA = Backbone.View.extend({
 
-    tagName: 'div',
-    id: 'new',
-
     initialize: function(){
+       // Create an instance of View B
        this.viewB = new ViewB();
+
+       // Create a reference back to this (parent) view
        this.viewB.parentView = this;
+
+       // Append ViewB to ViewA
        $(this.el).append(this.viewB.el);
     }
 });
 
+// Define View B
 ViewB = Backbone.View.extend({
 
-    tagName: 'h1',
+    //...,
 
-    render: function(){
-        $(this.el).html('Header text'); // or use this.options.headerText or equivalent
-    },
+    initialize: function(){
+        // Listen for changes to the nested models in our parent ViewA
+        this.listenTo(this.model.parent.modelB, "change", this.render);
+        this.listenTo(this.model.parent.modelC, "change", this.render);
 
-    funcB1: function(){
-        this.model.parent.doSomethingOnParent();
-        this.model.parent.modelC.doSomethingOnSibling();
-        $(this.parentView.el).shakeViolently();
+        // We can also call any method on our parent view if it is defined
+        // $(this.parentView.el).shake();
     }
 
 });
+
+// Create an instance of ViewA with ModelA
+// viewA will create its own instance of ViewB
+// from inside the initialize() method
+var viewA = new ViewA({ model: ModelA });
 ```
 
-Then in your application initialization code, you would initialize ViewA and place its element inside the body element.
-
-An alternative approach is to use an extension called [Backbone-Forms](https://github.com/powmedia/backbone-forms). Using a similar schema to what we wrote earlier, nesting could be achieved as follows:
-
-```javascript
-var ModelB = Backbone.Model.extend({
-    schema: {
-        attributeB1: 'Text',
-        attributeB2: 'Text'
-    }
-});
-
-var ModelC = Backbone.Model.extend({
-    schema: {
-        attributeC: 'Text',
-    }
-});
-
-var ModelA = Backbone.Model.extend({
-    schema: {
-        attributeA1: 'Text',
-        attributeA2: 'Text',
-        refToModelB: { type: 'NestedModel', model: ModelB, template: 'templateB' },
-        refToModelC: { type: 'NestedModel', model: ModelC, template: 'templateC' }
-    }
-});
-```
-
-There is more information about this technique available on [GitHub](https://github.com/powmedia/backbone-forms#customising-templates).
-
-(Thanks to [Jens Alm](http://stackoverflow.com/users/100952/jens-alm) and [Artem Oboturov](http://stackoverflow.com/users/801466/artem-oboturov) for these tips)
 
 #### Rendering Parent View from Child
 
