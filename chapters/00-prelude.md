@@ -5,7 +5,7 @@
 In the past, building data-rich web applications with JavaScript was a challenge. The transition from writing an app that requires complete page reloads into something more dynamic often requires rethinking our architecture and it's easy for things to get out of hand if no effort is put into keeping your code organized. We can't just hack together some jQuery code and hope that this will scale as your application grows.
 
 Thankfully, we now have a number of libraries that can help improve the structure and maintainability of our code,
-making it easier to build ambitious interfaces without a great deal of effort. [Backbone.js](http://documentcloud.github.com/backbone/) is one such foundations for solving these problems and in this book we will be taking you though an in-depth walkthrough of it.
+making it easier to build ambitious interfaces without a great deal of effort. [Backbone.js](http://documentcloud.github.com/backbone/) is one such foundation for solving these problems and in this book we will be taking you though an in-depth walkthrough of it.
 
 Begin with the fundamentals, work your way through the practicals and learn how to build an application that is both cleanly organized and maintainable. If you are a developer looking to write code that can be more easily read, structured and extended - this guide will hopefully be of help.
 
