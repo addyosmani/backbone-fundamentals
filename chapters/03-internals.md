@@ -205,7 +205,7 @@ console.log('Completed has changed: ' + myTodo.get('completed'));
 
 myTodo.set({
   title: 'Changing more than one attribute at the same time only triggers the listener once.',
-  'complete': true
+  completed: true
 });
 
 // Above logs:
