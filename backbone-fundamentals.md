@@ -1,4 +1,5 @@
 
+ 
 ## Prelude
 
 ![](img/logo.jpg)
@@ -6,7 +7,7 @@
 In the past, building data-rich web applications with JavaScript was a challenge. The transition from writing an app that requires complete page reloads into something more dynamic often requires rethinking our architecture and it's easy for things to get out of hand if no effort is put into keeping your code organized. We can't just hack together some jQuery code and hope that this will scale as your application grows.
 
 Thankfully, we now have a number of libraries that can help improve the structure and maintainability of our code,
-making it easier to build ambitious interfaces without a great deal of effort. [Backbone.js](http://documentcloud.github.com/backbone/) is one such foundations for solving these problems and in this book we will be taking you though an in-depth walkthrough of it.
+making it easier to build ambitious interfaces without a great deal of effort. [Backbone.js](http://documentcloud.github.com/backbone/) is one such foundation for solving these problems and in this book we will be taking you though an in-depth walkthrough of it.
 
 Begin with the fundamentals, work your way through the practicals and learn how to build an application that is both cleanly organized and maintainable. If you are a developer looking to write code that can be more easily read, structured and extended - this guide will hopefully be of help.
 
@@ -33,7 +34,7 @@ I am indebted to the fantastic work done by the technical reviewers who helped i
 
 ## Credits
 
-None of this would have been possible without the time and effort invested by the other developers and authors in the community who contributed to it. I would like to extend my thanks to Derick Bailey, Ryan Eastridge, Jack Franklin, Mike Ball, Uģis Ozols, Björn Ekengren and our other excellent [contributors](https://github.com/addyosmani/backbone-fundamentals/graphs/contributors) that made this project possible.
+None of this would have been possible without the time and effort invested by the other developers and authors in the community who contributed to it. I would like to extend my thanks to Derick Bailey, Ryan Eastridge, Jack Franklin, Mike Ball, Ugis Ozols, Björn Ekengren and our other excellent [contributors](https://github.com/addyosmani/backbone-fundamentals/graphs/contributors) that made this project possible.
 
 ## Reading
 
@@ -53,7 +54,7 @@ The goal of all architecture is to build something well; in our case, to craft c
 
 Modern JavaScript frameworks and libraries can bring structure and organization to your projects, establishing a maintainable foundation right from the start. They build on the trials and tribulations of developers who have had to work around callback chaos similar to that which you are facing now or may in the near future.
 
-When developing applications using just jQuery, the piece missing is a way to structure and organize your code. It's very easy to creata a JavaScript app that ends up a tangled mess of jQuery selectors and callbacks, all desperately trying to keep data in sync between the HTML for your UI, the logic in your JavaScript and calls to your API for data.
+When developing applications using just jQuery, the piece missing is a way to structure and organize your code. It's very easy to create a JavaScript app that ends up a tangled mess of jQuery selectors and callbacks, all desperately trying to keep data in sync between the HTML for your UI, the logic in your JavaScript, and calls to your API for data.
 
 Without something to help tame the mess, you're likely to string together a set of independant plugins and libraries to make up the functionality or build everything yourself from scratch and have to maintain it yourself. Backbone solves this problem for you, providing a way to cleanly organize code, separating responsibilities into recognizable pieces that are easy to maintain.
 
@@ -81,9 +82,9 @@ Backbone.js is a lightweight JavaScript library that adds structure to your clie
 
 Developers commonly use libraries like Backbone.js to create single-page applications (SPAs). SPAs are web applications that load into the browser and then react to data changes on the client side without requiring complete page refreshes from the server.
 
-Backbone mature, popular and has both a vibrant developer community as well as a wealth of plugins and extensions available that build upon it. It has been used to create non-trivial applications by companies such as Disqus, Walmart, SoundCloud and LinkedIn.
+Backbone is mature, popular, and has both a vibrant developer community as well as a wealth of plugins and extensions available that build upon it. It has been used to create non-trivial applications by companies such as Disqus, Walmart, SoundCloud and LinkedIn.
 
-Backbone focuses on giving you with helpful methods for querying and manipulating your data rather than re-inventing the JavaScript object model. It's a library rather than a framework that plays well with others and scales well, from embedded widgets to large-scale applications.
+Backbone focuses on giving you helpful methods for querying and manipulating your data rather than re-inventing the JavaScript object model. It's a library, rather than a framework, that plays well with others and scales well, from embedded widgets to large-scale applications.
 
 As it's small, there is also less your users have to download on mobile or slower connections. The entire Backbone source can be read and understood in just a few hours.
 
@@ -108,13 +109,13 @@ Maturity in software (framework) development isn't simply about how long a frame
 
 ### Why Consider Backbone.js?
 
-Backbone provides a minimal set of data-structuring (Models, Collections) and user interface (Views, URLs) primities that are helpful when building dynamic applications using JavaScript. It's not opinionated, meaning you have the freedom and flexibility to build the best experience for your web application how you see fit. You can either use the prescribed architecture it offers out of the box or extend it to meet your requirements.
+Backbone provides a minimal set of data-structuring (Models, Collections) and user interface (Views, URLs) primitives that are helpful when building dynamic applications using JavaScript. It's not opinionated, meaning you have the freedom and flexibility to build the best experience for your web application how you see fit. You can either use the prescribed architecture it offers out of the box or extend it to meet your requirements.
 
-The library doesn't focus on widgets or replacing the way you structure objects - it just supplies you with utilities for manipulating and querying data in your application. It also doesn't prescribe a specific template engine - whilst you are free to use the Microt-emplating offered by Underscore.js (one of it's dependencies), views can bind to HTML constructured using your templating solution of choice.
+The library doesn't focus on widgets or replacing the way you structure objects - it just supplies you with utilities for manipulating and querying data in your application. It also doesn't prescribe a specific template engine - while you are free to use the Micro-templating offered by Underscore.js (one of it's dependencies), views can bind to HTML constructed using your templating solution of choice.
 
-Looking at the [large](http://backbonejs.org/#examples) number of applications built with Backbone, it's clear that it scales well. Backbone also works quite well with other libraries, meaning you can embed Backbone widgets in an application written with AngularJS, use it with TypeScript or just use an individual class (like Models) as a data backer for simpler apps.
+Looking at the [large](http://backbonejs.org/#examples) number of applications built with Backbone, it's clear that it scales well. Backbone also works quite well with other libraries, meaning you can embed Backbone widgets in an application written with AngularJS, use it with TypeScript, or just use an individual class (like Models) as a data backer for simpler apps.
 
-There are no performance drawbacks to using Backbone to structure your application. It avoids run loops, two-way binding and constant polling of your data structures for updates and tries to keep things simple where possible. That said, should you wish to go against the grain, you can of course implement such things on top of it. Backbone won't stop you.
+There are no performance drawbacks to using Backbone to structure your application. It avoids run loops, two-way binding, and constant polling of your data structures for updates and tries to keep things simple where possible. That said, should you wish to go against the grain, you can of course implement such things on top of it. Backbone won't stop you.
 
 With a vibrant community of plugin and extension authors, there's a liklihood that if you're looking to achieve some behavior Backbone is lacking, a complementary project exists that works well with it. This is made simpler by Backbone offering literate documentation of it's source code, allowing anyone an opportunity to easily understand what is going on behind the scenes.
 
@@ -707,7 +708,7 @@ console.log('Completed has changed: ' + myTodo.get('completed'));
 
 myTodo.set({
   title: 'Changing more than one attribute at the same time only triggers the listener once.',
-  'complete': true
+  completed: true
 });
 
 // Above logs:
@@ -888,7 +889,7 @@ Alternatively, you can set `el` to an existing element when creating the view:
 var todosView = new TodosView({el: $('#footer')});
 ```
 
-**$el and $()**
+**el and $()**
 
 View logic often needs to invoke jQuery or Zepto functions on the `el` element and elements nested within it. Backbone makes it easy to do so by defining the `$el` property and `$()` function. The `view.$el` property is equivalent to `$(view.el)` and `view.$(selector)` is equivalent to `$(view.el).find(selector)`. In our TodosView example's render method, we see `this.$el` used to set the HTML of the element and `this.$()` used to find subelements of class 'edit'.
 
@@ -4059,7 +4060,7 @@ var MyView = Backbone.View.extend({
 });
 ```
 
-Once this is in place, you need to create an instance of your view and pass your model in to it. Then you can take the view's `el` and append it to the DOM in order to display the view.
+Once this is in place, you need to create an instance of your view and pass your model into it. Then you can take the view's `el` and append it to the DOM in order to display the view.
 
 ```javascript
 var Derick = new Person({
@@ -4142,16 +4143,16 @@ var Derick = new Person({
 
 // create the first view instance
 var zombieView = new ZombieView({
-  model: Person
+  model: Derick
 });
 
 // create a second view instance, re-using
 // the same variable name to store it
 zombieView = new ZombieView({
-  model: Person
+  model: Derick
 });
 
-Person.set('email', 'derickbailey@example.com');
+Derick.set('email', 'derickbailey@example.com');
 ```
 
 Since we're re-using the same `zombieView` variable for both instances, the first instance of the view will fall out of scope immediately after the second is created. This allows the JavaScript garbage collector to come along and clean it up, which should mean the first view instance is no longer active and no longer going to respond to the model's "change" event.
@@ -4170,7 +4171,7 @@ var ZombieView = Backbone.View.extend({
 
   initialize: function(){
     // bind the model change to re-render this view
-    this.listenTo(this.model, 'change', this.render, this);
+    this.listenTo(this.model, 'change', this.render);
   },
 
   close: function(){
@@ -4222,7 +4223,7 @@ var ZombieView = Marionette.ItemView.extend({
   initialize: function(){
 
     // bind the model change to re-render this view
-    this.listenTo(this.model, 'change', this.render, this);
+    this.listenTo(this.model, 'change', this.render);
 
   },
 
@@ -4237,7 +4238,7 @@ var ZombieView = Marionette.ItemView.extend({
 
 Notice in this case we are using a method called `listenTo`. This method comes from Backbone.Events, and is available in all objects that mix in Backbone.Events - including most Marionette objects. The `listenTo` method signature is similar to that of the `on` method, with the exception of passing the object that triggers the event as the first parameter. 
 
-Marionette's views also provide a `close` event, in which the event bindings that are set up with the `listenTo` are automatically removed. This means we no longer need to define a `close` method directly, and when we use the `listenTo` method, we know that our events will be removed and our views will not turn in to zombies.
+Marionette's views also provide a `close` event, in which the event bindings that are set up with the `listenTo` are automatically removed. This means we no longer need to define a `close` method directly, and when we use the `listenTo` method, we know that our events will be removed and our views will not turn into zombies.
 
 But how do we automate the call to `close` on a view, in the real application? When and where do we call that? Enter the `Marionette.Region` - an object that manages the lifecycle of an individual view.
 
@@ -4284,7 +4285,7 @@ myRegion.show(view2);
 
 There are several things to note, here. First, we're telling the region what DOM element to manage by specifying an `el` in the region instance. Second, we're no longer calling the `render` method on our views. And lastly, we're not calling `close` on our view, either, though this is getting called for us.
 
-When we use a region to manage the lifecycle of our views, and display the views in the DOM, the region itself handles these concerns. By passing a view instance in to the `show` method of the region, it will call the render method on the view for us. It will then take the resulting `el` of the view and populate the DOM element.
+When we use a region to manage the lifecycle of our views, and display the views in the DOM, the region itself handles these concerns. By passing a view instance into the `show` method of the region, it will call the render method on the view for us. It will then take the resulting `el` of the view and populate the DOM element.
 
 The next time we call the `show` method of the region, the region remembers that it is currently displaying a view. The region calls the `close` method on the view, removes it from the DOM, and then proceeds to run the render & display code for the new view that was passed in.
 
@@ -4390,8 +4391,8 @@ TodoMVC.module('Layout', function(Layout, App, Backbone, Marionette, $, _){
     },
 
     initialize : function() {
-      this.listenTo(App.vent, 'todoList:filter', this.updateFilterSelection, this);
-      this.listenTo(this.collection, 'all', this.updateCount, this);
+      this.listenTo(App.vent, 'todoList:filter', this.updateFilterSelection);
+      this.listenTo(this.collection, 'all', this.updateCount);
     },
 
     onRender : function() {
@@ -4544,7 +4545,7 @@ TodoMVC.module('TodoList', function(TodoList, App, Backbone, Marionette, $, _){
 
 In this particular app, note that Controllers don't add a great deal to the overall workflow. In general, Marionette's philosophy on routers is that they should be an afterthought in the implementation of applications. Quite often, we've seen developers abuse Backbone's routing system by making it the sole controller of the entire application workflow and logic.
 
-This inevitably leads to mashing every possible combination of code in to the router methods - view creation, model loading, coordinating different parts of the app, etc. Developers such as Derick view this as a violation of the [single-responsibility principle](http://en.wikipedia.org/wiki/Single_responsibility_principle) (SRP) and separation of concerns.
+This inevitably leads to mashing every possible combination of code into the router methods - view creation, model loading, coordinating different parts of the app, etc. Developers such as Derick view this as a violation of the [single-responsibility principle](http://en.wikipedia.org/wiki/Single_responsibility_principle) (SRP) and separation of concerns.
 
 
 Backbone's router and history exist to deal with a specific aspect of browsers - managing the forward and back buttons. Marionette's philosophy is that it should be limited to that, with the code that gets executed by the navigation being somewhere else. This allows the application to be used with or without a router. We can call a controller's "show" method from a button click, from an application event handler, or from a router, and we will end up with the same application state no matter how we called that method.
@@ -4591,7 +4592,7 @@ TodoMVC.module('TodoList.Views', function(Views, App, Backbone, Marionette, $, _
       },
 
       initialize : function() {
-        this.listenTo(this.model, 'change', this.render, this);
+        this.listenTo(this.model, 'change', this.render);
       },
 
       onRender : function() {
@@ -4644,7 +4645,7 @@ TodoMVC.module('TodoList.Views', function(Views, App, Backbone, Marionette, $, _
       },
 
       initialize : function() {
-        this.listenTo(this.collection, 'all', this.update, this);
+        this.listenTo(this.collection, 'all', this.update);
       },
 
       onRender : function() {
@@ -4764,11 +4765,11 @@ And that's it!
 
 ### Is the Marionette implementation of the Todo app more maintainable?
 
-Derick feels that maintainability largely comes down to modularity, separating responsibilities (Single Responsibility Principle and Separation of Concerns) by using patterns to keep concerns from being mixed together. It can, however, be difficult to simply extract things into separate modules for the sake of extraction, abstraction, or dividing the concept down in to its simplest parts.
+Derick feels that maintainability largely comes down to modularity, separating responsibilities (Single Responsibility Principle and Separation of Concerns) by using patterns to keep concerns from being mixed together. It can, however, be difficult to simply extract things into separate modules for the sake of extraction, abstraction, or dividing the concept down into its simplest parts.
 
 The Single Responsibility Principle (SRP) tells us quite the opposite - that we need to understand the context in which things change. What parts always change together, in _this_ system? What parts can change independently? Without knowing this, we won't know what pieces should be broken out into separate components and modules versus put together into the same module or object.
 
-The way Derick organizes his apps into modules is by creating a breakdown of concepts at each level. A higher level module is a higher level of concern - an aggregation of responsibilities. Each responsibility is broken down in to an expressive API set that is implemented by lower level modules (Dependency Inversion Principle). These are coordinated through a mediator - which he typically refers to as the Controller in a module.
+The way Derick organizes his apps into modules is by creating a breakdown of concepts at each level. A higher level module is a higher level of concern - an aggregation of responsibilities. Each responsibility is broken down into an expressive API set that is implemented by lower level modules (Dependency Inversion Principle). These are coordinated through a mediator - which he typically refers to as the Controller in a module.
 
 
 The way Derick organizes his files also plays directly into maintainability and he has also written posts about the importance of keeping a sane application folder structure that I recommend reading:
@@ -4790,7 +4791,7 @@ The flexibility and versatility in Marionette is easiest to understand by examin
 
 **The RequireJS version**: Using Marionette with RequireJS helps to create a modularized application architecture - a tremendously important concept in scaling JavaScript applications. RequireJS provides a powerful set of tools that can be leveraged to great advantage, making Marionette even more flexible than it already is.
 
-**The Marionette module version**: RequireJS isn't the only way to create a modularized application architecture, though. For those that wish to build applications in modules and namespaces, Marionette provides a built-in module and namespacing structure. This example application takes the simple version of the application and re-writes it in to a namespaced application architecture, with an application controller (mediator / workflow object) that brings all of the pieces together.
+**The Marionette module version**: RequireJS isn't the only way to create a modularized application architecture, though. For those that wish to build applications in modules and namespaces, Marionette provides a built-in module and namespacing structure. This example application takes the simple version of the application and re-writes it into a namespaced application architecture, with an application controller (mediator / workflow object) that brings all of the pieces together.
 
 Marionette certainly provides its share of opinions on how a Backbone application should be architected. The combination of modules, view types, event aggregator, application objects, and more, can be used to create a very powerful and flexible architecture based on these opinions.
 
