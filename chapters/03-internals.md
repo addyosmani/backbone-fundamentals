@@ -386,7 +386,7 @@ Alternatively, you can set `el` to an existing element when creating the view:
 var todosView = new TodosView({el: $('#footer')});
 ```
 
-**$el and $()**
+**el and $()**
 
 View logic often needs to invoke jQuery or Zepto functions on the `el` element and elements nested within it. Backbone makes it easy to do so by defining the `$el` property and `$()` function. The `view.$el` property is equivalent to `$(view.el)` and `view.$(selector)` is equivalent to `$(view.el).find(selector)`. In our TodosView example's render method, we see `this.$el` used to set the HTML of the element and `this.$()` used to find subelements of class 'edit'.
 
