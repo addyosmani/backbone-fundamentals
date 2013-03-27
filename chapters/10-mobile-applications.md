@@ -203,8 +203,6 @@ which is being used by all Todo-MVC apps, and the "index.css" for some project s
 
 ### The workflow with Backbone and jQueryMobile
 
-
-
 By delegating routing and navigation functionalities of the jQuery Mobile Framework to Backbone, we can profit from its clear separation of application structure to later on easily share application logic between a desktop webpage, tablets and mobile apps.
 
 Backbone.Router offers an explicit way to define custom navigation routes. Whilst jQuery Mobile encourages the use of URL hash fragments to reference separate pages or views in the same document.
@@ -630,6 +628,7 @@ $(document).bind("mobileinit", function(){
   $.mobile.defaultDialogTransition = "none";
     });
   })
+```
 
 consider to add device specific settings, which can be achieved like: 
 
