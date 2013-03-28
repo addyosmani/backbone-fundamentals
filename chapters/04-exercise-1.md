@@ -323,6 +323,7 @@ Now, let's add some more logic to complete our AppView!
     // Our template for the line of statistics at the bottom of the app.
     statsTemplate: _.template( $('#stats-template').html() ),
 
+    // New
     // Delegated events for creating new items, and clearing completed ones.
     events: {
       'keypress #new-todo': 'createOnEnter',
@@ -341,6 +342,8 @@ Now, let's add some more logic to complete our AppView!
 
       this.listenTo(app.Todos, 'add', this.addOne);
       this.listenTo(app.Todos, 'reset', this.addAll);
+
+      // New
       this.listenTo(app.Todos, 'change:completed', this.filterOne);
       this.listenTo(app.Todos,'filter', this.filterAll);
       this.listenTo(app.Todos, 'all', this.render);
@@ -348,6 +351,7 @@ Now, let's add some more logic to complete our AppView!
       app.Todos.fetch();
     },
 
+    // New
     // Re-rendering the App just means refreshing the statistics -- the rest
     // of the app doesn't change.
     render: function() {
@@ -388,14 +392,18 @@ Now, let's add some more logic to complete our AppView!
       app.Todos.each(this.addOne, this);
     },
 
+    // New
     filterOne : function (todo) {
       todo.trigger('visible');
     },
 
+    // New
     filterAll : function () {
       app.Todos.each(this.filterOne, this);
     },
 
+
+    // New
     // Generate the attributes for a new Todo item.
     newAttributes: function() {
       return {
@@ -405,6 +413,7 @@ Now, let's add some more logic to complete our AppView!
       };
     },
 
+    // New
     // If you hit return in the main input field, create new Todo model,
     // persisting it to localStorage.
     createOnEnter: function( event ) {
@@ -416,12 +425,14 @@ Now, let's add some more logic to complete our AppView!
       this.$input.val('');
     },
 
+    // New
     // Clear all completed todo items, destroying their models.
     clearCompleted: function() {
       _.invoke(app.Todos.completed(), 'destroy');
       return false;
     },
 
+    // New
     toggleAllComplete: function() {
       var completed = this.allCheckbox.checked;
 
@@ -559,7 +570,7 @@ So now we have two views: `AppView` and `TodoView`. The former needs to be insta
 
 Let's pause and ensure that the work we've done so far functions as intended.
 
-If you are following along, open `file://*path*/index.html` in your web browser and monitor its console. If all is well, you shouldn't see any JavaScript errors other than regarding the router.js file that we haven't created yet. The todo list should be blank as we haven't yet created any todos. Plus, there is some additional work we'll need to do before the user interface fully functions.
+If you are following along, open `file://*path*/index.html` in your browser and monitor its console. If all is well, you shouldn't see any JavaScript errors other than regarding the router.js file that we haven't created yet. The todo list should be blank as we haven't yet created any todos. Plus, there is some additional work we'll need to do before the user interface fully functions.
 
 However, a few things can be tested through the JavaScript console.
 
