@@ -7758,7 +7758,7 @@ test(<span class="ch">&#39;should find a model by id&#39;</span>, <span class="k
 <pre class="sourceCode javascript"><code class="sourceCode javascript">module( <span class="ch">&#39;About Backbone.Model&#39;</span>);
 
 test(<span class="ch">&#39;Can be created with default values for its attributes.&#39;</span>, <span class="kw">function</span>() {
-    expect( <span class="dv">1</span> );
+    expect( <span class="dv">3</span> );
 
     <span class="kw">var</span> todo = <span class="kw">new</span> Todo();
     equal( <span class="kw">todo</span>.<span class="fu">get</span>(<span class="ch">&#39;text&#39;</span>), <span class="ch">&#39;&#39;</span> );
@@ -7767,7 +7767,7 @@ test(<span class="ch">&#39;Can be created with default values for its attributes
 });
 
 test(<span class="ch">&#39;Will set attributes on the model instance when created.&#39;</span>, <span class="kw">function</span>() {
-    expect( <span class="dv">3</span> );
+    expect( <span class="dv">1</span> );
 
     <span class="kw">var</span> todo = <span class="kw">new</span> Todo( { <span class="dt">text</span>: <span class="ch">&#39;Get oil change for car.&#39;</span> } );
     equal( <span class="kw">todo</span>.<span class="fu">get</span>(<span class="ch">&#39;text&#39;</span>), <span class="ch">&#39;Get oil change for car.&#39;</span> );
@@ -7788,7 +7788,7 @@ test(<span class="ch">&#39;Fires a custom event when the state changes.&#39;</sp
     <span class="kw">var</span> todo = <span class="kw">new</span> Todo();
 
     <span class="kw">todo</span>.<span class="fu">on</span>( <span class="ch">&#39;change&#39;</span>, spy );
-    <span class="co">// How would you update a property on the todo here?</span>
+    <span class="co">// Change the model state</span>
     <span class="kw">todo</span>.<span class="fu">set</span>( { <span class="dt">text</span>: <span class="ch">&#39;new text&#39;</span> } );
 
     ok( <span class="kw">spy</span>.<span class="fu">calledOnce</span>, <span class="ch">&#39;A change event callback was correctly triggered&#39;</span> );
@@ -7802,7 +7802,7 @@ test(<span class="ch">&#39;Can contain custom validation rules, and will trigger
     <span class="kw">var</span> todo = <span class="kw">new</span> Todo();
 
     <span class="kw">todo</span>.<span class="fu">on</span>(<span class="ch">&#39;invalid&#39;</span>, errorCallback);
-    <span class="co">// What would you need to set on the todo properties to cause validation to fail?</span>
+    <span class="co">// Change the model state in such a way that validation will fail</span>
     <span class="kw">todo</span>.<span class="fu">set</span>( { <span class="dt">done</span>: <span class="ch">&#39;not a boolean&#39;</span> } );
 
     ok( <span class="kw">errorCallback</span>.<span class="fu">called</span>, <span class="ch">&#39;A failed validation correctly triggered an error&#39;</span> );
@@ -7908,11 +7908,10 @@ test(<span class="ch">&#39;Is backed by a model instance, which provides the dat
 test(<span class="ch">&#39;Can render, after which the DOM representation of the view will be visible.&#39;</span>, <span class="kw">function</span>() {
    <span class="kw">this</span>.<span class="fu">todoView</span>.<span class="fu">render</span>();
 
-    <span class="co">// Hint: render() just builds the DOM representation of the view, but doesn&#39;t insert it into the DOM.</span>
-    <span class="co">// How would you append it to the ul#todoList?</span>
-    <span class="co">// How do you access the view&#39;s DOM representation?</span>
-
+    <span class="co">// Append the DOM representation of the view to ul#todoList</span>
     $(<span class="ch">&#39;ul#todoList&#39;</span>).<span class="fu">append</span>(<span class="kw">this</span>.<span class="fu">todoView</span>.<span class="fu">el</span>);
+
+    <span class="co">// Check the number of li items rendered to the list</span>
     equal($(<span class="ch">&#39;#todoList&#39;</span>).<span class="fu">find</span>(<span class="ch">&#39;li&#39;</span>).<span class="fu">length</span>, <span class="dv">1</span>);
 });
 
@@ -7927,15 +7926,14 @@ asyncTest(<span class="ch">&#39;Can wire up view methods to DOM elements.&#39;</
 
         equal(<span class="kw">viewElt</span>.<span class="fu">length</span> &gt; <span class="dv">0</span>, <span class="kw">true</span>);
 
-        <span class="co">// Make sure that QUnit knows we can continue</span>
+        <span class="co">// Ensure QUnit knows we can continue</span>
         start();
     }, <span class="dv">1000</span>, <span class="ch">&#39;Expected DOM Elt to exist&#39;</span>);
 
-
-    <span class="co">// Hint: How would you trigger the view, via a DOM Event, to toggle the &#39;done&#39; status.</span>
-    <span class="co">// (See todos.js line 70, where the events hash is defined.)</span>
-
+    <span class="co">// Trigget the view to toggle the &#39;done&#39; status on an item or items</span>
     $(<span class="ch">&#39;#todoList li input.check&#39;</span>).<span class="fu">click</span>();
+
+    <span class="co">// Check the done status for the model is true</span>
     equal( <span class="kw">this</span>.<span class="fu">todoView</span>.<span class="fu">model</span>.<span class="fu">get</span>(<span class="ch">&#39;done&#39;</span>), <span class="kw">true</span> );
 });</code></pre>
 <h3 id="app"><a href="#TOC">App</a></h3>
@@ -7956,14 +7954,23 @@ asyncTest(<span class="ch">&#39;Can wire up view methods to DOM elements.&#39;</
 test(<span class="ch">&#39;Should bootstrap the application by initializing the Collection.&#39;</span>, <span class="kw">function</span>() {
     expect( <span class="dv">2</span> );
 
+    <span class="co">// The todos collection should not be undefined</span>
     notEqual( <span class="kw">this</span>.<span class="fu">App</span>.<span class="fu">todos</span>, undefined );
+
+    <span class="co">// The initial length of our todos should however be zero</span>
     equal( <span class="kw">this</span>.<span class="fu">App</span>.<span class="fu">todos</span>.<span class="fu">length</span>, <span class="dv">0</span> );
 });
 
 test( <span class="ch">&#39;Should bind Collection events to View creation.&#39;</span> , <span class="kw">function</span>() {
-      $(<span class="ch">&#39;#new-todo&#39;</span>).<span class="fu">val</span>( <span class="ch">&#39;Foo&#39;</span> );
+
+      <span class="co">// Set the value of a brand new todo within the input box</span>
+      $(<span class="ch">&#39;#new-todo&#39;</span>).<span class="fu">val</span>( <span class="ch">&#39;Buy some milk&#39;</span> );
+
+      <span class="co">// Trigger the enter (return) key to be pressed inside #new-todo</span>
+      <span class="co">// causing the new item to be added to the todos collection</span>
       $(<span class="ch">&#39;#new-todo&#39;</span>).<span class="fu">trigger</span>(<span class="kw">new</span> $.<span class="fu">Event</span>( <span class="ch">&#39;keypress&#39;</span>, { <span class="dt">keyCode</span>: <span class="dv">13</span> } ));
 
+      <span class="co">// The length of our collection should now be 1</span>
       equal( <span class="kw">this</span>.<span class="fu">App</span>.<span class="fu">todos</span>.<span class="fu">length</span>, <span class="dv">1</span> );
  });</code></pre>
 <h2 id="further-reading-resources"><a href="#TOC">Further Reading &amp; Resources</a></h2>
