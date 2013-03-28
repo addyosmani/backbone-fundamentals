@@ -9917,7 +9917,7 @@ For our models we want to at minimum test that:
 module( 'About Backbone.Model');
 
 test('Can be created with default values for its attributes.', function() {
-    expect( 1 );
+    expect( 3 );
 
     var todo = new Todo();
     equal( todo.get('text'), '' );
@@ -9926,7 +9926,7 @@ test('Can be created with default values for its attributes.', function() {
 });
 
 test('Will set attributes on the model instance when created.', function() {
-    expect( 3 );
+    expect( 1 );
 
     var todo = new Todo( { text: 'Get oil change for car.' } );
     equal( todo.get('text'), 'Get oil change for car.' );
@@ -9947,7 +9947,7 @@ test('Fires a custom event when the state changes.', function() {
     var todo = new Todo();
 
     todo.on( 'change', spy );
-    // How would you update a property on the todo here?
+    // Change the model state
     todo.set( { text: 'new text' } );
 
     ok( spy.calledOnce, 'A change event callback was correctly triggered' );
@@ -9961,7 +9961,7 @@ test('Can contain custom validation rules, and will trigger an invalid event on 
     var todo = new Todo();
 
     todo.on('invalid', errorCallback);
-    // What would you need to set on the todo properties to cause validation to fail?
+    // Change the model state in such a way that validation will fail
     todo.set( { done: 'not a boolean' } );
 
     ok( errorCallback.called, 'A failed validation correctly triggered an error' );
@@ -10080,11 +10080,10 @@ test('Is backed by a model instance, which provides the data.', function() {
 test('Can render, after which the DOM representation of the view will be visible.', function() {
    this.todoView.render();
 
-    // Hint: render() just builds the DOM representation of the view, but doesn't insert it into the DOM.
-    // How would you append it to the ul#todoList?
-    // How do you access the view's DOM representation?
-
+    // Append the DOM representation of the view to ul#todoList
     $('ul#todoList').append(this.todoView.el);
+
+    // Check the number of li items rendered to the list
     equal($('#todoList').find('li').length, 1);
 });
 
@@ -10099,15 +10098,14 @@ asyncTest('Can wire up view methods to DOM elements.', function() {
 
         equal(viewElt.length > 0, true);
 
-        // Make sure that QUnit knows we can continue
+        // Ensure QUnit knows we can continue
         start();
     }, 1000, 'Expected DOM Elt to exist');
 
-
-    // Hint: How would you trigger the view, via a DOM Event, to toggle the 'done' status.
-    // (See todos.js line 70, where the events hash is defined.)
-
+    // Trigget the view to toggle the 'done' status on an item or items
     $('#todoList li input.check').click();
+
+    // Check the done status for the model is true
     equal( this.todoView.model.get('done'), true );
 });
 ```
@@ -10134,14 +10132,23 @@ module( 'About Backbone Applications' , {
 test('Should bootstrap the application by initializing the Collection.', function() {
     expect( 2 );
 
+    // The todos collection should not be undefined
     notEqual( this.App.todos, undefined );
+
+    // The initial length of our todos should however be zero
     equal( this.App.todos.length, 0 );
 });
 
 test( 'Should bind Collection events to View creation.' , function() {
-      $('#new-todo').val( 'Foo' );
+
+      // Set the value of a brand new todo within the input box
+      $('#new-todo').val( 'Buy some milk' );
+
+      // Trigger the enter (return) key to be pressed inside #new-todo
+      // causing the new item to be added to the todos collection
       $('#new-todo').trigger(new $.Event( 'keypress', { keyCode: 13 } ));
 
+      // The length of our collection should now be 1
       equal( this.App.todos.length, 1 );
  });
 ```
