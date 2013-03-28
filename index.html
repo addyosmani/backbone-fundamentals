@@ -546,13 +546,13 @@ code > span.er { color: #ff0000; font-weight: bold; }
       &lt;%- title %&gt;
     &lt;/div&gt;
   <span class="kw">&lt;/script&gt;</span>
-  <span class="kw">&lt;script</span><span class="ot"> src=</span><span class="st">&quot;jquery-min.js&quot;</span><span class="kw">&gt;&lt;/script&gt;</span>
-  <span class="kw">&lt;script</span><span class="ot"> src=</span><span class="st">&quot;underscore-min.js&quot;</span><span class="kw">&gt;&lt;/script&gt;</span>
-  <span class="kw">&lt;script</span><span class="ot"> src=</span><span class="st">&quot;backbone-min.js&quot;</span><span class="kw">&gt;&lt;/script&gt;</span>
-  <span class="kw">&lt;script</span><span class="ot"> src=</span><span class="st">&quot;example.js&quot;</span><span class="kw">&gt;&lt;/script&gt;</span>
+  <span class="kw">&lt;script</span><span class="ot"> src=</span><span class="st">&quot;jquery.js&quot;</span><span class="kw">&gt;&lt;/script&gt;</span>
+  <span class="kw">&lt;script</span><span class="ot"> src=</span><span class="st">&quot;underscore.js&quot;</span><span class="kw">&gt;&lt;/script&gt;</span>
+  <span class="kw">&lt;script</span><span class="ot"> src=</span><span class="st">&quot;backbone.js&quot;</span><span class="kw">&gt;&lt;/script&gt;</span>
+  <span class="kw">&lt;script</span><span class="ot"> src=</span><span class="st">&quot;demo.js&quot;</span><span class="kw">&gt;&lt;/script&gt;</span>
 <span class="kw">&lt;/body&gt;</span>
 <span class="kw">&lt;/html&gt;</span></code></pre>
-<p>In our Todo application, Backbone Model instances are used to hold the data for each Todo item:</p>
+<p>In our Todo application (demo.js), Backbone Model instances are used to hold the data for each Todo item:</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="co">// Define a Todo Model</span>
 <span class="kw">var</span> Todo = <span class="kw">Backbone.Model</span>.<span class="fu">extend</span>({
   <span class="co">// Default todo attribute values</span>
@@ -564,7 +564,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 
 <span class="co">// Instantiate the Todo Model with a title, allowing completed attribute</span>
 <span class="co">// to default to false</span>
-<span class="kw">var</span> todo1 = <span class="kw">new</span> Todo({
+<span class="kw">var</span> myTodo = <span class="kw">new</span> Todo({
   <span class="dt">title</span>: <span class="ch">&#39;Check attributes property of the logged models in the console.&#39;</span>
 });</code></pre>
 <p>Our Todo Model extends Backbone.Model and simply defines default values for two data attributes. As you will discover in the upcoming chapters, Backbone Models provide many more features but this simple Model illustrates that first and foremost a Model is a data container.</p>
@@ -580,6 +580,15 @@ code > span.er { color: #ff0000; font-weight: bold; }
     <span class="ch">&#39;dblclick label&#39;</span>: <span class="ch">&#39;edit&#39;</span>,
     <span class="ch">&#39;keypress .edit&#39;</span>: <span class="ch">&#39;updateOnEnter&#39;</span>,
     <span class="ch">&#39;blur .edit&#39;</span>:   <span class="ch">&#39;close&#39;</span>
+  },
+
+  <span class="co">// Called when the view is first created</span>
+  <span class="dt">initialize</span>: <span class="kw">function</span> () {
+    <span class="kw">this</span>.$<span class="fu">el</span> = $(<span class="ch">&#39;#todo&#39;</span>);
+    <span class="co">// Later we&#39;ll look at:</span>
+    <span class="co">// this.listenTo(someCollection, &#39;all&#39;, this.render);</span>
+    <span class="co">// but you can actually run this example right now by</span>
+    <span class="co">// calling TodoView.render();</span>
   },
 
   <span class="co">// Re-render the titles of the todo item.</span>
@@ -604,7 +613,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 });
 
 <span class="co">// create a view for a todo</span>
-<span class="kw">var</span> todoView = <span class="kw">new</span> TodoView({<span class="dt">model</span>: todo1});</code></pre>
+<span class="kw">var</span> todoView = <span class="kw">new</span> TodoView({<span class="dt">model</span>: myTodo});</code></pre>
 <p>TodoView is defined by extending Backbone.View and is instantiated with an associated Model. In our example, the <code>render()</code> method uses a template to construct the HTML for the Todo item which is placed inside a li element. Each call to <code>render()</code> will replace the content of the li element using the current Model data. Thus, a View instance renders the content of a DOM element using the attributes of an associated Model. Later we will see how a View can bind its <code>render()</code> method to Model change events, causing the View to re-render whenever the Model changes.</p>
 <p>So far, we have seen that Backbone.Model implements the Model aspect of MVC and Backbone.View implements the View. However, as we noted earlier, Backbone departs from traditional MVC when it comes to Controllers - there is no Backbone.Controller!</p>
 <p>Instead, the Controller responsibility is addressed within the View. Recall that Controllers respond to requests and perform appropriate actions which may result in changes to the Model and updates to the View. In a single-page application, rather than having requests in the traditional sense, we have events. Events can be traditional browser DOM events (e.g., clicks) or internal application events such as Model changes.</p>

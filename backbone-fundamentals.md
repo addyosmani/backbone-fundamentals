@@ -252,15 +252,15 @@ Our example will need a div element to which we can attach a list of Todo's. It 
       <%- title %>
     </div>
   </script>
-  <script src="jquery-min.js"></script>
-  <script src="underscore-min.js"></script>
-  <script src="backbone-min.js"></script>
-  <script src="example.js"></script>
+  <script src="jquery.js"></script>
+  <script src="underscore.js"></script>
+  <script src="backbone.js"></script>
+  <script src="demo.js"></script>
 </body>
 </html>
 ```
 
-In our Todo application, Backbone Model instances are used to hold the data for each Todo item:
+In our Todo application (demo.js), Backbone Model instances are used to hold the data for each Todo item:
 
 ```javascript
 // Define a Todo Model
@@ -274,7 +274,7 @@ var Todo = Backbone.Model.extend({
 
 // Instantiate the Todo Model with a title, allowing completed attribute
 // to default to false
-var todo1 = new Todo({
+var myTodo = new Todo({
   title: 'Check attributes property of the logged models in the console.'
 });
 ```
@@ -295,6 +295,15 @@ var TodoView = Backbone.View.extend({
     'dblclick label': 'edit',
     'keypress .edit': 'updateOnEnter',
     'blur .edit':   'close'
+  },
+
+  // Called when the view is first created
+  initialize: function () {
+    this.$el = $('#todo');
+    // Later we'll look at:
+    // this.listenTo(someCollection, 'all', this.render);
+    // but you can actually run this example right now by
+    // calling TodoView.render();
   },
 
   // Re-render the titles of the todo item.
@@ -319,7 +328,7 @@ var TodoView = Backbone.View.extend({
 });
 
 // create a view for a todo
-var todoView = new TodoView({model: todo1});
+var todoView = new TodoView({model: myTodo});
 ```
 
 TodoView is defined by extending Backbone.View and is instantiated with an associated Model. In our example, the ```render()``` method uses a template to construct the HTML for the Todo item which is placed inside a li element. Each call to ```render()``` will replace the content of the li element using the current Model data. Thus, a View instance renders the content of a DOM element using the attributes of an associated Model. Later we will see how a View can bind its ```render()``` method to Model change events, causing the View to re-render whenever the Model changes.
