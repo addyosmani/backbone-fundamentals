@@ -864,7 +864,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <span class="co">// logs: {&quot;title&quot;:&quot;Try these examples and check results in console.&quot;,&quot;completed&quot;:true}</span>
 <span class="kw">console</span>.<span class="fu">log</span>(<span class="kw">todo2</span>.<span class="fu">toJSON</span>());</code></pre>
 <p><strong>Model.set()</strong></p>
-<p><code>Model.set()</code> allows us to pass attributes into an instance of our model. Backbone uses Model.set() to know when to broadcast to its listeners that the model’s data has changed.</p>
+<p><code>Model.set()</code> sets a hash containing one or more attributes on the model. When any of these attributes alter the state of the model, a <q>change</q> event is triggered on it. Change events for each attribute are also triggered and can be bound to (e.g <code>change:name</code>, <code>change:age</code>).</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> Todo = <span class="kw">Backbone.Model</span>.<span class="fu">extend</span>({
   <span class="co">// Default todo attribute values</span>
   <span class="dt">defaults</span>: {

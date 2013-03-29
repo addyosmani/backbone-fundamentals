@@ -687,7 +687,7 @@ console.log(todo2.toJSON());
 
 **Model.set()**
 
-`Model.set()` allows us to pass attributes into an instance of our model. Backbone uses Model.set() to know when to broadcast to its listeners that the model's data has changed.
+`Model.set()` sets a hash containing one or more attributes on the model. When any of these attributes alter the state of the model, a "change" event is triggered on it. Change events for each attribute are also triggered and can be bound to (e.g `change:name`, `change:age`).
 
 ```javascript
 var Todo = Backbone.Model.extend({
