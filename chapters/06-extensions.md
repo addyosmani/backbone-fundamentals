@@ -1,12 +1,18 @@
 # Backbone Extensions
 
+Backbone is flexible, simple and powerful, however you may find that the complexity of the application you are working on requires more than what it provides out of the box. There are certain concerns which it just doesn't address directly as one of it's goals is to be minimalist. 
+
+Take for example Views, which provide by default a `render` method which does nothing and produces no real results when called, despite most using it to generate HTML which a view will manage. Also look at Models and Collections which have no built-in way of handling nested hierarchies - if you require this functionality, you need to write it yourself or use a plugin.
+
+In these cases, there are many existing Backbone plugins which can provide advanced solutions for large-scale Backbone apps. A fairly complete list of plugins and frameworks available can be found on the Backbone [wiki](https://github.com/documentcloud/backbone/wiki/Extensions%2C-Plugins%2C-Resources). Using these add-ons, there is enough for applications of most sizes to be completed successfully.
+
+In this section of the book we will look at a few popular Backbone add-ons, including MarionetteJS and Thorax.
 
 ## MarionetteJS (Backbone.Marionette)
 
 *By Derick Bailey & Addy Osmani*
 
 As we've seen, Backbone provides a great set of building blocks for our JavaScript applications. It gives us the core constructs that are needed to build small to mid-sized apps, organize jQuery DOM events, or create single page apps that support mobile devices and large scale enterprise needs. But Backbone is not a complete framework. It's a set of building blocks that leaves much of the application design, architecture, and scalability to the developer, including memory management, view management, and more.
-
 
 [MarionetteJS](http://marionettejs.com) (a.k.a Backbone.Marionette) provides many of the features that the non-trivial application developer needs, above what Backbone itself provides. It is a composite application library that aims to simplify the construction of large scale applications. It does this by providing a collection of common design and implementation patterns found in the applications that the creator, [Derick Bailey](http://lostechies.com/derickbailey/), and many other [contributors](https://github.com/marionettejs/backbone.marionette/graphs/contributors) have been using to build Backbone apps.
  
