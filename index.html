@@ -396,15 +396,17 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <figure>
 <img src="img/logo.jpg"><figcaption></figcaption>
 </figure>
-<p>In the past, building data-rich web applications with JavaScript was a challenge. The transition from writing an app that requires complete page reloads into something more dynamic often requires rethinking our architecture and it’s easy for things to get out of hand if no effort is put into keeping your code organized. We can’t just hack together some jQuery code and hope that this will scale as your application grows.</p>
-<p>Thankfully, we now have a number of libraries that can help improve the structure and maintainability of our code, making it easier to build ambitious interfaces without a great deal of effort. <a href="http://documentcloud.github.com/backbone/">Backbone.js</a> is one such foundation for solving these problems and in this book we will be taking you though an in-depth walkthrough of it.</p>
-<p>Begin with the fundamentals, work your way through the practicals and learn how to build an application that is both cleanly organized and maintainable. If you are a developer looking to write code that can be more easily read, structured and extended - this guide will hopefully be of help.</p>
+<p>Not so long ago, <q>data-rich web application</q> was an oxymoron. Today, these applications are everywhere and you need to know how to build them.</p>
+<p>Traditionally, web applications left the heavy-lifting to servers that pushed fresh data to the browser in complete page loads and use of client-side JavaScript was limited to improving the user experience. Now this relationship has been inverted - client applications pull raw data from the server and render it into the browser when and where it is needed.</p>
+<p>Architecture on the client has gone from an afterthought to essential - you can’t just hack together some jQuery code and expect it to scale as your application grows. Most likely, you would end up with a nightmarish tangle of UI callbacks entwined with business logic, destined to be discarded by the poor soul who inherits your code.</p>
+<p>Thankfully, there are a growing number of JavaScript libraries that can help improve the structure and maintainability of your code, making it easier to build ambitious interfaces without a great deal of effort. <a href="http://documentcloud.github.com/backbone/">Backbone.js</a> has quickly become one of the most popular open-source solutions to these issues and in this book we will be taking you on an in-depth walkthrough of it.</p>
+<p>Begin with the fundamentals, work your way through the exercises, and learn how to build an application that is both cleanly organized and maintainable. If you are a developer looking to write code that can be more easily read, structured, and extended - this guide can help.</p>
 <p>This (in-progress) book is released under a Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported <a href="http://creativecommons.org/licenses/by-nc-sa/3.0/">license</a> meaning you can both grab a copy of the book for free or help to further <a href="https://github.com/addyosmani/backbone-fundamentals/">improve</a> it. Corrections to existing material are always welcome and I hope that together we can provide the community with an up-to-date resource that is of help.</p>
 <p>My extended thanks go out to <a href="https://github.com/jashkenas">Jeremy Ashkenas</a> for creating Backbone.js and <a href="https://github.com/addyosmani/backbone-fundamentals/contributors">these</a> members of the community for their assistance making this project far better than I could have imagined.</p>
 <h2 id="target-audience"><a href="#TOC">Target Audience</a></h2>
 <p>This book is targeted at novice to intermediate developers wishing to learn how to better structure their client-side code. An understanding of JavaScript fundamentals is required to get the most out of it, however we have tried to provide a basic description of these concepts where possible.</p>
 <h2 id="acknowledgements"><a href="#TOC">Acknowledgements</a></h2>
-<p>I am indebted to the fantastic work done by the technical reviewers who helped improve this book. Their knowledge, energy and passion have helped shape it into a better learning resource and they continue to serve as a source of inspiration. Thanks go out to:</p>
+<p>I am indebted to the fantastic work done by the technical reviewers who helped improve this book. Their knowledge, energy, and passion have helped shape it into a better learning resource and they continue to serve as a source of inspiration. Thanks go out to:</p>
 <ul>
 <li><a href="http://github.com/dcmaf">Marc Friedman</a></li>
 <li><a href="https://github.com/derickbailey">Derick Bailey</a></li>
@@ -4132,7 +4134,9 @@ $(<span class="ch">&#39;#content&#39;</span>).<span class="fu">html</span>(<span
 <p>Part of Backbone’s appeal is that it provides structure but is generally un-opinionated, in particular when it comes to views. Thorax makes an opinionated decision to use Handlebars as its templating solution. Some of the patterns found in Marionette are found in Thorax as well. Marionette exposes most of these patterns as JavaScript APIs while in Thorax they are often exposed as template helpers. This chapter assumes the reader has knowledge of Handlebars.</p>
 <p>Thorax was created by Ryan Eastridge and Kevin Decker to create Walmart’s mobile web application. This chapter is limited to Thorax’s templating features and patterns implemented in Thorax that you can utilize in your application regardless of whether you choose to adopt Thorax. To learn more about other features implemented in Thorax and to download boilerplate projects visit the <a href="http://thoraxjs.org">Thorax website</a>.</p>
 <h3 id="hello-world"><a href="#TOC">Hello World</a></h3>
-<p><code>Thorax.View</code> differs from <code>Backbone.View</code> in that there is no <code>options</code> object. All arguments passed to the constructor become properties of the view, which in turn become available to the <code>template</code>:</p>
+<p>When creating a new View, the options you pass — after being merged into any default options already present on the view — are attached to the view as this.options for future reference.</p>
+<p>In Backbone, when creating a new view, options passed are merged into any default options already present on a view and are exposed via <code>this.options</code> for later reference. <code>Thorax.View</code> differs from <code>Backbone.View</code> in that there is no <code>options</code> object.</p>
+<p>All arguments passed to the constructor become properties of the view, which in turn become available to the <code>template</code>:</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript">    <span class="kw">var</span> view = <span class="kw">new</span> <span class="kw">Thorax</span>.<span class="fu">View</span>({
         <span class="dt">greeting</span>: <span class="ch">&#39;Hello&#39;</span>,
         <span class="dt">template</span>: <span class="kw">Handlebars</span>.<span class="fu">compile</span>(<span class="ch">&#39;{{greeting}} World!&#39;</span>)
@@ -4150,7 +4154,7 @@ $(<span class="ch">&#39;#content&#39;</span>).<span class="fu">html</span>(<span
         <span class="dt">child</span>: <span class="kw">new</span> <span class="kw">Thorax</span>.<span class="fu">View</span>(...),
         <span class="dt">template</span>: <span class="kw">Handlebars</span>.<span class="fu">compile</span>(<span class="ch">&#39;{{view child}}&#39;</span>)
     });</code></pre>
-<p>Or the name of a child view to initialize (and any optional properties to pass). In this case the child view must have previously been created with <code>extend</code> and given a <code>name</code> property:</p>
+<p>Or the name of a child view to initialize as well as any optional properties you wish to pass. In this case the child view must have previously been created with <code>extend</code> and given a <code>name</code> property:</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript">    <span class="kw">var</span> ChildView = <span class="kw">Thorax.View</span>.<span class="fu">extend</span>({
         <span class="dt">name</span>: <span class="ch">&#39;child&#39;</span>,
         <span class="dt">template</span>: ...

@@ -3,12 +3,15 @@
 
 ![](img/logo.jpg)
 
-In the past, building data-rich web applications with JavaScript was a challenge. The transition from writing an app that requires complete page reloads into something more dynamic often requires rethinking our architecture and it's easy for things to get out of hand if no effort is put into keeping your code organized. We can't just hack together some jQuery code and hope that this will scale as your application grows.
+Not so long ago, "data-rich web application" was an oxymoron. Today, these applications are everywhere and you need to know how to build them.
 
-Thankfully, we now have a number of libraries that can help improve the structure and maintainability of our code,
-making it easier to build ambitious interfaces without a great deal of effort. [Backbone.js](http://documentcloud.github.com/backbone/) is one such foundation for solving these problems and in this book we will be taking you though an in-depth walkthrough of it.
+Traditionally, web applications left the heavy-lifting to servers that pushed fresh data to the browser in complete page loads and use of client-side JavaScript was limited to improving the user experience. Now this relationship has been inverted - client applications pull raw data from the server and render it into the browser when and where it is needed.
 
-Begin with the fundamentals, work your way through the practicals and learn how to build an application that is both cleanly organized and maintainable. If you are a developer looking to write code that can be more easily read, structured and extended - this guide will hopefully be of help.
+Architecture on the client has gone from an afterthought to essential - you can't just hack together some jQuery code and expect it to scale as your application grows. Most likely, you would end up with a nightmarish tangle of UI callbacks entwined with business logic, destined to be discarded by the poor soul who inherits your code.
+
+Thankfully, there are a growing number of JavaScript libraries that can help improve the structure and maintainability of your code, making it easier to build ambitious interfaces without a great deal of effort. [Backbone.js](http://documentcloud.github.com/backbone/) has quickly become one of the most popular open-source solutions to these issues and in this book we will be taking you on an in-depth walkthrough of it.
+
+Begin with the fundamentals, work your way through the exercises, and learn how to build an application that is both cleanly organized and maintainable. If you are a developer looking to write code that can be more easily read, structured, and extended - this guide can help.
 
 This (in-progress) book is released under a Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported [license](http://creativecommons.org/licenses/by-nc-sa/3.0/) meaning you can both grab a copy of the book for free or help to further [improve](https://github.com/addyosmani/backbone-fundamentals/) it. Corrections to existing material are always welcome and I hope that together we can provide the community with an up-to-date resource that is of help.
 
@@ -20,7 +23,7 @@ This book is targeted at novice to intermediate developers wishing to learn how 
 
 ## Acknowledgements
 
-I am indebted to the fantastic work done by the technical reviewers who helped improve this book. Their knowledge, energy and passion have helped shape it into a better learning resource and they continue to serve as a source of inspiration. Thanks go out to:
+I am indebted to the fantastic work done by the technical reviewers who helped improve this book. Their knowledge, energy, and passion have helped shape it into a better learning resource and they continue to serve as a source of inspiration. Thanks go out to:
 
 * [Marc Friedman](http://github.com/dcmaf)
 * [Derick Bailey](https://github.com/derickbailey)
@@ -4884,7 +4887,11 @@ Thorax was created by Ryan Eastridge and Kevin Decker to create Walmart's mobile
 
 ### Hello World
 
-`Thorax.View` differs from `Backbone.View` in that there is no `options` object. All arguments passed to the constructor become properties of the view, which in turn become available to the `template`:
+When creating a new View, the options you pass — after being merged into any default options already present on the view — are attached to the view as this.options for future reference.
+
+In Backbone, when creating a new view, options passed are merged into any default options already present on a view and are exposed via `this.options` for later reference. `Thorax.View` differs from `Backbone.View` in that there is no `options` object. 
+
+All arguments passed to the constructor become properties of the view, which in turn become available to the `template`:
 
 ```javascript
     var view = new Thorax.View({
@@ -4914,7 +4921,7 @@ The view helper allows you to embed other views within a view. Child views can b
     });
 ```
 
-Or the name of a child view to initialize (and any optional properties to pass). In this case the child view must have previously been created with `extend` and given a `name` property:
+Or the name of a child view to initialize as well as any optional properties you wish to pass. In this case the child view must have previously been created with `extend` and given a `name` property:
 
 ```javascript
     var ChildView = Thorax.View.extend({

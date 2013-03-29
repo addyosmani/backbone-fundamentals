@@ -841,7 +841,11 @@ Thorax was created by Ryan Eastridge and Kevin Decker to create Walmart's mobile
 
 ### Hello World
 
-`Thorax.View` differs from `Backbone.View` in that there is no `options` object. All arguments passed to the constructor become properties of the view, which in turn become available to the `template`:
+When creating a new View, the options you pass — after being merged into any default options already present on the view — are attached to the view as this.options for future reference.
+
+In Backbone, when creating a new view, options passed are merged into any default options already present on a view and are exposed via `this.options` for later reference. `Thorax.View` differs from `Backbone.View` in that there is no `options` object. 
+
+All arguments passed to the constructor become properties of the view, which in turn become available to the `template`:
 
 ```javascript
     var view = new Thorax.View({
@@ -871,7 +875,7 @@ The view helper allows you to embed other views within a view. Child views can b
     });
 ```
 
-Or the name of a child view to initialize (and any optional properties to pass). In this case the child view must have previously been created with `extend` and given a `name` property:
+Or the name of a child view to initialize as well as any optional properties you wish to pass. In this case the child view must have previously been created with `extend` and given a `name` property:
 
 ```javascript
     var ChildView = Thorax.View.extend({
