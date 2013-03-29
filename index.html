@@ -275,7 +275,10 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <li><a href="#creating-backbone-boilerplate-modules">Creating Backbone Boilerplate Modules</a></li>
 <li><a href="#router.js">router.js</a></li>
 </ul></li>
-<li><a href="#related-tools-projects">Related Tools &amp; Projects</a></li>
+<li><a href="#other-useful-tools-projects">Other Useful Tools &amp; Projects</a><ul>
+<li><a href="#yeoman">Yeoman</a></li>
+<li><a href="#backbone-devtools">Backbone DevTools</a></li>
+</ul></li>
 <li><a href="#conclusions">Conclusions</a></li>
 </ul></li>
 <li><a href="#mobile-applications">Mobile Applications</a><ul>
@@ -6543,10 +6546,27 @@ define([
   <span class="kw">return</span> Router;
 
 });</code></pre>
-<h2 id="related-tools-projects"><a href="#TOC">Related Tools &amp; Projects</a></h2>
-<p>As we’ve seen, scaffolding tools can assist in expediting how quickly you can begin a new application by creating the basic files required for a project automatically.</p>
-<p>If you appreciated Grunt-BBB and would like to explore similar tools for the broader app development workflow, I’m happy to also recommend checking out the <a href="http://yeoman.io">Yeoman</a> and workflow <a href="http://brunch.io">Brunch</a>.</p>
-<p>Both projects offer application scaffolding, a file-watcher and build system however Yeoman achieves the latter through <a href="http://gruntjs.com">Grunt</a> and also helps with client-side package management via <a href="http://bower.io">Bower</a>.</p>
+<h2 id="other-useful-tools-projects"><a href="#TOC">Other Useful Tools &amp; Projects</a></h2>
+<p>When working with Backbone, you usually need to write a number of different classes and files for your application. Scaffolding tools such as Grunt-BBB can help automate this process by generating basic boilerplates for the files you need for you.</p>
+<h3 id="yeoman"><a href="#TOC">Yeoman</a></h3>
+<p>If you appreciated Grunt-BBB but would like to explore a tool for assisting with your broader development workflow, I’m happy to recommend a tool I’ve been helping with called <a href="http://yeoman.io">Yeoman</a>.</p>
+<figure>
+<img src="img/yeoman.png"><figcaption></figcaption>
+</figure>
+<p>Yeoman is a workflow comprised of a collection of tools and best practices for helping you develop more efficiently. It’s comprised of yo (a scaffolding tool), <a href="http://gruntjs.com">Grunt</a>(a build tool) and <a href="http://bower.io">Bower</a> (a client-side package manager).</p>
+<p>Where Grunt-BBB focuses on offering an opionated start for Backbone projects, Yeoman allows you to scaffold apps using Backbone (or other frameworks), get Backbone plugins directly from the command-line and compile your CoffeeScript, Sass or other abstractions without additional effort.</p>
+<figure>
+<img src="img/bower.png"><figcaption></figcaption>
+</figure>
+<p>You may also be interested in <a href="http://brunch.io/">Brunch</a>, a similar project which uses skeleton boilerplates to generate new applications.</p>
+<h3 id="backbone-devtools"><a href="#TOC">Backbone DevTools</a></h3>
+<p>When building an application with Backbone, there’s some additional tooling available for your day-to-day debugging workflow.</p>
+<p>Backbone DevTools was created to help with this and is a Chrome DevTools extension allowing you to inspect events, syncs, View-DOM bindings and what objects have been instantiated.</p>
+<p>A useful View hierarchy displayed in the Elements panel and you can also inspect a DOM element and the closest View will be exposed via $view in the console.</p>
+<figure>
+<img src="img/bbdevtools.jpg"><figcaption></figcaption>
+</figure>
+<p>At the time of writing, the project is currently available on <a href="https://github.com/spect88/backbone-devtools">GitHub</a>.</p>
 <h2 id="conclusions"><a href="#TOC">Conclusions</a></h2>
 <p>In this section we reviewed Backbone Boilerplate and learned how to use the <code>bbb</code> tool to help us scaffold out our application.</p>
 <p>If you would like to learn more about how this project helps structure your app, BBB includes some built-in boilerplate sample apps that can be easily generated for review.</p>
