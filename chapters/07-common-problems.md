@@ -5,11 +5,11 @@ In this section, we will review a number of common problems developers often exp
 Perhaps the most frequent of these questions surround how to do more with Views. If you are interested in discovering how to work with nested Views, learn about view disposal and inheritance, this section will hopefully have you covered.
 
 
-#### View Nesting
+#### Working With Nested Views
 
 **Problem**
 
-What is the best approach for rendering and appending Subviews in Backbone.js?
+What is the best approach for rendering and appending nested Views (or Subviews) in Backbone.js?
 
 **Solution 1**
 
@@ -176,7 +176,13 @@ The Backbone extensions [Marionette](#marionette) and [Thorax](#thorax) provide 
 
 (Thanks to [Lukas](http://stackoverflow.com/users/299189/lukas)  and [Ian Taylor](http://stackoverflow.com/users/154765/ian-storm-taylor) for these tips).
 
-#### What is the best way to manage models in nested Views?
+#### Managing Models In Nested Views
+
+**Problem**
+
+What is the best way to manage models in nested views?
+
+**Solution**
 
 In order to reach attributes on related models in a nested setup, models require some prior knowledge of each other, something which Backbone doesn't implicitly handle out of the box.
 
@@ -203,7 +209,6 @@ This allows you to reach the parent model in any child model function through `t
 Now, we have already discussed a few options for how to construct nested Views using Backbone. For the sake of simplicity, let us imagine that we are creating a new child view `ViewB` from within the `initialize()` method of `ViewA` below. `ViewB` can reach out over the `ViewA` model and listen out for changes on any of its nested models. 
 
 See inline for comments on exactly what each step is enabling:
-
 
 ```javascript
 
@@ -245,7 +250,7 @@ var viewA = new ViewA({ model: ModelA });
 ```
 
 
-#### Rendering Parent View from Child
+#### Rendering A Parent View From A Child View
 
 **Problem**
 
@@ -285,7 +290,7 @@ The child will trigger a "somethingHappened" event and the parent's render funct
 (Thanks to Tal [Bereznitskey](http://stackoverflow.com/users/269666/tal-bereznitskey) for this tip)
 
 
-#### Disposing View hierarchies
+#### Disposing View Hierarchies
 
 **Problem**
 
@@ -334,7 +339,7 @@ In most cases, the view removal should not affect any associated models. For exa
 
 Note: You may also be interested in reading the about Marionette Composite Views in the Extensions part of the book.
 
-#### Rendering View hierarchies
+#### Rendering View Hierarchies
 
 **Problem**
 
@@ -352,6 +357,44 @@ It can render a single model with a template. It can also take a collection from
 There is a working demo of this in action available [online](http://jsfiddle.net/derickbailey/AdWjU/).
 
 And you can get the source code and documentation for [Marionette](https://github.com/marionettejs/backbone.marionette) too.
+
+
+#### Working With Nested Models Or Collections
+
+**Problem**
+
+Backbone doesn't include support for nested models or collections out of the box, favoring the use of good patterns for modeling your structured data on the client side. How do I work around this?
+
+**Solution**
+
+As we've seen, it's common to create collections representing groups of models using Backbone. It's also however common to wish to nest collections within models, depending on the type of application you are working on. 
+
+Take for example a Building model that contains many Room models which could sit in a Rooms collection.
+
+You could expose a `this.rooms` collection for each building, allowing you to lazy-load rooms once a building has been opened. 
+
+```javascript
+var Building = Backbone.Model.extend({
+
+    initialize: function(){
+        this.rooms = new Rooms;
+        this.rooms.url = '/building/' + this.id + '/rooms';
+        this.rooms.on("reset", this.updateCounts);
+    },
+
+    // ...
+
+});
+
+// Create a new building model
+var townHall = new Building;
+
+// once opened, lazy-load the rooms
+townHall.rooms.fetch({reset: true});
+```
+
+There are also a number of Backbone plugins which can help with nested data structures, such as [Backbone Relational](https://github.com/PaulUithol/Backbone-relational). This plugin handles one-to-one, one-to-many and many-to-one relations between models for Backbone and has some excellent [documentation](http://backbonerelational.org/).
+
 
 #### Better Model Property Validation
 
@@ -582,11 +625,11 @@ That's it!
 The Backbone.validateAll logic doesn't override the default Backbone logic by default and so it's perfectly capable of being used for scenarios where you might care more about field-validation [performance](http://jsperf.com/backbone-validateall) as well as those where you don't. Both solutions presented in this section should work fine however.
 
 
-#### Multiple Backbone versions
+#### Avoiding Conflicts With Multiple Backbone Versions
 
 **Problem**
 
-In some instances it may be necessary to use multiple versions of Backbone in the same project.
+In instances out of your control, you may have to work around having more than one version of Backbone in the same page. How do you work around this without causing conflicts?
 
 **Solution**
 
@@ -620,7 +663,7 @@ var Backbone19 = Backbone.noConflict();
 ```
 
 
-#### Building Model and View hierarchies
+#### Building Model And View Hierarchies
 
 **Problem**
 
