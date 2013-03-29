@@ -549,14 +549,35 @@ function(app, Foo) {
 });
 ```
 
-## Related Tools & Projects
+## Other Useful Tools & Projects
 
-As we've seen, scaffolding tools can assist in expediting how quickly you can begin a new application by creating the basic files required for a project automatically. 
+When working with Backbone, you usually need to write a number of different classes and files for your application. Scaffolding tools such as Grunt-BBB can help automate this process by generating basic boilerplates for the files you need for you.
 
-If you appreciated Grunt-BBB and would like to explore similar tools for the broader app development workflow, I'm happy to also recommend checking out the [Yeoman](http://yeoman.io) and workflow [Brunch](http://brunch.io).
+### Yeoman
 
-Both projects offer application scaffolding, a file-watcher and build system however Yeoman achieves the latter through [Grunt](http://gruntjs.com) and also helps with client-side package management via [Bower](http://bower.io).
+If you appreciated Grunt-BBB but would like to explore a tool for assisting with your broader development workflow, I'm happy to recommend a tool I've been helping with called [Yeoman](http://yeoman.io).
 
+![](img/yeoman.png)
+
+Yeoman is a workflow comprised of a collection of tools and best practices for helping you develop more efficiently. It's comprised of yo (a scaffolding tool), [Grunt](http://gruntjs.com)(a build tool) and [Bower](http://bower.io) (a client-side package manager). 
+
+Where Grunt-BBB focuses on offering an opionated start for Backbone projects, Yeoman allows you to scaffold apps using Backbone (or other frameworks), get Backbone plugins directly from the command-line and compile your CoffeeScript, Sass or other abstractions without additional effort.
+
+![](img/bower.png)
+
+You may also be interested in [Brunch](http://brunch.io/), a similar project which uses skeleton boilerplates to generate new applications.
+
+### Backbone DevTools
+
+When building an application with Backbone, there's some additional tooling available for your day-to-day debugging workflow.
+
+Backbone DevTools was created to help with this and is a Chrome DevTools extension allowing you to inspect events, syncs, View-DOM bindings and what objects have been instantiated. 
+
+A useful View hierarchy displayed in the Elements panel and you can also inspect a DOM element and the closest View will be exposed via $view in the console.
+
+![](img/bbdevtools.jpg)
+
+At the time of writing, the project is currently available on [GitHub](https://github.com/spect88/backbone-devtools).
 
 ## Conclusions
 
