@@ -1,0 +1,307 @@
+.PHONY: all test check clean distclean install uninstall
+.PRECIOUS: Makefile
+.SUFFIXES: .c .o .a
+
+prefix = @prefix@
+exec_prefix = @exec_prefix@
+bindir = @bindir@
+mandir = @mandir@
+man1dir = @man1dir@
+
+CC = @CC@
+CFLAGS = @CFLAGS@
+CPP = @CPP@
+CPPFLAGS = @CPPFLAGS@
+LD = @LD@
+LDFLAGS = @LDFLAGS@
+DIFF = @DIFF@
+RM_F = @RM_F@
+
+@USE_SYSTEM_LIBPNG_FALSE@LIB_LIBPNG =
+@USE_SYSTEM_LIBPNG_TRUE@LIB_LIBPNG = @LIBPNG@
+@USE_SYSTEM_ZLIB_FALSE@LIB_ZLIB =
+@USE_SYSTEM_ZLIB_TRUE@LIB_ZLIB = @LIBZ@
+LIBM = @LIBM@
+LIBS = @LIBS@
+ALL_LIBS = $(LIB_LIBPNG) $(LIB_ZLIB) $(LIBM) $(LIBS)
+
+OPTIPNG_DIR = ../optipng
+CEXCEPT_DIR = ../cexcept
+OPNGREDUC_DIR = ../opngreduc
+OPNGREDUC_LIB = libopngreduc.a
+OPNGREDUC_MK = @OPNGREDUC_MK@
+PNGXTERN_DIR = ../pngxtern
+PNGXTERN_LIB = libpngxtern.a
+PNGXTERN_MK = @PNGXTERN_MK@
+@USE_SYSTEM_LIBPNG_FALSE@LIBPNG_DIR = ../libpng
+@USE_SYSTEM_LIBPNG_FALSE@LIBPNG_LIB = libpng.a
+@USE_SYSTEM_LIBPNG_TRUE@LIBPNG_LIB = -lpng
+@USE_SYSTEM_LIBPNG_FALSE@LIBPNG_MK = @LIBPNG_MK@
+@USE_SYSTEM_ZLIB_FALSE@ZLIB_DIR = ../zlib
+@USE_SYSTEM_ZLIB_FALSE@ZLIB_LIB = libz.a
+@USE_SYSTEM_ZLIB_TRUE@ZLIB_LIB = -lz
+@USE_SYSTEM_ZLIB_FALSE@ZLIB_MK = @ZLIB_MK@
+GIF_DIR = ../gifread
+GIF_LIB = libgifread.a
+GIF_MK = @GIF_MK@
+PNM_DIR = ../pnmio
+PNM_LIB = libpnmio.a
+PNM_MK = @PNM_MK@
+TIFF_DIR = ../minitiff
+TIFF_LIB = libminitiff.a
+TIFF_MK = @TIFF_MK@
+
+OPTIPNG_OBJS = \
+  optipng.o \
+  optim.o \
+  cbitset.o \
+  osys.o \
+  wildargs.o
+
+@USE_SYSTEM_ZLIB_FALSE@OPTIPNG_DEPLIB_ZLIB = $(ZLIB_DIR)/$(ZLIB_LIB)
+@USE_SYSTEM_ZLIB_TRUE@OPTIPNG_DEPLIB_ZLIB =
+@USE_SYSTEM_LIBPNG_FALSE@OPTIPNG_DEPLIB_LIBPNG = $(LIBPNG_DIR)/$(LIBPNG_LIB)
+@USE_SYSTEM_LIBPNG_TRUE@OPTIPNG_DEPLIB_ZLIB =
+OPTIPNG_DEPLIBS = \
+  $(OPNGREDUC_DIR)/$(OPNGREDUC_LIB) \
+  $(PNGXTERN_DIR)/$(PNGXTERN_LIB) \
+  $(OPTIPNG_DEPLIB_LIBPNG) \
+  $(OPTIPNG_DEPLIB_ZLIB) \
+  $(GIF_DIR)/$(GIF_LIB) \
+  $(PNM_DIR)/$(PNM_LIB) \
+  $(TIFF_DIR)/$(TIFF_LIB)
+
+@USE_SYSTEM_ZLIB_FALSE@OPTIPNG_DEPINCLUDE_ZLIB = -I$(ZLIB_DIR)
+@USE_SYSTEM_ZLIB_TRUE@OPTIPNG_DEPINCLUDE_ZLIB =
+@USE_SYSTEM_LIBPNG_FALSE@OPTIPNG_DEPINCLUDE_LIBPNG = -I$(LIBPNG_DIR)
+@USE_SYSTEM_LIBPNG_TRUE@OPTIPNG_DEPINCLUDE_LIBPNG =
+OPTIPNG_DEPINCLUDES = \
+  -I$(CEXCEPT_DIR) \
+  $(OPTIPNG_DEPINCLUDE_ZLIB) \
+  $(OPTIPNG_DEPINCLUDE_LIBPNG) \
+  -I$(OPNGREDUC_DIR) \
+  -I$(PNGXTERN_DIR)
+
+OPTIPNG_TESTS = \
+  test/cbitset_test$(EXEEXT) \
+  test/print_ratio_test$(EXEEXT)
+OPTIPNG_TESTOBJS = \
+  test/cbitset_test.o \
+  test/print_ratio_test.o \
+  test/sprint_ratio.generated.o
+OPTIPNG_TESTOUT = *.out.png test/*.out
+
+all: optipng$(EXEEXT)
+
+optipng$(EXEEXT): $(OPTIPNG_OBJS) $(OPTIPNG_DEPLIBS)
+	$(LD) $(LDFLAGS) -o $@ $(OPTIPNG_OBJS) $(OPTIPNG_DEPLIBS) $(ALL_LIBS)
+
+.c.o:
+	$(CC) -c $(CPPFLAGS) $(CFLAGS) $(OPTIPNG_DEPINCLUDES) -o $@ $<
+
+optipng.o: optipng.c optipng.h cbitset.h osys.h proginfo.h
+optim.o: optim.c optipng.h cbitset.h osys.h
+cbitset.o: cbitset.c cbitset.h
+osys.o: osys.c osys.h
+wildargs.o: wildargs.c
+
+$(OPNGREDUC_DIR)/$(OPNGREDUC_LIB):
+	cd $(OPNGREDUC_DIR) && \
+	$(MAKE) -f $(OPNGREDUC_MK) $(OPNGREDUC_LIB) && \
+	cd $(OPTIPNG_DIR)
+
+$(PNGXTERN_DIR)/$(PNGXTERN_LIB): \
+  $(OPTIPNG_DEPLIB_LIBPNG) \
+  $(GIF_DIR)/$(GIF_LIB) \
+  $(PNM_DIR)/$(PNM_LIB) \
+  $(TIFF_DIR)/$(TIFF_LIB)
+	cd $(PNGXTERN_DIR) && \
+	$(MAKE) -f $(PNGXTERN_MK) $(PNGXTERN_LIB) && \
+	cd $(OPTIPNG_DIR)
+
+$(LIBPNG_DIR)/$(LIBPNG_LIB): \
+  $(OPTIPNG_DEPLIB_ZLIB)
+	cd $(LIBPNG_DIR) && \
+	$(MAKE) -f $(LIBPNG_MK) $(LIBPNG_LIB) && \
+	cd $(OPTIPNG_DIR)
+
+$(ZLIB_DIR)/$(ZLIB_LIB):
+	cd $(ZLIB_DIR) && \
+	$(MAKE) -f $(ZLIB_MK) $(ZLIB_LIB) && \
+	cd $(OPTIPNG_DIR)
+
+$(GIF_DIR)/$(GIF_LIB):
+	cd $(GIF_DIR) && \
+	$(MAKE) -f $(GIF_MK) $(GIF_LIB) && \
+	cd $(OPTIPNG_DIR)
+
+$(PNM_DIR)/$(PNM_LIB):
+	cd $(PNM_DIR) && \
+	$(MAKE) -f $(PNM_MK) $(PNM_LIB) && \
+	cd $(OPTIPNG_DIR)
+
+$(TIFF_DIR)/$(TIFF_LIB):
+	cd $(TIFF_DIR) && \
+	$(MAKE) -f $(TIFF_MK) $(TIFF_LIB) && \
+	cd $(OPTIPNG_DIR)
+
+test: local-test test-libpng test-gifread test-minitiff
+
+.PHONY: local-test
+local-test: optipng$(EXEEXT) $(OPTIPNG_TESTS)
+	-@$(RM_F) pngtest.out.png
+	./optipng$(EXEEXT) -o1 -q img/pngtest.png -out=pngtest.out.png
+	-@echo optipng ... ok
+	test/cbitset_test$(EXEEXT) < test/cbitset_test.dat > test/cbitset_test.out
+	@DIFF@ test/cbitset_test.expect test/cbitset_test.out
+	-@echo cbitset_test ... ok
+	test/print_ratio_test$(EXEEXT) > test/print_ratio_test.out
+	-@echo print_ratio_test ... ok
+
+test/cbitset_test$(EXEEXT): test/cbitset_test.o cbitset.o
+	$(LD) $(LDFLAGS) -o $@ \
+	  test/cbitset_test.o cbitset.o $(LIBS)
+
+test/print_ratio_test$(EXEEXT): \
+  test/print_ratio_test.o test/sprint_ratio.generated.o
+	$(LD) $(LDFLAGS) -o $@ \
+	  test/print_ratio_test.o test/sprint_ratio.generated.o
+
+test/cbitset_test.o: test/cbitset_test.c cbitset.h
+	$(CC) -c -I. $(CPPFLAGS) $(CFLAGS) -o $@ $*.c
+
+test/print_ratio_test.o: test/print_ratio_test.c test/print_ratio.h
+	$(CC) -c $(CPPFLAGS) $(CFLAGS) -o $@ $*.c
+
+test/sprint_ratio.generated.o: \
+  test/sprint_ratio.generated.c test/print_ratio.h osys.h
+	$(CC) -c $(CPPFLAGS) $(CFLAGS) -o $@ $*.c
+
+#test/sprint_ratio.generated.c: test/extract_print_ratio.sh optim.c
+#	$(SHELL) -c test/extract_print_ratio.sh
+
+.PHONY: test-libpng
+test-libpng: test-zlib
+@USE_SYSTEM_LIBPNG_FALSE@	cd $(LIBPNG_DIR) && \
+@USE_SYSTEM_LIBPNG_FALSE@	$(MAKE) -f $(LIBPNG_MK) test && \
+@USE_SYSTEM_LIBPNG_FALSE@	cd $(OPTIPNG_DIR)
+
+# FIXME:
+# Can't test zlib if NO_GZCOMPRES and NO_GZIP are enabled.
+.PHONY: test-zlib
+test-zlib:
+#@USE_SYSTEM_ZLIB_FALSE@	cd $(ZLIB_DIR) && \
+#@USE_SYSTEM_ZLIB_FALSE@	$(MAKE) -f $(ZLIB_MK) test && \
+#@USE_SYSTEM_ZLIB_FALSE@	cd $(OPTIPNG_DIR)
+
+.PHONY: test-gifread
+test-gifread:
+	cd $(GIF_DIR) && \
+	$(MAKE) -f $(GIF_MK) test && \
+	cd $(OPTIPNG_DIR)
+
+.PHONY: test-minitiff
+test-minitiff:
+	cd $(TIFF_DIR) && \
+	$(MAKE) -f $(TIFF_MK) test && \
+	cd $(OPTIPNG_DIR)
+
+check: test
+
+clean: \
+  local-clean \
+  clean-opngreduc \
+  clean-pngxtern-gif-pnm-tiff \
+  clean-libpng \
+  clean-zlib
+
+.PHONY: clean-opngreduc
+clean-opngreduc:
+	cd $(OPNGREDUC_DIR) && \
+	$(MAKE) -f $(OPNGREDUC_MK) clean && \
+	cd $(OPTIPNG_DIR)
+
+.PHONY: clean-pngxtern-gif-pnm-tiff
+clean-pngxtern-gif-pnm-tiff:
+	cd $(PNGXTERN_DIR) && \
+	$(MAKE) -f $(PNGXTERN_MK) clean && \
+	cd $(OPTIPNG_DIR)
+	cd $(GIF_DIR) && \
+	$(MAKE) -f $(GIF_MK) clean && \
+	cd $(OPTIPNG_DIR)
+	cd $(PNM_DIR) && \
+	$(MAKE) -f $(PNM_MK) clean && \
+	cd $(OPTIPNG_DIR)
+	cd $(TIFF_DIR) && \
+	$(MAKE) -f $(TIFF_MK) clean && \
+	cd $(OPTIPNG_DIR)
+
+.PHONY: clean-libpng
+clean-libpng:
+@USE_SYSTEM_LIBPNG_FALSE@	cd $(LIBPNG_DIR) && \
+@USE_SYSTEM_LIBPNG_FALSE@	$(MAKE) -f $(LIBPNG_MK) clean && \
+@USE_SYSTEM_LIBPNG_FALSE@	cd $(OPTIPNG_DIR)
+
+.PHONY: clean-zlib
+clean-zlib:
+@USE_SYSTEM_ZLIB_FALSE@	cd $(ZLIB_DIR) && \
+@USE_SYSTEM_ZLIB_FALSE@	$(MAKE) -f $(ZLIB_MK) clean && \
+@USE_SYSTEM_ZLIB_FALSE@	cd $(OPTIPNG_DIR)
+
+distclean: \
+  local-clean \
+  distclean-opngreduc \
+  distclean-pngxtern-gif-pnm-tiff \
+  distclean-libpng \
+  distclean-zlib
+	-$(RM_F) Makefile man/Makefile
+
+.PHONY: distclean-opngreduc
+distclean-opngreduc:
+	cd $(OPNGREDUC_DIR) && \
+	$(MAKE) -f $(OPNGREDUC_MK) distclean && \
+	cd $(OPTIPNG_DIR)
+
+.PHONY: distclean-pngxtern-gif-pnm-tiff
+distclean-pngxtern-gif-pnm-tiff:
+	cd $(PNGXTERN_DIR) && \
+	$(MAKE) -f $(PNGXTERN_MK) distclean && \
+	cd $(OPTIPNG_DIR)
+	cd $(GIF_DIR) && \
+	$(MAKE) -f $(GIF_MK) distclean && \
+	cd $(OPTIPNG_DIR)
+	cd $(PNM_DIR) && \
+	$(MAKE) -f $(PNM_MK) distclean && \
+	cd $(OPTIPNG_DIR)
+	cd $(TIFF_DIR) && \
+	$(MAKE) -f $(TIFF_MK) distclean && \
+	cd $(OPTIPNG_DIR)
+
+.PHONY: distclean-libpng
+distclean-libpng:
+@USE_SYSTEM_LIBPNG_FALSE@	cd $(LIBPNG_DIR) && \
+@USE_SYSTEM_LIBPNG_FALSE@	$(MAKE) -f $(LIBPNG_MK) clean && \
+@USE_SYSTEM_LIBPNG_FALSE@	cd $(OPTIPNG_DIR)
+
+.PHONY: distclean-zlib
+distclean-zlib:
+@USE_SYSTEM_ZLIB_FALSE@	cd $(ZLIB_DIR) && \
+@USE_SYSTEM_ZLIB_FALSE@	$(MAKE) -f $(ZLIB_MK) distclean && \
+@USE_SYSTEM_ZLIB_FALSE@	cd $(OPTIPNG_DIR)
+
+.PHONY: local-clean
+local-clean:
+	-$(RM_F) optipng$(EXEEXT) $(OPTIPNG_OBJS)
+	-$(RM_F) $(OPTIPNG_TESTS) $(OPTIPNG_TESTOBJS) $(OPTIPNG_TESTOUT)
+
+install: optipng$(EXEEXT)
+	mkdir -p $(DESTDIR)$(bindir)
+	mkdir -p $(DESTDIR)$(man1dir)
+	-@$(RM_F) $(DESTDIR)$(bindir)/optipng$(EXEEXT)
+	-@$(RM_F) $(DESTDIR)$(man1dir)/optipng.1
+	cp -f -p optipng$(EXEEXT) $(DESTDIR)$(bindir)
+	cp -f -p man/optipng.1 $(DESTDIR)$(man1dir)
+
+uninstall:
+	-$(RM_F) $(DESTDIR)$(bindir)/optipng$(EXEEXT)
+	-$(RM_F) $(DESTDIR)$(man1dir)/optipng.1

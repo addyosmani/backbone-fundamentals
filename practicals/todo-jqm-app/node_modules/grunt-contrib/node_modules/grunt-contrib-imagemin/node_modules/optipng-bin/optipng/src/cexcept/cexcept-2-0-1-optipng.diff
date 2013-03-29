@@ -1,0 +1,61 @@
+diff -ru cexcept-2-0-1/cexcept.h cexcept-2-0-1-optipng/cexcept.h
+--- cexcept-2-0-1/cexcept.h	2008-07-23 15:35:51.000000000 -0400
++++ cexcept-2-0-1-optipng/cexcept.h	2011-07-22 00:49:00.000000000 -0400
+@@ -1,6 +1,9 @@
+ /*===
+-cexcept.h 2.0.1 (2008-Jul-19-Sat)
++cexcept.h 2.0.1-optipng (2011-Jul-22)
++Derived from cexcept.h 2.0.1 by Cosmin Truta
++
+ http://www.nicemice.net/cexcept/
++
+ Adam M. Costello
+ http://www.nicemice.net/amc/
+ 
+@@ -210,7 +213,8 @@
+ 
+ #define Try \
+   { \
+-    jmp_buf *exception__prev, exception__env; \
++    jmp_buf * volatile exception__prev; \
++    jmp_buf exception__env; \
+     exception__prev = the_exception_context->penv; \
+     the_exception_context->penv = &exception__env; \
+     if (setjmp(exception__env) == 0) { \
+diff -ru cexcept-2-0-1/README cexcept-2-0-1-optipng/README
+--- cexcept-2-0-1/README	2008-07-23 15:35:51.000000000 -0400
++++ cexcept-2-0-1-optipng/README	2011-07-22 00:49:00.000000000 -0400
+@@ -1,5 +1,8 @@
+-cexcept: README 2.0.1 (2008-Jul-23-Wed)
++cexcept: README 2.0.1-optipng (2011-Jul-22)
++Updated by Cosmin Truta
++
+ http://www.nicemice.net/cexcept/
++
+ Adam M. Costello
+ http://www.nicemice.net/amc/
+ 
+@@ -14,8 +17,8 @@
+ 
+     name        version
+     ----------  -------
+-    README       2.0.1
+-    cexcept.h    2.0.1
++    README       2.0.1-optipng
++    cexcept.h    2.0.1-optipng
+     example1.c   2.0.0
+     example2.c   2.0.0
+     rationale    2.0.0
+@@ -49,6 +52,12 @@
+ The remainder of this file is a log of changes.
+ 
+ 
++2011-Jul-22-Fri
++
++  cexcept.h 2.0.1 --> 2.0.1-optipng
++    * Made exception__prev volatile to avoid "variable might be clobbered
++      by longjmp" warnings when a function contains multiple Try blocks.
++
+ 2008-Jul-23-Wed
+ 
+   cexcept.h 2.0.0 --> 2.0.1

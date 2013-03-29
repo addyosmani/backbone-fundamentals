@@ -1,0 +1,36 @@
+
+Libpng 1.4.12 - July 10, 2012
+
+This is a public release of libpng, intended for use in production codes.
+
+Files available for download:
+
+Source files with LF line endings (for Unix/Linux) and with a
+"configure" script
+
+   libpng-1.4.12.tar.xz (LZMA-compressed, recommended)
+   libpng-1.4.12.tar.gz
+   libpng-1.4.12.tar.bz2
+
+Source files with CRLF line endings (for Windows), without the
+"configure" script
+
+   lpng1412.7z (LZMA-compressed, recommended)
+   lpng1412.zip
+
+Other information:
+
+   libpng-1.4.12-README.txt
+   libpng-1.4.12-LICENSE.txt
+
+Changes since the last public release (1.4.11):
+  Added two images to contrib/pngsuite (1-bit and 2-bit transparent grayscale),
+    and renamed three whose names were inconsistent with those in
+    pngsuite/README.txt.
+  Changed "a+w" to "u+w" in Makefile.in to fix CVE-2012-3386.
+
+Send comments/corrections/commendations to glennrp at users.sourceforge.net
+or to png-mng-implement at lists.sf.net (subscription required; visit
+https://lists.sourceforge.net/lists/listinfo/png-mng-implement).
+
+Glenn R-P

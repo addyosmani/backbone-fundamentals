@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ * zlib.props - location of zlib source and build
+ *
+ * libpng version 1.4.12 - July 10, 2012
+ *
+ * Copyright (c) 1998-2011 Glenn Randers-Pehrson
+ *
+ * This code is released under the libpng license.
+ * For conditions of distribution and use, see the disclaimer
+ * and license in png.h
+
+ * You must edit this file to record the location of the zlib
+ * official and debug builds unless they are in the default
+ * directories:
+
+ *   official: zlib1
+ *   debug:    zlib debug
+ -->
+
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Label="Globals">
+    <!-- Place the name of the directory containing the official
+         build of zlib and the corresponding header files in this
+         property.  The directory is expected to contain at least:
+
+            zdll.lib  # The DLL import library
+            zlib.lib  # The static library
+            zlib.h    # The header file
+            zconf.h   # Another header file included by zlib.h
+     -->
+    <ZLib1Dir>..\..\..\..\zlib125-dll\zlib-1.2.5</ZLib1Dir>
+
+    <!-- Place the name of the directory containing the source of
+         zlib used for debugging in this property.
+         The directory need only contain the '.c' and '.h' files
+         from the source.  For your own sanity make sure that the
+         '.h' files in the source match those from the 'official'
+         build above.
+     -->
+    <ZLibSrcDir>..\..\..\..\zlib-1.2.5</ZLibSrcDir>
+  </PropertyGroup>
+</Project>

@@ -1,0 +1,11 @@
+LIBJPEGTURBO_6.2 {
+  global:  jpeg_mem_dest;  jpeg_mem_src;
+  local:
+    jsimd_*;
+    jconst_*;
+};
+
+LIBJPEG_6.2 {
+  global:
+    *;
+};

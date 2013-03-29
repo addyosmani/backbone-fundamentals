@@ -1,0 +1,66 @@
+.PHONY: all test check clean distclean
+.PRECIOUS: Makefile
+.SUFFIXES: .c .o .a
+
+CC = @CC@
+CFLAGS = @CFLAGS@
+CPP = @CPP@
+CPPFLAGS = @CPPFLAGS@
+LD = @LD@
+LDFLAGS = @LDFLAGS@
+AR = @AR@
+ARFLAGS = @ARFLAGS@
+RANLIB = @RANLIB@
+RM_F = @RM_F@
+
+@USE_SYSTEM_ZLIB_FALSE@ZDIR = ../zlib
+@USE_SYSTEM_LIBPNG_FALSE@PNGDIR = ../libpng
+GIFDIR = ../gifread
+PNMDIR = ../pnmio
+TIFFDIR = ../minitiff
+
+PNGXTERN_LIB = libpngxtern.a
+
+PNGXREAD_OBJS = pngxread.o pngxrbmp.o pngxrgif.o pngxrjpg.o pngxrpnm.o pngxrtif.o
+PNGXUTIL_OBJS = pngxio.o pngxmem.o pngxset.o
+PNGXTERN_OBJS = $(PNGXREAD_OBJS) $(PNGXUTIL_OBJS)
+
+@USE_SYSTEM_ZLIB_FALSE@PNGXTERN_DEPINCLUDE_ZLIB = -I$(ZDIR)
+@USE_SYSTEM_ZLIB_TRUE@PNGXTERN_DEPINCLUDE_ZLIB =
+@USE_SYSTEM_LIBPNG_FALSE@PNGXTERN_DEPINCLUDE_LIBPNG = -I$(PNGDIR)
+@USE_SYSTEM_LIBPNG_TRUE@PNGXTERN_DEPINCLUDE_LIBPNG =
+PNGXTERN_DEPINCLUDES = \
+  $(PNGXTERN_DEPINCLUDE_ZLIB) \
+  $(PNGXTERN_DEPINCLUDE_LIBPNG) \
+  -I$(GIFDIR) \
+  -I$(PNMDIR) \
+  -I$(TIFFDIR)
+
+all: $(PNGXTERN_LIB)
+
+test:
+
+check: test
+
+.c.o:
+	$(CC) -c $(CPPFLAGS) $(CFLAGS) $(PNGXTERN_DEPINCLUDES) -o $@ $<
+
+$(PNGXTERN_LIB): $(PNGXTERN_OBJS)
+	$(AR) $(ARFLAGS) $@ $(PNGXTERN_OBJS)
+	$(RANLIB) $@
+
+pngxio.o: pngxio.c pngxutil.h
+pngxmem.o: pngxmem.c pngxutil.h
+pngxset.o: pngxset.c pngxutil.h
+pngxread.o: pngxread.c pngxtern.h pngxutil.h
+pngxrbmp.o: pngxrbmp.c pngxtern.h pngxutil.h 
+pngxrgif.o: pngxrgif.c pngxtern.h pngxutil.h
+pngxrjpg.o: pngxrjpg.c pngxtern.h pngxutil.h
+pngxrpnm.o: pngxrpnm.c pngxtern.h pngxutil.h
+pngxrtif.o: pngxrtif.c pngxtern.h pngxutil.h
+
+clean:
+	-$(RM_F) $(PNGXTERN_LIB) $(PNGXTERN_OBJS)
+
+distclean: clean
+	-$(RM_F) Makefile
