@@ -206,7 +206,7 @@ var ZombieView = Backbone.View.extend({
 });
 ```
 
-Then call `close` on the first instance when it is no longer needed, and only one view instance will remain alive. For more information about the `listenTo` and `stopListening` functions, see [the Backbone documentation](http://backbonejs.org/#Events-listenTo), and my blog post on [Managing Events As Relationships, Not Just Resources](http://lostechies.com/derickbailey/2013/02/06/managing-events-as-relationships-not-just-references/).
+Then call `close` on the first instance when it is no longer needed, and only one view instance will remain alive. For more information about the `listenTo` and `stopListening` functions, see the earlier chapter on internals and Derick's post on [Managing Events As Relationships, Not Just Resources](http://lostechies.com/derickbailey/2013/02/06/managing-events-as-relationships-not-just-references/).
 
 ```javascript
 var Jeremy = new Person({
@@ -309,7 +309,7 @@ The next time we call the `show` method of the region, the region remembers that
 
 Since the region handles calling `close` for us, and we're using the `listenTo` event binder in our view instance, we no longer have to worry about zombie views in our application.
 
-Regions are not limited to just Marionette views, though. Any valid Backbone.View can be managed by a Marionette.Region. If your view happens to have a `close` method, it will be called when the view is closed. If not, the Backbone.View built-in method, `remove`, will be called instead. If neither of these methods exist, nothing will be called and you will be responsible for cleaning up the events and other bits, yourself.
+Regions are not limited to just Marionette views, though. Any valid Backbone.View can be managed by a Marionette.Region. If your view happens to have a `close` method, it will be called when the view is closed. If not, the Backbone.View built-in method, `remove`, will be called instead. 
 
 ### Marionette Todo app
 
