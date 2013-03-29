@@ -812,11 +812,16 @@ console.log('Todo set as completed: ' + myTodo.get('completed'));
 
 #### Validation
 
-Backbone supports model validation through `Model.validate()`, which allows checking the attribute values for a model prior to setting them.
+Backbone supports model validation through `model.validate()`, which allows checking the attribute values for a model prior to setting them. Validation by default occurs when the model is persisted using the `.save()` method or when `.set()` is called if `{validate:true}` is passed as an argument.
 
-Validation functions can be as simple or complex as necessary. If the attributes provided are valid, nothing should be returned from `.validate()`. If they are invalid, an error value should be returned instead. If an error is returned, an `invalid` event will occur and listeners will be passed the unmodified model and the error value.
+Validation functions can be as simple or complex as necessary. If the attributes provided are valid, nothing should be returned from `.validate()`. If they are invalid, an error value should be returned instead. 
 
-Validation automatically occurs when the model is persisted using the `.save()` method or when `.set()` is called with the validate option set to true. A basic validation example can be seen below:
+Should an error be returned:
+
+* An `invalid` event will triggered, setting the `validationError` property on the model with the value which is returned by this method. 
+* `.save()` will not continue and the attributes of the model will not be modified on the server
+
+A basic validation example can be seen below:
 
 ```javascript
 var Todo = Backbone.Model.extend({

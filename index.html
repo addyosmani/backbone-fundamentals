@@ -969,9 +969,14 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <span class="co">// Title value for this model has changed.</span>
 <span class="co">// Todo set as completed: true</span></code></pre>
 <h4 id="validation"><a href="#TOC">Validation</a></h4>
-<p>Backbone supports model validation through <code>Model.validate()</code>, which allows checking the attribute values for a model prior to setting them.</p>
-<p>Validation functions can be as simple or complex as necessary. If the attributes provided are valid, nothing should be returned from <code>.validate()</code>. If they are invalid, an error value should be returned instead. If an error is returned, an <code>invalid</code> event will occur and listeners will be passed the unmodified model and the error value.</p>
-<p>Validation automatically occurs when the model is persisted using the <code>.save()</code> method or when <code>.set()</code> is called with the validate option set to true. A basic validation example can be seen below:</p>
+<p>Backbone supports model validation through <code>model.validate()</code>, which allows checking the attribute values for a model prior to setting them. Validation by default occurs when the model is persisted using the <code>.save()</code> method or when <code>.set()</code> is called if <code>{validate:true}</code> is passed as an argument.</p>
+<p>Validation functions can be as simple or complex as necessary. If the attributes provided are valid, nothing should be returned from <code>.validate()</code>. If they are invalid, an error value should be returned instead.</p>
+<p>Should an error be returned:</p>
+<ul>
+<li>An <code>invalid</code> event will triggered, setting the <code>validationError</code> property on the model with the value which is returned by this method.</li>
+<li><code>.save()</code> will not continue and the attributes of the model will not be modified on the server</li>
+</ul>
+<p>A basic validation example can be seen below:</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> Todo = <span class="kw">Backbone.Model</span>.<span class="fu">extend</span>({
   <span class="dt">defaults</span>: {
     <span class="dt">completed</span>: <span class="kw">false</span>
