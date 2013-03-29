@@ -1,9 +1,11 @@
+
+
 Backbone and jquerymobile JQM Boilerplate code
 ===============================================
 
 This project provides a bulletproof template + build process to develop
 an application by using jQuery mobile and backbone.js
-The aim is to provide it in Addy Osmanis [Backbone Fundamentals](https://github.com/addyosmani/backbone-fundamentals)
+
 
 It consists of:
 - [Backbone.js](http://backbonejs.org/) 0.9.2
@@ -36,17 +38,33 @@ Preparations:
 * Open your command line tool
 * cd to the project folder "backbone.js-jquerymobile-boilerplate-template"
 * Download and install [node.js](http://nodejs.org/) for your os system and run in your project folder:
-* npm install -g grunt            ( installs grunt command line tool)
-* npm install -g bbb              ( is a grunt addon, which offers backbone templates and task collections like grunt-contrib)
-* npm install grunt-contrib       ( needed to install not global, because you'll need the newest version)
 
-On development:
-* bbb handlebars                  ( precompiles templates to javascript functions)
-* bbb server                      ( runs server on your local machine in development mode)
-* go to http://localhost:8000
-* Before you start developing, enable the handlebars task, if any change is done on a file by running once:
-  bbb watch or run bbb handlebars every time manually
+##### Installation setup
+// Installation setup, 0.4.0 grunt required
+npm uninstall -g grunt
+npm install -g grunt-cli
+npm install grunt --save-dev
+npm install -g bbb
 
+// To install grunt-tasks e.g.:
+npm install grunt-release --save-dev
+npm install grunt-contrib --save-dev
+npm install grunt-contrib-connect --save-dev
+...
+
+##### Run application
+
+// Run the application
+grunt server
+
+// While developing to recreate handlebar templates:
+grunt liveload
+
+// Manual update handlebars templates
+grunt handlebars
+
+// first steps to create prod release files
+grunt release
 
 ###<a name="general">General</a>
 

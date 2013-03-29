@@ -1,29 +1,30 @@
 module.exports = function (grunt) {
 
-    //grunt.loadNpmTasks('grunt-contrib');
+    grunt.loadNpmTasks('grunt-contrib');
+//    grunt.loadNpmTasks('grunt-release');
     grunt.loadNpmTasks('grunt-contrib-handlebars');
+
     grunt.loadNpmTasks('grunt-contrib-connect');
     grunt.loadNpmTasks('grunt-contrib-clean');
 
     grunt.loadNpmTasks('grunt-contrib-requirejs');
-    grunt.loadNpmTasks('grunt-contrib-jst');
     grunt.loadNpmTasks('grunt-contrib-concat');
 
     grunt.loadNpmTasks('grunt-contrib-csslint');
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-copy');
-    grunt.loadNpmTasks('grunt-release');
 
-    grunt.registerTask("default", ["clean", "handlebars", "copy", "requirejs", "concat"]);
-
-    //grunt.registerTask("release", ["default", "min", "mincss"]);
+    grunt.registerTask("default", ["server"]);
+    grunt.registerTask("server", ["handlebars", "connect"]);
+    grunt.registerTask("liveload", ["watch"]);
+    grunt.registerTask("release", ["clean", "handlebars", "requirejs", "concat", "copy"]);
+    /* if release-task supports grunt 0.4.0, use instead
+    / grunt.registerTask("default", "clean lint jst requirejs concat");
+    / grunt.registerTask("release", ["default", "min", "mincss"]);
+    */
 
     grunt.initConfig({
             clean : ["dist/"],
-            // The lint task will run the build configuration and the application
-            // JavaScript through JSHint and report any errors.  You can change the
-            // options for this task, by reading this:
-            // https://github.com/cowboy/grunt/blob/master/docs/task_lint.md
             lint : {
                 files : [
                     "build/config.js", "app/**/*.js"
@@ -68,29 +69,11 @@ module.exports = function (grunt) {
                 files : ['app/templates/**/*.template*'], // 'app/**/*.less',
                 tasks : 'handlebars'
             },
-
-            // The concatenate task is used here to merge the almond require/define
-            // shim and the templates into the application code.  It's named
-            // dist/debug/require.js, because we want to only load one script file in
-            // index.html.
-            concat : {
-                "dist/debug/require.js" : [
-                    "assets/js/libs/almond.js",
-                    "dist/debug/templates.js",
-                    "dist/debug/require.js"
-                ],
-                "dist/debug/handlebars_packaged.js" : [
-                    "app/handlebars_helpers.js",
-                    "app/alltemplates.js"
-                ]
-            },
-
             mincss : {
                 "dist/release/index.css" : [
                     "assets/css/h5bp.css"
                 ]
             },
-
             min : {
                 "dist/release/require.js" : [
                     "dist/debug/require.js"
@@ -100,9 +83,9 @@ module.exports = function (grunt) {
                 server: {
                     options: {
                         port: 9001,
-                        base: '.'
-                    },
-                    keepalive : true
+                        base: '.',
+                        keepalive : true
+                    }
                 }
             },
             requirejs : {
@@ -120,8 +103,62 @@ module.exports = function (grunt) {
             qunit : {
                 all : ["test/qunit/*.html"]
             }
+            // The concatenate task is used here to merge the almond require/define
+            // shim and the templates into the application code.  It's named
+            // dist/debug/require.js, because we want to only load one script file in
+            // index.html.
+            ,concat : {
+                "dist/debug/require.js" : [
+                    "assets/js/libs/almond.js",
+                    "dist/debug/templates.js",
+                    "dist/debug/require.js"
+                ],
+                "dist/debug/handlebars_packaged.js" : [
+                    "app/handlebars_helpers.js",
+                    "app/alltemplates.js"
+                ]
+            }
 
+            /*
+             With the upgrade to grunt 0.4.0, the grunt-release task is not supported, yet.
+             With 0.4.0, the release-task was replaced by the copy- and connect-task,
+             which slows down the development process of server reloading.
+
+             server : {
+             files : {
+             "favicon.ico" : "favicon.ico"
+             },
+
+             debug : {
+             files : {
+             "favicon.ico" : "favicon.ico"
+             },
+
+             folders : {
+             "app" : "dist/debug",
+             "assets/js/libs" : "dist/debug"
+             }
+             },
+
+             release : {
+             host : "0.0.0.0",
+             port : process.env.PORT || 8000,
+
+             files : {
+             "favicon.ico" : "favicon.ico"
+             },
+
+             folders : {
+             "app" : "dist/release",
+             "assets/js/libs" : "dist/release",
+             "assets/css" : "dist/release"
+             }
+             }
+             },
+             */
         }
+
+
     );
 
     var getSimpleFileName = function (fullFilePath) {

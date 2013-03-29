@@ -657,54 +657,103 @@ http://www.objectpartners.com/2012/11/02/use-jquery-mobile%E2%80%99s-tools-suite
 
 
 #### Multi platform support management by responsive design
-TODO
+
 
 The reality is that we don't always have the scope to create per-device experiences, so today's application will attempt to optimize the devices or browsers most likely to access it.
 It is essential, that the content the application exposes, is readily available to all users, regardless of what browser they are accessing it from, so this principle will be kept in mind during the design phase.
-We will be aiming to create a solution that is responsive from the start and jQuery Mobile simplifies a lot of the actual heavy lifting here as it supports responsive layouts, out of the box (including browsers that do not support media queries).
+There are tons of books, resources and tools on the market to address multi plaform support, which indicates the importance and difficulty.
+
+The mobile app architecture we created, simplifies a lot of the actual heavy lifting here as it supports responsive layouts, out of the box, including browsers that do not support media queries.
 Many developers forget that jQM is a UI framework not dissimilar to jQuery UI. It is using the widget factory and is capable for being used for a lot more than we accredited.
 
 Nowadays, in the common case a webpage already exists, and the management decides to offer a mobile app on top of it.
-The webpages and the apps code will be independant of each other. The time spend on changes, are doubled, and mobile applications become more and more important.
+The webpages and the apps code will be independant of each other. The time spend on changes, are doubled.
+But the importance and number of new mobile applications rises rapidly and with this trend, so does the effort required to manage the applications for the various devices.
 
-<b>Mobile first</b> is the answer to address this issue and explains more advantages, to start over with the mobile app first and later on with the desktop application.
-
-Further resources about Mobile first development are located at:
-
-http://www.lukew.com/ff/entry.asp?933
-
-http://www.abookapart.com/products/responsive-web-design
-
-http://www.abookapart.com/products/mobile-first
-
-http://shop.oreilly.com/product/0636920018100.do
+The <b>Responsive Design</b> and <b>Mobile First</b> approaches address these challenges. 
+(Mobile First, http://www.lukew.com/ff/entry.asp?933, http://www.abookapart.com/products/mobile-first)
 
 
-
-To support multi platforms by the usage of jQuery Mobile and Backbone,
-you can, descending by more time effort. Mobile first can be applied to all solutions:
+To support multi platform browsers by the usage of jQuery Mobile and Backbone,
+you can, descending by increasing time effort:
 
 1. Ideally, one code project, where only CSS differs for different devices.
 2. Same code project, and at runtime, different HTML template code
    and super-classes are exchanged per device type.
-3. Same code project, and at runtime, jQuery Mobile will be replaced 
+3. Same code project, the Responsive Design API and most widgets of jQuery Mobile will be reused,
+   but some components for the desktop browser will be added by another widget framework 
+   e.g. <b>jQueryUI</b> or <b>Twitter Boostrap</b>.
+4. Same code project, and at runtime, jQuery Mobile will be completely replaced 
    by another widget framework e.g. <b>jQueryUI</b> or <b>Twitter Boostrap</b>.
-   Super-classes and configurations have to be replaced as well.
-   The device specific code needs to be downloaded by the browser.
-4. Different code projects, but parts of the functions are reused.
-5. For the desktop app, have a completely separate code project.
+   Super-classes and configurations will be replaced, but HTML templates will be reused.
+5. Different code projects, but some parts of the functions are reused.
+6. For the desktop app, have a completely separate code project.
    Reasons are the usage of complete different programming languagages
    and/or frameworks.
 
-Let us discuss, why we think it is a good idea, to follow the <b>Mobile First</b> approach and do not change the UI framework.
 
-If you have a look on the jQuery Mobile showcase(http://jquerymobile.com/demos/1.2.0/docs/forms/forms-all-mini.html), in a desktop browser, it doesn’t look anything like a mobile application.
+In the following we will show, that it is technically possible to follow the strategie <b>1.</b> or <b>2.</b>, where the UI framework will not be replaced,
+but still achieve a nice looking UI for desktop and mobile.
+
+If you have a look on the jQuery Mobile design examples, in a desktop browser, it doesn’t look anything like a mobile application.
+
+![](../img/chapter10-3-3.png)
+<i>Desktop view of the jQuery Mobile docs application, http://view.jquerymobile.com/1.3.0/ </i>
+
+
+![](../img/chapter10-3-4.png)
+<i>Design examples of jQuery Mobile for desktop environments, http://jquerymobile.com/designs/#desktop </i>
+
 The accordeons, date-pickers, sliders - everything in the desktop UI is re-using what jQM would be providing users on mobile devices.
-Especially if you enable the attribute “data-mini” on components, you’ll not realize any difference.
+Especially if you enable the attribute “data-mini” on components, you’ll not realize any difference ( http://jquerymobile.com/demos/1.2.0/docs/forms/forms-all-mini.html).
 Thanks to some media queries, the desktop UI can make optimal use of whitespace,
 expanding component blocks out and providing alternative layouts whilst still making use of jQM as a component framework.
 
-The benefit of this is that you don’t need to go pulling in jQuery UI separately to be able to take advantage of these features.
+
+The benefit of this is that you don’t need to go pulling in another widget framework e.g.jQuery UI separately to be able to take advantage of these features.
 Thanks to the recent ThemeRoller the components can look pretty much exactly how I would like them to and users of the app can get a jQM UI for lower-resolutions and a jQM-ish UI for everything else.
 
-The takeaway here is just to remember that if you’re not (already) going through the hassle of conditional script/style loading based on screen-resolution (using matchMedia.js etc), there are simpler approaches that can be taken to cross-device component theming.
+The takeaway here is just to remember that if you are not already going through the hassle of conditional script/style loading based on screen-resolution (using matchMedia.js etc), there are simpler approaches that can be taken to cross-device component theming.
+At least the Responsive Design API of jQuery Mobile, which was added since version 1.3.0, always fits, 
+because it is easy to use and guarantees a solid solution for mobile as well as for desktop( http://view.jquerymobile.com/1.3.0/docs/intro/rwd.php).
+
+
+Also, if you hit your limits of CSS-styling a jQuery Mobile application for desktop browsers,
+the additional effort to use jQuery Mobile and Twitter Boostrap, together, can be quite simple.
+Because the TodoMVC app makes use of the jQM Widget processive enhanement plugins API,
+it would need conditional code to not call these, when Twitter Boostrap was loaded by a desktop browser.
+Therefore, as explained in the previous sections, we recommand to only trigger widget enhancements by <b>$.mobile.changePage</b>, once the page is loaded, too.
+
+An example of a widget hybrid usage can be seen here:
+
+![](../img/chapter10-3-2.png)
+<i>Appengine boilerplate, desktop and mobile appereance http://appengine.beecoss.com </i>
+
+The HTML code, CSS and JavaScript is almost the same.
+The differences are listed below:
+
+```html
+...
+ {% if is_mobile %}
+    <link rel="stylesheet" href="/mobile/jquery.mobile-1.1.0.min.css" />
+    {% else %}
+      <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+      <link rel="stylesheet" href="/css/style.css" />
+      <link rel="stylesheet" href="/css/bootstrap.min.css">
+      <link rel="stylesheet" href="/css/bootstrap-responsive.min.css">
+    {% endif %}
+      <link rel="stylesheet" href="/css/main.css" />
+
+    {% block mediaCSS %}{% endblock %}
+...
+ {% if is_mobile %}
+      <script src="/mobile/jquery.mobile-1.1.0.min.js"></script>
+    {% else %}
+      <script src="/js/libs/bootstrap.min.js"></script>
+    {% endif %}
+...
+```
+
+
+
+
