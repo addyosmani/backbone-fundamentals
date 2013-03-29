@@ -88,6 +88,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 </ul></li>
 </ul></li>
 <li><a href="#backbone-basics">Backbone Basics</a><ul>
+<li><a href="#getting-setup">Getting setup</a></li>
 <li><a href="#models-1">Models</a><ul>
 <li><a href="#initialization">Initialization</a></li>
 <li><a href="#getters-setters">Getters &amp; Setters</a></li>
@@ -307,7 +308,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 </ul></li>
 <li><a href="#qunit">QUnit</a><ul>
 <li><a href="#introduction-2">Introduction</a></li>
-<li><a href="#getting-setup">Getting Setup</a><ul>
+<li><a href="#getting-setup-1">Getting Setup</a><ul>
 <li><a href="#sample-html-with-qunit-compatible-markup">Sample HTML with QUnit-compatible markup:</a></li>
 </ul></li>
 <li><a href="#assertions">Assertions</a><ul>
@@ -728,7 +729,33 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <img src="img/code-school.png"><figcaption></figcaption>
 </figure>
 <h1 id="backbone-basics"><a href="#TOC">Backbone Basics</a></h1>
-<p>In this section, you’ll learn the essentials of Backbone’s models, views, collections, events, and routers. This isn’t meant as a replacement for the official documentation, but it will help you understand many of the core concepts behind Backbone before you start building applications with it.</p>
+<p>In this section, you’ll learn the essentials of Backbone’s models, views, collections, events, and routers. This isn’t by any means a replacement for the official documentation, but it will help you understand many of the core concepts behind Backbone before you start building applications using it.</p>
+<h3 id="getting-setup"><a href="#TOC">Getting setup</a></h3>
+<p>Before we dive into more code examples, let’s define some boilerplate markup you can use to specify the dependencies Backbone requires. This boilerplate can be reused in many ways with little to no alteration and will allow you to run code from examples with ease.</p>
+<p>You can paste the following into your text editor of choice, replacing the commented line between the script tags with the JavaScript from any given example:</p>
+<pre class="sourceCode html"><code class="sourceCode html"><span class="dt">&lt;!DOCTYPE </span>HTML<span class="dt">&gt;</span>
+<span class="kw">&lt;html&gt;</span>
+<span class="kw">&lt;head&gt;</span>
+    <span class="kw">&lt;meta</span><span class="ot"> charset=</span><span class="st">&quot;UTF-8&quot;</span><span class="kw">&gt;</span>
+    <span class="kw">&lt;title&gt;</span>Title<span class="kw">&lt;/title&gt;</span>
+<span class="kw">&lt;/head&gt;</span>
+<span class="kw">&lt;body&gt;</span>
+
+<span class="kw">&lt;script</span><span class="ot"> src=</span><span class="st">&quot;https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js&quot;</span><span class="kw">&gt;&lt;/script&gt;</span>
+<span class="kw">&lt;script</span><span class="ot"> type=</span><span class="st">&quot;text/javascript&quot;</span><span class="ot"> src=</span><span class="st">&quot;http://documentcloud.github.com/underscore/underscore-min.js&quot;</span><span class="kw">&gt;&lt;/script&gt;</span>
+<span class="kw">&lt;script</span><span class="ot"> type=</span><span class="st">&quot;text/javascript&quot;</span><span class="ot"> src=</span><span class="st">&quot;http://documentcloud.github.com/backbone/backbone-min.js&quot;</span><span class="kw">&gt;&lt;/script&gt;</span>
+<span class="kw">&lt;script</span><span class="ot"> type=</span><span class="st">&quot;text/javascript&quot;</span><span class="kw">&gt;</span>
+  <span class="co">// Your code goes here</span>
+<span class="kw">&lt;/script&gt;</span>
+<span class="kw">&lt;/body&gt;</span>
+<span class="kw">&lt;/html&gt;</span></code></pre>
+<p>You can then save and run the file in our browser of choice, such as Chrome or Firefox. Alternatively, if you prefer working with an online code editor, <a href="http://jsfiddle.net/jnf8B/">jsFiddle</a> and <a href="http://jsbin.com/iwiwox/1/edit">jsBin</a> versions of this boilerplate are also available.</p>
+<p>Most examples can also be run directly from within the console in your browser’s developer tools, assuming you’ve loaded the boilerplate HTML page so that Backbone and it’s dependencies are available for use.</p>
+<p>For Chrome, you can open up the DevTools via the Chrome menu in the top right hand corner: select <q>Tools &gt; Developer Tools</q> or alternatively use the Control + Shift + I shortcut on Windows/Linux or Command + Option + I on Mac.</p>
+<figure>
+<img src="img/devtools.png"><figcaption></figcaption>
+</figure>
+<p>Next, switch to the Console tab, from where you can enter in and run any piece of JavaScript code by hitting the return key. You can also use the Console as a multi-line editor using the Ctrl + Enter shortcut to move from the end of one line to the start of another.</p>
 <h2 id="models-1"><a href="#TOC">Models</a></h2>
 <p>Backbone models contain data for an application as well as the logic around this data. For example, we can use a model to represent the concept of a todo item including its attributes like title (todo content) and completed (current state of the todo).</p>
 <p>Models can be created by extending <code>Backbone.Model</code> as follows:</p>
@@ -7254,7 +7281,7 @@ expect(<span class="ch">&#39;click&#39;</span>).<span class="fu">toHaveBeenTrigg
 <p>QUnit is a powerful JavaScript test suite written by jQuery team member <a href="http://bassistance.de/">Jörn Zaefferer</a> and used by many large open-source projects (such as jQuery and Backbone.js) to test their code. It’s both capable of testing standard JavaScript code in the browser as well as code on the server-side (where environments supported include Rhino, V8 and SpiderMonkey). This makes it a robust solution for a large number of use-cases.</p>
 <p>Quite a few Backbone.js contributors feel that QUnit is a better introductory framework for testing if you don’t wish to start off with Jasmine and BDD right away. As we’ll see later on in this chapter, QUnit can also be combined with third-party solutions such as SinonJS to produce an even more powerful testing solution supporting spies and mocks, which some say is preferable over Jasmine.</p>
 <p>My personal recommendation is that it’s worth comparing both frameworks and opting for the solution that you feel the most comfortable with.</p>
-<h2 id="getting-setup"><a href="#TOC">Getting Setup</a></h2>
+<h2 id="getting-setup-1"><a href="#TOC">Getting Setup</a></h2>
 <p>Luckily, getting QUnit setup is a fairly straight-forward process that will take less than 5 minutes.</p>
 <p>We first setup a testing environment composed of three files:</p>
 <ul>
