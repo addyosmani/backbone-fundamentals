@@ -150,8 +150,8 @@ A sample implementation containing a single child view could be written:
 var OuterView = Backbone.View.extend({
     initialize: function() {
         this.children = {};
-        var child = new Backbone.View();
-        this.children[child.cid] = child;
+        this.child = new Backbone.View();
+        this.children[this.child.cid] = this.child;
     },
 
     render: function() {
@@ -163,7 +163,6 @@ var OuterView = Backbone.View.extend({
 };
 
 ```
-
 
 The use of `cid`s (client ids) here is useful because it illustrates separating a model and its views by having views referenced by their instances and not their attributes. It's quite common to ask for all views that satisfy an attribute on their models, but if you have recursive subviews or repeated views (a common occurrance), you can't simply ask for views by attributes. That is, unless you specify additional attributes that separate duplicates. Using `cid`s solves this problem as it allows for direct references to views.
 
