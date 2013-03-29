@@ -178,14 +178,15 @@ code > span.er { color: #ff0000; font-weight: bold; }
 </ul></li>
 </ul></li>
 <li><a href="#common-problems-solutions">Common Problems &amp; Solutions</a><ul>
-<li><a href="#view-nesting">View Nesting</a></li>
-<li><a href="#what-is-the-best-way-to-manage-models-in-nested-views">What is the best way to manage models in nested Views?</a></li>
-<li><a href="#rendering-parent-view-from-child">Rendering Parent View from Child</a></li>
-<li><a href="#disposing-view-hierarchies">Disposing View hierarchies</a></li>
-<li><a href="#rendering-view-hierarchies">Rendering View hierarchies</a></li>
+<li><a href="#working-with-nested-views">Working With Nested Views</a></li>
+<li><a href="#managing-models-in-nested-views">Managing Models In Nested Views</a></li>
+<li><a href="#rendering-a-parent-view-from-a-child-view">Rendering A Parent View From A Child View</a></li>
+<li><a href="#disposing-view-hierarchies">Disposing View Hierarchies</a></li>
+<li><a href="#rendering-view-hierarchies">Rendering View Hierarchies</a></li>
+<li><a href="#working-with-nested-models-or-collections">Working With Nested Models Or Collections</a></li>
 <li><a href="#better-model-property-validation">Better Model Property Validation</a></li>
-<li><a href="#multiple-backbone-versions">Multiple Backbone versions</a></li>
-<li><a href="#building-model-and-view-hierarchies">Building Model and View hierarchies</a></li>
+<li><a href="#avoiding-conflicts-with-multiple-backbone-versions">Avoiding Conflicts With Multiple Backbone Versions</a></li>
+<li><a href="#building-model-and-view-hierarchies">Building Model And View Hierarchies</a></li>
 <li><a href="#event-aggregators-and-mediators">Event Aggregators And Mediators</a><ul>
 <li><a href="#event-aggregator">Event Aggregator</a><ul>
 <li><a href="#backbones-event-aggregator">Backbone’s Event Aggregator</a><ul>
@@ -4330,9 +4331,9 @@ To see Thorax in action on a large scale website visit walmart.com on any Androi
 <h1 id="common-problems-solutions"><a href="#TOC">Common Problems &amp; Solutions</a></h1>
 <p>In this section, we will review a number of common problems developers often experience once they’ve started to work on relatively non-trivial projects using Backbone.js, as well as present potential solutions.</p>
 <p>Perhaps the most frequent of these questions surround how to do more with Views. If you are interested in discovering how to work with nested Views, learn about view disposal and inheritance, this section will hopefully have you covered.</p>
-<h4 id="view-nesting"><a href="#TOC">View Nesting</a></h4>
+<h4 id="working-with-nested-views"><a href="#TOC">Working With Nested Views</a></h4>
 <p><strong>Problem</strong></p>
-<p>What is the best approach for rendering and appending Subviews in Backbone.js?</p>
+<p>What is the best approach for rendering and appending nested Views (or Subviews) in Backbone.js?</p>
 <p><strong>Solution 1</strong></p>
 <p>Since pages are composed of nested elements and Backbone views correspond to elements within the page, nesting views is an intuitive approach to managing a hierarchy of elements.</p>
 <p>The best way to combine views is simply using:</p>
@@ -4436,8 +4437,8 @@ To see Thorax in action on a large scale website visit walmart.com on any Androi
 <span class="kw">var</span> OuterView = <span class="kw">Backbone.View</span>.<span class="fu">extend</span>({
     <span class="dt">initialize</span>: <span class="kw">function</span>() {
         <span class="kw">this</span>.<span class="fu">children</span> = {};
-        <span class="kw">var</span> child = <span class="kw">new</span> <span class="kw">Backbone</span>.<span class="fu">View</span>();
-        <span class="kw">this</span>.<span class="fu">children</span>[<span class="kw">child</span>.<span class="fu">cid</span>] = child;
+        <span class="kw">this</span>.<span class="fu">child</span> = <span class="kw">new</span> <span class="kw">Backbone</span>.<span class="fu">View</span>();
+        <span class="kw">this</span>.<span class="fu">children</span>[<span class="kw">this</span>.<span class="fu">child</span>.<span class="fu">cid</span>] = <span class="kw">this</span>.<span class="fu">child</span>;
     },
 
     <span class="dt">render</span>: <span class="kw">function</span>() {
@@ -4455,7 +4456,10 @@ To see Thorax in action on a large scale website visit walmart.com on any Androi
 </ul>
 <p>The Backbone extensions <a href="#marionette">Marionette</a> and <a href="#thorax">Thorax</a> provide logic for nesting views, and rendering collections where each item has an associated view. Marionette provides APIs in JavaScript while Thorax provides APIs via Handlebars template helpers. We will examine both of these in an upcoming chapter.</p>
 <p>(Thanks to <a href="http://stackoverflow.com/users/299189/lukas">Lukas</a> and <a href="http://stackoverflow.com/users/154765/ian-storm-taylor">Ian Taylor</a> for these tips).</p>
-<h4 id="what-is-the-best-way-to-manage-models-in-nested-views"><a href="#TOC">What is the best way to manage models in nested Views?</a></h4>
+<h4 id="managing-models-in-nested-views"><a href="#TOC">Managing Models In Nested Views</a></h4>
+<p><strong>Problem</strong></p>
+<p>What is the best way to manage models in nested views?</p>
+<p><strong>Solution</strong></p>
 <p>In order to reach attributes on related models in a nested setup, models require some prior knowledge of each other, something which Backbone doesn’t implicitly handle out of the box.</p>
 <p>One approach is to make sure each child model has a <q>parent</q> attribute. This way you can traverse the nesting first up to the parent and then down to any siblings that you know of. So, assuming we have models modelA, modelB and modelC:</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript">
@@ -4510,7 +4514,7 @@ ViewB = <span class="kw">Backbone.View</span>.<span class="fu">extend</span>({
 <span class="co">// viewA will create its own instance of ViewB</span>
 <span class="co">// from inside the initialize() method</span>
 <span class="kw">var</span> viewA = <span class="kw">new</span> ViewA({ <span class="dt">model</span>: ModelA });</code></pre>
-<h4 id="rendering-parent-view-from-child"><a href="#TOC">Rendering Parent View from Child</a></h4>
+<h4 id="rendering-a-parent-view-from-a-child-view"><a href="#TOC">Rendering A Parent View From A Child View</a></h4>
 <p><strong>Problem</strong></p>
 <p>How would one render a Parent View from one of its Children?</p>
 <p><strong>Solution</strong></p>
@@ -4530,9 +4534,8 @@ ViewB = <span class="kw">Backbone.View</span>.<span class="fu">extend</span>({
 <span class="kw">this</span>.<span class="fu">trigger</span>(<span class="ch">&#39;somethingHappened&#39;</span>);</code></pre>
 <p>The child will trigger a <q>somethingHappened</q> event and the parent’s render function will be called.</p>
 <p>(Thanks to Tal <a href="http://stackoverflow.com/users/269666/tal-bereznitskey">Bereznitskey</a> for this tip)</p>
-<h4 id="disposing-view-hierarchies"><a href="#TOC">Disposing View hierarchies</a></h4>
+<h4 id="disposing-view-hierarchies"><a href="#TOC">Disposing View Hierarchies</a></h4>
 <p><strong>Problem</strong></p>
-<p>In the last question, we looked at how to effectively dispose of views to decrease memory usage.</p>
 <p>Where your application is setup with multiple Parent and Child Views, it is also common to desire removing any DOM elements associated with such views as well as unbinding any event handlers tied to child elements when you no longer require them.</p>
 <p><strong>Solution</strong></p>
 <p>The solution in the last question should be enough to handle this use case, but if you require a more explicit example that handles children, we can see one below:</p>
@@ -4541,7 +4544,6 @@ ViewB = <span class="kw">Backbone.View</span>.<span class="fu">extend</span>({
         <span class="kw">this</span>.<span class="fu">onClose</span>();
     }
     <span class="kw">this</span>.<span class="fu">remove</span>();
-    <span class="kw">this</span>.<span class="fu">unbind</span>();
 };
 
 NewView = <span class="kw">Backbone.View</span>.<span class="fu">extend</span>({
@@ -4569,7 +4571,7 @@ NewChildView = <span class="kw">Backbone.View</span>.<span class="fu">extend</sp
 <p>In most cases, the view removal should not affect any associated models. For example, if you are working on a blogging application and you remove a view with comments, perhaps another view in your app shows a selection of comments and resetting the collection would affect those views as well.</p>
 <p>(Thanks to <a href="http://stackoverflow.com/users/906136/dira">dira</a> for this tip)</p>
 <p>Note: You may also be interested in reading the about Marionette Composite Views in the Extensions part of the book.</p>
-<h4 id="rendering-view-hierarchies"><a href="#TOC">Rendering View hierarchies</a></h4>
+<h4 id="rendering-view-hierarchies"><a href="#TOC">Rendering View Hierarchies</a></h4>
 <p><strong>Problem</strong></p>
 <p>Let us say you have a Collection, where each item in the Collection could itself be a Collection. You can render each item in the Collection, and indeed can render any items which themselves are Collections. The problem you might have is how to render HTML that reflects the hierarchical nature of the data structure.</p>
 <p><strong>Solution</strong></p>
@@ -4578,6 +4580,31 @@ NewChildView = <span class="kw">Backbone.View</span>.<span class="fu">extend</sp
 <p>It can render a single model with a template. It can also take a collection from that model and for each model in that collection, render a view. By default it uses the same composite view type that you’ve defined to render each of the models in the collection. All you have to do is tell the view instance where the collection is, via the initialize method, and you’ll get a recursive hierarchy rendered.</p>
 <p>There is a working demo of this in action available <a href="http://jsfiddle.net/derickbailey/AdWjU/">online</a>.</p>
 <p>And you can get the source code and documentation for <a href="https://github.com/marionettejs/backbone.marionette">Marionette</a> too.</p>
+<h4 id="working-with-nested-models-or-collections"><a href="#TOC">Working With Nested Models Or Collections</a></h4>
+<p><strong>Problem</strong></p>
+<p>Backbone doesn’t include support for nested models or collections out of the box, favoring the use of good patterns for modeling your structured data on the client side. How do I work around this?</p>
+<p><strong>Solution</strong></p>
+<p>As we’ve seen, it’s common to create collections representing groups of models using Backbone. It’s also however common to wish to nest collections within models, depending on the type of application you are working on.</p>
+<p>Take for example a Building model that contains many Room models which could sit in a Rooms collection.</p>
+<p>You could expose a <code>this.rooms</code> collection for each building, allowing you to lazy-load rooms once a building has been opened.</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> Building = <span class="kw">Backbone.Model</span>.<span class="fu">extend</span>({
+
+    <span class="dt">initialize</span>: <span class="kw">function</span>(){
+        <span class="kw">this</span>.<span class="fu">rooms</span> = <span class="kw">new</span> Rooms;
+        <span class="kw">this</span>.<span class="fu">rooms</span>.<span class="fu">url</span> = <span class="ch">&#39;/building/&#39;</span> + <span class="kw">this</span>.<span class="fu">id</span> + <span class="ch">&#39;/rooms&#39;</span>;
+        <span class="kw">this</span>.<span class="fu">rooms</span>.<span class="fu">on</span>(<span class="st">&quot;reset&quot;</span>, <span class="kw">this</span>.<span class="fu">updateCounts</span>);
+    },
+
+    <span class="co">// ...</span>
+
+});
+
+<span class="co">// Create a new building model</span>
+<span class="kw">var</span> townHall = <span class="kw">new</span> Building;
+
+<span class="co">// once opened, lazy-load the rooms</span>
+<span class="kw">townHall.rooms</span>.<span class="fu">fetch</span>({<span class="dt">reset</span>: <span class="kw">true</span>});</code></pre>
+<p>There are also a number of Backbone plugins which can help with nested data structures, such as <a href="https://github.com/PaulUithol/Backbone-relational">Backbone Relational</a>. This plugin handles one-to-one, one-to-many and many-to-one relations between models for Backbone and has some excellent <a href="http://backbonerelational.org/">documentation</a>.</p>
 <h4 id="better-model-property-validation"><a href="#TOC">Better Model Property Validation</a></h4>
 <p><strong>Problem</strong></p>
 <p>As we learned earlier in the book, the <code>validate</code> method on a Model is called by <code>set</code> (when the validate option is set) and <code>save</code>, and is passed the model attributes updated with the values passed to these methods.</p>
@@ -4757,9 +4784,9 @@ $(<span class="kw">function</span>($) {
 <span class="kw">user</span>.<span class="fu">set</span>({ <span class="ch">&#39;firstname&#39;</span>: <span class="ch">&#39;Greg&#39;</span> }, {<span class="dt">validate</span>: <span class="kw">true</span>, <span class="dt">validateAll</span>: <span class="kw">false</span>});</code></pre>
 <p>That’s it!</p>
 <p>The Backbone.validateAll logic doesn’t override the default Backbone logic by default and so it’s perfectly capable of being used for scenarios where you might care more about field-validation <a href="http://jsperf.com/backbone-validateall">performance</a> as well as those where you don’t. Both solutions presented in this section should work fine however.</p>
-<h4 id="multiple-backbone-versions"><a href="#TOC">Multiple Backbone versions</a></h4>
+<h4 id="avoiding-conflicts-with-multiple-backbone-versions"><a href="#TOC">Avoiding Conflicts With Multiple Backbone Versions</a></h4>
 <p><strong>Problem</strong></p>
-<p>In some instances it may be necessary to use multiple versions of Backbone in the same project.</p>
+<p>In instances out of your control, you may have to work around having more than one version of Backbone in the same page. How do you work around this without causing conflicts?</p>
 <p><strong>Solution</strong></p>
 <p>Like most client-side projects, Backbone’s code is wrapped in an immediately-invoked function expression:</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript">(<span class="kw">function</span>(){
@@ -4778,7 +4805,7 @@ $(<span class="kw">function</span>($) {
 <span class="co">// Backbone19 refers to the most recently loaded version,</span>
 <span class="co">// and `window.Backbone` will be restored to the previously</span>
 <span class="co">// loaded version</span></code></pre>
-<h4 id="building-model-and-view-hierarchies"><a href="#TOC">Building Model and View hierarchies</a></h4>
+<h4 id="building-model-and-view-hierarchies"><a href="#TOC">Building Model And View Hierarchies</a></h4>
 <p><strong>Problem</strong></p>
 <p>How does inheritence work with Backbone? How can I share code between similar models and views? How can I call methods that have been overridden?</p>
 <p><strong>Solution</strong></p>
