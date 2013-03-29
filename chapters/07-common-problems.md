@@ -290,8 +290,6 @@ The child will trigger a "somethingHappened" event and the parent's render funct
 
 **Problem**
 
-In the last question, we looked at how to effectively dispose of views to decrease memory usage.
-
 Where your application is setup with multiple Parent and Child Views, it is also common to desire removing any DOM elements associated with such views as well as unbinding any event handlers tied to child elements when you no longer require them.
 
 **Solution**
@@ -304,7 +302,6 @@ Backbone.View.prototype.close = function() {
         this.onClose();
     }
     this.remove();
-    this.unbind();
 };
 
 NewView = Backbone.View.extend({
