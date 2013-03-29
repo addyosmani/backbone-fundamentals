@@ -18,7 +18,7 @@ For this reason jQMobile follows two main principles, we first need to understan
 
 #### 1. The Principle of progressive widget enhancement by jQMobile
 
-JQuery Mobile follows he <b>progressive enhancement</b> and responsive web design principle by <HTML-5 markup-driven definitions</b> and <b>configurations</b>.
+JQuery Mobile follows the <b>progressive enhancement</b> and <b>responsive web design</b> principle by <b>HTML-5 markup-driven definitions</b> and <b>configurations</b>.
 
 A page in jQuery Mobile consists of an element with a <b>data-role="page"</b> attribute.
 Within the <b>page</b> container, any valid HTML markup can be used, but for typical pages in jQM, the immediate children are divs with <b>data-role="header"</b>, <b>data-role="content"</b>, and <b>data-role="footer"</b>.
@@ -60,34 +60,39 @@ A initial HTML page looks like:
 </html>
 ```
 
-<i>Example HTML setup of an jQuery Mobile page</i>
+<i>Example HTML setup of a basic jQuery Mobile page</i>
 <br />
 
-JQuery Mobiles will transform the written HTML definition by the <b>progressive widget enhancement API</b>.
+JQuery Mobiles will transform the written HTML definition by the <b>progressive widget enhancement API</b> to HTML and CSS.
+It also executes JavaScript, conditioned by configurations, attribute properties and runtime specific settings.
 
-See the results below:
+This implies: Whenever HTML content is added or changed, it need to be handled by the progressive widget enhancement of jQuery Mobile.
 
 ![](../img/chapter10-1-1-1.png)
 
-<i>Default HTML view in comparison to the jQuery Mobile enhancement</i>
+<i>Comparison of the user interface of the default HTML to the jQuery Mobile enhanced version</i>
 <br />
 #### 2. Understand the navigation of jQueryMobile
 
 
 The navigation system controls its application lifecycle by automatically "hijacking" standard links and form submissions and turning them into an AJAX request.
-Whenever a link is clicked or a form is submitted, that event is automatically intercepted and is used to issue an AJAX request based on the href or form action instead of reloading the page. 
+Whenever a link is clicked or a form is submitted, that event is automatically intercepted and is used to e.g. issue an AJAX request based on the href or form action, instead of reloading the page.
 
-When the requested page loads, jQuery Mobile parses the document for an element with the <b>data-role="page"</b> attribute and inserts that code into the DOM of the original page.
+When the page document is requested, jQuery Mobile searches the document for all elements with the <b>data-role="page"</b> attribute, parses its contents and inserts that code into the DOM of the original page.
+After the new page is prepared, the JavaScript of jQuery Mobile will trigger a transition to show the new page and hides the HTML of the previous page in the DOM.
+
 Next, any widgets in the incoming page are enhanced to apply all the styles and behavior. The rest of the incoming page is discarded so any scripts, stylesheets or other information will not be included.
 
-Roughly speaking, having its own event cycle, it is a tiny MVC framework which enables features like <b>progressive widget enhancement, prefetching, cacheing and multi-page templating by HTML configurations</b>, innately.
+Roughly speaking, having its own event cycle, it is a tiny MVC framework which enables features like
+<b>progressive widget enhancement, prefetching, caching and multi-page templating by HTML configurations</b>,innately.
 In general, the developer does not need to know about its event-workflow, but only about how to apply HTML based configurations, which will take action within the event phase.
-The chapter <b>Intercept jQuery Mobile events</b> explains, goes into detail, how to handle special scenarios, when fine grained JavaScript adaptiona need to be applied.
+The chapter <b>Intercept jQuery Mobile events</b> goes into detail, how to handle special scenarios, when fine grained JavaScript adaptions need to be applied.
 
 
-To e.g. navigate to the <b>secondpage</b> with the appearance of a modal dialog with fade-transition, the <b>data-rel="dialog"</b>, <b>data-transition="fade"</b> and <b>href="index.html#secondpage"</b> attributes can be added to the anchor tag.
-Via the multi-page templating feature, you can add as many pages as you want to the same HTML file within the body-tag, 
-by defining a div with <b>data-role="page"</b> or <b>data-role="dialog"</b> and the id, being the value of the link after the hashbang like:
+To e.g. navigate to the <b>secondpage</b> with the appearance of a modal dialog and render a fade-transition, add the <b>data-rel="dialog"</b>, <b>data-transition="fade"</b> and <b>href="index.html#secondpage"</b> attributes to the anchor tag.
+
+Via the <b>multi-page templating feature</b>, you can add as many pages as you want to the same HTML file within the body-tag,
+by defining a div with <b>data-role="page"</b> or <b>data-role="dialog"</b> and the <b>id</b>, being the value of the link after the hashbang:
 
 
 ```html
