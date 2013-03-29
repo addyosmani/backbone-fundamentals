@@ -263,13 +263,7 @@ In this respect, contrary to what might be mentioned in the official documentati
 
 ## What does MVC give us?
 
-To summarize, the separation of concerns in MVC facilitates modularization of an application's functionality and enables:
-
-* Easier overall maintenance. When updates need to be made to the application it is clear whether the changes are data-centric, meaning changes to Models and possibly Controllers, or merely visual, meaning changes to Views.
-* Decoupling Models and Views means that it's straight-forward to write unit tests for business logic
-* Duplication of low-level Model and Controller code is eliminated across the application
-* Depending on the size of the application and separation of roles, this modularity allows developers responsible for core logic and developers working on the user-interfaces to work simultaneously
-
+To summarize, the MVC pattern helps you keep your application logic separate from your user interface, making it easier to change and maintain both. Thanks to this separation of logic, it is more clear where changes to your data, interface or business logic need to be made and for what your unit tests should be written. 
 
 ### Delving Deeper into MVC
 
@@ -302,7 +296,6 @@ If you are interested in learning more about the variation of MVC which Backbone
 * Extensive eventing system. It's [trivial](http://lostechies.com/derickbailey/2011/07/19/references-routing-and-the-event-aggregator-coordinating-views-in-backbone-js/) to add support for pub/sub in Backbone
 * Prototypes are instantiated with the ```new``` keyword, which some developers prefer
 * Agnostic about templating frameworks, however Underscore's micro-templating is available by default. Backbone works well with libraries like Handlebars
-* Doesn't support deeply nested Models, though there are Backbone plugins such as [Backbone-relational](https://github.com/PaulUithol/Backbone-relational) which can help
 * Clear and flexible conventions for structuring applications. Backbone doesn't force usage of all of its components and can work with only those needed.
 
 ### Used by
