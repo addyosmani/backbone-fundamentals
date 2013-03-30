@@ -1,0 +1,1 @@
+pngtest.png: The test image used by libpng.

@@ -1,0 +1,36 @@
+#!/bin/sh
+
+set -u
+set -e
+trap onexit INT
+trap onexit TERM
+trap onexit EXIT
+
+TMPDIR=
+
+onexit()
+{
+	if [ ! "$TMPDIR" = "" ]; then
+		rm -rf $TMPDIR
+	fi
+}
+
+PACKAGE_NAME=@PACKAGE_NAME@
+VERSION=@VERSION@
+SRCDIR=@abs_top_srcdir@
+
+umask 022
+rm -f $PACKAGE_NAME-$VERSION-cygwin.tar.bz2
+TMPDIR=`mktemp -d /tmp/ljtbuild.XXXXXX`
+__PWD=`pwd`
+make install DESTDIR=$TMPDIR/pkg mandir=/opt/$PACKAGE_NAME/man \
+	docdir=/usr/share/doc/$PACKAGE_NAME-$VERSION \
+	exampledir=/usr/share/doc/$PACKAGE_NAME-$VERSION
+rm $TMPDIR/pkg/opt/$PACKAGE_NAME/lib/*.la
+ln -fs lib $TMPDIR/pkg/opt/$PACKAGE_NAME/lib32
+cd $TMPDIR/pkg
+tar cfj ../$PACKAGE_NAME-$VERSION-cygwin.tar.bz2 *
+cd $__PWD
+mv $TMPDIR/*.tar.bz2 .
+
+exit 0

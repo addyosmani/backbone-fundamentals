@@ -1,0 +1,5 @@
+<div data-role="fieldcontain">
+    <label for="todoDescription">Todo Description</label>
+    <input type="text" name="todoDescription" id="todoDescription" value="{{title}}" />
+</div>
+    <a id="saveDescription" href="#" data-role="button" data-mini="true">Save</a>

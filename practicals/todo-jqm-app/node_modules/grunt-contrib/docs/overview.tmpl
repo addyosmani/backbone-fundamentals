@@ -1,0 +1,9 @@
+# Overview
+This collection contains all <%= plugins.length %> grunt-contrib plugins.  We have made it available as a convenience for first-time users who would like to explore what Grunt has to offer.  After review, it is recommended that you uninstall this collection and specify the plugins you wish to use individually.
+
+A listing of each plugin and the current version included in this package is listed below.
+
+<% _.each(plugins, function(plugin) { %>
+## [<%= plugin.name %>](<%= plugin.homepage %>) (v<%= plugin.version %>) [![Build Status](https://secure.travis-ci.org/gruntjs/<%= plugin.name %>.png?branch=master)](http://travis-ci.org/gruntjs/<%= plugin.name %>)
+> <%= plugin.description %>
+<% }); %>

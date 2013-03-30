@@ -1,0 +1,329 @@
+#!/bin/sh
+
+trap "rm -f conftest* core a.out; exit 1" 1 2 3 15
+
+prefix="${prefix-/usr/local}"
+exec_prefix="${exec_prefix-\$(prefix)}"
+bindir="${bindir-\$(exec_prefix)/bin}"
+mandir="${mandir-\$(prefix)/man}"
+man1dir="${man1dir-\$(mandir)/man1}"
+
+cc="${CC-gcc}"
+#cc="${CC-clang}"
+#cc="${CC-c99}"
+cflags="$CFLAGS"
+
+enable_debug=0
+
+with_system_libpng=0
+with_system_zlib=0
+
+with_preconfigured_libpng=1
+with_preconfigured_zlib=0
+
+for arg in "$@"
+do
+    case "$arg" in
+    -- )
+        option="$arg"
+        ;;
+    --* )
+        option=`expr "X$arg" : 'X-\(.*\)'`
+        ;;
+    * )
+        option="$arg"
+        ;;
+    esac
+    case "$arg" in
+    *=* )
+        optarg=`expr "X$arg" : 'X[^=]*=\(.*\)'`
+        ;;
+    * )
+        optarg=""
+        ;;
+    esac
+    case "$option" in
+    -help | -hel | -he | -h )
+        echo "Usage:"
+        echo "    $0 [options]"
+        echo "Options:"
+        echo "    -h, -help               Show this help"
+        echo "Installation directories:"
+        echo "    -prefix=PREFIX          Install architecture-independent files in PREFIX"
+        echo "                            [default: $prefix]"
+        echo "    -exec-prefix=EPREFIX    Install architecture-dependent files in EPREFIX"
+        echo "                            [default: PREFIX]"
+        echo "    -bindir=DIR             Install executable in DIR [default: EPREFIX/bin]"
+        echo "    -mandir=DIR             Install manual in DIR [default: PREFIX/man]"
+        echo "Optional features:"
+        echo "    -enable-debug           Enable debug build flags and run-time checks"
+        echo "Optional packages:"
+        echo "    -with-system-libpng     Use the system-supplied libpng"
+        echo "                            [default: false]"
+        echo "    -with-system-zlib       Use the system-supplied zlib"
+        echo "                            [default: with-system-libpng]"
+        echo "Environment variables:"
+        echo "    CC                      C compiler command"
+        echo "    LD                      Linker command"
+        echo "    CFLAGS                  C compiler flags (e.g. -O3)"
+        echo "    CPPFLAGS                C preprocessor flags (e.g. -I DIR)"
+        echo "    LDFLAGS                 Linker flags (e.g. -L DIR)"
+        echo "    LIBS                    Additional libraries (e.g. -lfoo)"
+        exit 0
+        ;;
+    -prefix | -prefi | -pref | -pre | -pr | -p )
+        prefix="$2"
+        shift
+        ;;
+    -prefix=* | -prefi=* | -pref=* | -pre=* | -pr=* | -p=* )
+        prefix="$optarg"
+        ;;
+    -exec-prefix | -exec_prefix | -exec-prefi | -exec_prefi \
+    | -exec-pref |  -exec_pref | -exec-pre | -exec_pre \
+    | -exec-pr | -exec_pr | -exec-p | -exec_p | exec- | -exec_ \
+    | -exec | -exe | -ex | -e )
+        exec_prefix="$2"
+        shift
+        ;;
+    -exec-prefix=* | -exec_prefix=* | -exec-prefi=* | -exec_prefi=* \
+    | -exec-pref=* |  -exec_pref=* | -exec-pre=* | -exec_pre=* \
+    | -exec-pr=* | -exec_pr=* | -exec-p=* | -exec_p=* | exec-=* | -exec_=* \
+    | -exec=* | -exe=* | -ex=* | -e=* )
+        exec_prefix="$optarg"
+        ;;
+    -bindir | -bindi | -bind | -bin | -bi | -b )
+        bindir="$2"
+        shift
+        ;;
+    -bindir=* | -bindi=* | -bind=* | -bin=* | -bi=* | -b=* )
+        bindir="$optarg"
+        ;;
+    -mandir | -mandi | -mand | -man | -ma | -m )
+        mandir="$2"
+        shift
+        ;;
+    -mandir=* | -mandi=* | -mand=* | -man=* | -ma=* | -m=* )
+        mandir="$optarg"
+        ;;
+    -enable-debug )
+        enable_debug=1
+        ;;
+    -disable-debug )
+        enable_debug=0
+        ;;
+    -with-system-libpng )
+        with_system_libpng=1
+        # Must use the system-supplied zlib with the system-supplied libpng.
+        with_system_zlib=1
+        ;;
+    -without-system-libpng )
+        with_system_libpng=0
+        ;;
+    -with-system-zlib )
+        with_system_zlib=1
+        ;;
+    -without-system-zlib )
+        with_system_zlib=0
+        # Can't use the system-supplied libpng without the system-supplied zlib.
+        with_system_libpng=0
+        ;;
+    * )
+        echo "error: unknown option: $arg"
+        echo "Type \"$0 -help\" for help"
+        exit 64  # EX_USAGE
+        ;;
+    esac
+done
+
+if test "$with_system_libpng" -ne 0
+then
+    sed_config_libpng="
+        s:@USE_SYSTEM_LIBPNG_TRUE@::g
+        s:@USE_SYSTEM_LIBPNG_FALSE@:#:g
+    "
+else
+    sed_config_libpng="
+        s:@USE_SYSTEM_LIBPNG_FALSE@::g
+        s:@USE_SYSTEM_LIBPNG_TRUE@:#:g
+    "
+fi
+
+if test "$with_system_zlib" -ne 0
+then
+    sed_config_zlib="
+        s:@USE_SYSTEM_ZLIB_TRUE@::g
+        s:@USE_SYSTEM_ZLIB_FALSE@:#:g
+    "
+else
+    sed_config_zlib="
+        s:@USE_SYSTEM_ZLIB_FALSE@::g
+        s:@USE_SYSTEM_ZLIB_TRUE@:#:g
+    "
+    case `uname -s` in
+    mingw* | MINGW* | windows* | WINDOWS* )
+        with_preconfigured_zlib=1
+        sed_config_zlib="
+            $sed_config_zlib
+            s:@ZLIB_MK@:win32/Makefile.gcc:g
+            /MAKE.*ZLIB_MK/ s:distclean:clean:
+        "
+        ;;
+    esac
+fi
+
+test=conftest$$
+cat > $test.c <<EOM
+int hello() { return 42; }
+EOM
+
+gccish=0
+case "$cc" in
+*gcc* | *clang* )
+    echo "Checking for $cc..."
+    if ($cc -c $cflags $test.c) 2>/dev/null
+    then
+        gccish=1
+    fi
+    ;;
+esac
+
+rm -f $test.c $test.o
+
+if test $gccish -ne 0
+then
+    CC="${CC-$cc}"
+    CFLAGS="${CFLAGS--O2 -Wall -Wextra}"
+else
+    CC="${CC-cc}"
+    CFLAGS="${CFLAGS--O}"
+fi
+
+if test $enable_debug -ne 0
+then
+    CPPFLAGS="$CPPFLAGS -DDEBUG -D_DEBUG"
+    CFLAGS="$CFLAGS -g"
+    LDFLAGS="$LDFLAGS -g"
+fi
+
+if test $with_system_libpng -eq 0
+then
+    if test "$with_preconfigured_libpng" -ne 0
+    then
+        echo "Using pre-configured libpng..."
+        if test $gccish -ne 0
+        then
+            sed_config_libpng="
+                $sed_config_libpng
+                s:@LIBPNG_MK@:scripts/makefile.gcc:g
+            "
+        else
+            sed_config_libpng="
+                $sed_config_libpng
+                s:@LIBPNG_MK@:scripts/makefile.std:g
+            "
+        fi
+    else
+        echo "Configuring libpng..."
+        (cd src/libpng && ./configure)
+        if test $? -ne 0
+        then
+            echo "error: could not configure: libpng"
+            exit 1
+        fi
+    fi
+else
+    echo "Checking for system libpng..."
+    test=conftest$$
+cat > $test.c <<EOM
+#include <png.h>
+#if PNG_LIBPNG_VER < 10209
+#error This program requires libpng version 1.2.9 or higher
+#endif
+int dummy;
+EOM
+    ($CC -c $CPPFLAGS $CFLAGS $test.c) 2>/dev/null
+    status=$?
+    rm -f $test.c $test.o
+    if test $status -ne 0
+    then
+        echo "error: missing libpng or incorrect libpng version"
+        echo "note: libpng version 1.2.9 or higher is required"
+        exit 1
+    fi
+fi
+
+if test $with_system_zlib -eq 0
+then
+    if test "$with_preconfigured_zlib" -ne 0
+    then
+        echo "Using pre-configured zlib..."
+    else
+        echo "Configuring zlib..."
+        (cd src/zlib && ./configure --static)
+        if test $? -ne 0
+        then
+            echo "error: could not configure: zlib"
+            exit 1
+        fi
+    fi
+else
+    echo "Checking for system zlib..."
+    test=conftest$$
+cat > $test.c <<EOM
+#include <zlib.h>
+#if ZLIB_VERNUM < 0x1210
+#error This program requires zlib version 1.2.1 or higher.
+#endif
+int dummy;
+EOM
+    ($CC -c $CPPFLAGS $CFLAGS $test.c) 2>/dev/null
+    status=$?
+    rm -f $test.c $test.o
+    if test $status -ne 0
+    then
+        echo "error: missing zlib or incorrect zlib version"
+        echo "note: zlib version 1.2.1 or higher is required"
+        exit 1
+    fi
+fi
+
+sed_config="
+    $sed_config_libpng
+    $sed_config_zlib
+    s#@prefix@#$prefix#g
+    s#@exec_prefix@#$exec_prefix#g
+    s#@bindir@#$bindir#g
+    s#@mandir@#$mandir#g
+    s#@man1dir@#$man1dir#g
+    s#@CC@#${CC-cc}#g
+    s#@CFLAGS@#${CFLAGS--O}#g
+    s#@CPP@#${CPP-\$(CC) -E}#g
+    s#@CPPFLAGS@#${CPPFLAGS-}#g
+    s#@LD@#${LD-\$(CC)}#g
+    s#@LDFLAGS@#${LDFLAGS--s}#g
+    s#@AR@#${AR-ar}#g
+    s#@ARFLAGS@#${ARFLAGS-cru}#g
+    s#@RANLIB@#${RANLIB-ranlib}#g
+    s#@LIBS@#${LIBS-}#g
+    s#@LIBM@#${LIBM--lm}#g
+    s#@LIBZ@#${LIBZ--lz}#g
+    s#@LIBPNG@#${LIBPNG--lpng}#g
+    s#@DIFF@#${DIFF-diff -b -u}#g
+    s#@RM_F@#${RM_F-rm -f}#g
+    s#@[A-Z]*_MK@#Makefile#g
+    s# *\$##
+"
+
+for makefile in \
+    ./Makefile \
+    src/Makefile \
+    src/gifread/Makefile \
+    src/minitiff/Makefile \
+    src/opngreduc/Makefile \
+    src/optipng/Makefile \
+    src/optipng/man/Makefile \
+    src/pngxtern/Makefile \
+    src/pnmio/Makefile
+do
+    sed "$sed_config" $makefile.in > $makefile
+done

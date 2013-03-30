@@ -1,0 +1,4 @@
+/node_modules
+/lib/phantom
+/tmp
+npm-debug.log
