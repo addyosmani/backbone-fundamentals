@@ -1610,6 +1610,8 @@ Backbone.history.start();
 
 It is also possible for `Router.navigate()` to trigger the route as well as update the URL fragment.
 
+Note: The first we presented earlier is the preferred form, such as dropping a bookmark when your application transitions to a specific place. `navigate:true` is available, but it's usage is discouraged.
+
 ```javascript
 var TodoRouter = Backbone.Router.extend({
   routes: {

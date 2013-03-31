@@ -400,9 +400,9 @@ There are also a number of Backbone plugins which can help with nested data stru
 
 **Problem**
 
-As we learned earlier in the book, the `validate` method on a Model is called by `set` (when the validate option is set) and `save`, and is passed the model attributes updated with the values passed to these methods.
+As we learned earlier in the book, the `validate` method on a Model is called by `set` (when the validate option is set) and `save`. It is passed the model attributes updated with the values passed to these methods.
 
-By default, when we define a custom `validate` method, Backbone passes all of a Model's attributes through this validation each time, regardless of which model attributes are being set.
+By default, when we define a custom `validate` method, Backbone passes all of a model's attributes through this validation each time, regardless of which model attributes are being set.
 
 This means that it can be a challenge to determine which specific fields are being set or validated without being concerned about the others that aren't being set at the same time.
 

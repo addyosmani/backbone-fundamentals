@@ -204,7 +204,7 @@ An example of a server-side web application framework which tries to apply MVC t
 
 Although there's a clear separation of concerns that is MVC-like in Rails, it is actually using a different pattern called [Model2](http://en.wikipedia.org/wiki/Model2). Justifications for this include that Rails does not notify views from the model and controllers just pass model data directly to the view.
 
-That said, even for the server-side workflow of receiving a request from a URL, baking out an HTML page as a response and separating your business logic from your interface has many benefits. In the same way that keeping your UI cleanly separate from your database records is useful in server-side frameworks, it's wqually as useful to keep your UI cleanly separated from your data models in JavaScript (as we will read more about shortly).
+That said, even for the server-side workflow of receiving a request from a URL, baking out an HTML page as a response and separating your business logic from your interface has many benefits. In the same way that keeping your UI cleanly separate from your database records is useful in server-side frameworks, it's equally as useful to keep your UI cleanly separated from your data models in JavaScript (as we will read more about shortly).
 
 Other server-side implementations of MVC (such as the PHP [Zend](http://zend.com) framework) also implement the [Front Controller](http://en.wikipedia.org/wiki/Front_Controller_pattern) design pattern. This pattern layers an MVC stack behind a single point of entry. This single point of entry means that all HTTP requests (e.g., `http://www.example.com`, `http://www.example.com/whichever-page/`, etc.) are routed by the server's configuration to the same handler, independent of the URI.
 
@@ -226,7 +226,7 @@ The Server receives an HTTP request and routes it through a single entry point. 
 
 ### Client-Side MVC & Single Page Apps
 
-Several [studies](http://radar.oreilly.com/2009/07/velocity-making-your-site-fast.html) have confirmed that improvements to latency can have a positive impact on the usage and user engagement of sites and apps. This is at odds with the traditional approach to web app development which is very server-centric, requiring a complete page reload to move between one page to the next. Even with heavy caching in place, the browser still has to parse the CSS, JS and HTML and render the interface to the screen.
+Several [studies](http://radar.oreilly.com/2009/07/velocity-making-your-site-fast.html) have confirmed that improvements to latency can have a positive impact on the usage and user engagement of sites and apps. This is at odds with the traditional approach to web app development which is very server-centric, requiring a complete page reload to move from one page to the next. Even with heavy caching in place, the browser still has to parse the CSS, JavaScript, and HTML and render the interface to the screen.
 
 In addition to resulting in a great deal of duplicated content being served back to the user, this approach affects both latency and the general responsiveness of the user experience. A trend to improve perceived latency in the past few years has been to move towards building Single Page Applications (SPAs) - apps which after an initial page load are able to handle subsequent navigations and requests for data without the need for a complete reload. 
 
@@ -242,7 +242,7 @@ The basket and its data are presented in HTML. The data and its associated View 
 
 The need for fast, complex, and responsive Ajax-powered web applications demands replication of a lot of this logic on the client side, dramatically increasing the size and complexity of the code residing there. Eventually this has brought us to the point where we need MVC (or a similar architecture) implemented on the client side to better structure the code and make it easier to maintain and further extend during the application life-cycle.
 
-Through evolution, trial and error, JavaScript developers have harnessed the power of the traditional MVC pattern, leading to the development of several MVC-inspired JavaScript frameworks, such as Backbone.js.
+Through evolution and trial and error, JavaScript developers have harnessed the power of the traditional MVC pattern, leading to the development of several MVC-inspired JavaScript frameworks, such as Backbone.js.
 
 
 ### Client-Side MVC - Backbone Style
@@ -367,7 +367,7 @@ This completes our first encounter with Backbone.js. The remainder of this book 
 
 * When using Models in real-world applications we generally also need a way of persisting Models. Persistence allows us to edit and update Models with the knowledge that their most recent states will be saved somewhere, for example in a web browser's localStorage data-store or synchronized with a database.
 
-* A Model may have one (or many) Views observing it for changes. By *observing* we mean that a View has registered an interest in being informed whenever an update is made to the Model. This allows the View to ensure that what is displayed on screen and what data is contained in the model are kept in sync. Depending on your requirements, you might create a single View displaying all Model attributes, or create separate Views displaying different attributes. The important point is that the Model doesn't care how these Views are organized, it simply announces updates to its data as necessary through the framework's event system.
+* A Model may have multiple Views observing it for changes. By *observing* we mean that a View has registered an interest in being informed whenever an update is made to the Model. This allows the View to ensure that what is displayed on screen is kept in sync with the data contained in the model. Depending on your requirements, you might create a single View displaying all Model attributes, or create separate Views displaying different attributes. The important point is that the Model doesn't care how these Views are organized, it simply announces updates to its data as necessary through the framework's event system.
 
 * It is not uncommon for modern MVC/MV* frameworks to provide a means of grouping Models together. In Backbone, these groups are called "Collections." Managing Models in groups allows us to write application logic based on notifications from the group when a Model within the group changes. This avoids the need to manually observe individual Model instances. We'll see this in action later in the book. Collections are also useful for performing any aggregate computations across more than one model.
 
@@ -439,7 +439,7 @@ In this respect, contrary to what might be mentioned in the official documentati
 
 ## What does MVC give us?
 
-To summarize, the MVC pattern helps you keep your application logic separate from your user interface, making it easier to change and maintain both. Thanks to this separation of logic, it is more clear where changes to your data, interface or business logic need to be made and for what your unit tests should be written. 
+To summarize, the MVC pattern helps you keep your application logic separate from your user interface, making it easier to change and maintain both. Thanks to this separation of logic, it is more clear where changes to your data, interface, or business logic need to be made and for what your unit tests should be written. 
 
 ### Delving Deeper into MVC
 
@@ -1676,7 +1676,7 @@ See the Backbone.js documentation for full descriptions of the supported options
 
 ## Events
 
-Events are a basic inversion of control, where instead of having a function call another function by name, the second function registers interest in being called whenever the first "event" occurs.
+Events are a basic inversion of control. Instead of having one function call another by name, the second function is registered as a handler to be called when a specific event occurs.
 
 The part of your application that has to know how to call the other part of your app has been inverted. This is the core thing that makes it possible for your business logic to not have to know about how your user interface works and is the most powerful thing about the Backbone Events system.
 
@@ -2053,7 +2053,7 @@ var TodoRouter = Backbone.Router.extend({
 var myTodoRouter = new TodoRouter();
 ```
 
-Backbone offers an opt-in for HTML5 pushState support via `window.history.pushState`. This permits you to define routes such as http://backbonejs.org/just/an/example. This will be supported with automatic degradation when a user's browser doesn't support pushState. Note that it is vastly preferred that you're capable of also supporting pushState on the server side, although it is a little more difficult to implement.
+Backbone offers an opt-in for HTML5 pushState support via `window.history.pushState`. This permits you to define routes such as http://backbonejs.org/just/an/example. This will be supported with automatic degradation when a user's browser doesn't support pushState. Note that it is vastly preferred if you're capable of also supporting pushState on the server side, although it is a little more difficult to implement.
 
 **Is there a limit to the number of routers I should be using?**
 
@@ -2128,6 +2128,8 @@ Backbone.history.start();
 ```
 
 It is also possible for `Router.navigate()` to trigger the route as well as update the URL fragment.
+
+Note: The first we presented earlier is the preferred form, such as dropping a bookmark when your application transitions to a specific place. `navigate:true` is available, but it's usage is discouraged.
 
 ```javascript
 var TodoRouter = Backbone.Router.extend({
@@ -4056,13 +4058,13 @@ In this chapter we made our application persistent by binding it to a server usi
 
 # Backbone Extensions
 
-Backbone is flexible, simple and powerful, however you may find that the complexity of the application you are working on requires more than what it provides out of the box. There are certain concerns which it just doesn't address directly as one of it's goals is to be minimalist. 
+Backbone is flexible, simple, and powerful. However, you may find that the complexity of the application you are working on requires more than what it provides out of the box. There are certain concerns which it just doesn't address directly as one of it's goals is to be minimalist. 
 
-Take for example Views, which provide by default a `render` method which does nothing and produces no real results when called, despite most using it to generate HTML which a view will manage. Also look at Models and Collections which have no built-in way of handling nested hierarchies - if you require this functionality, you need to write it yourself or use a plugin.
+Take for example Views, which provide a default `render` method which does nothing and produces no real results when called, despite most implementations using it to generate the HTML that the view manages. Also, Models and Collections have no built-in way of handling nested hierarchies - if you require this functionality, you need to write it yourself or use a plugin.
 
 In these cases, there are many existing Backbone plugins which can provide advanced solutions for large-scale Backbone apps. A fairly complete list of plugins and frameworks available can be found on the Backbone [wiki](https://github.com/documentcloud/backbone/wiki/Extensions%2C-Plugins%2C-Resources). Using these add-ons, there is enough for applications of most sizes to be completed successfully.
 
-In this section of the book we will look at a few popular Backbone add-ons, including MarionetteJS and Thorax.
+In this section of the book we will look at two popular Backbone add-ons: MarionetteJS and Thorax.
 
 ## MarionetteJS (Backbone.Marionette)
 
@@ -4237,7 +4239,7 @@ The problem is caused by the model event binding in the view's `initialize` meth
 
 Since the original view is still in scope, and the second view instance is also in scope, changing data on the model will cause both view instances to respond.
 
-Fixing this is easy, though. You just need to call `off` when the view is done with its work and ready to be closed. To do this, add a `close` method to the view.
+Fixing this is easy, though. You just need to call `stopListening` when the view is done with its work and ready to be closed. To do this, add a `close` method to the view.
 
 ```javascript
 var ZombieView = Backbone.View.extend({
@@ -4262,7 +4264,7 @@ var ZombieView = Backbone.View.extend({
 });
 ```
 
-Then call `close` on the first instance when it is no longer needed, and only one view instance will remain alive. For more information about the `listenTo` and `stopListening` functions, see the earlier chapter on internals and Derick's post on [Managing Events As Relationships, Not Just Resources](http://lostechies.com/derickbailey/2013/02/06/managing-events-as-relationships-not-just-references/).
+Then call `close` on the first instance when it is no longer needed, and only one view instance will remain alive. For more information about the `listenTo` and `stopListening` functions, see the earlier Backbone Basics chapter and Derick's post on [Managing Events As Relationships, Not Just Resources](http://lostechies.com/derickbailey/2013/02/06/managing-events-as-relationships-not-just-references/).
 
 ```javascript
 var Jeremy = new Person({
@@ -4897,11 +4899,9 @@ Thorax was created by Ryan Eastridge and Kevin Decker to create Walmart's mobile
 
 ### Hello World
 
-When creating a new View, the options you pass — after being merged into any default options already present on the view — are attached to the view as this.options for future reference.
+In Backbone, when creating a new view, options passed are merged into any default options already present on a view and are exposed via `this.options` for later reference.
 
-In Backbone, when creating a new view, options passed are merged into any default options already present on a view and are exposed via `this.options` for later reference. `Thorax.View` differs from `Backbone.View` in that there is no `options` object. 
-
-All arguments passed to the constructor become properties of the view, which in turn become available to the `template`:
+`Thorax.View` differs from `Backbone.View` in that there is no `options` object. All arguments passed to the constructor become properties of the view, which in turn become available to the `template`:
 
 ```javascript
     var view = new Thorax.View({
@@ -4911,7 +4911,7 @@ All arguments passed to the constructor become properties of the view, which in 
     view.appendTo('body');
 ```
 
- In most examples in this chapter a `template` property will be specified. In larger projects including the boilerplate projects provided on the Thorax website a `name` property would instead be used and a `template` of the same file name in your project would automatically be assigned to the view.
+In most examples in this chapter a `template` property will be specified. In larger projects including the boilerplate projects provided on the Thorax website a `name` property would instead be used and a `template` of the same file name in your project would automatically be assigned to the view.
 
  If a `model` is set on a view, its attributes also become available to the template:
 
@@ -5228,7 +5228,7 @@ render : function () {
 
 **Solution 2**
 
-Beginners sometimes also try using `setElement` to solve tis problem, however keep in mind that using this method is an easy way to shoot yourself in the foot. Try to avoid if possible:
+Beginners sometimes also try using `setElement` to solve this problem, however keep in mind that using this method is an easy way to shoot yourself in the foot. Avoid using this approach when the first solution is a viable option:
 
 
 ```javascript
@@ -5584,9 +5584,9 @@ There are also a number of Backbone plugins which can help with nested data stru
 
 **Problem**
 
-As we learned earlier in the book, the `validate` method on a Model is called by `set` (when the validate option is set) and `save`, and is passed the model attributes updated with the values passed to these methods.
+As we learned earlier in the book, the `validate` method on a Model is called by `set` (when the validate option is set) and `save`. It is passed the model attributes updated with the values passed to these methods.
 
-By default, when we define a custom `validate` method, Backbone passes all of a Model's attributes through this validation each time, regardless of which model attributes are being set.
+By default, when we define a custom `validate` method, Backbone passes all of a model's attributes through this validation each time, regardless of which model attributes are being set.
 
 This means that it can be a challenge to determine which specific fields are being set or validated without being concerned about the others that aren't being set at the same time.
 
@@ -6019,7 +6019,7 @@ var Note = Backbone.Model.extend({
 
 **Problem** 
 
-How do I channel multiple event sources through a single object?**
+How do I channel multiple event sources through a single object?
 
 **Solution**
 
@@ -6035,7 +6035,7 @@ The core idea of the Event Aggregator, according to Martin Fowler, is to channel
 
 ######Backbone’s Event Aggregator
 
-The easiest event aggregator to show is that of Backbone.js – it’s built in to the Backbone object directly.
+The easiest event aggregator to show is that of Backbone.js – it’s built into the Backbone object directly.
 
 ```javascript
 var View1 = Backbone.View.extend({
@@ -6074,7 +6074,7 @@ Did you know that jQuery has a built-in event aggregator? They don’t call it t
 ```
 $("#mainArticle").on("click", function(e){
 
-  // handle the event that any element underneath of our #mainArticle element
+  // handle click event on any element underneath our #mainArticle element
 
 });
 ```
@@ -6083,11 +6083,11 @@ This code sets up an event handler function that waits for an unknown number of 
 
 #####Mediator
 
-A Mediator is an object that coordinates interactions (logic and behavior) between multiple objects. It makes decisions on when to call which objects, based on the actions (or in-action) of other objects and input.
+A Mediator is an object that coordinates interactions (logic and behavior) between multiple objects. It makes decisions on when to call which objects, based on the actions (or inaction) of other objects and input.
 
 **A Mediator For Backbone**
 
-Backbone doesn’t have the idea of a mediator built in to it like a lot of other MV* frameworks do. But that doesn’t mean you can’t write one in 1 line of code:
+Backbone doesn’t have the idea of a mediator built into it like a lot of other MV* frameworks do. But that doesn’t mean you can’t write one using a single line of code:
 
 ```javascript
 var mediator = {};
@@ -6121,11 +6121,11 @@ var orgChart = {
 }
 ```
 
-This example shows a very basic implementation of a mediator object with Backbone based objects that can trigger and subscribe to events. I’ve often referred to this type of object as a “workflow” object in the past, but the truth is that it is a mediator. It is an object that handles the workflow between many other objects, aggregating the responsibility of that workflow knowledge in to a single object. The result is workflow that is easier to understand and maintain.
+This example shows a very basic implementation of a mediator object with Backbone-based objects that can trigger and subscribe to events. I’ve often referred to this type of object as a “workflow” object in the past, but the truth is that it is a mediator. It is an object that handles the workflow between many other objects, aggregating the responsibility of that workflow knowledge into a single object. The result is workflow that is easier to understand and maintain.
 
 #####Similarities And Differences
 
-There are, without a doubt, similarities between the event aggregator and mediator examples that I’ve shown here. The similarities boil down to two primary items: events and third-party objects. These differences are superficial at best, though. When we dig in to the intent of the pattern and see that the implementations can be dramatically different, the nature of the patterns become more apparent.
+There are, without a doubt, similarities between the event aggregator and mediator examples that I’ve shown here. The similarities boil down to two primary items: events and third-party objects. These differences are superficial at best, though. When we dig into the intent of the pattern and see that the implementations can be dramatically different, the nature of the patterns become more apparent.
 
 ######Events
 
@@ -6137,9 +6137,9 @@ The difference, then, is why these two patterns are both using events. The event
 
 Both the event aggregator and mediator, by design, use a third-party object to facilitate things. The event aggregator itself is a third-party to the event publisher and the event subscriber. It acts as a central hub for events to pass through. The mediator is also a third party to other objects, though. So where is the difference? Why don’t we call an event aggregator a mediator? The answer largely comes down to where the application logic and workflow is coded.
 
-In the case of an event aggregator, the third party object is there only to facilitate the pass-through of events from an unknown number of sources to an unknown number of handlers. All workflow and business logic that needs to be kicked off is put directly in to the the object that triggers the events and the objects that handle the events.
+In the case of an event aggregator, the third party object is there only to facilitate the pass-through of events from an unknown number of sources to an unknown number of handlers. All workflow and business logic that needs to be kicked off is put directly into the the object that triggers the events and the objects that handle the events.
 
-In the case of the mediator, though, the business logic and workflow is aggregated in to the mediator itself. The mediator decides when an object should have it’s methods called and attributes updated based on factors that the mediator knows about. It encapsulates the workflow and process, coordinating multiple objects to produce the desired system behaviour. The individual objects involved in this workflow each know how to perform their own task. But it’s the mediator that tells the objects when to perform the tasks by making decisions at a higher level than the individual objects.
+In the case of the mediator, though, the business logic and workflow is aggregated into the mediator itself. The mediator decides when an object should have it’s methods called and attributes updated based on factors that the mediator knows about. It encapsulates the workflow and process, coordinating multiple objects to produce the desired system behaviour. The individual objects involved in this workflow each know how to perform their own task. But it’s the mediator that tells the objects when to perform the tasks by making decisions at a higher level than the individual objects.
 
 An event aggregator facilitates a “fire and forget” model of communication. The object triggering the event doesn’t care if there are any subscribers. It just fires the event and moves on. A mediator, though, might use events to make decisions, but it is definitely not “fire and forget”. A mediator pays attention to a known set of input or activities so that it can facilitate and coordinate additional behavior with a known set of actors (objects).
 
@@ -6149,7 +6149,7 @@ Understanding the similarities and differences between an event aggregator and m
 
 ######Event Aggregator Use
 
-In general, an event aggregator is uses when you either have too many objects to listen to directly, or you have objects that are unrelated entirely.
+In general, an event aggregator is used when you either have too many objects to listen to directly, or you have objects that are entirely unrelated.
 
 When two objects have a direct relationship already – say, a parent view and child view – then there might be little benefit in using an event aggregator. Have the child view trigger an event and the parent view can handle the event. This is most commonly seen in Backbone’s Collection and Model, where all Model events are bubbled up to and through it’s parent Collection. A Collection often uses model events to modify the state of itself or other models. Handling “selected” items in a collection is a good example of this.
 
@@ -6163,7 +6163,7 @@ A mediator is best applied when two or more objects have an indirect working rel
 
 A wizard interface is a good example of this, as shown with the “orgChart” example, above. There are multiple views that facilitate the entire workflow of the wizard. Rather than tightly coupling the view together by having them reference each other directly, we can decouple them and more explicitly model the workflow between them by introducing a mediator.
 
-The mediator extracts the workflow from the implementation details and creates a more natural abstraction at a higher level, showing us at a much faster glance what that workflow is. We no longer have to dig in to the details of each view in the workflow, to see what the workflow actually is.
+The mediator extracts the workflow from the implementation details and creates a more natural abstraction at a higher level, showing us at a much faster glance what that workflow is. We no longer have to dig into the details of each view in the workflow, to see what the workflow actually is.
 
 #####Event Aggregator And Mediator Together
 
@@ -6196,13 +6196,13 @@ var MyWorkflow = function(){
 MyWorkflow.prototype.doStuff = function(){
   // instantiate multiple objects here.
   // set up event handlers for those objects.
-  // coordinate all of the objects in to a meaningful workflow.
+  // coordinate all of the objects into a meaningful workflow.
 };
 ```
 
 In this example, when the MenuItem with the right model is clicked, the `“menu:click:foo”` event will be triggered. An instance of the “MyWorkflow” object, assuming one is already instantiated, will handle this specific event and will coordinate all of the objects that it knows about, to create the desired user experience and workflow.
 
-An event aggregator and a mediator have been combined to create a much more meaningful experience in both the code and the application itself. We now have a clean separation between the menu and the workflow through an event aggregator. And we are still keeping the workflow itself clean and maintainable through the use of a mediator.
+An event aggregator and a mediator have been combined to create a much more meaningful experience in both the code and the application itself. We now have a clean separation between the menu and the workflow through an event aggregator and we are still keeping the workflow itself clean and maintainable through the use of a mediator.
 
 #####Pattern Language: Semantics
 
@@ -8230,7 +8230,7 @@ When building an application with Backbone, there's some additional tooling avai
 
 Backbone DevTools was created to help with this and is a Chrome DevTools extension allowing you to inspect events, syncs, View-DOM bindings and what objects have been instantiated. 
 
-A useful View hierarchy displayed in the Elements panel and you can also inspect a DOM element and the closest View will be exposed via $view in the console.
+A useful View hierarchy is displayed in the Elements panel. Also, when you inspect a DOM element the closest View will be exposed via $view in the console.
 
 ![](img/bbdevtools.jpg)
 
@@ -11031,15 +11031,15 @@ That's it for this section on testing applications with QUnit and SinonJS. I enc
 
 # Conclusions
 
-I hope that you've found this introduction to Backbone.js of value. What you've hopefully learned is that whilst building a JavaScript-heavy application using nothing more than a DOM manipulation library (such as jQuery) is certainly a possible feat, it is difficult to build anything non-trivial without any formal structure in place. Your nested pile of jQuery callbacks and DOM elements are unlikely to scale and they can be very difficult to maintain as your application grows.
+I hope that you've found this introduction to Backbone.js of value. What you've hopefully learned is that while building a JavaScript-heavy application using nothing more than a DOM manipulation library (such as jQuery) is certainly a possible feat, it is difficult to build anything non-trivial without any formal structure in place. Your nested pile of jQuery callbacks and DOM elements are unlikely to scale and they can be very difficult to maintain as your application grows.
 
 The beauty of Backbone.js is it's simplicity. It's very small given the functionality and flexibility it provides, which is evident if you begin to study the Backbone.js source. In the words of Jeremy Ashkenas, "The essential premise at the heart of Backbone has always been to try and discover the minimal set of data-structuring (Models and Collections) and user interface (Views and URLs) primitives that are useful when building web applications with JavaScript." It just helps you improve the structure of your applications, helping you better separate concerns. There isn't anything more to it than that.
 
-Backbone offers Models with key-value bindings and events, Collections with an API of rich enumerable methods, declarative Views with event handling and a simple way to connect an existing API to your client-side application over a RESTful JSON interface. Use it and you can abstract away data into sane models and your DOM manipulation into views, binding together using nothing more than events.
+Backbone offers Models with key-value bindings and events, Collections with an API of rich enumerable methods, declarative Views with event handling and a simple way to connect an existing API to your client-side application over a RESTful JSON interface. Use it and you can abstract away data into sane models and your DOM manipulation into views, binding them together using nothing more than events.
 
-Almost any developer working on JavaScript applications for a while will ultimately come to creating a similar solution to it on their own if they value architecture and maintainability. The alternative to using it or something similar is rolling your own - often a process that involves glueing together a diverse set of libraries that weren't built to work together. You might use jQuery BBQ for history management and Handlebars for templating, whilst writing abstracts for organizing and testing code by yourself. 
+Almost any developer working on JavaScript applications for a while will ultimately create a similar solution on their own if they value architecture and maintainability. The alternative to using it or something similar is rolling your own - often a process that involves glueing together a diverse set of libraries that weren't built to work together. You might use jQuery BBQ for history management and Handlebars for templating, while writing abstracts for organizing and testing code by yourself. 
 
-Contrast this with Backbone, which has [literate](http://en.wikipedia.org/wiki/Literate_programming) [documentation](http://backbonejs.org/docs/backbone.html) of the source code, a thriving community of both users and hackers and a large number of questions about it asked and answered daily on sites like [Stack Overflow](http://stackoverflow.com/search?q=backbone). Rather than re-inventing the wheel there are many advantages to structuring your application using a solution based on the collective knowledge and experience of an entire community. 
+Contrast this with Backbone, which has [literate](http://en.wikipedia.org/wiki/Literate_programming) [documentation](http://backbonejs.org/docs/backbone.html) of the source code, a thriving community of both users and hackers, and a large number of questions about it asked and answered daily on sites like [Stack Overflow](http://stackoverflow.com/search?q=backbone). Rather than re-inventing the wheel there are many advantages to structuring your application using a solution based on the collective knowledge and experience of an entire community. 
 
 In addition to helping provide sane structure to your applications, Backbone is highly extensible supporting more custom architecture should you require more than what is prescribed out of the box. This is evident by the number of extensions and plugins which have been released for it over the past year, including those which we have touched upon such as MarionetteJS and Thorax. 
 
@@ -11049,12 +11049,11 @@ If you're wondering whether it is worth using Backbone on a project, ask yoursel
 
 Google's GMail is often cited as an example of a well built single-page app. If you've used it, you might have noticed that it requests a large initial chunk, representing most of the JavaScript, CSS and HTML most users will need and everything extra needed after that occurs in the background. GMail can easily switch between your inbox to your spam folder without needing the whole page to be re-rendered. Libraries like Backbone make it easier for web developers to create experiences like this.
 
-That said, Backbone won't be able to help if you're plannong on building something which isn't worth the learning curve associated with a library. If your application or site is still will still heavily be using the server to do the heavy lifting of constructing and serving complete pages to the browser, you may find just using plain JavaScript or jQuery for simple effects or interactions to be more appropriate. Spend time assessing how suitable Backbone might be for you and make the right choice on a per-project basis.
+That said, Backbone won't be able to help if you're planning on building something which isn't worth the learning curve associated with a library. If your application or site will still be using the server to do the heavy lifting of constructing and serving complete pages to the browser, you may find just using plain JavaScript or jQuery for simple effects or interactions to be more appropriate. Spend time assessing how suitable Backbone might be for you and make the right choice on a per-project basis.
 
-Backbone is neither difficult to learn nor use, however the time and effort you spend learning how to structure applications using it will be well worth it. Whilst reading this book will equip you with the fundamentals needed to understand the library, the best way to learn is to try building your own real-world applications. You will hopefully find that the end product is cleaner, better organized and more maintainable code.
+Backbone is neither difficult to learn nor use, however the time and effort you spend learning how to structure applications using it will be well worth it. While reading this book will equip you with the fundamentals needed to understand the library, the best way to learn is to try building your own real-world applications. You will hopefully find that the end product is cleaner, better organized and more maintainable code.
 
 With that, I wish you the very best with your onward journey into the world of Backbone and will leave you with a quote from American writer [Henry Miller](http://en.wikipedia.org/wiki/Henry_Miller) -  “One’s destination is never a place, but a new way of seeing things.” 
-
 
 # Appendix
 
