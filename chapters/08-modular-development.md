@@ -479,7 +479,7 @@ define(['jquery', 'backbone', 'underscore'].concat(models),
 
 will be ignored. This is by design as it ensures that dynamic dependency/module loading can still take place even after optimization.
 
-Although the RequireJS optimizer works fine in both Node and Java environments, it's strongly recommended to run it under Node as it executes significantly faster there. 
+Although the RequireJS optimizer works fine in both Node and Java environments, it's strongly recommended to run it under Node as it executes significantly faster there.
 
 To get started with r.js, grab it from the [RequireJS download page](http://requirejs.org/docs/download.html#rjs) or [through NPM](http://requirejs.org/docs/optimization.html#download). To begin getting our project to build with r.js, we will need to create a new build profile.
 
@@ -491,7 +491,7 @@ Assuming the code for our application and external dependencies are in `app/libs
   out: 'dist/main.js',
 ```
 
-The paths above are relative to the `baseUrl` for our project and in our case it would make sense to make this the `app` folder. The `out` parameter informs r.js that we want to concatenate everything into a single file. 
+The paths above are relative to the `baseUrl` for our project and in our case it would make sense to make this the `app` folder. The `out` parameter informs r.js that we want to concatenate everything into a single file, that should be called `main.js` and be created within the `dist/` directory. Note that here, we do need to add the `.js` extension to the filename. Earlier we saw that when referencing modules by filenames, you don't need to use the `.js` extension, however this is one case in which you do.
 
 Alternatively, we can specify `dir`, which will ensure the contents of our `app` directory are copied into this directory. e.g:
 
