@@ -535,22 +535,12 @@ The following sections provide insight into how Backbone uses jQuery/Zepto and U
 Although most developers won't need it, Backbone does support setting a custom DOM library to be used instead of these options. From the source:
 
 ```
-// Set the JavaScript library that will be used for DOM manipulation and
-// Ajax calls (a.k.a. the `$` variable). By default Backbone will use: jQuery,
-// Zepto, or Ender; but the `setDomLibrary()` method lets you inject an
-// alternate JavaScript library (or a mock library for testing your views
-// outside of a browser).
-
-Backbone.setDomLibrary = function(lib) {
-  $ = lib;
-};
+// For Backbone's purposes, jQuery, Zepto, Ender, or My Library (kidding) owns
+// the `$` variable.
+ Backbone.$ = root.jQuery || root.Zepto || root.ender || root.$;
 ```
 
-Calling this method will allow you to use any custom DOM-manipulation library. e.g:
-
-```
-Backbone.setDomLibrary(aCustomLibrary);
-```
+So, setting `Backbone.$ = myLibrary;` will allow you to use any custom DOM-manipulation library in place of the jQuery default.
 
 ### Utilities
 
@@ -560,17 +550,18 @@ From the source:
 
 ```
 // Underscore methods that we want to implement on the Collection.
-var methods = ['forEach', 'each', 'map', 'reduce', 'reduceRight', 'find',
-    'detect', 'filter', 'select', 'reject', 'every', 'all', 'some', 'any',
-    'include', 'contains', 'invoke', 'max', 'min', 'sortBy', 'sortedIndex',
-    'toArray', 'size', 'first', 'initial', 'rest', 'last', 'without', 'indexOf',
-    'shuffle', 'lastIndexOf', 'isEmpty', 'groupBy'];
+// 90% of the core usefulness of Backbone Collections is actually implemented
+// right here:
+var methods = ['forEach', 'each', 'map', 'collect', 'reduce', 'foldl', 'inject', 'reduceRight', 'foldr', 'find', 'detect', 'filter', 'select', 'reject', 'every', 'all', 'some', 'any', 'include', 'contains', 'invoke', 'max', 'min', 'toArray', 'size', 'first', 'head', 'take', 'initial', 'rest', 'tail', 'drop', 'last', 'without', 'indexOf', 'shuffle', 'lastIndexOf', 'isEmpty', 'chain'];
 
-// Mix in each Underscore method as a proxy to Collection#models.
-  _.each(methods, function(method) {
+// Mix in each Underscore method as a proxy to `Collection#models`.
+_.each(methods, function(method) {
     Collection.prototype[method] = function() {
-      return _[method].apply(_, [this.models].concat(_.toArray(arguments)));
+        var args = slice.call(arguments);
+        args.unshift(this.models);
+        return _[method].apply(_, args);
     };
+});
 ```
 
 However, for a complete linked list of methods supported, see the [official documentation](http://backbonejs.org/#Collection-Underscore-Methods).
@@ -611,9 +602,14 @@ From the source for `Backbone.history.start`:
       // Depending on whether we're using pushState or hashes, and whether
       // 'onhashchange' is supported, determine how we check the URL state.
       if (this._hasPushState) {
-        Backbone.$(window).on('popstate', this.checkUrl);
+          Backbone.$(window)
+              .on('popstate', this.checkUrl);
       } else if (this._wantsHashChange && ('onhashchange' in window) && !oldIE) {
-        Backbone.$(window).on('hashchange', this.checkUrl);
+          Backbone.$(window)
+              .on('hashchange', this.checkUrl);
+      } else if (this._wantsHashChange) {
+          this._checkUrlInterval = setInterval(this.checkUrl, this.interval);
+      }
       ...
 ```
 
