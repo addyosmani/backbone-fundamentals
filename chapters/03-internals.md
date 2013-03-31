@@ -1157,7 +1157,7 @@ See the Backbone.js documentation for full descriptions of the supported options
 
 ## Events
 
-Events are a basic inversion of control, where instead of having a function call another function by name, the second function registers interest in being called whenever the first "event" occurs.
+Events are a basic inversion of control. Instead of having one function call another by name, the second function is registered as a handler to be called when a specific event occurs.
 
 The part of your application that has to know how to call the other part of your app has been inverted. This is the core thing that makes it possible for your business logic to not have to know about how your user interface works and is the most powerful thing about the Backbone Events system.
 
