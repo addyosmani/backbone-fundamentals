@@ -181,7 +181,7 @@ The problem is caused by the model event binding in the view's `initialize` meth
 
 Since the original view is still in scope, and the second view instance is also in scope, changing data on the model will cause both view instances to respond.
 
-Fixing this is easy, though. You just need to call `off` when the view is done with its work and ready to be closed. To do this, add a `close` method to the view.
+Fixing this is easy, though. You just need to call `stopListening` when the view is done with its work and ready to be closed. To do this, add a `close` method to the view.
 
 ```javascript
 var ZombieView = Backbone.View.extend({
@@ -206,7 +206,7 @@ var ZombieView = Backbone.View.extend({
 });
 ```
 
-Then call `close` on the first instance when it is no longer needed, and only one view instance will remain alive. For more information about the `listenTo` and `stopListening` functions, see the earlier chapter on internals and Derick's post on [Managing Events As Relationships, Not Just Resources](http://lostechies.com/derickbailey/2013/02/06/managing-events-as-relationships-not-just-references/).
+Then call `close` on the first instance when it is no longer needed, and only one view instance will remain alive. For more information about the `listenTo` and `stopListening` functions, see the earlier Backbone Basics chapter and Derick's post on [Managing Events As Relationships, Not Just Resources](http://lostechies.com/derickbailey/2013/02/06/managing-events-as-relationships-not-just-references/).
 
 ```javascript
 var Jeremy = new Person({

@@ -573,7 +573,7 @@ When building an application with Backbone, there's some additional tooling avai
 
 Backbone DevTools was created to help with this and is a Chrome DevTools extension allowing you to inspect events, syncs, View-DOM bindings and what objects have been instantiated. 
 
-A useful View hierarchy displayed in the Elements panel and you can also inspect a DOM element and the closest View will be exposed via $view in the console.
+A useful View hierarchy is displayed in the Elements panel. Also, when you inspect a DOM element the closest View will be exposed via $view in the console.
 
 ![](img/bbdevtools.jpg)
 
