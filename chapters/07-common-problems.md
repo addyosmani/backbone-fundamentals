@@ -44,7 +44,7 @@ render : function () {
 
 **Solution 2**
 
-Beginners sometimes also try using `setElement` to solve tis problem, however keep in mind that using this method is an easy way to shoot yourself in the foot. Try to avoid if possible:
+Beginners sometimes also try using `setElement` to solve this problem, however keep in mind that using this method is an easy way to shoot yourself in the foot. Avoid using this approach when the first solution is a viable option:
 
 
 ```javascript
@@ -835,7 +835,7 @@ var Note = Backbone.Model.extend({
 
 **Problem** 
 
-How do I channel multiple event sources through a single object?**
+How do I channel multiple event sources through a single object?
 
 **Solution**
 
