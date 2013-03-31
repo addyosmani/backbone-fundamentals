@@ -1157,7 +1157,7 @@ See the Backbone.js documentation for full descriptions of the supported options
 
 ## Events
 
-Events are a basic inversion of control, where instead of having a function call another function by name, the second function registers interest in being called whenever the first "event" occurs.
+Events are a basic inversion of control. Instead of having one function call another by name, the second function is registered as a handler to be called when a specific event occurs.
 
 The part of your application that has to know how to call the other part of your app has been inverted. This is the core thing that makes it possible for your business logic to not have to know about how your user interface works and is the most powerful thing about the Backbone Events system.
 
@@ -1534,7 +1534,7 @@ var TodoRouter = Backbone.Router.extend({
 var myTodoRouter = new TodoRouter();
 ```
 
-Backbone offers an opt-in for HTML5 pushState support via `window.history.pushState`. This permits you to define routes such as http://backbonejs.org/just/an/example. This will be supported with automatic degradation when a user's browser doesn't support pushState. Note that it is vastly preferred that you're capable of also supporting pushState on the server side, although it is a little more difficult to implement.
+Backbone offers an opt-in for HTML5 pushState support via `window.history.pushState`. This permits you to define routes such as http://backbonejs.org/just/an/example. This will be supported with automatic degradation when a user's browser doesn't support pushState. Note that it is vastly preferred if you're capable of also supporting pushState on the server side, although it is a little more difficult to implement.
 
 **Is there a limit to the number of routers I should be using?**
 
