@@ -1,12 +1,12 @@
 # Backbone Extensions
 
-Backbone is flexible, simple and powerful, however you may find that the complexity of the application you are working on requires more than what it provides out of the box. There are certain concerns which it just doesn't address directly as one of it's goals is to be minimalist. 
+Backbone is flexible, simple, and powerful. However, you may find that the complexity of the application you are working on requires more than what it provides out of the box. There are certain concerns which it just doesn't address directly as one of it's goals is to be minimalist. 
 
-Take for example Views, which provide by default a `render` method which does nothing and produces no real results when called, despite most using it to generate HTML which a view will manage. Also look at Models and Collections which have no built-in way of handling nested hierarchies - if you require this functionality, you need to write it yourself or use a plugin.
+Take for example Views, which provide a default `render` method which does nothing and produces no real results when called, despite most implementations using it to generate the HTML that the view manages. Also, Models and Collections have no built-in way of handling nested hierarchies - if you require this functionality, you need to write it yourself or use a plugin.
 
 In these cases, there are many existing Backbone plugins which can provide advanced solutions for large-scale Backbone apps. A fairly complete list of plugins and frameworks available can be found on the Backbone [wiki](https://github.com/documentcloud/backbone/wiki/Extensions%2C-Plugins%2C-Resources). Using these add-ons, there is enough for applications of most sizes to be completed successfully.
 
-In this section of the book we will look at a few popular Backbone add-ons, including MarionetteJS and Thorax.
+In this section of the book we will look at two popular Backbone add-ons: MarionetteJS and Thorax.
 
 ## MarionetteJS (Backbone.Marionette)
 
@@ -841,11 +841,9 @@ Thorax was created by Ryan Eastridge and Kevin Decker to create Walmart's mobile
 
 ### Hello World
 
-When creating a new View, the options you pass — after being merged into any default options already present on the view — are attached to the view as this.options for future reference.
+In Backbone, when creating a new view, options passed are merged into any default options already present on a view and are exposed via `this.options` for later reference.
 
-In Backbone, when creating a new view, options passed are merged into any default options already present on a view and are exposed via `this.options` for later reference. `Thorax.View` differs from `Backbone.View` in that there is no `options` object. 
-
-All arguments passed to the constructor become properties of the view, which in turn become available to the `template`:
+`Thorax.View` differs from `Backbone.View` in that there is no `options` object. All arguments passed to the constructor become properties of the view, which in turn become available to the `template`:
 
 ```javascript
     var view = new Thorax.View({
@@ -855,7 +853,7 @@ All arguments passed to the constructor become properties of the view, which in 
     view.appendTo('body');
 ```
 
- In most examples in this chapter a `template` property will be specified. In larger projects including the boilerplate projects provided on the Thorax website a `name` property would instead be used and a `template` of the same file name in your project would automatically be assigned to the view.
+In most examples in this chapter a `template` property will be specified. In larger projects including the boilerplate projects provided on the Thorax website a `name` property would instead be used and a `template` of the same file name in your project would automatically be assigned to the view.
 
  If a `model` is set on a view, its attributes also become available to the template:
 
