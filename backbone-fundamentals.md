@@ -5592,14 +5592,6 @@ This means that it can be a challenge to determine which specific fields are bei
 
 **Solution**
 
-The most optimal solution to this problem probably isn't to stick validation in your model attributes. Instead, have a function specifically designed for validating that particular form. There are many good JavaScript form validation libraries out there. If you want to stick it on your model, just make it a class function:
-
-```javascript
-User.validate = function(formElement) {
-  //...
-};
-```
-
 To illustrate this problem better, let us look at a typical registration form use case that:
 
 * Validates form fields using the blur event
@@ -5639,7 +5631,7 @@ HTML:
 </html>
 ```
 
-Some simple validation that could be written using the current Backbone `validate` method to work with this form could be implemented using something like:
+Basic validation that could be written using the current Backbone `validate` method to work with this form could be implemented using something like:
 
 
 ```javascript
@@ -5652,7 +5644,7 @@ validate: function(attrs) {
 }
 ```
 
-Unfortunately, this method would trigger a first name error each time any of the fields were blurred and only an error message next to the first name field would be presented.
+Unfortunately, this method would trigger a `firstname` error each time any of the fields were blurred and only an error message next to the first name field would be presented.
 
 One potential solution to the problem is to validate all fields and return all of the errors:
 
@@ -5668,7 +5660,7 @@ validate: function(attrs) {
 }
 ```
 
-This can be adapted into a complete solution that defines a Field model for each input in our form and works within the parameters of our use case as follows:
+This can be adapted into a solution that defines a Field model for each input in our form and works within the parameters of our use case as follows:
 
 ```javascript
 
@@ -5708,10 +5700,11 @@ $(function($) {
 
 ```
 
-
-This works great as the solution checks the validation for each attribute individually and sets the message for the correct blurred field. A [demo](http://jsbin.com/afetez/2/edit) of the above by [@braddunbar](http://github.com/braddunbar) is also available.
+This works fine as the solution checks the validation for each attribute individually and sets the message for the correct blurred field. A [demo](http://jsbin.com/afetez/2/edit) of the above by [@braddunbar](http://github.com/braddunbar) is also available.
 
 Unfortunately, this solution does perform validation on all fields every time, even though we are only displaying errors for the field that has changed. If we have multiple client-side validation methods, we may not want to have to call each validation method on every attribute every time, so this solution might not be ideal for everyone.
+
+##### Backbone.validateAll
 
 A potentially better alternative to the above is to use [@gfranko](http://github.com/@franko)'s [Backbone.validateAll](https://github.com/gfranko/Backbone.validateAll) plugin, specifically created to validate specific Model properties (or form fields) without worrying about the validation of any other Model properties (or form fields).
 
@@ -5804,16 +5797,14 @@ user.set({ 'firstname': 'Greg' }, {validate: true, validateAll: false});
 
 ```
 
-That's it!
-
-The Backbone.validateAll logic doesn't override the default Backbone logic by default and so it's perfectly capable of being used for scenarios where you might care more about field-validation [performance](http://jsperf.com/backbone-validateall) as well as those where you don't. Both solutions presented in this section should work fine however.
+That's it. The Backbone.validateAll logic doesn't override the default Backbone logic by default and so it's perfectly capable of being used for scenarios where you might care more about field-validation [performance](http://jsperf.com/backbone-validateall) as well as those where you don't. Both solutions presented in this section should work fine however.
 
 
 ##### Backbone.Validation
 
 As we've seen, the `validate` method Backbone offers is `undefined` by default and you need to override it with your own custom validation logic to get model validation in place. Often developers run into the issue of implementing this validation as nested ifs and elses, which can become unmaintainable when things get complicated.
 
-A helpful plugin for Backbone called [Backbone.Validation](https://github.com/thedersen/backbone.validation) attempts to solve this problem by offering an extensible way to declare validation rules on the model and override the `validate` method behind the scenes.
+Another helpful plugin for Backbone called [Backbone.Validation](https://github.com/thedersen/backbone.validation) attempts to solve this problem by offering an extensible way to declare validation rules on the model and override the `validate` method behind the scenes.
 
 One of the useful methods this plugin includes is (pseudo) live validation via a `preValidate` method. This can be used to check on key-press if the input for a model is valid without changing the model itself. You can run any validators for a model attribute by calling the `preValidate` method, passing it the name of the attribute as well as the value you would like validated.
 
@@ -5823,6 +5814,21 @@ One of the useful methods this plugin includes is (pseudo) live validation via a
 
 var errorMsg = myModel.preValidate('attribute', 'value');
 ```
+
+##### Form-specific validation classes
+
+That said, the most optimal solution to this problem may not be to stick validation in your model attributes. Instead, you could have a function specifically designed for validating a specific form and there are many good JavaScript form validation libraries out there that can help with this.
+
+If you want to stick it on your model, you can also make it a class function:
+
+```javascript
+User.validate = function(formElement) {
+  //...
+};
+```
+
+For more information on validation plugins available for Backbone, see the [Backbone wiki](https://github.com/documentcloud/backbone/wiki/Extensions%2C-Plugins%2C-Resources#model).
+
 
 #### Avoiding Conflicts With Multiple Backbone Versions
 

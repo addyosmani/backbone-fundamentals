@@ -185,7 +185,9 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <li><a href="#rendering-view-hierarchies">Rendering View Hierarchies</a></li>
 <li><a href="#working-with-nested-models-or-collections">Working With Nested Models Or Collections</a></li>
 <li><a href="#better-model-property-validation">Better Model Property Validation</a><ul>
+<li><a href="#backbone.validateall">Backbone.validateAll</a></li>
 <li><a href="#backbone.validation">Backbone.Validation</a></li>
+<li><a href="#form-specific-validation-classes">Form-specific validation classes</a></li>
 </ul></li>
 <li><a href="#avoiding-conflicts-with-multiple-backbone-versions">Avoiding Conflicts With Multiple Backbone Versions</a></li>
 <li><a href="#building-model-and-view-hierarchies">Building Model And View Hierarchies</a></li>
@@ -4631,10 +4633,6 @@ NewChildView = <span class="kw">Backbone.View</span>.<span class="fu">extend</sp
 <p>By default, when we define a custom <code>validate</code> method, Backbone passes all of a model’s attributes through this validation each time, regardless of which model attributes are being set.</p>
 <p>This means that it can be a challenge to determine which specific fields are being set or validated without being concerned about the others that aren’t being set at the same time.</p>
 <p><strong>Solution</strong></p>
-<p>The most optimal solution to this problem probably isn’t to stick validation in your model attributes. Instead, have a function specifically designed for validating that particular form. There are many good JavaScript form validation libraries out there. If you want to stick it on your model, just make it a class function:</p>
-<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">User</span>.<span class="fu">validate</span> = <span class="kw">function</span>(formElement) {
-  <span class="co">//...</span>
-};</code></pre>
 <p>To illustrate this problem better, let us look at a typical registration form use case that:</p>
 <ul>
 <li>Validates form fields using the blur event</li>
@@ -4668,7 +4666,7 @@ NewChildView = <span class="kw">Backbone.View</span>.<span class="fu">extend</sp
   &lt;/form&gt;
 &lt;/body&gt;
 &lt;/html&gt;</code></pre>
-<p>Some simple validation that could be written using the current Backbone <code>validate</code> method to work with this form could be implemented using something like:</p>
+<p>Basic validation that could be written using the current Backbone <code>validate</code> method to work with this form could be implemented using something like:</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="dt">validate</span>: <span class="kw">function</span>(attrs) {
 
     <span class="kw">if</span>(!<span class="kw">attrs</span>.<span class="fu">firstname</span>) <span class="kw">return</span> <span class="ch">&#39;first name is empty&#39;</span>;
@@ -4676,7 +4674,7 @@ NewChildView = <span class="kw">Backbone.View</span>.<span class="fu">extend</sp
     <span class="kw">if</span>(!<span class="kw">attrs</span>.<span class="fu">email</span>) <span class="kw">return</span> <span class="ch">&#39;email is empty&#39;</span>;
 
 }</code></pre>
-<p>Unfortunately, this method would trigger a first name error each time any of the fields were blurred and only an error message next to the first name field would be presented.</p>
+<p>Unfortunately, this method would trigger a <code>firstname</code> error each time any of the fields were blurred and only an error message next to the first name field would be presented.</p>
 <p>One potential solution to the problem is to validate all fields and return all of the errors:</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="dt">validate</span>: <span class="kw">function</span>(attrs) {
   <span class="kw">var</span> errors = {};
@@ -4687,7 +4685,7 @@ NewChildView = <span class="kw">Backbone.View</span>.<span class="fu">extend</sp
 
   <span class="kw">if</span> (!<span class="kw">_</span>.<span class="fu">isEmpty</span>(errors)) <span class="kw">return</span> errors;
 }</code></pre>
-<p>This can be adapted into a complete solution that defines a Field model for each input in our form and works within the parameters of our use case as follows:</p>
+<p>This can be adapted into a solution that defines a Field model for each input in our form and works within the parameters of our use case as follows:</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript">
 $(<span class="kw">function</span>($) {
 
@@ -4722,8 +4720,9 @@ $(<span class="kw">function</span>($) {
   });
 
 });</code></pre>
-<p>This works great as the solution checks the validation for each attribute individually and sets the message for the correct blurred field. A <a href="http://jsbin.com/afetez/2/edit">demo</a> of the above by <a href="http://github.com/braddunbar">@braddunbar</a> is also available.</p>
+<p>This works fine as the solution checks the validation for each attribute individually and sets the message for the correct blurred field. A <a href="http://jsbin.com/afetez/2/edit">demo</a> of the above by <a href="http://github.com/braddunbar">@braddunbar</a> is also available.</p>
 <p>Unfortunately, this solution does perform validation on all fields every time, even though we are only displaying errors for the field that has changed. If we have multiple client-side validation methods, we may not want to have to call each validation method on every attribute every time, so this solution might not be ideal for everyone.</p>
+<h5 id="backbone.validateall"><a href="#TOC">Backbone.validateAll</a></h5>
 <p>A potentially better alternative to the above is to use <a href="http://github.com/@franko">@gfranko</a>’s <a href="https://github.com/gfranko/Backbone.validateAll">Backbone.validateAll</a> plugin, specifically created to validate specific Model properties (or form fields) without worrying about the validation of any other Model properties (or form fields).</p>
 <p>Here is how we would setup a partial User Model and validate method using this plugin for our use case:</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript">
@@ -4802,16 +4801,22 @@ $(<span class="kw">function</span>($) {
 <p>It’s fairly straight-forward to use as well. We can simply define a new Model instance and then set the data on our model using the <code>validateAll</code> option to use the behavior defined by the plugin:</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> user = <span class="kw">new</span> User();
 <span class="kw">user</span>.<span class="fu">set</span>({ <span class="ch">&#39;firstname&#39;</span>: <span class="ch">&#39;Greg&#39;</span> }, {<span class="dt">validate</span>: <span class="kw">true</span>, <span class="dt">validateAll</span>: <span class="kw">false</span>});</code></pre>
-<p>That’s it!</p>
-<p>The Backbone.validateAll logic doesn’t override the default Backbone logic by default and so it’s perfectly capable of being used for scenarios where you might care more about field-validation <a href="http://jsperf.com/backbone-validateall">performance</a> as well as those where you don’t. Both solutions presented in this section should work fine however.</p>
+<p>That’s it. The Backbone.validateAll logic doesn’t override the default Backbone logic by default and so it’s perfectly capable of being used for scenarios where you might care more about field-validation <a href="http://jsperf.com/backbone-validateall">performance</a> as well as those where you don’t. Both solutions presented in this section should work fine however.</p>
 <h5 id="backbone.validation"><a href="#TOC">Backbone.Validation</a></h5>
 <p>As we’ve seen, the <code>validate</code> method Backbone offers is <code>undefined</code> by default and you need to override it with your own custom validation logic to get model validation in place. Often developers run into the issue of implementing this validation as nested ifs and elses, which can become unmaintainable when things get complicated.</p>
-<p>A helpful plugin for Backbone called <a href="https://github.com/thedersen/backbone.validation">Backbone.Validation</a> attempts to solve this problem by offering an extensible way to declare validation rules on the model and override the <code>validate</code> method behind the scenes.</p>
+<p>Another helpful plugin for Backbone called <a href="https://github.com/thedersen/backbone.validation">Backbone.Validation</a> attempts to solve this problem by offering an extensible way to declare validation rules on the model and override the <code>validate</code> method behind the scenes.</p>
 <p>One of the useful methods this plugin includes is (pseudo) live validation via a <code>preValidate</code> method. This can be used to check on key-press if the input for a model is valid without changing the model itself. You can run any validators for a model attribute by calling the <code>preValidate</code> method, passing it the name of the attribute as well as the value you would like validated.</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="co">// If the value of the attribute is invalid, a truthy error message is returned</span>
 <span class="co">// if not, it returns a falsy value</span>
 
 <span class="kw">var</span> errorMsg = <span class="kw">myModel</span>.<span class="fu">preValidate</span>(<span class="ch">&#39;attribute&#39;</span>, <span class="ch">&#39;value&#39;</span>);</code></pre>
+<h5 id="form-specific-validation-classes"><a href="#TOC">Form-specific validation classes</a></h5>
+<p>That said, the most optimal solution to this problem may not be to stick validation in your model attributes. Instead, you could have a function specifically designed for validating a specific form and there are many good JavaScript form validation libraries out there that can help with this.</p>
+<p>If you want to stick it on your model, you can also make it a class function:</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">User</span>.<span class="fu">validate</span> = <span class="kw">function</span>(formElement) {
+  <span class="co">//...</span>
+};</code></pre>
+<p>For more information on validation plugins available for Backbone, see the <a href="https://github.com/documentcloud/backbone/wiki/Extensions%2C-Plugins%2C-Resources#model">Backbone wiki</a>.</p>
 <h4 id="avoiding-conflicts-with-multiple-backbone-versions"><a href="#TOC">Avoiding Conflicts With Multiple Backbone Versions</a></h4>
 <p><strong>Problem</strong></p>
 <p>In instances out of your control, you may have to work around having more than one version of Backbone in the same page. How do you work around this without causing conflicts?</p>
