@@ -5809,6 +5809,21 @@ That's it!
 The Backbone.validateAll logic doesn't override the default Backbone logic by default and so it's perfectly capable of being used for scenarios where you might care more about field-validation [performance](http://jsperf.com/backbone-validateall) as well as those where you don't. Both solutions presented in this section should work fine however.
 
 
+##### Backbone.Validation
+
+As we've seen, the `validate` method Backbone offers is `undefined` by default and you need to override it with your own custom validation logic to get model validation in place. Often developers run into the issue of implementing this validation as nested ifs and elses, which can become unmaintainable when things get complicated.
+
+A helpful plugin for Backbone called [Backbone.Validation](https://github.com/thedersen/backbone.validation) attempts to solve this problem by offering an extensible way to declare validation rules on the model and override the `validate` method behind the scenes.
+
+One of the useful methods this plugin includes is (pseudo) live validation via a `preValidate` method. This can be used to check on key-press if the input for a model is valid without changing the model itself. You can run any validators for a model attribute by calling the `preValidate` method, passing it the name of the attribute as well as the value you would like validated.
+
+```javascript
+// If the value of the attribute is invalid, a truthy error message is returned
+// if not, it returns a falsy value
+
+var errorMsg = myModel.preValidate('attribute', 'value');
+```
+
 #### Avoiding Conflicts With Multiple Backbone Versions
 
 **Problem**
@@ -6692,7 +6707,7 @@ define(['jquery', 'backbone', 'underscore'].concat(models),
 
 will be ignored. This is by design as it ensures that dynamic dependency/module loading can still take place even after optimization.
 
-Although the RequireJS optimizer works fine in both Node and Java environments, it's strongly recommended to run it under Node as it executes significantly faster there. 
+Although the RequireJS optimizer works fine in both Node and Java environments, it's strongly recommended to run it under Node as it executes significantly faster there.
 
 To get started with r.js, grab it from the [RequireJS download page](http://requirejs.org/docs/download.html#rjs) or [through NPM](http://requirejs.org/docs/optimization.html#download). To begin getting our project to build with r.js, we will need to create a new build profile.
 
@@ -6704,7 +6719,7 @@ Assuming the code for our application and external dependencies are in `app/libs
   out: 'dist/main.js',
 ```
 
-The paths above are relative to the `baseUrl` for our project and in our case it would make sense to make this the `app` folder. The `out` parameter informs r.js that we want to concatenate everything into a single file. 
+The paths above are relative to the `baseUrl` for our project and in our case it would make sense to make this the `app` folder. The `out` parameter informs r.js that we want to concatenate everything into a single file, that should be called `main.js` and be created within the `dist/` directory. Note that here, we do need to add the `.js` extension to the filename. Earlier we saw that when referencing modules by filenames, you don't need to use the `.js` extension, however this is one case in which you do.
 
 Alternatively, we can specify `dir`, which will ensure the contents of our `app` directory are copied into this directory. e.g:
 

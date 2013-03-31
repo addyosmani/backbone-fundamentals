@@ -184,7 +184,9 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <li><a href="#disposing-view-hierarchies">Disposing View Hierarchies</a></li>
 <li><a href="#rendering-view-hierarchies">Rendering View Hierarchies</a></li>
 <li><a href="#working-with-nested-models-or-collections">Working With Nested Models Or Collections</a></li>
-<li><a href="#better-model-property-validation">Better Model Property Validation</a></li>
+<li><a href="#better-model-property-validation">Better Model Property Validation</a><ul>
+<li><a href="#backbone.validation">Backbone.Validation</a></li>
+</ul></li>
 <li><a href="#avoiding-conflicts-with-multiple-backbone-versions">Avoiding Conflicts With Multiple Backbone Versions</a></li>
 <li><a href="#building-model-and-view-hierarchies">Building Model And View Hierarchies</a></li>
 <li><a href="#event-aggregators-and-mediators">Event Aggregators And Mediators</a><ul>
@@ -4802,6 +4804,14 @@ $(<span class="kw">function</span>($) {
 <span class="kw">user</span>.<span class="fu">set</span>({ <span class="ch">&#39;firstname&#39;</span>: <span class="ch">&#39;Greg&#39;</span> }, {<span class="dt">validate</span>: <span class="kw">true</span>, <span class="dt">validateAll</span>: <span class="kw">false</span>});</code></pre>
 <p>That’s it!</p>
 <p>The Backbone.validateAll logic doesn’t override the default Backbone logic by default and so it’s perfectly capable of being used for scenarios where you might care more about field-validation <a href="http://jsperf.com/backbone-validateall">performance</a> as well as those where you don’t. Both solutions presented in this section should work fine however.</p>
+<h5 id="backbone.validation"><a href="#TOC">Backbone.Validation</a></h5>
+<p>As we’ve seen, the <code>validate</code> method Backbone offers is <code>undefined</code> by default and you need to override it with your own custom validation logic to get model validation in place. Often developers run into the issue of implementing this validation as nested ifs and elses, which can become unmaintainable when things get complicated.</p>
+<p>A helpful plugin for Backbone called <a href="https://github.com/thedersen/backbone.validation">Backbone.Validation</a> attempts to solve this problem by offering an extensible way to declare validation rules on the model and override the <code>validate</code> method behind the scenes.</p>
+<p>One of the useful methods this plugin includes is (pseudo) live validation via a <code>preValidate</code> method. This can be used to check on key-press if the input for a model is valid without changing the model itself. You can run any validators for a model attribute by calling the <code>preValidate</code> method, passing it the name of the attribute as well as the value you would like validated.</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="co">// If the value of the attribute is invalid, a truthy error message is returned</span>
+<span class="co">// if not, it returns a falsy value</span>
+
+<span class="kw">var</span> errorMsg = <span class="kw">myModel</span>.<span class="fu">preValidate</span>(<span class="ch">&#39;attribute&#39;</span>, <span class="ch">&#39;value&#39;</span>);</code></pre>
 <h4 id="avoiding-conflicts-with-multiple-backbone-versions"><a href="#TOC">Avoiding Conflicts With Multiple Backbone Versions</a></h4>
 <p><strong>Problem</strong></p>
 <p>In instances out of your control, you may have to work around having more than one version of Backbone in the same page. How do you work around this without causing conflicts?</p>
@@ -5404,7 +5414,7 @@ define([<span class="ch">&#39;jquery&#39;</span>, <span class="ch">&#39;backbone
 <pre><code>({
   baseUrl: &#39;app&#39;,
   out: &#39;dist/main.js&#39;,</code></pre>
-<p>The paths above are relative to the <code>baseUrl</code> for our project and in our case it would make sense to make this the <code>app</code> folder. The <code>out</code> parameter informs r.js that we want to concatenate everything into a single file.</p>
+<p>The paths above are relative to the <code>baseUrl</code> for our project and in our case it would make sense to make this the <code>app</code> folder. The <code>out</code> parameter informs r.js that we want to concatenate everything into a single file, that should be called <code>main.js</code> and be created within the <code>dist/</code> directory. Note that here, we do need to add the <code>.js</code> extension to the filename. Earlier we saw that when referencing modules by filenames, you don’t need to use the <code>.js</code> extension, however this is one case in which you do.</p>
 <p>Alternatively, we can specify <code>dir</code>, which will ensure the contents of our <code>app</code> directory are copied into this directory. e.g:</p>
 <pre><code>({
   baseUrl: &#39;app&#39;,
