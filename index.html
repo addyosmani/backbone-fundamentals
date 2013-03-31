@@ -645,10 +645,12 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <p>While in this instance events help us relate Backbone to the MVC pattern, we will see them playing a much larger role in our SPA applications. Backbone.Event is a fundamental Backbone component which is mixed into both Backbone.Model and Backbone.View, providing them with rich event management capabilities. Note that the traditional controller role (Smalltalk-80 style) is performed by the template, not by the Backbone.View.</p>
 <p>This completes our first encounter with Backbone.js. The remainder of this book will explore the many features of the framework which build on these simple constructs. Before moving on, let’s take a look at common features of JavaScript MV* frameworks.</p>
 <h3 id="implementation-specifics"><a href="#TOC">Implementation Specifics</a></h3>
-<p>The picture below shows the typical HTTP request/response lifecycle for client-side MVC using Backbone:</p>
+<p>An SPA is loaded into the browser using a normal HTTP request and response. The page may simply be an HTML file, as in our example above, or it could be a view constructed by a server-side MVC implementation.</p>
+<p>Once loaded, a client-side Router intercepts URLs and invokes client-side logic in place of sending a new request to the server. The picture below shows typical request handling for client-side MVC as implemented by Backbone:</p>
 <figure>
 <img src="img/backbone_mvc.png"><figcaption></figcaption>
 </figure>
+<p>URL routing, DOM events (e.g., mouse clicks), and Model events (e.g., attribute changes) all trigger handling logic in the View. The handlers update the DOM and Models, which may trigger additional events. Models are synced with Data Sources which may involve communicating with back-end servers.</p>
 <h4 id="models"><a href="#TOC">Models</a></h4>
 <ul>
 <li><p>The built-in capabilities of Models vary across frameworks; however, it’s common for them to support validation of attributes, where attributes represent the properties of the Model, such as a Model identifier.</p></li>
@@ -910,7 +912,15 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <span class="kw">console</span>.<span class="fu">log</span>(<span class="ch">&#39;Completed: &#39;</span> + <span class="kw">myTodo</span>.<span class="fu">get</span>(<span class="ch">&#39;completed&#39;</span>)); <span class="co">// Completed: true</span></code></pre>
 <p><strong>Direct access</strong></p>
 <p>Models expose an <code>.attributes</code> attribute which represents an internal hash containing the state of that model. This is generally in the form of a JSON object similar to the model data you might find on the server but can take other forms.</p>
-<p>Setting values through the <code>.attributes</code> attribute on a model bypasses triggers bound to the model. Additionally you can pass <code>{silent: true}</code>, which silences individual <q>change:attr</q> events entirely, but can build up and then hit in unexpected ways later on.</p>
+<p>Setting values through the <code>.attributes</code> attribute on a model bypasses triggers bound to the model.</p>
+<p>Passing <code>{silent:true}</code> on change doesn’t delay individual <code>&quot;change:attr&quot;</code> events, instead they are silenced entirely:</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> Person = <span class="kw">new</span> <span class="kw">Backbone</span>.<span class="fu">Model</span>();
+<span class="kw">Person</span>.<span class="fu">set</span>({<span class="dt">name</span>: <span class="ch">&#39;Jeremy&#39;</span>}, {<span class="dt">silent</span>: <span class="kw">true</span>});
+
+<span class="kw">console</span>.<span class="fu">log</span>(!<span class="kw">Person</span>.<span class="fu">hasChanged</span>(<span class="dv">0</span>));
+<span class="co">// true</span>
+<span class="kw">console</span>.<span class="fu">log</span>(!<span class="kw">Person</span>.<span class="fu">hasChanged</span>(<span class="ch">&#39;&#39;</span>));
+<span class="co">// true</span></code></pre>
 <p>Remember where possible it is best practice to use <code>Model.set()</code>, or direct instantiation as explained earlier.</p>
 <h4 id="listening-for-changes-to-your-model"><a href="#TOC">Listening for changes to your model</a></h4>
 <p>If you want to receive a notification when a Backbone model changes you can bind a listener to the model for its change event. A convenient place to add listeners is in the <code>initialize()</code> function as shown below:</p>
@@ -985,14 +995,32 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <span class="co">// Title value for this model has changed.</span>
 <span class="co">// Todo set as completed: true</span></code></pre>
 <h4 id="validation"><a href="#TOC">Validation</a></h4>
-<p>Backbone supports model validation through <code>model.validate()</code>, which allows checking the attribute values for a model prior to setting them. Validation by default occurs when the model is persisted using the <code>.save()</code> method or when <code>.set()</code> is called if <code>{validate:true}</code> is passed as an argument.</p>
+<p>Backbone supports model validation through <code>model.validate()</code>, which allows checking the attribute values for a model prior to setting them. By default, validation occurs when the model is persisted using the <code>save()</code> method or when <code>set()</code> is called if <code>{validate:true}</code> is passed as an argument.</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> Person = <span class="kw">new</span> <span class="kw">Backbone</span>.<span class="fu">Model</span>({<span class="dt">name</span>: <span class="ch">&#39;Jeremy&#39;</span>});
+
+<span class="co">// Validate the model name</span>
+<span class="kw">Person</span>.<span class="fu">validate</span> = <span class="kw">function</span>(attrs) {
+  <span class="kw">if</span> (!<span class="kw">attrs</span>.<span class="fu">name</span>) {
+    <span class="kw">return</span> <span class="ch">&#39;I need your name&#39;</span>;
+  }
+};
+
+<span class="co">// Change the name</span>
+<span class="kw">Person</span>.<span class="fu">set</span>({<span class="dt">name</span>: <span class="ch">&#39;Samuel&#39;</span>});
+<span class="kw">console</span>.<span class="fu">log</span>(<span class="kw">Person</span>.<span class="fu">get</span>(<span class="ch">&#39;name&#39;</span>));
+<span class="co">// &#39;Samuel&#39;</span>
+
+<span class="co">// Remove the name attribute, force validation</span>
+<span class="kw">Person</span>.<span class="fu">unset</span>(<span class="ch">&#39;name&#39;</span>, {<span class="dt">validate</span>: <span class="kw">true</span>});
+<span class="co">// false</span></code></pre>
+<p>Above, we also make sure of the <code>unset()</code> method, which removes an attribute by deleting it from the internal model attributes hash.</p>
 <p>Validation functions can be as simple or complex as necessary. If the attributes provided are valid, nothing should be returned from <code>.validate()</code>. If they are invalid, an error value should be returned instead.</p>
 <p>Should an error be returned:</p>
 <ul>
 <li>An <code>invalid</code> event will triggered, setting the <code>validationError</code> property on the model with the value which is returned by this method.</li>
 <li><code>.save()</code> will not continue and the attributes of the model will not be modified on the server</li>
 </ul>
-<p>A basic validation example can be seen below:</p>
+<p>A more complete validation example can be seen below:</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> Todo = <span class="kw">Backbone.Model</span>.<span class="fu">extend</span>({
   <span class="dt">defaults</span>: {
     <span class="dt">completed</span>: <span class="kw">false</span>
@@ -1079,6 +1107,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="dt">el</span>: <span class="ch">&#39;#footer&#39;</span></code></pre>
 <p>Alternatively, you can set <code>el</code> to an existing element when creating the view:</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> todosView = <span class="kw">new</span> TodosView({<span class="dt">el</span>: $(<span class="ch">&#39;#footer&#39;</span>)});</code></pre>
+<p>Note: When declaring a View, <code>options</code>, <code>el</code>, <code>tagName</code>, <code>id</code> and <code>className</code> may be defined as functions, if you want their values to be determined at runtime.</p>
 <p><strong>$el and $()</strong></p>
 <p>View logic often needs to invoke jQuery or Zepto functions on the <code>el</code> element and elements nested within it. Backbone makes it easy to do so by defining the <code>$el</code> property and <code>$()</code> function. The <code>view.$el</code> property is equivalent to <code>$(view.el)</code> and <code>view.$(selector)</code> is equivalent to <code>$(view.el).find(selector)</code>. In our TodosView example’s render method, we see <code>this.$el</code> used to set the HTML of the element and <code>this.$()</code> used to find subelements of class <q>edit</q>.</p>
 <p><strong>setElement</strong></p>
@@ -1266,6 +1295,14 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <span class="kw">console</span>.<span class="fu">log</span>(<span class="st">&quot;Collection size: &quot;</span> + <span class="kw">todos</span>.<span class="fu">length</span>);
 <span class="co">// Logs: Collection size: 0</span></code></pre>
 <p>Note that <code>add()</code> and <code>remove()</code> accept both individual models and lists of models.</p>
+<p>Also note that when using <code>add()</code> on a collection, passing <code>{merge: true}</code> causes duplicate models to have their attributes merged in to the existing models, instead of being ignored.</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> items = <span class="kw">new</span> <span class="kw">Backbone</span>.<span class="fu">Collection</span>;
+<span class="kw">items</span>.<span class="fu">add</span>([{ <span class="dt">id </span>: <span class="dv">1</span>, <span class="dt">name</span>: <span class="st">&quot;Dog&quot;</span> , <span class="dt">age</span>: <span class="dv">3</span>}, { <span class="dt">id </span>: <span class="dv">2</span>, <span class="dt">name</span>: <span class="st">&quot;cat&quot;</span> , <span class="dt">age</span>: <span class="dv">2</span>}]);
+<span class="kw">items</span>.<span class="fu">add</span>([{ <span class="dt">id </span>: <span class="dv">1</span>, <span class="dt">name</span>: <span class="st">&quot;Bear&quot;</span> }], {<span class="dt">merge</span>: <span class="kw">true</span> });
+<span class="kw">items</span>.<span class="fu">add</span>([{ <span class="dt">id </span>: <span class="dv">2</span>, <span class="dt">name</span>: <span class="st">&quot;lion&quot;</span> }]); <span class="co">// merge: false</span>
+ 
+<span class="kw">console</span>.<span class="fu">log</span>(<span class="kw">JSON</span>.<span class="fu">stringify</span>(<span class="kw">items</span>.<span class="fu">toJSON</span>()));
+<span class="co">// [{&quot;id&quot;:1,&quot;name&quot;:&quot;Bear&quot;,&quot;age&quot;:3},{&quot;id&quot;:2,&quot;name&quot;:&quot;cat&quot;,&quot;age&quot;:2}]</span></code></pre>
 <h4 id="retrieving-models"><a href="#TOC">Retrieving Models</a></h4>
 <p>There are a few different ways to retrieve a model from a collection. The most straight-forward is to use <code>Collection.get()</code> which accepts a single id as follows:</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> myTodo = <span class="kw">new</span> Todo({<span class="dt">title</span>:<span class="ch">&#39;Read the whole book&#39;</span>, <span class="dt">id</span>: <span class="dv">2</span>});
@@ -1324,6 +1361,62 @@ code > span.er { color: #ff0000; font-weight: bold; }
 
 <span class="kw">myTodo</span>.<span class="fu">set</span>(<span class="ch">&#39;title&#39;</span>, <span class="ch">&#39;go fishing&#39;</span>);
 <span class="co">// Logs: Changed my mind! I should go fishing</span></code></pre>
+<p>jQuery-style event maps of the form <code>obj.on({click: action})</code> can also be used. These can be clearer than needing three separate calls to <code>.on</code> and should align better with the events hash used in Views:</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript">
+<span class="kw">var</span> Todo = <span class="kw">Backbone.Model</span>.<span class="fu">extend</span>({
+  <span class="dt">defaults</span>: {
+    <span class="dt">title</span>: <span class="ch">&#39;&#39;</span>,
+    <span class="dt">completed</span>: <span class="kw">false</span>
+  }
+});
+
+<span class="kw">var</span> myTodo = <span class="kw">new</span> Todo();
+<span class="kw">myTodo</span>.<span class="fu">set</span>({<span class="dt">title</span>: <span class="ch">&#39;Buy some cookies&#39;</span>, <span class="dt">completed</span>: <span class="kw">true</span>});
+
+<span class="kw">myTodo</span>.<span class="fu">on</span>({
+   <span class="ch">&#39;change:title&#39;</span> : titleChanged,
+   <span class="ch">&#39;change:completed&#39;</span> : stateChanged
+});
+
+<span class="kw">function</span> titleChanged(){
+  <span class="kw">console</span>.<span class="fu">log</span>(<span class="ch">&#39;The title was changed!&#39;</span>);
+}
+
+<span class="kw">function</span> stateChanged(){
+  <span class="kw">console</span>.<span class="fu">log</span>(<span class="ch">&#39;The state was changed!&#39;</span>);
+}
+
+<span class="kw">myTodo</span>.<span class="fu">set</span>({<span class="dt">title</span>: <span class="ch">&#39;Get the groceries&#39;</span>});
+<span class="co">// The title was changed! </span></code></pre>
+<p>Backbone events also support a <a href="http://backbonejs.org/#Events-once">once()</a> method, which ensures that a callback only fires one time when a notification arrives.It is similar to Node’s <a href="http://nodejs.org/api/events.html#events_emitter_once_event_listener">once</a>, or jQuery’s <a href="http://api.jquery.com/one/">one</a>. This is particularly useful for when you want to say <q>the next time something happens, do this</q>.</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="co">// Define an object with two counters</span>
+<span class="kw">var</span> TodoCounter = { <span class="dt">counterA</span>: <span class="dv">0</span>, <span class="dt">counterB</span>: <span class="dv">0</span> };
+<span class="co">// Mix in Backbone Events</span>
+<span class="kw">_</span>.<span class="fu">extend</span>(TodoCounter, <span class="kw">Backbone</span>.<span class="fu">Events</span>);
+
+<span class="co">// Increment counterA, triggering an event</span>
+<span class="kw">var</span> incrA = <span class="kw">function</span>(){ 
+  <span class="kw">TodoCounter</span>.<span class="fu">counterA</span> += <span class="dv">1</span>; 
+  <span class="kw">TodoCounter</span>.<span class="fu">trigger</span>(<span class="ch">&#39;event&#39;</span>); 
+};
+
+<span class="co">// Increment counterB</span>
+<span class="kw">var</span> incrB = <span class="kw">function</span>(){ 
+  <span class="kw">TodoCounter</span>.<span class="fu">counterB</span> += <span class="dv">1</span>; 
+};
+
+<span class="co">// Use once rather than having to explicitly unbind</span>
+<span class="co">// our event listener</span>
+<span class="kw">TodoCounter</span>.<span class="fu">once</span>(<span class="ch">&#39;event&#39;</span>, incrA);
+<span class="kw">TodoCounter</span>.<span class="fu">once</span>(<span class="ch">&#39;event&#39;</span>, incrB);
+
+<span class="co">// Trigger the event once again</span>
+<span class="kw">TodoCounter</span>.<span class="fu">trigger</span>(<span class="ch">&#39;event&#39;</span>);
+
+<span class="co">// Check out output</span>
+<span class="kw">console</span>.<span class="fu">log</span>(<span class="kw">TodoCounter</span>.<span class="fu">counterA</span> === <span class="dv">1</span>); <span class="co">// true</span>
+<span class="kw">console</span>.<span class="fu">log</span>(<span class="kw">Counter</span>.<span class="fu">counterB</span> === <span class="dv">1</span>); <span class="co">// false</span></code></pre>
+<p><code>counterA</code> and <code>counterB</code> should only have been incremented once.</p>
 <h4 id="resettingrefreshing-collections"><a href="#TOC">Resetting/Refreshing Collections</a></h4>
 <p>Rather than adding or removing models individually, you might want to update an entire collection at once. <code>Collection.set()</code> takes an array of models and performs the necessary add, remove, and change operations required to update the collection.</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> TodosCollection = <span class="kw">new</span> <span class="kw">Backbone</span>.<span class="fu">Collection</span>();
@@ -1382,6 +1475,23 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <p>Another useful tip is to use <code>reset</code> with no arguments to clear out a collection completely. This is handy when dynamically loading a new page of results where you want to blank out the current page of results.</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">myCollection</span>.<span class="fu">reset</span>();</code></pre>
 <p>Note that using <code>Collection.reset()</code> doesn’t fire any <code>add</code> or <code>remove</code> events. A <code>reset</code> event is fired instead as shown in the previous example. The reason you might want to use this is to perform super-optimized rendering in extreme cases where individual events are too expensive.</p>
+<p>Also note that listening to a <a href="http://backbonejs.org/#Collection-reset">reset</a> event, the list of previous models is available in <code>options.previousModels</code>, for convenience.</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> Todo = <span class="kw">new</span> <span class="kw">Backbone</span>.<span class="fu">Model</span>();
+<span class="kw">var</span> Todos = <span class="kw">new</span> <span class="kw">Backbone</span>.<span class="fu">Collection</span>([Todo])
+.<span class="fu">on</span>(<span class="ch">&#39;reset&#39;</span>, <span class="kw">function</span>(Todos, options) {
+  <span class="kw">console</span>.<span class="fu">log</span>(<span class="kw">options</span>.<span class="fu">previousModels</span>);
+  <span class="kw">console</span>.<span class="fu">log</span>([Todo]);
+  <span class="kw">console</span>.<span class="fu">log</span>(<span class="kw">options</span>.<span class="fu">previousModels</span>[<span class="dv">0</span>] === Todo); <span class="co">// true</span>
+});
+<span class="kw">Todos</span>.<span class="fu">reset</span>([]);</code></pre>
+<p>An <code>update()</code> method is available for Collections (which is also available as an option to fetch) for <q>smart</q> updating of sets of models. This method attempts to perform smart updating of a collection using a specified list of models. When a model in this list isn’t present in the collection, it is added. If it is, its attributes will be merged. Models which are present in the collection but not in the list are removed.</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> theBeatles = <span class="kw">new</span> Collection([<span class="ch">&#39;john&#39;</span>, <span class="ch">&#39;paul&#39;</span>, <span class="ch">&#39;george&#39;</span>, <span class="ch">&#39;ringo&#39;</span>]);
+
+<span class="kw">theBeatles</span>.<span class="fu">update</span>([<span class="ch">&#39;john&#39;</span>, <span class="ch">&#39;paul&#39;</span>, <span class="ch">&#39;george&#39;</span>, <span class="ch">&#39;pete&#39;</span>]);
+
+<span class="co">// Fires a `remove` event for &#39;ringo&#39;, and an `add` event for &#39;pete&#39;.</span>
+<span class="co">// Updates any of john, paul and georges&#39;s attributes that may have</span>
+<span class="co">// changed over the years.</span></code></pre>
 <h4 id="underscore-utility-functions"><a href="#TOC">Underscore utility functions</a></h4>
 <p>Backbone takes full advantage of its hard dependency on Underscore by making many of its utilities directly available on collections:</p>
 <p><strong><code>forEach</code>: iterate over collections</strong></p>
@@ -1448,7 +1558,23 @@ code > span.er { color: #ff0000; font-weight: bold; }
   }
 });</code></pre>
 <p><strong><code>indexOf()</code>: return the item at a particular index within a collection</strong></p>
-<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">Todos</span>.<span class="fu">indexOf</span>(<span class="dv">5</span>);</code></pre>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> People = <span class="kw">new</span> <span class="kw">Backbone</span>.<span class="fu">Collection</span>;
+
+<span class="kw">People</span>.<span class="fu">comparator</span> = <span class="kw">function</span>(a, b) {
+  <span class="kw">return</span> <span class="kw">a</span>.<span class="fu">get</span>(<span class="ch">&#39;name&#39;</span>) &lt; <span class="kw">b</span>.<span class="fu">get</span>(<span class="ch">&#39;name&#39;</span>) ? -<span class="dv">1</span> : <span class="dv">1</span>;
+};
+
+<span class="kw">var</span> tom = <span class="kw">new</span> <span class="kw">Backbone</span>.<span class="fu">Model</span>({<span class="dt">name</span>: <span class="ch">&#39;Tom&#39;</span>});
+<span class="kw">var</span> rob = <span class="kw">new</span> <span class="kw">Backbone</span>.<span class="fu">Model</span>({<span class="dt">name</span>: <span class="ch">&#39;Rob&#39;</span>});
+<span class="kw">var</span> tim = <span class="kw">new</span> <span class="kw">Backbone</span>.<span class="fu">Model</span>({<span class="dt">name</span>: <span class="ch">&#39;Tim&#39;</span>});
+
+<span class="kw">People</span>.<span class="fu">add</span>(tom);
+<span class="kw">People</span>.<span class="fu">add</span>(rob);
+<span class="kw">People</span>.<span class="fu">add</span>(tim);
+
+<span class="kw">console</span>.<span class="fu">log</span>(<span class="kw">People</span>.<span class="fu">indexOf</span>(rob) === <span class="dv">0</span>); <span class="co">// true</span>
+<span class="kw">console</span>.<span class="fu">log</span>(<span class="kw">People</span>.<span class="fu">indexOf</span>(tim) === <span class="dv">1</span>); <span class="co">// true</span>
+<span class="kw">console</span>.<span class="fu">log</span>(<span class="kw">People</span>.<span class="fu">indexOf</span>(tom) === <span class="dv">2</span>); <span class="co">// true</span></code></pre>
 <p><strong><code>any()</code>: Confirm if any of the values in a collection pass an iterator truth test</strong></p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">Todos</span>.<span class="fu">any</span>(<span class="kw">function</span>(model){
   <span class="kw">return</span> <span class="kw">model</span>.<span class="fu">id</span> === <span class="dv">100</span>;
@@ -1603,8 +1729,20 @@ collection
 
 <span class="kw">var</span> todo2 = <span class="kw">todos</span>.<span class="fu">get</span>(<span class="dv">2</span>);
 <span class="kw">todo2</span>.<span class="fu">destroy</span>(); <span class="co">// sends HTTP DELETE to /todos/2 and removes from collection</span></code></pre>
+<p>Calling <code>destroy</code> on a Model will return <code>false</code> if the model <code>isNew</code>:</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> Todo = <span class="kw">new</span> <span class="kw">Backbone</span>.<span class="fu">Model</span>();
+<span class="kw">console</span>.<span class="fu">log</span>(<span class="kw">Todo</span>.<span class="fu">destroy</span>());
+<span class="co">// false</span></code></pre>
 <p><strong>Options</strong></p>
-<p>Each RESTful API method accepts a variety of options. Most importantly, all methods accept success and error callbacks which can be used to customize the handling of server responses. Specifying the <code>{patch: true}</code> option to <code>Model.save()</code> will cause it to use HTTP PATCH to send only the changed attributes to the server instead of the entire model. Similarly, passing the <code>{reset: true}</code> option to <code>Collection.fetch()</code> will result in the collection being updated using <code>reset()</code> rather than <code>set()</code>.</p>
+<p>Each RESTful API method accepts a variety of options. Most importantly, all methods accept success and error callbacks which can be used to customize the handling of server responses.</p>
+<p>Specifying the <code>{patch: true}</code> option to <code>Model.save()</code> will cause it to use HTTP PATCH to send only the changed attributes (i.e partial updates) to the server instead of the entire model i.e <code>model.save(attrs, {patch: true})</code>:</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="co">// Save partial using PATCH</span>
+<span class="kw">model</span>.<span class="fu">clear</span>().<span class="fu">set</span>({<span class="dt">id</span>: <span class="dv">1</span>, <span class="dt">a</span>: <span class="dv">1</span>, <span class="dt">b</span>: <span class="dv">2</span>, <span class="dt">c</span>: <span class="dv">3</span>, <span class="dt">d</span>: <span class="dv">4</span>});
+<span class="kw">model</span>.<span class="fu">save</span>();
+<span class="kw">model</span>.<span class="fu">save</span>({<span class="dt">b</span>: <span class="dv">2</span>, <span class="dt">d</span>: <span class="dv">4</span>}, {<span class="dt">patch</span>: <span class="kw">true</span>});
+<span class="kw">console</span>.<span class="fu">log</span>(<span class="kw">this</span>.<span class="fu">syncArgs</span>.<span class="fu">method</span>);
+<span class="co">// &#39;patch&#39;</span></code></pre>
+<p>Similarly, passing the <code>{reset: true}</code> option to <code>Collection.fetch()</code> will result in the collection being updated using <code>reset()</code> rather than <code>set()</code>.</p>
 <p>See the Backbone.js documentation for full descriptions of the supported options.</p>
 <h2 id="events"><a href="#TOC">Events</a></h2>
 <p>Events are a basic inversion of control. Instead of having one function call another by name, the second function is registered as a handler to be called when a specific event occurs.</p>
@@ -1874,7 +2012,12 @@ collection
         <span class="co">/* This is a default route that also uses a *splat. Consider the</span>
 <span class="co">        default route a wildcard for URLs that are either not matched or where</span>
 <span class="co">        the user has incorrectly typed in a route path manually */</span>
-        <span class="co">/* Sample usage: http://example.com/# &lt;anything&gt; */</span>
+        <span class="co">/* Sample usage: http://example.com/# &lt;anything&gt; */</span>,
+
+        <span class="st">&quot;optional(/:item)&quot;</span>: <span class="st">&quot;optionalItem&quot;</span>,
+        <span class="st">&quot;named/optional/(y:z)&quot;</span>: <span class="st">&quot;namedOptionalItem&quot;</span>
+        <span class="co">/* Eouter URLs also support optional parts via parentheses, without having</span>
+<span class="co">           to use a regex.  */</span>
     },
 
     <span class="dt">showAbout</span>: <span class="kw">function</span>(){
@@ -1963,8 +2106,8 @@ collection
 <span class="co">// but editTodo() function is not invoked even though location we end up is mapped to it.</span>
 <span class="co">//</span>
 <span class="co">// logs: View todo requested.</span></code></pre>
-<p>It is also possible for <code>Router.navigate()</code> to trigger the route as well as update the URL fragment.</p>
-<p>Note: The first we presented earlier is the preferred form, such as dropping a bookmark when your application transitions to a specific place. <code>navigate:true</code> is available, but it’s usage is discouraged.</p>
+<p>It is also possible for <code>Router.navigate()</code> to trigger the route along with updating the URL fragment by passing the <code>trigger:true</code> option.</p>
+<p>Note: This usage is discouraged. The recommended usage is the one described above which creates a bookmarkable URL when your application transitions to a specific state.</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> TodoRouter = <span class="kw">Backbone.Router</span>.<span class="fu">extend</span>({
   <span class="dt">routes</span>: {
     <span class="st">&quot;todo/:id&quot;</span>: <span class="st">&quot;viewTodo&quot;</span>,
@@ -1974,7 +2117,7 @@ collection
 
   <span class="dt">viewTodo</span>: <span class="kw">function</span>(id){
     <span class="kw">console</span>.<span class="fu">log</span>(<span class="st">&quot;View todo requested.&quot;</span>);
-    <span class="kw">this</span>.<span class="fu">navigate</span>(<span class="st">&quot;todo/&quot;</span> + id + <span class="ch">&#39;/edit&#39;</span>, <span class="kw">true</span>); <span class="co">// updates the fragment and triggers the route as well</span>
+    <span class="kw">this</span>.<span class="fu">navigate</span>(<span class="st">&quot;todo/&quot;</span> + id + <span class="ch">&#39;/edit&#39;</span>, {<span class="dt">trigger</span>: <span class="kw">true</span>}); <span class="co">// updates the fragment and triggers the route as well</span>
   },
 
   <span class="dt">editTodo</span>: <span class="kw">function</span>(id) {
@@ -1994,12 +2137,68 @@ collection
 <span class="co">// logs:</span>
 <span class="co">// View todo requested.</span>
 <span class="co">// Edit todo opened.</span></code></pre>
+<p>A <q>route</q> event is also triggered on the router in addition to being fired on Backbone.history.</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">Backbone.history</span>.<span class="fu">on</span>(<span class="ch">&#39;route&#39;</span>, onRoute);
+
+<span class="co">// Trigger &#39;route&#39; event on router instance.&quot;</span>
+<span class="kw">router</span>.<span class="fu">on</span>(<span class="ch">&#39;route&#39;</span>, <span class="kw">function</span>(name, args) {
+  <span class="kw">console</span>.<span class="fu">log</span>(name === <span class="ch">&#39;routeEvent&#39;</span>); 
+});
+
+<span class="kw">location</span>.<span class="fu">replace</span>(<span class="ch">&#39;http://example.com#route-event/x&#39;</span>);
+<span class="kw">Backbone.history</span>.<span class="fu">checkUrl</span>();</code></pre>
 <h2 id="backbones-sync-api"><a href="#TOC">Backbone’s Sync API</a></h2>
 <p>We previously discussed how Backbone supports RESTful persistence via its <code>fetch()</code> and <code>create()</code> methods on Collections and <code>save()</code>, and <code>delete()</code> methods on Models. Now we are going to take a closer look at Backbone’s sync method which underlies these operations.</p>
 <p>The Backbone.sync method is an integral part of Backbone.js. It assumes a jQuery-like <code>$.ajax()</code> method, so HTTP parameters are organized based on jQuery’s API. Since some legacy servers may not support JSON-formatted requests and HTTP PUT and DELETE operations, Backbone can be configured to emulate these capabilities using the two configuration variables shown below with their default values:</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">Backbone</span>.<span class="fu">emulateHTTP</span> = <span class="kw">false</span>; <span class="co">// set to true if server cannot handle HTTP PUT or HTTP DELETE</span>
 <span class="kw">Backbone</span>.<span class="fu">emulateJSON</span> = <span class="kw">false</span>; <span class="co">// set to true if server cannot handle application/json requests</span></code></pre>
-<p>The Backbone.emulateHTTP variable should be set to true if extended HTTP methods are not supported by the server. The Backbone.emulateJSON variable should be set to true if the server does not understand the MIME type for JSON.</p>
+<p>The inline Backbone.emulateHTTP option should be set to true if extended HTTP methods are not supported by the server. The Backbone.emulateJSON option should be set to true if the server does not understand the MIME type for JSON.</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="co">// Create a new library collection</span>
+<span class="kw">var</span> Library = <span class="kw">Backbone.Collection</span>.<span class="fu">extend</span>({
+    <span class="dt">url </span>: <span class="kw">function</span>() { <span class="kw">return</span> <span class="ch">&#39;/library&#39;</span>; }
+});
+
+<span class="co">// Define attributes for our model</span>
+<span class="kw">var</span> attrs = {
+    <span class="dt">title  </span>: <span class="st">&quot;The Tempest&quot;</span>,
+    <span class="dt">author </span>: <span class="st">&quot;Bill Shakespeare&quot;</span>,
+    <span class="dt">length </span>: <span class="dv">123</span>
+};
+  
+<span class="co">// Create a new Library instance</span>
+<span class="kw">var</span> library = <span class="kw">new</span> Library;
+
+<span class="co">// Create a new instance of a model within our collection</span>
+<span class="kw">library</span>.<span class="fu">create</span>(attrs, {<span class="dt">wait</span>: <span class="kw">false</span>});
+  
+<span class="co">// Update with just emulateHTTP</span>
+<span class="kw">library</span>.<span class="fu">first</span>().<span class="fu">save</span>({<span class="dt">id</span>: <span class="ch">&#39;2-the-tempest&#39;</span>, <span class="dt">author</span>: <span class="ch">&#39;Tim Shakespeare&#39;</span>}, {
+  <span class="dt">emulateHTTP</span>: <span class="kw">true</span>
+});
+    
+<span class="co">// Check the ajaxSettings being used for our request</span>
+<span class="kw">console</span>.<span class="fu">log</span>(<span class="kw">this</span>.<span class="fu">ajaxSettings</span>.<span class="fu">url</span> === <span class="ch">&#39;/library/2-the-tempest&#39;</span>); <span class="co">// true</span>
+<span class="kw">console</span>.<span class="fu">log</span>(<span class="kw">this</span>.<span class="fu">ajaxSettings</span>.<span class="fu">type</span> === <span class="ch">&#39;POST&#39;</span>); <span class="co">// true</span>
+<span class="kw">console</span>.<span class="fu">log</span>(<span class="kw">this</span>.<span class="fu">ajaxSettings</span>.<span class="fu">contentType</span> === <span class="ch">&#39;application/json&#39;</span>); <span class="co">// true</span>
+
+<span class="co">// Parse the data for the request to confirm it is as expected</span>
+<span class="kw">var</span> data = <span class="kw">JSON</span>.<span class="fu">parse</span>(<span class="kw">this</span>.<span class="fu">ajaxSettings</span>.<span class="fu">data</span>);
+<span class="kw">console</span>.<span class="fu">log</span>(<span class="kw">data</span>.<span class="fu">id</span> === <span class="ch">&#39;2-the-tempest&#39;</span>);  <span class="co">// true</span>
+<span class="kw">console</span>.<span class="fu">log</span>(<span class="kw">data</span>.<span class="fu">author</span> === <span class="ch">&#39;Tim Shakespeare&#39;</span>); <span class="co">// true</span>
+<span class="kw">console</span>.<span class="fu">log</span>(<span class="kw">data</span>.<span class="fu">length</span> === <span class="dv">123</span>); <span class="co">// true</span></code></pre>
+<p>Similarly, we could just update using <code>emulateJSON</code>:</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">library</span>.<span class="fu">first</span>().<span class="fu">save</span>({<span class="dt">id</span>: <span class="ch">&#39;2-the-tempest&#39;</span>, <span class="dt">author</span>: <span class="ch">&#39;Tim Shakespeare&#39;</span>}, {
+  <span class="dt">emulateJSON</span>: <span class="kw">true</span>
+});
+
+<span class="kw">console</span>.<span class="fu">log</span>(<span class="kw">this</span>.<span class="fu">ajaxSettings</span>.<span class="fu">url</span> === <span class="ch">&#39;/library/2-the-tempest&#39;</span>); <span class="co">// true</span>
+<span class="kw">console</span>.<span class="fu">log</span>(<span class="kw">this</span>.<span class="fu">ajaxSettings</span>.<span class="fu">type</span> === <span class="ch">&#39;PUT&#39;</span>); <span class="co">// true</span>
+<span class="kw">console</span>.<span class="fu">log</span>(<span class="kw">this</span>.<span class="fu">ajaxSettings</span>.<span class="fu">contentType</span> ===<span class="ch">&#39;application/x-www-form-urlencoded&#39;</span>); <span class="co">// true</span>
+
+<span class="kw">var</span> data = <span class="kw">JSON</span>.<span class="fu">parse</span>(<span class="kw">this</span>.<span class="fu">ajaxSettings</span>.<span class="fu">data</span>.<span class="fu">model</span>);
+<span class="kw">console</span>.<span class="fu">log</span>(<span class="kw">data</span>.<span class="fu">id</span> === <span class="ch">&#39;2-the-tempest&#39;</span>);
+<span class="kw">console</span>.<span class="fu">log</span>(<span class="kw">data</span>.<span class="fu">author</span> ===<span class="ch">&#39;Tim Shakespeare&#39;</span>);
+<span class="kw">console</span>.<span class="fu">log</span>(<span class="kw">data</span>.<span class="fu">length</span> === <span class="dv">123</span>);</code></pre>
 <p><code>Backbone.sync</code> is called every time Backbone tries to read, save, or delete models. It uses jQuery or Zepto’s <code>$.ajax()</code> implementations to make these RESTful requests, however this can be overridden as per your needs.</p>
 <p><strong>Overriding Backbone.sync</strong></p>
 <p>The <code>sync</code> function may be overridden globally as Backbone.sync, or at a finer-grained level, by adding a sync function to a Backbone collection or to an individual model.</p>
@@ -4803,12 +5002,12 @@ $(<span class="kw">function</span>($) {
 <p>That’s it. The Backbone.validateAll logic doesn’t override the default Backbone logic by default and so it’s perfectly capable of being used for scenarios where you might care more about field-validation <a href="http://jsperf.com/backbone-validateall">performance</a> as well as those where you don’t. Both solutions presented in this section should work fine however.</p>
 <h5 id="backbone.validation"><a href="#TOC">Backbone.Validation</a></h5>
 <p>As we’ve seen, the <code>validate</code> method Backbone offers is <code>undefined</code> by default and you need to override it with your own custom validation logic to get model validation in place. Often developers run into the issue of implementing this validation as nested ifs and elses, which can become unmaintainable when things get complicated.</p>
-<p>Another helpful plugin for Backbone called <a href="https://github.com/thedersen/backbone.validation">Backbone.Validation</a> attempts to solve this problem by offering an extensible way to declare validation rules on the model and override the <code>validate</code> method behind the scenes.</p>
-<p>One of the useful methods this plugin includes is (pseudo) live validation via a <code>preValidate</code> method. This can be used to check on key-press if the input for a model is valid without changing the model itself. You can run any validators for a model attribute by calling the <code>preValidate</code> method, passing it the name of the attribute as well as the value you would like validated.</p>
+<p>Another helpful plugin for Backbone called <a href="https://github.com/thedersen/backbone.validation">Backbone.Validation</a> attempts to solve this problem by offering an extensible way to declare validation rules on the model and overrides the <code>validate</code> method behind the scenes.</p>
+<p>One of the useful methods this plugin includes is (pseudo) live validation via a <code>preValidate</code> method. This can be used to check on key-press if the input for a model is valid without changing the model itself. You can run any validators for a model attribute by calling the <code>preValidate</code> method, passing it the name of the attribute along with the value you would like validated.</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="co">// If the value of the attribute is invalid, a truthy error message is returned</span>
 <span class="co">// if not, it returns a falsy value</span>
 
-<span class="kw">var</span> errorMsg = <span class="kw">myModel</span>.<span class="fu">preValidate</span>(<span class="ch">&#39;attribute&#39;</span>, <span class="ch">&#39;value&#39;</span>);</code></pre>
+<span class="kw">var</span> errorMsg = <span class="kw">user</span>.<span class="fu">preValidate</span>(<span class="ch">&#39;firstname&#39;</span>, <span class="ch">&#39;Greg&#39;</span>);</code></pre>
 <h5 id="form-specific-validation-classes"><a href="#TOC">Form-specific validation classes</a></h5>
 <p>That said, the most optimal solution to this problem may not be to stick validation in your model attributes. Instead, you could have a function specifically designed for validating a specific form and there are many good JavaScript form validation libraries out there that can help with this.</p>
 <p>If you want to stick it on your model, you can also make it a class function:</p>
@@ -5418,7 +5617,7 @@ define([<span class="ch">&#39;jquery&#39;</span>, <span class="ch">&#39;backbone
 <pre><code>({
   baseUrl: &#39;app&#39;,
   out: &#39;dist/main.js&#39;,</code></pre>
-<p>The paths above are relative to the <code>baseUrl</code> for our project and in our case it would make sense to make this the <code>app</code> folder. The <code>out</code> parameter informs r.js that we want to concatenate everything into a single file, that should be called <code>main.js</code> and be created within the <code>dist/</code> directory. Note that here, we do need to add the <code>.js</code> extension to the filename. Earlier we saw that when referencing modules by filenames, you don’t need to use the <code>.js</code> extension, however this is one case in which you do.</p>
+<p>The paths above are relative to the <code>baseUrl</code> for our project and in our case it would make sense to make this the <code>app</code> folder. The <code>out</code> parameter informs r.js that we want to concatenate everything into a single file called <code>main.js</code> under the <code>dist/</code> directory. Note that here we do need to add the <code>.js</code> extension to the filename. Earlier, we saw that when referencing modules by filenames, you don’t need to use the <code>.js</code> extension, however this is one case in which you do.</p>
 <p>Alternatively, we can specify <code>dir</code>, which will ensure the contents of our <code>app</code> directory are copied into this directory. e.g:</p>
 <pre><code>({
   baseUrl: &#39;app&#39;,
@@ -8991,32 +9190,26 @@ test( <span class="ch">&#39;Should bind Collection events to View creation.&#39;
 <p>The following sections provide insight into how Backbone uses jQuery/Zepto and Underscore.js.</p>
 <h3 id="dom-manipulation"><a href="#TOC">DOM Manipulation</a></h3>
 <p>Although most developers won’t need it, Backbone does support setting a custom DOM library to be used instead of these options. From the source:</p>
-<pre><code>// Set the JavaScript library that will be used for DOM manipulation and
-// Ajax calls (a.k.a. the `$` variable). By default Backbone will use: jQuery,
-// Zepto, or Ender; but the `setDomLibrary()` method lets you inject an
-// alternate JavaScript library (or a mock library for testing your views
-// outside of a browser).
-
-Backbone.setDomLibrary = function(lib) {
-  $ = lib;
-};</code></pre>
-<p>Calling this method will allow you to use any custom DOM-manipulation library. e.g:</p>
-<pre><code>Backbone.setDomLibrary(aCustomLibrary);</code></pre>
+<pre><code>// For Backbone&#39;s purposes, jQuery, Zepto, Ender, or My Library (kidding) owns
+// the `$` variable.
+ Backbone.$ = root.jQuery || root.Zepto || root.ender || root.$;</code></pre>
+<p>So, setting <code>Backbone.$ = myLibrary;</code> will allow you to use any custom DOM-manipulation library in place of the jQuery default.</p>
 <h3 id="utilities"><a href="#TOC">Utilities</a></h3>
 <p>Underscore.js is heavily used in Backbone behind the scenes for everything from object extension to event binding. As the entire library is generally included, we get free access to a number of useful utilities we can use on Collections such as filtering <code>_.filter()</code>, sorting <code>_.sortBy()</code>, mapping <code>_.map()</code> and so on.</p>
 <p>From the source:</p>
 <pre><code>// Underscore methods that we want to implement on the Collection.
-var methods = [&#39;forEach&#39;, &#39;each&#39;, &#39;map&#39;, &#39;reduce&#39;, &#39;reduceRight&#39;, &#39;find&#39;,
-    &#39;detect&#39;, &#39;filter&#39;, &#39;select&#39;, &#39;reject&#39;, &#39;every&#39;, &#39;all&#39;, &#39;some&#39;, &#39;any&#39;,
-    &#39;include&#39;, &#39;contains&#39;, &#39;invoke&#39;, &#39;max&#39;, &#39;min&#39;, &#39;sortBy&#39;, &#39;sortedIndex&#39;,
-    &#39;toArray&#39;, &#39;size&#39;, &#39;first&#39;, &#39;initial&#39;, &#39;rest&#39;, &#39;last&#39;, &#39;without&#39;, &#39;indexOf&#39;,
-    &#39;shuffle&#39;, &#39;lastIndexOf&#39;, &#39;isEmpty&#39;, &#39;groupBy&#39;];
+// 90% of the core usefulness of Backbone Collections is actually implemented
+// right here:
+var methods = [&#39;forEach&#39;, &#39;each&#39;, &#39;map&#39;, &#39;collect&#39;, &#39;reduce&#39;, &#39;foldl&#39;, &#39;inject&#39;, &#39;reduceRight&#39;, &#39;foldr&#39;, &#39;find&#39;, &#39;detect&#39;, &#39;filter&#39;, &#39;select&#39;, &#39;reject&#39;, &#39;every&#39;, &#39;all&#39;, &#39;some&#39;, &#39;any&#39;, &#39;include&#39;, &#39;contains&#39;, &#39;invoke&#39;, &#39;max&#39;, &#39;min&#39;, &#39;toArray&#39;, &#39;size&#39;, &#39;first&#39;, &#39;head&#39;, &#39;take&#39;, &#39;initial&#39;, &#39;rest&#39;, &#39;tail&#39;, &#39;drop&#39;, &#39;last&#39;, &#39;without&#39;, &#39;indexOf&#39;, &#39;shuffle&#39;, &#39;lastIndexOf&#39;, &#39;isEmpty&#39;, &#39;chain&#39;];
 
-// Mix in each Underscore method as a proxy to Collection#models.
-  _.each(methods, function(method) {
+// Mix in each Underscore method as a proxy to `Collection#models`.
+_.each(methods, function(method) {
     Collection.prototype[method] = function() {
-      return _[method].apply(_, [this.models].concat(_.toArray(arguments)));
-    };</code></pre>
+        var args = slice.call(arguments);
+        args.unshift(this.models);
+        return _[method].apply(_, args);
+    };
+});</code></pre>
 <p>However, for a complete linked list of methods supported, see the <a href="http://backbonejs.org/#Collection-Underscore-Methods">official documentation</a>.</p>
 <h3 id="restful-persistence-1"><a href="#TOC">RESTful persistence</a></h3>
 <p>Models and collections in Backbone can be <q>sync</q>ed with the server using the <code>fetch</code>, <code>save</code> and <code>destroy</code> methods. All of these methods delegate back to the <code>Backbone.sync</code> function, which actually wraps jQuery/Zepto’s <code>$.ajax</code> function, calling GET, POST and DELETE for the respective persistence methods on Backbone models.</p>
@@ -9044,9 +9237,14 @@ Backbone.sync = function(method, model, options) {
 <pre><code>      // Depending on whether we&#39;re using pushState or hashes, and whether
       // &#39;onhashchange&#39; is supported, determine how we check the URL state.
       if (this._hasPushState) {
-        Backbone.$(window).on(&#39;popstate&#39;, this.checkUrl);
+          Backbone.$(window)
+              .on(&#39;popstate&#39;, this.checkUrl);
       } else if (this._wantsHashChange &amp;&amp; (&#39;onhashchange&#39; in window) &amp;&amp; !oldIE) {
-        Backbone.$(window).on(&#39;hashchange&#39;, this.checkUrl);
+          Backbone.$(window)
+              .on(&#39;hashchange&#39;, this.checkUrl);
+      } else if (this._wantsHashChange) {
+          this._checkUrlInterval = setInterval(this.checkUrl, this.interval);
+      }
       ...</code></pre>
 <p><code>Backbone.History.stop</code> similarly uses your DOM manipulation library to unbind these event listeners.</p>
 <hr>

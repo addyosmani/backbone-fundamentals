@@ -206,10 +206,21 @@ console.log('Completed: ' + myTodo.get('completed')); // Completed: true
 
 Models expose an `.attributes` attribute which represents an internal hash containing the state of that model. This is generally in the form of a JSON object similar to the model data you might find on the server but can take other forms.
 
-Setting values through the `.attributes` attribute on a model bypasses triggers bound to the model. Additionally you can pass `{silent: true}`, which silences individual "change:attr" events entirely, but can build up and then hit in unexpected ways later on.
+Setting values through the `.attributes` attribute on a model bypasses triggers bound to the model.
+
+Passing `{silent:true}` on change doesn't delay individual `"change:attr"` events, instead they are silenced entirely:
+
+```javascript
+var Person = new Backbone.Model();
+Person.set({name: 'Jeremy'}, {silent: true});
+
+console.log(!Person.hasChanged(0));
+// true
+console.log(!Person.hasChanged(''));
+// true
+```
 
 Remember where possible it is best practice to use `Model.set()`, or direct instantiation as explained earlier.
-
 
 #### Listening for changes to your model
 
@@ -295,7 +306,29 @@ console.log('Todo set as completed: ' + myTodo.get('completed'));
 
 #### Validation
 
-Backbone supports model validation through `model.validate()`, which allows checking the attribute values for a model prior to setting them. Validation by default occurs when the model is persisted using the `.save()` method or when `.set()` is called if `{validate:true}` is passed as an argument.
+Backbone supports model validation through `model.validate()`, which allows checking the attribute values for a model prior to setting them. By default, validation occurs when the model is persisted using the `save()` method or when `set()` is called if `{validate:true}` is passed as an argument.
+
+```javascript
+var Person = new Backbone.Model({name: 'Jeremy'});
+
+// Validate the model name
+Person.validate = function(attrs) {
+  if (!attrs.name) {
+    return 'I need your name';
+  }
+};
+
+// Change the name
+Person.set({name: 'Samuel'});
+console.log(Person.get('name'));
+// 'Samuel'
+
+// Remove the name attribute, force validation
+Person.unset('name', {validate: true});
+// false
+```
+
+Above, we also make sure of the `unset()` method, which removes an attribute by deleting it from the internal model attributes hash.
 
 Validation functions can be as simple or complex as necessary. If the attributes provided are valid, nothing should be returned from `.validate()`. If they are invalid, an error value should be returned instead. 
 
@@ -304,7 +337,7 @@ Should an error be returned:
 * An `invalid` event will triggered, setting the `validationError` property on the model with the value which is returned by this method. 
 * `.save()` will not continue and the attributes of the model will not be modified on the server
 
-A basic validation example can be seen below:
+A more complete validation example can be seen below:
 
 ```javascript
 var Todo = Backbone.Model.extend({
@@ -426,6 +459,8 @@ Alternatively, you can set `el` to an existing element when creating the view:
 ```javascript
 var todosView = new TodosView({el: $('#footer')});
 ```
+
+Note: When declaring a View, `options`, `el`, `tagName`, `id` and `className` may be defined as functions, if you want their values to be determined at runtime.
 
 **$el and $()**
 
@@ -677,6 +712,18 @@ console.log("Collection size: " + todos.length);
 
 Note that `add()` and `remove()` accept both individual models and lists of models.
 
+Also note that when using `add()` on a collection, passing `{merge: true}` causes duplicate models to have their attributes merged in to the existing models, instead of being ignored.
+
+```javascript
+var items = new Backbone.Collection;
+items.add([{ id : 1, name: "Dog" , age: 3}, { id : 2, name: "cat" , age: 2}]);
+items.add([{ id : 1, name: "Bear" }], {merge: true });
+items.add([{ id : 2, name: "lion" }]); // merge: false
+ 
+console.log(JSON.stringify(items.toJSON()));
+// [{"id":1,"name":"Bear","age":3},{"id":2,"name":"cat","age":2}]
+```
+
 #### Retrieving Models
 
 There are a few different ways to retrieve a model from a collection. The most straight-forward is to use `Collection.get()` which accepts a single id as follows:
@@ -758,6 +805,71 @@ myTodo.set('title', 'go fishing');
 // Logs: Changed my mind! I should go fishing
 ```
 
+jQuery-style event maps of the form `obj.on({click: action})` can also be used. These can be clearer than needing three separate calls to `.on` and should align better with the events hash used in Views:
+
+```javascript
+
+var Todo = Backbone.Model.extend({
+  defaults: {
+    title: '',
+    completed: false
+  }
+});
+
+var myTodo = new Todo();
+myTodo.set({title: 'Buy some cookies', completed: true});
+
+myTodo.on({
+   'change:title' : titleChanged,
+   'change:completed' : stateChanged
+});
+
+function titleChanged(){
+  console.log('The title was changed!');
+}
+
+function stateChanged(){
+  console.log('The state was changed!');
+}
+
+myTodo.set({title: 'Get the groceries'});
+// The title was changed! 
+```
+
+Backbone events also support a [once()](http://backbonejs.org/#Events-once) method, which ensures that a callback only fires one time when a notification arrives.It is similar to Node's [once](http://nodejs.org/api/events.html#events_emitter_once_event_listener), or jQuery's [one](http://api.jquery.com/one/). This is particularly useful for when you want to say "the next time something happens, do this".
+
+```javascript
+// Define an object with two counters
+var TodoCounter = { counterA: 0, counterB: 0 };
+// Mix in Backbone Events
+_.extend(TodoCounter, Backbone.Events);
+
+// Increment counterA, triggering an event
+var incrA = function(){ 
+  TodoCounter.counterA += 1; 
+  TodoCounter.trigger('event'); 
+};
+
+// Increment counterB
+var incrB = function(){ 
+  TodoCounter.counterB += 1; 
+};
+
+// Use once rather than having to explicitly unbind
+// our event listener
+TodoCounter.once('event', incrA);
+TodoCounter.once('event', incrB);
+
+// Trigger the event once again
+TodoCounter.trigger('event');
+
+// Check out output
+console.log(TodoCounter.counterA === 1); // true
+console.log(Counter.counterB === 1); // false
+```
+
+`counterA` and `counterB` should only have been incremented once.
+
 #### Resetting/Refreshing Collections
 
 Rather than adding or removing models individually, you might want to update an entire collection at once. `Collection.set()` takes an array of models and performs the necessary add, remove, and change operations required to update the collection.
@@ -829,6 +941,31 @@ myCollection.reset();
 ```
 
 Note that using `Collection.reset()` doesn't fire any `add` or `remove` events. A `reset` event is fired instead as shown in the previous example. The reason you might want to use this is to perform super-optimized rendering in extreme cases where individual events are too expensive.
+
+Also note that listening to a [reset](http://backbonejs.org/#Collection-reset) event, the list of previous models is available in `options.previousModels`, for convenience.
+
+```javascript
+var Todo = new Backbone.Model();
+var Todos = new Backbone.Collection([Todo])
+.on('reset', function(Todos, options) {
+  console.log(options.previousModels);
+  console.log([Todo]);
+  console.log(options.previousModels[0] === Todo); // true
+});
+Todos.reset([]);
+```
+
+An `update()` method is available for Collections (which is also available as an option to fetch) for "smart" updating of sets of models. This method attempts to perform smart updating of a collection using a specified list of models. When a model in this list isn't present in the collection, it is added. If it is, its attributes will be merged. Models which are present in the collection but not in the list are removed.
+
+```javascript
+var theBeatles = new Collection(['john', 'paul', 'george', 'ringo']);
+
+theBeatles.update(['john', 'paul', 'george', 'pete']);
+
+// Fires a `remove` event for 'ringo', and an `add` event for 'pete'.
+// Updates any of john, paul and georges's attributes that may have
+// changed over the years.
+```
 
 #### Underscore utility functions
 
@@ -925,7 +1062,23 @@ var Todos = Backbone.Collection.extend({
 **`indexOf()`: return the item at a particular index within a collection**
 
 ```javascript
-Todos.indexOf(5);
+var People = new Backbone.Collection;
+
+People.comparator = function(a, b) {
+  return a.get('name') < b.get('name') ? -1 : 1;
+};
+
+var tom = new Backbone.Model({name: 'Tom'});
+var rob = new Backbone.Model({name: 'Rob'});
+var tim = new Backbone.Model({name: 'Tim'});
+
+People.add(tom);
+People.add(rob);
+People.add(tim);
+
+console.log(People.indexOf(rob) === 0); // true
+console.log(People.indexOf(tim) === 1); // true
+console.log(People.indexOf(tom) === 2); // true
 ```
 
 **`any()`: Confirm if any of the values in a collection pass an iterator truth test**
@@ -1149,9 +1302,30 @@ var todo2 = todos.get(2);
 todo2.destroy(); // sends HTTP DELETE to /todos/2 and removes from collection
 ```
 
+Calling `destroy` on a Model will return `false` if the model `isNew`:
+
+```javascript
+var Todo = new Backbone.Model();
+console.log(Todo.destroy());
+// false
+```
+
 **Options**
 
-Each RESTful API method accepts a variety of options. Most importantly, all methods accept success and error callbacks which can be used to customize the handling of server responses. Specifying the `{patch: true}` option to `Model.save()` will cause it to use HTTP PATCH to send only the changed attributes to the server instead of the entire model. Similarly, passing the `{reset: true}` option to `Collection.fetch()` will result in the collection being updated using `reset()` rather than `set()`.
+Each RESTful API method accepts a variety of options. Most importantly, all methods accept success and error callbacks which can be used to customize the handling of server responses. 
+
+Specifying the `{patch: true}` option to `Model.save()` will cause it to use HTTP PATCH to send only the changed attributes (i.e partial updates) to the server instead of the entire model i.e `model.save(attrs, {patch: true})`:
+
+```javascript
+// Save partial using PATCH
+model.clear().set({id: 1, a: 1, b: 2, c: 3, d: 4});
+model.save();
+model.save({b: 2, d: 4}, {patch: true});
+console.log(this.syncArgs.method);
+// 'patch'
+```
+
+Similarly, passing the `{reset: true}` option to `Collection.fetch()` will result in the collection being updated using `reset()` rather than `set()`.
 
 See the Backbone.js documentation for full descriptions of the supported options.
 
@@ -1503,7 +1677,12 @@ var TodoRouter = Backbone.Router.extend({
         /* This is a default route that also uses a *splat. Consider the
         default route a wildcard for URLs that are either not matched or where
         the user has incorrectly typed in a route path manually */
-        /* Sample usage: http://example.com/# <anything> */
+        /* Sample usage: http://example.com/# <anything> */,
+
+        "optional(/:item)": "optionalItem",
+        "named/optional/(y:z)": "namedOptionalItem"
+        /* Eouter URLs also support optional parts via parentheses, without having
+           to use a regex.  */
     },
 
     showAbout: function(){
@@ -1533,6 +1712,7 @@ var TodoRouter = Backbone.Router.extend({
 
 var myTodoRouter = new TodoRouter();
 ```
+
 
 Backbone offers an opt-in for HTML5 pushState support via `window.history.pushState`. This permits you to define routes such as http://backbonejs.org/just/an/example. This will be supported with automatic degradation when a user's browser doesn't support pushState. Note that it is vastly preferred if you're capable of also supporting pushState on the server side, although it is a little more difficult to implement.
 
@@ -1644,6 +1824,20 @@ Backbone.history.start();
 // Edit todo opened.
 ```
 
+A "route" event is also triggered on the router in addition to being fired on Backbone.history.
+
+```javascript
+Backbone.history.on('route', onRoute);
+
+// Trigger 'route' event on router instance."
+router.on('route', function(name, args) {
+  console.log(name === 'routeEvent'); 
+});
+
+location.replace('http://example.com#route-event/x');
+Backbone.history.checkUrl();
+```
+
 ## Backbone’s Sync API
 
 We previously discussed how Backbone supports RESTful persistence via its `fetch()` and `create()` methods on Collections and `save()`, and `delete()` methods on Models. Now we are going to take a closer look at Backbone's sync method which underlies these operations.
@@ -1655,7 +1849,60 @@ Backbone.emulateHTTP = false; // set to true if server cannot handle HTTP PUT or
 Backbone.emulateJSON = false; // set to true if server cannot handle application/json requests
 ```
 
-The Backbone.emulateHTTP variable should be set to true if extended HTTP methods are not supported by the server. The Backbone.emulateJSON variable should be set to true if the server does not understand the MIME type for JSON.
+The inline Backbone.emulateHTTP option should be set to true if extended HTTP methods are not supported by the server. The Backbone.emulateJSON option should be set to true if the server does not understand the MIME type for JSON.
+
+```javascript
+// Create a new library collection
+var Library = Backbone.Collection.extend({
+    url : function() { return '/library'; }
+});
+
+// Define attributes for our model
+var attrs = {
+    title  : "The Tempest",
+    author : "Bill Shakespeare",
+    length : 123
+};
+  
+// Create a new Library instance
+var library = new Library;
+
+// Create a new instance of a model within our collection
+library.create(attrs, {wait: false});
+  
+// Update with just emulateHTTP
+library.first().save({id: '2-the-tempest', author: 'Tim Shakespeare'}, {
+  emulateHTTP: true
+});
+    
+// Check the ajaxSettings being used for our request
+console.log(this.ajaxSettings.url === '/library/2-the-tempest'); // true
+console.log(this.ajaxSettings.type === 'POST'); // true
+console.log(this.ajaxSettings.contentType === 'application/json'); // true
+
+// Parse the data for the request to confirm it is as expected
+var data = JSON.parse(this.ajaxSettings.data);
+console.log(data.id === '2-the-tempest');  // true
+console.log(data.author === 'Tim Shakespeare'); // true
+console.log(data.length === 123); // true
+```
+
+Similarly, we could just update using `emulateJSON`:
+
+```javascript
+library.first().save({id: '2-the-tempest', author: 'Tim Shakespeare'}, {
+  emulateJSON: true
+});
+
+console.log(this.ajaxSettings.url === '/library/2-the-tempest'); // true
+console.log(this.ajaxSettings.type === 'PUT'); // true
+console.log(this.ajaxSettings.contentType ==='application/x-www-form-urlencoded'); // true
+
+var data = JSON.parse(this.ajaxSettings.data.model);
+console.log(data.id === '2-the-tempest');
+console.log(data.author ==='Tim Shakespeare');
+console.log(data.length === 123);
+```
 
 `Backbone.sync` is called every time Backbone tries to read, save, or delete models. It uses jQuery or Zepto's `$.ajax()` implementations to make these RESTful requests, however this can be overridden as per your needs.
 
