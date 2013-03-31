@@ -1608,9 +1608,9 @@ Backbone.history.start();
 // logs: View todo requested.
 ```
 
-It is also possible for `Router.navigate()` to trigger the route as well as update the URL fragment.
+It is also possible for `Router.navigate()` to trigger the route along with updating the URL fragment by passing the `trigger:true` option.
 
-Note: The first we presented earlier is the preferred form, such as dropping a bookmark when your application transitions to a specific place. `navigate:true` is available, but it's usage is discouraged.
+Note: This usage is discouraged. The recommended usage is the one described above which creates a bookmarkable URL when your application transitions to a specific state.
 
 ```javascript
 var TodoRouter = Backbone.Router.extend({
@@ -1622,7 +1622,7 @@ var TodoRouter = Backbone.Router.extend({
 
   viewTodo: function(id){
     console.log("View todo requested.");
-    this.navigate("todo/" + id + '/edit', true); // updates the fragment and triggers the route as well
+    this.navigate("todo/" + id + '/edit', {trigger: true}); // updates the fragment and triggers the route as well
   },
 
   editTodo: function(id) {
