@@ -361,6 +361,10 @@ This completes our first encounter with Backbone.js. The remainder of this book 
 
 ### Implementation Specifics
 
+The picture below shows the typical HTTP request/response lifecycle for client-side MVC using Backbone:
+
+![](img/backbone_mvc.png)
+
 #### Models
 
 * The built-in capabilities of Models vary across frameworks; however, it's common for them to support validation of attributes, where attributes represent the properties of the Model, such as a Model identifier.
@@ -369,7 +373,7 @@ This completes our first encounter with Backbone.js. The remainder of this book 
 
 * A Model may have multiple Views observing it for changes. By *observing* we mean that a View has registered an interest in being informed whenever an update is made to the Model. This allows the View to ensure that what is displayed on screen is kept in sync with the data contained in the model. Depending on your requirements, you might create a single View displaying all Model attributes, or create separate Views displaying different attributes. The important point is that the Model doesn't care how these Views are organized, it simply announces updates to its data as necessary through the framework's event system.
 
-* It is not uncommon for modern MVC/MV* frameworks to provide a means of grouping Models together. In Backbone, these groups are called "Collections." Managing Models in groups allows us to write application logic based on notifications from the group when a Model within the group changes. This avoids the need to manually observe individual Model instances. We'll see this in action later in the book. Collections are also useful for performing any aggregate computations across more than one model.
+* It is not uncommon for modern MVC/MV* frameworks to provide a means of grouping Models together. In Backbone, these groups are called Collections. Managing Models in groups allows us to write application logic based on notifications from the group when a Model within the group changes. This avoids the need to manually observe individual Model instances. We'll see this in action later in the book. Collections are also useful for performing any aggregate computations across more than one model.
 
 
 #### Views
