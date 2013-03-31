@@ -365,9 +365,13 @@ This completes our first encounter with Backbone.js. The remainder of this book 
 
 ### Implementation Specifics
 
-The picture below shows the typical HTTP request/response lifecycle for client-side MVC using Backbone:
+An SPA is loaded into the browser using a normal HTTP request and response. The page may simply be an HTML file, as in our example above, or it could be a view constructed by a server-side MVC implementation.
+
+Once loaded, a client-side Router intercepts URLs and invokes client-side logic in place of sending a new request to the server. The picture below shows typical request handling for client-side MVC as implemented by Backbone:
 
 ![](img/backbone_mvc.png)
+
+URL routing, DOM events (e.g., mouse clicks), and Model events (e.g., attribute changes) all trigger handling logic in the View. The handlers update the DOM and Models, which may trigger additional events. Models are synced with Data Sources which may involve communicating with back-end servers.
 
 #### Models
 
@@ -2315,9 +2319,9 @@ Backbone.history.start();
 // logs: View todo requested.
 ```
 
-It is also possible for `Router.navigate()` to trigger the route as well as update the URL fragment.
+It is also possible for `Router.navigate()` to trigger the route along with updating the URL fragment by passing the `trigger:true` option.
 
-Note: The first we presented earlier is the preferred form, such as dropping a bookmark when your application transitions to a specific place. `navigate:true` is available, but it's usage is discouraged.
+Note: This usage is discouraged. The recommended usage is the one described above which creates a bookmarkable URL when your application transitions to a specific state.
 
 ```javascript
 var TodoRouter = Backbone.Router.extend({
@@ -2329,7 +2333,7 @@ var TodoRouter = Backbone.Router.extend({
 
   viewTodo: function(id){
     console.log("View todo requested.");
-    this.navigate("todo/" + id + '/edit', true); // updates the fragment and triggers the route as well
+    this.navigate("todo/" + id + '/edit', {trigger: true}); // updates the fragment and triggers the route as well
   },
 
   editTodo: function(id) {
@@ -6059,15 +6063,15 @@ That's it. The Backbone.validateAll logic doesn't override the default Backbone 
 
 As we've seen, the `validate` method Backbone offers is `undefined` by default and you need to override it with your own custom validation logic to get model validation in place. Often developers run into the issue of implementing this validation as nested ifs and elses, which can become unmaintainable when things get complicated.
 
-Another helpful plugin for Backbone called [Backbone.Validation](https://github.com/thedersen/backbone.validation) attempts to solve this problem by offering an extensible way to declare validation rules on the model and override the `validate` method behind the scenes.
+Another helpful plugin for Backbone called [Backbone.Validation](https://github.com/thedersen/backbone.validation) attempts to solve this problem by offering an extensible way to declare validation rules on the model and overrides the `validate` method behind the scenes.
 
-One of the useful methods this plugin includes is (pseudo) live validation via a `preValidate` method. This can be used to check on key-press if the input for a model is valid without changing the model itself. You can run any validators for a model attribute by calling the `preValidate` method, passing it the name of the attribute as well as the value you would like validated.
+One of the useful methods this plugin includes is (pseudo) live validation via a `preValidate` method. This can be used to check on key-press if the input for a model is valid without changing the model itself. You can run any validators for a model attribute by calling the `preValidate` method, passing it the name of the attribute along with the value you would like validated.
 
 ```javascript
 // If the value of the attribute is invalid, a truthy error message is returned
 // if not, it returns a falsy value
 
-var errorMsg = myModel.preValidate('attribute', 'value');
+var errorMsg = user.preValidate('firstname', 'Greg');
 ```
 
 ##### Form-specific validation classes
@@ -6980,7 +6984,7 @@ Assuming the code for our application and external dependencies are in `app/libs
   out: 'dist/main.js',
 ```
 
-The paths above are relative to the `baseUrl` for our project and in our case it would make sense to make this the `app` folder. The `out` parameter informs r.js that we want to concatenate everything into a single file, that should be called `main.js` and be created within the `dist/` directory. Note that here, we do need to add the `.js` extension to the filename. Earlier we saw that when referencing modules by filenames, you don't need to use the `.js` extension, however this is one case in which you do.
+The paths above are relative to the `baseUrl` for our project and in our case it would make sense to make this the `app` folder. The `out` parameter informs r.js that we want to concatenate everything into a single file called `main.js` under the `dist/` directory. Note that here we do need to add the `.js` extension to the filename. Earlier, we saw that when referencing modules by filenames, you don't need to use the `.js` extension, however this is one case in which you do.
 
 Alternatively, we can specify `dir`, which will ensure the contents of our `app` directory are copied into this directory. e.g:
 

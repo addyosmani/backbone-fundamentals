@@ -645,10 +645,12 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <p>While in this instance events help us relate Backbone to the MVC pattern, we will see them playing a much larger role in our SPA applications. Backbone.Event is a fundamental Backbone component which is mixed into both Backbone.Model and Backbone.View, providing them with rich event management capabilities. Note that the traditional controller role (Smalltalk-80 style) is performed by the template, not by the Backbone.View.</p>
 <p>This completes our first encounter with Backbone.js. The remainder of this book will explore the many features of the framework which build on these simple constructs. Before moving on, let’s take a look at common features of JavaScript MV* frameworks.</p>
 <h3 id="implementation-specifics"><a href="#TOC">Implementation Specifics</a></h3>
-<p>The picture below shows the typical HTTP request/response lifecycle for client-side MVC using Backbone:</p>
+<p>An SPA is loaded into the browser using a normal HTTP request and response. The page may simply be an HTML file, as in our example above, or it could be a view constructed by a server-side MVC implementation.</p>
+<p>Once loaded, a client-side Router intercepts URLs and invokes client-side logic in place of sending a new request to the server. The picture below shows typical request handling for client-side MVC as implemented by Backbone:</p>
 <figure>
 <img src="img/backbone_mvc.png"><figcaption></figcaption>
 </figure>
+<p>URL routing, DOM events (e.g., mouse clicks), and Model events (e.g., attribute changes) all trigger handling logic in the View. The handlers update the DOM and Models, which may trigger additional events. Models are synced with Data Sources which may involve communicating with back-end servers.</p>
 <h4 id="models"><a href="#TOC">Models</a></h4>
 <ul>
 <li><p>The built-in capabilities of Models vary across frameworks; however, it’s common for them to support validation of attributes, where attributes represent the properties of the Model, such as a Model identifier.</p></li>
@@ -2104,8 +2106,8 @@ collection
 <span class="co">// but editTodo() function is not invoked even though location we end up is mapped to it.</span>
 <span class="co">//</span>
 <span class="co">// logs: View todo requested.</span></code></pre>
-<p>It is also possible for <code>Router.navigate()</code> to trigger the route as well as update the URL fragment.</p>
-<p>Note: The first we presented earlier is the preferred form, such as dropping a bookmark when your application transitions to a specific place. <code>navigate:true</code> is available, but it’s usage is discouraged.</p>
+<p>It is also possible for <code>Router.navigate()</code> to trigger the route along with updating the URL fragment by passing the <code>trigger:true</code> option.</p>
+<p>Note: This usage is discouraged. The recommended usage is the one described above which creates a bookmarkable URL when your application transitions to a specific state.</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> TodoRouter = <span class="kw">Backbone.Router</span>.<span class="fu">extend</span>({
   <span class="dt">routes</span>: {
     <span class="st">&quot;todo/:id&quot;</span>: <span class="st">&quot;viewTodo&quot;</span>,
@@ -2115,7 +2117,7 @@ collection
 
   <span class="dt">viewTodo</span>: <span class="kw">function</span>(id){
     <span class="kw">console</span>.<span class="fu">log</span>(<span class="st">&quot;View todo requested.&quot;</span>);
-    <span class="kw">this</span>.<span class="fu">navigate</span>(<span class="st">&quot;todo/&quot;</span> + id + <span class="ch">&#39;/edit&#39;</span>, <span class="kw">true</span>); <span class="co">// updates the fragment and triggers the route as well</span>
+    <span class="kw">this</span>.<span class="fu">navigate</span>(<span class="st">&quot;todo/&quot;</span> + id + <span class="ch">&#39;/edit&#39;</span>, {<span class="dt">trigger</span>: <span class="kw">true</span>}); <span class="co">// updates the fragment and triggers the route as well</span>
   },
 
   <span class="dt">editTodo</span>: <span class="kw">function</span>(id) {
@@ -5000,12 +5002,12 @@ $(<span class="kw">function</span>($) {
 <p>That’s it. The Backbone.validateAll logic doesn’t override the default Backbone logic by default and so it’s perfectly capable of being used for scenarios where you might care more about field-validation <a href="http://jsperf.com/backbone-validateall">performance</a> as well as those where you don’t. Both solutions presented in this section should work fine however.</p>
 <h5 id="backbone.validation"><a href="#TOC">Backbone.Validation</a></h5>
 <p>As we’ve seen, the <code>validate</code> method Backbone offers is <code>undefined</code> by default and you need to override it with your own custom validation logic to get model validation in place. Often developers run into the issue of implementing this validation as nested ifs and elses, which can become unmaintainable when things get complicated.</p>
-<p>Another helpful plugin for Backbone called <a href="https://github.com/thedersen/backbone.validation">Backbone.Validation</a> attempts to solve this problem by offering an extensible way to declare validation rules on the model and override the <code>validate</code> method behind the scenes.</p>
-<p>One of the useful methods this plugin includes is (pseudo) live validation via a <code>preValidate</code> method. This can be used to check on key-press if the input for a model is valid without changing the model itself. You can run any validators for a model attribute by calling the <code>preValidate</code> method, passing it the name of the attribute as well as the value you would like validated.</p>
+<p>Another helpful plugin for Backbone called <a href="https://github.com/thedersen/backbone.validation">Backbone.Validation</a> attempts to solve this problem by offering an extensible way to declare validation rules on the model and overrides the <code>validate</code> method behind the scenes.</p>
+<p>One of the useful methods this plugin includes is (pseudo) live validation via a <code>preValidate</code> method. This can be used to check on key-press if the input for a model is valid without changing the model itself. You can run any validators for a model attribute by calling the <code>preValidate</code> method, passing it the name of the attribute along with the value you would like validated.</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="co">// If the value of the attribute is invalid, a truthy error message is returned</span>
 <span class="co">// if not, it returns a falsy value</span>
 
-<span class="kw">var</span> errorMsg = <span class="kw">myModel</span>.<span class="fu">preValidate</span>(<span class="ch">&#39;attribute&#39;</span>, <span class="ch">&#39;value&#39;</span>);</code></pre>
+<span class="kw">var</span> errorMsg = <span class="kw">user</span>.<span class="fu">preValidate</span>(<span class="ch">&#39;firstname&#39;</span>, <span class="ch">&#39;Greg&#39;</span>);</code></pre>
 <h5 id="form-specific-validation-classes"><a href="#TOC">Form-specific validation classes</a></h5>
 <p>That said, the most optimal solution to this problem may not be to stick validation in your model attributes. Instead, you could have a function specifically designed for validating a specific form and there are many good JavaScript form validation libraries out there that can help with this.</p>
 <p>If you want to stick it on your model, you can also make it a class function:</p>
@@ -5615,7 +5617,7 @@ define([<span class="ch">&#39;jquery&#39;</span>, <span class="ch">&#39;backbone
 <pre><code>({
   baseUrl: &#39;app&#39;,
   out: &#39;dist/main.js&#39;,</code></pre>
-<p>The paths above are relative to the <code>baseUrl</code> for our project and in our case it would make sense to make this the <code>app</code> folder. The <code>out</code> parameter informs r.js that we want to concatenate everything into a single file, that should be called <code>main.js</code> and be created within the <code>dist/</code> directory. Note that here, we do need to add the <code>.js</code> extension to the filename. Earlier we saw that when referencing modules by filenames, you don’t need to use the <code>.js</code> extension, however this is one case in which you do.</p>
+<p>The paths above are relative to the <code>baseUrl</code> for our project and in our case it would make sense to make this the <code>app</code> folder. The <code>out</code> parameter informs r.js that we want to concatenate everything into a single file called <code>main.js</code> under the <code>dist/</code> directory. Note that here we do need to add the <code>.js</code> extension to the filename. Earlier, we saw that when referencing modules by filenames, you don’t need to use the <code>.js</code> extension, however this is one case in which you do.</p>
 <p>Alternatively, we can specify <code>dir</code>, which will ensure the contents of our <code>app</code> directory are copied into this directory. e.g:</p>
 <pre><code>({
   baseUrl: &#39;app&#39;,
