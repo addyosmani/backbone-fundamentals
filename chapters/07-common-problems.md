@@ -851,7 +851,7 @@ The core idea of the Event Aggregator, according to Martin Fowler, is to channel
 
 ######Backbone’s Event Aggregator
 
-The easiest event aggregator to show is that of Backbone.js – it’s built in to the Backbone object directly.
+The easiest event aggregator to show is that of Backbone.js – it’s built into the Backbone object directly.
 
 ```javascript
 var View1 = Backbone.View.extend({
@@ -890,7 +890,7 @@ Did you know that jQuery has a built-in event aggregator? They don’t call it t
 ```
 $("#mainArticle").on("click", function(e){
 
-  // handle the event that any element underneath of our #mainArticle element
+  // handle click event on any element underneath our #mainArticle element
 
 });
 ```
@@ -899,11 +899,11 @@ This code sets up an event handler function that waits for an unknown number of 
 
 #####Mediator
 
-A Mediator is an object that coordinates interactions (logic and behavior) between multiple objects. It makes decisions on when to call which objects, based on the actions (or in-action) of other objects and input.
+A Mediator is an object that coordinates interactions (logic and behavior) between multiple objects. It makes decisions on when to call which objects, based on the actions (or inaction) of other objects and input.
 
 **A Mediator For Backbone**
 
-Backbone doesn’t have the idea of a mediator built in to it like a lot of other MV* frameworks do. But that doesn’t mean you can’t write one in 1 line of code:
+Backbone doesn’t have the idea of a mediator built into it like a lot of other MV* frameworks do. But that doesn’t mean you can’t write one using a single line of code:
 
 ```javascript
 var mediator = {};
@@ -937,11 +937,11 @@ var orgChart = {
 }
 ```
 
-This example shows a very basic implementation of a mediator object with Backbone based objects that can trigger and subscribe to events. I’ve often referred to this type of object as a “workflow” object in the past, but the truth is that it is a mediator. It is an object that handles the workflow between many other objects, aggregating the responsibility of that workflow knowledge in to a single object. The result is workflow that is easier to understand and maintain.
+This example shows a very basic implementation of a mediator object with Backbone-based objects that can trigger and subscribe to events. I’ve often referred to this type of object as a “workflow” object in the past, but the truth is that it is a mediator. It is an object that handles the workflow between many other objects, aggregating the responsibility of that workflow knowledge into a single object. The result is workflow that is easier to understand and maintain.
 
 #####Similarities And Differences
 
-There are, without a doubt, similarities between the event aggregator and mediator examples that I’ve shown here. The similarities boil down to two primary items: events and third-party objects. These differences are superficial at best, though. When we dig in to the intent of the pattern and see that the implementations can be dramatically different, the nature of the patterns become more apparent.
+There are, without a doubt, similarities between the event aggregator and mediator examples that I’ve shown here. The similarities boil down to two primary items: events and third-party objects. These differences are superficial at best, though. When we dig into the intent of the pattern and see that the implementations can be dramatically different, the nature of the patterns become more apparent.
 
 ######Events
 
@@ -953,9 +953,9 @@ The difference, then, is why these two patterns are both using events. The event
 
 Both the event aggregator and mediator, by design, use a third-party object to facilitate things. The event aggregator itself is a third-party to the event publisher and the event subscriber. It acts as a central hub for events to pass through. The mediator is also a third party to other objects, though. So where is the difference? Why don’t we call an event aggregator a mediator? The answer largely comes down to where the application logic and workflow is coded.
 
-In the case of an event aggregator, the third party object is there only to facilitate the pass-through of events from an unknown number of sources to an unknown number of handlers. All workflow and business logic that needs to be kicked off is put directly in to the the object that triggers the events and the objects that handle the events.
+In the case of an event aggregator, the third party object is there only to facilitate the pass-through of events from an unknown number of sources to an unknown number of handlers. All workflow and business logic that needs to be kicked off is put directly into the the object that triggers the events and the objects that handle the events.
 
-In the case of the mediator, though, the business logic and workflow is aggregated in to the mediator itself. The mediator decides when an object should have it’s methods called and attributes updated based on factors that the mediator knows about. It encapsulates the workflow and process, coordinating multiple objects to produce the desired system behaviour. The individual objects involved in this workflow each know how to perform their own task. But it’s the mediator that tells the objects when to perform the tasks by making decisions at a higher level than the individual objects.
+In the case of the mediator, though, the business logic and workflow is aggregated into the mediator itself. The mediator decides when an object should have it’s methods called and attributes updated based on factors that the mediator knows about. It encapsulates the workflow and process, coordinating multiple objects to produce the desired system behaviour. The individual objects involved in this workflow each know how to perform their own task. But it’s the mediator that tells the objects when to perform the tasks by making decisions at a higher level than the individual objects.
 
 An event aggregator facilitates a “fire and forget” model of communication. The object triggering the event doesn’t care if there are any subscribers. It just fires the event and moves on. A mediator, though, might use events to make decisions, but it is definitely not “fire and forget”. A mediator pays attention to a known set of input or activities so that it can facilitate and coordinate additional behavior with a known set of actors (objects).
 
@@ -965,7 +965,7 @@ Understanding the similarities and differences between an event aggregator and m
 
 ######Event Aggregator Use
 
-In general, an event aggregator is uses when you either have too many objects to listen to directly, or you have objects that are unrelated entirely.
+In general, an event aggregator is used when you either have too many objects to listen to directly, or you have objects that are entirely unrelated.
 
 When two objects have a direct relationship already – say, a parent view and child view – then there might be little benefit in using an event aggregator. Have the child view trigger an event and the parent view can handle the event. This is most commonly seen in Backbone’s Collection and Model, where all Model events are bubbled up to and through it’s parent Collection. A Collection often uses model events to modify the state of itself or other models. Handling “selected” items in a collection is a good example of this.
 
@@ -979,7 +979,7 @@ A mediator is best applied when two or more objects have an indirect working rel
 
 A wizard interface is a good example of this, as shown with the “orgChart” example, above. There are multiple views that facilitate the entire workflow of the wizard. Rather than tightly coupling the view together by having them reference each other directly, we can decouple them and more explicitly model the workflow between them by introducing a mediator.
 
-The mediator extracts the workflow from the implementation details and creates a more natural abstraction at a higher level, showing us at a much faster glance what that workflow is. We no longer have to dig in to the details of each view in the workflow, to see what the workflow actually is.
+The mediator extracts the workflow from the implementation details and creates a more natural abstraction at a higher level, showing us at a much faster glance what that workflow is. We no longer have to dig into the details of each view in the workflow, to see what the workflow actually is.
 
 #####Event Aggregator And Mediator Together
 
@@ -1012,13 +1012,13 @@ var MyWorkflow = function(){
 MyWorkflow.prototype.doStuff = function(){
   // instantiate multiple objects here.
   // set up event handlers for those objects.
-  // coordinate all of the objects in to a meaningful workflow.
+  // coordinate all of the objects into a meaningful workflow.
 };
 ```
 
 In this example, when the MenuItem with the right model is clicked, the `“menu:click:foo”` event will be triggered. An instance of the “MyWorkflow” object, assuming one is already instantiated, will handle this specific event and will coordinate all of the objects that it knows about, to create the desired user experience and workflow.
 
-An event aggregator and a mediator have been combined to create a much more meaningful experience in both the code and the application itself. We now have a clean separation between the menu and the workflow through an event aggregator. And we are still keeping the workflow itself clean and maintainable through the use of a mediator.
+An event aggregator and a mediator have been combined to create a much more meaningful experience in both the code and the application itself. We now have a clean separation between the menu and the workflow through an event aggregator and we are still keeping the workflow itself clean and maintainable through the use of a mediator.
 
 #####Pattern Language: Semantics
 
