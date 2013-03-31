@@ -199,9 +199,13 @@ This completes our first encounter with Backbone.js. The remainder of this book 
 
 ### Implementation Specifics
 
-The picture below shows the typical HTTP request/response lifecycle for client-side MVC using Backbone:
+An SPA is loaded into the browser using a normal HTTP request and response. The page may simply be an HTML file, as in our example above, or it could be a view constructed by a server-side MVC implementation.
+
+Once loaded, a client-side Router intercepts URLs and invokes client-side logic in place of sending a new request to the server. The picture below shows typical request handling for client-side MVC as implemented by Backbone:
 
 ![](img/backbone_mvc.png)
+
+URL routing, DOM events (e.g., mouse clicks), and Model events (e.g., attribute changes) all trigger handling logic in the View. The handlers update the DOM and Models, which may trigger additional events. Models are synced with Data Sources which may involve communicating with back-end servers.
 
 #### Models
 
