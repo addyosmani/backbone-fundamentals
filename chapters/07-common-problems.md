@@ -620,15 +620,15 @@ That's it. The Backbone.validateAll logic doesn't override the default Backbone 
 
 As we've seen, the `validate` method Backbone offers is `undefined` by default and you need to override it with your own custom validation logic to get model validation in place. Often developers run into the issue of implementing this validation as nested ifs and elses, which can become unmaintainable when things get complicated.
 
-Another helpful plugin for Backbone called [Backbone.Validation](https://github.com/thedersen/backbone.validation) attempts to solve this problem by offering an extensible way to declare validation rules on the model and override the `validate` method behind the scenes.
+Another helpful plugin for Backbone called [Backbone.Validation](https://github.com/thedersen/backbone.validation) attempts to solve this problem by offering an extensible way to declare validation rules on the model and overrides the `validate` method behind the scenes.
 
-One of the useful methods this plugin includes is (pseudo) live validation via a `preValidate` method. This can be used to check on key-press if the input for a model is valid without changing the model itself. You can run any validators for a model attribute by calling the `preValidate` method, passing it the name of the attribute as well as the value you would like validated.
+One of the useful methods this plugin includes is (pseudo) live validation via a `preValidate` method. This can be used to check on key-press if the input for a model is valid without changing the model itself. You can run any validators for a model attribute by calling the `preValidate` method, passing it the name of the attribute along with the value you would like validated.
 
 ```javascript
 // If the value of the attribute is invalid, a truthy error message is returned
 // if not, it returns a falsy value
 
-var errorMsg = myModel.preValidate('attribute', 'value');
+var errorMsg = user.preValidate('firstname', 'Greg');
 ```
 
 ##### Form-specific validation classes
