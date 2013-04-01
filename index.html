@@ -245,27 +245,34 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <li><a href="#an-asset-package-alternative-for-dependency-management">An asset package alternative for dependency management</a></li>
 </ul></li>
 <li><a href="#paginating-backbone.js-requests-collections">Paginating Backbone.js Requests &amp; Collections</a><ul>
-<li><a href="#paginators-pieces">Paginator’s pieces</a></li>
+<li><a href="#introduction-2">Introduction</a><ul>
+<li><a href="#backbone.paginator">Backbone.Paginator</a></li>
 <li><a href="#live-examples">Live Examples</a></li>
+</ul></li>
 <li><a href="#paginator.requestpager">Paginator.requestPager</a><ul>
 <li><a href="#create-a-new-paginated-collection">1. Create a new Paginated collection</a></li>
-<li><a href="#set-the-model-for-the-collection-as-normal">2: Set the model for the collection as normal</a></li>
-<li><a href="#configure-the-base-url-and-the-type-of-the-request">3. Configure the base URL and the type of the request</a></li>
+</ul></li>
+<li><a href="#gotchas">Gotchas!</a><ul>
 <li><a href="#configure-how-the-library-will-show-the-results">4. Configure how the library will show the results</a></li>
 <li><a href="#configure-the-parameters-we-want-to-send-to-the-server">5. Configure the parameters we want to send to the server</a></li>
+</ul></li>
+<li><a href="#gotchas-1">Gotchas!</a><ul>
 <li><a href="#finally-configure-collection.parse-and-were-done">6. Finally, configure Collection.parse() and we’re done</a></li>
 <li><a href="#convenience-methods">Convenience methods:</a></li>
 </ul></li>
 <li><a href="#paginator.clientpager">Paginator.clientPager</a><ul>
 <li><a href="#create-a-new-paginated-collection-with-a-model-and-url">1. Create a new paginated collection with a model and URL</a></li>
-<li><a href="#configure-the-base-url-and-the-type-of-the-request-1">2. Configure the base URL and the type of the request</a></li>
+<li><a href="#configure-the-base-url-and-the-type-of-the-request">2. Configure the base URL and the type of the request</a></li>
 <li><a href="#configure-how-the-library-will-show-the-results-1">3. Configure how the library will show the results</a></li>
 <li><a href="#configure-the-parameters-we-want-to-send-to-the-server-1">4. Configure the parameters we want to send to the server</a></li>
 <li><a href="#finally-configure-collection.parse-and-were-done-1">5. Finally, configure Collection.parse() and we’re done</a></li>
 <li><a href="#convenience-methods-1">Convenience methods:</a></li>
 <li><a href="#implementation-notes">Implementation notes:</a></li>
-</ul></li>
 <li><a href="#plugins">Plugins</a></li>
+<li><a href="#bootstrapping">Bootstrapping</a></li>
+<li><a href="#styling">Styling</a></li>
+<li><a href="#conclusions">Conclusions</a></li>
+</ul></li>
 </ul></li>
 <li><a href="#backbone-boilerplate-and-grunt-bbb">Backbone Boilerplate And Grunt-BBB</a><ul>
 <li><a href="#getting-started">Getting Started</a><ul>
@@ -283,7 +290,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <li><a href="#yeoman">Yeoman</a></li>
 <li><a href="#backbone-devtools">Backbone DevTools</a></li>
 </ul></li>
-<li><a href="#conclusions">Conclusions</a></li>
+<li><a href="#conclusions-1">Conclusions</a></li>
 </ul></li>
 <li><a href="#backbone-jquery-mobile">Backbone &amp; jQuery Mobile</a><ul>
 <li><a href="#mobile-app-development-with-jquery-mobile">Mobile app development with jQuery Mobile</a><ul>
@@ -320,12 +327,12 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <li><a href="#rendering-with-a-templating-system">Rendering with a templating system</a></li>
 </ul></li>
 </ul></li>
-<li><a href="#conclusions-1">Conclusions</a></li>
+<li><a href="#conclusions-2">Conclusions</a></li>
 <li><a href="#exercise">Exercise</a></li>
 <li><a href="#further-reading-1">Further reading</a></li>
 </ul></li>
 <li><a href="#qunit">QUnit</a><ul>
-<li><a href="#introduction-2">Introduction</a></li>
+<li><a href="#introduction-3">Introduction</a></li>
 <li><a href="#getting-setup-1">Getting Setup</a><ul>
 <li><a href="#sample-html-with-qunit-compatible-markup">Sample HTML with QUnit-compatible markup:</a></li>
 </ul></li>
@@ -375,7 +382,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <li><a href="#books-courses">Books &amp; Courses</a></li>
 <li><a href="#extensionslibraries">Extensions/Libraries</a></li>
 </ul></li>
-<li><a href="#conclusions-2">Conclusions</a></li>
+<li><a href="#conclusions-3">Conclusions</a></li>
 <li><a href="#appendix">Appendix</a><ul>
 <li><a href="#a-simple-javascript-mvc-implementation">A Simple JavaScript MVC Implementation</a><ul>
 <li><a href="#event-system">Event System</a></li>
@@ -442,6 +449,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <h2 id="reading"><a href="#TOC">Reading</a></h2>
 <p>I assume your level of knowledge about JavaScript goes beyond the basics and as such certain topics such as object literals are skipped. If you need to learn more about the language, I am happy to suggest:</p>
 <ul>
+<li><a href="http://eloquentjavascript.net/">Eloquent JavaScript</a></li>
 <li><a href="http://shop.oreilly.com/product/9780596805531.do">JavaScript: The Definitive Guide</a> by David Flanagan (O’Reilly)</li>
 <li><a href="http://www.informit.com/store/effective-javascript-68-specific-ways-to-harness-the-9780321812186">Effective JavaScript</a> by David Herman (Pearson)</li>
 <li><a href="http://shop.oreilly.com/product/9780596517748.do">JavaScript: The Good Parts</a> by Douglas Crockford (O’Reilly)</li>
@@ -6041,40 +6049,56 @@ Backbone.history.start({
 <p>A template using Jammit can derive it’s data from the collection object that is passed to it:</p>
 <pre><code>this.$el.html(JST.myTemplate({ collection: this.collection }));</code></pre>
 <h1 id="paginating-backbone.js-requests-collections"><a href="#TOC">Paginating Backbone.js Requests &amp; Collections</a></h1>
-<p>Pagination is a ubiquitous problem we often find ourselves needing to solve on the web. Perhaps most predominantly when working with back-end APIs and JavaScript-heavy clients which consume them.</p>
-<p>On this topic, we’re going to go through a set of <strong>pagination components</strong> I wrote for Backbone.js, which should hopefully come in useful if you’re working on applications which need to tackle this problem. They’re part of an extension called <a href="http://github.com/addyosmani/backbone.paginator">Backbone.Paginator</a>.</p>
-<p>When working with a structural framework like Backbone.js, the three types of pagination we are most likely to run into are:</p>
-<p><strong>Requests to a service layer (API)</strong>- e.g query for results containing the term <q>Brendan</q> - if 5,000 results are available only display 20 results per page (leaving us with 250 possible result pages that can be navigated to).</p>
+<h2 id="introduction-2"><a href="#TOC">Introduction</a></h2>
+<p>Pagination is a ubiquitous problem we often find ourselves needing to solve on the web - perhaps most predominantly when working with service APIs and JavaScript-heavy clients which consume them. It’s also a problem that is often under-refined as most of us consider pagination relatively easy to get right. This isn’t however always the case as pagination tends to get more tricky than it initially seems.</p>
+<p>Before we dive into solutions for paginating data for your Backbone applications, let’s define exactly what we consider pagination to be:</p>
+<p>Pagination is a control system allowing users to browser through pages of search results (or any type of content) which is continued. Search results are the canonical example, but pagination today is found on news sites, blogs and discussion boards, often in the form of Previous and Next links. More complete pagination systems offer granular control of the specific pages you can navigate to, giving the user more power to find what they are looking for.</p>
+<p>It isn’t a problem limited to pages requiring some visual controls for pagination either - sites like Facebook, Pinterest and Twitter have demonstrated that there are many contexts where infinite paging is also useful. Infitite paging is of course when we pre-fetch (or appear to pre-fetch) content from a subsequent page and add it directly to the user’s current page, making the experience feel <q>infinite</q>.</p>
+<p>Pagination is very context-specific and depends on the content being displayed. In the Google search results, pagination is important as they want to offer you the most relevant set of results in the first 1-2 pages. After that, you might be a little more selective (or random) with the page you choose to navigate to. This differs from cases where you’ll want to cycle through consecutive pages for (e.g for a news article or blog post).</p>
+<p>Pagination is almost certainly content and context-specific, but as Faruk Ates has <a href="https://gist.github.com/mislav/622561">previously</a> pointed out the principles of good pagination apply no matter what the content or context is. As with everything extensible when it comes to Backbone, one can try to write their own pagination that can try solving many of these content-specific types of pagination problems. That said, you’ll probably spend quite a bit of time on this and sometimes you just want to use a tried and tested solution that just works.</p>
+<p>On this topic, we’re going to go through a set of pagination components I (and a group of <a href="https://github.com/addyosmani/backbone.paginator/contributors">contributors</a>) wrote for Backbone.js, which should hopefully come in useful if you’re working on applications which need to page Backbone Collections. They’re part of an extension called <a href="http://github.com/addyosmani/backbone.paginator">Backbone.Paginator</a>.</p>
+<h3 id="backbone.paginator"><a href="#TOC">Backbone.Paginator</a></h3>
+<p>When working with data on the client-side, the three types of pagination we are most likely to run into are:</p>
+<p><strong>Requests to a service layer (API)</strong> - For example, query for results containing the term <q>Paul</q> - if 5,000 results are available only display 20 results per page (leaving us with 250 possible result pages that can be navigated to).</p>
 <p>This problem actually has quite a great deal more to it, such as maintaining persistence of other URL parameters (e.g sort, query, order) which can change based on a user’s search configuration in a UI. One also has to think of a clean way of hooking views up to this pagination so you can easily navigate between pages (e.g., First, Last, Next, Previous, 1,2,3), manage the number of results displayed per page and so on.</p>
 <p><strong>Further client-side pagination of data returned -</strong> e.g we’ve been returned a JSON response containing 100 results. Rather than displaying all 100 to the user, we only display 20 of these results within a navigable UI in the browser.</p>
 <p>Similar to the request problem, client-pagination has its own challenges like navigation once again (Next, Previous, 1,2,3), sorting, order, switching the number of results to display per page and so on.</p>
 <p><strong>Infinite results</strong> - with services such as Facebook, the concept of numeric pagination is instead replaced with a <q>Load More</q> or <q>View More</q> button. Triggering this normally fetches the next <q>page</q> of N results but rather than replacing the previous set of results loaded entirely, we simply append to them instead.</p>
 <p>A request pager which simply appends results in a view rather than replacing on each new fetch is effectively an <q>infinite</q> pager.</p>
 <p><strong>Let’s now take a look at exactly what we’re getting out of the box:</strong></p>
-<p><em>Paginator is a set of opinionated components for paginating collections of data using Backbone.js. It aims to provide both solutions for assisting with pagination of requests to a server (e.g an API) as well as pagination of single-loads of data, where we may wish to further paginate a collection of N results into M pages within a view.</em></p>
-<h3 id="paginators-pieces"><a href="#TOC">Paginator’s pieces</a></h3>
+<p>Backbone.Paginator is a set of opinionated components for paginating collections of data using Backbone.js. It aims to provide both solutions for assisting with pagination of requests to a server (e.g an API) as well as pagination of single-loads of data, where we may wish to further paginate a collection of N results into M pages within a view.</p>
+<figure>
+<img src="img/paginator-ui.png"><figcaption></figcaption>
+</figure>
 <p>Backbone.Paginator supports two main pagination components:</p>
 <ul>
 <li><strong>Backbone.Paginator.requestPager</strong>: For pagination of requests between a client and a server-side API</li>
 <li><strong>Backbone.Paginator.clientPager</strong>: For pagination of data returned from a server which you would like to further paginate within the UI (e.g 60 results are returned, paginate into 3 pages of 20)</li>
 </ul>
 <h3 id="live-examples"><a href="#TOC">Live Examples</a></h3>
-<p>Live previews of both pagination components using the Netflix API can be found below. Fork the repository to experiment with these examples further.</p>
+<p>If you would like to look at examples built using the components included in the project, links to official demos are included below and use the Netflix API so that you can see them working with an actual data source.</p>
 <ul>
 <li><a href="http://addyosmani.github.com/backbone.paginator/examples/netflix-request-paging/index.html">Backbone.Paginator.requestPager()</a></li>
 <li><a href="http://addyosmani.github.com/backbone.paginator/examples/netflix-client-paging/index.html">Backbone.Paginator.clientPager()</a></li>
 <li><a href="http://addyosmani.github.com/backbone.paginator/examples/netflix-infinite-paging/index.html">Infinite Pagination (Backbone.Paginator.requestPager())</a></li>
 <li><a href="http://addyosmani.github.com/backbone.paginator/examples/google-diacritic/index.html">Diacritic Plugin</a></li>
 </ul>
-<h3 id="paginator.requestpager"><a href="#TOC">Paginator.requestPager</a></h3>
-<p>In this section we’re going to walkthrough actually using the requestPager.</p>
+<h2 id="paginator.requestpager"><a href="#TOC">Paginator.requestPager</a></h2>
+<p>In this section we’re going to walk through using the requestPager. You would use this component when working with a service API which itself supports pagination. This component allows users to control the pagination settings for requests to this API (i.e navigate to the next, previous, N pages) via the client-side.</p>
+<p>The idea is that pagination, searching and filtering of data can all be done from your Backbone application without the need for a page reload.</p>
+<figure>
+<img src="img/paginator-request.png"><figcaption></figcaption>
+</figure>
 <h4 id="create-a-new-paginated-collection"><a href="#TOC">1. Create a new Paginated collection</a></h4>
 <p>First, we define a new Paginated collection using <code>Backbone.Paginator.requestPager()</code> as follows:</p>
-<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> PaginatedCollection = <span class="kw">Backbone.Paginator.requestPager</span>.<span class="fu">extend</span>({</code></pre>
-<h4 id="set-the-model-for-the-collection-as-normal"><a href="#TOC">2: Set the model for the collection as normal</a></h4>
-<p>Within our collection, we then (as normal) specify the model to be used with this collection followed by the URL (or base URL) for the service providing our data (e.g the Netflix API).</p>
-<pre class="sourceCode javascript"><code class="sourceCode javascript">        <span class="dt">model</span>: model,</code></pre>
-<h4 id="configure-the-base-url-and-the-type-of-the-request"><a href="#TOC">3. Configure the base URL and the type of the request</a></h4>
+<p>```javascript</p>
+<p>var PaginatedCollection = Backbone.Paginator.requestPager.extend({</p>
+<pre><code>####2: Set the model for the collection as normal
+
+Within our collection, we then (as normal) specify the model to be used with this collection followed by the URL (or base URL) for the service providing our data (e.g the Netflix API).
+</code></pre>
+<pre><code>    model: model,</code></pre>
+<p>``` ####3. Configure the base URL and the type of the request</p>
 <p>We need to set a base URL. The <code>type</code> of the request is <code>GET</code> by default, and the <code>dataType</code> is <code>jsonp</code> in order to enable cross-domain requests.</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript">    <span class="dt">paginator_core</span>: {
       <span class="co">// the type of the request (GET by default)</span>
@@ -6084,10 +6108,14 @@ Backbone.history.start({
       <span class="dt">dataType</span>: <span class="ch">&#39;jsonp&#39;</span>,
 
       <span class="co">// the URL (or base URL) for the service</span>
+      <span class="co">// if you want to have a more dynamic URL, you can make this a function</span>
+      <span class="co">// that returns a string</span>
       <span class="dt">url</span>: <span class="ch">&#39;http://odata.netflix.com/Catalog/People(49446)/TitlesActedIn?&#39;</span>
     },</code></pre>
+<h2 id="gotchas"><a href="#TOC">Gotchas!</a></h2>
+<p>If you use <code>dataType</code> <strong>NOT</strong> jsonp, please remove the callback custom parameter inside the <code>server_api</code> configuration.</p>
 <h4 id="configure-how-the-library-will-show-the-results"><a href="#TOC">4. Configure how the library will show the results</a></h4>
-<p>We need to tell the library how many items per page would we like to see, etc…</p>
+<p>We need to tell the library how many items per page we would like to see, etc…</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript">    <span class="dt">paginator_ui</span>: {
       <span class="co">// the lowest page index your API allows to be accessed</span>
       <span class="dt">firstPage</span>: <span class="dv">0</span>,
@@ -6106,8 +6134,7 @@ Backbone.history.start({
       <span class="dt">totalPages</span>: <span class="dv">10</span>
     },</code></pre>
 <h4 id="configure-the-parameters-we-want-to-send-to-the-server"><a href="#TOC">5. Configure the parameters we want to send to the server</a></h4>
-<p>The base URL on its own won’t be enough for most cases, so you can pass more parameters to the server.</p>
-<p>Note how you can use functions insead of hardcoded values, and you can also refer to the values you specified in <code>paginator_ui</code>.</p>
+<p>Only the base URL won’t be enough for most cases, so you can pass more parameters to the server. Note how you can use functions instead of hardcoded values, and you can also refer to the values you specified in <code>paginator_ui</code>.</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript">    <span class="dt">server_api</span>: {
       <span class="co">// the query field in the request</span>
       <span class="ch">&#39;$filter&#39;</span>: <span class="ch">&#39;&#39;</span>,
@@ -6130,9 +6157,11 @@ Backbone.history.start({
       <span class="ch">&#39;$inlinecount&#39;</span>: <span class="ch">&#39;allpages&#39;</span>,
       <span class="ch">&#39;$callback&#39;</span>: <span class="ch">&#39;callback&#39;</span>
     },</code></pre>
+<h2 id="gotchas-1"><a href="#TOC">Gotchas!</a></h2>
+<p>If you use <code>$callback</code>, please ensure that you did use the jsonp as a <code>dataType</code> inside your <code>paginator_core</code> configuration.</p>
 <h4 id="finally-configure-collection.parse-and-were-done"><a href="#TOC">6. Finally, configure Collection.parse() and we’re done</a></h4>
 <p>The last thing we need to do is configure our collection’s <code>parse()</code> method. We want to ensure we’re returning the correct part of our JSON response containing the data our collection will be populated with, which below is <code>response.d.results</code> (for the Netflix API).</p>
-<p>You might also notice that we’re setting <code>this.totalPages</code> to the total page count returned by the API. This allows us to define the maximum number of (result) pages available for the current/last request so that we can clearly display this in the UI. It also allows us to influence whether clicking say, a <q>next</q> button should proceed with a request or not.</p>
+<p>You might also notice that we’re setting <code>this.totalPages</code> to the total page count returned by the API. This allows us to define the maximum number of (result) pages available for the current/last request so that we can clearly display this in the UI. It also allows us to infuence whether clicking say, a <q>next</q> button should proceed with a request or not.</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript">        <span class="dt">parse</span>: <span class="kw">function</span> (response) {
             <span class="co">// Be sure to change this based on how your results</span>
             <span class="co">// are structured (e.g d.results is Netflix specific)</span>
@@ -6140,7 +6169,7 @@ Backbone.history.start({
             <span class="co">//Normally this.totalPages would equal response.d.__count</span>
             <span class="co">//but as this particular NetFlix request only returns a</span>
             <span class="co">//total count of items for the search, we divide.</span>
-            <span class="kw">this</span>.<span class="fu">totalPages</span> = <span class="kw">Math</span>.<span class="fu">floor</span>(<span class="kw">response.d</span>.__<span class="fu">count</span> / <span class="kw">this</span>.<span class="fu">perPage</span>);
+            <span class="kw">this</span>.<span class="fu">totalPages</span> = <span class="kw">Math</span>.<span class="fu">ceil</span>(<span class="kw">response.d</span>.__<span class="fu">count</span> / <span class="kw">this</span>.<span class="fu">perPage</span>);
             <span class="kw">return</span> tags;
         }
     });
@@ -6150,21 +6179,21 @@ Backbone.history.start({
 <p>For your convenience, the following methods are made available for use in your views to interact with the <code>requestPager</code>:</p>
 <ul>
 <li><strong>Collection.goTo( n, options )</strong> - go to a specific page</li>
-<li><strong>Collection.requestNextPage( options )</strong> - go to the next page</li>
-<li><strong>Collection.requestPreviousPage( options )</strong> - go to the previous page</li>
+<li><strong>Collection.nextPage( options )</strong> - go to the next page</li>
+<li><strong>Collection.prevPage( options )</strong> - go to the previous page</li>
 <li><strong>Collection.howManyPer( n )</strong> - set the number of items to display per page</li>
 </ul>
-<p><strong>requestPager</strong> collection’s methods <code>.goTo()</code>, <code>.requestNextPage()</code> and <code>.requestPreviousPage()</code> are all extensions of the original <a href="http://documentcloud.github.com/backbone/#Collection-fetch">Backbone Collection.fetch() method</a>. As such, they can all take the same option object as parameter.</p>
+<p><strong>requestPager</strong> collection’s methods <code>.goTo()</code>, <code>.nextPage()</code> and <code>.prevPage()</code> are all extension of the original <a href="http://documentcloud.github.com/backbone/#Collection-fetch">Backbone Collection.fetch() method</a>. As so, they all can take the same option object as parameter.</p>
 <p>This option object can use <code>success</code> and <code>error</code> parameters to pass a function to be executed after server answer.</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">Collection</span>.<span class="fu">goTo</span>(n, {
   <span class="dt">success</span>: <span class="kw">function</span>( collection, response ) {
-    <span class="co">// called if server request succeeds</span>
+    <span class="co">// called is server request success</span>
   },
   <span class="dt">error</span>: <span class="kw">function</span>( collection, response ) {
-    <span class="co">// called if server request fails</span>
+    <span class="co">// called if server request fail</span>
   }
 });</code></pre>
-<p>You could also use the <a href="http://api.jquery.com/jQuery.ajax/#jqXHR">jqXHR</a> returned by these methods to manage callbacks.</p>
+<p>To manage callback, you could also use the <a href="http://api.jquery.com/jQuery.ajax/#jqXHR">jqXHR</a> returned by these methods to manage callback.</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript">Collection
   .<span class="fu">requestNextPage</span>()
   .<span class="fu">done</span>(<span class="kw">function</span>( data, textStatus, jqXHR ) {
@@ -6177,16 +6206,20 @@ Backbone.history.start({
     <span class="co">// do something after server request is complete</span>
   });
 });</code></pre>
-<p>If you’d like to add the incoming models to the current collection, instead of replacing the collection’s contents, pass <code>{add: true}</code> as an option to these methods.</p>
-<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">Collection</span>.<span class="fu">requestPreviousPage</span>({ <span class="dt">add</span>: <span class="kw">true</span> });</code></pre>
-<h3 id="paginator.clientpager"><a href="#TOC">Paginator.clientPager</a></h3>
-<p>The <code>clientPager</code> works similar to the <code>requestPager</code>, except that our configuration values influence the pagination of data already returned at a UI-level. Whilst not shown (yet) there is also a lot more UI logic that ties in with the <code>clientPager</code>. An example of this can be seen in <q>views/clientPagination.js</q>.</p>
+<p>If you’d like to add the incoming models to the current collection, instead of replacing the collection’s contents, pass <code>{update: true, remove: false}</code> as options to these methods.</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">Collection</span>.<span class="fu">prevPage</span>({ <span class="dt">update</span>: <span class="kw">true</span>, <span class="dt">remove</span>: <span class="kw">false</span> });</code></pre>
+<h2 id="paginator.clientpager"><a href="#TOC">Paginator.clientPager</a></h2>
+<p>The clientPager is used to further paginate data that has already been returned by the service API. Say you’ve requested 100 results from the service and wish to split this into 5 pages of paginated results, each containing 20 results at a client level - the clientPager makes it trivial to do this.</p>
+<figure>
+<img src="img/paginator-client.png"><figcaption></figcaption>
+</figure>
+<p>It makes sense to use the clientPager when your users are unlikely to cycle through a large number of results and you want to avoid additional network requests each time they wish to fetch the next <q>page</q> of items. As the results have all already been requested, it’s just a case of switching between the ranges of data actually presented to the user.</p>
 <h4 id="create-a-new-paginated-collection-with-a-model-and-url"><a href="#TOC">1. Create a new paginated collection with a model and URL</a></h4>
 <p>As with <code>requestPager</code>, let’s first create a new Paginated <code>Backbone.Paginator.clientPager</code> collection, with a model:</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript">    <span class="kw">var</span> PaginatedCollection = <span class="kw">Backbone.Paginator.clientPager</span>.<span class="fu">extend</span>({
 
         <span class="dt">model</span>: model,</code></pre>
-<h4 id="configure-the-base-url-and-the-type-of-the-request-1"><a href="#TOC">2. Configure the base URL and the type of the request</a></h4>
+<h4 id="configure-the-base-url-and-the-type-of-the-request"><a href="#TOC">2. Configure the base URL and the type of the request</a></h4>
 <p>We need to set a base URL. The <code>type</code> of the request is <code>GET</code> by default, and the <code>dataType</code> is <code>jsonp</code> in order to enable cross-domain requests.</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript">    <span class="dt">paginator_core</span>: {
       <span class="co">// the type of the request (GET by default)</span>
@@ -6199,7 +6232,7 @@ Backbone.history.start({
       <span class="dt">url</span>: <span class="ch">&#39;http://odata.netflix.com/v2/Catalog/Titles?&amp;&#39;</span>
     },</code></pre>
 <h4 id="configure-how-the-library-will-show-the-results-1"><a href="#TOC">3. Configure how the library will show the results</a></h4>
-<p>We need to tell the library how many items per page would we like to see, etc…</p>
+<p>We need to tell the library how many items per page we would like to see, etc…</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript">    <span class="dt">paginator_ui</span>: {
       <span class="co">// the lowest page index your API allows to be accessed</span>
       <span class="dt">firstPage</span>: <span class="dv">1</span>,
@@ -6215,11 +6248,14 @@ Backbone.history.start({
       <span class="co">// service you are using does not support providing the total</span>
       <span class="co">// number of pages for us.</span>
       <span class="co">// 10 as a default in case your service doesn&#39;t return the total</span>
-      <span class="dt">totalPages</span>: <span class="dv">10</span>
+      <span class="dt">totalPages</span>: <span class="dv">10</span>,
+
+      <span class="co">// The total number of pages to be shown as a pagination</span>
+      <span class="co">// list is calculated by (pagesInRange * 2) + 1.</span>
+      <span class="dt">pagesInRange</span>: <span class="dv">4</span>
     },</code></pre>
 <h4 id="configure-the-parameters-we-want-to-send-to-the-server-1"><a href="#TOC">4. Configure the parameters we want to send to the server</a></h4>
-<p>The base URL on its own won’t be enough for most cases, so you can pass more parameters to the server.</p>
-<p>Note how you can use functions instead of hardcoded values, and you can also refer to the values you specified in <code>paginator_ui</code>.</p>
+<p>Only the base URL won’t be enough for most cases, so you can pass more parameters to the server. Note how you can use functions instead of hardcoded values, and you can also refer to the values you specified in <code>paginator_ui</code>.</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript">    <span class="dt">server_api</span>: {
       <span class="co">// the query field in the request</span>
       <span class="ch">&#39;$filter&#39;</span>: <span class="ch">&#39;substringof(\&#39;america\&#39;,Name)&#39;</span>,
@@ -6253,25 +6289,25 @@ Backbone.history.start({
 <h4 id="convenience-methods-1"><a href="#TOC">Convenience methods:</a></h4>
 <p>As mentioned, your views can hook into a number of convenience methods to navigate around UI-paginated data. For <code>clientPager</code> these include:</p>
 <ul>
-<li><strong>Collection.goTo(n)</strong> - go to a specific page</li>
-<li><strong>Collection.previousPage()</strong> - go to the previous page</li>
-<li><strong>Collection.nextPage()</strong> - go to the next page</li>
+<li><strong>Collection.goTo(n, options)</strong> - go to a specific page</li>
+<li><strong>Collection.prevPage(options)</strong> - go to the previous page</li>
+<li><strong>Collection.nextPage(options)</strong> - go to the next page</li>
 <li><strong>Collection.howManyPer(n)</strong> - set how many items to display per page</li>
-<li><strong>Collection.setSort(sortBy, sortDirection)</strong> - update sort on the current view. Sorting will automatically detect if you’re trying to sort numbers (even if they’re stored as strings) and will do the right thing.</li>
-<li><strong>Collection.setFilter(filterFields, filterWords)</strong> - filter the current view. Filtering supports multiple words without any specific order, so you’ll basically get a full-text search ability. Also, you can pass it only one field from the model, or you can pass an array with fields and all of them will get filtered. Last option is to pass it an object containing a comparison method and rules. Currently, only the <code>levenshtein</code> method is available.</li>
+<li><strong>Collection.setSort(sortBy, sortDirection)</strong> - update sort on the current view. Sorting will automatically detect if you’re trying to sort numbers (even if they’re strored as strings) and will do the right thing.</li>
+<li><strong>Collection.setFilter(filterFields, filterWords)</strong> - filter the current view. Filtering supports multiple words without any specific order, so you’ll basically get a full-text search ability. Also, you can pass it only one field from the model, or you can pass an array with fields and all of them will get filtered. Last option is to pass it an object containing a comparison method and rules. Currently, only <code>levenshtein</code> method is available.</li>
 </ul>
+<p>The <code>goTo()</code>, <code>prevPage()</code>, and <code>nextPage()</code> functions do not require the <code>options</code> param since they will be executed synchronously. However, when specified, the success callback will be invoked before the function returns. For example:</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript">nextPage(); <span class="co">// this works just fine!</span>
+nextPage({<span class="dt">success</span>: <span class="kw">function</span>() { }}); <span class="co">// this will call the success function</span></code></pre>
+<p>The options param exists to preserve (some) interface unification between the requestPaginator and clientPaginator so that they may be used interchangeably in your Backbone.Views.</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript">  <span class="kw">this</span>.<span class="fu">collection</span>.<span class="fu">setFilter</span>(
     {<span class="ch">&#39;Name&#39;</span>: {<span class="dt">cmp_method</span>: <span class="ch">&#39;levenshtein&#39;</span>, <span class="dt">max_distance</span>: <span class="dv">7</span>}}
-    , <span class="ch">&#39;Amreican P&#39;</span> <span class="co">// Note the switched &#39;r&#39; and &#39;e&#39;, and the &#39;P&#39; from &#39;Pie&#39;</span>
+    , <span class="st">&quot;Amreican P&quot;</span> <span class="co">// Note the switched &#39;r&#39; and &#39;e&#39;, and the &#39;P&#39; from &#39;Pie&#39;</span>
   );</code></pre>
-<p>Also note that the levenshtein plug-in should be loaded and enabled using the <code>useLevenshteinPlugin</code> variable.</p>
-<p>Last but not less important: Performing Levenshtein comparison returns the <code>distance</code> between two strings. It won’t let you <em>search</em> lengthy text.</p>
-<p>The Levenshtein distance between two strings is the number of characters that should be added, removed or moved to the left or to the right to transform one string into the other.</p>
-<p>That means that comparing <q>Something</q> in <q>This is a test that could show something</q> will return 32, which is bigger than comparing <q>Something</q> and <q>ABCDEFG</q> (9).</p>
-<p>Use levenshtein only for short texts (titles, names, etc).</p>
+<p>Also note that the Levenshtein plugin should be loaded and enabled using the <code>useLevenshteinPlugin</code> variable. Last but not less important: performing Levenshtein comparison returns the <code>distance</code> between two strings. It won’t let you <em>search</em> lengthy text. The distance between two strings means the number of characters that should be added, removed or moved to the left or to the right so the strings get equal. That means that comparing <q>Something</q> in <q>This is a test that could show something</q> will return 32, which is bigger than comparing <q>Something</q> and <q>ABCDEFG</q> (9). Use Levenshtein only for short texts (titles, names, etc).</p>
 <ul>
 <li><p><strong>Collection.doFakeFilter(filterFields, filterWords)</strong> - returns the models count after fake-applying a call to <code>Collection.setFilter</code>.</p></li>
-<li><p><strong>Collection.setFieldFilter(rules)</strong> - filter each value of each model according to <code>rules</code> that you pass as argument. Example: You have a collection of books with <q>release year</q> and <q>author</q>. You can filter only the books that were released between 1999 and 2003. And then you can add another <code>rule</code> that will filter those books only to authors whose names start with <q>A</q>. Possible rules: function, required, min, max, range, minLength, maxLength, rangeLength, oneOf, equalTo, pattern.</p></li>
+<li><p><strong>Collection.setFieldFilter(rules)</strong> - filter each value of each model according to <code>rules</code> that you pass as argument. Example: You have a collection of books with <q>release year</q> and <q>author</q>. You can filter only the books that were released between 1999 and 2003. And then you can add another <code>rule</code> that will filter those books only to authors who’s name start with <q>A</q>. Possible rules: function, required, min, max, range, minLength, maxLength, rangeLength, oneOf, equalTo, containsAllOf, pattern. Passing this an empty rules set will remove any FieldFilter rules applied.</p></li>
 </ul>
 <pre class="sourceCode javascript"><code class="sourceCode javascript">
   <span class="kw">my_collection</span>.<span class="fu">setFieldFilter</span>([
@@ -6293,22 +6329,84 @@ Backbone.history.start({
   <span class="co">//{field: &#39;color_name&#39;, type: &#39;maxLength&#39;, value: &#39;6&#39;}</span>
   <span class="co">//{field: &#39;color_name&#39;, type: &#39;rangeLength&#39;, value: {min: &#39;4&#39;, max: &#39;6&#39;}}</span>
   <span class="co">//{field: &#39;color_name&#39;, type: &#39;oneOf&#39;, value: [&#39;green&#39;, &#39;yellow&#39;]}</span>
-  <span class="co">//{field: &#39;color_name&#39;, type: &#39;pattern&#39;, value: new RegExp(&#39;gre*&#39;, &#39;ig&#39;)}</span></code></pre>
+  <span class="co">//{field: &#39;color_name&#39;, type: &#39;pattern&#39;, value: new RegExp(&#39;gre*&#39;, &#39;ig&#39;)}</span>
+  <span class="co">//{field: &#39;color_name&#39;, type: &#39;containsAllOf&#39;, value: [&#39;green&#39;, &#39;yellow&#39;, &#39;blue&#39;]}</span></code></pre>
 <ul>
 <li><strong>Collection.doFakeFieldFilter(rules)</strong> - returns the models count after fake-applying a call to <code>Collection.setFieldFilter</code>.</li>
 </ul>
 <h4 id="implementation-notes"><a href="#TOC">Implementation notes:</a></h4>
 <p>You can use some variables in your <code>View</code> to represent the actual state of the paginator.</p>
-<p><code>totalUnfilteredRecords</code> - Contains the number of records, including all records filtered in any way. (Only available in <code>clientPager</code>)</p>
-<p><code>totalRecords</code> - Contains the number of records</p>
-<p><code>currentPage</code> - The actual page were the paginator is at.</p>
-<p><code>perPage</code> - The number of records the paginator will show per page.</p>
-<p><code>totalPages</code> - The number of total pages.</p>
-<p><code>startRecord</code> - The position of the first record shown in the current page (eg 41 to 50 from 2000 records) (Only available in <code>clientPager</code>)</p>
-<p><code>endRecord</code> - The position of the last record shown in the current page (eg 41 to 50 from 2000 records) (Only available in <code>clientPager</code>)</p>
+<ul>
+<li><code>totalUnfilteredRecords</code> - Contains the number of records, including all records filtered in any way. (Only available in <code>clientPager</code>)</li>
+<li><code>totalRecords</code> - Contains the number of records</li>
+<li><code>currentPage</code> - The actual page were the paginator is at.</li>
+<li><code>perPage</code> - The number of records the paginator will show per page.</li>
+<li><code>totalPages</code> - The number of total pages.</li>
+<li><code>startRecord</code> - The position of the first record shown in the current page (eg 41 to 50 from 2000 records) (Only available in <code>clientPager</code>)</li>
+<li><code>endRecord</code> - The position of the last record shown in the current page (eg 41 to 50 from 2000 records) (Only available in <code>clientPager</code>)</li>
+<li><code>pagesInRange</code> - The number of pages to be drawn on each side of the current page. So if <code>pagesInRange</code> is 3 and <code>currentPage</code> is 13 you will get the numbers 10, 11, 12, 13(selected), 14, 15, 16.</li>
+</ul>
+<pre class="sourceCode html"><code class="sourceCode html"><span class="co">&lt;!-- sample template for pagination UI --&gt;</span>
+<span class="kw">&lt;script</span><span class="ot"> type=</span><span class="st">&quot;text/html&quot;</span><span class="ot"> id=</span><span class="st">&quot;tmpServerPagination&quot;</span><span class="kw">&gt;</span>
+
+  &lt;div class=<span class="st">&quot;row</span>-<span class="st">fluid&quot;</span>&gt;
+
+    &lt;div class=<span class="st">&quot;pagination</span> <span class="st">span8&quot;</span>&gt;
+      &lt;ul&gt;
+        &lt;% <span class="kw">_</span>.<span class="fu">each</span> (pageSet, <span class="kw">function</span> (p) { %&gt;
+        &lt;% <span class="kw">if</span> (currentPage == p) { %&gt;
+          &lt;li class=<span class="st">&quot;active&quot;</span>&gt;&lt;span&gt;&lt;%= p %&gt;&lt;/span&gt;&lt;/li&gt;
+        &lt;% } <span class="kw">else</span> { %&gt;
+          &lt;li&gt;&lt;a href=<span class="st">&quot;</span>#<span class="st">&quot;</span> class=<span class="st">&quot;page&quot;</span>&gt;&lt;%= p %&gt;&lt;/a&gt;&lt;/li&gt;
+        &lt;% } %&gt;
+        &lt;% }); %&gt;
+      &lt;/ul&gt;
+    &lt;/div&gt;
+
+    &lt;div class=<span class="st">&quot;pagination</span> <span class="st">span4&quot;</span>&gt;
+      &lt;ul&gt;
+        &lt;% <span class="kw">if</span> (currentPage &gt; firstPage) { %&gt;
+          &lt;li&gt;&lt;a href=<span class="st">&quot;</span>#<span class="st">&quot;</span> class=<span class="st">&quot;serverprevious&quot;</span>&gt;Previous&lt;/a&gt;&lt;/li&gt;
+        &lt;% }<span class="kw">else</span>{ %&gt;
+          &lt;li&gt;&lt;span&gt;Previous&lt;/span&gt;&lt;/li&gt;
+        &lt;% }%&gt;
+        &lt;% <span class="kw">if</span> (currentPage &lt; totalPages) { %&gt;
+          &lt;li&gt;&lt;a href=<span class="st">&quot;</span>#<span class="st">&quot;</span> class=<span class="st">&quot;servernext&quot;</span>&gt;Next&lt;/a&gt;&lt;/li&gt;
+        &lt;% } <span class="kw">else</span> { %&gt;
+          &lt;li&gt;&lt;span&gt;Next&lt;/span&gt;&lt;/li&gt;
+        &lt;% } %&gt;
+        &lt;% <span class="kw">if</span> (firstPage != currentPage) { %&gt;
+          &lt;li&gt;&lt;a href=<span class="st">&quot;</span>#<span class="st">&quot;</span> class=<span class="st">&quot;serverfirst&quot;</span>&gt;First&lt;/a&gt;&lt;/li&gt;
+        &lt;% } <span class="kw">else</span> { %&gt;
+          &lt;li&gt;&lt;span&gt;First&lt;/span&gt;&lt;/li&gt;
+        &lt;% } %&gt;
+        &lt;% <span class="kw">if</span> (totalPages != currentPage) { %&gt;
+          &lt;li&gt;&lt;a href=<span class="st">&quot;</span>#<span class="st">&quot;</span> class=<span class="st">&quot;serverlast&quot;</span>&gt;Last&lt;/a&gt;&lt;/li&gt;
+        &lt;% } <span class="kw">else</span> { %&gt;
+          &lt;li&gt;&lt;span&gt;Last&lt;/span&gt;&lt;/li&gt;
+        &lt;% } %&gt;
+      &lt;/ul&gt;
+    &lt;/div&gt;
+
+  &lt;/div&gt;
+
+  &lt;span class=<span class="st">&quot;cell</span> <span class="st">serverhowmany&quot;</span>&gt; Show &lt;a href=<span class="st">&quot;</span>#<span class="st">&quot;</span>
+    class=<span class="st">&quot;selected&quot;</span>&gt;<span class="dv">18</span>&lt;/a&gt; | &lt;a href=<span class="st">&quot;</span>#<span class="st">&quot;</span> class=<span class="st">&quot;&quot;</span>&gt;<span class="dv">9</span>&lt;/a&gt; | &lt;a href=<span class="st">&quot;</span>#<span class="st">&quot;</span> class=<span class="st">&quot;&quot;</span>&gt;<span class="dv">12</span>&lt;/a&gt; per page
+  &lt;/span&gt;
+
+  &lt;span class=<span class="st">&quot;divider&quot;</span>&gt;/&lt;/span&gt;
+
+  &lt;span class=<span class="st">&quot;cell</span> <span class="st">first</span> <span class="st">records&quot;</span>&gt;
+    <span class="dt">Page</span>: &lt;span class=<span class="st">&quot;label&quot;</span>&gt;&lt;%= currentPage %&gt;&lt;/span&gt; of &lt;span class=<span class="st">&quot;label&quot;</span>&gt;&lt;%= totalPages %&gt;&lt;/span&gt; shown
+  &lt;/span&gt;
+
+<span class="kw">&lt;/script&gt;</span></code></pre>
 <h3 id="plugins"><a href="#TOC">Plugins</a></h3>
 <p><strong>Diacritic.js</strong></p>
-<p>A plugin for Backbone.Paginator that replaces diacritic characters (ă,ş,ţ etc) with characters that match them most closely. This is particularly useful for filtering.</p>
+<p>A plugin for Backbone.Paginator that replaces diacritic characters (<code>´</code>, <code>˝</code>, <code>̏</code>, <code>˚</code>,<code>~</code> etc.) with characters that match them most closely. This is particularly useful for filtering.</p>
+<figure>
+<img src="img/paginator-dia.png"><figcaption></figcaption>
+</figure>
 <p>To enable the plugin, set <code>this.useDiacriticsPlugin</code> to true, as can be seen in the example below:</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">Paginator</span>.<span class="fu">clientPager</span> = <span class="kw">Backbone.Collection</span>.<span class="fu">extend</span>({
 
@@ -6316,6 +6414,30 @@ Backbone.history.start({
     <span class="dt">initialize</span>: <span class="kw">function</span>(){
       <span class="kw">this</span>.<span class="fu">useDiacriticsPlugin</span> = <span class="kw">true</span>; <span class="co">// use diacritics plugin if available</span>
     ...</code></pre>
+<h3 id="bootstrapping"><a href="#TOC">Bootstrapping</a></h3>
+<p>By default, both the clientPager and requestPager will make an initial request to the server in order to populate their internal paging data. In order to avoid this additional request, it may be beneficial to bootstrap your Backbone.Paginator instance from data that already exists in the dom.</p>
+<p><strong>Backbone.Paginator.clientPager:</strong></p>
+<p>```javascript</p>
+<p>// Extend the Backbone.Paginator.clientPager with your own configuration options var MyClientPager = Backbone.Paginator.clientPager.extend({paginator_ui: {}}); // Create an instance of your class and populate with the models of your entire collection var aClientPager = new MyClientPager([{id: 1, title: <q>foo</q>}, {id: 2, title: <q>bar</q>}]); // Invoke the bootstrap function aClientPager.bootstrap(); ``` Note: If you intend to bootstrap a clientPager, there is no need to specify a <q>paginator_core</q> object in your configuration (since you should have already populated the clientPager with the entirety of it’s necessary data)</p>
+<p><strong>Backbone.Paginator.requestPager:</strong></p>
+<p>```javascript</p>
+<p>// Extend the Backbone.Paginator.requestPager with your own configuration options var MyRequestPager = Backbone.Paginator.requestPager.extend({paginator_ui: {}}); // Create an instance of your class with the first page of data var aRequestPager = new MyRequestPager([{id: 1, title: <q>foo</q>}, {id: 2, title: <q>bar</q>}]); // Invoke the bootstrap function and configure requestPager with <q>totalRecords</q> aRequestPager.bootstrap({totalRecords: 50}); <code>Note: Both the clientPager and requestPager</code>bootstrap``` function will accept an options param that will be extended by your Backbone.Paginator instance. However the <q>totalRecords</q> property will be set implicitly by the clientPager.</p>
+<p><a href="http://ricostacruz.com/backbone-patterns/#bootstrapping_data">More on Backbone bootstrapping</a></p>
+<h3 id="styling"><a href="#TOC">Styling</a></h3>
+<p>You’re of course free to customize the overall look and feel of the paginators as much as you wish. By default, all sample applications make use of the <a href="http://twitter.github.com/bootstrap">Twitter Bootstrap</a> for styling links, buttons and drop-downs.</p>
+<p>CSS classes are available to style record counts, filters, sorting and more:</p>
+<figure>
+<img src="img/paginator-styling2.png"><figcaption></figcaption>
+</figure>
+<p>Classes are also available for styling more granular elements like page counts within <code>breadcrumb &gt; pages</code> e.g <code>.page</code>, <code>.page selected</code>:</p>
+<figure>
+<img src="img/paginator-classes.png"><figcaption></figcaption>
+</figure>
+<p>There’s a tremendous amount of flexibility available for styling and as you’re in control of templating too, your paginators can be made to look as visually simple or complex as needed.</p>
+<h3 id="conclusions"><a href="#TOC">Conclusions</a></h3>
+<p>Although it’s certainly possible to write your own custom pagination classes to work with Backbone Collections, Backbone.Paginator tries to take care of much of this for you.</p>
+<p>It’s highly configurable, avoiding the need to write your own paging when working with Collections of data sourced from your database or API. Use the plugin to help tame large lists of data into more manageable, easily navigatable, paginated lists.</p>
+<p>Additionally, if you have any questions about Backbone.Paginator (or would like to help improve it), feel free to post to the project <a href="https://github.com/addyosmani/backbone.paginator">issues</a> list.</p>
 <h1 id="backbone-boilerplate-and-grunt-bbb"><a href="#TOC">Backbone Boilerplate And Grunt-BBB</a></h1>
 <p>Boilerplates provide us a starting point for working on projects. They’re a base for building upon using the minimum required code to get something functional put together. When you’re working on a new Backbone application, a new Model typically only takes a few lines of code to get working.</p>
 <p>That alone probably isn’t enough however, as you’ll need a Collection to group those models, a View to render them and perhaps a router if you’re looking to making specific views of your Collection data bookmarkable. If you’re starting on a completely fresh project, you may also need a build process in place to produce an optimized version of your app that can be pushed to production.</p>
@@ -6801,7 +6923,7 @@ define([
 <img src="img/bbdevtools.jpg"><figcaption></figcaption>
 </figure>
 <p>At the time of writing, the project is currently available on <a href="https://github.com/spect88/backbone-devtools">GitHub</a>.</p>
-<h2 id="conclusions"><a href="#TOC">Conclusions</a></h2>
+<h2 id="conclusions-1"><a href="#TOC">Conclusions</a></h2>
 <p>In this section we reviewed Backbone Boilerplate and learned how to use the <code>bbb</code> tool to help us scaffold out our application.</p>
 <p>If you would like to learn more about how this project helps structure your app, BBB includes some built-in boilerplate sample apps that can be easily generated for review.</p>
 <p>These include a boilerplate tutorial project (<code>bbb init:tutorial</code>) and an implementation of my <a href="http://todomvc">TodoMVC</a> project (<code>bbb init:todomvc</code>). I recommend checking these out as they’ll provide you with a more complete picture of how Backbone Boilerplate, its templates, and so on fit into the overall setup for a web app.</p>
@@ -8013,7 +8135,7 @@ expect(<span class="ch">&#39;click&#39;</span>).<span class="fu">toHaveBeenTrigg
   });
 });</code></pre>
 <p>This will now also pass without any issues, however as mentioned, this last approach probably only makes sense if you’re working with smaller, highly dynamic templates.</p>
-<h2 id="conclusions-1"><a href="#TOC">Conclusions</a></h2>
+<h2 id="conclusions-2"><a href="#TOC">Conclusions</a></h2>
 <p>We have now covered how to write Jasmine tests for Backbone.js models, collections, and views. While testing routing can at times be desirable, some developers feel it can be more optimal to leave this to third-party tools such as Selenium, so do keep this in mind.</p>
 <h2 id="exercise"><a href="#TOC">Exercise</a></h2>
 <p>As an exercise, I recommend now trying the Jasmine Koans in <code>practicals\jasmine-koans</code> and trying to fix some of the purposefully failing tests it has to offer. This is an excellent way of not just learning how Jasmine specs and suites work, but working through the examples (without peeking back) will also put your Backbone skills to the test too.</p>
@@ -8024,7 +8146,7 @@ expect(<span class="ch">&#39;click&#39;</span>).<span class="fu">toHaveBeenTrigg
 <li><a href="http://japhr.blogspot.com/2011/12/phantomjs-and-backbonejs-and-requirejs.html">Backbone, PhantomJS and Jasmine</a></li>
 </ul>
 <h1 id="qunit"><a href="#TOC">QUnit</a></h1>
-<h2 id="introduction-2"><a href="#TOC">Introduction</a></h2>
+<h2 id="introduction-3"><a href="#TOC">Introduction</a></h2>
 <p>QUnit is a powerful JavaScript test suite written by jQuery team member <a href="http://bassistance.de/">Jörn Zaefferer</a> and used by many large open-source projects (such as jQuery and Backbone.js) to test their code. It’s both capable of testing standard JavaScript code in the browser as well as code on the server-side (where environments supported include Rhino, V8 and SpiderMonkey). This makes it a robust solution for a large number of use-cases.</p>
 <p>Quite a few Backbone.js contributors feel that QUnit is a better introductory framework for testing if you don’t wish to start off with Jasmine and BDD right away. As we’ll see later on in this chapter, QUnit can also be combined with third-party solutions such as SinonJS to produce an even more powerful testing solution supporting spies and mocks, which some say is preferable over Jasmine.</p>
 <p>My personal recommendation is that it’s worth comparing both frameworks and opting for the solution that you feel the most comfortable with.</p>
@@ -8792,7 +8914,7 @@ test( <span class="ch">&#39;Should bind Collection events to View creation.&#39;
 <li><a href="https://github.com/janmonschke/backbone-couchdb">Backbone CouchDB</a></li>
 <li><a href="https://github.com/n-time/backbone.validations">Backbone Validations - HTML5 inspired validations</a></li>
 </ul>
-<h1 id="conclusions-2"><a href="#TOC">Conclusions</a></h1>
+<h1 id="conclusions-3"><a href="#TOC">Conclusions</a></h1>
 <p>I hope that you’ve found this introduction to Backbone.js of value. What you’ve hopefully learned is that while building a JavaScript-heavy application using nothing more than a DOM manipulation library (such as jQuery) is certainly a possible feat, it is difficult to build anything non-trivial without any formal structure in place. Your nested pile of jQuery callbacks and DOM elements are unlikely to scale and they can be very difficult to maintain as your application grows.</p>
 <p>The beauty of Backbone.js is it’s simplicity. It’s very small given the functionality and flexibility it provides, which is evident if you begin to study the Backbone.js source. In the words of Jeremy Ashkenas, <q>The essential premise at the heart of Backbone has always been to try and discover the minimal set of data-structuring (Models and Collections) and user interface (Views and URLs) primitives that are useful when building web applications with JavaScript.</q> It just helps you improve the structure of your applications, helping you better separate concerns. There isn’t anything more to it than that.</p>
 <p>Backbone offers Models with key-value bindings and events, Collections with an API of rich enumerable methods, declarative Views with event handling and a simple way to connect an existing API to your client-side application over a RESTful JSON interface. Use it and you can abstract away data into sane models and your DOM manipulation into views, binding them together using nothing more than events.</p>
