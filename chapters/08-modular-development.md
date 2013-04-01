@@ -1049,7 +1049,7 @@ Pagination is a ubiquitous problem we often find ourselves needing to solve on t
 
 Before we dive into solutions for paginating data for your Backbone applications, let's define exactly what we consider pagination to be:
 
-Pagination is a control system allowing users to browser through pages of search results (or any type of content) which is continued. Search results are the canonical example, but pagination today is found on news sites, blogs and discussion boards, often in the form of Previous and Next links. More complete pagination systems offer granular control of the specific pages you can navigate to, giving the user more power to find what they are looking for. 
+Pagination is a control system allowing users to browse through pages of search results (or any type of content) which is continued. Search results are the canonical example, but pagination today is found on news sites, blogs and discussion boards, often in the form of Previous and Next links. More complete pagination systems offer granular control of the specific pages you can navigate to, giving the user more power to find what they are looking for. 
 
 It isn't a problem limited to pages requiring some visual controls for pagination either - sites like Facebook, Pinterest and Twitter have demonstrated that there are many contexts where infinite paging is also useful. Infitite paging is of course when we pre-fetch (or appear to pre-fetch) content from a subsequent page and add it directly to the user’s current page, making the experience feel "infinite".
 
@@ -1548,6 +1548,7 @@ var aClientPager = new MyClientPager([{id: 1, title: 'foo'}, {id: 2, title: 'bar
 // Invoke the bootstrap function
 aClientPager.bootstrap();
 ```
+
 Note: If you intend to bootstrap a clientPager, there is no need to specify a 'paginator_core' object in your configuration (since you should have already populated the clientPager with the entirety of it's necessary data)
 
 **Backbone.Paginator.requestPager:**
@@ -1561,6 +1562,7 @@ var aRequestPager = new MyRequestPager([{id: 1, title: 'foo'}, {id: 2, title: 'b
 // Invoke the bootstrap function and configure requestPager with 'totalRecords'
 aRequestPager.bootstrap({totalRecords: 50});
 ```
+
 Note: Both the clientPager and requestPager ```bootstrap``` function will accept an options param that will be extended by your Backbone.Paginator instance. However the 'totalRecords' property will be set implicitly by the clientPager.
 
 [More on Backbone bootstrapping](http://ricostacruz.com/backbone-patterns/#bootstrapping_data)
