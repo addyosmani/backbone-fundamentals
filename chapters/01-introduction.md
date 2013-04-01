@@ -96,18 +96,22 @@ Here is a peek at what you will be learning in each chapter:
 
 <i>Chapter 8, Modular Development</i> looks at how AMD modules and RequireJS can be used to modularize your code.
 
-<i>Chapter 9, Backbone Boilerplate And Grunt BBB</i> introduces powerful tools you can use to bootstrap a new Backbone.js application with boilerplate code.
+<i>Chapter 9, Exercise 3: Todos - Your First Modular Backbone + RequireJS App</i> takes you through rewriting the app created in Exercise 1 to be more modular with the help of RequireJS.
 
-<i>Chapter 10, Mobile Applications</i> addresses the issues that arise when using Backbone with jQuery Mobile.
+<i>Chapter 10, Paginating Backbone Requests & Collections</i> walks through how to use the Backbone.Paginator plugin to paginate data for your Collections.
 
-<i>Chapter 11, Jasmine</i> covers how to unit test Backbone code using the Jasmine test framework.
+<i>Chapter 11, Backbone Boilerplate And Grunt BBB</i> introduces powerful tools you can use to bootstrap a new Backbone.js application with boilerplate code.
 
-<i>Chapter 12, QUnit</i> discusses how to use the QUnit for unit testing.
+<i>Chapter 12, Mobile Applications</i> addresses the issues that arise when using Backbone with jQuery Mobile.
 
-<i>Chapter 13, SinonJS</i> discusses how to use SinonJS for unit testing your Backbone apps.
+<i>Chapter 13, Jasmine</i> covers how to unit test Backbone code using the Jasmine test framework.
 
-<i>Chapter 14, Resources</i> provides references to additional Backbone-related resources.
+<i>Chapter 14, QUnit</i> discusses how to use the QUnit for unit testing.
 
-<i>Chapter 15, Conclusions</i> wraps up the our tour through the world of Backbone.js development.
+<i>Chapter 15, SinonJS</i> discusses how to use SinonJS for unit testing your Backbone apps.
 
-<i>Chapter 16, Appendix</i> returns to our design pattern discussion by contrasting MVC with the Model-View-Presenter (MVP) pattern and examines how Backbone.js relates to the two patterns. It also provides useful information for existing Backbone users who may be upgrading from Backbone 0.9.2 to version 0.9.10 and beyond.
+<i>Chapter 16, Resources</i> provides references to additional Backbone-related resources.
+
+<i>Chapter 17, Conclusions</i> wraps up the our tour through the world of Backbone.js development.
+
+<i>Chapter 18, Appendix</i> returns to our design pattern discussion by contrasting MVC with the Model-View-Presenter (MVP) pattern and examines how Backbone.js relates to the two patterns. It also provides useful information for existing Backbone users who may be upgrading from Backbone 0.9.2 to version 0.9.10 and beyond.

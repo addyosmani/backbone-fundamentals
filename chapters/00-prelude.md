@@ -35,7 +35,7 @@ I am indebted to the fantastic work done by the technical reviewers who helped r
 * [Dusan Gledovic](https://github.com/g6scheme)
 * [Sindre Sorhus](https://github.com/sindresorhus)
 
-I would also like to thank my loving family for their patience and support while I worked on this book.
+I would also like to thank my loving family for their patience and support while I worked on this book, as well as my brilliant editor Mary Treseler.
 
 ## Credits
 

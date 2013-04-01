@@ -36,7 +36,7 @@ I am indebted to the fantastic work done by the technical reviewers who helped r
 * [Dusan Gledovic](https://github.com/g6scheme)
 * [Sindre Sorhus](https://github.com/sindresorhus)
 
-I would also like to thank my loving family for their patience and support while I worked on this book.
+I would also like to thank my loving family for their patience and support while I worked on this book, as well as my brilliant editor Mary Treseler.
 
 ## Credits
 
@@ -161,21 +161,25 @@ Here is a peek at what you will be learning in each chapter:
 
 <i>Chapter 8, Modular Development</i> looks at how AMD modules and RequireJS can be used to modularize your code.
 
-<i>Chapter 9, Backbone Boilerplate And Grunt BBB</i> introduces powerful tools you can use to bootstrap a new Backbone.js application with boilerplate code.
+<i>Chapter 9, Exercise 3: Todos - Your First Modular Backbone + RequireJS App</i> takes you through rewriting the app created in Exercise 1 to be more modular with the help of RequireJS.
 
-<i>Chapter 10, Mobile Applications</i> addresses the issues that arise when using Backbone with jQuery Mobile.
+<i>Chapter 10, Paginating Backbone Requests & Collections</i> walks through how to use the Backbone.Paginator plugin to paginate data for your Collections.
 
-<i>Chapter 11, Jasmine</i> covers how to unit test Backbone code using the Jasmine test framework.
+<i>Chapter 11, Backbone Boilerplate And Grunt BBB</i> introduces powerful tools you can use to bootstrap a new Backbone.js application with boilerplate code.
 
-<i>Chapter 12, QUnit</i> discusses how to use the QUnit for unit testing.
+<i>Chapter 12, Mobile Applications</i> addresses the issues that arise when using Backbone with jQuery Mobile.
 
-<i>Chapter 13, SinonJS</i> discusses how to use SinonJS for unit testing your Backbone apps.
+<i>Chapter 13, Jasmine</i> covers how to unit test Backbone code using the Jasmine test framework.
 
-<i>Chapter 14, Resources</i> provides references to additional Backbone-related resources.
+<i>Chapter 14, QUnit</i> discusses how to use the QUnit for unit testing.
 
-<i>Chapter 15, Conclusions</i> wraps up the our tour through the world of Backbone.js development.
+<i>Chapter 15, SinonJS</i> discusses how to use SinonJS for unit testing your Backbone apps.
 
-<i>Chapter 16, Appendix</i> returns to our design pattern discussion by contrasting MVC with the Model-View-Presenter (MVP) pattern and examines how Backbone.js relates to the two patterns. It also provides useful information for existing Backbone users who may be upgrading from Backbone 0.9.2 to version 0.9.10 and beyond.
+<i>Chapter 16, Resources</i> provides references to additional Backbone-related resources.
+
+<i>Chapter 17, Conclusions</i> wraps up the our tour through the world of Backbone.js development.
+
+<i>Chapter 18, Appendix</i> returns to our design pattern discussion by contrasting MVC with the Model-View-Presenter (MVP) pattern and examines how Backbone.js relates to the two patterns. It also provides useful information for existing Backbone users who may be upgrading from Backbone 0.9.2 to version 0.9.10 and beyond.
 
 # Fundamentals
 
@@ -7070,6 +7074,11 @@ That's it. As long as you have UglifyJS/Closure tools setup correctly, r.js shou
 If you would like to learn more about build profiles, James Burke has a [heavily commented sample file](https://github.com/jrburke/r.js/blob/master/build/example.build.js) with all the possible options available.
 
 
+
+
+
+
+
 # Exercise: Your First Modular Backbone + RequireJS App
 
 In this chapter, we'll look at our first practical Backbone & RequireJS project - how to build a modular Todo application. Similar to exercise 1, the application will allow us to add new todos, edit new todos and clear todo items that have been marked as completed. For a more advanced practical, see the section on mobile Backbone development.
@@ -7553,6 +7562,7 @@ A template using Jammit can derive it's data from the collection object that is 
 ```
 this.$el.html(JST.myTemplate({ collection: this.collection }));
 ```
+
 
 # Paginating Backbone.js Requests & Collections
 
@@ -8101,9 +8111,6 @@ Although it's certainly possible to write your own custom pagination classes to 
 It's highly configurable, avoiding the need to write your own paging when working with Collections of data sourced from your database or API. Use the plugin to help tame large lists of data into more manageable, easily navigatable, paginated lists. 
 
 Additionally, if you have any questions about Backbone.Paginator (or would like to help improve it), feel free to post to the project [issues](https://github.com/addyosmani/backbone.paginator) list.
-
-
-
 
 # Backbone Boilerplate And Grunt-BBB
 
