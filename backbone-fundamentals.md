@@ -179,7 +179,7 @@ Here is a peek at what you will be learning in each chapter:
 
 <i>Chapter 17, Conclusions</i> wraps up the our tour through the world of Backbone.js development.
 
-<i>Chapter 18, Appendix</i> returns to our design pattern discussion by contrasting MVC with the Model-View-Presenter (MVP) pattern and examines how Backbone.js relates to the two patterns. It also provides useful information for existing Backbone users who may be upgrading from Backbone 0.9.2 to version 0.9.10 and beyond.
+<i>Chapter 18, Appendix</i> returns to our design pattern discussion by contrasting MVC with the Model-View-Presenter (MVP) pattern and examines how Backbone.js relates to both. A walkthrough of writing a Backbone-like library from scratch and other topics are also covered.
 
 # Fundamentals
 
@@ -7079,7 +7079,7 @@ If you would like to learn more about build profiles, James Burke has a [heavily
 
 
 
-# Exercise: Your First Modular Backbone + RequireJS App
+# Exercise 3: Your First Modular Backbone + RequireJS App
 
 In this chapter, we'll look at our first practical Backbone & RequireJS project - how to build a modular Todo application. Similar to exercise 1, the application will allow us to add new todos, edit new todos and clear todo items that have been marked as completed. For a more advanced practical, see the section on mobile Backbone development.
 

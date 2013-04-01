@@ -232,7 +232,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <li><a href="#optimizing-backbone-apps-for-production-with-the-requirejs-optimizer">Optimizing Backbone apps for production with the RequireJS Optimizer</a></li>
 </ul></li>
 </ul></li>
-<li><a href="#exercise-your-first-modular-backbone-requirejs-app">Exercise: Your First Modular Backbone + RequireJS App</a><ul>
+<li><a href="#exercise-3-your-first-modular-backbone-requirejs-app">Exercise 3: Your First Modular Backbone + RequireJS App</a><ul>
 <li><a href="#overview">Overview</a></li>
 <li><a href="#markup">Markup</a></li>
 <li><a href="#configuration-options">Configuration options</a></li>
@@ -519,7 +519,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <p><i>Chapter 15, SinonJS</i> discusses how to use SinonJS for unit testing your Backbone apps.</p>
 <p><i>Chapter 16, Resources</i> provides references to additional Backbone-related resources.</p>
 <p><i>Chapter 17, Conclusions</i> wraps up the our tour through the world of Backbone.js development.</p>
-<p><i>Chapter 18, Appendix</i> returns to our design pattern discussion by contrasting MVC with the Model-View-Presenter (MVP) pattern and examines how Backbone.js relates to the two patterns. It also provides useful information for existing Backbone users who may be upgrading from Backbone 0.9.2 to version 0.9.10 and beyond.</p>
+<p><i>Chapter 18, Appendix</i> returns to our design pattern discussion by contrasting MVC with the Model-View-Presenter (MVP) pattern and examines how Backbone.js relates to both. A walkthrough of writing a Backbone-like library from scratch and other topics are also covered.</p>
 <h1 id="fundamentals"><a href="#TOC">Fundamentals</a></h1>
 <p>Design patterns are proven solutions to common development problems that can help us improve the organization and structure of our applications. By using patterns, we benefit from the collective experience of skilled developers who have repeatedly solved similar problems.</p>
 <p>Historically, developers creating desktop and server-class applications have had a wealth of design patterns available for them to lean on, but it’s only been in the past few years that such patterns have been applied to client-side development.</p>
@@ -5675,7 +5675,7 @@ define([<span class="ch">&#39;jquery&#39;</span>, <span class="ch">&#39;backbone
 <p>The build profile is usually placed inside the <q>scripts</q> or <q>js</q> directory of your project. As per the docs, this file can however exist anywhere you wish, but you’ll need to edit the contents of your build profile accordingly.</p>
 <p>That’s it. As long as you have UglifyJS/Closure tools setup correctly, r.js should be able to easily optimize your entire Backbone project in just a few key-strokes.</p>
 <p>If you would like to learn more about build profiles, James Burke has a <a href="https://github.com/jrburke/r.js/blob/master/build/example.build.js">heavily commented sample file</a> with all the possible options available.</p>
-<h1 id="exercise-your-first-modular-backbone-requirejs-app"><a href="#TOC">Exercise: Your First Modular Backbone + RequireJS App</a></h1>
+<h1 id="exercise-3-your-first-modular-backbone-requirejs-app"><a href="#TOC">Exercise 3: Your First Modular Backbone + RequireJS App</a></h1>
 <p>In this chapter, we’ll look at our first practical Backbone &amp; RequireJS project - how to build a modular Todo application. Similar to exercise 1, the application will allow us to add new todos, edit new todos and clear todo items that have been marked as completed. For a more advanced practical, see the section on mobile Backbone development.</p>
 <p>The complete code for the application can can be found in the <code>practicals/modular-todo-app</code> folder of this repo (thanks to Thomas Davis and Jérôme Gravel-Niquet). Alternatively grab a copy of my side-project <a href="https://github.com/addyosmani/todomvc">TodoMVC</a> which contains the sources to both AMD and non-AMD versions.</p>
 <h3 id="overview"><a href="#TOC">Overview</a></h3>

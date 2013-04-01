@@ -1,4 +1,4 @@
-# Exercise: Your First Modular Backbone + RequireJS App
+# Exercise 3: Your First Modular Backbone + RequireJS App
 
 In this chapter, we'll look at our first practical Backbone & RequireJS project - how to build a modular Todo application. Similar to exercise 1, the application will allow us to add new todos, edit new todos and clear todo items that have been marked as completed. For a more advanced practical, see the section on mobile Backbone development.
 
