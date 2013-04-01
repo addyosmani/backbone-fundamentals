@@ -822,7 +822,7 @@ To have our application retrieve the Book models from the server on page load we
 ```javascript
 initialize: function() {
 	this.collection = new app.Library();
-	this.collection.fetch(); // NEW
+	this.collection.fetch({reset: true}); // NEW
 	this.render();
 
 	this.listenTo( this.collection, 'add', this.renderBook );
@@ -842,7 +842,7 @@ $(function() {
 });
 ```
 
-We have also added a listener on the reset event. We need to do this since the models are fetched asynchronously after the page is rendered. When the fetch completes, Backbone fires the reset event and our listener re-renders the view. If you reload the page now you should see all books that are stored on the server:
+We have also added a listener on the reset event. We need to do this since the models are fetched asynchronously after the page is rendered. When the fetch completes, Backbone fires the reset event, as requested by the `reset: true` option, and our listener re-renders the view. If you reload the page now you should see all books that are stored on the server:
 
 ![](img/chapter5-9.png)
 
