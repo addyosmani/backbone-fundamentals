@@ -163,6 +163,13 @@ var TodoView = Backbone.View.extend({
   // Re-render the titles of the todo item.
   render: function() {
     this.$el.html( this.todoTpl( this.model.toJSON() ) );
+    // $el here is a reference to the jQuery element 
+    // associated with the view, todoTpl is a reference
+    // to an Underscore template and toJSON() returns an 
+    // object containing the model's attributes
+    // Altogether, the statement is replacing the HTML of
+    // a DOM element with the result of instantiating a 
+    // template with the model's attributes.
     this.input = this.$('.edit');
     return this;
   },
