@@ -527,22 +527,24 @@ The second tricky part with jQuery Mobile is to dynamically manipulate specific 
 
 With the current version (1.3), jQM provides three ways, documented and explained below in the official API, on forums, and blogs.
 
+* **$(“pageId”).trigger(“pagecreate”)**
 
-* *$(“pageId”).trigger(“pagecreate”)*
-  Creates markup of header, content as well as footer
- 
-* *$(“anyElement”).trigger(“create”)*
-  Creates markup of the element as well as all children
+    *Creates markup of header, content as well as footer*
 
-* *$(“myListElement”).listview(“refresh”)*
-* *$('[type="radio"]').checkboxradio()*
-* *$('[type="text"]').textinput()*
-* *$('[type="button"]').button()*
-* *$('[data-role="navbar"]').navbar()*
-* *$('[type="range"]').slider()*
-* *$('select').selectmenu()*
+* **$(“anyElement”).trigger(“create”)**
 
-Every component of jQM offers plugins methods they can invoke to update the state of specific UI elements.
+    *Creates markup of the element as well as all children*
+
+* **$(“myListElement”).listview(“refresh”)**
+* **$('[type="radio"]').checkboxradio()**
+* **$('[type="text"]').textinput()**
+* **$('[type="button"]').button()**
+* **$('[data-role="navbar"]').navbar()**
+* **$('[type="range"]').slider()**
+* **$('select').selectmenu()**
+
+    *Every component of jQM offers plugins methods they can invoke to update the state of specific UI elements.*
+
 
 Sometimes, when creating a component from scratch, the following error can occur: 'cannot call methods on listview prior to initialization'. This can be avoided, with component initialization prior to markup enhancement, by calling it in the following way:
 
