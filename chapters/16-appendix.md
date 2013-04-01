@@ -616,5 +616,55 @@ From the source for `Backbone.history.start`:
 `Backbone.History.stop` similarly uses your DOM manipulation library to unbind these event listeners.
 
 
+## Backbone Vs. Other Libraries And Frameworks
+
+Backbone is just one of many different solutions available for structuring your application and we're by no means advocating it as the be all and end all. It's served the authors of this book well in building many simple and complex web applications and we hope that it can serve you equally as well. The answer to the question 'Is Backbone better than X?' generally has a lot more to do with what kind of application you're building.
+
+AngularJS and Ember.js are examples of powerful alternatives but differ from Backbone in that there are more opinionated. For some projects this can be useful and for others, perhaps not. The important thing to remember is that there is no library or framework that's going to be the best solution for every use-case and so it's important to learn about the tools at your disposal and decide which one is best on a project-by-project basis. 
+
+Choose the right tool for the right job. This is why we recommend spending some time doing a little due diligence. Consider productivity, ease of use, testability, community and documentation. If you're looking for more concrete comparisons between frameworks, read:
+
+* [Journey Through The JavaScript MVC Jungle](http://coding.smashingmagazine.com/2012/07/27/journey-through-the-javascript-mvc-jungle/)
+* [Throne of JS - Seven JavaScript Frameworks](http://blog.stevensanderson.com/2012/08/01/rich-javascript-applications-the-seven-frameworks-throne-of-js-2012/)
+
+The authors behind Backbone.js, AngularJS and Ember have also discussed some of the strengths and weaknesses of their solutions on Quora, StackOverflow and so on:
+
+* [Jeremy Ashkenas on Why Backbone?](http://backbonejs.org/#FAQ-why-backbone)
+* [Tom Dale on Why Ember.js vs. AngularJS](http://www.quora.com/Ember-js/Which-one-of-angular-js-and-ember-js-is-the-better-choice/answer/Tom-Dale)
+* [Brian Ford & Jeremy Ashkenas on Backbone vs. Angular (discussion)](http://www.reddit.com/r/javascript/comments/17h22w/an_introduction_to_angular_for_backbone_developers/) 
+
+The solution you opt for may need to support building non-trivial features and could end up being used to maintain the app for years to come so think about things like:
+
+**What is the library/framework really capable of?**
+
+Spend time reviewing both the source code of the framework and official list of features to see how well they fit with your requirements. There will be projects that may require modifying or extending the underlying source and thus make sure that if this might be the case, you’ve performed due diligence on the code.
+Has the framework been proven in production?
+
+i.e Have developers actually built and deployed large applications with it that are publicly accessible? Backbone has a strong portfolio of these (SoundCloud, LinkedIn, Walmart) but not all frameworks do. Ember is used in number of large apps, including the new version of ZenDesk. AngularJS has been used to build the YouTube app for PS3 amongst other places. It’s not only important to know that a framework works in production, but also being able to look at real world code and be inspired by what can be built with it.
+
+**Is the framework mature?**
+
+I generally recommend developers don’t simply “pick one and go with it”. New projects often come with a lot of buzz surrounding their releases but remember to take care when selecting them for use on a production-level app. You don’t want to risk the project being canned, going through major periods of refactoring or other breaking changes that tend to be more carefully planned out when a framework is mature. Mature projects also tend to have more detailed documentation available, either as a part of their official or community-driven docs.
+
+**Is the framework flexible or opinionated?**
+
+Know what flavor you’re after as there are plenty of frameworks available which provide one or the other. Opinionated frameworks lock (or suggest) you to do things in a specific way (theirs). By design they are limiting, but place less emphasis on the developer having to figure out how things should work on their own.
+Have you really played with the framework?
+
+Write a small application without using frameworks and then attempt to refactor your code with a framework to confirm whether it’s easy to work with or not. As much as researching and reading up on code will influence your decision, it’s equally as important to write actual code using the framework to make sure you’re comfortable with the concepts it enforces.
+
+**Does the framework have a comprehensive set of documentation?**
+
+Although demo applications can be useful for reference, you’ll almost always find yourself consulting the official framework docs to find out what its API supports, how common tasks or components can be created with it and what the gotchas worth noting are. Any framework worth it’s salt should have a detailed set of documentation which will help guide developers using it. Without this, you can find yourself heavily relying on IRC channels, groups and self-discovery, which can be fine, but are often overly time-consuming when compared to a great set of docs provided upfront.
+
+**What is the total size of the framework, factoring in minification, gzipping and any modular building that it supports?**
+
+What dependencies does the framework have? Frameworks tend to only list the total filesize of the base library itself, but don’t list the sizes of the library's dependencies. This can mean the difference between opting for a library that initially looks quite small, but could be relatively large if it say, depends on jQuery and other libraries.
+
+**Have you reviewed the community around the framework?**
+
+Is there an active community of project contributors and users who would be able to assist if you run into issues? Have enough developers been using the framework that there are existing reference applications, tutorials and maybe even screencasts that you can use to learn more about it?
+
+
 ---
 Where relevant, copyright Addy Osmani, 2012-2013.
