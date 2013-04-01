@@ -637,6 +637,13 @@ code > span.er { color: #ff0000; font-weight: bold; }
   <span class="co">// Re-render the titles of the todo item.</span>
   <span class="dt">render</span>: <span class="kw">function</span>() {
     <span class="kw">this</span>.$<span class="fu">el</span>.<span class="fu">html</span>( <span class="kw">this</span>.<span class="fu">todoTpl</span>( <span class="kw">this</span>.<span class="fu">model</span>.<span class="fu">toJSON</span>() ) );
+    <span class="co">// $el here is a reference to the jQuery element </span>
+    <span class="co">// associated with the view, todoTpl is a reference</span>
+    <span class="co">// to an Underscore template and toJSON() returns an </span>
+    <span class="co">// object containing the model&#39;s attributes</span>
+    <span class="co">// Altogether, the statement is replacing the HTML of</span>
+    <span class="co">// a DOM element with the result of instantiating a </span>
+    <span class="co">// template with the model&#39;s attributes.</span>
     <span class="kw">this</span>.<span class="fu">input</span> = <span class="kw">this</span>.$(<span class="ch">&#39;.edit&#39;</span>);
     <span class="kw">return</span> <span class="kw">this</span>;
   },
@@ -6052,10 +6059,10 @@ Backbone.history.start({
 <h2 id="introduction-2"><a href="#TOC">Introduction</a></h2>
 <p>Pagination is a ubiquitous problem we often find ourselves needing to solve on the web - perhaps most predominantly when working with service APIs and JavaScript-heavy clients which consume them. It’s also a problem that is often under-refined as most of us consider pagination relatively easy to get right. This isn’t however always the case as pagination tends to get more tricky than it initially seems.</p>
 <p>Before we dive into solutions for paginating data for your Backbone applications, let’s define exactly what we consider pagination to be:</p>
-<p>Pagination is a control system allowing users to browser through pages of search results (or any type of content) which is continued. Search results are the canonical example, but pagination today is found on news sites, blogs and discussion boards, often in the form of Previous and Next links. More complete pagination systems offer granular control of the specific pages you can navigate to, giving the user more power to find what they are looking for.</p>
-<p>It isn’t a problem limited to pages requiring some visual controls for pagination either - sites like Facebook, Pinterest and Twitter have demonstrated that there are many contexts where infinite paging is also useful. Infitite paging is of course when we pre-fetch (or appear to pre-fetch) content from a subsequent page and add it directly to the user’s current page, making the experience feel <q>infinite</q>.</p>
-<p>Pagination is very context-specific and depends on the content being displayed. In the Google search results, pagination is important as they want to offer you the most relevant set of results in the first 1-2 pages. After that, you might be a little more selective (or random) with the page you choose to navigate to. This differs from cases where you’ll want to cycle through consecutive pages for (e.g for a news article or blog post).</p>
-<p>Pagination is almost certainly content and context-specific, but as Faruk Ates has <a href="https://gist.github.com/mislav/622561">previously</a> pointed out the principles of good pagination apply no matter what the content or context is. As with everything extensible when it comes to Backbone, one can try to write their own pagination that can try solving many of these content-specific types of pagination problems. That said, you’ll probably spend quite a bit of time on this and sometimes you just want to use a tried and tested solution that just works.</p>
+<p>Pagination is a control system allowing users to browse through pages of search results (or any type of content) which is continued. Search results are the canonical example, but pagination today is found on news sites, blogs, and discussion boards, often in the form of Previous and Next links. More complete pagination systems offer granular control of the specific pages you can navigate to, giving the user more power to find what they are looking for.</p>
+<p>It isn’t a problem limited to pages requiring some visual controls for pagination either - sites like Facebook, Pinterest, and Twitter have demonstrated that there are many contexts where infinite paging is also useful. Infinite paging is, of course, when we pre-fetch (or appear to pre-fetch) content from a subsequent page and add it directly to the user’s current page, making the experience feel <q>infinite</q>.</p>
+<p>Pagination is very context-specific and depends on the content being displayed. In the Google search results, pagination is important as they want to offer you the most relevant set of results in the first 1-2 pages. After that, you might be a little more selective (or random) with the page you choose to navigate to. This differs from cases where you’ll want to cycle through consecutive pages for (e.g., for a news article or blog post).</p>
+<p>Pagination is almost certainly content and context-specific, but as Faruk Ates has <a href="https://gist.github.com/mislav/622561">previously</a> pointed out the principles of good pagination apply no matter what the content or context is. As with everything extensible when it comes to Backbone, you can write your own pagination to address many of these content-specific types of pagination problems. That said, you’ll probably spend quite a bit of time on this and sometimes you just want to use a tried and tested solution that just works.</p>
 <p>On this topic, we’re going to go through a set of pagination components I (and a group of <a href="https://github.com/addyosmani/backbone.paginator/contributors">contributors</a>) wrote for Backbone.js, which should hopefully come in useful if you’re working on applications which need to page Backbone Collections. They’re part of an extension called <a href="http://github.com/addyosmani/backbone.paginator">Backbone.Paginator</a>.</p>
 <h3 id="backbone.paginator"><a href="#TOC">Backbone.Paginator</a></h3>
 <p>When working with data on the client-side, the three types of pagination we are most likely to run into are:</p>
@@ -6085,7 +6092,7 @@ Backbone.history.start({
 </ul>
 <h2 id="paginator.requestpager"><a href="#TOC">Paginator.requestPager</a></h2>
 <p>In this section we’re going to walk through using the requestPager. You would use this component when working with a service API which itself supports pagination. This component allows users to control the pagination settings for requests to this API (i.e navigate to the next, previous, N pages) via the client-side.</p>
-<p>The idea is that pagination, searching and filtering of data can all be done from your Backbone application without the need for a page reload.</p>
+<p>The idea is that pagination, searching, and filtering of data can all be done from your Backbone application without the need for a page reload.</p>
 <figure>
 <img src="img/paginator-request.png"><figcaption></figcaption>
 </figure>
@@ -6183,7 +6190,7 @@ Within our collection, we then (as normal) specify the model to be used with thi
 <li><strong>Collection.prevPage( options )</strong> - go to the previous page</li>
 <li><strong>Collection.howManyPer( n )</strong> - set the number of items to display per page</li>
 </ul>
-<p><strong>requestPager</strong> collection’s methods <code>.goTo()</code>, <code>.nextPage()</code> and <code>.prevPage()</code> are all extension of the original <a href="http://documentcloud.github.com/backbone/#Collection-fetch">Backbone Collection.fetch() method</a>. As so, they all can take the same option object as parameter.</p>
+<p><strong>requestPager</strong> collection’s methods <code>.goTo()</code>, <code>.nextPage()</code> and <code>.prevPage()</code> are all extensions of the original <a href="http://documentcloud.github.com/backbone/#Collection-fetch">Backbone Collection.fetch() methods</a>. As so, they all can take the same option object as a parameter.</p>
 <p>This option object can use <code>success</code> and <code>error</code> parameters to pass a function to be executed after server answer.</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">Collection</span>.<span class="fu">goTo</span>(n, {
   <span class="dt">success</span>: <span class="kw">function</span>( collection, response ) {
@@ -6213,7 +6220,7 @@ Within our collection, we then (as normal) specify the model to be used with thi
 <figure>
 <img src="img/paginator-client.png"><figcaption></figcaption>
 </figure>
-<p>It makes sense to use the clientPager when your users are unlikely to cycle through a large number of results and you want to avoid additional network requests each time they wish to fetch the next <q>page</q> of items. As the results have all already been requested, it’s just a case of switching between the ranges of data actually presented to the user.</p>
+<p>Use the clientPager when you prefer to get results in a single <q>load</q> and thus avoid making additional network requests each time your users want to fetch the next <q>page</q> of items. As the results have all already been requested, it’s just a case of switching between the ranges of data actually presented to the user.</p>
 <h4 id="create-a-new-paginated-collection-with-a-model-and-url"><a href="#TOC">1. Create a new paginated collection with a model and URL</a></h4>
 <p>As with <code>requestPager</code>, let’s first create a new Paginated <code>Backbone.Paginator.clientPager</code> collection, with a model:</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript">    <span class="kw">var</span> PaginatedCollection = <span class="kw">Backbone.Paginator.clientPager</span>.<span class="fu">extend</span>({
@@ -6417,11 +6424,23 @@ nextPage({<span class="dt">success</span>: <span class="kw">function</span>() { 
 <h3 id="bootstrapping"><a href="#TOC">Bootstrapping</a></h3>
 <p>By default, both the clientPager and requestPager will make an initial request to the server in order to populate their internal paging data. In order to avoid this additional request, it may be beneficial to bootstrap your Backbone.Paginator instance from data that already exists in the dom.</p>
 <p><strong>Backbone.Paginator.clientPager:</strong></p>
-<p>```javascript</p>
-<p>// Extend the Backbone.Paginator.clientPager with your own configuration options var MyClientPager = Backbone.Paginator.clientPager.extend({paginator_ui: {}}); // Create an instance of your class and populate with the models of your entire collection var aClientPager = new MyClientPager([{id: 1, title: <q>foo</q>}, {id: 2, title: <q>bar</q>}]); // Invoke the bootstrap function aClientPager.bootstrap(); ``` Note: If you intend to bootstrap a clientPager, there is no need to specify a <q>paginator_core</q> object in your configuration (since you should have already populated the clientPager with the entirety of it’s necessary data)</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript">
+<span class="co">// Extend the Backbone.Paginator.clientPager with your own configuration options</span>
+<span class="kw">var</span> MyClientPager =  <span class="kw">Backbone.Paginator.clientPager</span>.<span class="fu">extend</span>({<span class="dt">paginator_ui</span>: {}});
+<span class="co">// Create an instance of your class and populate with the models of your entire collection</span>
+<span class="kw">var</span> aClientPager = <span class="kw">new</span> MyClientPager([{<span class="dt">id</span>: <span class="dv">1</span>, <span class="dt">title</span>: <span class="ch">&#39;foo&#39;</span>}, {<span class="dt">id</span>: <span class="dv">2</span>, <span class="dt">title</span>: <span class="ch">&#39;bar&#39;</span>}]);
+<span class="co">// Invoke the bootstrap function</span>
+<span class="kw">aClientPager</span>.<span class="fu">bootstrap</span>();</code></pre>
+<p>Note: If you intend to bootstrap a clientPager, there is no need to specify a <q>paginator_core</q> object in your configuration (since you should have already populated the clientPager with the entirety of it’s necessary data)</p>
 <p><strong>Backbone.Paginator.requestPager:</strong></p>
-<p>```javascript</p>
-<p>// Extend the Backbone.Paginator.requestPager with your own configuration options var MyRequestPager = Backbone.Paginator.requestPager.extend({paginator_ui: {}}); // Create an instance of your class with the first page of data var aRequestPager = new MyRequestPager([{id: 1, title: <q>foo</q>}, {id: 2, title: <q>bar</q>}]); // Invoke the bootstrap function and configure requestPager with <q>totalRecords</q> aRequestPager.bootstrap({totalRecords: 50}); <code>Note: Both the clientPager and requestPager</code>bootstrap``` function will accept an options param that will be extended by your Backbone.Paginator instance. However the <q>totalRecords</q> property will be set implicitly by the clientPager.</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript">
+<span class="co">// Extend the Backbone.Paginator.requestPager with your own configuration options</span>
+<span class="kw">var</span> MyRequestPager =  <span class="kw">Backbone.Paginator.requestPager</span>.<span class="fu">extend</span>({<span class="dt">paginator_ui</span>: {}});
+<span class="co">// Create an instance of your class with the first page of data</span>
+<span class="kw">var</span> aRequestPager = <span class="kw">new</span> MyRequestPager([{<span class="dt">id</span>: <span class="dv">1</span>, <span class="dt">title</span>: <span class="ch">&#39;foo&#39;</span>}, {<span class="dt">id</span>: <span class="dv">2</span>, <span class="dt">title</span>: <span class="ch">&#39;bar&#39;</span>}]);
+<span class="co">// Invoke the bootstrap function and configure requestPager with &#39;totalRecords&#39;</span>
+<span class="kw">aRequestPager</span>.<span class="fu">bootstrap</span>({<span class="dt">totalRecords</span>: <span class="dv">50</span>});</code></pre>
+<p>Note: Both the clientPager and requestPager <code>bootstrap</code> function will accept an options param that will be extended by your Backbone.Paginator instance. However the <q>totalRecords</q> property will be set implicitly by the clientPager.</p>
 <p><a href="http://ricostacruz.com/backbone-patterns/#bootstrapping_data">More on Backbone bootstrapping</a></p>
 <h3 id="styling"><a href="#TOC">Styling</a></h3>
 <p>You’re of course free to customize the overall look and feel of the paginators as much as you wish. By default, all sample applications make use of the <a href="http://twitter.github.com/bootstrap">Twitter Bootstrap</a> for styling links, buttons and drop-downs.</p>
@@ -7311,17 +7330,19 @@ class=<span class="st">&quot;ui-btn ui-shadow ui-btn-corner-all ui-mini ui-btn-u
 <p>The second tricky part with jQuery Mobile is to dynamically manipulate specific DOM contents (e.g. after loading in content with Ajax). We suggest you use this technique only if there is evidence for an appreciable performance gain.</p>
 <p>With the current version (1.3), jQM provides three ways, documented and explained below in the official API, on forums, and blogs.</p>
 <ul>
-<li><p><em>$(<q>pageId</q>).trigger(<q>pagecreate</q>)</em> Creates markup of header, content as well as footer</p></li>
-<li><p><em>$(<q>anyElement</q>).trigger(<q>create</q>)</em> Creates markup of the element as well as all children</p></li>
-<li><em>$(<q>myListElement</q>).listview(<q>refresh</q>)</em></li>
-<li><em>$(<q>[type=<q>radio</q>]</q>).checkboxradio()</em></li>
-<li><em>$(<q>[type=<q>text</q>]</q>).textinput()</em></li>
-<li><em>$(<q>[type=<q>button</q>]</q>).button()</em></li>
-<li><em>$(<q>[data-role=<q>navbar</q>]</q>).navbar()</em></li>
-<li><em>$(<q>[type=<q>range</q>]</q>).slider()</em></li>
-<li><p><em>$(<q>select</q>).selectmenu()</em></p></li>
+<li><p><strong>$(<q>pageId</q>).trigger(<q>pagecreate</q>)</strong></p>
+<p><em>Creates markup of header, content as well as footer</em></p></li>
+<li><p><strong>$(<q>anyElement</q>).trigger(<q>create</q>)</strong></p>
+<p><em>Creates markup of the element as well as all children</em></p></li>
+<li><strong>$(<q>myListElement</q>).listview(<q>refresh</q>)</strong></li>
+<li><strong>$(<q>[type=<q>radio</q>]</q>).checkboxradio()</strong></li>
+<li><strong>$(<q>[type=<q>text</q>]</q>).textinput()</strong></li>
+<li><strong>$(<q>[type=<q>button</q>]</q>).button()</strong></li>
+<li><strong>$(<q>[data-role=<q>navbar</q>]</q>).navbar()</strong></li>
+<li><strong>$(<q>[type=<q>range</q>]</q>).slider()</strong></li>
+<li><p><strong>$(<q>select</q>).selectmenu()</strong></p>
+<p><em>Every component of jQM offers plugins methods they can invoke to update the state of specific UI elements.</em></p></li>
 </ul>
-<p>Every component of jQM offers plugins methods they can invoke to update the state of specific UI elements.</p>
 <p>Sometimes, when creating a component from scratch, the following error can occur: <q>cannot call methods on listview prior to initialization</q>. This can be avoided, with component initialization prior to markup enhancement, by calling it in the following way:</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"> $(<span class="ch">&#39;#mylist&#39;</span>).<span class="fu">listview</span>().<span class="fu">listview</span>(<span class="ch">&#39;refresh&#39;</span>)</code></pre>
 <p>To see more details and enhancements for further scripting pages of JQM read their API and follow the release notes frequently.</p>

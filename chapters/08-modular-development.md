@@ -1278,7 +1278,7 @@ The clientPager is used to further paginate data that has already been returned 
 
 ![](img/paginator-client.png)
 
-It makes sense to use the clientPager when your users are unlikely to cycle through a large number of results and you want to avoid additional network requests each time they wish to fetch the next "page" of items. As the results have all already been requested, it's just a case of switching between the ranges of data actually presented to the user.
+Use the clientPager when you prefer to get results in a single "load" and thus avoid making additional network requests each time your users want to fetch the next "page" of items. As the results have all already been requested, it's just a case of switching between the ranges of data actually presented to the user.
 
 ####1. Create a new paginated collection with a model and URL
 

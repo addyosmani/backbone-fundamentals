@@ -340,6 +340,13 @@ var TodoView = Backbone.View.extend({
   // Re-render the titles of the todo item.
   render: function() {
     this.$el.html( this.todoTpl( this.model.toJSON() ) );
+    // $el here is a reference to the jQuery element 
+    // associated with the view, todoTpl is a reference
+    // to an Underscore template and toJSON() returns an 
+    // object containing the model's attributes
+    // Altogether, the statement is replacing the HTML of
+    // a DOM element with the result of instantiating a 
+    // template with the model's attributes.
     this.input = this.$('.edit');
     return this;
   },
@@ -7553,13 +7560,13 @@ Pagination is a ubiquitous problem we often find ourselves needing to solve on t
 
 Before we dive into solutions for paginating data for your Backbone applications, let's define exactly what we consider pagination to be:
 
-Pagination is a control system allowing users to browser through pages of search results (or any type of content) which is continued. Search results are the canonical example, but pagination today is found on news sites, blogs and discussion boards, often in the form of Previous and Next links. More complete pagination systems offer granular control of the specific pages you can navigate to, giving the user more power to find what they are looking for. 
+Pagination is a control system allowing users to browse through pages of search results (or any type of content) which is continued. Search results are the canonical example, but pagination today is found on news sites, blogs, and discussion boards, often in the form of Previous and Next links. More complete pagination systems offer granular control of the specific pages you can navigate to, giving the user more power to find what they are looking for. 
 
-It isn't a problem limited to pages requiring some visual controls for pagination either - sites like Facebook, Pinterest and Twitter have demonstrated that there are many contexts where infinite paging is also useful. Infitite paging is of course when we pre-fetch (or appear to pre-fetch) content from a subsequent page and add it directly to the user’s current page, making the experience feel "infinite".
+It isn't a problem limited to pages requiring some visual controls for pagination either - sites like Facebook, Pinterest, and Twitter have demonstrated that there are many contexts where infinite paging is also useful. Infinite paging is, of course, when we pre-fetch (or appear to pre-fetch) content from a subsequent page and add it directly to the user’s current page, making the experience feel "infinite".
 
-Pagination is very context-specific and depends on the content being displayed. In the Google search results, pagination is important as they want to offer you the most relevant set of results in the first 1-2 pages. After that, you might be a little more selective (or random) with the page you choose to navigate to. This differs from cases where you'll want to cycle through consecutive pages for (e.g for a news article or blog post). 
+Pagination is very context-specific and depends on the content being displayed. In the Google search results, pagination is important as they want to offer you the most relevant set of results in the first 1-2 pages. After that, you might be a little more selective (or random) with the page you choose to navigate to. This differs from cases where you'll want to cycle through consecutive pages for (e.g., for a news article or blog post). 
 
-Pagination is almost certainly content and context-specific, but as Faruk Ates has [previously](https://gist.github.com/mislav/622561) pointed out the principles of good pagination apply no matter what the content or context is. As with everything extensible when it comes to Backbone, one can try to write their own pagination that can try solving many of these content-specific types of pagination problems. That said, you'll probably spend quite a bit of time on this and sometimes you just want to use a tried and tested solution that just works.
+Pagination is almost certainly content and context-specific, but as Faruk Ates has [previously](https://gist.github.com/mislav/622561) pointed out the principles of good pagination apply no matter what the content or context is. As with everything extensible when it comes to Backbone, you can write your own pagination to address many of these content-specific types of pagination problems. That said, you'll probably spend quite a bit of time on this and sometimes you just want to use a tried and tested solution that just works.
 
 On this topic, we're going to go through a set of pagination components I (and a group of [contributors](https://github.com/addyosmani/backbone.paginator/contributors)) wrote for Backbone.js, which should hopefully come in useful if you're working on applications which need to page Backbone Collections. They're part of an extension called [Backbone.Paginator](http://github.com/addyosmani/backbone.paginator).
 
@@ -7603,7 +7610,7 @@ If you would like to look at examples built using the components included in the
 
 In this section we're going to walk through using the requestPager. You would use this component when working with a service API which itself supports pagination. This component allows users to control the pagination settings for requests to this API (i.e navigate to the next, previous, N pages) via the client-side. 
 
-The idea is that pagination, searching and filtering of data can all be done from your Backbone application without the need for a page reload. 
+The idea is that pagination, searching, and filtering of data can all be done from your Backbone application without the need for a page reload. 
 
 ![](img/paginator-request.png)
 
@@ -7737,7 +7744,7 @@ For your convenience, the following methods are made available for use in your v
 * **Collection.prevPage( options )** - go to the previous page
 * **Collection.howManyPer( n )** - set the number of items to display per page
 
-**requestPager** collection's methods `.goTo()`, `.nextPage()` and `.prevPage()` are all extension of the original [Backbone Collection.fetch() method](http://documentcloud.github.com/backbone/#Collection-fetch). As so, they all can take the same option object as parameter.
+**requestPager** collection's methods `.goTo()`, `.nextPage()` and `.prevPage()` are all extensions of the original [Backbone Collection.fetch() methods](http://documentcloud.github.com/backbone/#Collection-fetch). As so, they all can take the same option object as a parameter.
 
 This option object can use `success` and `error` parameters to pass a function to be executed after server answer.
 
@@ -7782,7 +7789,7 @@ The clientPager is used to further paginate data that has already been returned 
 
 ![](img/paginator-client.png)
 
-It makes sense to use the clientPager when your users are unlikely to cycle through a large number of results and you want to avoid additional network requests each time they wish to fetch the next "page" of items. As the results have all already been requested, it's just a case of switching between the ranges of data actually presented to the user.
+Use the clientPager when you prefer to get results in a single "load" and thus avoid making additional network requests each time your users want to fetch the next "page" of items. As the results have all already been requested, it's just a case of switching between the ranges of data actually presented to the user.
 
 ####1. Create a new paginated collection with a model and URL
 
@@ -8052,6 +8059,7 @@ var aClientPager = new MyClientPager([{id: 1, title: 'foo'}, {id: 2, title: 'bar
 // Invoke the bootstrap function
 aClientPager.bootstrap();
 ```
+
 Note: If you intend to bootstrap a clientPager, there is no need to specify a 'paginator_core' object in your configuration (since you should have already populated the clientPager with the entirety of it's necessary data)
 
 **Backbone.Paginator.requestPager:**
@@ -8065,6 +8073,7 @@ var aRequestPager = new MyRequestPager([{id: 1, title: 'foo'}, {id: 2, title: 'b
 // Invoke the bootstrap function and configure requestPager with 'totalRecords'
 aRequestPager.bootstrap({totalRecords: 50});
 ```
+
 Note: Both the clientPager and requestPager ```bootstrap``` function will accept an options param that will be extended by your Backbone.Paginator instance. However the 'totalRecords' property will be set implicitly by the clientPager.
 
 [More on Backbone bootstrapping](http://ricostacruz.com/backbone-patterns/#bootstrapping_data)
@@ -9218,22 +9227,24 @@ The second tricky part with jQuery Mobile is to dynamically manipulate specific 
 
 With the current version (1.3), jQM provides three ways, documented and explained below in the official API, on forums, and blogs.
 
+* **$(“pageId”).trigger(“pagecreate”)**
 
-* *$(“pageId”).trigger(“pagecreate”)*
-  Creates markup of header, content as well as footer
- 
-* *$(“anyElement”).trigger(“create”)*
-  Creates markup of the element as well as all children
+    *Creates markup of header, content as well as footer*
 
-* *$(“myListElement”).listview(“refresh”)*
-* *$('[type="radio"]').checkboxradio()*
-* *$('[type="text"]').textinput()*
-* *$('[type="button"]').button()*
-* *$('[data-role="navbar"]').navbar()*
-* *$('[type="range"]').slider()*
-* *$('select').selectmenu()*
+* **$(“anyElement”).trigger(“create”)**
 
-Every component of jQM offers plugins methods they can invoke to update the state of specific UI elements.
+    *Creates markup of the element as well as all children*
+
+* **$(“myListElement”).listview(“refresh”)**
+* **$('[type="radio"]').checkboxradio()**
+* **$('[type="text"]').textinput()**
+* **$('[type="button"]').button()**
+* **$('[data-role="navbar"]').navbar()**
+* **$('[type="range"]').slider()**
+* **$('select').selectmenu()**
+
+    *Every component of jQM offers plugins methods they can invoke to update the state of specific UI elements.*
+
 
 Sometimes, when creating a component from scratch, the following error can occur: 'cannot call methods on listview prior to initialization'. This can be avoided, with component initialization prior to markup enhancement, by calling it in the following way:
 
