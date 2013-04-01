@@ -15,7 +15,7 @@ Thankfully, there are a growing number of JavaScript libraries that can help imp
 
 Begin with the fundamentals, work your way through the exercises, and learn how to build an application that is both cleanly organized and maintainable. If you are a developer looking to write code that can be more easily read, structured, and extended - this guide can help.
 
-This book is released under a Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported [license](http://creativecommons.org/licenses/by-nc-sa/3.0/) meaning you can both grab a copy of the book for free or help to further [improve](https://github.com/addyosmani/backbone-fundamentals/) it. Corrections to existing material are always welcome and I hope that together we can provide the community with an up-to-date resource that is of help.
+Improving developer education is important to me, which is why this book is released under a Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported [license](http://creativecommons.org/licenses/by-nc-sa/3.0/). This means you can purchase or grab a copy of the book for [free](http://addyosmani.github.com/backbone-fundamentals/) or help to further [improve](https://github.com/addyosmani/backbone-fundamentals/) it. Corrections to existing material are always welcome and I hope that together we can provide the community with an up-to-date resource that is of help. 
 
 My extended thanks go out to [Jeremy Ashkenas](https://github.com/jashkenas) and [DocumentCloud](documentcloud.org) for creating Backbone.js and [these](https://github.com/addyosmani/backbone-fundamentals/contributors) members of the community for their assistance making this project far better than I could have imagined.
 
@@ -25,20 +25,30 @@ This book is targeted at novice to intermediate developers wishing to learn how 
 
 ## Acknowledgements
 
-I am indebted to the fantastic work done by the technical reviewers who helped improve this book. Their knowledge, energy, and passion have helped shape it into a better learning resource and they continue to serve as a source of inspiration. Thanks go out to:
+I am indebted to the fantastic work done by the technical reviewers who helped review and improve this book. Their knowledge, energy, and passion have helped shape it into a better learning resource and they continue to serve as a source of inspiration. Thanks go out to:
 
-* [Marc Friedman](http://github.com/dcmaf)
+* [Marc Friedman](https://github.com/dcmaf)
 * [Derick Bailey](https://github.com/derickbailey)
 * [Jeremy Ashkenas](https://github.com/jashkenas)
 * [Samuel Clay](https://github.com/samuelclay)
 * [Mat Scales](http://github.com/wibblymat)
 * [Alex Graul](https://github.com/alexgraul)
-* [Dusan Gledovic](http://github.com/g6scheme)
-* [Sindre Sorhus](http://github.com/sindresorhus)
+* [Dusan Gledovic](https://github.com/g6scheme)
+* [Sindre Sorhus](https://github.com/sindresorhus)
 
 ## Credits
 
-None of this would have been possible without the time and effort invested by the other developers and authors in the community who contributed to it. I would like to extend my thanks to Derick Bailey, Ryan Eastridge, Jack Franklin, Mike Ball, Uģis Ozols, Björn Ekengren and our other excellent [contributors](https://github.com/addyosmani/backbone-fundamentals/graphs/contributors) that made this project possible.
+None of this work would have been possible without the time and effort invested by the other developers and authors in the community who helped contribute to it. I would like to extend my thanks to: 
+
+* Derick and Marc (once again)
+* [Ryan Eastridge](https://github.com/eastridge)
+* [Jack Franklin](https://github.com/jackfranklin)
+* [David Amend](https://github.com/raDiesle)
+* [Mike Ball](https://github.com/mdb)
+* [Uģis Ozols](https://github.com/ugisozols)
+* [Björn Ekengren](https://github.com/Ekengren)
+
+as well as our other excellent [contributors](https://github.com/addyosmani/backbone-fundamentals/graphs/contributors) that made this project possible.
 
 ## Reading
 
@@ -4167,7 +4177,7 @@ To have our application retrieve the Book models from the server on page load we
 ```javascript
 initialize: function() {
 	this.collection = new app.Library();
-	this.collection.fetch(); // NEW
+	this.collection.fetch({reset: true}); // NEW
 	this.render();
 
 	this.listenTo( this.collection, 'add', this.renderBook );
@@ -4187,7 +4197,7 @@ $(function() {
 });
 ```
 
-We have also added a listener on the reset event. We need to do this since the models are fetched asynchronously after the page is rendered. When the fetch completes, Backbone fires the reset event and our listener re-renders the view. If you reload the page now you should see all books that are stored on the server:
+We have also added a listener on the reset event. We need to do this since the models are fetched asynchronously after the page is rendered. When the fetch completes, Backbone fires the reset event, as requested by the `reset: true` option, and our listener re-renders the view. If you reload the page now you should see all books that are stored on the server:
 
 ![](img/chapter5-9.png)
 
@@ -8538,25 +8548,24 @@ The mobile web is huge and it is continuing to grow at an impressive rate. Along
 Creating native apps is expensive.
 It is very costly in terms of time and it usually requires varied experiences in programming languages like Objective C , C#, Java and JavaScript to support multiple runtime environments.
 
-HTML, CSS, and JavaScript enables you to build an app only once. Because of the common runtime environment, the browser, it supports a broad band of mobile devices such as tablets, smartphones, notebooks or PCs.
+HTML, CSS, and JavaScript enable you to build a single application targeting a common runtime environment: the browser. This approach supports a broad range of mobile devices such as tablets, smartphones, and notebooks along with traditional PCs.
 
-The challenging task is not only to adopt contents like text and pictures properly to various screen resolutions but also to have same user experience across native apps by different operating systems.
-Like jQueryUI, jQuery Mobile is a user interface framework, based on jQuery that works across all popular phones, tablet, e-Reader, and desktop platforms. Built with accessibility and universal access in mind. 
+The challenging task is not only to adapt contents like text and pictures properly to various screen resolutions but also to have same user experience across native apps under different operating systems.
+Like jQueryUI, jQuery Mobile is a user interface framework based on jQuery that works across all popular phone, tablet, e-Reader, and desktop platforms. It is built with accessibility and universal access in mind. 
 
 
-The main idea of the framework is to enable anybody creating mobile apps, even without the knownledge of a programming language and no need to write complex, device specific CSS, but HTML only.
-For this reason jQMobile follows two main principles, we first need to understand to be able to integrate the framework to Backbone.
+The main idea of the framework is to enable anyone to create a mobile app using only HTML. Knowledge of a programming language is not required and there is no need to write complex, device specific CSS. For this reason jQMobile follows two main principles we first need to understand in order to integrate the framework to Backbone: *progressive enhancement* and *responsive web design*.
 
 
 #### The Principle of progressive widget enhancement by jQMobile
 
-JQuery Mobile follows the <b>progressive enhancement</b> and <b>responsive web design</b> principle by <b>HTML-5 markup-driven definitions</b> and <b>configurations</b>.
+JQuery Mobile follows progressive enhancement and responsive web design principles using HTML-5 markup-driven definitions and configurations.
 
-A page in jQuery Mobile consists of an element with a <b>data-role="page"</b> attribute.
-Within the <b>page</b> container, any valid HTML markup can be used, but for typical pages in jQM, the immediate children are divs with <b>data-role="header"</b>, <b>data-role="content"</b>, and <b>data-role="footer"</b>.
-The baseline requirement for a page is only the page wrapper to support the navigation system, the rest is optional.
+A page in jQuery Mobile consists of an element with a `data-role="page"` attribute.
+Within the `page` container, any valid HTML markup can be used, but for typical pages in jQM, the immediate children are divs with `data-role="header"`, `data-role="content"`, and `data-role="footer"`.
+The baseline requirement for a page is only a page wrapper to support the navigation system, the rest is optional.
 
-A initial HTML page looks like:
+An initial HTML page looks like this:
 
 ```html
 <!DOCTYPE html>
@@ -8592,39 +8601,26 @@ A initial HTML page looks like:
 </html>
 ```
 
-<i>Example HTML setup of a basic jQuery Mobile page</i>
-<br />
+*Example HTML setup of a basic jQuery Mobile page*
 
-JQuery Mobiles will transform the written HTML definition by the <b>progressive widget enhancement API</b> to HTML and CSS.
-It also executes JavaScript, conditioned by configurations, attribute properties and runtime specific settings.
+JQuery Mobile will transform the written HTML definition to the rendered HTML and CSS using its Progressive Widget Enhancement API. It also executes JavaScript which is conditioned by configurations, attribute properties, and runtime specific settings.
 
-This implies: Whenever HTML content is added or changed, it need to be handled by the progressive widget enhancement of jQuery Mobile.
+This implies: Whenever HTML content is added or changed, it needs to be handled by the progressive widget enhancement of jQuery Mobile.
 
 ![](img/chapter10-1-1-1.png)
 
-<i>Comparison of the user interface of the default HTML to the jQuery Mobile enhanced version</i>
-<br />
-#### 2. Understand the navigation of jQuery Mobile
+*Comparison of the user interface of the default HTML to the jQuery Mobile enhanced version*
 
+#### Understanding jQuery Mobile Navigation
 
-The navigation system controls its application lifecycle by automatically "hijacking" standard links and form submissions and turning them into an AJAX request.
-Whenever a link is clicked or a form is submitted, that event is automatically intercepted and is used to e.g. issue an AJAX request based on the href or form action, instead of reloading the page.
+The jQuery Mobile navigation system controls its application's lifecycle by automatically "hijacking" standard links and form submissions and turning them into AJAX requests. Whenever a link is clicked or a form is submitted, that event is automatically intercepted and used to issue an AJAX request based on the href or form action instead of reloading the page.
 
-When the page document is requested, jQuery Mobile searches the document for all elements with the <b>data-role="page"</b> attribute, parses its contents and inserts that code into the DOM of the original page.
-After the new page is prepared, the JavaScript of jQuery Mobile will trigger a transition to show the new page and hides the HTML of the previous page in the DOM.
+When the page document is requested, jQuery Mobile searches the document for all elements with the `data-role="page"` attribute, parses its contents, and inserts that code into the DOM of the original page.
+Once the new page is prepared, jQuery Mobile's JavaScript triggers a transition that shows the new page and hides the HTML of the previous page in the DOM.
 
-Next, any widgets in the incoming page are enhanced to apply all the styles and behavior. The rest of the incoming page is discarded so any scripts, stylesheets or other information will not be included.
+Next, any widgets in the incoming page are enhanced to apply all the styles and behavior. The rest of the incoming page is discarded so any scripts, stylesheets, or other information will not be included.
 
-Roughly speaking, having its own event cycle, it is a tiny MVC framework which enables features like
-<b>progressive widget enhancement, prefetching, caching and multi-page templating by HTML configurations</b>,innately.
-In general, the developer does not need to know about its event-workflow, but only about how to apply HTML based configurations, which will take action within the event phase.
-The chapter <b>Intercept jQuery Mobile events</b> goes into detail, how to handle special scenarios, when fine grained JavaScript adaptions need to be applied.
-
-
-To e.g. navigate to the <b>secondpage</b> with the appearance of a modal dialog and render a fade-transition, add the <b>data-rel="dialog"</b>, <b>data-transition="fade"</b> and <b>href="index.html#secondpage"</b> attributes to the anchor tag.
-
-Via the <b>multi-page templating feature</b>, you can add as many pages as you want to the same HTML file within the body-tag,
-by defining a div with <b>data-role="page"</b> or <b>data-role="dialog"</b> and the <b>id</b>, being the value of the link after the hashbang:
+Via the *multi-page templating feature*, you can add as many pages as you want to the same HTML file within the body tag by defining divs with `data-role="page"` or `data-role="dialog"` attributes along with an `id` which can be used in links (preceded by a hashbang):
 
 
 ```html
@@ -8654,8 +8650,12 @@ by defining a div with <b>data-role="page"</b> or <b>data-role="dialog"</b> and 
 </html>
 ```
 
-<i>Example to show multipage templating of jQuery Mobile</i>
-<br />
+*jQuery Mobile multi-page templating example*
+
+To, for example, navigate to *secondpage* and have it appear in a modal dialog using a fade-transition, you would just add the `data-rel="dialog"`, `data-transition="fade"`, and `href="index.html#secondpage"` attributes to an anchor tag.
+
+Roughly speaking, having its own event cycle, jQuery Mobile is a tiny MVC framework which includes features like
+progressive widget enhancement, pre-fetching, caching, and multi-page templating by HTML configurations innately. In general, a Backbone.js developer does not need to know about its internal event workflow, but will need to know how to apply HTML-based configurations which will take action within the event phase. The *Intercepting jQuery Mobile Events* section goes into detail regarding how to handle special scenarios when fine-grained JavaScript adaptions need to be applied.
 
 For further introduction and explanations about jQuery Mobile visit:
 
@@ -8665,55 +8665,48 @@ For further introduction and explanations about jQuery Mobile visit:
 
 ### Basic Backbone app setup for jQuery Mobile
 
-Throughout <b>Developing Backbone.js Applications</b> content, we learned how to use and benefit from the <b>Backbone-Router, -Views, -Events</b> and <b>-Model</b>, such as advanced plugins and customized JavaScript programming.
+The first major hurdle developers typically run into when building applications with jQuery Mobile and an MV* framework is that both frameworks want to handle application navigation.
 
-The first major hurdle developers typically run into when building applications with jQuery Mobile and a M* framework is that they have their own opinions about how to handle application navigation.
-The same is true for Backbone.
+To combine Backbone and jQuery Mobile, we first need to disable jQuery Mobile's navigation system and progressive enhancement. The second step will then be to make use of jQM's custom API to apply configurations and enhance components during Backbone's application lifecycle instead.
 
-To combine Backbone and jQuery Mobile, we first need to <b>disable</b> the <b>navigation system</b> and the <b>progressive enhancement</b> of jQuery Mobile.
-The second step will be to make usage of the custom API of jQM to apply configurations and enhance components by different techniques in the application lifecycle of Backbone.
-
-The mobile app example presented in the following is build upon the existing codebase of the <b>TodoMVC Backbone-Require.js</b>, which is usedin the chapter <b>Modular Development</b> as well, and is enhanced to support jQuery Mobile.
+The mobile app example presented here is based on the existing codebase of the TodoMVC Backbone-Require.js example, which was discussed in an earlier chapter, and is enhanced to support jQuery Mobile.
 
 ![](img/chapter10-1-1.png)
 
-<i>Screenshot of the TodoMVC app with jQuery Mobile</i>
-<br />
-Apart from that it makes use of Grunt-BBB as well as Handlebars.js. Additional utilities useful for mobile applications will be provided, which can be easily combined and extended.
-( see chapter <b>Backbone Boilerplate & Grunt-BBB</b> and the <b>Throrax</b>-chapter) 
+*Screenshot of the TodoMVC app with jQuery Mobile*
+
+This implementation makes use of Grunt-BBB as well as Handlebars.js. Additional utilities useful for mobile applications will be provided, which can be easily combined and extended.
+(see the *Backbone Boilerplate & Grunt-BBB* and *Backbone Extensions* chapters) 
 
 ![](img/chapter10-1-2.png)
 
-<i>Workspace of the TodoMVC app with jQueryMobile and Backbone</i>
-<br />
+*Workspace of the TodoMVC app with jQueryMobile and Backbone*
 
-The initial order of the files to load by Require.js is as follows:
+The order of the files loaded by Require.js is as follows:
 
-1. <b>jQuery</b>
-2. <b>Underscore/Lodash</b>
-3. <b>handlebars.compiled</b>
-4. <b>TodoRouter</b>, instantiates specific views
-5. <b>jQueryMobile</b>
-6. <b>JqueryMobileCustomInitConfig</b>
+1. jQuery
+2. Underscore/Lodash
+3. handlebars.compiled
+4. TodoRouter (instantiates specific views)
+5. jQueryMobile
+6. JqueryMobileCustomInitConfig
 7. Instantiation of the Backbone Router
 
-By opening the console in the project directory and running the Grunt-Backbone command <b>grunt handlebars</b> or <b>grunt watch</b> in the console, 
-it will combine and compile all template files to <b>dist/debug/handlebars_packaged</b>. To start the application, run <b>grunt server</b>.
+By opening the console in the project directory and then running the Grunt-Backbone command `grunt handlebars` or `grunt watch` in the console, it will combine and compile all template files to `dist/debug/handlebars_packaged`. To start the application, run `grunt server`.
 
-<br />
 Files instantiated, when redirected from the Backbone-Router are:
 
-a) <b>BasicView.js</b> and <b>basic_page_simple.template</b>
-   <p>The BasicView is responsible for the Handlebars multipage-template processing.
-   Last, it calls the jQuery Mobile API <b>$.mobile.changePage</b>, when <b>Backbone.View.render</b> is applied 
-   to handle page navigation and progressive widget enhancement.</p>
+a) *BasicView.js* and *basic_page_simple.template*
+
+   The BasicView is responsible for the Handlebars multipage-template processing. Its implementation of `render` calls the jQuery Mobile API `$.mobile.changePage` to handle page navigation and progressive widget enhancement.
    
-b) <b>Concrete view with its template partial</b>
-   E.g. <b>EditTodoPage.js</b> and <b>editTodoView.template_partial</b>
+b) Concrete view with its template partial
+
+   E.g., `EditTodoPage.js` and `editTodoView.template_partial`
 
 
-The head of <b>index.html</b> needs to load the <b>jquerymobile.css</b> as well as the <b>base.css</b>,
-which is being used by all Todo-MVC apps, and the <b>index.css</b> for some project specific custom CSS.
+The head section of `index.html` needs to load the `jquerymobile.css` as well as the `base.css`,
+which is used by all Todo-MVC apps, and the `index.css` for some project-specific custom CSS.
 
 ```html
 <html>
@@ -8738,20 +8731,19 @@ which is being used by all Todo-MVC apps, and the <b>index.css</b> for some proj
 </html>
 ```
 
-<i>Code of <b>index.html</b></i>
+*index.html*
 
-### The workflow with Backbone and jQueryMobile
+### Workflow with Backbone and jQueryMobile
 
-By delegating routing and navigation functionalities of the jQuery Mobile Framework to Backbone, we can profit from its clear separation of application structure to later on easily share application logic between a desktop webpage, tablets and mobile apps.
+By delegating the routing and navigation functions of the jQuery Mobile Framework to Backbone, we can profit from its clear separation of application structure to later on easily share application logic between a desktop webpage, tablets, and mobile apps.
 
-<b>Backbone.Router</b> offers an explicit way to define custom navigation routes. Whilst jQuery Mobile encourages the use of URL hash fragments to reference separate pages or views in the same document.
-Some of the ideas that have been previously proposed to work-around this problem included manually patching Backbone and jQuery Mobile.
+We now need to contend with the different ways in which Backbone and jQuery Mobile handle requests. `Backbone.Router` offers an explicit way to define custom navigation routes, while jQuery Mobile uses URL hash fragments to reference separate pages or views in the same document.
 
-The solution demonstrated below, will not only simplify the handling of the jQuery Mobile component initialization event-cycle, but also enables the usage of the existing Backbones Router functionalities.
+Some of the ideas that have been previously proposed to work-around this problem included manually patching Backbone and jQuery Mobile. The solution demonstrated below will not only simplify the handling of the jQuery Mobile component initialization event-cycle, but also enables use of existing Backbone Router handlers.
 
-To adopt the navigation control from jQuery Mobile to Backbone, we first need to apply some specific setting to the <b>mobileinit</b> event, after the framework was loaded to e.g. let the Backbone Router decide, which page to load.
+To adapt the navigation control from jQuery Mobile to Backbone, we first need to apply some specific settings to the `mobileinit` event which occurs after the framework has loaded in order to let the Backbone Router decide which page to load.
 
-A suggested configuration with its descriptions to delegate jQM navigation and to enable manual widget creation triggering to Backbone is listed below:
+A configuration which will get jQM to delegate navigation to Backbone and which will also enable manual widget creation triggering is given below:
 
 ```javascript
 $(document).bind("mobileinit", function(){
@@ -8778,47 +8770,41 @@ $(document).bind("mobileinit", function(){
 });
 ```
 
-<i>Code of <b>jquerymobile.config.js</b></i>
+*jquerymobile.config.js*
 
-The behaviour and usage of the new workflow will be explained, grouped by its functionalities:
+The behaviour and usage of the new workflow will be explained belowe, grouped by its functionalities:
 
-a) <b>Routing to a concrete View-page</b>
+a) Routing to a concrete View-page
 
-b) <b>Management of mobile page templates</b>
+b) Management of mobile page templates
 
-c) <b>DOM management</b>
+c) DOM management
 
-d) <b>$.mobile.changePage</b>
+d) $.mobile.changePage
 
 
-For an overview and understanding the chronological order, have a look on the diagram below.
-In the following, the <b>steps 1-11</b> are attached to the text and refer to the new workflow diagram of the mobile application.
+In the following discussion, the steps 1-11 in the text refer to the new workflow diagram of the mobile application below.
 
 ![](img/chapter10-2-1.png)
 
-<i>Workflow of TodoMVC, with Backbone and jQueryMobile</i>
+*Workflow of TodoMVC, with Backbone and jQueryMobile*
 
-####Routing to a concrete View-page, inherited by BasicView
+####Routing to a concrete View page, Inheriting from BasicView
 
-Whenever the hash URL has changed, e.g. by clicking the link, the configuration prevented jQM to trigger its events. Instead, the Backbone Router listens to the hash changes and decides which view to request.
+When the hash URL changes, e.g., a link is clicked, the configuration above prevents jQM from triggering its events. Instead, the Backbone Router listens to the hash changes and decides which view to request.
 
-However, experience has shown that, it is a good practice for mobile pages, to create basic anatomies by prototyping for various situations like a basic page,
-the usage of the <b>jQuery Validation Plugin</b>, <b>popups</b> or <b>dialogs</b> with jQM.
+Experience has shown that, for mobile pages, it is a good practice to create basic prototypes for jQM components such as basic pages, popups, and dialogs, as well as for using the jQuery Validation Plugin. This makes it much easier to exchange device-specific view logic at runtime and adopt general strategies. This will also help to add syntax and to support multi-chaining of prototype inheritance with JavaScript and Backbone.
 
-Then it becomes much easier to exchange device specific view logics, at runtime, and adopt general strategies-
-This would also help to add syntax and to support multi chaining of prototype inheritance with JavaScript and Backbone.
-By creating a <b>BasicView-superclass</b>, we enable all inherited-view-pages to share a common way to handle jQM the common usage of a template engine and specific view handling.
+By creating a `BasicView` superclass, we enable all inheriting view-pages to share a common way of handling jQM along with common usage of a template engine and specific view handling.
 
-In the build progress of Grunt/Yeoman, the semantic templates will be compiled by Handlebar.js and the AMDs template files are combined into a single file.
-By merging all page definitions into a single-file-app, it becomes offline capable, which is important for mobile app.
+When building with Grunt/Yeoman, the semantic templates are compiled by Handlebar.js and the AMDs template files are combined into a single file. By merging all page definitions into a single-file-app, it becomes offline capable, which is important for mobile app.
 
 
-#### Management of mobile page templates
+#### Management of Mobile Page Templates
 
-Within a concrete View-page, you can override properties for static values and functions to return dynamic values of the super class <b>BasicView</b>.
-These values will be later on processed by the BasicView to construct the HTML of a jQuery Mobile page with the help of Handlebars.
+Within a concrete View page, you can override properties for static values and functions to return dynamic values of the super class `BasicView`. These values will be processed later by the BasicView to construct the HTML of a jQuery Mobile page with the help of Handlebars.
 
-Additional dynamic template parameters e.g. Backbone Model information, will be taken from the specific View and merged with the ones from the BasicView.
+Additional dynamic template parameters, e.g., Backbone model information, will be taken from the specific View and merged with the ones from the BasicView.
 
 A concrete View might look like:
 
@@ -8835,7 +8821,7 @@ define([
                 return this.model.toJSON();
             },
             events : function () {
-// merged events of BasicView, to add an older fix for back button functionality
+                // merged events of BasicView, to add an older fix for back button functionality
                 return _.extend({
                     'click #saveDescription' : 'saveDescription'
                 }, this.constructor.__super__.events);
@@ -8850,12 +8836,10 @@ define([
     });
 ```
 
-<i>Sample of a concrete View, <b>EditTodoPage.js</b></i>
+*A concrete View (EditTodoPage.js)*
 
 
-By default, the BasicView uses the <b>basic_page_simple.template</b> as the Handlebars template.
-if you need a custom template, being used only once, 
-or in the case you want to create a new Super-abstract-View, like the basic_page_simple, override the <b>getTemplateID</b> function.
+By default, the BasicView uses `basic_page_simple.template` as the Handlebars template. If you need to use a custom template or want to introduce a new Super abstract View with an alternate template, override the `getTemplateID` function:
 
 ```javascript
 getTemplateID : function(){
@@ -8863,13 +8847,12 @@ getTemplateID : function(){
 }
 ```
 
-By convention, the overridden <b>id</b>-attribute will be taken as the id of the jQM page
-as well as the filename of the corresponding template-file to be inserted as a partial in the <b>basic_page_simple</b> template.
-In the case of the <b>EditTodoPage</b>-View, the name of the file will be <b>editTodoPage.template_partial</b>.
-Every concrete page is meant to be a partial, which will be inserted in the <b>data-role="content"</b> element,
-where the parameter <b>templatePartialPageID</b> is located.
+By convention, the `id` attribute will be taken as the id of the jQM page as well as the filename of the corresponding template file to be inserted as a partial in the `basic_page_simple` template. In the case of the `EditTodoPage` view, the name of the file will be `editTodoPage.template_partial`.
 
-Later on, the <b>getHeaderTitle</b> function from the <b>EditTodoPage</b> will be replaced in the abstract template with <b>headerTitle</b>.
+Every concrete page is meant to be a partial, which will be inserted in the `data-role="content"` element,
+where the parameter `templatePartialPageID` is located.
+
+Later on, the result of the `getHeaderTitle` function from `EditTodoPage` will replace the *headerTitle* in the abstract template.
 
 
 ```javascript
@@ -8889,18 +8872,17 @@ Later on, the <b>getHeaderTitle</b> function from the <b>EditTodoPage</b> will b
 </div>
 ```
 
-<i>Code of <b>basic_page_simple.template</b></i>
+*basic_page_simple.template*
 
 
-The <b>whatis</b> Handlebars View helper does simple logging of parameters.
+*Note: The `whatis` Handlebars View helper does simple logging of parameters.*
 
 
-All the additional parameters being returned by <b>getSpecificTemplateValues</b> 
-will be replaced in the concrete template <b>editTodoPage.template_partial</b>.
-Because <b>footerContent</b> is expected to be used rarely, it can be returned in <b>getSpecificTemplateValues</b>.
+All the additional parameters being returned by `getSpecificTemplateValues` will be inserted into the concrete template `editTodoPage.template_partial`.
 
-In the case of the EditTodoPage View, all the model information is being returned,
-where <b>title</b> is used in the concrete partial page.
+Because `footerContent` is expected to be used rarely, its content is returned by `getSpecificTemplateValues`.
+
+In the case of the EditTodoPage view, all the model information is being returned and `title` is used in the concrete partial page:
 
 
 ```html
@@ -8911,11 +8893,10 @@ where <b>title</b> is used in the concrete partial page.
     <a id="saveDescription" href="#" data-role="button" data-mini="true">Save</a>
 ```
 
-<i>Code of editTodoView.template_partial</i>
+*editTodoView.template_partial*
 
 
-When <b>render</b> is triggered, the <b>basic_page_simple.template</b> and <b>editTodoView.template_partial</b> templates will be loaded 
-and the collected parameters from <b>EditTodoPage</b> and <b>BasicView</b> will be combined and generated by Handlebars to:
+When `render` is triggered, the `basic_page_simple.template` and `editTodoView.template_partial` templates will be loaded and the parameters from `EditTodoPage` and `BasicView` will be combined and generated by Handlebars to generate:
 
 ```html
     <div data-role="header">
@@ -8934,34 +8915,25 @@ and the collected parameters from <b>EditTodoPage</b> and <b>BasicView</b> will 
     </div>
 ```
 
-<i>Final HTML definition result of the Handlebars templating, basic_page_simple_template and editTodoView.template_partial</i>
+*Final HTML definition resulting from basic_page_simple_template and editTodoView.template_partial*
 
-The next section explains, how the template parameters are collected by the <b>BasicView</b> and the HTML definition is loaded.
+The next section explains how the template parameters are collected by the `BasicView` and the HTML definition is loaded.
 
 
 #### DOM management and $.mobile.changePage
 
-When <b>render</b> is executed, <b>BasicView</b> will first clean up the DOM, by removing the previous page in <b>line 70</b>.
-To delete the elements from the DOM, <b>$.remove</b> cannot be used, but <b>$previousEl.detach()</b>.
-<b>Detach</b> does not remove the elements attached events and data.
-This is important, because jQuery Mobile still needs information to e.g.
-trigger transition effects when switching to another page.
-Have in mind, that the DOM data and events should be cleared later on as well due to possible performance lacking.
+When `render` is executed (line 29 is the source code listing below), `BasicView` first cleans up the DOM by removing the previous page (line 70). To delete the elements from the DOM, `$.remove` cannot be used, but `$previousEl.detach()` can be since `detach` does not remove the element's attached events and data.
 
-Other strategies than the one used in the function <b>cleanupPossiblePageDuplicationInDOM</b> to cleanup the DOM are applicable.
-To only remove the old page having the same id than the current from the DOM, when it was already requested before,
-would also be a working strategy of preventing DOM duplication. Depending on what fits best to your application needs,
-it is also possible a one-banana problem to exchange it with a caching mechanism.
+This is important, because jQuery Mobile still needs information (e.g., to trigger transition effects when switching to another page). Keep in mind that the DOM data and events should be cleared later on as well to avoid possible performance issues.
 
-Next, <b>BasicView</b> will collect all template parameters from the concrete View implementation
-and inserts the HTML of the requested page into the body.
-This is done in <b>steps 4, 5, 6</b> <b>and 7</b> and between <b>line 23</b> and <b>51</b>.
+Other strategies than the one used in the function `cleanupPossiblePageDuplicationInDOM` to cleanup the DOM are viable. To only remove the old page having the same id as the current from the DOM, when it was already requested before, would also be a working strategy of preventing DOM duplication. Depending on what fits best to your application needs, it is also possibly a one-banana problem to exchange it using a caching mechanism.
 
-Additional, the <b>data-role</b> will be set on the jQuery Mobile page. Common used attribute values are
-<b>page</b>, <b>dialog</b> or <b>popup</b>.
+Next, `BasicView` collects all template parameters from the concrete View implementation and inserts the HTML of the requested page into the body. This is done in steps 4, 5, 6, and 7 in the diagram above (between lines 23 and 51 in the source listing).
 
-As you can see, in <b>line 74</b>, it also contains a manual implementation to handle the back buttons action.
-In special scenarios, the back button navigation functionality of jQuery Mobile was not working with older versions and disabled jQMobiles navigation sytem.
+Additionally, the `data-role` will be set on the jQuery Mobile page. Commonly used attribute values are
+page, dialog, or popup.
+
+As you can see, (starting at line 74), the `goBackInHistory` function contains a manual implementation to handle the back button's action. In certain scenarios, the back button navigation functionality of jQuery Mobile was not working with older versions and disabled jQMobile's navigation sytem.
 
 
 ```javascript
@@ -8999,7 +8971,7 @@ In special scenarios, the back button navigation functionality of jQuery Mobile 
 32             this.addPageToDOMAndRenderJQM();
 33             this.enhanceJQMComponentsAPI();
 34         },
-35 // Generate HTML by the Handlebars templates
+35 // Generate HTML using the Handlebars templates
 36         getTemplateResult: function (templateDefinitionID, templateValues) {
 37             return window.JST[templateDefinitionID](templateValues);
 38         },
@@ -9048,13 +9020,13 @@ In special scenarios, the back button navigation functionality of jQuery Mobile 
 81 });
 ```
 
-<i>Code of BasicView.js</i>
+*BasicView.js*
 
-After the dynamic HTML is added to the DOM, <b>$.mobile.changePage</b> has to be applied at <b>step 8</b> and <b>code line 54</b>.
+After the dynamic HTML is added to the DOM, `$.mobile.changePage` has to be applied at step 8 (code line 54).
 
-It is the most important API call, because it triggers the jQuery Mobile component creation of the current page.
+This is the most important API call, because it triggers the jQuery Mobile component creation for the current page.
 
-Next, the page will be displayed to the user at <b>step 9</b>.
+Next, the page will be displayed to the user at step 9.
 
 
 ```javascript
@@ -9069,10 +9041,9 @@ class="ui-btn ui-shadow ui-btn-corner-all ui-mini ui-btn-up-c">
 
 ![](img/chapter10-2-2.png)
 
-<i>Look and feel of the written HTML code and jQuery Mobile enhanced, Todo description page</i>
+*Look and feel of the written HTML code and the jQuery Mobile enhanced Todo description page*
 
-<br />
-UI enhancement is done in the enhanceJQMComponentsAPI function in line 52:
+UI enhancement is done in the `enhanceJQMComponentsAPI` function in line 52:
 
 ```javascript
 $.mobile.changePage("#" + this.id, {
@@ -9081,75 +9052,71 @@ $.mobile.changePage("#" + this.id, {
                     });
 ```
 
-To retain control of hash routing, <b>changeHash</b> has to be set to false as well as the proper <b>role</b>-parameter to guarantee proper page appearance.
-Finally, <b>changePage</b> will show the new page with its defined transition to the user.
+To retain control of hash routing, `changeHash` has to be set to false and the proper `role` parameter provided to guarantee proper page appearance. Finally, `changePage` will show the new page with its defined transition to the user.
 
-For the basic use cases, it is advised, to have one View per page, and always render again the complete page by calling <b>$.mobile.changePage</b> when widget enhancement needs to be done.
+For the basic use cases, it is advised to have one View per page, and always render the complete page again by calling `$.mobile.changePage` when widget enhancement needs to be done.
 
-To progress component enrichment of a newly added HTML-fragment into the DOM, advanced techniques need to be applied, to guarantee correct appearance of the mobile components.
-You have to be very careful, when creating partial HTML code and updating values on UI elements.
-The next section will explain how to handle such situations.
+To progress component enrichment of a newly added HTML-fragment into the DOM, advanced techniques need to be applied to guarantee correct appearance of the mobile components. You need to be very careful when creating partial HTML code and updating values on UI elements. The next section will explain how to handle these situations.
 
 
 ### Applying advanced jQM techniques to Backbone
 
 #### Dynamic DOM Scripting
 
+The solution described above solves the issues of handling routing with Backbone by calling `$.mobile.changePage('pageID')`.  Additionally, it guarantees that the HTML page will be completely enhanced by the markup for jQuery Mobile.
 
-The solution described above solves the issues of handling routing with Backbone by calling $.mobile.changePage('pageID').
-Additionally, it is guaranteed, that the HTML page will be completely enhanced by the markup of jQuery Mobile.
+The second tricky part with jQuery Mobile is to dynamically manipulate specific DOM contents (e.g. after loading in content with Ajax). We suggest you use this technique only if there is evidence for an appreciable performance gain.
 
-The second tricky part with jQuery Mobile is to dynamically manipulate specific DOM contents (e.g. after loading in content with Ajax).
-We suggest you use this technique, only if there is evidence for an appreciable performance gain.
-With the current version 1.3, jQM provides three ways, documented and explained below in the official API, on forums and blogs.
+With the current version (1.3), jQM provides three ways, documented and explained below in the official API, on forums, and blogs.
 
 
-* <b>$(“pageId”).trigger(“pagecreate”)</b>
-  <p>Creates markup of header, content as well as footer</p>
-* <b>$(“anyElement”).trigger(“create”)</b>
-  <p>Creates markup of the element as well as all children</p>
-* <b>$(“myListElement”).listview(“refresh”)</b>
-  <b>$('[type="radio"]').checkboxradio()</b>
-  <b>$('[type="text"]').textinput()</b>
-  <b>$('[type="button"]').button()</b>
-  <b>$('[data-role="navbar"]').navbar()</b>
-  <b>$('[type="range"]').slider()</b>
-  <b>$('select').selectmenu()</b>
-  <p>Every component of jQM offers plugins methods to
-    update the state of specific UI elements.
-    Sometimes, when creating a component from scratch, the following error can occur 'cannot call methods on listview prior to initialization'.
-    This can be avoided, with component initialization prior to markup enhancement, by calling it in the following way:
-    <b>$('#mylist').listview().listview('refresh')</b>
-  </p>
+* *$(“pageId”).trigger(“pagecreate”)*
+  Creates markup of header, content as well as footer
+ 
+* *$(“anyElement”).trigger(“create”)*
+  Creates markup of the element as well as all children
 
-To see more details and enhancements for further scripting pages of JQM read their API and follow the release notes, frequently.
+* *$(“myListElement”).listview(“refresh”)*
+* *$('[type="radio"]').checkboxradio()*
+* *$('[type="text"]').textinput()*
+* *$('[type="button"]').button()*
+* *$('[data-role="navbar"]').navbar()*
+* *$('[type="range"]').slider()*
+* *$('select').selectmenu()*
+
+Every component of jQM offers plugins methods they can invoke to update the state of specific UI elements.
+
+Sometimes, when creating a component from scratch, the following error can occur: 'cannot call methods on listview prior to initialization'. This can be avoided, with component initialization prior to markup enhancement, by calling it in the following way:
+
+```javascript
+ $('#mylist').listview().listview('refresh')
+```
+
+To see more details and enhancements for further scripting pages of JQM read their API and follow the release notes frequently.
 
 * [jQuery Mobile: Page Scripting](http://jquerymobile.com/test/docs/pages/page-scripting.html)
 * [jQuery Mobile: Document Ready vs. Page Events](http://stackoverflow.com/questions/14468659/jquery-mobile-document-ready-vs-page-events/ )
 * [StackOverflow: Markup Enhancement of Dynamically Added Content](http://stackoverflow.com/questions/14550396/jquery-mobile-markup-enhancement-of-dynamically-added-content)
 
 
+If you consider using a `Model-Binding Plugin`, you will need to come up with an automated mechanism to enrich single components.
 
-<br />
-If you consider using a <b>Model-Binding Plugin</b>, you will need to come up with an automated mechanism to enrich single components.
+After having a look at the previous section about Dynamic DOM Scripting, it might not be acceptable to completely re-create a component (e.g a Listview) which takes a longer time to load and to reduce the complexity of event-delegation. Instead, the component-specific plugins, which will only update the needed parts of the HTML and CSS, should be used.
 
-After having a look on the previous section about <b>Dynamic DOM Scripting</b>,
-it might not be acceptable, to completely recreate a component (e.g a Listview), which takes longer time to load and to reduce the complexity of event-delegation.
-Instead, the component specific plugins, which will only update the needed parts of the HTML and CSS, should be used.
 In the case of a Listview, you would need to call the following function to update the list of added, edited, or removed entries:
 
 ```javascript
 $('#mylist').listview()
 ```
 
-You need to come up with a detection of the component type to decide which plugin method needs to be called. The jQuery Mobile Angular.js Adapter provides such a strategy and solution as well.
+You need to come up with a means of detecting the component type to in order to decide which plugin method needs to be called. The jQuery Mobile Angular.js Adapter provides such a strategy and solution as well.
 
 [Example of Model Binding with jQuery Mobile](https://github.com/tigbro/jquery-mobile-angular-adapter/blob/master/src/main/webapp/integration/jqmWidgetPatches.js)
 
 
-#### Intercept jQuery Mobile events
+#### Intercepting jQuery Mobile Events
 
-In special situations you will need to to take action to a triggered jQuery Mobile event, which can be done like this:
+In special situations you will need to take action on a triggered jQuery Mobile event, which can be done as follows:
 
 ```javascript
 $('#myPage').live('pagebeforecreate', function(event){
@@ -9164,29 +9131,25 @@ $('#myPage').live('pagecreate', function(event){
 });
 ```
 
-In such scenarios, it is important to know when the jQuery Mobile events occur. The following diagram and the API depicts the event-cycle.
+In such scenarios, it is important to know when the jQuery Mobile events occur. The following diagram  depicts the event cycle (page A is the outgoing page and page B is the incoming page).
 
 
 ![](img/chapter10-3-1.png)
 
-<i> Original event cycle of jQuery Mobile </i>
+*jQuery Mobile Event Cycle*
 
-An alternative is the jQuery Mobile Router project, which you might need to replace with the Backbone Router. With the help of jQM-Router project,
-you could achieve a powerful way to intercept and route one of the various jQM events.
-It is an extension to jQuery Mobile, which can be used independenly.
-Have in mind, that jQM-Router misses some features of Backbone.Router and is tight coupled with the jQuery Mobile framework.
-For these reasons, we dismissed it for the TodoMVC app.
-If you intend to use it, consider <b>Backbone.js Custom Builds</b> to exclude the router code. This might save ~ 25%, out of the max compressed size of 17,1 KB.
+An alternative is the jQuery Mobile Router project, which you might use to replace the Backbone Router. With the help of the jQM Router project, you could achieve a powerful way to intercept and route one of the various jQM events. It is an extension to jQuery Mobile, which can be used independently.
 
-[Backbones Custom Builder](http://gregfranko.com/backbone/customBuild/)
+Be aware that jQM-Router misses some features of Backbone.Router and is tightly coupled with the jQuery Mobile framework. For these reasons, we did not use it for the TodoMVC app. If you intend to use it, consider using a Backbone.js custom build to exclude the router code. This might save around 25% relative to the max compressed size of 17,1 KB.
+
+[Backbone's Custom Builder](http://gregfranko.com/backbone/customBuild/)
 
 
 #### Performance
 
-Performance is a sensible topic on mobile devices.
-jQuery Mobile provides various tools, to create performance logs, which gives you a good overview about the actual time spend to routing logic, component enhancement, and visual effects.
+Performance is an important topic on mobile devices. jQuery Mobile provides various tools that create performance logs which can give you a good overview of the actual time spent in routing logic, component enhancement, and visual effects.
 
-Depending on the device, the time spend on transitions can take <b>up to 90% load time</b>. To disable transitions all over, you can eighter pass the transition <b>none</b> to <b>$.mobile.changePage()</b>, in the configuration code block:
+Depending on the device, the time spent on transitions can take up to 90% of the load time. To disable all transitions, you can either pass the transition `none` to `$.mobile.changePage()`, in the configuration code block:
 
 ```javascript
 $(document).bind("mobileinit", function(){
@@ -9198,7 +9161,7 @@ $(document).bind("mobileinit", function(){
   })
 ```
 
-consider to add device specific settings, which can be achieved like: 
+or consider adding device-specific settings, for example: 
 
 ```javascript
 $(document).bind("mobileinit", function(){
@@ -9214,12 +9177,11 @@ $(document).bind("mobileinit", function(){
   });
 ```
 
-Also, think about coming up with your own <b>precaching of enhanced jQuery Mobile pages</b>.
-The API of jQuery Mobile is frequently enriched with every new release around these topic.
-We suggest you to have a look on the updated API to optimal achieve a caching strategy with dynamic scripting,
-which fits to your needs, best.
+Also, consider doing your own pre-caching of enhanced jQuery Mobile pages.
 
-See further information on performance at:
+The jQuery Mobile API is frequently enhanced with regards to this topic in each new release. We suggest you take a look at the latest updated API to determine an optimal caching strategy with dynamic scripting that best fits your needs.
+
+For further information on performance, see the following:
 
 * [jQuery Mobile Profiling Tools](https://github.com/jquery/jquery-mobile/tree/master/tools)
 * [Device specific jQuery Mobile configuations](http://backbonefu.com/2012/01/jquery-mobile-and-backbone-js-the-ugly/)
@@ -9227,97 +9189,72 @@ See further information on performance at:
 * [jQuery Mobile precaching functionalities](http://jquerymobile.com/demos/1.2.0/docs/pages/page-cache.html)
 
 
-#### Clever multi platform support management by DRY
+#### Clever Multi-Platform Support Management
 
+Nowadays, a company typically has an existing webpage and management decides to provide an additional mobile app to customers. The code of the web page and the mobile app become independent of each other and the time required for content or feature changes becomes much higher than for the webpage alone.
 
-The reality is that we do not always have the scope to create per-device experiences, so today's application will attempt to optimize the devices or browsers most likely to access it.
-It is essential, that the content the application exposes, is readily available to all users, regardless of what browser they are accessing it from, so this principle will be kept in mind during the design phase.
+As the trend is towards an increasing number of mobile platforms and dimensions, the effort required to support them is only increasing as well. Ultimately, creating per-device experiences is not always viable. However, it is essential that content is available to all users, regardless of their browser and platform. This principle must be kept in mind during the design phase.
 
-The mobile app architecture, presented in this chapter, simplifies a lot of the actual heavy lifting, as it supports responsive layouts, out of the box and even supports browsers, which cannot handle media queries.
-It might be not obvious, that jQM is a UI framework not dissimilar to jQuery UI. jQuery Mobile is using the widget factory and is capable for being used for more than just widgets for mobile environments.
+*[Responsive Design](http://www.lukew.com/ff/entry.asp?933)* and *[Mobile First](http://www.abookapart.com/products/mobile-first)* approaches address these challenges.
 
-Nowadays, usually a webpage already exists, and the management decides to serve a mobile app on top to the customers.
-The code of the webpage and the app become independant of each other. The time needed to spend on content or feature changes, are much higher.
+The mobile app architecture presented in this chapter takes care of a lot of the actual heavy lifting required, as it supports responsive layouts out of the box and even supports browsers which cannot handle media queries. It might not be obvious that jQM is a UI framework not dissimilar to jQuery UI. jQuery Mobile is using the widget factory and is capable of being used for more than just mobile environments.
 
-But the trend is towards an increasing number of mobile applications and its dimensions, so does the effort to manage the applications for various devices.
-The additional time to spend on handling changes in your app for the next years, is depending on your architectural choice.
+To support multi-platform browsers using jQuery Mobile and Backbone,
+you can, in order of increasing time  and effort:
 
-The <b>[Responsive Design](http://www.lukew.com/ff/entry.asp?933)</b> and <b>[Mobile First](http://www.abookapart.com/products/mobile-first)</b> approaches address these challenges. 
-
-
-To support multi platform browsers by the usage of jQuery Mobile and Backbone,
-you can, descending by increasing time effort:
-
-1. Ideally, <b>one code project</b>, where only CSS differs for different devices.
-2. Same code project, and at runtime, different HTML templates
+1. Ideally, have one code project, where only CSS differs for different devices.
+2. Same code project, and at runtime different HTML templates
    and super-classes are exchanged per device type.
 3. Same code project, and the Responsive Design API and most widgets of jQuery Mobile will be reused.
    For the desktop browser, some components will be added by another widget framework
-   e.g. <b>jQueryUI</b> or <b>Twitter Boostrap</b>, e.g. controlled by the HTML templating.
+   (e.g. *jQueryUI* or *Twitter Boostrap*), e.g. controlled by the HTML templating.
 4. Same code project, and at runtime, jQuery Mobile will be completely replaced 
-   by another widget framework e.g. <b>jQueryUI</b> or <b>Twitter Boostrap</b>.
+   by another widget framework (e.g. *jQueryUI* or *Twitter Boostrap*).
    Super-classes and configurations, as well as concrete Backbone.View code snippets need to be replaced.
-5. <b>Different code projects</b>, but common modules are reused.
+5. Different code projects, but common modules are reused.
 6. For the desktop app, there is a completely separate code project.
    Reasons might be the usage of complete different programming languagages
-   and/or frameworks, lack of Responsive Design knownledge or legacy of pollution.
-<br />
+   and/or frameworks, lack of Responsive Design knowledge or legacy of pollution.
 
-The architectural solution, to build a nice looking desktop application with only one mobile framework, sounds crazy, but is feasible.
+The ideal solution, to build a nice-looking desktop application with only one mobile framework, sounds crazy, but is feasible.
 
-If you have a look at the <b>jQuery Mobile API page</b> in a desktop browser, it does not look anything like a mobile application.
+If you have a look at the jQuery Mobile API page in a desktop browser, it does not look anything like a mobile application.
 
 ![](img/chapter10-3-3.png)
 
-<i>Desktop view of the jQuery Mobile API and Docs application, http://view.jquerymobile.com/1.3.0/ </i>
-<br />
+*Desktop view of the jQuery Mobile API and Docs application (http://view.jquerymobile.com/1.3.0/)*
 
 The same goes for the jQuery Mobile design examples, where jQuery Mobile intends to add further user interface experiences.
 
 ![](img/chapter10-3-4.png)
 
-<i>Design examples of jQuery Mobile for desktop environments, http://jquerymobile.com/designs/#desktop</i>
-<br />
+*Design examples of jQuery Mobile for desktop environments, http://jquerymobile.com/designs/#desktop*
 
-The accordeons, date-pickers, sliders - everything in the desktop UI is re-using what jQM would be providing users on mobile devices.
-By way of example, adding the attribute <b>data-mini="true"</b> on components, will lose the clumsiness of the mobile widgets on a desktop browser.
+The accordions, date-pickers, sliders - everything in the desktop UI is re-using what jQM would be providing users on mobile devices. By way of example, adding the attribute `data-mini="true"` on components will lose the clumsiness of the mobile widgets on a desktop browser.
 
-See http://jquerymobile.com/demos/1.2.0/docs/forms/forms-all-mini.html, Mini widgets for e.g. desktop applications by jQuery Mobile.
+See http://jquerymobile.com/demos/1.2.0/docs/forms/forms-all-mini.html, Mini-widgets for desktop applications by jQuery Mobile.
 
-Thanks to some media queries, the desktop UI can make optimal use of whitespace,
-expanding component blocks out and providing alternative layouts whilst still making use of jQM as a component framework.
+Thanks to some media queries, the desktop UI can make optimal use of whitespace, expanding component blocks out and providing alternative layouts while still making use of jQM as the component framework.
 
+The benefit of this is that you don’t need to pull in another widget framework (e.g., jQuery UI) separately to be able to take advantage of these features. Thanks to the ThemeRoller, the components can look pretty much exactly how you would like them to and users of the app can get a jQM UI for lower-resolutions and a jQM-ish UI for everything else.
 
-The benefit of this is that you don’t need to go pulling in another widget framework e.g.jQuery UI separately to be able to take advantage of these features.
-Thanks to the recent ThemeRoller the components can look pretty much exactly how I would like them to and users of the app can get a jQM UI for lower-resolutions and a jQM-ish UI for everything else.
-
-The takeaway here is just to remember that if you are not already going through the hassle of conditional script/style loading based on screen-resolution (using matchMedia.js etc), there are simpler approaches that can be taken to cross-device component theming.
-At least the <b>Responsive Design API</b> of jQuery Mobile, which was added since version 1.3.0, is always reasonable, 
-because it will work for mobile as well as for desktop. Summarized, you can manage jQuery Mobile components to give users a typical desktop appereance. They will not realize a difference.
+The take away here is just to remember that if you are not already going through the hassle of conditional script/style loading based on screen-resolution (using matchMedia.js, etc.), there are simpler approaches that can be taken to cross-device component theming. At least the Responsive Design API of jQuery Mobile, which was added since version 1.3.0, is always reasonable because it will work for mobile as well as for desktop. In summary, you can manage jQuery Mobile components to give users a typical desktop appearance and they will not realize a difference.
 
 [Responsive Design with jQuery Mobile](http://view.jquerymobile.com/1.3.0/docs/intro/rwd.php)
 
-<br />
-
-Also, if you <b>hit your limits of CSS-styling and configurations</b> of your jQuery Mobile application for desktop browsers,
-the additional effort to use <b>jQuery Mobile</b> and <b>Twitter Boostrap</b>, together, can be quite simple.
-In the case a desktop browser requests the page and Twitter Boostrap is loaded, the used <b>mobile TodoMVC app</b>, would need conditional code to not trigger the 
-<b>jQM Widget processive enhancement plugins API</b> (demonstrated in section <b>Dynamic DOM Scripting</b>) in the <b>Backbone.View</b> implementation.
-Therefore, as explained in the previous sections, we recommand to only trigger widget enhancements by <b>$.mobile.changePage</b>, once to load the complete page.
+Also, if you hit your limits of CSS-styling and configurations of your jQuery Mobile application for desktop browsers, the additional effort to use jQuery Mobile and Twitter Bootstrap together can be quite simple.
+In the case that a desktop browser requests the page and Twitter Bootstrap has been loaded, the mobile TodoMVC app would need conditional code to not trigger the  jQM Widget processive enhancement plugins API (demonstrated in the  *Dynamic DOM Scripting* section) in the Backbone.View implementation. Therefore, as explained in the previous sections, we recommend triggering widget enhancements by `$.mobile.changePage` only once to load the complete page.
 
 An example of such a widget hybrid usage can be seen here:
 
 ![](img/chapter10-3-2.png)
 
-<i>[Appengine boilerplate, desktop and mobile appereance](http://appengine.beecoss.com)</i>
-<br />
+*[Appengine boilerplate, desktop and mobile appearance](http://appengine.beecoss.com)*
 
-Although, it is using server-side technologies for templating by the programming language Python,
-the principle of triggering progressive enhancement at pageload, is the same as <b>$mobile.changePage</b>.
+Although it is using server-side technologies for templating using the programming language Python,
+the principle of triggering progressive enhancement at page load is the same as `$mobile.changePage`.
 
-As you can see, the JavaScript and even the CSS stays the same.
-The one and only device specific conditions and differences in implementations, are about switching the appropriate imported frameworks,
-which are located in the HTML template:
+As you can see, the JavaScript and even the CSS stays the same. The only device-specific conditions and differences in implementations are for selecting the appropriate framework imports, which are located in the HTML template:
 
 ```html
 ...
@@ -9340,10 +9277,6 @@ which are located in the HTML template:
     {% endif %}
 ...
 ```
-
-
-
-
 
 # Unit Testing
 
@@ -10458,7 +10391,8 @@ Running these tests in the QUnit test runner (which you would see when your HTML
 
 Housing all of our assertions in one test case can quickly become difficult to maintain, but luckily QUnit supports structuring blocks of assertions more cleanly. This can be done using ```module()``` - a method that allows us to easily group tests together. A typical approach to grouping might be keeping multiple tests for a specific method as part of the same group (module).
 
-#### Basic QUnit Modules:
+#### Basic QUnit Modules
+
 ```javascript
 module( 'Module One' );
 test( 'first test', function() {} );
@@ -10475,7 +10409,7 @@ test( 'another test', function() {} );
 
 We can take this further by introducing ```setup()``` and ```teardown()``` callbacks to our modules, where ```setup()``` is run before each test and ```teardown()``` is run after each test.
 
-#### Using setup() and teardown() :
+#### Using setup() and teardown()
 ```javascript
 module( 'Module One', {
     setup: function() {
@@ -10558,7 +10492,7 @@ test( 'notEqual', 2, function() {
 });
 ```
 
-### strictEqual - a comparison assertion. It passes if actual === expected.
+### strictEqual - a comparison assertion. It passes if actual === expected
 
 ```javascript
 test( 'strictEqual', 2, function() {
@@ -10568,7 +10502,7 @@ test( 'strictEqual', 2, function() {
 });
 ```
 
-### notStrictEqual - a comparison assertion. It passes if actual !== expected.
+### notStrictEqual - a comparison assertion. It passes if actual !== expected
 
 ```javascript
 test('notStrictEqual', 2, function() {

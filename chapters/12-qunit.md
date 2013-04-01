@@ -131,7 +131,8 @@ Running these tests in the QUnit test runner (which you would see when your HTML
 
 Housing all of our assertions in one test case can quickly become difficult to maintain, but luckily QUnit supports structuring blocks of assertions more cleanly. This can be done using ```module()``` - a method that allows us to easily group tests together. A typical approach to grouping might be keeping multiple tests for a specific method as part of the same group (module).
 
-#### Basic QUnit Modules:
+#### Basic QUnit Modules
+
 ```javascript
 module( 'Module One' );
 test( 'first test', function() {} );
@@ -148,7 +149,7 @@ test( 'another test', function() {} );
 
 We can take this further by introducing ```setup()``` and ```teardown()``` callbacks to our modules, where ```setup()``` is run before each test and ```teardown()``` is run after each test.
 
-#### Using setup() and teardown() :
+#### Using setup() and teardown()
 ```javascript
 module( 'Module One', {
     setup: function() {
@@ -231,7 +232,7 @@ test( 'notEqual', 2, function() {
 });
 ```
 
-### strictEqual - a comparison assertion. It passes if actual === expected.
+### strictEqual - a comparison assertion. It passes if actual === expected
 
 ```javascript
 test( 'strictEqual', 2, function() {
@@ -241,7 +242,7 @@ test( 'strictEqual', 2, function() {
 });
 ```
 
-### notStrictEqual - a comparison assertion. It passes if actual !== expected.
+### notStrictEqual - a comparison assertion. It passes if actual !== expected
 
 ```javascript
 test('notStrictEqual', 2, function() {
