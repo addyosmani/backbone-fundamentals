@@ -1049,13 +1049,13 @@ Pagination is a ubiquitous problem we often find ourselves needing to solve on t
 
 Before we dive into solutions for paginating data for your Backbone applications, let's define exactly what we consider pagination to be:
 
-Pagination is a control system allowing users to browse through pages of search results (or any type of content) which is continued. Search results are the canonical example, but pagination today is found on news sites, blogs and discussion boards, often in the form of Previous and Next links. More complete pagination systems offer granular control of the specific pages you can navigate to, giving the user more power to find what they are looking for. 
+Pagination is a control system allowing users to browse through pages of search results (or any type of content) which is continued. Search results are the canonical example, but pagination today is found on news sites, blogs, and discussion boards, often in the form of Previous and Next links. More complete pagination systems offer granular control of the specific pages you can navigate to, giving the user more power to find what they are looking for. 
 
-It isn't a problem limited to pages requiring some visual controls for pagination either - sites like Facebook, Pinterest and Twitter have demonstrated that there are many contexts where infinite paging is also useful. Infitite paging is of course when we pre-fetch (or appear to pre-fetch) content from a subsequent page and add it directly to the user’s current page, making the experience feel "infinite".
+It isn't a problem limited to pages requiring some visual controls for pagination either - sites like Facebook, Pinterest, and Twitter have demonstrated that there are many contexts where infinite paging is also useful. Infinite paging is, of course, when we pre-fetch (or appear to pre-fetch) content from a subsequent page and add it directly to the user’s current page, making the experience feel "infinite".
 
-Pagination is very context-specific and depends on the content being displayed. In the Google search results, pagination is important as they want to offer you the most relevant set of results in the first 1-2 pages. After that, you might be a little more selective (or random) with the page you choose to navigate to. This differs from cases where you'll want to cycle through consecutive pages for (e.g for a news article or blog post). 
+Pagination is very context-specific and depends on the content being displayed. In the Google search results, pagination is important as they want to offer you the most relevant set of results in the first 1-2 pages. After that, you might be a little more selective (or random) with the page you choose to navigate to. This differs from cases where you'll want to cycle through consecutive pages for (e.g., for a news article or blog post). 
 
-Pagination is almost certainly content and context-specific, but as Faruk Ates has [previously](https://gist.github.com/mislav/622561) pointed out the principles of good pagination apply no matter what the content or context is. As with everything extensible when it comes to Backbone, one can try to write their own pagination that can try solving many of these content-specific types of pagination problems. That said, you'll probably spend quite a bit of time on this and sometimes you just want to use a tried and tested solution that just works.
+Pagination is almost certainly content and context-specific, but as Faruk Ates has [previously](https://gist.github.com/mislav/622561) pointed out the principles of good pagination apply no matter what the content or context is. As with everything extensible when it comes to Backbone, you can write your own pagination to address many of these content-specific types of pagination problems. That said, you'll probably spend quite a bit of time on this and sometimes you just want to use a tried and tested solution that just works.
 
 On this topic, we're going to go through a set of pagination components I (and a group of [contributors](https://github.com/addyosmani/backbone.paginator/contributors)) wrote for Backbone.js, which should hopefully come in useful if you're working on applications which need to page Backbone Collections. They're part of an extension called [Backbone.Paginator](http://github.com/addyosmani/backbone.paginator).
 
@@ -1099,7 +1099,7 @@ If you would like to look at examples built using the components included in the
 
 In this section we're going to walk through using the requestPager. You would use this component when working with a service API which itself supports pagination. This component allows users to control the pagination settings for requests to this API (i.e navigate to the next, previous, N pages) via the client-side. 
 
-The idea is that pagination, searching and filtering of data can all be done from your Backbone application without the need for a page reload. 
+The idea is that pagination, searching, and filtering of data can all be done from your Backbone application without the need for a page reload. 
 
 ![](img/paginator-request.png)
 
@@ -1233,7 +1233,7 @@ For your convenience, the following methods are made available for use in your v
 * **Collection.prevPage( options )** - go to the previous page
 * **Collection.howManyPer( n )** - set the number of items to display per page
 
-**requestPager** collection's methods `.goTo()`, `.nextPage()` and `.prevPage()` are all extension of the original [Backbone Collection.fetch() method](http://documentcloud.github.com/backbone/#Collection-fetch). As so, they all can take the same option object as parameter.
+**requestPager** collection's methods `.goTo()`, `.nextPage()` and `.prevPage()` are all extensions of the original [Backbone Collection.fetch() methods](http://documentcloud.github.com/backbone/#Collection-fetch). As so, they all can take the same option object as a parameter.
 
 This option object can use `success` and `error` parameters to pass a function to be executed after server answer.
 
