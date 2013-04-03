@@ -241,7 +241,7 @@ We'll also need a view for the list itself:
 var app = app || {};
 
 app.LibraryView = Backbone.View.extend({
-	el: $( '#books' ),
+	el: '#books',
 
 	initialize: function( initialBooks ) {
 		this.collection = new app.Library( initialBooks );
