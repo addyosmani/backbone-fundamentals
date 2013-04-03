@@ -865,7 +865,7 @@ TodoCounter.trigger('event');
 
 // Check out output
 console.log(TodoCounter.counterA === 1); // true
-console.log(Counter.counterB === 1); // false
+console.log(TodoCounter.counterB === 1); // true
 ```
 
 `counterA` and `counterB` should only have been incremented once.
