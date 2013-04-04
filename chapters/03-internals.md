@@ -1681,7 +1681,7 @@ var TodoRouter = Backbone.Router.extend({
 
         "optional(/:item)": "optionalItem",
         "named/optional/(y:z)": "namedOptionalItem"
-        /* Eouter URLs also support optional parts via parentheses, without having
+        /* Router URLs also support optional parts via parentheses, without having
            to use a regex.  */
     },
 
