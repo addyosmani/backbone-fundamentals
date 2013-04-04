@@ -595,7 +595,7 @@ TodoMVC.module('TodoList.Views', function(Views, App, Backbone, Marionette, $, _
   // that are made to the item, including marking completed.
 
   Views.ItemView = Marionette.ItemView.extend({
-    tagName : 'li',
+      tagName : 'li',
       template : '#template-todoItemView',
 
       ui : {
