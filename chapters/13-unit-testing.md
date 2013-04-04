@@ -256,7 +256,7 @@ describe('Todo routes', function(){
         this.router = new App.TodoRouter();
 
         // Create a new spy
-        this.routerSpy = sinon.spy();
+        this.routerSpy = jasmine.spy();
 
         // Begin monitoring hashchange events
         try{

@@ -230,7 +230,7 @@ $(document).bind("mobileinit", function(){
 
 *jquerymobile.config.js*
 
-The behaviour and usage of the new workflow will be explained belowe, grouped by its functionalities:
+The behaviour and usage of the new workflow will be explained below, grouped by its functionalities:
 
 a) Routing to a concrete View-page
 
