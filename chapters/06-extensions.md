@@ -650,7 +650,7 @@ TodoMVC.module('TodoList.Views', function(Views, App, Backbone, Marionette, $, _
   // filtering of active vs completed items for display.
 
   Views.ListView = Marionette.CompositeView.extend({
-    template : '#template-todoListCompositeView',
+      template : '#template-todoListCompositeView',
       itemView : Views.ItemView,
       itemViewContainer : '#todo-list',
 
