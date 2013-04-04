@@ -605,7 +605,7 @@ The next part of our tutorial is going to cover completing and deleting todos. T
 
 ```javascript
 
-  // js/view/todos.js
+  // js/views/todos.js
 
   var app = app || {};
 
@@ -753,7 +753,10 @@ When the route changes, the todo list will be filtered on a model level and the 
 
     setFilter: function( param ) {
       // Set the current filter to be used
-      app.TodoFilter = param.trim() || '';
+      if (param) {
+        param = param.trim();
+      }
+      app.TodoFilter = param || '';
 
       // Trigger a collection filter event, causing hiding/unhiding
       // of Todo view items
