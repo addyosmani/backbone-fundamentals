@@ -764,11 +764,11 @@ When the route changes, the todo list will be filtered on a model level and the 
 
     setFilter: function( param ) {
       // Set the current filter to be used
-      app.TodoFilter = param.trim() || '';
+      window.app.TodoFilter = param.trim() || '';
 
       // Trigger a collection filter event, causing hiding/unhiding
       // of Todo view items
-      app.Todos.trigger('filter');
+      window.app.Todos.trigger('filter');
     }
   });
 
