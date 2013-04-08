@@ -251,6 +251,8 @@ code > span.er { color: #ff0000; font-weight: bold; }
 </ul></li>
 <li><a href="#paginator.requestpager">Paginator.requestPager</a><ul>
 <li><a href="#create-a-new-paginated-collection">1. Create a new Paginated collection</a></li>
+<li><a href="#set-the-model-for-the-collection-as-normal">2. Set the model for the collection as normal</a></li>
+<li><a href="#configure-the-base-url-and-the-type-of-the-request">3. Configure the base URL and the type of the request</a></li>
 </ul></li>
 <li><a href="#gotchas">Gotchas!</a><ul>
 <li><a href="#configure-how-the-library-will-show-the-results">4. Configure how the library will show the results</a></li>
@@ -262,7 +264,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 </ul></li>
 <li><a href="#paginator.clientpager">Paginator.clientPager</a><ul>
 <li><a href="#create-a-new-paginated-collection-with-a-model-and-url">1. Create a new paginated collection with a model and URL</a></li>
-<li><a href="#configure-the-base-url-and-the-type-of-the-request">2. Configure the base URL and the type of the request</a></li>
+<li><a href="#configure-the-base-url-and-the-type-of-the-request-1">2. Configure the base URL and the type of the request</a></li>
 <li><a href="#configure-how-the-library-will-show-the-results-1">3. Configure how the library will show the results</a></li>
 <li><a href="#configure-the-parameters-we-want-to-send-to-the-server-1">4. Configure the parameters we want to send to the server</a></li>
 <li><a href="#finally-configure-collection.parse-and-were-done-1">5. Finally, configure Collection.parse() and we’re done</a></li>
@@ -6102,14 +6104,13 @@ Backbone.history.start({
 </figure>
 <h4 id="create-a-new-paginated-collection"><a href="#TOC">1. Create a new Paginated collection</a></h4>
 <p>First, we define a new Paginated collection using <code>Backbone.Paginator.requestPager()</code> as follows:</p>
-<p>```javascript</p>
-<p>var PaginatedCollection = Backbone.Paginator.requestPager.extend({</p>
-<pre><code>####2: Set the model for the collection as normal
-
-Within our collection, we then (as normal) specify the model to be used with this collection followed by the URL (or base URL) for the service providing our data (e.g the Netflix API).
-</code></pre>
-<pre><code>    model: model,</code></pre>
-<p>``` ####3. Configure the base URL and the type of the request</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript">
+<span class="kw">var</span> PaginatedCollection = <span class="kw">Backbone.Paginator.requestPager</span>.<span class="fu">extend</span>({</code></pre>
+<h4 id="set-the-model-for-the-collection-as-normal"><a href="#TOC">2. Set the model for the collection as normal</a></h4>
+<p>Within our collection, we then (as normal) specify the model to be used with this collection followed by the URL (or base URL) for the service providing our data (e.g the Netflix API).</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript">
+        <span class="dt">model</span>: model,</code></pre>
+<h4 id="configure-the-base-url-and-the-type-of-the-request"><a href="#TOC">3. Configure the base URL and the type of the request</a></h4>
 <p>We need to set a base URL. The <code>type</code> of the request is <code>GET</code> by default, and the <code>dataType</code> is <code>jsonp</code> in order to enable cross-domain requests.</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript">    <span class="dt">paginator_core</span>: {
       <span class="co">// the type of the request (GET by default)</span>
@@ -6230,7 +6231,7 @@ Within our collection, we then (as normal) specify the model to be used with thi
 <pre class="sourceCode javascript"><code class="sourceCode javascript">    <span class="kw">var</span> PaginatedCollection = <span class="kw">Backbone.Paginator.clientPager</span>.<span class="fu">extend</span>({
 
         <span class="dt">model</span>: model,</code></pre>
-<h4 id="configure-the-base-url-and-the-type-of-the-request"><a href="#TOC">2. Configure the base URL and the type of the request</a></h4>
+<h4 id="configure-the-base-url-and-the-type-of-the-request-1"><a href="#TOC">2. Configure the base URL and the type of the request</a></h4>
 <p>We need to set a base URL. The <code>type</code> of the request is <code>GET</code> by default, and the <code>dataType</code> is <code>jsonp</code> in order to enable cross-domain requests.</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript">    <span class="dt">paginator_core</span>: {
       <span class="co">// the type of the request (GET by default)</span>

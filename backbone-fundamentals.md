@@ -7635,15 +7635,16 @@ First, we define a new Paginated collection using `Backbone.Paginator.requestPag
 var PaginatedCollection = Backbone.Paginator.requestPager.extend({
 
 ```
-####2: Set the model for the collection as normal
+
+####2. Set the model for the collection as normal
 
 Within our collection, we then (as normal) specify the model to be used with this collection followed by the URL (or base URL) for the service providing our data (e.g the Netflix API).
 
 ```javascript
 
         model: model,
-
 ```
+
 ####3. Configure the base URL and the type of the request
 
 We need to set a base URL. The `type` of the request is `GET` by default, and the `dataType` is `jsonp` in order to enable cross-domain requests.
