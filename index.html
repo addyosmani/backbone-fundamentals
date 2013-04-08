@@ -2046,7 +2046,7 @@ collection
 
         <span class="st">&quot;optional(/:item)&quot;</span>: <span class="st">&quot;optionalItem&quot;</span>,
         <span class="st">&quot;named/optional/(y:z)&quot;</span>: <span class="st">&quot;namedOptionalItem&quot;</span>
-        <span class="co">/* Eouter URLs also support optional parts via parentheses, without having</span>
+        <span class="co">/* Router URLs also support optional parts via parentheses, without having</span>
 <span class="co">           to use a regex.  */</span>
     },
 
@@ -2835,7 +2835,7 @@ secondTodo instanceof <span class="kw">app</span>.<span class="fu">Todo</span> <
 <h2 id="completing-deleting-todos"><a href="#TOC">Completing &amp; deleting todos</a></h2>
 <p>The next part of our tutorial is going to cover completing and deleting todos. These two actions are specific to each Todo item, so we need to add this functionality to the TodoView view. We will do so by adding <code>togglecompleted()</code> and <code>clear()</code> methods along with corresponding entries in the <code>events</code> hash.</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript">
-  <span class="co">// js/view/todos.js</span>
+  <span class="co">// js/views/todos.js</span>
 
   <span class="kw">var</span> app = app || {};
 
@@ -2970,7 +2970,10 @@ secondTodo instanceof <span class="kw">app</span>.<span class="fu">Todo</span> <
 
     <span class="dt">setFilter</span>: <span class="kw">function</span>( param ) {
       <span class="co">// Set the current filter to be used</span>
-      <span class="kw">app</span>.<span class="fu">TodoFilter</span> = <span class="kw">param</span>.<span class="fu">trim</span>() || <span class="ch">&#39;&#39;</span>;
+      <span class="kw">if</span> (param) {
+        param = <span class="kw">param</span>.<span class="fu">trim</span>();
+      }
+      <span class="kw">app</span>.<span class="fu">TodoFilter</span> = param || <span class="ch">&#39;&#39;</span>;
 
       <span class="co">// Trigger a collection filter event, causing hiding/unhiding</span>
       <span class="co">// of Todo view items</span>
@@ -3165,14 +3168,11 @@ secondTodo instanceof <span class="kw">app</span>.<span class="fu">Todo</span> <
 <span class="kw">app</span>.<span class="fu">BookView</span> = <span class="kw">Backbone.View</span>.<span class="fu">extend</span>({
     <span class="dt">tagName</span>: <span class="ch">&#39;div&#39;</span>,
     <span class="dt">className</span>: <span class="ch">&#39;bookContainer&#39;</span>,
-    <span class="dt">template</span>: $( <span class="ch">&#39;#bookTemplate&#39;</span> ).<span class="fu">html</span>(),
+    <span class="dt">template</span>: <span class="kw">_</span>.<span class="fu">template</span>( $( <span class="ch">&#39;#bookTemplate&#39;</span> ).<span class="fu">html</span>() ),
 
     <span class="dt">render</span>: <span class="kw">function</span>() {
-        <span class="co">//tmpl is a function that takes a JSON object and returns html</span>
-        <span class="kw">var</span> tmpl = <span class="kw">_</span>.<span class="fu">template</span>( <span class="kw">this</span>.<span class="fu">template</span> );
-
         <span class="co">//this.el is what we defined in tagName. use $el to get access to jQuery html() function</span>
-        <span class="kw">this</span>.$<span class="fu">el</span>.<span class="fu">html</span>( tmpl( <span class="kw">this</span>.<span class="fu">model</span>.<span class="fu">toJSON</span>() ) );
+        <span class="kw">this</span>.$<span class="fu">el</span>.<span class="fu">html</span>( <span class="kw">this</span>.<span class="fu">template</span>( <span class="kw">this</span>.<span class="fu">model</span>.<span class="fu">toJSON</span>() ) );
 
         <span class="kw">return</span> <span class="kw">this</span>;
     }
@@ -3183,7 +3183,7 @@ secondTodo instanceof <span class="kw">app</span>.<span class="fu">Todo</span> <
 <span class="kw">var</span> app = app || {};
 
 <span class="kw">app</span>.<span class="fu">LibraryView</span> = <span class="kw">Backbone.View</span>.<span class="fu">extend</span>({
-    <span class="dt">el</span>: $( <span class="ch">&#39;#books&#39;</span> ),
+    <span class="dt">el</span>: <span class="ch">&#39;#books&#39;</span>,
 
     <span class="dt">initialize</span>: <span class="kw">function</span>( initialBooks ) {
         <span class="kw">this</span>.<span class="fu">collection</span> = <span class="kw">new</span> <span class="kw">app</span>.<span class="fu">Library</span>( initialBooks );
@@ -3728,7 +3728,7 @@ $(<span class="kw">function</span>() {
 <li>Flexible, <q>as-needed</q> architecture allowing you to pick and choose what you need</li>
 <li>And much, much more</li>
 </ul>
-<p>Marionette follows a similar philosophy to Backbone in that it provides a suite of components that can be used independently of each other, or used together to create a significant advantages for us as developers. But it steps above the structural components of Backbone and provides an application layer, with more than a dozen components and building blocks.</p>
+<p>Marionette follows a similar philosophy to Backbone in that it provides a suite of components that can be used independently of each other, or used together to create significant advantages for us as developers. But it steps above the structural components of Backbone and provides an application layer, with more than a dozen components and building blocks.</p>
 <p>Marionette’s components range greatly in the features they provide, but they all work together to create a composite application layer that can both reduce boilerplate code and provide a much needed application structure. Its core components include various and specialized view types that take the boilerplate out of rendering common Backbone.Model and Backbone.Collection scenarios; an Application object and Module architecture to scale applications across sub-applications, features and files; integration of a command pattern, event aggregator, and request/response mechanism; and many more object types that can be extended in a myriad of ways to create an architecture that facilitates an application’s specific needs.</p>
 <p>In spite of the large number of constructs that Marionette provides, though, you’re not required to use all of it just because you want to use some of it. Much like Backbone itself, you can pick and choose which features you want to use and when. This allows you to work with other Backbone frameworks and plugins very easily. It also means that you are not required to engage in an all-or-nothing migration to begin using Marionette.</p>
 <h3 id="boilerplate-rendering-code"><a href="#TOC">Boilerplate Rendering Code</a></h3>
@@ -4062,11 +4062,11 @@ $(<span class="ch">&#39;#content&#39;</span>).<span class="fu">html</span>(<span
 
     <span class="dt">setFilter</span>: <span class="kw">function</span>( param ) {
       <span class="co">// Set the current filter to be used</span>
-      <span class="kw">app</span>.<span class="fu">TodoFilter</span> = <span class="kw">param</span>.<span class="fu">trim</span>() || <span class="ch">&#39;&#39;</span>;
+      <span class="kw">window</span>.<span class="fu">app</span>.<span class="fu">TodoFilter</span> = <span class="kw">param</span>.<span class="fu">trim</span>() || <span class="ch">&#39;&#39;</span>;
 
       <span class="co">// Trigger a collection filter event, causing hiding/unhiding</span>
       <span class="co">// of Todo view items</span>
-      <span class="kw">app.Todos</span>.<span class="fu">trigger</span>(<span class="ch">&#39;filter&#39;</span>);
+      <span class="kw">window</span>.<span class="fu">app</span>.<span class="fu">Todos</span>.<span class="fu">trigger</span>(<span class="ch">&#39;filter&#39;</span>);
     }
   });</code></pre>
 <p>Marionette uses the concept of an AppRouter to simplify routing. This reduces the boilerplate for handling route events and allows routers to be configured to call methods on an object directly. We configure our AppRouter using <code>appRoutes</code> which replaces the <code>'*filter': 'setFilter'</code> route defined in our original router and invokes a method on our Controller.</p>
@@ -4176,7 +4176,7 @@ $(<span class="ch">&#39;#content&#39;</span>).<span class="fu">html</span>(<span
   <span class="co">// that are made to the item, including marking completed.</span>
 
   <span class="kw">Views</span>.<span class="fu">ItemView</span> = <span class="kw">Marionette.ItemView</span>.<span class="fu">extend</span>({
-    <span class="dt">tagName </span>: <span class="ch">&#39;li&#39;</span>,
+      <span class="dt">tagName </span>: <span class="ch">&#39;li&#39;</span>,
       <span class="dt">template </span>: <span class="ch">&#39;#template-todoItemView&#39;</span>,
 
       <span class="dt">ui </span>: {
@@ -4231,7 +4231,7 @@ $(<span class="ch">&#39;#content&#39;</span>).<span class="fu">html</span>(<span
   <span class="co">// filtering of active vs completed items for display.</span>
 
   <span class="kw">Views</span>.<span class="fu">ListView</span> = <span class="kw">Marionette.CompositeView</span>.<span class="fu">extend</span>({
-    <span class="dt">template </span>: <span class="ch">&#39;#template-todoListCompositeView&#39;</span>,
+      <span class="dt">template </span>: <span class="ch">&#39;#template-todoListCompositeView&#39;</span>,
       <span class="dt">itemView </span>: <span class="kw">Views</span>.<span class="fu">ItemView</span>,
       <span class="dt">itemViewContainer </span>: <span class="ch">&#39;#todo-list&#39;</span>,
 
@@ -5957,7 +5957,7 @@ require([<span class="ch">&#39;views/app&#39;</span>], <span class="kw">function
         &lt;/span&gt;
       &lt;% } %&gt;</code></pre>
 <p>The rest of the source for the Todo app mainly consists of code for handling user and application events, but that rounds up most of the core concepts for this practical.</p>
-<p>To see how everything ties together, feel free to grab the source by cloning this repo or browse it <a href="https://github.com/addyosmani/backbone-fundamentals/tree/master/practicals/modular-todo-app">online</a> to learn more. I hope you find it helpful!.</p>
+<p>To see how everything ties together, feel free to grab the source by cloning this repo or browse it <a href="https://github.com/addyosmani/backbone-fundamentals/tree/master/practicals/modular-todo-app">online</a> to learn more. I hope you find it helpful!</p>
 <p><strong>Note:</strong> While this first practical doesn’t use a build profile as outlined in the chapter on using the RequireJS optimizer, we will be using one in the section on building mobile Backbone applications.</p>
 <h2 id="route-based-module-loading"><a href="#TOC">Route-based module loading</a></h2>
 <p>This section will discuss a route based approach to module loading as implemented in <a href="http://walmartlabs.github.com/lumbar">Lumbar</a> by Kevin Decker. Like RequireJS, Lumbar is also a modular build system, but the pattern it implements for loading routes may be used with any build system.</p>
@@ -7121,7 +7121,7 @@ define([
    $.<span class="fu">mobile</span>.<span class="fu">page</span>.<span class="fu">prototype</span>.<span class="fu">options</span>.<span class="fu">degradeInputs</span>.<span class="fu">date</span> = <span class="kw">true</span>;
 });</code></pre>
 <p><em>jquerymobile.config.js</em></p>
-<p>The behaviour and usage of the new workflow will be explained belowe, grouped by its functionalities:</p>
+<p>The behaviour and usage of the new workflow will be explained below, grouped by its functionalities:</p>
 <ol type="a">
 <li><p>Routing to a concrete View-page</p></li>
 <li><p>Management of mobile page templates</p></li>
@@ -7664,7 +7664,7 @@ it(<span class="ch">&#39;should contain a text value if not the default value&#3
         <span class="kw">this</span>.<span class="fu">router</span> = <span class="kw">new</span> <span class="kw">App</span>.<span class="fu">TodoRouter</span>();
 
         <span class="co">// Create a new spy</span>
-        <span class="kw">this</span>.<span class="fu">routerSpy</span> = <span class="kw">sinon</span>.<span class="fu">spy</span>();
+        <span class="kw">this</span>.<span class="fu">routerSpy</span> = <span class="kw">jasmine</span>.<span class="fu">spy</span>();
 
         <span class="co">// Begin monitoring hashchange events</span>
         <span class="kw">try</span>{

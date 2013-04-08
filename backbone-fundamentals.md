@@ -2236,7 +2236,7 @@ var TodoRouter = Backbone.Router.extend({
 
         "optional(/:item)": "optionalItem",
         "named/optional/(y:z)": "namedOptionalItem"
-        /* Eouter URLs also support optional parts via parentheses, without having
+        /* Router URLs also support optional parts via parentheses, without having
            to use a regex.  */
     },
 
@@ -3194,7 +3194,7 @@ The next part of our tutorial is going to cover completing and deleting todos. T
 
 ```javascript
 
-  // js/view/todos.js
+  // js/views/todos.js
 
   var app = app || {};
 
@@ -3342,7 +3342,10 @@ When the route changes, the todo list will be filtered on a model level and the 
 
     setFilter: function( param ) {
       // Set the current filter to be used
-      app.TodoFilter = param.trim() || '';
+      if (param) {
+        param = param.trim();
+      }
+      app.TodoFilter = param || '';
 
       // Trigger a collection filter event, causing hiding/unhiding
       // of Todo view items
@@ -3588,14 +3591,11 @@ var app = app || {};
 app.BookView = Backbone.View.extend({
 	tagName: 'div',
 	className: 'bookContainer',
-	template: $( '#bookTemplate' ).html(),
+	template: _.template( $( '#bookTemplate' ).html() ),
 
 	render: function() {
-		//tmpl is a function that takes a JSON object and returns html
-		var tmpl = _.template( this.template );
-
 		//this.el is what we defined in tagName. use $el to get access to jQuery html() function
-		this.$el.html( tmpl( this.model.toJSON() ) );
+		this.$el.html( this.template( this.model.toJSON() ) );
 
 		return this;
 	}
@@ -3610,7 +3610,7 @@ We'll also need a view for the list itself:
 var app = app || {};
 
 app.LibraryView = Backbone.View.extend({
-	el: $( '#books' ),
+	el: '#books',
 
 	initialize: function( initialBooks ) {
 		this.collection = new app.Library( initialBooks );
@@ -4373,7 +4373,7 @@ Marionette's key benefits include:
 * Flexible, "as-needed" architecture allowing you to pick and choose what you need
 * And much, much more
 
-Marionette follows a similar philosophy to Backbone in that it provides a suite of components that can be used independently of each other, or used together to create a significant advantages for us as developers. But it steps above the structural components of Backbone and provides an application layer, with more than a dozen components and building blocks.
+Marionette follows a similar philosophy to Backbone in that it provides a suite of components that can be used independently of each other, or used together to create significant advantages for us as developers. But it steps above the structural components of Backbone and provides an application layer, with more than a dozen components and building blocks.
 
 Marionette's components range greatly in the features they provide, but they all work together to create a composite application layer that can both reduce boilerplate code and provide a much needed application structure. Its core components include various and specialized view types that take the boilerplate out of rendering common Backbone.Model and Backbone.Collection scenarios; an Application object and Module architecture to scale applications across sub-applications, features and files; integration of a command pattern, event aggregator, and request/response mechanism; and many more object types that can be extended in a myriad of ways to create an architecture that facilitates an application's specific needs. 
 
@@ -4800,11 +4800,11 @@ Recall how Backbone routes trigger methods within the Router as shown below in o
 
     setFilter: function( param ) {
       // Set the current filter to be used
-      app.TodoFilter = param.trim() || '';
+      window.app.TodoFilter = param.trim() || '';
 
       // Trigger a collection filter event, causing hiding/unhiding
       // of Todo view items
-      app.Todos.trigger('filter');
+      window.app.Todos.trigger('filter');
     }
   });
 
@@ -4936,7 +4936,7 @@ TodoMVC.module('TodoList.Views', function(Views, App, Backbone, Marionette, $, _
   // that are made to the item, including marking completed.
 
   Views.ItemView = Marionette.ItemView.extend({
-    tagName : 'li',
+      tagName : 'li',
       template : '#template-todoItemView',
 
       ui : {
@@ -4991,7 +4991,7 @@ TodoMVC.module('TodoList.Views', function(Views, App, Backbone, Marionette, $, _
   // filtering of active vs completed items for display.
 
   Views.ListView = Marionette.CompositeView.extend({
-    template : '#template-todoListCompositeView',
+      template : '#template-todoListCompositeView',
       itemView : Views.ItemView,
       itemViewContainer : '#todo-list',
 
@@ -7432,7 +7432,7 @@ The contents of our `statsTemplate` can be seen below. It's nothing too complica
 
 The rest of the source for the Todo app mainly consists of code for handling user and application events, but that rounds up most of the core concepts for this practical.
 
-To see how everything ties together, feel free to grab the source by cloning this repo or browse it [online](https://github.com/addyosmani/backbone-fundamentals/tree/master/practicals/modular-todo-app) to learn more. I hope you find it helpful!.
+To see how everything ties together, feel free to grab the source by cloning this repo or browse it [online](https://github.com/addyosmani/backbone-fundamentals/tree/master/practicals/modular-todo-app) to learn more. I hope you find it helpful!
 
 **Note:** While this first practical doesn't use a build profile as outlined in the chapter on using the RequireJS optimizer, we will be using one in the section on building mobile Backbone applications.
 
@@ -8939,7 +8939,7 @@ $(document).bind("mobileinit", function(){
 
 *jquerymobile.config.js*
 
-The behaviour and usage of the new workflow will be explained belowe, grouped by its functionalities:
+The behaviour and usage of the new workflow will be explained below, grouped by its functionalities:
 
 a) Routing to a concrete View-page
 
@@ -9705,7 +9705,7 @@ describe('Todo routes', function(){
         this.router = new App.TodoRouter();
 
         // Create a new spy
-        this.routerSpy = sinon.spy();
+        this.routerSpy = jasmine.spy();
 
         // Begin monitoring hashchange events
         try{
