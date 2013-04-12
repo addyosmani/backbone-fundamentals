@@ -35,7 +35,7 @@ For Chrome, you can open up the DevTools via the Chrome menu in the top right ha
 
 ![](img/devtools.png)
 
-Next, switch to the Console tab, from where you can enter in and run any piece of JavaScript code by hitting the return key. You can also use the Console as a multi-line editor using the Ctrl + Enter shortcut to move from the end of one line to the start of another.
+Next, switch to the Console tab, from where you can enter in and run any piece of JavaScript code by hitting the return key. You can also use the Console as a multi-line editor using the Shift + Enter shortcut on Windows, or Ctrl + Enter shortcut on Mac to move from the end of one line to the start of another.
  
 
 ## Models
