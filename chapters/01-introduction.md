@@ -84,7 +84,7 @@ Here is a peek at what you will be learning in each chapter:
 
 <i>Chapter 2, Fundamentals</i> traces the history of the MVC design pattern and introduces how it is implemented by Backbone.js and other JavaScript frameworks.
 
-<i>Chapter 3, Backbone Basics</i> covers the major features of the core Backbone.js framework and technologies and techniques you will need to know in order to apply it.
+<i>Chapter 3, Backbone Basics</i> covers the major features of the Backbone.js core and the technologies and techniques you will need to know in order to apply it.
 
 <i>Chapter 4, Exercise 1: Todos - Your First Backbone.js App</i> takes you step-by-step through development of a simple client-side Todo List application.
 
