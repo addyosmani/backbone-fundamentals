@@ -18,7 +18,7 @@ A number of modern JavaScript frameworks provide developers an easy path to orga
 
 * Models represent the domain-specific knowledge and data in an application. Think of this as being a ‘type’ of data you can model — like a User, Photo, or Todo note. Models can notify observers when their state changes.
 * Views typically constitute the user interface in an application (e.g., markup and templates), but don’t have to be. They observe Models, but don’t directly communicate with them.
-* Controllers handle input (e.g., clicks, user actions) and update Models. 
+* Controllers handle input (e.g., clicks, user actions) and update Models.
 
 Thus, in an MVC application, user input is acted upon by Controllers which update Models. Views observe Models and update the user interface when changes occur.
 

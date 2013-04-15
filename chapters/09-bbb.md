@@ -1,6 +1,6 @@
 # Backbone Boilerplate And Grunt-BBB
 
-Boilerplates provide us a starting point for working on projects. They're a base for building upon using the minimum required code to get something functional put together. When you're working on a new Backbone application, a new Model typically only takes a few lines of code to get working. 
+Boilerplates provide us a starting point for working on projects. They're a base for building upon using the minimum required code to get something functional put together. When you're working on a new Backbone application, a new Model typically only takes a few lines of code to get working.
 
 That alone probably isn't enough however, as you'll need a Collection to group those models, a View to render them and perhaps a router if you're looking to making specific views of your Collection data bookmarkable. If you're starting on a completely fresh project, you may also need a build process in place to produce an optimized version of your app that can be pushed to production.
 
@@ -29,14 +29,13 @@ Notes on build tool steps:
 
 ### Backbone Boilerplate and Grunt-BBB
 
-To get started we're going to install Grunt-BBB, which will include Backbone Boilerplate and any third-party dependencies it might need such as the Grunt build tool. 
+To get started we're going to install Grunt-BBB, which will include Backbone Boilerplate and any third-party dependencies it might need such as the Grunt build tool.
 
 We can install Grunt-bBB via NPM by running:
 
 ```shell
 npm install -g bbb
 ```
-
 That's it. We should now be good to go.
 
 A typical workflow for using grunt-bbb, which we will use later on is:
@@ -104,7 +103,6 @@ Initialized from template "bbb".
 
 Done, without errors.
 ```
-
 Let's review what has been generated.
 
 ### index.html
@@ -138,13 +136,11 @@ This is a fairly standard stripped-down HTML5 Boilerplate foundation with the no
 </body>
 </html>
 ```
-
 RequireJS - the [AMD](https://github.com/amdjs/amdjs-api/wiki/AMD) (Asynchronous Module Definition) module and script loader - will assist us with managing the modules in our application. We've already covered it in the last chapter, but let's recap what this particular block does in terms of the Boilerplate:
 
 ```
 <script data-main="/app/config" src="/vendor/js/libs/require.js"></script>
 ```
-
 The `data-main` attribute is used to inform RequireJS to load `app/config.js` (a configuration object) after it has finished loading itself. You'll notice that we've omitted the `.js` extension here as RequireJS can automatically add this for us, however it will respect your paths if we do choose to include it regardless. Let's now look at the config file being referenced.
 
 ### config.js
@@ -171,7 +167,6 @@ require.config({
 
 });
 ```
-
 The first option defined in the above config is `deps: ["../vendor/jam/require.config", "main"]`. This informs RequireJS to load up additonal RequireJS configuration as well a a main.js file, which is considered the entry point for our application.
 
  You may notice that we haven't specified any other path information for `main`. Require will infer the default `baseUrl` using the path from our `data-main` attribute in index.html. In other words, our `baseUrl` is `app/` and any scripts we require will be loaded relative to this location. We could use the `baseUrl` option to override this default if we wanted to use a different location.
@@ -180,7 +175,7 @@ The next block is `paths`, which we can use to specify paths relative to the `ba
 
 After this comes `shim`, an important part of our RequireJS configuration which allows us to load libraries which are not AMD compliant. The basic idea here is that rather than requiring all libraries to implement support for AMD, the `shim` takes care of the hard work for us.
 
-Going back to `deps`, the contents of our `require.config` file can be seen below. 
+Going back to `deps`, the contents of our `require.config` file can be seen below.
 
 ```javascript
 var jam = {
@@ -227,10 +222,9 @@ var jam = {
 };
 
 ```
-
 The `jam` object is to support configuration of [Jam](http://jamjs.org/) - a package manager for the front-end which helps instal, upgrade and configurate the dependencies used by your project. It is currently the package manager of choice for Backbone Boilerplate.
 
-Under the `packages` array, a number of dependencies are specified for inclusion, such as Backbone, the Backbone.LayoutManager plugin, jQuery and Lo-dash. 
+Under the `packages` array, a number of dependencies are specified for inclusion, such as Backbone, the Backbone.LayoutManager plugin, jQuery and Lo-dash.
 
 For those curious about [Backbone.LayoutManager](https://github.com/tbranyen/backbone.layoutmanager), it's a Backbone plugin that provides a foundation for assembling layouts and views within Backbone.
 
@@ -251,7 +245,7 @@ require([
   "router"
 ],
 
-function(app, Router) {
+function (app, Router) {
 
   // Define your master router on the application namespace and trigger all
   // navigation from this instance.
@@ -264,11 +258,11 @@ function(app, Router) {
   // All navigation that is relative should be passed through the navigate
   // method, to be processed by the router. If the link has a `data-bypass`
   // attribute, bypass the delegation completely.
-  $(document).on("click", "a[href]:not([data-bypass])", function(evt) {
+  $(document).on("click", "a[href]:not([data-bypass])", function (evt) {
     // Get the absolute anchor href.
     var href = { prop: $(this).prop("href"), attr: $(this).attr("href") };
     // Get the absolute root.
-    var root = location.protocol + "//" + location.host + app.root;
+    var root = location.protocol + "//  + location.host + app.root;
 
     // Ensure the root is part of the anchor href, meaning it's relative.
     if (href.prop.slice(0, root.length) === root) {
@@ -286,7 +280,6 @@ function(app, Router) {
 });
 
 ```
-
 Inline, Backbone Boilerplate includes boilerplate code for initializing our router with HTML5 History API support and handling other navigation scenarios, so we don't have to.
 
 ### app.js
@@ -298,7 +291,7 @@ In this case however, this file is used to define templating and layout configur
 ```javascript
 define([
   "backbone.layoutmanager"
-], function() {
+], function () {
 
   // Provide a global location to place configuration settings and module
   // creation.
@@ -317,7 +310,7 @@ define([
 
     prefix: "app/templates/",
 
-    fetch: function(path) {
+    fetch: function (path) {
       // Concatenate the file extension.
       path = path + ".html";
 
@@ -330,7 +323,7 @@ define([
       var done = this.async();
 
       // Seek out the template asynchronously.
-      $.get(app.root + path, function(contents) {
+      $.get(app.root + path, function (contents) {
         done(JST[path] = _.template(contents));
       });
     }
@@ -339,12 +332,12 @@ define([
   // Mix Backbone.Events, modules, and layout management into the app object.
   return _.extend(app, {
     // Create a custom object with a nested Views object.
-    module: function(additionalProps) {
+    module: function (additionalProps) {
       return _.extend({ Views: {} }, additionalProps);
     },
 
     // Helper for using layouts.
-    useLayout: function(name, options) {
+    useLayout: function (name, options) {
       // Enable variable arity by allowing the first argument to be the options
       // object and omitting the name argument.
       if (_.isObject(name)) {
@@ -372,7 +365,6 @@ define([
 });
 
 ```
-
 Note: JST stands for JavaScript templates and generally refers to templates which have been (or will be) precompiled as part of a build step. When running `bbb release` or `bbb debug`, Underscore/Lo-dash templates will be precompiled to avoid the need to compile them at runtime within the browser.
 
 ### Creating Backbone Boilerplate Modules
@@ -392,7 +384,7 @@ $ bbb init:module
 # Grunt prompt
 Please answer the following:
 [?] Module Name foo
-[?] Do you need to make any changes to the above before continuing? (y/N) 
+[?] Do you need to make any changes to the above before continuing? (y/N)
 
 Writing app/modules/foo.js...OK
 Writing app/styles/foo.styl...OK
@@ -402,7 +394,6 @@ Initialized from template "module".
 
 Done, without errors.
 ```
-
 This will generate a module `foo.js` as follows:
 
 ```javascript
@@ -413,14 +404,14 @@ define([
 ],
 
 // Map dependencies from above array.
-function(app) {
+function (app) {
 
   // Create a new module.
   var Foo = app.module();
 
   // Default Model.
   Foo.Model = Backbone.Model.extend({
-  
+
   });
 
   // Default Collection.
@@ -438,7 +429,6 @@ function(app) {
 
 });
 ```
-
 Notice how boilerplate code for a model, collection and view have been scaffolded out for us.
 
 Optionally, we may also wish to include references to plugins such as the Backbone LocalStorage or Offline adapters. One clean way of including a plugin in the above boilerplate could be:
@@ -453,7 +443,7 @@ define([
 ],
 
 // Map dependencies from above array.
-function(app) {
+function (app) {
 
   // Create a new module.
   var Foo = app.module();
@@ -479,7 +469,6 @@ function(app) {
 
 });
 ```
-
 ### router.js
 
 Finally, let's look at our application router which is used for handling navigation. The default router Backbone Boilerplate generates for us includes sane defaults out of the box and can be easily extended.
@@ -490,7 +479,7 @@ define([
   "app"
 ],
 
-function(app) {
+function (app) {
 
   // Defining the application router, you can attach sub routers here.
   var Router = Backbone.Router.extend({
@@ -498,7 +487,7 @@ function(app) {
       "": "index"
     },
 
-    index: function() {
+    index: function () {
 
     }
   });
@@ -507,7 +496,6 @@ function(app) {
 
 });
 ```
-
 If however we would like to execute some module-specific logic, when the page loads (i.e when a user hits the default route), we can pull in a module as a dependency and optionally use the Backbone LayoutManager to attach Views to our layout as follows:
 
 ```javascript
@@ -519,7 +507,7 @@ define([
   'modules/foo'
 ],
 
-function(app, Foo) {
+function (app, Foo) {
 
   // Defining the application router, you can attach sub routers here.
   var Router = Backbone.Router.extend({
@@ -527,7 +515,7 @@ function(app, Foo) {
       '': 'index'
     },
 
-    index: function() {
+    index: function () {
             // Create a new Collection
             var collection = new Foo.Collection();
 
@@ -548,10 +536,9 @@ function(app, Foo) {
 
 });
 ```
-
 ## Related Tools & Projects
 
-As we've seen, scaffolding tools can assist in expediting how quickly you can begin a new application by creating the basic files required for a project automatically. 
+As we've seen, scaffolding tools can assist in expediting how quickly you can begin a new application by creating the basic files required for a project automatically.
 
 If you appreciated Grunt-BBB and would like to explore similar tools for the broader app development workflow, I'm happy to also recommend checking out the [Yeoman](http://yeoman.io) and workflow [Brunch](http://brunch.io).
 
@@ -564,7 +551,7 @@ In this section we reviewed Backbone Boilerplate and learned how to use the `bbb
 
 If you would like to learn more about how this project helps structure your app, BBB includes some built-in boilerplate sample apps that can be easily generated for review.
 
-These include a boilerplate tutorial project (`bbb init:tutorial`) and an implementation of my [TodoMVC](http://todomvc) project (`bbb init:todomvc`). I recommend checking these out as they'll provide you with a more complete picture of how Backbone Boilerplate, its templates, and so on fit into the overall setup for a web app.
+These include a boilerplate tutorial project (`bbb init:tutorial`) and an implementation of my [TodoMVC](http://todomvc.com) project (`bbb init:todomvc`). I recommend checking these out as they'll provide you with a more complete picture of how Backbone Boilerplate, its templates, and so on fit into the overall setup for a web app.
 
 For more about Grunt-BBB, remember to take a look at the official project [repository](https://github.com/backbone-boilerplate/grunt-bbb). There is also a related [slide-deck](https://dl.dropbox.com/u/79007/talks/Modern_Web_Applications/slides/index.html) available for those interested in reading more.
 

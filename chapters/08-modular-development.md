@@ -4,7 +4,7 @@
 
 When we say an application is modular, we generally mean it's composed of a set of highly decoupled, distinct pieces of functionality stored in modules. As you probably know, loose coupling facilitates easier maintainability of apps by removing dependencies where possible. When this is implemented efficiently, it's quite easy to see how changes to one part of a system may affect another.
 
-Unlike some more traditional programming languages, the current iteration of JavaScript (ECMA-262) doesn't provide developers with the means to import such modules of code in a clean, organized manner. 
+Unlike some more traditional programming languages, the current iteration of JavaScript (ECMA-262) doesn't provide developers with the means to import such modules of code in a clean, organized manner.
 
 Instead, developers are left to fall back on variations of the module or object literal patterns combined with script tags or a script loader. With many of these, module scripts are strung together in the DOM with namespaces being described by a single global object where it's still possible to have name collisions. There's also no clean way to handle dependency management without some manual effort or third party tools.
 
@@ -59,10 +59,9 @@ define(
     definition function /*function for instantiating the module or object*/
 );
 ```
-
 As you can tell by the inline comments, the `module_id` is an optional argument which is typically only required when non-AMD concatenation tools are being used (there may be some other edge cases where it's useful too). When this argument is left out, we call the module 'anonymous'. When working with anonymous modules, RequireJS will use a module's file path as its module id, so the adage Don't Repeat Yourself (DRY) should be applied by omitting the module id in the `define()` invocation.
 
-The dependencies argument is an array representing all of the other modules that this module depends on and the third argument is a factory that can either be a function that should be executed to instantiate the module or an object. 
+The dependencies argument is an array representing all of the other modules that this module depends on and the third argument is a factory that can either be a function that should be executed to instantiate the module or an object.
 
 A barebones module (compatible with RequireJS) could be defined using `define()` as follows:
 
@@ -72,13 +71,13 @@ A barebones module (compatible with RequireJS) could be defined using `define()`
 define(['foo', 'bar'],
     // module definition function
     // dependencies (foo and bar) are mapped to function parameters
-    function ( foo, bar ) {
+    function (foo, bar) {
         // return a value that defines the module export
         // (i.e the functionality we want to expose for consumption)
 
         // create your module here
         var myModule = {
-            doStuff:function(){
+            doStuff:function () {
                 console.log('Yay! Stuff');
             }
         }
@@ -86,7 +85,6 @@ define(['foo', 'bar'],
         return myModule;
 });
 ```
-
 *Note: RequireJS is intelligent enough to automatically infer the '.js' extension to your script file names. As such, this extension is generally omitted when specifying dependencies.*
 
 #### Alternate syntax
@@ -96,7 +94,7 @@ Here is the previous snippet using the alternate syntax:
 ```javascript
 // A module ID has been omitted here to make the module anonymous
 
-define(function(require){
+define(function (require) {
         // module definition function
     // dependencies (foo and bar) are defined as local vars
     var foo = require('foo'),
@@ -107,7 +105,7 @@ define(function(require){
 
     // create your module here
     var myModule = {
-        doStuff:function(){
+        doStuff:function () {
             console.log('Yay! Stuff');
         }
     }
@@ -115,7 +113,6 @@ define(function(require){
     return myModule;
 });
 ```
-
 The `require()` method is typically used to load code in a top-level JavaScript file or within a module should you wish to dynamically fetch dependencies. An example of its usage is:
 
 ```javascript
@@ -124,12 +121,11 @@ The `require()` method is typically used to load code in a top-level JavaScript 
 // function arguments to the callback (foo and bar)
 // so that they can similarly be accessed
 
-require( ['foo', 'bar'], function ( foo, bar ) {
+require( ['foo', 'bar'], function (foo, bar) {
     // rest of your code here
     foo.doSomething();
 });
 ```
-
 Addy's post on [Writing Modular JS](http://addyosmani.com/writing-modular-js/) covers the AMD specification in much more detail. Defining and using modules will be covered in this book shortly when we look at more structured examples of using RequireJS.
 
 ### Getting Started with RequireJS
@@ -139,7 +135,6 @@ Before using RequireJS and Backbone we will first set up a very basic RequireJS 
 ```html
 <script data-main="app.js" src="lib/require.js"></script>
 ```
-
 Now, RequireJS will automatically load `app.js` for you.
 
 #### RequireJS Configuration
@@ -154,7 +149,6 @@ require.config({
     shim: {}, // used for setting up all Shims (see below for more detail)
 });
 ```
-
 The main reason you'd want to configure RequireJS is to add shims, which we'll cover next. To see other configuration options available to you, I recommend checking out the [RequireJS documentation](http://requirejs.org/docs/api.html#config).
 
 
@@ -173,7 +167,6 @@ require.config({
     }
 });
 ```
-
 Note that when specifying paths for RequireJS you should omit the `.js` from the end of script names.
 
 The important line here is `exports: '_'`. This line tells RequireJS that the script in `'lib/underscore.js'` creates a global variable called `_` instead of defining a module. Now when we list Underscore as a dependency RequireJS will know to give us the `_` global variable as though it was the module defined by that script. We can set up a shim for Backbone too:
@@ -191,13 +184,11 @@ require.config({
     }
 });
 ```
-
 Again, that configuration tells RequireJS to return the global `Backbone` variable that Backbone exports, but this time you'll notice that Backbone's dependencies are defined. This means whenever this:
 
 ```javascript
-require( 'lib/backbone', function( Backbone ) {...} );
+require('lib/backbone', function (Backbone) {... });
 ```
-
 Is run, it will first make sure the dependencies are met, and then pass the global `Backbone` object into the callback function. You don't need to do this with every library, only the ones that don't support AMD. For example, jQuery does support it, as of jQuery 1.7.
 
 If you'd like to read more about general RequireJS usage, the [RequireJS API docs](http://requirejs.org/docs/api.html) are incredibly thorough and easy to read.
@@ -213,7 +204,6 @@ require.config({
     }
 });
 ```
-
 Of course, this can be combined with a shim:
 
 ```javascript
@@ -228,15 +218,13 @@ require.config({
     }
 });
 ```
-
 Just make sure that you refer to the custom path in your shim settings, too. Now you can do
 
 ```javascript
-require( ['underscore'], function(_) {
+require( ['underscore'], function (_) {
 // code here
 });
 ```
-
 to shim Underscore but still use a custom path.
 
 
@@ -249,7 +237,7 @@ Now that we've taken a look at how to define AMD modules, let's review how to go
 For example, here is how a model is defined.
 
 ```javascript
-define(['underscore', 'backbone'], function(_, Backbone) {
+define(['underscore', 'backbone'], function (_, Backbone) {
   var myModel = Backbone.Model.extend({
 
     // Default attributes
@@ -258,10 +246,10 @@ define(['underscore', 'backbone'], function(_, Backbone) {
     },
 
     // A dummy initialization method
-    initialize: function() {
+    initialize: function () {
     },
 
-    clear: function() {
+    clear: function () {
       this.destroy();
       this.view.remove();
     }
@@ -270,7 +258,6 @@ define(['underscore', 'backbone'], function(_, Backbone) {
   return myModel;
 });
 ```
-
 Note how we alias Underscore.js's instance to `_` and Backbone to just `Backbone`, making it very trivial to convert non-AMD code over to using this module format. For a view which might require other dependencies such as jQuery, this can similarly be done as follows:
 
 ```javascript
@@ -280,12 +267,11 @@ define([
   'backbone',
   'collections/mycollection',
   'views/myview'
-  ], function($, _, Backbone, myCollection, myView){
+  ], function ($, _, Backbone, myCollection, myView) {
 
   var AppView = Backbone.View.extend({
   ...
 ```
-
 Aliasing to the dollar-sign (`$`) once again makes it very easy to encapsulate any part of an application you wish using AMD.
 
 Doing it this way makes it easy to organize your Backbone application as you like. It's recommended to separate modules into folders. For example, individual folders for models, collections, views and so on. RequireJS doesn't care about what folder structure you use; as long as you use the correct path when using `require`, it will happily pull in the file.
@@ -295,7 +281,7 @@ As part of this chapter I've made a very simple [Backbone application with Requi
 At the base of this application is the `Item` model, which describes a single item in the stock. Its implementation is very straight forward:
 
 ```javascript
-define( ["lib/backbone"], function ( Backbone ) {
+define( ["lib/backbone"], function (Backbone) {
   var Item = Backbone.Model.extend({
     defaults: {
       price: 35,
@@ -305,19 +291,18 @@ define( ["lib/backbone"], function ( Backbone ) {
   return Item;
 });
 ```
-
 Converting an individual model, collection, view or similar into an AMD, RequireJS compliant one is typically very straight forward. Usually all that's needed is the first line, calling `define`, and to make sure that once you've defined your object - in this case, the `Item` model, to return it.
 
 Let's now set up a view for that individual item:
 
 ```javascript
-define( ["lib/backbone"], function ( Backbone ) {
+define( ["lib/backbone"], function (Backbone) {
   var ItemView = Backbone.View.extend({
     tagName: "div",
     className: "item-wrap",
     template: _.template($("#itemTemplate").html()),
 
-    render: function() {
+    render: function () {
       this.$el.html(this.template(this.model.toJSON()));
       return this;
     }
@@ -325,45 +310,43 @@ define( ["lib/backbone"], function ( Backbone ) {
   return ItemView;
 });
 ```
-
 This view doesn't actually depend on the model it will be used with, so again the only dependency is Backbone. Other than that it's just a regular Backbone view. There's nothing special going on here, other than returning the object and using `define` so RequireJS can pick it up. Now let's make a collection to view a list of items. This time we will need to reference the `Item` model, so we add it as a dependency:
 
 ```javascript
-define(["lib/backbone", "models/item"], function(Backbone, Item) {
+define(["lib/backbone", "models/item"], function (Backbone, Item) {
   var Cart = Backbone.Collection.extend({
     model: Item,
-    initialize: function() {
+    initialize: function () {
       this.on("add", this.updateSet, this);
     },
-    updateSet: function() {
+    updateSet: function () {
       items = this.models;
     }
   });
   return Cart;
 });
 ```
-
 I've called this collection `Cart`, as it's a group of items. As the `Item` model is the second dependency, I can bind the variable `Item` to it by declaring it as the second argument to the callback function. I can then refer to this within my collection implementation.
 
 Finally, let's have a look at the view for this collection. (This file is much bigger in the application, but I've taken some bits out so it's easier to examine).
 
 ```javascript
-define(["lib/backbone", "models/item", "views/itemview"], function(Backbone, Item, ItemView) {
+define(["lib/backbone", "models/item", "views/itemview"], function (Backbone, Item, ItemView) {
   var ItemCollectionView = Backbone.View.extend({
     el: '#yourcart',
-    initialize: function(collection) {
+    initialize: function (collection) {
       this.collection = collection;
       this.render();
       this.collection.on("reset", this.render, this);
     },
-    render: function() {
+    render: function () {
       this.$el.html("");
-      this.collection.each(function(item) {
+      this.collection.each(function (item) {
         this.renderItem(item);
       }, this);
     },
-    renderItem: function(item) {
-      var itemView = new ItemView({model: item});
+    renderItem: function (item) {
+      var itemView = new ItemView({ model: item });
       this.$el.append(itemView.render().el);
     },
     // more methods here removed
@@ -371,7 +354,6 @@ define(["lib/backbone", "models/item", "views/itemview"], function(Backbone, Ite
   return ItemCollectionView;
 });
 ```
-
 There really is nothing to it once you've got the general pattern. Define each "object" (a model, view, collection, router or otherwise) through RequireJS, and then specify them as dependencies to other objects that need them. Again, you can find this entire application [on Github](https://github.com/javascript-playground/backbone-require-example).
 
 If you'd like to take a look at how others do it, [Pete Hawkins' Backbone Stack repository](https://github.com/phawk/Backbone-Stack) is a good example of structuring a Backbone application using RequireJS. Greg Franko has also written [an overview of how he uses Backbone and Require](http://gregfranko.com/blog/using-backbone-dot-js-with-require-dot-js/), and [Jeremy Kahn's post](http://jeremyckahn.github.com/blog/2012/08/18/keeping-it-sane-backbone-views-and-require-dot-js/) neatly describes his approach. For a look at a full sample application, the [Backbone and Require version](https://github.com/addyosmani/todomvc/tree/gh-pages/dependency-examples/backbone_require) of the TodoMVC application is a good starting point.
@@ -394,18 +376,16 @@ require.config( {
     baseUrl: 'app'
 } );
 ```
-
 3. When the `text!` prefix is used for a dependency, RequireJS will automatically load the text plugin and treat the dependency as a text resource. A typical example of this in action may look like:
 
 ```javascript
 require(['js/app', 'text!templates/mainView.html'],
-    function( app, mainView ) {
+    function (app, mainView) {
         // the contents of the mainView file will be
         // loaded into mainView for usage.
     }
 );
 ```
-
 4. Finally we can use the text resource that's been loaded for templating purposes. You're probably used to storing your HTML templates inline using a script with a specific identifier.
 
 With Underscore.js's micro-templating (and jQuery) this would typically be:
@@ -414,35 +394,31 @@ HTML:
 
 ```html
 <script type="text/template" id="mainViewTemplate">
-    <% _.each( person, function( person_item ){ %>
+    <% _.each( person, function (person_item) { %>
         <li><%= person_item.get('name') %></li>
     <% }); %>
 </script>
 ```
 
-
 JS:
 
 ```javascript
-var compiled_template = _.template( $('#mainViewTemplate').html() );
+var compiled_template = _.template($('#mainViewTemplate').html());
 ```
-
 With RequireJS and the text plugin however, it's as simple as saving the same template into an external text file (say, `mainView.html`) and doing the following:
 
 ```javascript
 require(['js/app', 'text!templates/mainView.html'],
-    function(app, mainView){
-        var compiled_template = _.template( mainView );
+    function (app, mainView) {
+        var compiled_template = _.template(mainView);
     }
 );
 ```
-
 That's it! Now you can apply your template to a view in Backbone with something like:
 
 ```javascript
-collection.someview.$el.html( compiled_template( { results: collection.models } ) );
+collection.someview.$el.html(compiled_template( { results: collection.models } ));
 ```
-
 All templating solutions will have their own custom methods for handling template compilation, but if you understand the above, substituting Underscore's micro-templating for any other solution should be fairly trivial.
 
 
@@ -462,24 +438,22 @@ You'll notice that I mentioned the word 'specific' in the first bullet point. Th
 
 ```javascript
 define(['jquery', 'backbone', 'underscore', 'collections/sample', 'views/test'],
-    function($, Backbone, _, Sample, Test){
-        //...
+    function ($, Backbone, _, Sample, Test) {
+        // ..
     });
 ```
-
 will combine fine, however dynamic dependencies such as:
 
 ```javascript
 var models = someCondition ? ['models/ab', 'models/ac'] : ['models/ba', 'models/bc'];
 define(['jquery', 'backbone', 'underscore'].concat(models),
-    function($, Backbone, _, firstModel, secondModel){
-        //...
+    function ($, Backbone, _, firstModel, secondModel) {
+        // ..
     });
 ```
-
 will be ignored. This is by design as it ensures that dynamic dependency/module loading can still take place even after optimization.
 
-Although the RequireJS optimizer works fine in both Node and Java environments, it's strongly recommended to run it under Node as it executes significantly faster there. 
+Although the RequireJS optimizer works fine in both Node and Java environments, it's strongly recommended to run it under Node as it executes significantly faster there.
 
 To get started with r.js, grab it from the [RequireJS download page](http://requirejs.org/docs/download.html#rjs) or [through NPM](http://requirejs.org/docs/optimization.html#download). To begin getting our project to build with r.js, we will need to create a new build profile.
 
@@ -490,8 +464,7 @@ Assuming the code for our application and external dependencies are in `app/libs
   baseUrl: 'app',
   out: 'dist/main.js',
 ```
-
-The paths above are relative to the `baseUrl` for our project and in our case it would make sense to make this the `app` folder. The `out` parameter informs r.js that we want to concatenate everything into a single file. 
+The paths above are relative to the `baseUrl` for our project and in our case it would make sense to make this the `app` folder. The `out` parameter informs r.js that we want to concatenate everything into a single file.
 
 Alternatively, we can specify `dir`, which will ensure the contents of our `app` directory are copied into this directory. e.g:
 
@@ -501,8 +474,7 @@ Alternatively, we can specify `dir`, which will ensure the contents of our `app`
   dir: 'release',
   out: 'dist/main.js'
 ```
-
-Additional options that can be specified such as `modules` and `appDir` are not compatible with `out`, however let's briefly discuss them in case you do wish to use them. 
+Additional options that can be specified such as `modules` and `appDir` are not compatible with `out`, however let's briefly discuss them in case you do wish to use them.
 
 `modules` is an array where we can explicitly specify the module names we would like to have optimized.
 
@@ -512,26 +484,23 @@ Additional options that can be specified such as `modules` and `appDir` are not 
         {
             name: 'app',
             exclude: [
-                // If you prefer not to include certain 
+                // If you prefer not to include certain
                 // libs exclude them here
             ]
         }
 ```
-
 `appDir` - when specified, our`baseUrl` is relative to this parameter. If `appDir` is not defined, `baseUrl` is simply relative to the `build.js` file.
 
 ```
     appDir: './',
 ```
-
-Back to our build profile, the `main` parameter is used to specify our main module - we are making use of `include` here as we're going to take advantage of [Almond](https://github.com/jrburke/almond) - a stripped down loader for RequireJS modules which is useful should you not need to load modules in dynamically. 
+Back to our build profile, the `main` parameter is used to specify our main module - we are making use of `include` here as we're going to take advantage of [Almond](https://github.com/jrburke/almond) - a stripped down loader for RequireJS modules which is useful should you not need to load modules in dynamically.
 
 ```
   include: ['libs/almond', 'main'],
   wrap: true,
 ```
-
-`include` is another array which specifies the modules we want to include in the build. By specifying "main", r.js will trace over all modules main depends on and will include them. `wrap` wraps modules which RequireJS needs into a closure so that only what we export is included in the global environment. 
+`include` is another array which specifies the modules we want to include in the build. By specifying "main", r.js will trace over all modules main depends on and will include them. `wrap` wraps modules which RequireJS needs into a closure so that only what we export is included in the global environment.
 
 ```
   paths: {
@@ -547,12 +516,11 @@ The remainder of the build.js file would be a regular paths configuration object
 ```
 node r.js -o build.js
 ```
-
 which should place our compiled project into dist/main.js.
 
 The build profile is usually placed inside the 'scripts' or 'js' directory of your project. As per the docs, this file can however exist anywhere you wish, but you'll need to edit the contents of your build profile accordingly.
 
-That's it. As long as you have UglifyJS/Closure tools setup correctly, r.js should be able to easily optimize your entire Backbone project in just a few key-strokes. 
+That's it. As long as you have UglifyJS/Closure tools setup correctly, r.js should be able to easily optimize your entire Backbone project in just a few key-strokes.
 
 If you would like to learn more about build profiles, James Burke has a [heavily commented sample file](https://github.com/jrburke/r.js/blob/master/build/example.build.js) with all the possible options available.
 
@@ -596,7 +564,6 @@ index.html
                 text.js
 ...css/
 ```
-
 ### Markup
 
 The markup for the application is relatively simple and consists of three primary parts: an input section for entering new todo items (`create-todo`), a list section to display existing items (which can also be edited in-place) (`todo-list`) and finally a section summarizing how many items are left to be completed (`todo-stats`).
@@ -621,7 +588,6 @@ The markup for the application is relatively simple and consists of three primar
 
 </div>
 ```
-
 The rest of the tutorial will now focus on the JavaScript side of the practical.
 
 ### Configuration options
@@ -645,11 +611,10 @@ require.config({
   }
 });
 
-require(['views/app'], function(AppView){
+require(['views/app'], function (AppView) {
   var app_view = new AppView;
 });
 ```
-
 The `require()` at the end of our main.js file is simply there so we can load and instantiate the primary view for our application (`views/app.js`). You'll commonly see both this and the configuration object included in most top-level script files for a project.
 
 In addition to offering name-mapping, the configuration object can be used to define additional properties such as `waitSeconds` - the number of seconds to wait before script loading times out and `locale`, should you wish to load up i18n bundles for custom languages. The `baseUrl` is simply the path to use for module lookups.
@@ -664,7 +629,7 @@ Before we dive into AMD-wrapped versions of our Backbone components, let's revie
 ```javascript
 var TodoView = Backbone.View.extend({
 
-    //... is a list tag.
+    // .. is a list tag.
     tagName:  'li',
 
     // Cache the template function for a single item.
@@ -681,13 +646,12 @@ var TodoView = Backbone.View.extend({
     // The TodoView listens for changes to its model, re-rendering. Since there's
     // a one-to-one correspondence between a **Todo** and a **TodoView** in this
     // app, we set a direct reference on the model for convenience.
-    initialize: function() {
+    initialize: function () {
       this.model.on('change', this.render, this);
       this.model.view = this;
     },
     ...
 ```
-
 Note how for templating the common practice of referencing a script by an ID (or other selector) and obtaining its value is used. This of course requires that the template being accessed is implicitly defined in our markup. The following is the 'embedded' version of our template being referenced above:
 
 ```
@@ -704,7 +668,6 @@ Note how for templating the common practice of referencing a script by an ID (or
       </div>
 </script>
 ```
-
 Whilst there is nothing wrong with the template itself, once we begin to develop larger applications requiring multiple templates, including them all in our markup on page-load can quickly become both unmanageable and come with performance costs. We'll look at solving this problem in a minute.
 
 Let's now take a look at the AMD-version of our view. As discussed earlier, the 'module' is wrapped using AMD's `define()` which allows us to specify the dependencies our view requires. Using the mapped paths to 'jquery' etc. simplifies referencing common dependencies and instances of dependencies are themselves mapped to local variables that we can access (e.g 'jquery' is mapped to `$`).
@@ -717,10 +680,10 @@ define([
   'underscore',
   'backbone',
   'text!templates/todos.html'
-  ], function($, _, Backbone, todosTemplate){
+  ], function ($, _, Backbone, todosTemplate) {
   var TodoView = Backbone.View.extend({
 
-    //... is a list tag.
+    // .. is a list tag.
     tagName:  'li',
 
     // Cache the template function for a single item.
@@ -737,20 +700,20 @@ define([
     // The TodoView listens for changes to its model, re-rendering. Since there's
     // a one-to-one correspondence between a **Todo** and a **TodoView** in this
     // app, we set a direct reference on the model for convenience.
-    initialize: function() {
+    initialize: function () {
       this.model.on('change', this.render, this);
       this.model.view = this;
     },
 
     // Re-render the contents of the todo item.
-    render: function() {
+    render: function () {
       this.$el.html(this.template(this.model.toJSON()));
       this.setContent();
       return this;
     },
 
     // Use `jQuery.text` to set the contents of the todo item.
-    setContent: function() {
+    setContent: function () {
       var content = this.model.get('content');
       this.$('.todo-content').text(content);
       this.input = this.$('.todo-input');
@@ -759,7 +722,6 @@ define([
     },
     ...
 ```
-
  From a maintenance perspective, there's nothing logically different in this version of our view, except for how we approach templating.
 
 Using the RequireJS text plugin (the dependency marked `text`), we can actually store all of the contents for the template we looked at earlier in an external file (todos.html).
@@ -778,7 +740,6 @@ Using the RequireJS text plugin (the dependency marked `text`), we can actually 
     </div>
 </div>
 ```
-
 There's no longer a need to be concerned with IDs for the template as we can map its contents to a local variable (in this case `todosTemplate`). We then simply pass this to the Underscore.js templating function `_.template()` the same way we normally would have the value of our template script.
 
 Next, let's look at how to define models as dependencies which can be pulled into collections. Here's an AMD-compatible model module, which has two default values: a `content` attribute for the content of a Todo item and a boolean `done` state, allowing us to trigger whether the item has been completed or not.
@@ -786,7 +747,7 @@ Next, let's look at how to define models as dependencies which can be pulled int
 **models/todo.js**
 
 ```javascript
-define(['underscore', 'backbone'], function(_, Backbone) {
+define(['underscore', 'backbone'], function (_, Backbone) {
   var TodoModel = Backbone.Model.extend({
 
     // Default attributes for the todo.
@@ -796,16 +757,16 @@ define(['underscore', 'backbone'], function(_, Backbone) {
       done: false
     },
 
-    initialize: function() {
+    initialize: function () {
     },
 
     // Toggle the `done` state of this todo item.
-    toggle: function() {
-      this.save({done: !this.get('done')});
+    toggle: function () {
+      this.save({ done: !this.get('done') });
     },
 
     // Remove this Todo from *localStorage* and delete its view.
-    clear: function() {
+    clear: function () {
       this.destroy();
       this.view.remove();
     }
@@ -814,7 +775,6 @@ define(['underscore', 'backbone'], function(_, Backbone) {
   return TodoModel;
 });
 ```
-
 As per other types of dependencies, we can easily map our model module to a local variable (in this case `Todo`) so it can be referenced as the model to use for our `TodosCollection`. This collection also supports a simple `done()` filter for narrowing down Todo items that have been completed and a `remaining()` filter for those that are still outstanding.
 
 **collections/todos.js**
@@ -825,7 +785,7 @@ define([
   'backbone',
   'libs/backbone/localstorage',
   'models/todo'
-  ], function(_, Backbone, Store, Todo){
+  ], function (_, Backbone, Store, Todo) {
 
     var TodosCollection = Backbone.Collection.extend({
 
@@ -836,17 +796,16 @@ define([
     localStorage: new Store('todos'),
 
     // Filter down the list of all todo items that are finished.
-    done: function() {
-      return this.filter(function(todo){ return todo.get('done'); });
+    done: function () {
+      return this.filter(function (todo) { return todo.get('done'); });
     },
 
     // Filter down the list to only todo items that are still not finished.
-    remaining: function() {
+    remaining: function () {
       return this.without.apply(this, this.done());
     },
     ...
 ```
-
 In addition to allowing users to add new Todo items from views (which we then insert as models in a collection), we ideally also want to be able to display how many items have been completed and how many are remaining. We've already defined filters that can provide us this information in the above collection, so let's use them in our main application view.
 
 **views/app.js**
@@ -859,7 +818,7 @@ define([
   'collections/todos',
   'views/todo',
   'text!templates/stats.html'
-  ], function($, _, Backbone, Todos, TodoView, statsTemplate){
+  ], function ($, _, Backbone, Todos, TodoView, statsTemplate) {
 
   var AppView = Backbone.View.extend({
 
@@ -874,7 +833,7 @@ define([
 
     // Re-rendering the App just means refreshing the statistics -- the rest
     // of the app doesn't change.
-    render: function() {
+    render: function () {
       var done = Todos.done().length;
       this.$('#todo-stats').html(this.statsTemplate({
         total:      Todos.length,
@@ -884,7 +843,6 @@ define([
     },
     ...
 ```
-
 Above, we map the second template for this project, `templates/stats.html` to `statsTemplate` which is used for rendering the overall `done` and `remaining` states. This works by simply passing our template the length of our overall Todos collection (`Todos.length` - the number of Todo items created so far) and similarly the length (counts) for items that have been completed (`Todos.done().length`) or are remaining (`Todos.remaining().length`).
 
 The contents of our `statsTemplate` can be seen below. It's nothing too complicated, but does use ternary conditions to evaluate whether we should state there's "1 item" or "2 item<i>s</i>" in a particular state.
@@ -905,7 +863,6 @@ The contents of our `statsTemplate` can be seen below. It's nothing too complica
         </span>
       <% } %>
 ```
-
 
 
 The rest of the source for the Todo app mainly consists of code for handling user and application events, but that rounds up most of the core concepts for this practical.
@@ -951,8 +908,8 @@ Every JavaScript file defined in a module will have a `module` object in scope w
 
     new (Backbone.Router.extend({
         routes: module.routes,
-        index: function() {},
-        contact: function() {}
+        index: function () {},
+        contact: function () {}
     }));
 
 ### Module loader Router
@@ -967,17 +924,17 @@ A sample implementation is provided below. The `config` object would need to con
         routes: {}
     };
 
-    _.each(config.modules, function(module, moduleName) {
+    _.each(config.modules, function (module, moduleName) {
         if (module.routes) {
             // Generate a loading callback for the module
             var callbackName = "loader_" moduleName;
-            handlers[callbackName] = function() {
+            handlers[callbackName] = function () {
                 if (loader.isLoaded(moduleName)) {
                     // Do nothing if the module is loaded
                     return;
                 } else {
-                    //the module needs to be loaded
-                    loader.loadModule(moduleName, function() {
+                    // he module needs to be loaded
+                    loader.loadModule(moduleName, function () {
                         // Module is loaded, reloading the route
                         // will trigger callback in the module's
                         // router
@@ -987,7 +944,7 @@ A sample implementation is provided below. The `config` object would need to con
             };
             // Each route in the module should trigger the
             // loading callback
-            _.each(module.routes, function(methodName, route) {
+            _.each(module.routes, function (methodName, route) {
                 handlers.routes[route] = callbackName;
             });
         }
@@ -1008,10 +965,10 @@ Another advantage to defining all routes in a single location is that the same J
         server = express(),
         config = JSON.parse(fs.readFileSync('path/to/config.json'));
 
-    _.each(config.modules, function(module, moduleName) {
+    _.each(config.modules, function (module, moduleName) {
         if (module.routes) {
-            _.each(module.routes, function(methodName, route) {
-                server.get(route, function(req, res) {
+            _.each(module.routes, function (methodName, route) {
+                server.get(route, function (req, res) {
                       res.sendFile('public/index.html');
                 });
             });
@@ -1033,14 +990,13 @@ For more than trivial views, DocumentCloud have a home-built asset packager call
 
 Jammit expects your JavaScript templates (JST) to live alongside any ERB templates you're using in the form of .jst files. It packages the templates into a global JST object which can be used to render templates into strings. Making Jammit aware of your templates is straight-forward - just add an entry for something like `views/**/*.jst` to your app package in assets.yml.
 
-To provide Jammit dependencies you simply write out an assets.yml file that either listed the dependencies in order or used a combination of free capture directories (for example: /**/*.js, templates/*.js, and specific files). 
+To provide Jammit dependencies you simply write out an assets.yml file that either listed the dependencies in order or used a combination of free capture directories (for example: /**/*.js, templates/*.js, and specific files).
 
 A template using Jammit can derive it's data from the collection object that is passed to it:
 
 ```
 this.$el.html(JST.myTemplate({ collection: this.collection }));
 ```
-
 # Paginating Backbone.js Requests & Collections
 
 Pagination is a ubiquitous problem we often find ourselves needing to solve on the web. Perhaps most predominantly when working with back-end APIs and JavaScript-heavy clients which consume them.
@@ -1092,7 +1048,6 @@ First, we define a new Paginated collection using `Backbone.Paginator.requestPag
 ```javascript
 var PaginatedCollection = Backbone.Paginator.requestPager.extend({
 ```
-
 #### 2: Set the model for the collection as normal
 
 Within our collection, we then (as normal) specify the model to be used with this collection followed by the URL (or base URL) for the service providing our data (e.g the Netflix API).
@@ -1100,7 +1055,6 @@ Within our collection, we then (as normal) specify the model to be used with thi
 ```javascript
         model: model,
 ```
-
 #### 3. Configure the base URL and the type of the request
 
 We need to set a base URL. The `type` of the request is `GET` by default, and the `dataType` is `jsonp` in order to enable cross-domain requests.
@@ -1117,7 +1071,6 @@ We need to set a base URL. The `type` of the request is `GET` by default, and th
       url: 'http://odata.netflix.com/Catalog/People(49446)/TitlesActedIn?'
     },
 ```
-
 #### 4. Configure how the library will show the results
 
 We need to tell the library how many items per page would we like to see, etc...
@@ -1141,7 +1094,6 @@ We need to tell the library how many items per page would we like to see, etc...
       totalPages: 10
     },
 ```
-
 #### 5. Configure the parameters we want to send to the server
 
 The base URL on its own won't be enough for most cases, so you can pass more parameters to the server.
@@ -1154,12 +1106,12 @@ Note how you can use functions insead of hardcoded values, and you can also refe
       '$filter': '',
 
       // number of items to return per request/page
-      '$top': function() { return this.perPage },
+      '$top': function () { return this.perPage },
 
       // how many results the request should skip ahead to
       // customize as needed. For the Netflix API, skipping ahead based on
       // page * number of results per page was necessary.
-      '$skip': function() { return this.currentPage * this.perPage },
+      '$skip': function () { return this.currentPage * this.perPage },
 
       // field to sort by
       '$orderby': 'ReleaseYear',
@@ -1172,7 +1124,6 @@ Note how you can use functions insead of hardcoded values, and you can also refe
       '$callback': 'callback'
     },
 ```
-
 #### 6. Finally, configure Collection.parse() and we're done
 
 The last thing we need to do is configure our collection's `parse()` method. We want to ensure we're returning the correct part of our JSON response containing the data our collection will be populated with, which below is `response.d.results` (for the Netflix API).
@@ -1184,9 +1135,9 @@ You might also notice that we're setting `this.totalPages` to the total page cou
             // Be sure to change this based on how your results
             // are structured (e.g d.results is Netflix specific)
             var tags = response.d.results;
-            //Normally this.totalPages would equal response.d.__count
-            //but as this particular NetFlix request only returns a
-            //total count of items for the search, we divide.
+            // ormally this.totalPages would equal response.d.__count
+            // ut as this particular NetFlix request only returns a
+            // otal count of items for the search, we divide.
             this.totalPages = Math.floor(response.d.__count / this.perPage);
             return tags;
         }
@@ -1194,15 +1145,14 @@ You might also notice that we're setting `this.totalPages` to the total page cou
 
 });
 ```
-
 #### Convenience methods:
 
 For your convenience, the following methods are made available for use in your views to interact with the `requestPager`:
 
-* **Collection.goTo( n, options )** - go to a specific page
-* **Collection.requestNextPage( options )** - go to the next page
-* **Collection.requestPreviousPage( options )** - go to the previous page
-* **Collection.howManyPer( n )** - set the number of items to display per page
+* **Collection.goTo(n, options)** - go to a specific page
+* **Collection.requestNextPage(options)** - go to the next page
+* **Collection.requestPreviousPage(options)** - go to the previous page
+* **Collection.howManyPer(n)** - set the number of items to display per page
 
 **requestPager** collection's methods `.goTo()`, `.requestNextPage()` and `.requestPreviousPage()` are all extensions of the original [Backbone Collection.fetch() method](http://documentcloud.github.com/backbone/#Collection-fetch). As such, they can all take the same option object as parameter.
 
@@ -1210,38 +1160,35 @@ This option object can use `success` and `error` parameters to pass a function t
 
 ```javascript
 Collection.goTo(n, {
-  success: function( collection, response ) {
+  success: function (collection, response) {
     // called if server request succeeds
   },
-  error: function( collection, response ) {
+  error: function (collection, response) {
     // called if server request fails
   }
 });
 ```
-
 You could also use the [jqXHR](http://api.jquery.com/jQuery.ajax/#jqXHR) returned by these methods to manage callbacks.
 
 ```javascript
 Collection
   .requestNextPage()
-  .done(function( data, textStatus, jqXHR ) {
+  .done(function (data, textStatus, jqXHR) {
     // called is server request success
   })
-  .fail(function( data, textStatus, jqXHR ) {
+  .fail(function (data, textStatus, jqXHR) {
     // called if server request fail
   })
-  .always(function( data, textStatus, jqXHR ) {
+  .always(function (data, textStatus, jqXHR) {
     // do something after server request is complete
   });
 });
 ```
-
-If you'd like to add the incoming models to the current collection, instead of replacing the collection's contents, pass `{add: true}` as an option to these methods.
+If you'd like to add the incoming models to the current collection, instead of replacing the collection's contents, pass `{add: true }` as an option to these methods.
 
 ```javascript
 Collection.requestPreviousPage({ add: true });
 ```
-
 ### Paginator.clientPager
 
 The `clientPager` works similar to the `requestPager`, except that our configuration values influence the pagination of data already returned at a UI-level. Whilst not shown (yet) there is also a lot more UI logic that ties in with the `clientPager`. An example of this can be seen in 'views/clientPagination.js'.
@@ -1254,7 +1201,6 @@ As with `requestPager`, let's first create a new Paginated `Backbone.Paginator.c
 
         model: model,
 ```
-
 #### 2. Configure the base URL and the type of the request
 
 We need to set a base URL. The `type` of the request is `GET` by default, and the `dataType` is `jsonp` in order to enable cross-domain requests.
@@ -1271,7 +1217,6 @@ We need to set a base URL. The `type` of the request is `GET` by default, and th
       url: 'http://odata.netflix.com/v2/Catalog/Titles?&'
     },
 ```
-
 #### 3. Configure how the library will show the results
 
 We need to tell the library how many items per page would we like to see, etc...
@@ -1295,7 +1240,6 @@ We need to tell the library how many items per page would we like to see, etc...
       totalPages: 10
     },
 ```
-
 #### 4. Configure the parameters we want to send to the server
 
 The base URL on its own won't be enough for most cases, so you can pass more parameters to the server.
@@ -1308,12 +1252,12 @@ Note how you can use functions instead of hardcoded values, and you can also ref
       '$filter': 'substringof(\'america\',Name)',
 
       // number of items to return per request/page
-      '$top': function() { return this.perPage },
+      '$top': function () { return this.perPage },
 
       // how many results the request should skip ahead to
       // customize as needed. For the Netflix API, skipping ahead based on
       // page * number of results per page was necessary.
-      '$skip': function() { return this.currentPage * this.perPage },
+      '$skip': function () { return this.currentPage * this.perPage },
 
       // field to sort by
       '$orderby': 'ReleaseYear',
@@ -1326,7 +1270,6 @@ Note how you can use functions instead of hardcoded values, and you can also ref
       '$callback': 'callback'
     },
 ```
-
 #### 5. Finally, configure Collection.parse() and we're done
 
 And finally we have our `parse()` method, which in this case isn't concerned with the total number of result pages available on the server as we have our own total count of pages for the paginated data in the UI.
@@ -1339,7 +1282,6 @@ And finally we have our `parse()` method, which in this case isn't concerned wit
 
     });
 ```
-
 #### Convenience methods:
 
 As mentioned, your views can hook into a number of convenience methods to navigate around UI-paginated data. For `clientPager` these include:
@@ -1353,11 +1295,10 @@ As mentioned, your views can hook into a number of convenience methods to naviga
 
 ```javascript
   this.collection.setFilter(
-    {'Name': {cmp_method: 'levenshtein', max_distance: 7}}
+    {'Name': {cmp_method: 'levenshtein', max_distance: 7 }}
     , 'Amreican P' // Note the switched 'r' and 'e', and the 'P' from 'Pie'
   );
 ```
-
 Also note that the levenshtein plug-in should be loaded and enabled using the ```useLevenshteinPlugin``` variable.
 
 Last but not less important: Performing Levenshtein comparison returns the ```distance``` between two strings. It won't let you *search* lengthy text.
@@ -1373,30 +1314,28 @@ Use levenshtein only for short texts (titles, names, etc).
 * **Collection.setFieldFilter(rules)** - filter each value of each model according to `rules` that you pass as argument. Example: You have a collection of books with 'release year' and 'author'. You can filter only the books that were released between 1999 and 2003. And then you can add another `rule` that will filter those books only to authors whose names start with 'A'. Possible rules: function, required, min, max, range, minLength, maxLength, rangeLength, oneOf, equalTo, pattern.
 
 ```javascript
-
   my_collection.setFieldFilter([
-    {field: 'release_year', type: 'range', value: {min: '1999', max: '2003'}},
-    {field: 'author', type: 'pattern', value: new RegExp('A*', 'igm')}
+    {field: 'release_year', type: 'range', value: {min: '1999', max: '2003' }},
+    {field: 'author', type: 'pattern', value: new RegExp('A*', 'igm') }
   ]);
 
-  //Rules:
+  // ules:
   //
-  //var my_var = 'green';
+  // ar my_var = 'green';
   //
-  //{field: 'color', type: 'equalTo', value: my_var}
-  //{field: 'color', type: 'function', value: function(field_value){ return field_value == my_var; } }
-  //{field: 'color', type: 'required'}
-  //{field: 'number_of_colors', type: 'min', value: '2'}
-  //{field: 'number_of_colors', type: 'max', value: '4'}
-  //{field: 'number_of_colors', type: 'range', value: {min: '2', max: '4'} }
-  //{field: 'color_name', type: 'minLength', value: '4'}
-  //{field: 'color_name', type: 'maxLength', value: '6'}
-  //{field: 'color_name', type: 'rangeLength', value: {min: '4', max: '6'}}
-  //{field: 'color_name', type: 'oneOf', value: ['green', 'yellow']}
-  //{field: 'color_name', type: 'pattern', value: new RegExp('gre*', 'ig')}
+  // field: 'color', type: 'equalTo', value: my_var }
+  // field: 'color', type: 'function', value: function (field_value) { return field_value == my_var; } }
+  // field: 'color', type: 'required' }
+  // field: 'number_of_colors', type: 'min', value: '2' }
+  // field: 'number_of_colors', type: 'max', value: '4' }
+  // field: 'number_of_colors', type: 'range', value: {min: '2', max: '4' } }
+  // field: 'color_name', type: 'minLength', value: '4' }
+  // field: 'color_name', type: 'maxLength', value: '6' }
+  // field: 'color_name', type: 'rangeLength', value: {min: '4', max: '6' }}
+  // field: 'color_name', type: 'oneOf', value: ['green', 'yellow'] }
+  // field: 'color_name', type: 'pattern', value: new RegExp('gre*', 'ig') }
 
 ```
-
 * **Collection.doFakeFieldFilter(rules)** - returns the models count after fake-applying a call to ```Collection.setFieldFilter```.
 
 #### Implementation notes:
@@ -1429,11 +1368,10 @@ To enable the plugin, set `this.useDiacriticsPlugin` to true, as can be seen in 
 Paginator.clientPager = Backbone.Collection.extend({
 
     // Default values used when sorting and/or filtering.
-    initialize: function(){
+    initialize: function () {
       this.useDiacriticsPlugin = true; // use diacritics plugin if available
     ...
 ```
-
  [1]: http://github.com/addyosmani/backbone.paginator
  [2]: http://addyosmani.github.com/backbone.paginator/
  [3]: http://addyosmani.github.com/backbone.paginator/examples/netflix-request-paging/index.html

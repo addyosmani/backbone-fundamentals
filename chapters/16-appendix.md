@@ -2,7 +2,7 @@
 
 ## A Simple JavaScript MVC Implementation
 
-A comprehensive discussion of Backbone's implementation is beyond the scope of this book. We can, however, present a simple MVC library - which we will call Cranium.js - that illustrates how frameworks such as Backbone implement the MVC pattern. 
+A comprehensive discussion of Backbone's implementation is beyond the scope of this book. We can, however, present a simple MVC library - which we will call Cranium.js - that illustrates how frameworks such as Backbone implement the MVC pattern.
 
 Like Backbone, we will rely on [Underscore](http://underscorejs.org "Underscore.js") for inheritance and templating.
 
@@ -43,9 +43,9 @@ var Events = Cranium.Events = {
     Cranium.Events.channels[events + --Cranium.Events.eventNumber] = callback;
   },
   // Unregisters an event type and its listener
-  off: function(topic) {
+  off: function (topic) {
     delete Cranium.Events.channels[topic];
-  }            
+  }
 };
 ```
 
@@ -65,8 +65,8 @@ Let's see a simple implementation of the Model:
 
 // Attributes represents data, model's properties.
 // These are to be passed at Model instantiation.
-// Also we are creating id for each Model instance 
-// so that it can identify itself (e.g. on chage 
+// Also we are creating id for each Model instance
+// so that it can identify itself (e.g. on chage
 // announcements)
 var Model = Cranium.Model = function (attributes) {
     this.id = _.uniqueId('model');
@@ -75,14 +75,14 @@ var Model = Cranium.Model = function (attributes) {
 
 // Getter (accessor) method;
 // returns named data item
-Cranium.Model.prototype.get = function(attrName) {
+Cranium.Model.prototype.get = function (attrName) {
     return this.attributes[attrName];
 };
 
 // Setter (mutator) method;
-// Set/mix in into model mapped data (e.g.{name: "John"})
+// Set/mix in into model mapped data (e.g.{name: "John" })
 // and publishes the change event
-Cranium.Model.prototype.set = function(attrs){
+Cranium.Model.prototype.set = function (attrs) {
     if (_.isObject(attrs)) {
       _.extend(this.attributes, attrs);
       this.change(this.attributes);
@@ -90,17 +90,17 @@ Cranium.Model.prototype.set = function(attrs){
     return this;
 };
 
-// Returns clone of the Models data object 
+// Returns clone of the Models data object
 // (used for view template rendering)
-Cranium.Model.prototype.toJSON = function(options) {
+Cranium.Model.prototype.toJSON = function (options) {
     return _.clone(this.attributes);
 };
 
 // Helper function that announces changes to the Model
 // and passes the new data
-Cranium.Model.prototype.change = function(attrs){
+Cranium.Model.prototype.change = function (attrs) {
     this.trigger(this.id + 'update', attrs);
-}; 
+};
 
 // Mix in Event system
 _.extend(Cranium.Model.prototype, Cranium.Events);
@@ -116,7 +116,7 @@ Let's explore Views a little further using a simple JavaScript example:
 // DOM View
 var View = Cranium.View = function (options) {
   // Mix in options object (e.g extending functionallity)
-  _.extend(this, options); 
+  _.extend(this, options);
   this.id = _.uniqueId('view');
 };
 
@@ -126,7 +126,7 @@ _.extend(Cranium.View.prototype, Cranium.Events);
 
 ### Controllers
 
-Controllers are an intermediary between models and views which are classically responsible for two tasks: 
+Controllers are an intermediary between models and views which are classically responsible for two tasks:
 
 * they update the view when the model changes
 * they update the model when the user manipulates the view
@@ -135,22 +135,22 @@ Controllers are an intermediary between models and views which are classically r
 // cranium.js - Cranium.Controller
 
 // Controller tying together a model and view
-var Controller = Cranium.Controller = function(options){
+var Controller = Cranium.Controller = function (options) {
   // Mix in options object (e.g extending functionallity)
-  _.extend(this, options); 
+  _.extend(this, options);
   this.id = _.uniqueId('controller');
   var parts, selector, eventType;
 
-  // Parses Events object passed during the definition of the 
+  // Parses Events object passed during the definition of the
   // controller and maps it to the defined method to handle it;
-  if(this.events){
-    _.each(this.events, function(method, eventName){
+  if (this.events){
+    _.each(this.events, function (method, eventName) {
       parts = eventName.split('.');
       selector = parts[0];
       eventType = parts[1];
       $(selector)['on' + eventType] = this[method];
     }.bind(this));
-  }    
+  }
 };
 ```
 
@@ -185,7 +185,6 @@ HTML template for the primer that follows:
 Cranium.js usage:
 
 ```javascript
-
 // example.js - usage of Cranium MVC
 
 // And todo instance
@@ -194,9 +193,9 @@ var todo1 = new Cranium.Model({
     completed: ""
 });
 
-console.log("First todo title - nothing set: " + todo1.get('title'));
-todo1.set({title: "Do something"});
-console.log("Its changed now: " + todo1.get('title'));
+console.log('First todo title - nothing set: ' + todo1.get('title'));
+todo1.set({ title: "Do something" });
+console.log('Its changed now: ' + todo1.get('title'));
 ''
 // View instance
 var todoView = new Cranium.View({
@@ -207,13 +206,13 @@ var todoView = new Cranium.View({
   template: _.template($('.todo-template').innerHTML),
 
   init: function (model) {
-    this.render( model.toJSON() );
+    this.render(model.toJSON());
 
     this.on(model.id + 'update', this.render.bind(this));
   },
   render: function (data) {
-    console.log("View about to render.");
-    $(this.el).innerHTML = this.template( data );
+    console.log('View about to render.');
+    $(this.el).innerHTML = this.template(data);
   }
 });
 
@@ -223,9 +222,9 @@ var todoController = new Cranium.Controller({
 
   // and the view to observe this model
   view:  todoView,
-  
+
   events: {
-    "#todo.click" : "toggleComplete"
+    '#todo.click': 'toggleComplete'
   },
 
   // Initialize everything
@@ -236,9 +235,9 @@ var todoController = new Cranium.Controller({
   // Toggles the value of the todo in the Model
   toggleComplete: function () {
     var completed = todoController.model.get('completed');
-    console.log("Todo old 'completed' value?", completed);
+    console.log('Todo old "completed" value?', completed);
     todoController.model.set({ completed: (!completed) ? 'checked': '' });
-    console.log("Todo new 'completed' value?", todoController.model.get('completed'));
+    console.log('Todo new "completed" value?', todoController.model.get('completed'));
     return this;
   }
 });
@@ -247,7 +246,7 @@ var todoController = new Cranium.Controller({
 // Let's kick start things off
 todoController.initialize();
 
-todo1.set({ title: "Due to this change Model will notify View and it will re-render"});
+todo1.set({ title: 'Due to this change Model will notify View and it will re-render' });
 
 ```
 
@@ -311,12 +310,12 @@ Here, our Backbone ```TodoView``` uses the Observer pattern to 'subscribe' to ch
 // The DOM element for a todo item...
 app.TodoView = Backbone.View.extend({
 
-  //... is a list tag.
+  // .. is a list tag.
   tagName:  'li',
 
   // Pass the contents of the todo template through a templating
   // function, cache it for a single todo
-  template: _.template( $('#item-template').html() ),
+  template: _.template($('#item-template').html()),
 
   // The DOM events specific to an item.
   events: {
@@ -326,19 +325,19 @@ app.TodoView = Backbone.View.extend({
   // The TodoView listens for changes to its model, re-rendering. Since there's
   // a one-to-one correspondence between a **Todo** and a **TodoView** in this
   // app, we set a direct reference on the model for convenience.
-  initialize: function() {
-    this.model.on( 'change', this.render, this );
-    this.model.on( 'destroy', this.remove, this );
+  initialize: function () {
+    this.model.on('change', this.render, this);
+    this.model.on('destroy', this.remove, this);
   },
 
   // Re-render the titles of the todo item.
-  render: function() {
-    this.$el.html( this.template( this.model.toJSON() ) );
+  render: function () {
+    this.$el.html(this.template( this.model.toJSON() ));
     return this;
   },
 
   // Toggle the `"completed"` state of the model.
-  togglecompleted: function() {
+  togglecompleted: function () {
     this.model.toggle();
   },
 });
@@ -371,26 +370,26 @@ In this section we'll be taking a look shortly at some examples of how you can n
 One popular pattern for namespacing in JavaScript is opting for a single global variable as your primary object of reference. A skeleton implementation of this where we return an object with functions and properties can be found below:
 
 ```javascript
-var myApplication = (function(){
-    function(){
-      // ...
-    },
-    return {
-      // ...
-    }
+var myApplication = (function () {
+  function () {
+    // ...
+  },
+  return {
+    // ...
+  }
 })();
 ```
 
 You've probably seen this technique before. A Backbone-specific example might look like this:
 
 ```javascript
-var myViews = (function(){
-    return {
-        TodoView: Backbone.View.extend({ .. }),
-        TodosView: Backbone.View.extend({ .. }),
-        AboutView: Backbone.View.extend({ .. });
-        //etc.
-    };
+var myViews = (function () {
+  return {
+    TodoView: Backbone.View.extend({ .. }),
+    TodosView: Backbone.View.extend({ .. }),
+    AboutView: Backbone.View.extend({ .. });
+    // etc.
+  };
 })();
 ```
 
@@ -416,22 +415,23 @@ Object Literals have the advantage of not polluting the global namespace but ass
 This example demonstrates two ways you can check to see if a namespace already exists before defining it. I commonly use Option 2.
 
 ```javascript
-/* Doesn't check for existence of myApplication */
+// Doesn't check for existence of myApplication.
 var myApplication = {};
 
-/*
-Does check for existence. If already defined, we use that instance.
-Option 1:   if(!myApplication) myApplication = {};
-Option 2:   var myApplication = myApplication || {};
-We can then populate our object literal to support models, views and collections (or any data, really):
-*/
+// Does check for existence. If already defined, we use that instance.
+//
+// Option 1:   if (!myApplication) myApplication = {};
+// Option 2:   var myApplication = myApplication || {};
+//
+// We can then populate our object literal to support models, views and
+// collections (or any data, really):
 
 var myApplication = {
-    models : {},
-    views : {
-        pages : {}
-    },
-    collections : {}
+  models: {},
+  views: {
+    pages: {}
+  },
+  collections: {}
 };
 ```
 
@@ -506,9 +506,8 @@ This is readable, clearly organized, and is a relatively safe way of namespacing
 In case you were wondering, here is the original DocumentCloud (remember those guys that created Backbone?) workspace that uses namespacing in a necessary way. This approach makes sense as their documents (and annotations and document lists) are embedded on third-party news sites.
 
 ```javascript
-
 // Provide top-level namespaces for our javascript.
-(function() {
+(function () {
   window.dc = {};
   dc.controllers = {};
   dc.model = {};
@@ -541,7 +540,7 @@ Although most developers won't need it, Backbone does support setting a custom D
 // alternate JavaScript library (or a mock library for testing your views
 // outside of a browser).
 
-Backbone.setDomLibrary = function(lib) {
+Backbone.setDomLibrary = function (lib) {
   $ = lib;
 };
 ```
@@ -554,7 +553,7 @@ Backbone.setDomLibrary(aCustomLibrary);
 
 ### Utilities
 
-Underscore.js is heavily used in Backbone behind the scenes for everything from object extension to event binding. As the entire library is generally included, we get free access to a number of useful utilities we can use on Collections such as filtering `_.filter()`, sorting `_.sortBy()`, mapping `_.map()` and so on. 
+Underscore.js is heavily used in Backbone behind the scenes for everything from object extension to event binding. As the entire library is generally included, we get free access to a number of useful utilities we can use on Collections such as filtering `_.filter()`, sorting `_.sortBy()`, mapping `_.map()` and so on.
 
 From the source:
 
@@ -567,8 +566,8 @@ var methods = ['forEach', 'each', 'map', 'reduce', 'reduceRight', 'find',
     'shuffle', 'lastIndexOf', 'isEmpty', 'groupBy'];
 
 // Mix in each Underscore method as a proxy to Collection#models.
-  _.each(methods, function(method) {
-    Collection.prototype[method] = function() {
+  _.each(methods, function (method) {
+    Collection.prototype[method] = function () {
       return _[method].apply(_, [this.models].concat(_.toArray(arguments)));
     };
 ```
@@ -577,7 +576,7 @@ However, for a complete linked list of methods supported, see the [official docu
 
 ### RESTful persistence
 
-Models and collections in Backbone can be "sync"ed with the server using the `fetch`, `save` and `destroy` methods. All of these methods delegate back to the `Backbone.sync` function, which actually wraps jQuery/Zepto's `$.ajax` function, calling GET, POST and DELETE for the respective persistence methods on Backbone models. 
+Models and collections in Backbone can be "sync"ed with the server using the `fetch`, `save` and `destroy` methods. All of these methods delegate back to the `Backbone.sync` function, which actually wraps jQuery/Zepto's `$.ajax` function, calling GET, POST and DELETE for the respective persistence methods on Backbone models.
 
 From the the source for `Backbone.sync`:
 
@@ -589,12 +588,12 @@ var methodMap = {
   'delete': 'DELETE',
   'read':   'GET'
 };
-  
-Backbone.sync = function(method, model, options) {
+
+Backbone.sync = function (method, model, options) {
     var type = methodMap[method];
 
     // ... Followed by lots of Backbone.js configuration, then..
-    
+
     // Make the request, allowing the user to override any Ajax options.
     var xhr = options.xhr = Backbone.ajax(_.extend(params, options));
     model.trigger('request', model, xhr, options);
@@ -603,7 +602,7 @@ Backbone.sync = function(method, model, options) {
 
 ### Routing
 
-Calls to `Backbone.History.start` rely on jQuery/Zepto binding `popState` or `hashchange` event listeners back to the window object. 
+Calls to `Backbone.History.start` rely on jQuery/Zepto binding `popState` or `hashchange` event listeners back to the window object.
 
 From the source for `Backbone.history.start`:
 
@@ -623,33 +622,33 @@ From the source for `Backbone.history.start`:
 ## Upgrading to Backbone 0.9.10
 
 
-*Developing Backbone.js Applications* is currently based on Backbone 0.9.10. If you are transitioning from 0.9.2 to 0.9.10 or above, the following is a guide of [changes](http://backbonejs.org/#changelog) grouped by classes, where applicable. 
+*Developing Backbone.js Applications* is currently based on Backbone 0.9.10. If you are transitioning from 0.9.2 to 0.9.10 or above, the following is a guide of [changes](http://backbonejs.org/#changelog) grouped by classes, where applicable.
 
 **Note:** We aim to update the entirety of this book to Backbone 1.0 once it has been tagged.
 
 ### Model
 
-* Model validation is now only enforced by default in `Model#save` and is no longer enforced by default upon construction or in `Model#set`, unless the `{validate:true}` option is passed:
+* Model validation is now only enforced by default in `Model#save` and is no longer enforced by default upon construction or in `Model#set`, unless the `{validate:true }` option is passed:
 
 ```javascript
-var model = new Backbone.Model({name: "One"});
-model.validate = function(attrs) {
+var model = new Backbone.Model({ name: "One" });
+model.validate = function (attrs) {
   if (!attrs.name) {
     return "No thanks.";
   }
 };
-model.set({name: "Two"});
+model.set({ name: "Two" });
 console.log(model.get('name'));
 // 'Two'
-model.unset('name', {validate: true});
+model.unset('name', {validate: true });
 // false
 ```
 
-* Passing `{silent:true}` on change will no longer delay individual `"change:attr"` events, instead they are silenced entirely.
+* Passing `{silent:true }` on change will no longer delay individual `"change:attr"` events, instead they are silenced entirely.
 
 ```javascript
 var model = new Backbone.Model();
-model.set({x: true}, {silent: true});
+model.set({ x: true }, {silent: true });
 
 console.log(!model.hasChanged(0));
 // true
@@ -669,27 +668,27 @@ console.log(model.destroy());
 
 * After fetching a model or a collection, all defined parse functions will now be run. So fetching a collection and getting back new models could cause both the collection to parse the list, and then each model to be parsed in turn, if you have both functions defined.
 
-* HTTP PATCH support allows us to send only changed attributes (i.e partial updates) to the server by passing `{patch: true}` i.e `model.save(attrs, {patch: true})`.
+* HTTP PATCH support allows us to send only changed attributes (i.e partial updates) to the server by passing `{patch: true }` i.e `model.save(attrs, {patch: true })`.
 
 ```javascript
 // Save partial using PATCH
-model.clear().set({id: 1, a: 1, b: 2, c: 3, d: 4});
+model.clear().set({ id: 1, a: 1, b: 2, c: 3, d: 4 });
 model.save();
-model.save({b: 2, d: 4}, {patch: true});
+model.save({ b: 2, d: 4 }, {patch: true });
 console.log(this.syncArgs.method);
 // 'patch'
 ```
 
-* When using `add` on a collection, passing `{merge: true}` will now cause duplicate models to have their attributes merged in to the existing models, instead of being ignored.
+* When using `add` on a collection, passing `{merge: true }` will now cause duplicate models to have their attributes merged in to the existing models, instead of being ignored.
 
 ```javascript
 var items = new Backbone.Collection;
-items.add([{ id : 1, name: "Dog" , age: 3}, { id : 2, name: "cat" , age: 2}]);
+items.add([{ id : 1, name: "Dog" , age: 3 }, { id : 2, name: "cat" , age: 2 }]);
 items.add([{ id : 1, name: "Bear" }], {merge: true });
 items.add([{ id : 2, name: "lion" }]); // merge: false
- 
+
 console.log(JSON.stringify(items.toJSON()));
-// [{"id":1,"name":"Bear","age":3},{"id":2,"name":"cat","age":2}]
+// [{"id":1,"name":"Bear","age":3 },{"id":2,"name":"cat","age":2 }]
 
 ```
 
@@ -701,7 +700,7 @@ console.log(JSON.stringify(items.toJSON()));
 ```javascript
 var model = new Backbone.Model();
 var collection = new Backbone.Collection([model])
-.on('reset', function(collection, options) {
+.on('reset', function (collection, options) {
   console.log(options.previousModels);
   console.log([model]);
   console.log(options.previousModels[0] === model); // true
@@ -734,13 +733,13 @@ theBeatles.update(['john', 'paul', 'george', 'pete']);
 ```javascript
 var col = new Backbone.Collection;
 
-col.comparator = function(a, b) {
+col.comparator = function (a, b) {
   return a.get('name') < b.get('name') ? -1 : 1;
 };
 
-var tom = new Backbone.Model({name: 'Tom'});
-var rob = new Backbone.Model({name: 'Rob'});
-var tim = new Backbone.Model({name: 'Tim'});
+var tom = new Backbone.Model({ name: 'Tom' });
+var rob = new Backbone.Model({ name: 'Rob' });
+var tim = new Backbone.Model({ name: 'Tim' });
 
 col.add(tom);
 col.add(rob);
@@ -749,7 +748,7 @@ col.add(tim);
 console.log(col.indexOf(rob) === 0); // true
 console.log(col.indexOf(tim) === 1); // true
 console.log(col.indexOf(tom) === 2); // true
-  
+
 ```
 
 ### View
@@ -758,7 +757,7 @@ console.log(col.indexOf(tom) === 2); // true
 
 ### Events
 
-* Backbone events now support jQuery-style event maps `obj.on({click: action})`. This is clearer than needing three separate calls to `.on` and should align better with the events hash used in Views:
+* Backbone events now support jQuery-style event maps `obj.on({ click: action })`. This is clearer than needing three separate calls to `.on` and should align better with the events hash used in Views:
 
 ```javascript
  model.on({
@@ -777,15 +776,15 @@ console.log(col.indexOf(tom) === 2); // true
 var obj = { counterA: 0, counterB: 0 };
 _.extend(obj, Backbone.Events);
 
-var incrA = function(){ obj.counterA += 1; obj.trigger('event'); };
-var incrB = function(){ obj.counterB += 1; };
+var incrA = function () { obj.counterA += 1; obj.trigger('event'); };
+var incrB = function () { obj.counterB += 1; };
 
 obj.once('event', incrA);
 obj.once('event', incrB);
 obj.trigger('event');
 
 console.log(obj.counterA === 1); // true
-console.log(obj.counterB === 1); // true 
+console.log(obj.counterB === 1); // true
 
 ```
 
@@ -793,7 +792,7 @@ console.log(obj.counterB === 1); // true
 
 * Added [listenTo](http://backbonejs.org/#Events-listenTo) and [stopListening](http://backbonejs.org/#Events-stopListening) to Events. They can be used as inversion-of-control flavors of [on](http://backbonejs.org/#Events-on) and [off](http://backbonejs.org/#Events-off), for convenient unbinding of all events an object is currently listening to. `view.remove()` automatically calls `view.stopListening()`.
 
-If you've had a chance to work on a few Backbone projects by this point, you may know that every `on` called on an object also requires an `off` to be called in order for the garbage collector to do its job. 
+If you've had a chance to work on a few Backbone projects by this point, you may know that every `on` called on an object also requires an `off` to be called in order for the garbage collector to do its job.
 
 This can sometimes be overlooked when Views are binding to Models. In 0.9.10, this can now be done the other way around - Views can bind to Model notifications and unbind from all of them with just one call. We achieve this using `view.listenTo(model, 'eventName', func)` and `view.stopListening()`.
 
@@ -802,9 +801,9 @@ The default `remove()` of Views will call `stopListening()` for you, just in cas
 ```javascript
 var a = _.extend({}, Backbone.Events);
 var b = _.extend({}, Backbone.Events);
-a.listenTo(b, 'all', function(){ console.log(true); });
+a.listenTo(b, 'all', function () { console.log(true); });
 b.trigger('anything');
-a.listenTo(b, 'all', function(){ console.log(false); });
+a.listenTo(b, 'all', function () { console.log(false); });
 a.stopListening();
 b.trigger('anything');
 ```
@@ -816,14 +815,14 @@ In 0.9.2, we have to do this to achieve what we need:
 ```javascript
  // In BaseView definition
 var BaseView = Backbone.View.extend({
-  destroy: function() {
+  destroy: function () {
     // Allow child views to hook to this event to unsubscribe
     // anything they may have subscribed to to other objects.
     this.trigger('beforedestroy');
     if (this.model) {
       this.model.off(null, null, this);
     }
-                
+
     if (this.collection) {
       this.collection.off(null, null, this);
     }
@@ -833,28 +832,28 @@ var BaseView = Backbone.View.extend({
   }
 });
 
-// In MyView definition. 
+// In MyView definition.
 // We have a global EventBus that allows elements on the app to subscribe to global events.
 // connection/disconnected, connection/resume is two of them.
 
 var MyView = BaseView.extend({
-  initialize: function() {
+  initialize: function () {
     this.on('beforedestroy', this.onBeforeDestroy, this);
     this.model.on('reset', this.onModelLoaded, this);
     EventBus.on('connection/disconnected', this.onDisconnect, this);
     EventBus.on('connection/resume', this.onConnectionResumed, this);
   },
-  onModelLoaded: function() {
+  onModelLoaded: function () {
     // We only need this to be done once! (Kinda weird...)
     this.model.off('load', this.onModelLoaded, this);
   },
-  onDisconnect: function() {
+  onDisconnect: function () {
     // Figure out what state we are currently on, display View-specific messaging, etc.
   },
-  onConnectionResumed: function() {
+  onConnectionResumed: function () {
     // Re-do previous network request that failed.
   },
-  onBeforeDestroy: function() {
+  onBeforeDestroy: function () {
     EventBus.off('connection/resume', this.onConnectionResumed, this);
     EventBus.off('connection/disconnected', this.onDisconnect, this);
   }
@@ -864,30 +863,29 @@ var MyView = BaseView.extend({
 However, in 0.9.10, what we need to do is quite simple:
 
 ```javascript
-
 // In BaseView definition
 var BaseView = Backbone.View.extend({
-  destroy: function() {
+  destroy: function () {
     this.trigger('beforedestroy');
     this.remove();
   }
 });
 
-// In MyView definition. 
+// In MyView definition.
 
 var MyView = BaseView.extend({
-  initialize: function() {
+  initialize: function () {
     this.listenTo(EventBus, 'connection/disconnected', this.onDisconnect);
     this.listenTo(EventBus, 'connection/resume', this.onConnectionResumed);
     this.once(this.model, 'load', this.onModelLoaded);
   },
-  onModelLoaded: function() {
+  onModelLoaded: function () {
     // Don't need to unsubscribe anymore!
   },
-  onDisconnect: function() {
+  onDisconnect: function () {
     // Figure out the state, display messaging, etc.
   },
-  onConnectionResumed: function() {
+  onConnectionResumed: function () {
     // Re-do previous network request that failed.
   }
   // Most importantly, we no longer need onBeforeDestroy() anymore!
@@ -903,8 +901,8 @@ var MyView = BaseView.extend({
 Backbone.history.on('route', onRoute);
 
 // Trigger 'route' event on router instance."
-router.on('route', function(name, args) {
-  console.log(name === 'routeEvent'); 
+router.on('route', function (name, args) {
+  console.log(name === 'routeEvent');
 });
 
 location.replace('http://example.com#route-event/x');
@@ -913,7 +911,7 @@ Backbone.history.checkUrl();
 
 * For semantic and cross browser reasons, routes will now ignore search parameters. Routes like `search?query=…&page=3` should become `search/…/3`.
 * Bugfix for normalizing leading and trailing slashes in the Router definitions. Their presence (or absence) should not affect behavior.
-* Router URLs now support optional parts via parentheses, without having to use a regex. 
+* Router URLs now support optional parts via parentheses, without having to use a regex.
 
 ```javascript
 var Router = Backbone.Router.extend({
@@ -930,7 +928,7 @@ var Router = Backbone.Router.extend({
 
 ```javascript
 var Library = Backbone.Collection.extend({
-    url : function() { return '/library'; }
+    url : function () { return '/library'; }
 });
 
 var attrs = {
@@ -938,15 +936,15 @@ var attrs = {
     author : "Bill Shakespeare",
     length : 123
   };
-  
+
 library = new Library;
-library.create(attrs, {wait: false});
-  
+library.create(attrs, {wait: false });
+
 // update with just emulateHTTP
-library.first().save({id: '2-the-tempest', author: 'Tim Shakespeare'}, {
+library.first().save({id: '2-the-tempest', author: 'Tim Shakespeare' }, {
   emulateHTTP: true
 });
-    
+
 console.log(this.ajaxSettings.url === '/library/2-the-tempest'); // true
 console.log(this.ajaxSettings.type === 'POST'); // true
 console.log(this.ajaxSettings.contentType === 'application/json'); // true
@@ -958,7 +956,7 @@ console.log(data.length === 123);
 
 // or update with just emulateJSON
 
-library.first().save({id: '2-the-tempest', author: 'Tim Shakespeare'}, {
+library.first().save({id: '2-the-tempest', author: 'Tim Shakespeare' }, {
   emulateJSON: true
 });
 
@@ -975,13 +973,13 @@ console.log(data.length === 123);
 
 * Consolidated `"sync"` and `"error"` events within `Backbone.sync`. They are now triggered regardless of the existence of success or error callbacks.
 
-* Added a `"request"` event to `Backbone.sync`, which triggers whenever a request begins to be made to the server. The natural complement to the `"sync"` event. 
+* Added a `"request"` event to `Backbone.sync`, which triggers whenever a request begins to be made to the server. The natural complement to the `"sync"` event.
 
 
 ### Other
 * Bug fix on change where attribute comparison uses `!==` instead of `_.isEqual`.
 * Bug fix where an empty response from the server on save would not call the success function.
-* To improve the performance of add, `options.index` will no longer be set in the `add` event callback. 
+* To improve the performance of add, `options.index` will no longer be set in the `add` event callback.
 * Removed the `Backbone.wrapError` helper method. Overriding sync should work better for those particular use cases.
 * To set what library Backbone uses for DOM manipulation and Ajax calls, use `Backbone.$ =` ... instead of `setDomLibrary`.
 * Added a `Backbone.ajax` hook for more convenient overriding of the default use of `$.ajax`. If AJAX is too passé, set it to your preferred method for server communication.

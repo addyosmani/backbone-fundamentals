@@ -21,32 +21,30 @@ Using ```this.spy()``` without any arguments creates an anonymous spy. This is c
 
 ```javascript
 test('should call all subscribers for a message exactly once', function () {
-    var message = getUniqueString();
-    var spy = this.spy();
+  var message = getUniqueString();
+  var spy = this.spy();
 
-    PubSub.subscribe( message, spy );
-    PubSub.publishSync( message, 'Hello World' );
+  PubSub.subscribe(message, spy);
+  PubSub.publishSync(message, 'Hello World');
 
-    ok( spy.calledOnce, 'the subscriber was called once' );
+  ok(spy.calledOnce, 'the subscriber was called once');
 });
 ```
-
 #### Spying On Existing Functions
 
 We can also use ```this.spy()``` to spy on existing functions (like jQuery's ```$.ajax```) in the example below. When spying on a function which already exists, the function behaves normally but we get access to data about its calls which can be very useful for testing purposes.
 
 ```javascript
-test( 'should inspect the jQuery.getJSON usage of jQuery.ajax', function () {
-    this.spy( jQuery, 'ajax' );
+test('should inspect the jQuery.getJSON usage of jQuery.ajax', function () {
+  this.spy(jQuery, 'ajax');
 
-    jQuery.getJSON( '/todos/completed' );
+  jQuery.getJSON('/todos/completed');
 
-    ok( jQuery.ajax.calledOnce );
-    equals( jQuery.ajax.getCall(0).args[0].url, '/todos/completed' );
-    equals( jQuery.ajax.getCall(0).args[0].dataType, 'json' );
+  ok(jQuery.ajax.calledOnce);
+  equals(jQuery.ajax.getCall(0).args[0].url, '/todos/completed');
+  equals(jQuery.ajax.getCall(0).args[0].dataType, 'json');
 });
 ```
-
 #### Inspection Interface
 
 SinonJS comes with a rich spy interface which allows us to test whether a spy was called with a specific argument, if it was called a specific number of times, and test against the values of arguments. A complete list of features supported in the interface can be found on [SinonJS.org](http://sinonjs.org/docs/), but let's take a look at some examples demonstrating some of the most commonly used ones:
@@ -55,74 +53,70 @@ SinonJS comes with a rich spy interface which allows us to test whether a spy wa
 **Matching arguments: test a spy was called with a specific set of arguments:**
 
 ```javascript
-test( 'Should call a subscriber with standard matching': function () {
-    var spy = sinon.spy();
+test('Should call a subscriber with standard matching', function () {
+  var spy = sinon.spy();
 
-    PubSub.subscribe( 'message', spy );
-    PubSub.publishSync( 'message', { id: 45 } );
+  PubSub.subscribe('message', spy);
+  PubSub.publishSync('message', { id: 45 });
 
-    assertTrue( spy.calledWith( { id: 45 } ) );
+  assertTrue(spy.calledWith( { id: 45 } ));
 });
 ```
-
 **Stricter argument matching: test a spy was called at least once with specific arguments and no others:**
 
 ```javascript
-test( 'Should call a subscriber with strict matching': function () {
-    var spy = sinon.spy();
+test('Should call a subscriber with strict matching', function () {
+  var spy = sinon.spy();
 
-    PubSub.subscribe( 'message', spy );
-    PubSub.publishSync( 'message', 'many', 'arguments' );
-    PubSub.publishSync( 'message', 12, 34 );
+  PubSub.subscribe('message', spy);
+  PubSub.publishSync('message', 'many', 'arguments');
+  PubSub.publishSync('message', 12, 34);
 
-    // This passes
-    assertTrue( spy.calledWith('many') );
+  // This passes
+  assertTrue(spy.calledWith('many'));
 
-    // This however, fails
-    assertTrue( spy.calledWithExactly( 'many' ) );
+  // This however, fails
+  assertTrue(spy.calledWithExactly( 'many' ));
 });
 ```
-
 **Testing call order: testing if a spy was called before or after another spy:**
 
 ```javascript
-test( 'Should call a subscriber and maintain call order': function () {
-    var a = sinon.spy();
-    var b = sinon.spy();
+test('Should call a subscriber and maintain call order', function () {
+  var a = sinon.spy();
+  var b = sinon.spy();
 
-    PubSub.subscribe( 'message', a );
-    PubSub.subscribe( 'event', b );
+  PubSub.subscribe('message', a);
+  PubSub.subscribe('event', b);
 
-    PubSub.publishSync( 'message', { id: 45 } );
-    PubSub.publishSync( 'event', [1, 2, 3] );
+  PubSub.publishSync('message', { id: 45 });
+  PubSub.publishSync('event', [1, 2, 3]);
 
-    assertTrue( a.calledBefore(b) );
-    assertTrue( b.calledAfter(a) );
+  assertTrue(a.calledBefore(b));
+  assertTrue(b.calledAfter(a));
 });
 ```
-
 **Match execution counts: test a spy was called a specific number of times:**
 
 ```javascript
-test( 'Should call a subscriber and check call counts', function () {
-    var message = getUniqueString();
-    var spy = this.spy();
+test('Should call a subscriber and check call counts', function () {
+  var message = getUniqueString();
+  var spy = this.spy();
 
-    PubSub.subscribe( message, spy );
-    PubSub.publishSync( message, 'some payload' );
+  PubSub.subscribe(message, spy);
+  PubSub.publishSync(message, 'some payload');
 
 
-    // Passes if spy was called once and only once.
-    ok( spy.calledOnce ); // calledTwice and calledThrice are also supported
+  // Passes if spy was called once and only once.
+  ok(spy.calledOnce); // calledTwice and calledThrice are also supported
 
-    // The number of recorded calls.
-    equal( spy.callCount, 1 );
+  // The number of recorded calls.
+  equal(spy.callCount, 1);
 
-    // Directly checking the arguments of the call
-    equals( spy.getCall(0).args[0], message );
+  // Directly checking the arguments of the call
+  equals(spy.getCall(0).args[0], message);
 });
 ```
-
 
 ## Stubs and mocks
 
@@ -138,51 +132,44 @@ We can pretend that the models have yet to be written just to demonstrate how st
 
 ```javascript
 var TodoList = Backbone.Collection.extend({
-    model: Todo
+  model: Todo
 });
 
 // Let's assume our instance of this collection is
 this.todoList;
 ```
-
 Assuming our collection is instantiating new models itself, it's necessary for us to stub the model's constructor function for the the test. This can be done by creating a simple stub as follows:
 
 ```javascript
-this.todoStub = sinon.stub( window, 'Todo' );
+this.todoStub = sinon.stub(window, 'Todo');
 ```
-
 The above creates a stub of the Todo method on the window object. When stubbing a persistent object, it's necessary to restore it to its original state. This can be done in a ```teardown()``` as follows:
 
 ```javascript
 this.todoStub.restore();
 ```
-
 After this, we need to alter what the constructor returns, which can be efficiently done using a plain ```Backbone.Model``` constructor. While this isn't a Todo model, it does still provide us an actual Backbone model.
 
 
 ```javascript
-setup: function() {
-    this.model = new Backbone.Model({
-      id: 2,
-      title: 'Hello world'
-    });
-    this.todoStub.returns( this.model );
+setup: function () {
+  this.model = new Backbone.Model({
+    id: 2,
+    title: 'Hello world'
+  });
+  this.todoStub.returns(this.model);
 });
 ```
-
 The expectation here might be that this snippet would ensure our TodoList collection always instantiates a stubbed Todo model, but because a reference to the model in the collection is already present, we need to reset the model property of our collection as follows:
 
 ```javascript
 this.todoList.model = Todo;
 ```
-
 The result of this is that when our TodoList collection instantiates new Todo models, it will return our plain Backbone model instance as desired. This allows us to write a test for the addition of new model literals as follows:
 
 ```javascript
-module( 'Should function when instantiated with model literals', {
-
-  setup:function() {
-
+module('Should function when instantiated with model literals', {
+  setup: function () {
     this.todoStub = sinon.stub(window, 'Todo');
     this.model = new Backbone.Model({
       id: 2,
@@ -194,7 +181,7 @@ module( 'Should function when instantiated with model literals', {
 
     // Let's reset the relationship to use a stub
     this.todos.model = Todo;
-    
+
     // add a model
     this.todos.add({
       id: 2,
@@ -202,22 +189,19 @@ module( 'Should function when instantiated with model literals', {
     });
   },
 
-  teardown: function() {
+  teardown: function () {
     this.todoStub.restore();
   }
-
 });
 
-test('should add a model', function() {
-    equal( this.todos.length, 1 );
+test('should add a model', function () {
+  equal(this.todos.length, 1);
 });
 
-test('should find a model by id', function() {
-    equal( this.todos.get(5).get('id'), 5 );
-  });
+test('should find a model by id', function () {
+  equal(this.todos.get(5).get('id'), 5);
 });
 ```
-
 
 ### Mocks
 
@@ -227,21 +211,20 @@ Here's a snippet with sample usage of a mock based on PubSubJS. Here, we have a 
 
 ```javascript
 test('should call all subscribers when exceptions', function () {
-    var myAPI = { clearTodo: function () {} };
+  var myAPI = { clearTodo: function () {} };
 
-    var spy = this.spy();
-    var mock = this.mock( myAPI );
-    mock.expects( 'clearTodo' ).once().throws();
+  var spy = this.spy();
+  var mock = this.mock(myAPI);
+  mock.expects('clearTodo').once().throws();
 
-    PubSub.subscribe( 'message', myAPI.clearTodo );
-    PubSub.subscribe( 'message', spy );
-    PubSub.publishSync( 'message', undefined );
+  PubSub.subscribe('message', myAPI.clearTodo);
+  PubSub.subscribe('message', spy);
+  PubSub.publishSync('message', undefined);
 
-    mock.verify();
-    ok( spy.calledOnce );
+  mock.verify();
+  ok(spy.calledOnce);
 });
 ```
-
 
 
 ## Exercise
@@ -262,63 +245,60 @@ For our models we want to at minimum test that:
 * Validation rules are correctly enforced
 
 ```javascript
-module( 'About Backbone.Model');
+module('About Backbone.Model');
 
-test('Can be created with default values for its attributes.', function() {
-    expect( 1 );
+test('Can be created with default values for its attributes.', function () {
+  expect(1);
 
-    var todo = new Todo();
-    equal( todo.get('text'), '' );
-    equal( todo.get('done'), false );
-    equal( todo.get('order'), 0 );
+  var todo = new Todo();
+  equal(todo.get('text'), '');
+  equal(todo.get('done'), false);
+  equal(todo.get('order'), 0);
 });
 
-test('Will set attributes on the model instance when created.', function() {
-    expect( 3 );
+test('Will set attributes on the model instance when created.', function () {
+  expect(3);
 
-    var todo = new Todo( { text: 'Get oil change for car.' } );
-    equal( todo.get('text'), 'Get oil change for car.' );
-
+  var todo = new Todo({ text: 'Get oil change for car.' });
+  equal(todo.get('text'), 'Get oil change for car.');
 });
 
-test('Will call a custom initialize function on the model instance when created.', function() {
-    expect( 1 );
+test('Will call a custom initialize function on the model instance when created.', function () {
+  expect(1);
 
-    var toot = new Todo({ text: 'Stop monkeys from throwing their own crap!' });
-    equal( toot.get('text'), 'Stop monkeys from throwing their own rainbows!' );
+  var toot = new Todo({ text: 'Stop monkeys from throwing their own crap!' });
+  equal(toot.get('text'), 'Stop monkeys from throwing their own rainbows!');
 });
 
-test('Fires a custom event when the state changes.', function() {
-    expect( 1 );
+test('Fires a custom event when the state changes.', function () {
+  expect(1);
 
-    var spy = this.spy();
-    var todo = new Todo();
+  var spy = this.spy();
+  var todo = new Todo();
 
-    todo.on( 'change', spy );
-    // How would you update a property on the todo here?
-    todo.set( { text: 'new text' } );
+  todo.on('change', spy);
+  // How would you update a property on the todo here?
+  todo.set({ text: 'new text' });
 
-    ok( spy.calledOnce, 'A change event callback was correctly triggered' );
+  ok(spy.calledOnce, 'A change event callback was correctly triggered');
 });
 
 
-test('Can contain custom validation rules, and will trigger an invalid event on failed validation.', function() {
-    expect( 3 );
+test('Can contain custom validation rules, and will trigger an invalid event on failed validation.', function () {
+  expect(3);
 
-    var errorCallback = this.spy();
-    var todo = new Todo();
+  var errorCallback = this.spy();
+  var todo = new Todo();
 
-    todo.on('invalid', errorCallback);
-    // What would you need to set on the todo properties to cause validation to fail?
-    todo.set( { done: 'not a boolean' } );
+  todo.on('invalid', errorCallback);
+  // What would you need to set on the todo properties to cause validation to fail?
+  todo.set({ done: 'not a boolean' });
 
-    ok( errorCallback.called, 'A failed validation correctly triggered an error' );
-    notEqual( errorCallback.getCall(0), undefined );
-    equal( errorCallback.getCall(0).args[1], 'Todo.done must be a boolean value.' );
-
+  ok(errorCallback.called, 'A failed validation correctly triggered an error');
+  notEqual(errorCallback.getCall(0), undefined);
+  equal(errorCallback.getCall(0).args[1], 'Todo.done must be a boolean value.');
 });
 ```
-
 
 ### Collections
 
@@ -330,65 +310,61 @@ For our collection we'll want to test that:
 * The order for Todos is numerically correct
 
 ```javascript
-  describe('Test Collection', function() {
-
-    beforeEach(function() {
-
-      // Define new todos
-      this.todoOne = new Todo;
-      this.todoTwo = new Todo({
-        title: "Buy some milk"
-      });
-
-      // Create a new collection of todos for testing
-      return this.todos = new TodoList([this.todoOne, this.todoTwo]);
+describe('Test Collection', function () {
+  beforeEach(function () {
+    // Define new todos
+    this.todoOne = new Todo;
+    this.todoTwo = new Todo({
+      title: 'Buy some milk'
     });
 
-    it('Has the Todo model', function() {
-      return expect(this.todos.model).toBe(Todo);
-    });
-
-    it('Uses local storage', function() {
-      return expect(this.todos.localStorage).toEqual(new Store('todos-backbone'));
-    });
-
-    describe('done', function() {
-      return it('returns an array of the todos that are done', function() {
-        this.todoTwo.done = true;
-        return expect(this.todos.done()).toEqual([this.todoTwo]);
-      });
-    });
-
-    describe('remaining', function() {
-      return it('returns an array of the todos that are not done', function() {
-        this.todoTwo.done = true;
-        return expect(this.todos.remaining()).toEqual([this.todoOne]);
-      });
-    });
-
-    describe('clear', function() {
-      return it('destroys the current todo from local storage', function() {
-        expect(this.todos.models).toEqual([this.todoOne, this.todoTwo]);
-        this.todos.clear(this.todoOne);
-        return expect(this.todos.models).toEqual([this.todoTwo]);
-      });
-    });
-
-    return describe('Order sets the order on todos ascending numerically', function() {
-      it('defaults to one when there arent any items in the collection', function() {
-        this.emptyTodos = new TodoApp.Collections.TodoList;
-        return expect(this.emptyTodos.order()).toEqual(0);
-      });
-
-      return it('Increments the order by one each time', function() {
-        expect(this.todos.order(this.todoOne)).toEqual(1);
-        return expect(this.todos.order(this.todoTwo)).toEqual(2);
-      });
-    });
-
+    // Create a new collection of todos for testing
+    return this.todos = new TodoList([this.todoOne, this.todoTwo]);
   });
-```
 
+  it('Has the Todo model', function () {
+    return expect(this.todos.model).toBe(Todo);
+  });
+
+  it('Uses local storage', function () {
+    return expect(this.todos.localStorage).toEqual(new Store('todos-backbone'));
+  });
+
+  describe('done', function () {
+    return it('returns an array of the todos that are done', function () {
+      this.todoTwo.done = true;
+      return expect(this.todos.done()).toEqual([this.todoTwo]);
+    });
+  });
+
+  describe('remaining', function () {
+    return it('returns an array of the todos that are not done', function () {
+      this.todoTwo.done = true;
+      return expect(this.todos.remaining()).toEqual([this.todoOne]);
+    });
+  });
+
+  describe('clear', function () {
+    return it('destroys the current todo from local storage', function () {
+      expect(this.todos.models).toEqual([this.todoOne, this.todoTwo]);
+      this.todos.clear(this.todoOne);
+      return expect(this.todos.models).toEqual([this.todoTwo]);
+    });
+  });
+
+  return describe('Order sets the order on todos ascending numerically', function () {
+    it('defaults to one when there arent any items in the collection', function () {
+      this.emptyTodos = new TodoApp.Collections.TodoList;
+      return expect(this.emptyTodos.order()).toEqual(0);
+    });
+
+    return it('Increments the order by one each time', function () {
+      expect(this.todos.order(this.todoOne)).toEqual(1);
+      return expect(this.todos.order(this.todoTwo)).toEqual(2);
+    });
+  });
+});
+```
 
 
 ### Views
@@ -403,97 +379,95 @@ One could also take this further and test that user interactions with the view c
 
 
 ```javascript
-module( 'About Backbone.View', {
-    setup: function() {
-        $('body').append('<ul id="todoList"></ul>');
-        this.todoView = new TodoView({ model: new Todo() });
-    },
-    teardown: function() {
-        this.todoView.remove();
-        $('#todoList').remove();
-    }
+module('About Backbone.View', {
+  setup: function () {
+    $('body').append('<ul id="todoList"></ul>');
+    this.todoView = new TodoView({ model: new Todo() });
+  },
+  teardown: function () {
+    this.todoView.remove();
+    $('#todoList').remove();
+  }
 });
 
-test('Should be tied to a DOM element when created, based off the property provided.', function() {
-    expect( 1 );
-    equal( this.todoView.el.tagName.toLowerCase(), 'li' );
+test('Should be tied to a DOM element when created, based off the property provided.', function () {
+    expect(1);
+    equal(this.todoView.el.tagName.toLowerCase(), 'li');
 });
 
-test('Is backed by a model instance, which provides the data.', function() {
-    expect( 2 );
-    notEqual( this.todoView.model, undefined );
-    equal( this.todoView.model.get('done'), false );
+test('Is backed by a model instance, which provides the data.', function () {
+  expect(2);
+  notEqual(this.todoView.model, undefined);
+  equal(this.todoView.model.get('done'), false);
 });
 
-test('Can render, after which the DOM representation of the view will be visible.', function() {
-   this.todoView.render();
+test('Can render, after which the DOM representation of the view will be visible.', function () {
+  this.todoView.render();
 
-    // Hint: render() just builds the DOM representation of the view, but doesn't insert it into the DOM.
-    // How would you append it to the ul#todoList?
-    // How do you access the view's DOM representation?
+  // Hint: render() just builds the DOM representation of the view, but doesn't insert it into the DOM.
+  // How would you append it to the ul#todoList?
+  // How do you access the view's DOM representation?
 
-    $('ul#todoList').append(this.todoView.el);
-    equal($('#todoList').find('li').length, 1);
+  $('ul#todoList').append(this.todoView.el);
+  equal($('#todoList').find('li').length, 1);
 });
 
-asyncTest('Can wire up view methods to DOM elements.', function() {
-    expect( 2 );
-    var viewElt;
+asyncTest('Can wire up view methods to DOM elements.', function () {
+  expect(2);
+  var viewElt;
 
-    $('#todoList').append( this.todoView.render().el );
+  $('#todoList').append(this.todoView.render().el);
 
-    setTimeout(function() {
-        viewElt = $('#todoList li input.check').filter(':first');
+  setTimeout(function () {
+    viewElt = $('#todoList li input.check').filter(':first');
 
-        equal(viewElt.length > 0, true);
+    equal(viewElt.length > 0, true);
 
-        // Make sure that QUnit knows we can continue
-        start();
-    }, 1000, 'Expected DOM Elt to exist');
+    // Make sure that QUnit knows we can continue
+    start();
+  }, 1000, 'Expected DOM Elt to exist');
 
 
-    // Hint: How would you trigger the view, via a DOM Event, to toggle the 'done' status.
-    // (See todos.js line 70, where the events hash is defined.)
+  // Hint: How would you trigger the view, via a DOM Event, to toggle the 'done' status.
+  // (See todos.js line 70, where the events hash is defined.)
 
-    $('#todoList li input.check').click();
-    equal( this.todoView.model.get('done'), true );
+  $('#todoList li input.check').click();
+  equal(this.todoView.model.get('done'), true);
 });
 ```
-
 
 ### App
 
 It can also be useful to write tests for any application bootstrap you may have in place. For the following module, our setup instantiates and appends to a TodoApp view and we can test anything from local instances of views being correctly defined to application interactions correctly resulting in changes to instances of local collections.
 
 ```javascript
-module( 'About Backbone Applications' , {
-    setup: function() {
-        Backbone.localStorageDB = new Store('testTodos');
-        $('#qunit-fixture').append('<div id="app"></div>');
-        this.App = new TodoApp({ appendTo: $('#app') });
-    },
+module('About Backbone Applications', {
+  setup: function () {
+    Backbone.localStorageDB = new Store('testTodos');
+    $('#qunit-fixture').append('<div id="app"></div>');
+    this.App = new TodoApp({ appendTo: $('#app') });
+  },
 
-    teardown: function() {
-        this.App.todos.reset();
-        $('#app').remove();
-    }
+  teardown: function () {
+    this.App.todos.reset();
+    $('#app').remove();
+  }
 });
 
-test('Should bootstrap the application by initializing the Collection.', function() {
-    expect( 2 );
+test('Should bootstrap the application by initializing the Collection.', function () {
+  expect(2);
 
-    notEqual( this.App.todos, undefined );
-    equal( this.App.todos.length, 0 );
+  notEqual(this.App.todos, undefined);
+  equal(this.App.todos.length, 0);
 });
 
-test( 'Should bind Collection events to View creation.' , function() {
-      $('#new-todo').val( 'Foo' );
-      $('#new-todo').trigger(new $.Event( 'keypress', { keyCode: 13 } ));
+test('Should bind Collection events to View creation.', function () {
+  $('#new-todo').val('Foo');
+  $('#new-todo').trigger(new $.Event('keypress', { keyCode: 13 }));
 
-      equal( this.App.todos.length, 1 );
+  equal(this.App.todos.length, 1);
  });
 ```
-
 ## Further Reading & Resources
 
 That's it for this section on testing applications with QUnit and SinonJS. I encourage you to try out the [QUnit Backbone.js Koans](https://github.com/addyosmani/backbone-koans-qunit) and see if you can extend some of the examples. For further reading consider looking at some of the additional resources below:

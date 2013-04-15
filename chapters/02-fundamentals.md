@@ -28,7 +28,7 @@ Martin Fowler has done an excellent job of writing about the [origins](http://ma
 
 ### MVC Applied To The Web
 
-The web heavily relies on the HTTP protocol, which is stateless. This means that there is not a constantly open connection between the browser and server; each request instantiates a new communication channel between the two. Once the request initiator (e.g., a browser) gets a response the connection is closed. This fact creates a completely different context when compared to the one of the operating systems on which many of the original MVC ideas were developed. The MVC implementation has to conform to the web context. 
+The web heavily relies on the HTTP protocol, which is stateless. This means that there is not a constantly open connection between the browser and server; each request instantiates a new communication channel between the two. Once the request initiator (e.g., a browser) gets a response the connection is closed. This fact creates a completely different context when compared to the one of the operating systems on which many of the original MVC ideas were developed. The MVC implementation has to conform to the web context.
 
 A typical server-side MVC implementation implements the Front Controller design pattern. This pattern layers an MVC stack behind a single point of entry. This single point of entry means that all HTTP requests (e.g., `http://www.example.com`, `http://www.example.com/whichever-page/`, etc.) are routed by the server's configuration to the same handler, independent of the URI.
 
@@ -60,7 +60,7 @@ In complex JavaScript single-page web applications (SPA), all application respon
 
 A typical page in a SPA consists of small elements representing logical entities. These entities belong to specific data domains and need to be presented in particular ways on the page.
 
-A good example is a basket in an e-commerce web application which can have items added to it. This basket might be presented to the user in a box in the top right corner of the page (see the picture below): 
+A good example is a basket in an e-commerce web application which can have items added to it. This basket might be presented to the user in a box in the top right corner of the page (see the picture below):
 
 ![](img/wireframe_e_commerce.png)
 
@@ -98,7 +98,6 @@ Our example will need a div element to which we can attach a list of Todo's. It 
 </body>
 </html>
 ```
-
 In our Todo application, Backbone Model instances are used to hold the data for each Todo item:
 
 ```javascript
@@ -117,7 +116,6 @@ var todo1 = new Todo({
   title: 'Check attributes property of the logged models in the console.'
 });
 ```
-
 Our Todo Model extends Backbone.Model and simply defines default values for two data attributes. As you will discover in the upcoming chapters, Backbone Models provide many more features but this simple Model illustrates that first and foremost a Model is a data container.
 
 Each Todo instance will be rendered on the page by a TodoView:
@@ -128,7 +126,7 @@ var TodoView = Backbone.View.extend({
   tagName:  'li',
 
   // Cache the template function for a single item.
-  todoTpl: _.template( $('#item-template').html() ),
+  todoTpl: _.template($('#item-template').html()),
 
   events: {
     'dblclick label': 'edit',
@@ -137,30 +135,29 @@ var TodoView = Backbone.View.extend({
   },
 
   // Re-render the titles of the todo item.
-  render: function() {
-    this.$el.html( this.todoTpl( this.model.toJSON() ) );
+  render: function () {
+    this.$el.html(this.todoTpl( this.model.toJSON() ));
     this.input = this.$('.edit');
     return this;
   },
 
-  edit: function() {
+  edit: function () {
     // executed when todo label is double clicked
   },
 
-  close: function() {
+  close: function () {
     // executed when todo loses focus
   },
 
-  updateOnEnter: function( e ) {
-    // executed on each keypress when in todo edit mode, 
+  updateOnEnter: function (e) {
+    // executed on each keypress when in todo edit mode,
     // but we'll wait for enter to get in action
   }
 });
 
 // create a view for a todo
-var todoView = new TodoView({model: todo1});
+var todoView = new TodoView({ model: todo1 });
 ```
-
 TodoView is defined by extending Backbone.View and is instantiated with an associated Model. In our example, the ```render()``` method uses a template to construct the HTML for the Todo item which is placed inside a li element. Each call to ```render()``` will replace the content of the li element using the current Model data. Thus, a View instance renders the content of a DOM element using the attributes of an associated Model. Later we will see how a View can bind its ```render()``` method to Model change events, causing the View to re-render whenever the Model changes.
 
 So far, we have seen that Backbone.Model implements the Model aspect of MVC and Backbone.View implements the View. However, as we noted earlier, Backbone departs from traditional MVC when it comes to Controllers - there is no Backbone.Controller!
@@ -213,13 +210,12 @@ Let's compare two examples of HTML templates. One is implemented using the popul
 
 ```html
 <div class="view">
-  <input class="toggle" type="checkbox" {{#if completed}} "checked" {{/if}}>
-  <label>{{title}}</label>
+  <input class="toggle" type="checkbox" {{#if completed }} "checked" {{/if }}>
+  <label>{{title }}</label>
   <button class="destroy"></button>
 </div>
-<input class="edit" value="{{title}}">
+<input class="edit" value="{{title }}">
 ```
-
 **Underscore.js Microtemplates:**
 
 ```html
@@ -230,13 +226,11 @@ Let's compare two examples of HTML templates. One is implemented using the popul
 </div>
 <input class="edit" value="<%= title %>">
 ```
-
 You may also use double curly brackets (i.e ```{{}}```) (or any other tag you feel comfortable with) in Microtemplates. In the case of curly brackets, this can be done by setting the Underscore ```templateSettings``` attribute as follows:
 
 ```javascript
-_.templateSettings = { interpolate : /\{\{(.+?)\}\}/g };
+_.templateSettings = { interpolate : /\{\{(.+?)\ }\ }/g };
 ```
-
 **A note on Navigation and State**
 
 It is also worth noting that in classical web development, navigating between independent views required the use of a page refresh. In single-page JavaScript applications, however, once data is fetched from a server via Ajax, it can be dynamically rendered in a new view within the same page. Since this doesn't automatically update the URL, the role of navigation thus falls to a "router", which assists in managing application state (e.g., allowing users to bookmark a particular view they have navigated to). As routers are neither a part of MVC nor present in every MVC-like framework, I will not be going into them in greater detail in this section.

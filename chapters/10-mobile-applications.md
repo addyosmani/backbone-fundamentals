@@ -17,7 +17,6 @@ Using jQuery Mobile this can be done by setting:
 ```javascript
 $.mobile.hashListeningEnabled = false;
 ```
-
 prior to initializing any of your other code.
 
 I discovered this method looking through some jQuery Mobile commits that didn't make their way into the official docs, but am happy to see that they are now [covered in more detail](http://jquerymobile.com/test/docs/api/globalconfig.html).
@@ -30,9 +29,8 @@ var url = '#about',
     reverse = false,
     changeHash = false;
 
-$.mobile.changePage( url , { transition: effect}, reverse, changeHash );
+$.mobile.changePage(url , { transition: effect }, reverse, changeHash);
 ```
-
 In the above sample, `url` can refer to a URL or a hash identifier to navigate to, `effect` is simply the transition effect to animate the page in with and the final two parameters decide the direction for the transition (`reverse`) and whether or not the hash in the address bar should be updated (`changeHash`). With respect to the latter, I typically set this to false to avoid managing two sources for hash updates, but feel free to set this to true if you're comfortable doing so.
 
 **Note:** For some parallel work being done to explore how well the jQuery Mobile Router plugin works with Backbone, you may be interested in checking out [https://github.com/Filirom1/jquery-mobile-backbone-requirejs](https://github.com/Filirom1/jquery-mobile-backbone-requirejs).
@@ -67,7 +65,6 @@ window.mobileSearch = window.mobileSearch || {
     }
 }
 ```
-
 **Models**
 
 In the Flickly application, there are at least two unique types of data that need to be modeled - search results and individual photos, both of which contain additional meta-data like photo titles. If you simplify this down, search results are actually groups of photos in their own right, so the application only requires:

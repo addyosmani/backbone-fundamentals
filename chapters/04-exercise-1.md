@@ -50,7 +50,6 @@ First, we'll set up the header and the basic application dependencies: [jQuery](
 </body>
 </html>
 ```
-
 In addition to the aforementioned dependencies, note that a few other application-specific files are also loaded. These are organized into folders representing their application responsibilities: models, views, collections, and routers. An app.js file is present to house central initialization code.
 
 Note: If you want to follow along, create a directory structure as demonstrated in index.html:
@@ -68,25 +67,24 @@ We will be creating the application JavaScript files during the tutorial. Don't 
 Now let's populate the body of index.html. We'll need an `<input>` for creating new todos, a `<ul id="todo-list" />` for listing the actual todos, and a footer where we can later insert statistics and links for performing operations such as clearing completed todos. We'll add the following markup immediately inside our body tag before the script elements:
 
 ```html
-  <section id="todoapp">
-    <header id="header">
-      <h1>todos</h1>
-      <input id="new-todo" placeholder="What needs to be done?" autofocus>
-    </header>
-    <section id="main">
-      <input id="toggle-all" type="checkbox">
-      <label for="toggle-all">Mark all as complete</label>
-      <ul id="todo-list"></ul>
-    </section>
-    <footer id="footer"></footer>
+<section id="todoapp">
+  <header id="header">
+    <h1>todos</h1>
+    <input id="new-todo" placeholder="What needs to be done?" autofocus>
+  </header>
+  <section id="main">
+    <input id="toggle-all" type="checkbox">
+    <label for="toggle-all">Mark all as complete</label>
+    <ul id="todo-list"></ul>
   </section>
-  <div id="info">
-    <p>Double-click to edit a todo</p>
-    <p>Written by <a href="https://github.com/addyosmani">Addy Osmani</a></p>
-    <p>Part of <a href="http://todomvc.com">TodoMVC</a></p>
-  </div>
+  <footer id="footer"></footer>
+</section>
+<div id="info">
+  <p>Double-click to edit a todo</p>
+  <p>Written by <a href="https://github.com/addyosmani">Addy Osmani</a></p>
+  <p>Part of <a href="http://todomvc.com">TodoMVC</a></p>
+</div>
 ```
-
 #### Templates
 
 To complete index.html, we need to add the templates which we will use to dynamically create HTML by injecting model data into their placeholders. One way of including templates in the page is by using custom script tags. These don't get evaluated by the browser, which just interprets them as plain text. Underscore micro-templating can then access the templates, rendering fragments of HTML.
@@ -94,44 +92,42 @@ To complete index.html, we need to add the templates which we will use to dynami
 We'll start by filling in the #item-template which will be used to display individual todo items.
 
 ```html
-  <!-- index.html -->
+<!-- index.html -->
 
-  <script type="text/template" id="item-template">
-    <div class="view">
-      <input class="toggle" type="checkbox" <%= completed ? 'checked' : '' %>>
-      <label><%- title %></label>
-      <button class="destroy"></button>
-    </div>
-    <input class="edit" value="<%- title %>">
-  </script>
+<script type="text/template" id="item-template">
+  <div class="view">
+    <input class="toggle" type="checkbox" <%= completed ? 'checked' : '' %>>
+    <label><%- title %></label>
+    <button class="destroy"></button>
+  </div>
+  <input class="edit" value="<%- title %>">
+</script>
 ```
-
 The template tags in the above markup, such as `<%=` and `<%-`, are specific to Underscore.js and are documented on the Underscore site. In your own applications, you have a choice of template libraries, such as Mustache or Handlebars. Use whichever you prefer, Backbone doesn't mind.
 
 We also need to define the #stats-template template which we will use to populate the footer.
 
 ```html
-  <!-- index.html -->
+<!-- index.html -->
 
-  <script type="text/template" id="stats-template">
-    <span id="todo-count"><strong><%= remaining %></strong> <%= remaining === 1 ? 'item' : 'items' %> left</span>
-    <ul id="filters">
-      <li>
-        <a class="selected" href="#/">All</a>
-      </li>
-      <li>
-        <a href="#/active">Active</a>
-      </li>
-      <li>
-        <a href="#/completed">Completed</a>
-      </li>
-    </ul>
-    <% if (completed) { %>
-    <button id="clear-completed">Clear completed (<%= completed %>)</button>
-    <% } %>
-  </script>
+<script type="text/template" id="stats-template">
+  <span id="todo-count"><strong><%= remaining %></strong> <%= remaining === 1 ? 'item' : 'items' %> left</span>
+  <ul id="filters">
+    <li>
+      <a class="selected" href="#/">All</a>
+    </li>
+    <li>
+      <a href="#/active">Active</a>
+    </li>
+    <li>
+      <a href="#/completed">Completed</a>
+    </li>
+  </ul>
+  <% if (completed) { %>
+  <button id="clear-completed">Clear completed (<%= completed %>)</button>
+  <% } %>
+</script>
 ```
-
 The #stats-template displays the number of remaining incomplete items and contains a list of hyperlinks which will be used to perform actions when we implement our router. It also contains a button which can be used to clear all of the completed items.
 
 Now that we have all the HTML that we will need, we'll start implementing our application by returning to the fundamentals: a Todo model.
@@ -141,34 +137,29 @@ Now that we have all the HTML that we will need, we'll start implementing our ap
 The `Todo` model is remarkably straightforward. First, a todo has two attributes: a `title` stores a todo item's title and a `completed` status indicates if it's complete. These attributes are passed as defaults, as shown below:
 
 ```javascript
+// js/models/todo.js
 
-  // js/models/todo.js
+var app = app || {};
 
-  var app = app || {};
+// Todo Model
+// ----------
+// Our basic **Todo** model has `title`, `order`, and `completed` attributes.
 
-  // Todo Model
-  // ----------
-  // Our basic **Todo** model has `title`, `order`, and `completed` attributes.
+app.Todo = Backbone.Model.extend({
+  // Default attributes ensure that each todo created has `title` and `completed` keys.
+  defaults: {
+    title: '',
+    completed: false
+  },
 
-  app.Todo = Backbone.Model.extend({
-
-    // Default attributes ensure that each todo created has `title` and `completed` keys.
-    defaults: {
-      title: '',
-      completed: false
-    },
-
-    // Toggle the `completed` state of this todo item.
-    toggle: function() {
-      this.save({
-        completed: !this.get('completed')
-      });
-    }
-
-  });
-
+  // Toggle the `completed` state of this todo item.
+  toggle: function () {
+    this.save({
+      completed: !this.get('completed')
+    });
+  }
+});
 ```
-
 Second, the Todo model has a `toggle()` method through which a Todo item's completion status can be set and simultaneously persisted.
 
 ## Todo collection
@@ -176,56 +167,52 @@ Second, the Todo model has a `toggle()` method through which a Todo item's compl
 Next, a `TodoList` collection is used to group our models. The collection uses the LocalStorage adapter to override Backbone's default `sync()` operation with one that will persist our Todo records to HTML5 Local Storage. Through local storage, they're saved between page requests.
 
 ```javascript
+// js/collections/todos.js
 
-  // js/collections/todos.js
+var app = app || {};
 
-  var app = app || {};
+// Todo Collection
+// ---------------
 
-  // Todo Collection
-  // ---------------
+// The collection of todos is backed by *localStorage* instead of a remote
+// server.
+var TodoList = Backbone.Collection.extend({
+  // Reference to this collection's model.
+  model: app.Todo,
 
-  // The collection of todos is backed by *localStorage* instead of a remote
-  // server.
-  var TodoList = Backbone.Collection.extend({
+  // Save all of the todo items under the `"todos-backbone"` namespace.
+  localStorage: new Backbone.LocalStorage('todos-backbone'),
 
-    // Reference to this collection's model.
-    model: app.Todo,
+  // Filter down the list of all todo items that are finished.
+  completed: function () {
+    return this.filter(function (todo) {
+      return todo.get('completed');
+    });
+  },
 
-    // Save all of the todo items under the `"todos-backbone"` namespace.
-    localStorage: new Backbone.LocalStorage('todos-backbone'),
+  // Filter down the list to only todo items that are still not finished.
+  remaining: function () {
+    return this.without.apply(this, this.completed());
+  },
 
-    // Filter down the list of all todo items that are finished.
-    completed: function() {
-      return this.filter(function( todo ) {
-        return todo.get('completed');
-      });
-    },
-
-    // Filter down the list to only todo items that are still not finished.
-    remaining: function() {
-      return this.without.apply( this, this.completed() );
-    },
-
-    // We keep the Todos in sequential order, despite being saved by unordered
-    // GUID in the database. This generates the next order number for new items.
-    nextOrder: function() {
-      if ( !this.length ) {
-        return 1;
-      }
-      return this.last().get('order') + 1;
-    },
-
-    // Todos are sorted by their original insertion order.
-    comparator: function( todo ) {
-      return todo.get('order');
+  // We keep the Todos in sequential order, despite being saved by unordered
+  // GUID in the database. This generates the next order number for new items.
+  nextOrder: function () {
+    if (!this.length) {
+      return 1;
     }
-  });
+    return this.last().get('order') + 1;
+  },
 
-  // Create our global collection of **Todos**.
-  app.Todos = new TodoList();
+  // Todos are sorted by their original insertion order.
+  comparator: function (todo) {
+    return todo.get('order');
+  }
+});
 
+// Create our global collection of **Todos**.
+app.Todos = new TodoList();
 ```
-
 The collection's `completed()` and `remaining()` methods return an array of finished and unfinished todos, respectively.
 
 A `nextOrder()` method implements a sequence generator while a `comparator()` sorts items by their insertion order.
@@ -241,53 +228,48 @@ In our case, an `AppView` will handle the creation of new todos and rendering of
 To keep things short and simple, we won't be implementing all of the application's features in this tutorial, we'll just cover enough to get you started. Even so, there is a lot for us to cover in `AppView`, so we'll split our discussion into two sections.
 
 ```javascript
+// js/views/app.js
 
-  // js/views/app.js
+var app = app || {};
 
-  var app = app || {};
+// The Application
+// ---------------
 
-  // The Application
-  // ---------------
+// Our overall **AppView** is the top-level piece of UI.
+app.AppView = Backbone.View.extend({
+  // Instead of generating a new element, bind to the existing skeleton of
+  // the App already present in the HTML.
+  el: '#todoapp',
 
-  // Our overall **AppView** is the top-level piece of UI.
-  app.AppView = Backbone.View.extend({
+  // Our template for the line of statistics at the bottom of the app.
+  statsTemplate: _.template($('#stats-template').html()),
 
-    // Instead of generating a new element, bind to the existing skeleton of
-    // the App already present in the HTML.
-    el: '#todoapp',
+  // At initialization we bind to the relevant events on the `Todos`
+  // collection, when items are added or changed.
+  initialize: function () {
+    this.allCheckbox = this.$('#toggle-all')[0];
+    this.$input = this.$('#new-todo');
+    this.$footer = this.$('#footer');
+    this.$main = this.$('#main');
 
-    // Our template for the line of statistics at the bottom of the app.
-    statsTemplate: _.template( $('#stats-template').html() ),
+    this.listenTo(app.Todos, 'add', this.addOne);
+    this.listenTo(app.Todos, 'reset', this.addAll);
+  },
 
-    // At initialization we bind to the relevant events on the `Todos`
-    // collection, when items are added or changed.
-    initialize: function() {
-      this.allCheckbox = this.$('#toggle-all')[0];
-      this.$input = this.$('#new-todo');
-      this.$footer = this.$('#footer');
-      this.$main = this.$('#main');
+  // Add a single todo item to the list by creating a view for it, and
+  // appending its element to the `<ul>`.
+  addOne: function (todo) {
+    var view = new app.TodoView({ model: todo });
+    $('#todo-list').append(view.render().el);
+  },
 
-      this.listenTo(app.Todos, 'add', this.addOne);
-      this.listenTo(app.Todos, 'reset', this.addAll);
-    },
-
-    // Add a single todo item to the list by creating a view for it, and
-    // appending its element to the `<ul>`.
-    addOne: function( todo ) {
-      var view = new app.TodoView({ model: todo });
-      $('#todo-list').append( view.render().el );
-    },
-
-    // Add all items in the **Todos** collection at once.
-    addAll: function() {
-      this.$('#todo-list').html('');
-      app.Todos.each(this.addOne, this);
-    }
-
-  });
-
+  // Add all items in the **Todos** collection at once.
+  addAll: function () {
+    this.$('#todo-list').html('');
+    app.Todos.each(this.addOne, this);
+  }
+});
 ```
-
 A few notable features are present in our initial version of AppView, including a `statsTemplate`, an `initialize` method that's implicitly called on instantiation, and several view-specific methods.
 
 An `el` (element) property stores a selector targeting the DOM element with an ID of `todoapp`. In the case of our application, `el` refers to the matching `<section id="todoapp" />` element in index.html.
@@ -305,136 +287,132 @@ Note that we were able to use `this` within `addAll()` to refer to the view beca
 Now, let's add some more logic to complete our AppView!
 
 ```javascript
+// js/views/app.js
 
-  // js/views/app.js
+var app = app || {};
 
-  var app = app || {};
+// The Application
+// ---------------
 
-  // The Application
-  // ---------------
+// Our overall **AppView** is the top-level piece of UI.
+app.AppView = Backbone.View.extend({
+  // Instead of generating a new element, bind to the existing skeleton of
+  // the App already present in the HTML.
+  el: '#todoapp',
 
-  // Our overall **AppView** is the top-level piece of UI.
-  app.AppView = Backbone.View.extend({
+  // Our template for the line of statistics at the bottom of the app.
+  statsTemplate: _.template($('#stats-template').html()),
 
-    // Instead of generating a new element, bind to the existing skeleton of
-    // the App already present in the HTML.
-    el: '#todoapp',
+  // Delegated events for creating new items, and clearing completed ones.
+  events: {
+    'keypress #new-todo': 'createOnEnter',
+    'click #clear-completed': 'clearCompleted',
+    'click #toggle-all': 'toggleAllComplete'
+  },
 
-    // Our template for the line of statistics at the bottom of the app.
-    statsTemplate: _.template( $('#stats-template').html() ),
+  // At initialization we bind to the relevant events on the `Todos`
+  // collection, when items are added or changed. Kick things off by
+  // loading any preexisting todos that might be saved in *localStorage*.
+  initialize: function () {
+    this.allCheckbox = this.$('#toggle-all')[0];
+    this.$input = this.$('#new-todo');
+    this.$footer = this.$('#footer');
+    this.$main = this.$('#main');
 
-    // Delegated events for creating new items, and clearing completed ones.
-    events: {
-      'keypress #new-todo': 'createOnEnter',
-      'click #clear-completed': 'clearCompleted',
-      'click #toggle-all': 'toggleAllComplete'
-    },
+    this.listenTo(app.Todos, 'add', this.addOne);
+    this.listenTo(app.Todos, 'reset', this.addAll);
+    this.listenTo(app.Todos, 'change:completed', this.filterOne);
+    this.listenTo(app.Todos,'filter', this.filterAll);
+    this.listenTo(app.Todos, 'all', this.render);
 
-    // At initialization we bind to the relevant events on the `Todos`
-    // collection, when items are added or changed. Kick things off by
-    // loading any preexisting todos that might be saved in *localStorage*.
-    initialize: function() {
-      this.allCheckbox = this.$('#toggle-all')[0];
-      this.$input = this.$('#new-todo');
-      this.$footer = this.$('#footer');
-      this.$main = this.$('#main');
+    app.Todos.fetch();
+  },
 
-      this.listenTo(app.Todos, 'add', this.addOne);
-      this.listenTo(app.Todos, 'reset', this.addAll);
-      this.listenTo(app.Todos, 'change:completed', this.filterOne);
-      this.listenTo(app.Todos,'filter', this.filterAll);
-      this.listenTo(app.Todos, 'all', this.render);
+  // Re-rendering the App just means refreshing the statistics -- the rest
+  // of the app doesn't change.
+  render: function () {
+    var completed = app.Todos.completed().length;
+    var remaining = app.Todos.remaining().length;
 
-      app.Todos.fetch();
-    },
+    if (app.Todos.length) {
+      this.$main.show();
+      this.$footer.show();
 
-    // Re-rendering the App just means refreshing the statistics -- the rest
-    // of the app doesn't change.
-    render: function() {
-      var completed = app.Todos.completed().length;
-      var remaining = app.Todos.remaining().length;
+      this.$footer.html(this.statsTemplate({
+        completed: completed,
+        remaining: remaining
+      }));
 
-      if ( app.Todos.length ) {
-        this.$main.show();
-        this.$footer.show();
-
-        this.$footer.html(this.statsTemplate({
-          completed: completed,
-          remaining: remaining
-        }));
-
-        this.$('#filters li a')
-          .removeClass('selected')
-          .filter('[href="#/' + ( app.TodoFilter || '' ) + '"]')
-          .addClass('selected');
-      } else {
-        this.$main.hide();
-        this.$footer.hide();
-      }
-
-      this.allCheckbox.checked = !remaining;
-    },
-
-    // Add a single todo item to the list by creating a view for it, and
-    // appending its element to the `<ul>`.
-    addOne: function( todo ) {
-      var view = new app.TodoView({ model: todo });
-      $('#todo-list').append( view.render().el );
-    },
-
-    // Add all items in the **Todos** collection at once.
-    addAll: function() {
-      this.$('#todo-list').html('');
-      app.Todos.each(this.addOne, this);
-    },
-
-    filterOne : function (todo) {
-      todo.trigger('visible');
-    },
-
-    filterAll : function () {
-      app.Todos.each(this.filterOne, this);
-    },
-
-    // Generate the attributes for a new Todo item.
-    newAttributes: function() {
-      return {
-        title: this.$input.val().trim(),
-        order: app.Todos.nextOrder(),
-        completed: false
-      };
-    },
-
-    // If you hit return in the main input field, create new Todo model,
-    // persisting it to localStorage.
-    createOnEnter: function( event ) {
-      if ( event.which !== ENTER_KEY || !this.$input.val().trim() ) {
-        return;
-      }
-
-      app.Todos.create( this.newAttributes() );
-      this.$input.val('');
-    },
-
-    // Clear all completed todo items, destroying their models.
-    clearCompleted: function() {
-      _.invoke(app.Todos.completed(), 'destroy');
-      return false;
-    },
-
-    toggleAllComplete: function() {
-      var completed = this.allCheckbox.checked;
-
-      app.Todos.each(function( todo ) {
-        todo.save({
-          'completed': completed
-        });
-      });
+      this.$('#filters li a')
+        .removeClass('selected')
+        .filter('[href="#/' + (app.TodoFilter || '') + '"]')
+        .addClass('selected');
+    } else {
+      this.$main.hide();
+      this.$footer.hide();
     }
-  });
 
+    this.allCheckbox.checked = !remaining;
+  },
+
+  // Add a single todo item to the list by creating a view for it, and
+  // appending its element to the `<ul>`.
+  addOne: function (todo) {
+    var view = new app.TodoView({ model: todo });
+    $('#todo-list').append(view.render().el);
+  },
+
+  // Add all items in the **Todos** collection at once.
+  addAll: function () {
+    this.$('#todo-list').html('');
+    app.Todos.each(this.addOne, this);
+  },
+
+  filterOne : function (todo) {
+    todo.trigger('visible');
+  },
+
+  filterAll : function () {
+    app.Todos.each(this.filterOne, this);
+  },
+
+  // Generate the attributes for a new Todo item.
+  newAttributes: function () {
+    return {
+      title: this.$input.val().trim(),
+      order: app.Todos.nextOrder(),
+      completed: false
+    };
+  },
+
+  // If you hit return in the main input field, create new Todo model,
+  // persisting it to localStorage.
+  createOnEnter: function (event) {
+    if (event.which !== ENTER_KEY || !this.$input.val().trim()) {
+      return;
+    }
+
+    app.Todos.create(this.newAttributes());
+    this.$input.val('');
+  },
+
+  // Clear all completed todo items, destroying their models.
+  clearCompleted: function () {
+    _.invoke(app.Todos.completed(), 'destroy');
+    return false;
+  },
+
+  toggleAllComplete: function () {
+    var completed = this.allCheckbox.checked;
+
+    app.Todos.each(function (todo) {
+      todo.save({
+        'completed': completed
+      });
+    });
+  }
+});
 ```
-
 We have added the logic for creating new todos, editing them, and filtering them based on their completed status.
 
 * events: We've defined an `events` hash containing declarative callbacks for our DOM events. It binds those events to the following methods:
@@ -460,71 +438,67 @@ The `initialize()` method completes by fetching the previously saved todos from 
 Now let’s look at the `TodoView` view. This will be in charge of individual Todo records, making sure the view updates when the todo does. To enable this functionality, we will add event listeners to the view that listen for events on an individual todo's HTML representation.
 
 ```javascript
+// js/views/todos.js
 
-  // js/views/todos.js
+var app = app || {};
 
-  var app = app || {};
+// Todo Item View
+// --------------
 
-  // Todo Item View
-  // --------------
+// The DOM element for a todo item...
+app.TodoView = Backbone.View.extend({
+  // .. is a list tag.
+  tagName: 'li',
 
-  // The DOM element for a todo item...
-  app.TodoView = Backbone.View.extend({
+  // Cache the template function for a single item.
+  template: _.template($('#item-template').html()),
 
-    //... is a list tag.
-    tagName: 'li',
+  // The DOM events specific to an item.
+  events: {
+    'dblclick label': 'edit',
+    'keypress .edit': 'updateOnEnter',
+    'blur .edit': 'close'
+  },
 
-    // Cache the template function for a single item.
-    template: _.template( $('#item-template').html() ),
+  // The TodoView listens for changes to its model, re-rendering. Since there's
+  // a one-to-one correspondence between a **Todo** and a **TodoView** in this
+  // app, we set a direct reference on the model for convenience.
+  initialize: function () {
+    this.listenTo(this.model, 'change', this.render);
+  },
 
-    // The DOM events specific to an item.
-    events: {
-      'dblclick label': 'edit',
-      'keypress .edit': 'updateOnEnter',
-      'blur .edit': 'close'
-    },
+  // Re-renders the titles of the todo item.
+  render: function () {
+    this.$el.html(this.template( this.model.toJSON() ));
+    this.$input = this.$('.edit');
+    return this;
+  },
 
-    // The TodoView listens for changes to its model, re-rendering. Since there's
-    // a one-to-one correspondence between a **Todo** and a **TodoView** in this
-    // app, we set a direct reference on the model for convenience.
-    initialize: function() {
-      this.listenTo(this.model, 'change', this.render);
-    },
+  // Switch this view into `"editing"` mode, displaying the input field.
+  edit: function () {
+    this.$el.addClass('editing');
+    this.$input.focus();
+  },
 
-    // Re-renders the titles of the todo item.
-    render: function() {
-      this.$el.html( this.template( this.model.toJSON() ) );
-      this.$input = this.$('.edit');
-      return this;
-    },
+  // Close the `"editing"` mode, saving changes to the todo.
+  close: function () {
+    var value = this.$input.val().trim();
 
-    // Switch this view into `"editing"` mode, displaying the input field.
-    edit: function() {
-      this.$el.addClass('editing');
-      this.$input.focus();
-    },
-
-    // Close the `"editing"` mode, saving changes to the todo.
-    close: function() {
-      var value = this.$input.val().trim();
-
-      if ( value ) {
-        this.model.save({ title: value });
-      }
-
-      this.$el.removeClass('editing');
-    },
-
-    // If you hit `enter`, we're through editing the item.
-    updateOnEnter: function( e ) {
-      if ( e.which === ENTER_KEY ) {
-        this.close();
-      }
+    if (value) {
+      this.model.save({ title: value });
     }
-  });
 
+    this.$el.removeClass('editing');
+  },
+
+  // If you hit `enter`, we're through editing the item.
+  updateOnEnter: function (e) {
+    if (e.which === ENTER_KEY) {
+      this.close();
+    }
+  }
+});
 ```
-
 In the `initialize()` constructor, we set up a listener that monitors a todo model’s `change` event. As a result, when the todo gets updated, the application will re-render the view and visually reflect its changes. Note that the model passed in the arguments hash by our AppView is automatically available to us as `this.model`.
 
 In the `render()` method, we render our Underscore.js `#item-template`, which was previously compiled into this.template using Underscore’s `_.template()` method.  This returns an HTML fragment that replaces the content of the view's element (an li element was implicitly created for us based on the `tagName` property). In other words, the rendered template is now present under `this.el` and can be appended to the todo list in the user interface. `render()` finishes by caching the input element within the instantiated template into `this.input`.
@@ -540,21 +514,18 @@ Our events hash includes three callbacks:
 So now we have two views: `AppView` and `TodoView`. The former needs to be instantiated on page load so its code gets executed. This can be accomplished through jQuery's `ready()` utility, which will execute a function when the DOM is loaded.
 
 ```javascript
+// js/app.js
 
-  // js/app.js
+var app = app || {};
+var ENTER_KEY = 13;
 
-  var app = app || {};
-  var ENTER_KEY = 13;
+$(function () {
 
-  $(function() {
+  // Kick things off by creating the **App**.
+  new app.AppView();
 
-    // Kick things off by creating the **App**.
-    new app.AppView();
-
-  });
-
+});
 ```
-
 ## In action
 
 Let's pause and ensure that the work we've done so far functions as intended.
@@ -563,7 +534,7 @@ If you are following along, open `file://*path*/index.html` in your web browser 
 
 However, a few things can be tested through the JavaScript console.
 
-In the console, add a new todo item: `window.app.Todos.create({ title: 'My first Todo item'});` and hit return.
+In the console, add a new todo item: `window.app.Todos.create({ title: 'My first Todo item' });` and hit return.
 
 ![](img/todos_d.png)
 
@@ -572,24 +543,22 @@ If all is functioning properly, this should log the new todo we've just added to
 `window.app.Todos.create()` executes a collection method (`Collection.create(attributes, [options])`) which instantiates a new model item of the type passed into the collection definition, in our case `app.Todo`:
 
 ```javascript
+// from our js/collections/todos.js
 
-  // from our js/collections/todos.js
+var TodoList = Backbone.Collection.extend({
 
-  var TodoList = Backbone.Collection.extend({
+  // the model type used by collection.create() to instantiate new model in the collection
+  model: app.Todo
+  ...
 
-      model: app.Todo // the model type used by collection.create() to instantiate new model in the collection
-      ...
-  )};
-
+) };
 ```
-
 Run the following in the console to check it out:
 
 ```javascript
-var secondTodo = window.app.Todos.create({ title: 'My second Todo item'});
+var secondTodo = window.app.Todos.create({ title: 'My second Todo item' });
 secondTodo instanceof app.Todo // returns true
 ```
-
 Now refresh the page and we should be able to see the fruits of our labour.
 
 The todos added through the console should still appear in the list since they are populated from the Local Storage. Also, we should be able to create a new todo by typing a title and pressing enter.
@@ -604,105 +573,101 @@ Excellent, we're making great progress, but what about completing and deleting t
 The next part of our tutorial is going to cover completing and deleting todos. These two actions are specific to each Todo item, so we need to add this functionality to the TodoView view. We will do so by adding `togglecompleted()` and `clear()` methods along with corresponding entries in the `events` hash.
 
 ```javascript
+// js/view/todos.js
 
-  // js/view/todos.js
+var app = app || {};
 
-  var app = app || {};
+// Todo Item View
+// --------------
 
-  // Todo Item View
-  // --------------
+// The DOM element for a todo item...
+app.TodoView = Backbone.View.extend({
+  // .. is a list tag.
+  tagName: 'li',
 
-  // The DOM element for a todo item...
-  app.TodoView = Backbone.View.extend({
+  // Cache the template function for a single item.
+  template: _.template($('#item-template').html()),
 
-    //... is a list tag.
-    tagName: 'li',
+  // The DOM events specific to an item.
+  events: {
+    'click .toggle': 'togglecompleted', // NEW
+    'dblclick label': 'edit',
+    'click .destroy': 'clear',           // NEW
+    'keypress .edit': 'updateOnEnter',
+    'blur .edit': 'close'
+  },
 
-    // Cache the template function for a single item.
-    template: _.template( $('#item-template').html() ),
+  // The TodoView listens for changes to its model, re-rendering. Since there's
+  // a one-to-one correspondence between a **Todo** and a **TodoView** in this
+  // app, we set a direct reference on the model for convenience.
+  initialize: function () {
+    this.listenTo(this.model, 'change', this.render);
+    this.listenTo(this.model, 'destroy', this.remove);        // NEW
+    this.listenTo(this.model, 'visible', this.toggleVisible); // NEW
+  },
 
-    // The DOM events specific to an item.
-    events: {
-      'click .toggle': 'togglecompleted', // NEW
-      'dblclick label': 'edit',
-      'click .destroy': 'clear',           // NEW
-      'keypress .edit': 'updateOnEnter',
-      'blur .edit': 'close'
-    },
+  // Re-render the titles of the todo item.
+  render: function () {
+    this.$el.html(this.template( this.model.toJSON() ));
 
-    // The TodoView listens for changes to its model, re-rendering. Since there's
-    // a one-to-one correspondence between a **Todo** and a **TodoView** in this
-    // app, we set a direct reference on the model for convenience.
-    initialize: function() {
-      this.listenTo(this.model, 'change', this.render);
-      this.listenTo(this.model, 'destroy', this.remove);        // NEW
-      this.listenTo(this.model, 'visible', this.toggleVisible); // NEW
-    },
+    this.$el.toggleClass('completed', this.model.get('completed')); // NEW
+    this.toggleVisible();                                             // NEW
 
-    // Re-render the titles of the todo item.
-    render: function() {
-      this.$el.html( this.template( this.model.toJSON() ) );
+    this.$input = this.$('.edit');
+    return this;
+  },
 
-      this.$el.toggleClass( 'completed', this.model.get('completed') ); // NEW
-      this.toggleVisible();                                             // NEW
+  // NEW - Toggles visibility of item
+  toggleVisible : function () {
+    this.$el.toggleClass( 'hidden',  this.isHidden());
+  },
 
-      this.$input = this.$('.edit');
-      return this;
-    },
+  // NEW - Determines if item should be hidden
+  isHidden : function () {
+    var isCompleted = this.model.get('completed');
+    return ( // hidden cases only
+      (!isCompleted && app.TodoFilter === 'completed')
+      || (isCompleted && app.TodoFilter === 'active')
+    );
+  },
 
-    // NEW - Toggles visibility of item
-    toggleVisible : function () {
-      this.$el.toggleClass( 'hidden',  this.isHidden());
-    },
+  // NEW - Toggle the `"completed"` state of the model.
+  togglecompleted: function () {
+    this.model.toggle();
+  },
 
-    // NEW - Determines if item should be hidden
-    isHidden : function () {
-      var isCompleted = this.model.get('completed');
-      return ( // hidden cases only
-        (!isCompleted && app.TodoFilter === 'completed')
-        || (isCompleted && app.TodoFilter === 'active')
-      );
-    },
+  // Switch this view into `"editing"` mode, displaying the input field.
+  edit: function () {
+    this.$el.addClass('editing');
+    this.$input.focus();
+  },
 
-    // NEW - Toggle the `"completed"` state of the model.
-    togglecompleted: function() {
-      this.model.toggle();
-    },
+  // Close the `"editing"` mode, saving changes to the todo.
+  close: function () {
+    var value = this.$input.val().trim();
 
-    // Switch this view into `"editing"` mode, displaying the input field.
-    edit: function() {
-      this.$el.addClass('editing');
-      this.$input.focus();
-    },
-
-    // Close the `"editing"` mode, saving changes to the todo.
-    close: function() {
-      var value = this.$input.val().trim();
-
-      if ( value ) {
-        this.model.save({ title: value });
-      } else {
-        this.clear(); // NEW
-      }
-
-      this.$el.removeClass('editing');
-    },
-
-    // If you hit `enter`, we're through editing the item.
-    updateOnEnter: function( e ) {
-      if ( e.which === ENTER_KEY ) {
-        this.close();
-      }
-    },
-
-    // NEW - Remove the item, destroy the model from *localStorage* and delete its view.
-    clear: function() {
-      this.model.destroy();
+    if (value) {
+      this.model.save({ title: value });
+    } else {
+      this.clear(); // NEW
     }
-  });
 
+    this.$el.removeClass('editing');
+  },
+
+  // If you hit `enter`, we're through editing the item.
+  updateOnEnter: function (e) {
+    if (e.which === ENTER_KEY) {
+      this.close();
+    }
+  },
+
+  // NEW - Remove the item, destroy the model from *localStorage* and delete its view.
+  clear: function () {
+    this.model.destroy();
+  }
+});
 ```
-
 The key part of this is the two event handlers we've added, a togglecompleted event on the todo's checkbox, and a click event on the todo's `<button class="destroy" />` button.
 
 Let's look at the events that occur when we click the checkbox for a todo item:
@@ -734,38 +699,34 @@ Finally, we move on to routing, which will allow us to easily filter the list of
 #/active
 #/completed
 ```
-
 ![](img/todos_e.png)
 
 When the route changes, the todo list will be filtered on a model level and the selected class on the filter links in the footer will be toggled as described above. When an item is updated while a filter is active it will be updated accordingly (e.g., if the filter is active and the item is checked, it will be hidden). The active filter is persisted on reload.
 
 ```javascript
+// js/routers/router.js
 
-  // js/routers/router.js
+// Todo Router
+// ----------
 
-  // Todo Router
-  // ----------
+var Workspace = Backbone.Router.extend({
+  routes: {
+    '*filter': 'setFilter'
+  },
 
-  var Workspace = Backbone.Router.extend({
-    routes:{
-      '*filter': 'setFilter'
-    },
+  setFilter: function (param) {
+    // Set the current filter to be used
+    app.TodoFilter = param.trim() || '';
 
-    setFilter: function( param ) {
-      // Set the current filter to be used
-      app.TodoFilter = param.trim() || '';
+    // Trigger a collection filter event, causing hiding/unhiding
+    // of Todo view items
+    app.Todos.trigger('filter');
+  }
+});
 
-      // Trigger a collection filter event, causing hiding/unhiding
-      // of Todo view items
-      app.Todos.trigger('filter');
-    }
-  });
-
-  app.TodoRouter = new Workspace();
-  Backbone.history.start();
-
+app.TodoRouter = new Workspace();
+Backbone.history.start();
 ```
-
 Our router uses a *splat to set up a default route which passes the string after '#/' in the URL to `setFilter()` which sets `window.app.TodoFilter` to that string.
 
 As we can see in the line `window.app.Todos.trigger('filter')`, once the filter has been set, we simply trigger 'filter' on our Todos collection to toggle which items are visible and which are hidden. Recall that our AppView's `filterAll()` method is bound to the collection's filter event and that any event on the collection will cause the AppView to re-render.

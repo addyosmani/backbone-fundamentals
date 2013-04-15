@@ -20,43 +20,40 @@ The best way to combine views is simply using:
 ```
 this.$('.someContainer').append(innerView.el);
 ```
-
 which just relies on jQuery. We could use this in a real example as follows:
 
 ```javascript
 ...
-initialize : function () { 
-    //...
+initialize : function () {
+    // ..
 },
 
 render : function () {
 
     this.$el.empty();
 
-    this.innerView1 = new Subview({options});
-    this.innerView2 = new Subview({options});
+    this.innerView1 = new Subview({ options });
+    this.innerView2 = new Subview({ options });
 
     this.$('.inner-view-container')
         .append(this.innerView1.el)
         .append(this.innerView2.el);
 }
 ```
-
 **Solution 2**
 
 Beginners sometimes also try using `setElement` to solve tis problem, however keep in mind that using this method is an easy way to shoot yourself in the foot. Try to avoid if possible:
 
 
 ```javascript
-
 // Where we have previously defined a View, SubView
 // in a parent View we could do:
 
 ...
 initialize : function () {
 
-    this.innerView1 = new Subview({options});
-    this.innerView2 = new Subview({options});
+    this.innerView1 = new Subview({ options });
+    this.innerView2 = new Subview({ options });
 },
 
 render : function () {
@@ -67,12 +64,11 @@ render : function () {
     this.innerView2.setElement('.some-element2').render();
 }
 ```
-
-Here we are creating subviews in the parent view's `initialize()` method and rendering the subviews in the parent's `render()` method. The elements managed by the subviews exist in the parent's template and the `View.setElement()` method is used to re-assign the element associated with each subview. 
+Here we are creating subviews in the parent view's `initialize()` method and rendering the subviews in the parent's `render()` method. The elements managed by the subviews exist in the parent's template and the `View.setElement()` method is used to re-assign the element associated with each subview.
 
 `setElement()` changes a view's element, including re-delegating event handlers by removing them from the old element and binding them to the new element. Note that `setElement()` returns the view, allowing us to chain the call to `render()`.
 
-This works and has some positive qualities: you don't need to worry about maintaining the order of your DOM elements when appending, views are initialized early, and the render() method doesn't need to take on too many responsibilities at once. 
+This works and has some positive qualities: you don't need to worry about maintaining the order of your DOM elements when appending, views are initialized early, and the render() method doesn't need to take on too many responsibilities at once.
 
 Unfortunately, downsides are that you can't set the `tagName` property of subviews and events need to be re-delegated. The first solution doesn't suffer from this problem.
 
@@ -82,13 +78,12 @@ Unfortunately, downsides are that you can't set the `tagName` property of subvie
 One more possible solution to this problem could be written:
 
 ```javascript
-
 var OuterView = Backbone.View.extend({
-    initialize: function() {
+    initialize: function () {
         this.inner = new InnerView();
     },
 
-    render: function() {
+    render: function () {
         this.$el.html(template); // or this.$el.empty() if you have no template
         this.$el.append(this.inner.$el);
         this.inner.render();
@@ -96,14 +91,13 @@ var OuterView = Backbone.View.extend({
 });
 
 var InnerView = Backbone.View.extend({
-    render: function() {
+    render: function () {
         this.$el.html(template);
         this.delegateEvents();
     }
 });
 
 ```
-
 This tackles a few specific design decisions:
 
 * The order in which you append the sub-elements matters
@@ -117,13 +111,12 @@ Note that InnerView needs to call `View.delegateEvents()` to bind its event hand
 A better solution, which is more clean but has the potential to affect performance is:
 
 ```javascript
-
 var OuterView = Backbone.View.extend({
-    initialize: function() {
+    initialize: function () {
         this.render();
     },
 
-    render: function() {
+    render: function () {
         this.$el.html(template); // or this.$el.empty() if you have no template
         this.inner = new InnerView();
         this.$el.append(this.inner.$el);
@@ -131,39 +124,36 @@ var OuterView = Backbone.View.extend({
 });
 
 var InnerView = Backbone.View.extend({
-    initialize: function() {
+    initialize: function () {
         this.render();
     },
 
-    render: function() {
+    render: function () {
         this.$el.html(template);
     }
 });
 ```
-
 If multiple views need to be nested at particular locations in a template, a hash of child views indexed by child view cids' should be created. In the template, use a custom HTML attribute named `data-view-cid` to create placeholder elements for each view to embed. Once the template has been rendered and its output appended to the parent view's `$el`, each placeholder can be queried for and replaced with the child view's `el`.
 
 A sample implementation containing a single child view could be written:
 
 ```javascript
-
 var OuterView = Backbone.View.extend({
-    initialize: function() {
+    initialize: function () {
         this.children = {};
         var child = new Backbone.View();
         this.children[child.cid] = child;
     },
 
-    render: function() {
-        this.$el.html('<div data-view-cid="' + this.child.cid + '"></div>');        
-        _.each(this.children, function(view, cid) {
+    render: function () {
+        this.$el.html('<div data-view-cid="' + this.child.cid + '"></div>');
+        _.each(this.children, function (view, cid) {
             this.$('[data-view-cid="' + cid + '"]').replaceWith(view.el);
         }, this);
     }
 };
 
 ```
-
 
 The use of `cid`s (client ids) here is useful because it illustrates separating a model and its views by having views referenced by their instances and not their attributes. It's quite common to ask for all views that satisfy an attribute on their models, but if you have recursive subviews or repeated views (a common occurrance), you can't simply ask for views by attributes. That is, unless you specify additional attributes that separate duplicates. Using `cid`s solves this problem as it allows for direct references to views.
 
@@ -184,13 +174,12 @@ In order to reach attributes on related models in a nested setup, models require
 One approach is to make sure each child model has a 'parent' attribute. This way you can traverse the nesting first up to the parent and then down to any siblings that you know of. So, assuming we have models modelA, modelB and modelC:
 
 ```javascript
-
 // When initializing modelA, I would suggest setting a link to the parent
 // model when doing this, like this:
 
 ModelA = Backbone.Model.extend({
 
-    initialize: function(){
+    initialize: function () {
         this.modelB = new modelB();
         this.modelB.parent = this;
         this.modelC = new modelC();
@@ -198,20 +187,18 @@ ModelA = Backbone.Model.extend({
     }
 }
 ```
+This allows you to reach the parent model in any child model function through `this.parent`.
 
-This allows you to reach the parent model in any child model function through `this.parent`. 
-
-Now, we have already discussed a few options for how to construct nested Views using Backbone. For the sake of simplicity, let us imagine that we are creating a new child view `ViewB` from within the `initialize()` method of `ViewA` below. `ViewB` can reach out over the `ViewA` model and listen out for changes on any of its nested models. 
+Now, we have already discussed a few options for how to construct nested Views using Backbone. For the sake of simplicity, let us imagine that we are creating a new child view `ViewB` from within the `initialize()` method of `ViewA` below. `ViewB` can reach out over the `ViewA` model and listen out for changes on any of its nested models.
 
 See inline for comments on exactly what each step is enabling:
 
 
 ```javascript
-
 // Define View A
 ViewA = Backbone.View.extend({
 
-    initialize: function(){
+    initialize: function () {
        // Create an instance of View B
        this.viewB = new ViewB();
 
@@ -226,9 +213,9 @@ ViewA = Backbone.View.extend({
 // Define View B
 ViewB = Backbone.View.extend({
 
-    //...,
+    // ..,
 
-    initialize: function(){
+    initialize: function () {
         // Listen for changes to the nested models in our parent ViewA
         this.listenTo(this.model.parent.modelB, "change", this.render);
         this.listenTo(this.model.parent.modelC, "change", this.render);
@@ -245,7 +232,6 @@ ViewB = Backbone.View.extend({
 var viewA = new ViewA({ model: ModelA });
 ```
 
-
 #### Rendering Parent View from Child
 
 **Problem**
@@ -258,7 +244,7 @@ In a scenario where you have a view containing another view, such as a photo gal
 
 The simplest solution is to just use `this.parentView.render();`.
 
-If however inversion of control is desired, events may be used to provide an equally valid solution. 
+If however inversion of control is desired, events may be used to provide an equally valid solution.
 
 Say we wish to begin rendering when a particular event has occurred. For the sake of example, let us call this event 'somethingHappened'. The parent view can bind notifications on the child view to know when the event has occurred. It can then render itself.
 
@@ -271,16 +257,13 @@ this.listenTo(this.childView, 'somethingHappened', this.render);
 // Parent removal
 this.stopListening(this.childView, 'somethingHappened');
 ```
-
 In the child view:
 
 ```javascript
-
 // After the event has occurred
 this.trigger('somethingHappened');
 
 ```
-
 The child will trigger a "somethingHappened" event and the parent's render function will be called.
 
 (Thanks to Tal [Bereznitskey](http://stackoverflow.com/users/269666/tal-bereznitskey) for this tip)
@@ -299,7 +282,7 @@ Where your application is setup with multiple Parent and Child Views, it is also
 The solution in the last question should be enough to handle this use case, but if you require a more explicit example that handles children, we can see one below:
 
 ```javascript
-Backbone.View.prototype.close = function() {
+Backbone.View.prototype.close = function () {
     if (this.onClose) {
         this.onClose();
     }
@@ -308,16 +291,16 @@ Backbone.View.prototype.close = function() {
 };
 
 NewView = Backbone.View.extend({
-    initialize: function() {
+    initialize: function () {
        this.childViews = [];
     },
-    renderChildren: function(item) {
+    renderChildren: function (item) {
         var itemView = new NewChildView({ model: item });
         $(this.el).prepend(itemView.render());
         this.childViews.push(itemView);
     },
-    onClose: function() {
-      _(this.childViews).each(function(view) {
+    onClose: function () {
+      _(this.childViews).each(function (view) {
         view.close();
       });
     }
@@ -325,11 +308,10 @@ NewView = Backbone.View.extend({
 
 NewChildView = Backbone.View.extend({
     tagName: 'li',
-    render: function() {
+    render: function () {
     }
 });
 ```
-
 Here, a close() method for views is implemented which disposes of a view when it is no longer needed or needs to be reset.
 
 In most cases, the view removal should not affect any associated models. For example, if you are working on a blogging application and you remove a view with comments, perhaps another view in your app shows a selection of comments and resetting the collection would affect those views as well.
@@ -372,11 +354,10 @@ This means that it can be a challenge to determine which specific fields are bei
 The most optimal solution to this problem probably isn't to stick validation in your model attributes. Instead, have a function specifically designed for validating that particular form. There are many good JavaScript form validation libraries out there. If you want to stick it on your model, just make it a class function:
 
 ```javascript
-User.validate = function(formElement) {
-  //...
+User.validate = function (formElement) {
+  // ..
 };
 ```
-
 To illustrate this problem better, let us look at a typical registration form use case that:
 
 * Validates form fields using the blur event
@@ -415,26 +396,24 @@ HTML:
 </body>
 </html>
 ```
-
 Some simple validation that could be written using the current Backbone `validate` method to work with this form could be implemented using something like:
 
 
 ```javascript
-validate: function(attrs) {
+validate: function (attrs) {
 
-    if(!attrs.firstname) return 'first name is empty';
-    if(!attrs.lastname) return 'last name is empty';
-    if(!attrs.email) return 'email is empty';
+    if (!attrs.firstname) return 'first name is empty';
+    if (!attrs.lastname) return 'last name is empty';
+    if (!attrs.email) return 'email is empty';
 
 }
 ```
-
 Unfortunately, this method would trigger a first name error each time any of the fields were blurred and only an error message next to the first name field would be presented.
 
 One potential solution to the problem is to validate all fields and return all of the errors:
 
 ```javascript
-validate: function(attrs) {
+validate: function (attrs) {
   var errors = {};
 
   if (!attrs.firstname) errors.firstname = 'first name is empty';
@@ -444,15 +423,13 @@ validate: function(attrs) {
   if (!_.isEmpty(errors)) return errors;
 }
 ```
-
 This can be adapted into a complete solution that defines a Field model for each input in our form and works within the parameters of our use case as follows:
 
 ```javascript
-
-$(function($) {
+$(function ($) {
 
   var User = Backbone.Model.extend({
-    validate: function(attrs) {
+    validate: function (attrs) {
       var errors = this.errors = {};
 
       if (!attrs.firstname) errors.firstname = 'firstname is required';
@@ -464,12 +441,12 @@ $(function($) {
   });
 
   var Field = Backbone.View.extend({
-    events: {blur: 'validate'},
-    initialize: function() {
+    events: {blur: 'validate' },
+    initialize: function () {
       this.name = this.$el.attr('name');
       this.$msg = $('[data-msg=' + this.name + ']');
     },
-    validate: function() {
+    validate: function () {
       this.model.set(this.name, this.$el.val());
       this.$msg.text(this.model.errors[this.name] || '');
     }
@@ -477,14 +454,13 @@ $(function($) {
 
   var user = new User;
 
-  $('input').each(function() {
-    new Field({el: this, model: user});
+  $('input').each(function () {
+    new Field({ el: this, model: user });
   });
 
 });
 
 ```
-
 
 This works great as the solution checks the validation for each attribute individually and sets the message for the correct blurred field. A [demo](http://jsbin.com/afetez/2/edit) of the above by [@braddunbar](http://github.com/braddunbar) is also available.
 
@@ -496,7 +472,6 @@ Here is how we would setup a partial User Model and validate method using this p
 
 
 ```javascript
-
 // Create a new User Model
 var User = Backbone.Model.extend({
 
@@ -507,28 +482,28 @@ var User = Backbone.Model.extend({
 
           digits: '[0-9]',
 
-          email: '^[a-zA-Z0-9._-]+@[a-zA-Z0-9][a-zA-Z0-9.-]*[.]{1}[a-zA-Z]{2,6}$'
+          email: '^[a-zA-Z0-9._-]+@[a-zA-Z0-9][a-zA-Z0-9.-]*[.]{1 }[a-zA-Z]{2,6 }$'
       },
 
     // Validators
       validators: {
 
-          minLength: function(value, minLength) {
+          minLength: function (value, minLength) {
             return value.length >= minLength;
 
           },
 
-          maxLength: function(value, maxLength) {
+          maxLength: function (value, maxLength) {
             return value.length <= maxLength;
 
           },
 
-          isEmail: function(value) {
+          isEmail: function (value) {
             return User.prototype.validators.pattern(value, User.prototype.patterns.email);
 
           },
 
-          hasSpecialCharacter: function(value) {
+          hasSpecialCharacter: function (value) {
             return User.prototype.validators.pattern(value, User.prototype.patterns.specialCharacters);
 
           },
@@ -537,39 +512,38 @@ var User = Backbone.Model.extend({
     // We can determine which properties are getting validated by
     // checking to see if properties are equal to null
 
-        validate: function(attrs) {
+        validate: function (attrs) {
 
           var errors = this.errors = {};
 
-          if(attrs.firstname != null) {
+          if (attrs.firstname != null) {
               if (!attrs.firstname) {
                   errors.firstname = 'firstname is required';
                   console.log('first name isEmpty validation called');
               }
 
-              else if(!this.validators.minLength(attrs.firstname, 2))
+              else if (!this.validators.minLength(attrs.firstname, 2))
                 errors.firstname = 'firstname is too short';
-              else if(!this.validators.maxLength(attrs.firstname, 15))
+              else if (!this.validators.maxLength(attrs.firstname, 15))
                 errors.firstname = 'firstname is too large';
-              else if(this.validators.hasSpecialCharacter(attrs.firstname)) errors.firstname = 'firstname cannot contain special characters';
+              else if (this.validators.hasSpecialCharacter(attrs.firstname)) errors.firstname = 'firstname cannot contain special characters';
           }
 
-          if(attrs.lastname != null) {
+          if (attrs.lastname != null) {
 
               if (!attrs.lastname) {
                   errors.lastname = 'lastname is required';
                   console.log('last name isEmpty validation called');
               }
 
-              else if(!this.validators.minLength(attrs.lastname, 2))
+              else if (!this.validators.minLength(attrs.lastname, 2))
                 errors.lastname = 'lastname is too short';
-              else if(!this.validators.maxLength(attrs.lastname, 15))
+              else if (!this.validators.maxLength(attrs.lastname, 15))
                 errors.lastname = 'lastname is too large';
-              else if(this.validators.hasSpecialCharacter(attrs.lastname)) errors.lastname = 'lastname cannot contain special characters';
+              else if (this.validators.hasSpecialCharacter(attrs.lastname)) errors.lastname = 'lastname cannot contain special characters';
 
           }
 ```
-
 
 This allows the logic inside of our validate methods to determine which form fields are currently being set/validated, and ignore the model properties that are not being set.
 
@@ -577,10 +551,9 @@ It's fairly straight-forward to use as well. We can simply define a new Model in
 
 ```javascript
 var user = new User();
-user.set({ 'firstname': 'Greg' }, {validate: true, validateAll: false});
+user.set({ 'firstname': 'Greg' }, {validate: true, validateAll: false });
 
 ```
-
 That's it!
 
 The Backbone.validateAll logic doesn't override the default Backbone logic by default and so it's perfectly capable of being used for scenarios where you might care more about field-validation [performance](http://jsperf.com/backbone-validateall) as well as those where you don't. Both solutions presented in this section should work fine however.
@@ -597,23 +570,21 @@ In some instances it may be necessary to use multiple versions of Backbone in th
 Like most client-side projects, Backbone's code is wrapped in an immediately-invoked function expression:
 
 ```javascript
-(function(){
+(function () {
   // Backbone.js
 }).call(this);
 ```
-
 Several things happen during this configuration stage. A Backbone `namespace` is created, and multiple versions of Backbone on the same page are supported through the noConflict mode:
 
 ```javascript
 var root = this;
 var previousBackbone = root.Backbone;
 
-Backbone.noConflict = function() {
+Backbone.noConflict = function () {
   root.Backbone = previousBackbone;
   return this;
 };
 ```
-
 Multiple versions of Backbone can be used on the same page by calling `noConflict` like this:
 
 ```javascript
@@ -622,7 +593,6 @@ var Backbone19 = Backbone.noConflict();
 // and `window.Backbone` will be restored to the previously
 // loaded version
 ```
-
 
 #### Building Model and View hierarchies
 
@@ -635,10 +605,9 @@ How does inheritence work with Backbone? How can I share code between similar mo
 For its inheritance, Backbone internally uses an `inherits` function inspired by `goog.inherits`, Google's implementation from the Closure Library. It's basically a function to correctly setup the prototype chain.
 
 ```javascript
- var inherits = function(parent, protoProps, staticProps) {
+ var inherits = function (parent, protoProps, staticProps) {
       ...
 ```
-
 The only major difference here is that Backbone's API accepts two objects containing `instance` and `static` methods.
 
 Following on from this, for inheritance purposes all of Backbone's objects contain an `extend` method as follows:
@@ -646,7 +615,6 @@ Following on from this, for inheritance purposes all of Backbone's objects conta
 ```javascript
 Model.extend = Collection.extend = Router.extend = View.extend = extend;
 ```
-
 Most development with Backbone is based around inheriting from these objects, and they're designed to mimic a classical object-oriented implementation.
 
 The above isn't quite the same as ECMAScript 5's `Object.create`, as it's actually copying properties (methods and values) from one object to another. As this isn't enough to support Backbone's inheritance and class model, the following steps are performed:
@@ -665,7 +633,7 @@ For example:
 ```javascript
 var MyMixin = {
   foo: 'bar',
-  sayFoo: function(){alert(this.foo);}
+  sayFoo: function () {alert(this.foo); }
 };
 
 var MyView = Backbone.View.extend({
@@ -675,33 +643,29 @@ var MyView = Backbone.View.extend({
 _.extend(MyView.prototype, MyMixin);
 
 var myView = new MyView();
-myView.sayFoo(); //=> 'bar'
+myView.sayFoo(); // > 'bar'
 ```
-
 We can take this further and also apply it to View inheritance. The following is an example of how to extend one View using another:
 
 ```javascript
-var Panel = Backbone.View.extend({
-});
+var Panel = Backbone.View.extend({});
 
-var PanelAdvanced = Panel.extend({
-});
+var PanelAdvanced = Panel.extend({});
 ```
-
 **Calling Overridden Methods**
 
 However, if you have an `initialize()` method in Panel, then it won't be called if you also have an `initialize()` method in PanelAdvanced, so you would have to call Panel's initialize method explicitly:
 
 ```javascript
 var Panel = Backbone.View.extend({
-  initialize: function(options){
+  initialize: function (options) {
     console.log('Panel initialized');
     this.foo = 'bar';
   }
 });
 
 var PanelAdvanced = Panel.extend({
-  initialize: function(options){
+  initialize: function (options) {
     Panel.prototype.initialize.call(this, [options]);
     console.log('PanelAdvanced initialized');
     console.log(this.foo); // Log: bar
@@ -710,7 +674,7 @@ var PanelAdvanced = Panel.extend({
 
 // We can also inherit PanelAdvaned if needed
 var PanelAdvancedExtra = PanelAdvanced.extend({
-  initialize: function(options){
+  initialize: function (options) {
     PanelAdvanced.prototype.initialize.call(this, [options]);
     console.log('PanelAdvancedExtra initialized');
   }
@@ -720,7 +684,6 @@ new Panel();
 new PanelAdvanced();
 new PanelAdvancedExtra();
 ```
-
 This isn't the most elegant of solutions because if you have a lot of Views that inherit from Panel, then you'll have to remember to call Panel's initialize from all of them.
 
 It's worth noting that if Panel doesn't have an initialize method now but you choose to add it in the future, then you'll need to go to all of the inherited classes in the future and make sure they call Panel's initialize.
@@ -753,10 +716,9 @@ var PanelAdvanced = Panel.extend({
   }
 });
 
-var panelAdvanced = new PanelAdvanced(); //Logs: Panel initialized, PanelAdvanced initialized, bar
+var panelAdvanced = new PanelAdvanced(); // ogs: Panel initialized, PanelAdvanced initialized, bar
 panelAdvanced.sayHi(); // Logs: hello from Panel
 ```
-
 When used appropriately, Underscore's `extend` method can save a great deal of time and effort writing redundant code.
 
 (Thanks to [Alex Young](http://dailyjs.com), [Derick Bailey](http://stackoverflow.com/users/93448/derick-bailey) and [JohnnyO](http://stackoverflow.com/users/188740/johnnyo) for the heads up about these tips).
@@ -769,7 +731,7 @@ Rather than using Backbone.Model.prototype.set.call as per the Backbone.js docum
 ```javascript
 // This is how we normally do it
 var OldFashionedNote = Backbone.Model.extend({
-  set: function(attributes, options) {
+  set: function (attributes, options) {
     // Call parent's method
     Backbone.Model.prototype.set.call(this, attributes, options);
     // some custom code here
@@ -777,13 +739,12 @@ var OldFashionedNote = Backbone.Model.extend({
   }
 });
 ```
-
 After including this plugin, you can do the same thing with the following syntax:
 
 ```javascript
 // This is how we can do it after using the Backbone-super plugin
 var Note = Backbone.Model.extend({
-  set: function(attributes, options) {
+  set: function (attributes, options) {
     // Call parent's method
     this._super(attributes, options);
     // some custom code here
@@ -791,10 +752,9 @@ var Note = Backbone.Model.extend({
   }
 });
 ```
-
 #### Event Aggregators And Mediators
 
-**Problem** 
+**Problem**
 
 How do I channel multiple event sources through a single object?**
 
@@ -822,7 +782,7 @@ var View1 = Backbone.View.extend({
     "click .foo": "doIt"
   },
 
-  doIt: function(){
+  doIt: function () {
     // trigger an event through the event aggregator
     Backbone.trigger("some:event");
   }
@@ -831,17 +791,16 @@ var View1 = Backbone.View.extend({
 var View2 = Backbone.View.extend({
   // ...
 
-  initialize: function(){
+  initialize: function () {
     // subscribe to the event aggregator's event
     Backbone.on("some:event", this.doStuff, this);
   },
 
-  doStuff: function(){
+  doStuff: function () {
     // ...
   }
 })
 ```
-
 In this example, the first view is triggering an event when a DOM element is clicked. The event is triggered through Backbone’s built-in event aggregator – the Backbone object. Of course, it’s trivial to create your own event aggregator in Backbone, and there are some key things that we need to keep in mind when using an event aggregator, to keep our code simple.
 
 #######jQuery’s Event Aggregator
@@ -849,13 +808,12 @@ In this example, the first view is triggering an event when a DOM element is cli
 Did you know that jQuery has a built-in event aggregator? They don’t call it this, but it’s in there and it’s scoped to DOM events. It also happens to look like Backbone’s event aggregator:
 
 ```
-$("#mainArticle").on("click", function(e){
+$("#mainArticle").on("click", function (e) {
 
   // handle the event that any element underneath of our #mainArticle element
 
 });
 ```
-
 This code sets up an event handler function that waits for an unknown number of event sources to trigger a “click” event, and it allows any number of listeners to attach to the events of those event publishers. jQuery just happens to scope this event aggregator to the DOM.
 
 #####Mediator
@@ -869,25 +827,24 @@ Backbone doesn’t have the idea of a mediator built in to it like a lot of othe
 ```javascript
 var mediator = {};
 ```
-
 Yes, of course this is just an object literal in JavaScript. Once again, we’re talking about semantics here. The purpose of the mediator is to control the workflow between objects and we really don’t need anything more than an object literal to do this.
 
 ```javascript
 var orgChart = {
 
-  addNewEmployee: function(){
+  addNewEmployee: function () {
 
     // getEmployeeDetail provides a view that users interact with
     var employeeDetail = this.getEmployeeDetail();
 
     // when the employee detail is complete, the mediator (the 'orgchart' object)
     // decides what should happen next
-    employeeDetail.on("complete", function(employee){
+    employeeDetail.on("complete", function (employee) {
 
       // set up additional objects that have additional events, which are used
       // by the mediator to do additional things
       var managerSelector = this.selectManager(employee);
-      managerSelector.on("save", function(employee){
+      managerSelector.on("save", function (employee) {
         employee.save();
       });
 
@@ -897,7 +854,6 @@ var orgChart = {
   // ...
 }
 ```
-
 This example shows a very basic implementation of a mediator object with Backbone based objects that can trigger and subscribe to events. I’ve often referred to this type of object as a “workflow” object in the past, but the truth is that it is a mediator. It is an object that handles the workflow between many other objects, aggregating the responsibility of that workflow knowledge in to a single object. The result is workflow that is easier to understand and maintain.
 
 #####Similarities And Differences
@@ -955,7 +911,7 @@ var MenuItem = Backbone.View.extend({
     "click .thatThing": "clickedIt"
   },
 
-  clickedIt: function(e){
+  clickedIt: function (e) {
     e.preventDefault();
 
     // assume this triggers "menu:click:foo"
@@ -966,17 +922,16 @@ var MenuItem = Backbone.View.extend({
 
 // ... somewhere else in the app
 
-var MyWorkflow = function(){
+var MyWorkflow = function () {
   Backbone.on("menu:click:foo", this.doStuff, this);
 };
 
-MyWorkflow.prototype.doStuff = function(){
+MyWorkflow.prototype.doStuff = function () {
   // instantiate multiple objects here.
   // set up event handlers for those objects.
   // coordinate all of the objects in to a meaningful workflow.
 };
 ```
-
 In this example, when the MenuItem with the right model is clicked, the `“menu:click:foo”` event will be triggered. An instance of the “MyWorkflow” object, assuming one is already instantiated, will handle this specific event and will coordinate all of the objects that it knows about, to create the desired user experience and workflow.
 
 An event aggregator and a mediator have been combined to create a much more meaningful experience in both the code and the application itself. We now have a clean separation between the menu and the workflow through an event aggregator. And we are still keeping the workflow itself clean and maintainable through the use of a mediator.

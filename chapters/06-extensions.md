@@ -9,7 +9,7 @@ As we've seen, Backbone provides a great set of building blocks for our JavaScri
 
 
 [MarionetteJS](http://marionettejs.com) (a.k.a Backbone.Marionette) provides many of the features that the non-trivial application developer needs, above what Backbone itself provides. It is a composite application library that aims to simplify the construction of large scale applications. It does this by providing a collection of common design and implementation patterns found in the applications that the creator, [Derick Bailey](http://lostechies.com/derickbailey/), and many other [contributors](https://github.com/marionettejs/backbone.marionette/graphs/contributors) have been using to build Backbone apps.
- 
+
 
 Marionette's key benefits include:
 
@@ -28,7 +28,7 @@ Marionette's key benefits include:
 
 Marionette follows a similar philosophy to Backbone in that it provides a suite of components that can be used independently of each other, or used together to create a significant advantages for us as developers. But it steps above the structural components of Backbone and provides an application layer, with more than a dozen components and building blocks.
 
-Marionette's components range greatly in the features they provide, but they all work together to create a composite application layer that can both reduce boilerplate code and provide a much needed application structure. Its core components include various and specialized view types that take the boilerplate out of rendering common Backbone.Model and Backbone.Collection scenarios; an Application object and Module architecture to scale applications across sub-applications, features and files; integration of a command pattern, event aggregator, and request/response mechanism; and many more object types that can be extended in a myriad of ways to create an architecture that facilitates an application's specific needs. 
+Marionette's components range greatly in the features they provide, but they all work together to create a composite application layer that can both reduce boilerplate code and provide a much needed application structure. Its core components include various and specialized view types that take the boilerplate out of rendering common Backbone.Model and Backbone.Collection scenarios; an Application object and Module architecture to scale applications across sub-applications, features and files; integration of a command pattern, event aggregator, and request/response mechanism; and many more object types that can be extended in a myriad of ways to create an architecture that facilitates an application's specific needs.
 
 In spite of the large number of constructs that Marionette provides, though, you're not required to use all of it just because you want to use some of it. Much like Backbone itself, you can pick and choose which features you want to use and when. This allows you to work with other Backbone frameworks and plugins very easily. It also means that you are not required to engage in an all-or-nothing migration to begin using Marionette.
 
@@ -52,12 +52,11 @@ Consider the code that it typically requires to render a view with Backbone and 
   </div>
 </script>
 ```
-
 ```javascript
 var MyView = Backbone.View.extend({
   template: $('#my-view-template').html(),
 
-  render: function(){
+  render: function () {
 
     // compile the Underscore.js template
     var compiledTemplate = _.template(this.template);
@@ -71,7 +70,6 @@ var MyView = Backbone.View.extend({
   }
 });
 ```
-
 Once this is in place, you need to create an instance of your view and pass your model in to it. Then you can take the view's `el` and append it to the DOM in order to display the view.
 
 ```javascript
@@ -89,7 +87,6 @@ myView.render();
 
 $('#content').html(myView.el)
 ```
-
 This is a standard set up for defining, building, rendering, and displaying a view with Backbone. This is also what we call "boilerplate code" - code that is repeated over and over and over again, across every project and every implementation with the same functionality. It gets to be tedious and repetitious very quickly.
 
 Enter Marionette's `ItemView` - a simple way to reduce the boilerplate of defining a view.
@@ -104,7 +101,6 @@ var MyView = Marionette.ItemView.extend({
   template: '#my-view-template'
 });
 ```
-
 And that's it - that's all you need to get the exact same behaviour as the previous view implementation. Just replace `Backbone.View.extend` with `Marionette.ItemView.extend`, then get rid of the `render` method. You can still create the view instance with a `model`, call the `render` method on the view instance, and display the view in the DOM the same way that we did before. But the view definition has been reduced to a single line of configuration for the template.
 
 ### Memory Management
@@ -117,14 +113,14 @@ Consider the following view implementation:
 var ZombieView = Backbone.View.extend({
   template: '#my-view-template',
 
-  initialize: function(){
+  initialize: function () {
 
     // bind the model change to re-render this view
     this.model.on('change', this.render, this);
 
   },
 
-  render: function(){
+  render: function () {
 
     // This alert is going to demonstrate a problem
     alert('We`re rendering the view');
@@ -132,12 +128,10 @@ var ZombieView = Backbone.View.extend({
   }
 });
 ```
-
 If we create two instances of this view using the same variable name for both instances, and then change a value in the model, how many times will we see the alert box?
 
 
 ```javascript
-
 var Person = Backbone.Model.extend({
   defaults: {
     "firstName": "Jeremy",
@@ -166,7 +160,6 @@ zombieView = new ZombieView({
 
 Person.set('email', 'derickbailey@example.com');
 ```
-
 Since we're re-using the same `zombieView` variable for both instances, the first instance of the view will fall out of scope immediately after the second is created. This allows the JavaScript garbage collector to come along and clean it up, which should mean the first view instance is no longer active and no longer going to respond to the model's "change" event.
 
 But when we run this code, we end up with the alert box showing up twice!
@@ -181,17 +174,17 @@ Fixing this is easy, though. You just need to call `off` when the view is done w
 var ZombieView = Backbone.View.extend({
   template: '#my-view-template',
 
-  initialize: function(){
+  initialize: function () {
     // bind the model change to re-render this view
     this.listenTo(this.model, 'change', this.render, this);
   },
 
-  close: function(){
+  close: function () {
     // unbind the events that this view is listening to
     this.stopListening();
   },
 
-  render: function(){
+  render: function () {
 
     // This alert is going to demonstrate a problem
     alert('We`re rendering the view');
@@ -199,7 +192,6 @@ var ZombieView = Backbone.View.extend({
   }
 });
 ```
-
 Then call `close` on the first instance when it is no longer needed, and only one view instance will remain alive. For more information about the `listenTo` and `stopListening` functions, see [the Backbone documentation](http://backbonejs.org/#Events-listenTo), and my blog post on [Managing Events As Relationships, Not Just Resources](http://lostechies.com/derickbailey/2013/02/06/managing-events-as-relationships-not-just-references/).
 
 ```javascript
@@ -223,8 +215,7 @@ zombieView = new ZombieView({
 
 Person.set('email', 'jeremyashkenas@example.com');
 ```
-
-Now we only see one alert box when this code runs. 
+Now we only see one alert box when this code runs.
 
 Rather than having to manually remove these event handlers, though, we can let Marionette do it for us.
 
@@ -232,14 +223,14 @@ Rather than having to manually remove these event handlers, though, we can let M
 var ZombieView = Marionette.ItemView.extend({
   template: '#my-view-template',
 
-  initialize: function(){
+  initialize: function () {
 
     // bind the model change to re-render this view
     this.listenTo(this.model, 'change', this.render, this);
 
   },
 
-  render: function(){
+  render: function () {
 
     // This alert is going to demonstrate a problem
     alert('We`re rendering the view');
@@ -247,8 +238,7 @@ var ZombieView = Marionette.ItemView.extend({
   }
 });
 ```
-
-Notice in this case we are using a method called `listenTo`. This method comes from Backbone.Events, and is available in all objects that mix in Backbone.Events - including most Marionette objects. The `listenTo` method signature is similar to that of the `on` method, with the exception of passing the object that triggers the event as the first parameter. 
+Notice in this case we are using a method called `listenTo`. This method comes from Backbone.Events, and is available in all objects that mix in Backbone.Events - including most Marionette objects. The `listenTo` method signature is similar to that of the `on` method, with the exception of passing the object that triggers the event as the first parameter.
 
 Marionette's views also provide a `close` event, in which the event bindings that are set up with the `listenTo` are automatically removed. This means we no longer need to define a `close` method directly, and when we use the `listenTo` method, we know that our events will be removed and our views will not turn in to zombies.
 
@@ -274,7 +264,6 @@ myView.render();
 // show the view in the DOM
 $('#content').html(myView.el)
 ```
-
 This, again, is boilerplate code. We shouldn't have to manually call `render` and manually select the DOM elements to show the view. Furthermore, this code doesn't lend itself to closing any previous view instance that might be attached to the DOM element we want to populate. And we've seen the danger of zombie views already.
 
 To solve these problems, Marionette provides a `Region` object - an object that manages the lifecycle of individual views, displayed in a particular DOM element.
@@ -294,7 +283,6 @@ myRegion.show(view1);
 var view2 = new MyView({ /* ... */ });
 myRegion.show(view2);
 ```
-
 There are several things to note, here. First, we're telling the region what DOM element to manage by specifying an `el` in the region instance. Second, we're no longer calling the `render` method on our views. And lastly, we're not calling `close` on our view, either, though this is getting called for us.
 
 When we use a region to manage the lifecycle of our views, and display the views in the DOM, the region itself handles these concerns. By passing a view instance in to the `show` method of the region, it will call the render method on the view for us. It will then take the resulting `el` of the view and populate the DOM element.
@@ -313,7 +301,7 @@ Our final implementation will be visually and functionally equivalent to the ori
 
 ![](img/marionette_todo0.png)
 
-First, we define an application object representing our base TodoMVC app. This will contain initialization code and define the default layout regions for our app. 
+First, we define an application object representing our base TodoMVC app. This will contain initialization code and define the default layout regions for our app.
 
 **TodoMVC.js:**
 
@@ -326,11 +314,10 @@ TodoMVC.addRegions({
   footer : '#footer'
 });
 
-TodoMVC.on('initialize:after', function(){
+TodoMVC.on('initialize:after', function () {
   Backbone.history.start();
 });
 ```
-
 Regions are used to manage the content that's displayed within specific elements, and the `addRegions` method on the `TodoMVC` object is just a shortcut for creating `Region` objects. We supply a jQuery selector for each region to manage (e.g., `#header`, `#main`, and `#footer`) and then tell the region to show various Backbone views within that region.
 
 Once the application object has been initialized, we call `Backbone.history.start()` to route the initial URL.
@@ -353,7 +340,7 @@ Note that Marionette modules (such as the below) offer a simple module system wh
 **TodoMVC.Layout.js:**
 
 ```javascript
-TodoMVC.module('Layout', function(Layout, App, Backbone, Marionette, $, _){
+TodoMVC.module('Layout', function (Layout, App, Backbone, Marionette, $, _) {
 
   // Layout Header View
   // ------------------
@@ -371,11 +358,11 @@ TodoMVC.module('Layout', function(Layout, App, Backbone, Marionette, $, _){
       'keypress #new-todo':   'onInputKeypress'
     },
 
-    onInputKeypress : function(evt) {
+    onInputKeypress : function (evt) {
       var ENTER_KEY = 13;
       var todoText = this.ui.input.val().trim();
 
-      if ( evt.which === ENTER_KEY && todoText ) {
+      if (evt.which === ENTER_KEY && todoText) {
         this.collection.create({
           title : todoText
         });
@@ -386,7 +373,7 @@ TodoMVC.module('Layout', function(Layout, App, Backbone, Marionette, $, _){
 
   // Layout Footer View
   // ------------------
-  
+
 
   Layout.Footer = Marionette.Layout.extend({
     template : '#template-footer',
@@ -402,16 +389,16 @@ TodoMVC.module('Layout', function(Layout, App, Backbone, Marionette, $, _){
       'click #clear-completed' : 'onClearClick'
     },
 
-    initialize : function() {
+    initialize : function () {
       this.listenTo(App.vent, 'todoList:filter', this.updateFilterSelection, this);
       this.listenTo(this.collection, 'all', this.updateCount, this);
     },
 
-    onRender : function() {
+    onRender : function () {
       this.updateCount();
     },
 
-    updateCount : function() {
+    updateCount : function () {
       var count = this.collection.getActive().length;
       this.ui.count.html(count);
 
@@ -422,14 +409,14 @@ TodoMVC.module('Layout', function(Layout, App, Backbone, Marionette, $, _){
       }
     },
 
-    updateFilterSelection : function(filter) {
+    updateFilterSelection : function (filter) {
       this.ui.filters
         .removeClass('selected')
         .filter('[href="#' + filter + '"]')
         .addClass('selected');
     },
 
-    onClearClick : function() {
+    onClearClick : function () {
       var completed = this.collection.getCompleted();
       completed.forEach(function destroy(todo) {
         todo.destroy();
@@ -440,7 +427,6 @@ TodoMVC.module('Layout', function(Layout, App, Backbone, Marionette, $, _){
 });
 
 ```
-
 Next, we tackle application routing and workflow, such as controlling Layouts in the page which can be shown or hidden.
 
 Recall how Backbone routes trigger methods within the Router as shown below in our original Workspace router from our first exercise:
@@ -451,7 +437,7 @@ Recall how Backbone routes trigger methods within the Router as shown below in o
       '*filter': 'setFilter'
     },
 
-    setFilter: function( param ) {
+    setFilter: function (param) {
       // Set the current filter to be used
       app.TodoFilter = param.trim() || '';
 
@@ -462,7 +448,6 @@ Recall how Backbone routes trigger methods within the Router as shown below in o
   });
 
 ```
-
 Marionette uses the concept of an AppRouter to simplify routing. This reduces the boilerplate for handling route events and allows routers to be configured to call methods on an object directly. We configure our AppRouter using `appRoutes` which replaces the `'*filter': 'setFilter'` route defined in our original router and invokes a method on our Controller.
 
 The TodoList Controller, also found in this next code block, handles some of the remaining visibility logic originally found in `AppView` and `TodoView`, albeit using very readable Layouts.
@@ -470,7 +455,7 @@ The TodoList Controller, also found in this next code block, handles some of the
 **TodoMVC.TodoList.js:**
 
 ```javascript
-TodoMVC.module('TodoList', function(TodoList, App, Backbone, Marionette, $, _){
+TodoMVC.module('TodoList', function (TodoList, App, Backbone, Marionette, $, _) {
 
   // TodoList Router
   // ---------------
@@ -488,8 +473,8 @@ TodoMVC.module('TodoList', function(TodoList, App, Backbone, Marionette, $, _){
   //
   // Control the workflow and logic that exists at the application
   // level, above the implementation detail of views and models
-  
-  TodoList.Controller = function(){
+
+  TodoList.Controller = function () {
     this.todoList = new App.Todos.TodoList();
   };
 
@@ -497,7 +482,7 @@ TodoMVC.module('TodoList', function(TodoList, App, Backbone, Marionette, $, _){
 
     // Start the app by showing the appropriate views
     // and fetching the list of todo items, if there are any
-    start: function(){
+    start: function () {
       this.showHeader(this.todoList);
       this.showFooter(this.todoList);
       this.showTodoList(this.todoList);
@@ -505,28 +490,28 @@ TodoMVC.module('TodoList', function(TodoList, App, Backbone, Marionette, $, _){
       this.todoList.fetch();
     },
 
-    showHeader: function(todoList){
+    showHeader: function (todoList) {
       var header = new App.Layout.Header({
         collection: todoList
       });
       App.header.show(header);
     },
 
-    showFooter: function(todoList){
+    showFooter: function (todoList) {
       var footer = new App.Layout.Footer({
         collection: todoList
       });
       App.footer.show(footer);
     },
 
-    showTodoList: function(todoList){
+    showTodoList: function (todoList) {
       App.main.show(new TodoList.Views.ListView({
         collection : todoList
       }));
     },
 
     // Set the filter to show complete or all items
-    filterItems: function(filter){
+    filterItems: function (filter) {
       App.vent.trigger('todoList:filter', filter.trim() || '');
     }
   });
@@ -537,8 +522,8 @@ TodoMVC.module('TodoList', function(TodoList, App, Backbone, Marionette, $, _){
   // Get the TodoList up and running by initializing the mediator
   // when the the application is started, pulling in all of the
   // existing Todo items and displaying them.
-  
-  TodoList.addInitializer(function(){
+
+  TodoList.addInitializer(function () {
 
     var controller = new TodoList.Controller();
     new TodoList.Router({
@@ -552,7 +537,6 @@ TodoMVC.module('TodoList', function(TodoList, App, Backbone, Marionette, $, _){
 });
 
 ```
-
 ####Controllers
 
 In this particular app, note that Controllers don't add a great deal to the overall workflow. In general, Marionette's philosophy on routers is that they should be an afterthought in the implementation of applications. Quite often, we've seen developers abuse Backbone's routing system by making it the sole controller of the entire application workflow and logic.
@@ -580,7 +564,7 @@ For our Todo List Item View, we define it as an ItemView, then our Todo List Vie
 TodoMVC.TodoList.Views.js
 
 ```javascript
-TodoMVC.module('TodoList.Views', function(Views, App, Backbone, Marionette, $, _){
+TodoMVC.module('TodoList.Views', function (Views, App, Backbone, Marionette, $, _) {
 
   // Todo List Item View
   // -------------------
@@ -603,34 +587,34 @@ TodoMVC.module('TodoList.Views', function(Views, App, Backbone, Marionette, $, _
         'click .toggle'  : 'toggle'
       },
 
-      initialize : function() {
+      initialize : function () {
         this.listenTo(this.model, 'change', this.render, this);
       },
 
-      onRender : function() {
+      onRender : function () {
         this.$el.removeClass('active completed');
         if (this.model.get('completed')) this.$el.addClass('completed');
         else this.$el.addClass('active');
       },
 
-      destroy : function() {
+      destroy : function () {
         this.model.destroy();
       },
 
-      toggle  : function() {
+      toggle  : function () {
         this.model.toggle().save();
       },
 
-      onEditClick : function() {
+      onEditClick : function () {
         this.$el.addClass('editing');
         this.ui.edit.focus();
       },
 
-      onEditKeypress : function(evt) {
+      onEditKeypress : function (evt) {
         var ENTER_KEY = 13;
         var todoText = this.ui.edit.val().trim();
 
-        if ( evt.which === ENTER_KEY && todoText ) {
+        if (evt.which === ENTER_KEY && todoText) {
           this.model.set('title', todoText).save();
           this.$el.removeClass('editing');
         }
@@ -656,15 +640,15 @@ TodoMVC.module('TodoList.Views', function(Views, App, Backbone, Marionette, $, _
         'click #toggle-all' : 'onToggleAllClick'
       },
 
-      initialize : function() {
+      initialize : function () {
         this.listenTo(this.collection, 'all', this.update, this);
       },
 
-      onRender : function() {
+      onRender : function () {
         this.update();
       },
 
-      update : function() {
+      update : function () {
         function reduceCompleted(left, right) { return left && right.get('completed'); }
         var allCompleted = this.collection.reduce(reduceCompleted,true);
         this.ui.toggle.prop('checked', allCompleted);
@@ -676,10 +660,10 @@ TodoMVC.module('TodoList.Views', function(Views, App, Backbone, Marionette, $, _
         }
       },
 
-      onToggleAllClick : function(evt) {
+      onToggleAllClick : function (evt) {
         var isChecked = evt.currentTarget.checked;
-        this.collection.each(function(todo){
-          todo.save({'completed': isChecked});
+        this.collection.each(function (todo) {
+          todo.save({ 'completed': isChecked });
         });
       }
   });
@@ -689,8 +673,8 @@ TodoMVC.module('TodoList.Views', function(Views, App, Backbone, Marionette, $, _
   //
   // Handler for filtering the list of items by showing and
   // hiding through the use of various CSS classes
-  
-  App.vent.on('todoList:filter',function(filter) {
+
+  App.vent.on('todoList:filter',function (filter) {
     filter = filter || 'all';
     $('#todoapp').attr('class', 'filter-' + filter);
   });
@@ -698,7 +682,6 @@ TodoMVC.module('TodoList.Views', function(Views, App, Backbone, Marionette, $, _
 });
 
 ```
-
 At the end of the last code block, you will also notice an event handler using `vent`. This is an event aggregator that allows us to handle `filterItem` triggers from our TodoList controller.
 
 Finally, we define the model and collection for representing our Todo items. These are semantically not very different from the original versions we used in our first exercise and have been re-written to better fit in with Derick's preferred style of coding.
@@ -706,11 +689,11 @@ Finally, we define the model and collection for representing our Todo items. The
 **Todos.js:**
 
 ```javascript
-TodoMVC.module('Todos', function(Todos, App, Backbone, Marionette, $, _){
+TodoMVC.module('Todos', function (Todos, App, Backbone, Marionette, $, _) {
 
   // Todo Model
   // ----------
-  
+
   Todos.Todo = Backbone.Model.extend({
     localStorage: new Backbone.LocalStorage('todos-backbone'),
 
@@ -720,16 +703,16 @@ TodoMVC.module('Todos', function(Todos, App, Backbone, Marionette, $, _){
       created   : 0
     },
 
-    initialize : function() {
+    initialize : function () {
       if (this.isNew()) this.set('created', Date.now());
     },
 
-    toggle  : function() {
+    toggle  : function () {
       return this.set('completed', !this.isCompleted());
     },
 
-    isCompleted: function() { 
-      return this.get('completed'); 
+    isCompleted: function () {
+      return this.get('completed');
     }
   });
 
@@ -741,19 +724,19 @@ TodoMVC.module('Todos', function(Todos, App, Backbone, Marionette, $, _){
 
     localStorage: new Backbone.LocalStorage('todos-backbone'),
 
-    getCompleted: function() {
+    getCompleted: function () {
       return this.filter(this._isCompleted);
     },
 
-    getActive: function() {
+    getActive: function () {
       return this.reject(this._isCompleted);
     },
 
-    comparator: function( todo ) {
+    comparator: function (todo) {
       return todo.get('created');
     },
 
-    _isCompleted: function(todo){
+    _isCompleted: function (todo) {
       return todo.isCompleted();
     }
   });
@@ -761,18 +744,16 @@ TodoMVC.module('Todos', function(Todos, App, Backbone, Marionette, $, _){
 });
 
 ```
-
 We finally kick-start everything off in our application index file, by calling `start` on our main application object:
 
 Initialization:
 
 ```javascript
-      $(function(){
+      $(function () {
         // Start the TodoMVC app (defined in js/TodoMVC.js)
         TodoMVC.start();
       });
 ```
-
 And that's it!
 
 ### Is the Marionette implementation of the Todo app more maintainable?
@@ -838,126 +819,118 @@ Thorax was created by Ryan Eastridge and Kevin Decker to create Walmart's mobile
 `Thorax.View` differs from `Backbone.View` in that there is no `options` object. All arguments passed to the constructor become properties of the view, which in turn become available to the `template`:
 
 ```javascript
-    var view = new Thorax.View({
-        greeting: 'Hello',
-        template: Handlebars.compile('{{greeting}} World!')
-    });
-    view.appendTo('body');
+var view = new Thorax.View({
+    greeting: 'Hello',
+    template: Handlebars.compile('{{greeting }} World!')
+});
+view.appendTo('body');
 ```
-
  In most examples in this chapter a `template` property will be specified. In larger projects including the boilerplate projects provided on the Thorax website a `name` property would instead be used and a `template` of the same file name in your project would automatically be assigned to the view.
 
  If a `model` is set on a view, its attributes also become available to the template:
 
-    var view = new Thorax.View({
-        model: new Thorax.Model({key: 'value'}),
-        template: Handlebars.compile('{{key}}')
-    });
-
+```javascript
+var view = new Thorax.View({
+  model: new Thorax.Model({ key: 'value' }),
+  template: Handlebars.compile('{{key }}')
+});
+```
 ### Embedding child views
 
 The view helper allows you to embed other views within a view. Child views can be specified as properties of the view:
 
 ```javascript
-    var parent = new Thorax.View({
-        child: new Thorax.View(...),
-        template: Handlebars.compile('{{view child}}')
-    });
+var parent = new Thorax.View({
+  child: new Thorax.View(...),
+  template: Handlebars.compile('{{view child }}')
+});
 ```
-
 Or the name of a child view to initialize (and any optional properties to pass). In this case the child view must have previously been created with `extend` and given a `name` property:
 
 ```javascript
-    var ChildView = Thorax.View.extend({
-        name: 'child',
-        template: ...
-    });
-  
-    var parent = new Thorax.View({
-        template: Handlebars.compile('{{view "child" key="value"}}')
-    });
-```
+var ChildView = Thorax.View.extend({
+  name: 'child',
+  template: ...
+});
 
+var parent = new Thorax.View({
+  template: Handlebars.compile('{{view "child" key="value" }}')
+});
+```
 The view helper may also be used as a block helper, in which case the block will be assigned as the `template` property of the child view:
 
 ```handlebars
-    {{#view child}}
-        child will have this block
-        set as its template property
-    {{/view}}
+{{#view child }}
+  child will have this block
+  set as its template property
+{{/view }}
 ```
-
 Handlebars is string based, while `Backbone.View` instances have a DOM `el`. Since we are mixing metaphors, the embedding of views works via a placeholder mechanism where the `view` helper in this case adds the view passed to the helper to a hash of `children`, then injects placeholder HTML into the template such as:
 
 ```html
-    <div data-view-placeholder-cid="view2"></div>
+<div data-view-placeholder-cid="view2"></div>
 ```
-
 Then once the parent view is rendered, we walk the DOM in search of all the placeholders we created, replacing them with the child views' `el`s:
 
 ```javascript
-    this.$el.find('[data-view-placeholder-cid]').forEach(function(el) {
-        var cid = el.getAttribute('data-view-placeholder-cid'),
-            view = this.children[cid];
-        view.render();
-        $(el).replaceWith(view.el);
-    }, this);
+this.$el.find('[data-view-placeholder-cid]').forEach(function (el) {
+  var cid = el.getAttribute('data-view-placeholder-cid'),
+      view = this.children[cid];
+  view.render();
+  $(el).replaceWith(view.el);
+}, this);
 ```
-
 ### View helpers
 
 One of the most useful constructs in Thorax is `Handlebars.registerViewHelper` (not to be confused with `Handlebars.registerHelper`). This method will register a new block helper that will create and embed a `HelperView` instance with its `template` set to the captured block. A `HelperView` instance is different from that of a regular child view in that its context will be that of the parent's in the template. Like other child views it will have a `parent` property set to that of the declaring view. Many of the built-in helpers in Thorax including the `collection` helper are created in this manner.
 
 A simple example would be an `on` helper that re-rendered the generated `HelperView` instance each time an event was triggered on the declaring / parent view:
 
-    Handlebars.registerViewHelper('on', function(eventName, helperView) {
-        helperView.parent.on(eventName, function() {
-            helperView.render();
-        });
-    });
-
+```javascript
+Handlebars.registerViewHelper('on', function (eventName, helperView) {
+  helperView.parent.on(eventName, function () {
+    helperView.render();
+  });
+});
+```
 An example use of this would be to have a counter that would increment each time a button was clicked. This example makes use of the `button` helper in Thorax which simply makes a button that calls a method when clicked:
 
 ```handlebars
-    {{#on "incremented"}}{{i}}{/on}}
-    {{#button trigger="incremented"}}Add{{/button}}
+{{#on "incremented" }}{{i }}{/on }}
+{{#button trigger="incremented" }}Add{{/button }}
 ```
-
 And the corresponding view class:
 
 ```javascript
-    new Thorax.View({
-        events: {
-            incremented: function() {
-                ++this.i;
-            }
-        },
-        initialize: function() {
-            this.i = 0;
-        },
-        template: ...
-    });
+new Thorax.View({
+  events: {
+    incremented: function () {
+      ++this.i;
+    }
+  },
+  initialize: function () {
+    this.i = 0;
+  },
+  template: ...
+});
 ```
-
 ### collection helper
 
 The `collection` helper creates and embeds a `CollectionView` instance, creating a view for each item in a collection, updating when items are added, removed, or changed in the collection. The simplest usage of the helper would look like:
 
 ```handlebars
-    {{#collection kittens}}
-      <li>{{name}}</li>
-    {{/collection}}
+{{#collection kittens }}
+  <li>{{name }}</li>
+{{/collection }}
 ```
-
 And the corresponding view:
 
 ```javascript
-    new Thorax.View({
-      kittens: new Thorax.Collection(...),
-      template: ...
-    });
+new Thorax.View({
+  kittens: new Thorax.Collection(...),
+  template: ...
+});
 ```
-
 The block in this case will be assigned as the `template` for each item view created, and the context will be the `attributes` of the given model. This helper accepts options that can be arbitrary HTML attributes, a `tag` option to specify the type of tag containing the collection, or any of the following:
 
 - `item-template` - A template to display for each model. If a block is specified it will become the item-template
@@ -968,150 +941,141 @@ The block in this case will be assigned as the `template` for each item view cre
 Options and blocks can be used in combination, in this case creating a `KittenView` class with a `template` set to the captured block for each kitten in the collection:
 
 ```handlebars
-    {{#collection kittens item-view="KittenView" tag="ul"}}
-      <li>{{name}}</li>
-    {{else}}
-      <li>No kittens!</li>
-    {{/collection}}
+{{#collection kittens item-view="KittenView" tag="ul" }}
+  <li>{{name }}</li>
+{{else }}
+  <li>No kittens!</li>
+{{/collection }}
 ```
-
 Note that multiple collections can be used per view, and collections can be nested. This is useful when there are models that contain collections that contain models that contain...
 
 ```handlebars
-    {{#collection kittens}}
-      <h2>{{name}}</h2>
-      <p>Kills:</p>
-      {{#collection miceKilled tag="ul"}}
-        <li>{{name}}</li>
-      {{/collection}}
-    {{/collection}}
+{{#collection kittens }}
+  <h2>{{name }}</h2>
+  <p>Kills:</p>
+  {{#collection miceKilled tag="ul" }}
+    <li>{{name }}</li>
+  {{/collection }}
+{{/collection }}
 ```
-
 ### Custom HTML data attributes
 
 Thorax makes heavy use of custom HTML data attributes to operate. While some make sense only within the context of Thorax, several are quite useful to have in any Backbone project for writing other functions against, or for general debugging. In order to add some to your views in non-Thorax projects, override the `setElement` method in your base view class:
 
 ```javascript
-  MyApplication.View = Backbone.View.extend({
-    setElement: function() {
-        var response = Backbone.View.prototype.setElement.apply(this, arguments);
-        this.name && this.$el.attr('data-view-name', this.name);
-        this.$el.attr('data-view-cid', this.cid);
-        this.collection && this.$el.attr('data-collection-cid', this.collection.cid);
-        this.model && this.$el.attr('data-model-cid', this.model.cid);
-        return response;
-    }
-  });
+MyApplication.View = Backbone.View.extend({
+  setElement: function () {
+    var response = Backbone.View.prototype.setElement.apply(this, arguments);
+    this.name && this.$el.attr('data-view-name', this.name);
+    this.$el.attr('data-view-cid', this.cid);
+    this.collection && this.$el.attr('data-collection-cid', this.collection.cid);
+    this.model && this.$el.attr('data-model-cid', this.model.cid);
+    return response;
+  }
+});
 ```
-
 In addition to making your application more immediately comprehensible in the inspector, it's now possible to extend jQuery / Zepto with functions to lookup the closest view, model or collection to a given element. In order to make it work you have to save references to each view created in your base view class by overriding the `_configure` method:
 
 
 ```javascript
-    MyApplication.View = Backbone.View.extend({
-        _configure: function() {
-            Backbone.View.prototype._configure.apply(this, arguments);
-            Thorax._viewsIndexedByCid[this.cid] = this;
-        },
-        dispose: function() {
-            Backbone.View.prototype.dispose.apply(this, arguments);
-            delete Thorax._viewsIndexedByCid[this.cid];
-        }
-    });
+MyApplication.View = Backbone.View.extend({
+  _configure: function () {
+    Backbone.View.prototype._configure.apply(this, arguments);
+    Thorax._viewsIndexedByCid[this.cid] = this;
+  },
+  dispose: function () {
+    Backbone.View.prototype.dispose.apply(this, arguments);
+    delete Thorax._viewsIndexedByCid[this.cid];
+  }
+});
 ```
-
 Then we can extend jQuery / Zepto:
 
 ```javascript
-    $.fn.view = function() {
-        var el = $(this).closest('[data-view-cid]');
-        return el && Thorax._viewsIndexedByCid[el.attr('data-view-cid')];
-    };
+$.fn.view = function () {
+  var el = $(this).closest('[data-view-cid]');
+  return el && Thorax._viewsIndexedByCid[el.attr('data-view-cid')];
+};
 
-    $.fn.model = function(view) {
-        var $this = $(this),
-            modelElement = $this.closest('[data-model-cid]'),
-            modelCid = modelElement && modelElement.attr('[data-model-cid]');
-        if (modelCid) {
-            var view = $this.view();
-            return view && view.model;
-        }
-        return false;
-    };
+$.fn.model = function (view) {
+  var $this = $(this),
+      modelElement = $this.closest('[data-model-cid]'),
+      modelCid = modelElement && modelElement.attr('[data-model-cid]');
+
+  if (modelCid) {
+    var view = $this.view();
+    return view && view.model;
+  }
+
+  return false;
+};
 ```
-
 Now instead of storing references to models randomly throughout your application to lookup when a given DOM event occurs you can use `$(element).model()`. In Thorax, this can particularly useful in conjunction with the `collection` helper which generates a view class (with a `model` property) for each `model` in the collection. An example template:
 
 ```handlebars
-    {{#collection kittens tag="ul"}}
-      <li>{{name}}</li>
-    {{/collection}}
+{{#collection kittens tag="ul" }}
+  <li>{{name }}</li>
+{{/collection }}
 ```
-
 And the corresponding view class:
 
 ```javascript
-    Thorax.View.extend({
-      events: {
-        'click li': function(event) {
-          var kitten = $(event.target).model();
-          console.log('Clicked on ' + kitten.get('name'));
-        }
-      },
-      kittens: new Thorax.Collection(...),
-      template: ...
-    });  
+Thorax.View.extend({
+  events: {
+    'click li': function (event) {
+      var kitten = $(event.target).model();
+      console.log('Clicked on ' + kitten.get('name'));
+    }
+  },
+  kittens: new Thorax.Collection(...),
+  template: ...
+});
 ```
-
 A common anti-pattern in Backbone applications is to assign a `className` to a single view class. Consider using the `data-view-name` attribute as a CSS selector instead, saving CSS classes for things that will be used multiple times:
 
 
 ```css
-  [data-view-name="child"] {
-
-  }
+[data-view-name="child"] {}
 ```
-
 ### Thorax Resources
 
 No Backbone related tutorial would be complete without a todo application. A [Thorax implementation of TodoMVC](http://todomvc.com/labs/architecture-examples/thorax/) is available, in addition to this far simpler example composed of this single Handlebars template:
 
 
 ```handlebars
-  {{#collection todos tag="ul"}}
-    <li{{#if done}} class="done"{{/if}}>
-      <input type="checkbox" name="done"{{#if done}} checked="checked"{{/if}}>
-      <span>{{item}}</span>
-    </li>
-  {{/collection}}
-  <form>
-    <input type="text">
-    <input type="submit" value="Add">
-  </form>
+{{#collection todos tag="ul" }}
+  <li{{#if done }} class="done"{{/if }}>
+    <input type="checkbox" name="done"{{#if done }} checked="checked"{{/if }}>
+    <span>{{item }}</span>
+  </li>
+{{/collection }}
+<form>
+  <input type="text">
+  <input type="submit" value="Add">
+</form>
 ```
-
 and the corresponding JavaScript:
 
 ```javascript
-  var todosView = Thorax.View({
-      todos: new Thorax.Collection(),
-      events: {
-          'change input[type="checkbox"]': function(event) {
-              var target = $(event.target);
-              target.model().set({done: !!target.attr('checked')});
-          },
-          'submit form': function(event) {
-              event.preventDefault();
-              var input = this.$('input[type="text"]');
-              this.todos.add({item: input.val()});
-              input.val('');
-          }
-      },
-      template: '...'
-  });
-  todosView.appendTo('body');
-```
+var todosView = Thorax.View({
+  todos: new Thorax.Collection(),
+  events: {
+    'change input[type="checkbox"]': function (event) {
+      var target = $(event.target);
+      target.model().set({ done: !!target.attr('checked') });
+    },
+    'submit form': function (event) {
+      event.preventDefault();
+      var input = this.$('input[type="text"]');
+      this.todos.add({ item: input.val() });
+      input.val('');
+    }
+  },
+  template: ...
+});
 
+todosView.appendTo('body');
+```
 To see Thorax in action on a large scale website visit walmart.com on any Android or iOS device. For a complete list of resources visit the [Thorax website](http://thoraxjs.org).
 <p>&nbsp;</p>
 <p>&nbsp;</p>
