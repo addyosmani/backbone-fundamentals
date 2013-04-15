@@ -4,7 +4,7 @@ Design patterns are proven solutions to common development problems that can hel
 
 Historically, developers creating desktop and server-class applications have had a wealth of design patterns available for them to lean on, but it's only been in the past few years that such patterns have been applied to client-side development.
 
-In this chapter, we're going to explore the evolution of the Model-View-Controller (MVC) design pattern and get our first look at how the Backbone.js framework allows us to apply this pattern to client-side development.
+In this chapter, we're going to explore the evolution of the Model-View-Controller (MVC) design pattern and get our first look at how Backbone.js allows us to apply this pattern to client-side development.
 
 ## MVC
 
