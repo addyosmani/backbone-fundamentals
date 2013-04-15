@@ -328,7 +328,7 @@ Person.unset('name', {validate: true});
 // false
 ```
 
-Above, we also make sure of the `unset()` method, which removes an attribute by deleting it from the internal model attributes hash.
+Above, we also use the `unset()` method, which removes an attribute by deleting it from the internal model attributes hash.
 
 Validation functions can be as simple or complex as necessary. If the attributes provided are valid, nothing should be returned from `.validate()`. If they are invalid, an error value should be returned instead. 
 
