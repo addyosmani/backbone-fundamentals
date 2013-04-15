@@ -393,7 +393,7 @@ Create a file called `package.json` in the root of your project. It should look 
 {
 	"name": "backbone-library",
 	"version": "0.0.1",
-	"description": "A simple library application using the Backbone framework",
+	"description": "A simple library application using Backbone",
 	"dependencies": {
 		"express": "~3.1.0",
 		"path": "~0.4.9",
