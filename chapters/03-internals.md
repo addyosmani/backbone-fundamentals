@@ -2,7 +2,7 @@
 
 In this section, you'll learn the essentials of Backbone's models, views, collections, events, and routers. This isn't by any means a replacement for the official documentation, but it will help you understand many of the core concepts behind Backbone before you start building applications using it.
 
-### Getting setup
+### Getting set up
 
 Before we dive into more code examples, let's define some boilerplate markup you can use to specify the dependencies Backbone requires. This boilerplate can be reused in many ways with little to no alteration and will allow you to run code from examples with ease.
 
@@ -27,9 +27,9 @@ You can paste the following into your text editor of choice, replacing the comme
 </html>
 ```
 
-You can then save and run the file in our browser of choice, such as Chrome or Firefox. Alternatively, if you prefer working with an online code editor, [jsFiddle](http://jsfiddle.net/jnf8B/) and [jsBin](http://jsbin.com/iwiwox/1/edit) versions of this boilerplate are also available.
+You can then save and run the file in your browser of choice, such as Chrome or Firefox. Alternatively, if you prefer working with an online code editor, [jsFiddle](http://jsfiddle.net/jnf8B/) and [jsBin](http://jsbin.com/iwiwox/1/edit) versions of this boilerplate are also available.
 
-Most examples can also be run directly from within the console in your browser's developer tools, assuming you've loaded the boilerplate HTML page so that Backbone and it's dependencies are available for use.
+Most examples can also be run directly from within the console in your browser's developer tools, assuming you've loaded the boilerplate HTML page so that Backbone and its dependencies are available for use.
 
 For Chrome, you can open up the DevTools via the Chrome menu in the top right hand corner: select "Tools > Developer Tools" or alternatively use the Control + Shift + I shortcut on Windows/Linux or Command + Option + I on Mac. 
 
@@ -170,7 +170,7 @@ console.log(todo2.toJSON());
 
 **Model.set()**
 
-`Model.set()` sets a hash containing one or more attributes on the model. When any of these attributes alter the state of the model, a "change" event is triggered on it. Change events for each attribute are also triggered and can be bound to (e.g `change:name`, `change:age`).
+`Model.set()` sets a hash containing one or more attributes on the model. When any of these attributes alter the state of the model, a "change" event is triggered on it. Change events for each attribute are also triggered and can be bound to (e.g. `change:name`, `change:age`).
 
 ```javascript
 var Todo = Backbone.Model.extend({
@@ -208,7 +208,7 @@ Models expose an `.attributes` attribute which represents an internal hash conta
 
 Setting values through the `.attributes` attribute on a model bypasses triggers bound to the model.
 
-Passing `{silent:true}` on change doesn't delay individual `"change:attr"` events, instead they are silenced entirely:
+Passing `{silent:true}` on change doesn't delay individual `"change:attr"` events. Instead they are silenced entirely:
 
 ```javascript
 var Person = new Backbone.Model();
@@ -335,7 +335,7 @@ Validation functions can be as simple or complex as necessary. If the attributes
 Should an error be returned:
 
 * An `invalid` event will triggered, setting the `validationError` property on the model with the value which is returned by this method. 
-* `.save()` will not continue and the attributes of the model will not be modified on the server
+* `.save()` will not continue and the attributes of the model will not be modified on the server.
 
 A more complete validation example can be seen below:
 
@@ -376,7 +376,7 @@ Views in Backbone don't contain the HTML markup for your application; they conta
 
 #### Creating new views
 
-Creating a new view is relatively straight-forward and similar to creating new models. To create a new View, simply extend `Backbone.View`. We introduced the sample TodoView below in the previous chapter; now let's take a closer look at how it works.
+Creating a new view is relatively straightforward and similar to creating new models. To create a new View, simply extend `Backbone.View`. We introduced the sample TodoView below in the previous chapter; now let's take a closer look at how it works:
 
 ```javascript
 var TodoView = Backbone.View.extend({
