@@ -4,7 +4,7 @@ Boilerplates provide us a starting point for working on projects. They're a base
 
 That alone probably isn't enough however, as you'll need a Collection to group those models, a View to render them and perhaps a router if you're looking to making specific views of your Collection data bookmarkable. If you're starting on a completely fresh project, you may also need a build process in place to produce an optimized version of your app that can be pushed to production.
 
-This is where boilerplate solutions are useful.Rather than having to manually write out the initial code for each piece of your Backbone app, a boilerplate could do this for you, also ideally taking care of the build process.
+This is where boilerplate solutions are useful. Rather than having to manually write out the initial code for each piece of your Backbone app, a boilerplate could do this for you, also ideally taking care of the build process.
 
 [Backbone Boilerplate](https://github.com/tbranyen/backbone-boilerplate/) (or just BB) provides just this. It is an excellent set of best practices and utilities for building Backbone.js applications, created by Backbone contributor [Tim Branyen](https://github.com/tbranyen). He took the the gotchas, pitfalls and common tasks he ran into while heavily using Backbone to build apps and crafted BB as a result of this experience.
 
