@@ -549,7 +549,7 @@ Presto! This populates the template, giving you a data-complete set of markup in
 
 A common Backbone convention is to return `this` at the end of `render()`. This is useful for a number of reasons, including:
 
-* Making views easily reusable in other parent views
+* Making views easily reusable in other parent views.
 * Creating a list of elements without rendering and painting each of them individually, only to be drawn once the entire list is populated.
 
 Let's try to implement the latter of these. The `render`method of a simple ListView which doesn't use an ItemView for each item could be written:
@@ -598,7 +598,7 @@ var ListView = Backbone.View.extend({
       // The itemView's DOM element is appended after it
       // has been rendered. Here, the 'return this' is helpful
       // as the itemView renders its model. Later, we ask for 
-      // it's output ("el")
+      // its output ("el")
       this.$el.append( itemView.render().el );
     }, this);
   }
@@ -836,7 +836,7 @@ myTodo.set({title: 'Get the groceries'});
 // The title was changed! 
 ```
 
-Backbone events also support a [once()](http://backbonejs.org/#Events-once) method, which ensures that a callback only fires one time when a notification arrives.It is similar to Node's [once](http://nodejs.org/api/events.html#events_emitter_once_event_listener), or jQuery's [one](http://api.jquery.com/one/). This is particularly useful for when you want to say "the next time something happens, do this".
+Backbone events also support a [once()](http://backbonejs.org/#Events-once) method, which ensures that a callback only fires one time when a notification arrives. It is similar to Node's [once](http://nodejs.org/api/events.html#events_emitter_once_event_listener), or jQuery's [one](http://api.jquery.com/one/). This is particularly useful for when you want to say "the next time something happens, do this".
 
 ```javascript
 // Define an object with two counters
@@ -1016,7 +1016,7 @@ sortedByAlphabet.forEach(function(model){
 ```javascript
 var count = 1;
 console.log(Todos.map(function(model){
-  return count++ + ". " + model.get('title');;
+  return count++ + ". " + model.get('title');
 }));
 // Above logs:
 //1. go to Belgium.
