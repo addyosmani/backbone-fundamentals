@@ -948,6 +948,8 @@ addBook: function( e ) {
 				formData[ el.id ] = $( el ).val();
 			}
 		}
+		// Clear input field value
+		$( el ).val('');
 	});
 
 	this.collection.create( formData );

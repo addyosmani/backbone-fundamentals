@@ -501,7 +501,7 @@ $(function($) {
       this.$msg = $('[data-msg=' + this.name + ']');
     },
     validate: function() {
-      this.model.set(this.name, this.$el.val());
+      this.model.set(this.name, this.$el.val(), {validate: true});
       this.$msg.text(this.model.errors[this.name] || '');
     }
   });
