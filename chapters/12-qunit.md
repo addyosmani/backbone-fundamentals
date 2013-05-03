@@ -176,8 +176,8 @@ These callbacks can be used to define (or clear) any components we wish to insta
 var Store = Backbone.Model.extend({});
 
 var StoreList = Backbone.Collection.extend({
-    model: store,
-    comparator: function( store ) { return store.get('name') }
+    model: Store,
+    comparator: function( Store ) { return Store.get('name') }
 });
 
 // Define a group for our tests
