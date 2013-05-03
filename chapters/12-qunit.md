@@ -187,7 +187,7 @@ module( 'StoreList sanity check', {
         this.list.add(new Store({ name: 'Costcutter' }));
         this.list.add(new Store({ name: 'Target' }));
         this.list.add(new Store({ name: 'Walmart' }));
-        this.list.add(new Store({ name: 'Barnes & Noble' });
+        this.list.add(new Store({ name: 'Barnes & Noble' }));
     },
     teardown: function() {
         window.errors = null;
