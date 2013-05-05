@@ -176,8 +176,8 @@ These callbacks can be used to define (or clear) any components we wish to insta
 var Store = Backbone.Model.extend({});
 
 var StoreList = Backbone.Collection.extend({
-    model: store,
-    comparator: function( store ) { return store.get('name') }
+    model: Store,
+    comparator: function( Store ) { return Store.get('name') }
 });
 
 // Define a group for our tests
@@ -187,7 +187,7 @@ module( 'StoreList sanity check', {
         this.list.add(new Store({ name: 'Costcutter' }));
         this.list.add(new Store({ name: 'Target' }));
         this.list.add(new Store({ name: 'Walmart' }));
-        this.list.add(new Store({ name: 'Barnes & Noble' });
+        this.list.add(new Store({ name: 'Barnes & Noble' }));
     },
     teardown: function() {
         window.errors = null;
