@@ -357,7 +357,7 @@ describe("Todo tests", function(){
 });
 ```
 
-In the previous section you may have noticed that we initially declared ```this.todo``` within the scope of our ```beforeEach()``` call and were then able to continue using this reference in ```afterEach()```. 
+In the previous section you may have noticed that we initially declared ```this.router``` within the scope of our ```beforeEach()``` call and were then able to continue using this reference in ```afterEach()```. 
 
 This is again down to shared function scope, which allows such declaractions to be common to all blocks (including ```runs()```). 
 
