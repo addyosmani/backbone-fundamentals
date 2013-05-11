@@ -34,7 +34,7 @@ An example of a server-side web application framework which tries to apply MVC t
 
 ![](img/rails_mvc.png)
 
-At it's core are the three MVC components we would expect - the Model, View and Controller architecture. In Rails:
+At its core are the three MVC components we would expect - the Model, View and Controller architecture. In Rails:
 
 * Models represent the data in an application and are typically used to manage rules for interacting with a specific database table. You generally have one table corresponding to one model with much of your application's business logic living within these models. 
 * Views represent your user interface, often taking the form of HTML that will be sent down to the browser. They're used to present application data to anything making requests from your application. 
