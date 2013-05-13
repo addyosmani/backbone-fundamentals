@@ -18,9 +18,9 @@ You can paste the following into your text editor of choice, replacing the comme
 <body>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-<script type="text/javascript" src="http://documentcloud.github.com/underscore/underscore-min.js"></script>
-<script type="text/javascript" src="http://documentcloud.github.com/backbone/backbone-min.js"></script>
-<script type="text/javascript">
+<script src="http://documentcloud.github.com/underscore/underscore-min.js"></script>
+<script src="http://documentcloud.github.com/backbone/backbone-min.js"></script>
+<script>
   // Your code goes here
 </script>
 </body>
