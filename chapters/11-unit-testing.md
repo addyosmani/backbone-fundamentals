@@ -256,7 +256,7 @@ describe('Todo routes', function(){
         this.router = new App.TodoRouter();
 
         // Create a new spy
-        this.routerSpy = sinon.spy();
+        this.routerSpy = jasmine.createSpy();
 
         // Begin monitoring hashchange events
         try{
@@ -629,7 +629,7 @@ expect($('#some-fixture')).to<the rest of your matcher would go here>
 
 The jasmine-jquery plugin loads fixtures from a directory named spec/javascripts/fixtures by default. If you wish to configure this path you can do so by initially setting ```jasmine.getFixtures().fixturesPath = 'your custom path'```.
 
-Finally, jasmine-jquery includes support for spying on jQuery events without the need for any extra plumbing work. This can be done using the ```spyOnEvent()``` and ```assert(eventName).toHaveBeenTriggered(selector)``` functions. For example:
+Finally, jasmine-jquery includes support for spying on jQuery events without the need for any extra plumbing work. This can be done using the ```spyOnEvent()``` and ```expect(eventName).toHaveBeenTriggered(selector)``` functions. For example:
 
 ```javascript
 spyOnEvent($('#el'), 'click');
