@@ -106,7 +106,7 @@ Here is a peek at what you will be learning in each chapter:
 
 <i>Chapter 13, Jasmine</i> covers how to unit test Backbone code using the Jasmine test framework.
 
-<i>Chapter 14, QUnit</i> discusses how to use the QUnit for unit testing.
+<i>Chapter 14, QUnit</i> discusses how to use QUnit for unit testing.
 
 <i>Chapter 15, SinonJS</i> discusses how to use SinonJS for unit testing your Backbone apps.
 
