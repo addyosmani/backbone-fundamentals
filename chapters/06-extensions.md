@@ -324,7 +324,7 @@ First, we define an application object representing our base TodoMVC app. This w
 **TodoMVC.js:**
 
 ```javascript
-var TodoMVC = new Marionette.Application();
+var TodoMVC = new Backbone.Marionette.Application();
 
 TodoMVC.addRegions({
   header : '#header',
