@@ -574,13 +574,13 @@ If you are following along, open `file://*path*/index.html` in your browser and 
 
 However, a few things can be tested through the JavaScript console.
 
-In the console, add a new todo item: `window.app.Todos.create({ title: 'My first Todo item'});` and hit return.
+In the console, add a new todo item: `app.Todos.create({ title: 'My first Todo item'});` and hit return.
 
 ![](img/todos_d.png)
 
 If all is functioning properly, this should log the new todo we've just added to the todos collection. The newly created todo is also saved to Local Storage and will be available on page refresh.
 
-`window.app.Todos.create()` executes a collection method (`Collection.create(attributes, [options])`) which instantiates a new model item of the type passed into the collection definition, in our case `app.Todo`:
+`app.Todos.create()` executes a collection method (`Collection.create(attributes, [options])`) which instantiates a new model item of the type passed into the collection definition, in our case `app.Todo`:
 
 ```javascript
 
@@ -597,7 +597,7 @@ If all is functioning properly, this should log the new todo we've just added to
 Run the following in the console to check it out:
 
 ```javascript
-var secondTodo = window.app.Todos.create({ title: 'My second Todo item'});
+var secondTodo = app.Todos.create({ title: 'My second Todo item'});
 secondTodo instanceof app.Todo // returns true
 ```
 
