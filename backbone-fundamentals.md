@@ -1351,7 +1351,7 @@ TodosCollection.on("change:title", function(model) {
 });
 
 TodosCollection.add([
-  { title: 'go to Jamaica.', completed: false, id: 3 },
+  { title: 'go to Jamaica.', completed: false, id: 3 }
 ]);
 
 var myTodo = TodosCollection.get(3);
@@ -2227,16 +2227,17 @@ var TodoRouter = Backbone.Router.extend({
         idea to leave them at the end of a URL otherwise you may need to apply regular
         expression parsing on your fragment */
 
+        "optional(/:item)": "optionalItem",
+        "named/optional/(y:z)": "namedOptionalItem",
+        /* Router URLs also support optional parts via parentheses, without having
+           to use a regex.  */
+
         "*other"    : "defaultRoute"
         /* This is a default route that also uses a *splat. Consider the
         default route a wildcard for URLs that are either not matched or where
         the user has incorrectly typed in a route path manually */
-        /* Sample usage: http://example.com/# <anything> */,
+        /* Sample usage: http://example.com/# <anything> */
 
-        "optional(/:item)": "optionalItem",
-        "named/optional/(y:z)": "namedOptionalItem"
-        /* Router URLs also support optional parts via parentheses, without having
-           to use a regex.  */
     },
 
     showAbout: function(){
@@ -2394,7 +2395,7 @@ Backbone.history.checkUrl();
 
 ## Backbone’s Sync API
 
-We previously discussed how Backbone supports RESTful persistence via its `fetch()` and `create()` methods on Collections and `save()`, and `delete()` methods on Models. Now we are going to take a closer look at Backbone's sync method which underlies these operations.
+We previously discussed how Backbone supports RESTful persistence via its `fetch()` and `create()` methods on Collections and `save()`, and `destroy()` methods on Models. Now we are going to take a closer look at Backbone's sync method which underlies these operations.
 
 The Backbone.sync method is an integral part of Backbone.js. It assumes a jQuery-like `$.ajax()` method, so HTTP parameters are organized based on jQuery’s API. Since some legacy servers may not support JSON-formatted requests and HTTP PUT and DELETE operations, Backbone can be configured to emulate these capabilities using the two configuration variables shown below with their default values:
 
@@ -4559,17 +4560,17 @@ var Jeremy = new Person({
 
 // create the first view instance
 var zombieView = new ZombieView({
-  model: Person
+  model: Jeremy
 })
 zombieView.close(); // double-tap the zombie
 
 // create a second view instance, re-using
 // the same variable name to store it
 zombieView = new ZombieView({
-  model: Person
+  model: Jeremy
 })
 
-Person.set('email', 'jeremyashkenas@example.com');
+Jeremy.set('email', 'jeremyashkenas@example.com');
 ```
 
 Now we only see one alert box when this code runs. 
