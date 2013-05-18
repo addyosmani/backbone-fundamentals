@@ -73,7 +73,7 @@ Modern JavaScript frameworks and libraries can bring structure and organization 
 
 When developing applications using just jQuery, the piece missing is a way to structure and organize your code. It's very easy to create a JavaScript app that ends up a tangled mess of jQuery selectors and callbacks, all desperately trying to keep data in sync between the HTML for your UI, the logic in your JavaScript, and calls to your API for data.
 
-Without something to help tame the mess, you're likely to string together a set of independant plugins and libraries to make up the functionality or build everything yourself from scratch and have to maintain it yourself. Backbone solves this problem for you, providing a way to cleanly organize code, separating responsibilities into recognizable pieces that are easy to maintain.
+Without something to help tame the mess, you're likely to string together a set of independent plugins and libraries to make up the functionality or build everything yourself from scratch and have to maintain it yourself. Backbone solves this problem for you, providing a way to cleanly organize code, separating responsibilities into recognizable pieces that are easy to maintain.
 
 In "Developing Backbone.js Applications," I and a number of other experienced authors will show you how to improve your web application structure using the popular JavaScript library, Backbone.js
 
@@ -171,7 +171,7 @@ Here is a peek at what you will be learning in each chapter:
 
 <i>Chapter 13, Jasmine</i> covers how to unit test Backbone code using the Jasmine test framework.
 
-<i>Chapter 14, QUnit</i> discusses how to use the QUnit for unit testing.
+<i>Chapter 14, QUnit</i> discusses how to use QUnit for unit testing.
 
 <i>Chapter 15, SinonJS</i> discusses how to use SinonJS for unit testing your Backbone apps.
 
@@ -217,7 +217,7 @@ An example of a server-side web application framework which tries to apply MVC t
 
 ![](img/rails_mvc.png)
 
-At it's core are the three MVC components we would expect - the Model, View and Controller architecture. In Rails:
+At its core are the three MVC components we would expect - the Model, View and Controller architecture. In Rails:
 
 * Models represent the data in an application and are typically used to manage rules for interacting with a specific database table. You generally have one table corresponding to one model with much of your application's business logic living within these models. 
 * Views represent your user interface, often taking the form of HTML that will be sent down to the browser. They're used to present application data to anything making requests from your application. 
@@ -251,7 +251,7 @@ Several [studies](http://radar.oreilly.com/2009/07/velocity-making-your-site-fas
 
 In addition to resulting in a great deal of duplicated content being served back to the user, this approach affects both latency and the general responsiveness of the user experience. A trend to improve perceived latency in the past few years has been to move towards building Single Page Applications (SPAs) - apps which after an initial page load are able to handle subsequent navigations and requests for data without the need for a complete reload. 
 
-When a user navigates to a new view, additional content required for the view is requested using an XHR (XMLHttpRequest), typically communicating with a server-side REST API or endpoint. [Ajax](https://en.wikipedia.org/wiki/Ajax_(programming))(Asynchronous JavaScript and XML) makes communication with the server asynchronous so that data is transferred and processed in the background, allowing the user to work on other parts of a page without interaction. This improves usability and responsiveness.
+When a user navigates to a new view, additional content required for the view is requested using an XHR (XMLHttpRequest), typically communicating with a server-side REST API or endpoint. [Ajax](https://en.wikipedia.org/wiki/Ajax_(programming)) (Asynchronous JavaScript and XML) makes communication with the server asynchronous so that data is transferred and processed in the background, allowing the user to work on other parts of a page without interaction. This improves usability and responsiveness.
 
 SPAs can also take advantage of browser features like the [History API](http://diveintohtml5.info/history.html) to update the address seen in the location bar when moving from one view to another. These URLs also make it possible to bookmark and share a particular application state, without the need to navigate to completely new pages.
 
@@ -573,9 +573,9 @@ You can paste the following into your text editor of choice, replacing the comme
 <body>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-<script type="text/javascript" src="http://documentcloud.github.com/underscore/underscore-min.js"></script>
-<script type="text/javascript" src="http://documentcloud.github.com/backbone/backbone-min.js"></script>
-<script type="text/javascript">
+<script src="http://documentcloud.github.com/underscore/underscore-min.js"></script>
+<script src="http://documentcloud.github.com/backbone/backbone-min.js"></script>
+<script>
   // Your code goes here
 </script>
 </body>
@@ -1107,7 +1107,7 @@ A common Backbone convention is to return `this` at the end of `render()`. This 
 * Making views easily reusable in other parent views.
 * Creating a list of elements without rendering and painting each of them individually, only to be drawn once the entire list is populated.
 
-Let's try to implement the latter of these. The `render`method of a simple ListView which doesn't use an ItemView for each item could be written:
+Let's try to implement the latter of these. The `render` method of a simple ListView which doesn't use an ItemView for each item could be written:
 
 ```javascript
 
@@ -4666,7 +4666,7 @@ First, we define an application object representing our base TodoMVC app. This w
 **TodoMVC.js:**
 
 ```javascript
-var TodoMVC = new Marionette.Application();
+var TodoMVC = new Backbone.Marionette.Application();
 
 TodoMVC.addRegions({
   header : '#header',
@@ -10302,7 +10302,7 @@ describe('Todo routes', function(){
         this.router = new App.TodoRouter();
 
         // Create a new spy
-        this.routerSpy = sinon.spy();
+        this.routerSpy = jasmine.createSpy();
 
         // Begin monitoring hashchange events
         try{
@@ -10403,7 +10403,7 @@ describe("Todo tests", function(){
 });
 ```
 
-In the previous section you may have noticed that we initially declared ```this.todo``` within the scope of our ```beforeEach()``` call and were then able to continue using this reference in ```afterEach()```. 
+In the previous section you may have noticed that we initially declared ```this.router``` within the scope of our ```beforeEach()``` call and were then able to continue using this reference in ```afterEach()```. 
 
 This is again down to shared function scope, which allows such declaractions to be common to all blocks (including ```runs()```). 
 
@@ -10422,21 +10422,21 @@ Let's review [SpecRunner.html.jst](https://github.com/pivotal/jasmine/blob/maste
 It first includes both Jasmine and the necessary CSS required for reporting:
 
     <link rel="stylesheet" type="text/css" href="lib/jasmine-<%= jasmineVersion %>/jasmine.css">
-    <script type="text/javascript" src="lib/jasmine-<%= jasmineVersion %>/jasmine.js"></script>
-    <script type="text/javascript" src="lib/jasmine-<%= jasmineVersion %>/jasmine-html.js"></script>
-    <script type="text/javascript" src="lib/jasmine-<%= jasmineVersion %>/boot.js"></script>
+    <script src="lib/jasmine-<%= jasmineVersion %>/jasmine.js"></script>
+    <script src="lib/jasmine-<%= jasmineVersion %>/jasmine-html.js"></script>
+    <script src="lib/jasmine-<%= jasmineVersion %>/boot.js"></script>
 
 Next come the sources being tested:
 
     <!-- include source files here... -->
-    <script type="text/javascript" src="src/Player.js"></script>
-    <script type="text/javascript" src="src/Song.js"></script>
+    <script src="src/Player.js"></script>
+    <script src="src/Song.js"></script>
 
 Finally, some sample tests are included:
 
     <!-- include spec files here... -->
-    <script type="text/javascript" src="spec/SpecHelper.js"></script>
-    <script type="text/javascript" src="spec/PlayerSpec.js"></script>
+    <script src="spec/SpecHelper.js"></script>
+    <script src="spec/PlayerSpec.js"></script>
 
 
 ***Note:*** Below this section of SpecRunner is code responsible for running the actual tests. Given that we won't be covering modifying this code, I'm going to skip reviewing it. I do however encourage you to take a look through [PlayerSpec.js](https://github.com/pivotal/jasmine/blob/master/lib/jasmine-core/example/spec/PlayerSpec.js) and [SpecHelper.js](https://github.com/pivotal/jasmine/blob/master/lib/jasmine-core/example/spec/SpecHelper.js). They're a useful basic example to go through how a minimal set of tests might work.
@@ -10675,7 +10675,7 @@ expect($('#some-fixture')).to<the rest of your matcher would go here>
 
 The jasmine-jquery plugin loads fixtures from a directory named spec/javascripts/fixtures by default. If you wish to configure this path you can do so by initially setting ```jasmine.getFixtures().fixturesPath = 'your custom path'```.
 
-Finally, jasmine-jquery includes support for spying on jQuery events without the need for any extra plumbing work. This can be done using the ```spyOnEvent()``` and ```assert(eventName).toHaveBeenTriggered(selector)``` functions. For example:
+Finally, jasmine-jquery includes support for spying on jQuery events without the need for any extra plumbing work. This can be done using the ```spyOnEvent()``` and ```expect(eventName).toHaveBeenTriggered(selector)``` functions. For example:
 
 ```javascript
 spyOnEvent($('#el'), 'click');
@@ -13101,21 +13101,21 @@ Let's review [SpecRunner.html.jst](https://github.com/pivotal/jasmine/blob/maste
 It first includes both Jasmine and the necessary CSS required for reporting:
 
     <link rel="stylesheet" type="text/css" href="lib/jasmine-<%= jasmineVersion %>/jasmine.css">
-    <script type="text/javascript" src="lib/jasmine-<%= jasmineVersion %>/jasmine.js"></script>
-    <script type="text/javascript" src="lib/jasmine-<%= jasmineVersion %>/jasmine-html.js"></script>
-    <script type="text/javascript" src="lib/jasmine-<%= jasmineVersion %>/boot.js"></script>
+    <script src="lib/jasmine-<%= jasmineVersion %>/jasmine.js"></script>
+    <script src="lib/jasmine-<%= jasmineVersion %>/jasmine-html.js"></script>
+    <script src="lib/jasmine-<%= jasmineVersion %>/boot.js"></script>
 
 Next come the sources being tested:
 
     <!-- include source files here... -->
-    <script type="text/javascript" src="src/Player.js"></script>
-    <script type="text/javascript" src="src/Song.js"></script>
+    <script src="src/Player.js"></script>
+    <script src="src/Song.js"></script>
 
 Finally, some sample tests are included:
 
     <!-- include spec files here... -->
-    <script type="text/javascript" src="spec/SpecHelper.js"></script>
-    <script type="text/javascript" src="spec/PlayerSpec.js"></script>
+    <script src="spec/SpecHelper.js"></script>
+    <script src="spec/PlayerSpec.js"></script>
 
 
 ***Note:*** Below this section of SpecRunner is code responsible for running the actual tests. Given that we won't be covering modifying this code, I'm going to skip reviewing it. I do however encourage you to take a look through [PlayerSpec.js](https://github.com/pivotal/jasmine/blob/master/lib/jasmine-core/example/spec/PlayerSpec.js) and [SpecHelper.js](https://github.com/pivotal/jasmine/blob/master/lib/jasmine-core/example/spec/SpecHelper.js). They're a useful basic example to go through how a minimal set of tests might work.
