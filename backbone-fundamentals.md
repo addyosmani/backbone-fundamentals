@@ -1351,7 +1351,7 @@ TodosCollection.on("change:title", function(model) {
 });
 
 TodosCollection.add([
-  { title: 'go to Jamaica.', completed: false, id: 3 },
+  { title: 'go to Jamaica.', completed: false, id: 3 }
 ]);
 
 var myTodo = TodosCollection.get(3);
