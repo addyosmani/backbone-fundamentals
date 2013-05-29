@@ -28,3 +28,4 @@ You can build the book using `make` or `make -f Makefile`. This will output the 
 * <code>apt-get install texlive-latex-base</code>
 * <code>apt-get install texlive-fonts-recommended</code>
 * <code>apt-get install cm-super</code>
+* <code>apt-get install etoolbox</code>
