@@ -45,7 +45,8 @@ pdf: markdown
 		--title-prefix $(title) \
 		--normalize \
 		--smart \
-		--toc
+		--toc \
+		--latex-engine=xelatex 
 
 mobi: epub
 	# Download: http://www.amazon.com/gp/feature.html?ie=UTF8&docId=1000765211
