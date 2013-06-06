@@ -3847,7 +3847,7 @@ zombieView = <span class="kw">new</span> ZombieView({
 
   <span class="dt">initialize</span>: <span class="kw">function</span>(){
     <span class="co">// bind the model change to re-render this view</span>
-    <span class="kw">this</span>.<span class="fu">listenTo</span>(<span class="kw">this</span>.<span class="fu">model</span>, <span class="ch">&#39;change&#39;</span>, <span class="kw">this</span>.<span class="fu">render</span>);
+    <span class="kw">this</span>.<span class="fu">model</span>.<span class="fu">on</span>(<span class="ch">&#39;change&#39;</span>, <span class="kw">this</span>.<span class="fu">render</span>, <span class="kw">this</span>);
   },
 
   <span class="dt">close</span>: <span class="kw">function</span>(){
