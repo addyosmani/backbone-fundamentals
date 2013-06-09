@@ -1516,13 +1516,30 @@ code > span.er { color: #ff0000; font-weight: bold; }
   <span class="kw">console</span>.<span class="fu">log</span>(<span class="kw">options</span>.<span class="fu">previousModels</span>[<span class="dv">0</span>] === Todo); <span class="co">// true</span>
 });
 <span class="kw">Todos</span>.<span class="fu">reset</span>([]);</code></pre>
-<p>An <code>update()</code> method is available for Collections (which is also available as an option to fetch) for <q>smart</q> updating of sets of models. This method attempts to perform smart updating of a collection using a specified list of models. When a model in this list isn’t present in the collection, it is added. If it is, its attributes will be merged. Models which are present in the collection but not in the list are removed.</p>
-<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> theBeatles = <span class="kw">new</span> Collection([<span class="ch">&#39;john&#39;</span>, <span class="ch">&#39;paul&#39;</span>, <span class="ch">&#39;george&#39;</span>, <span class="ch">&#39;ringo&#39;</span>]);
+<p>The <code>set()</code> method available for Collections can also be usef ror <q>smart</q> updating of sets of models. This method attempts to perform smart updating of a collection using a specified list of models. When a model in this list isn’t present in the collection, it is added. If it is, its attributes will be merged. Models which are present in the collection but not in the list are removed.</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript">
+<span class="co">// Define a model of type &#39;Beatle&#39; with a &#39;job&#39; attribute</span>
+<span class="kw">var</span> Beatle = <span class="kw">Backbone.Model</span>.<span class="fu">extend</span>({
+  <span class="dt">job</span>: <span class="ch">&#39;musician&#39;</span>
+});
 
-<span class="kw">theBeatles</span>.<span class="fu">update</span>([<span class="ch">&#39;john&#39;</span>, <span class="ch">&#39;paul&#39;</span>, <span class="ch">&#39;george&#39;</span>, <span class="ch">&#39;pete&#39;</span>]);
+<span class="co">// Create models for each member of the Beatles</span>
+<span class="kw">var</span> John = <span class="kw">new</span> Beatle({ <span class="dt">firstName</span>: <span class="ch">&#39;John&#39;</span>, <span class="dt">lastName</span>: <span class="ch">&#39;Lennon&#39;</span>});
+<span class="kw">var</span> Paul = <span class="kw">new</span> Beatle({ <span class="dt">firstName</span>: <span class="ch">&#39;Paul&#39;</span>, <span class="dt">lastName</span>: <span class="ch">&#39;McCartney&#39;</span>});
+<span class="kw">var</span> George = <span class="kw">new</span> Beatle({ <span class="dt">firstName</span>: <span class="ch">&#39;George&#39;</span>, <span class="dt">lastName</span>: <span class="ch">&#39;Harrison&#39;</span>});
+<span class="kw">var</span> Ringo = <span class="kw">new</span> Beatle({ <span class="dt">firstName</span>: <span class="ch">&#39;Ringo&#39;</span>, <span class="dt">lastName</span>: <span class="ch">&#39;Starr&#39;</span>});
 
-<span class="co">// Fires a `remove` event for &#39;ringo&#39;, and an `add` event for &#39;pete&#39;.</span>
-<span class="co">// Updates any of john, paul and georges&#39;s attributes that may have</span>
+<span class="co">// Create a collection using our models</span>
+<span class="kw">var</span> theBeatles = <span class="kw">new</span> <span class="kw">Backbone</span>.<span class="fu">Collection</span>([John, Paul, George, Ringo]);
+
+<span class="co">// Create a separate model for Pete Best</span>
+<span class="kw">var</span> Pete = <span class="kw">new</span> Beatle({ <span class="dt">firstName</span>: <span class="ch">&#39;Pete&#39;</span>, <span class="dt">lastName</span>: <span class="ch">&#39;Best&#39;</span>});
+
+<span class="co">// Update the collection</span>
+<span class="kw">theBeatles</span>.<span class="fu">set</span>([John, Paul, George, Pete]);
+
+<span class="co">// Fires a `remove` event for &#39;Ringo&#39;, and an `add` event for &#39;Pete&#39;.</span>
+<span class="co">// Updates any of John, Paul and Georges&#39;s attributes that may have</span>
 <span class="co">// changed over the years.</span></code></pre>
 <h4 id="underscore-utility-functions"><a href="#TOC">Underscore utility functions</a></h4>
 <p>Backbone takes full advantage of its hard dependency on Underscore by making many of its utilities directly available on collections:</p>

@@ -955,15 +955,32 @@ var Todos = new Backbone.Collection([Todo])
 Todos.reset([]);
 ```
 
-An `update()` method is available for Collections (which is also available as an option to fetch) for "smart" updating of sets of models. This method attempts to perform smart updating of a collection using a specified list of models. When a model in this list isn't present in the collection, it is added. If it is, its attributes will be merged. Models which are present in the collection but not in the list are removed.
+The `set()` method available for Collections can also be usef ror "smart" updating of sets of models. This method attempts to perform smart updating of a collection using a specified list of models. When a model in this list isn't present in the collection, it is added. If it is, its attributes will be merged. Models which are present in the collection but not in the list are removed.
 
 ```javascript
-var theBeatles = new Collection(['john', 'paul', 'george', 'ringo']);
 
-theBeatles.update(['john', 'paul', 'george', 'pete']);
+// Define a model of type 'Beatle' with a 'job' attribute
+var Beatle = Backbone.Model.extend({
+  job: 'musician'
+});
 
-// Fires a `remove` event for 'ringo', and an `add` event for 'pete'.
-// Updates any of john, paul and georges's attributes that may have
+// Create models for each member of the Beatles
+var John = new Beatle({ firstName: 'John', lastName: 'Lennon'});
+var Paul = new Beatle({ firstName: 'Paul', lastName: 'McCartney'});
+var George = new Beatle({ firstName: 'George', lastName: 'Harrison'});
+var Ringo = new Beatle({ firstName: 'Ringo', lastName: 'Starr'});
+
+// Create a collection using our models
+var theBeatles = new Backbone.Collection([John, Paul, George, Ringo]);
+
+// Create a separate model for Pete Best
+var Pete = new Beatle({ firstName: 'Pete', lastName: 'Best'});
+
+// Update the collection
+theBeatles.set([John, Paul, George, Pete]);
+
+// Fires a `remove` event for 'Ringo', and an `add` event for 'Pete'.
+// Updates any of John, Paul and Georges's attributes that may have
 // changed over the years.
 ```
 
