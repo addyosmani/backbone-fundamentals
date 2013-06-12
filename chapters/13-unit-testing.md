@@ -866,7 +866,7 @@ render: function() {
 ```
 
 
-However, this can get unwieldily fairly quickly. As the level of complexity and logic in our templates increase, so do the challenges associated with testing them. We can ease this process by taking advantage of modern templating libraries, many of which have already been demonstrated to work well with testing solutions such as Jasmine. 
+However, this can get unwieldy fairly quickly. As the level of complexity and logic in our templates increase, so do the challenges associated with testing them. We can ease this process by taking advantage of modern templating libraries, many of which have already been demonstrated to work well with testing solutions such as Jasmine.
 
 JavaScript templating systems (such as [Handlebars](http://handlebarsjs.com/), [Mustache](http://mustache.github.com/), and Underscore's own [micro-templating](http://underscorejs.org/#template)) support conditional logic in template strings. What this effectively means is that we can add if/else/ternery expressions inline which can then be evaluated as needed, allowing us to build even more powerful templates.
 

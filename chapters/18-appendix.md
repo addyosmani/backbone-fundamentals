@@ -115,7 +115,7 @@ Let's explore Views a little further using a simple JavaScript example:
 ```javascript
 // DOM View
 var View = Cranium.View = function (options) {
-  // Mix in options object (e.g extending functionallity)
+  // Mix in options object (e.g extending functionality)
   _.extend(this, options); 
   this.id = _.uniqueId('view');
 };
@@ -136,7 +136,7 @@ Controllers are an intermediary between models and views which are classically r
 
 // Controller tying together a model and view
 var Controller = Cranium.Controller = function(options){
-  // Mix in options object (e.g extending functionallity)
+  // Mix in options object (e.g extending functionality)
   _.extend(this, options); 
   this.id = _.uniqueId('controller');
   var parts, selector, eventType;

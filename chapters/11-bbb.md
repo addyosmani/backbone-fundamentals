@@ -172,7 +172,7 @@ require.config({
 });
 ```
 
-The first option defined in the above config is `deps: ["../vendor/jam/require.config", "main"]`. This informs RequireJS to load up additonal RequireJS configuration as well a a main.js file, which is considered the entry point for our application.
+The first option defined in the above config is `deps: ["../vendor/jam/require.config", "main"]`. This informs RequireJS to load up additional RequireJS configuration as well a a main.js file, which is considered the entry point for our application.
 
  You may notice that we haven't specified any other path information for `main`. Require will infer the default `baseUrl` using the path from our `data-main` attribute in index.html. In other words, our `baseUrl` is `app/` and any scripts we require will be loaded relative to this location. We could use the `baseUrl` option to override this default if we wanted to use a different location.
 
@@ -228,7 +228,7 @@ var jam = {
 
 ```
 
-The `jam` object is to support configuration of [Jam](http://jamjs.org/) - a package manager for the front-end which helps instal, upgrade and configurate the dependencies used by your project. It is currently the package manager of choice for Backbone Boilerplate.
+The `jam` object is to support configuration of [Jam](http://jamjs.org/) - a package manager for the front-end which helps install, upgrade and configure the dependencies used by your project. It is currently the package manager of choice for Backbone Boilerplate.
 
 Under the `packages` array, a number of dependencies are specified for inclusion, such as Backbone, the Backbone.LayoutManager plugin, jQuery and Lo-dash. 
 
@@ -364,7 +364,7 @@ define([
         el: "#main"
       }, options));
 
-      // Cache the refererence.
+      // Cache the reference.
       return this.layout = layout;
     }
   }, Backbone.Events);

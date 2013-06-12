@@ -4701,7 +4701,7 @@ To see Thorax in action on a large scale website visit walmart.com on any Androi
         }, <span class="kw">this</span>);
     }
 };</code></pre>
-<p>The use of <code>cid</code>s (client ids) here is useful because it illustrates separating a model and its views by having views referenced by their instances and not their attributes. It’s quite common to ask for all views that satisfy an attribute on their models, but if you have recursive subviews or repeated views (a common occurrance), you can’t simply ask for views by attributes. That is, unless you specify additional attributes that separate duplicates. Using <code>cid</code>s solves this problem as it allows for direct references to views.</p>
+<p>The use of <code>cid</code>s (client ids) here is useful because it illustrates separating a model and its views by having views referenced by their instances and not their attributes. It’s quite common to ask for all views that satisfy an attribute on their models, but if you have recursive subviews or repeated views (a common occurrence), you can’t simply ask for views by attributes. That is, unless you specify additional attributes that separate duplicates. Using <code>cid</code>s solves this problem as it allows for direct references to views.</p>
 <p>Generally speaking, more developers opt for Solution 1 or 5 as:</p>
 <ul>
 <li>The majority of their views may already rely on being in the DOM in their render() method</li>
@@ -5289,7 +5289,7 @@ $(<span class="kw">function</span>($) {
 <p>The mediator extracts the workflow from the implementation details and creates a more natural abstraction at a higher level, showing us at a much faster glance what that workflow is. We no longer have to dig into the details of each view in the workflow, to see what the workflow actually is.</p>
 <h5 id="event-aggregator-and-mediator-together"><a href="#TOC">Event Aggregator And Mediator Together</a></h5>
 <p>The crux of the difference between an event aggregator and a mediator, and why these pattern names should not be interchanged with each other, is illustrated best by showing how they can be used together. The menu example for an event aggregator is the perfect place to introduce a mediator as well.</p>
-<p>Clicking a menu item may trigger a series of changes throughout an application. Some of these changes will be independent of others, and using an event aggregator for this makes sense. Some of these changes may be internally related to each other, though, and may use a mediator to enact those changes. A mediator, then, could be set up to listen to the event aggregator. It could run it’s logic and process to facilitate and coordinate many objects that are related to each other, but unrelated to the original event source.</p>
+<p>Clicking a menu item may trigger a series of changes throughout an application. Some of these changes will be independent of others, and using an event aggregator for this makes sense. Some of these changes may be internally related to each other, though, and may use a mediator to enact those changes. A mediator, then, could be set up to listen to the event aggregator. It could run its logic and process to facilitate and coordinate many objects that are related to each other, but unrelated to the original event source.</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> MenuItem = <span class="kw">Backbone.View</span>.<span class="fu">extend</span>({
 
   <span class="dt">events</span>: {
@@ -6174,7 +6174,7 @@ Backbone.history.start({
 <p>If you use <code>$callback</code>, please ensure that you did use the jsonp as a <code>dataType</code> inside your <code>paginator_core</code> configuration.</p>
 <h4 id="finally-configure-collection.parse-and-were-done"><a href="#TOC">6. Finally, configure Collection.parse() and we’re done</a></h4>
 <p>The last thing we need to do is configure our collection’s <code>parse()</code> method. We want to ensure we’re returning the correct part of our JSON response containing the data our collection will be populated with, which below is <code>response.d.results</code> (for the Netflix API).</p>
-<p>You might also notice that we’re setting <code>this.totalPages</code> to the total page count returned by the API. This allows us to define the maximum number of (result) pages available for the current/last request so that we can clearly display this in the UI. It also allows us to infuence whether clicking say, a <q>next</q> button should proceed with a request or not.</p>
+<p>You might also notice that we’re setting <code>this.totalPages</code> to the total page count returned by the API. This allows us to define the maximum number of (result) pages available for the current/last request so that we can clearly display this in the UI. It also allows us to influence whether clicking say, a <q>next</q> button should proceed with a request or not.</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript">        <span class="dt">parse</span>: <span class="kw">function</span> (response) {
             <span class="co">// Be sure to change this based on how your results</span>
             <span class="co">// are structured (e.g d.results is Netflix specific)</span>
@@ -6602,7 +6602,7 @@ Done, without errors.</code></pre>
   }
 
 });</code></pre>
-<p>The first option defined in the above config is <code>deps: [&quot;../vendor/jam/require.config&quot;, &quot;main&quot;]</code>. This informs RequireJS to load up additonal RequireJS configuration as well a a main.js file, which is considered the entry point for our application.</p>
+<p>The first option defined in the above config is <code>deps: [&quot;../vendor/jam/require.config&quot;, &quot;main&quot;]</code>. This informs RequireJS to load up additional RequireJS configuration as well a a main.js file, which is considered the entry point for our application.</p>
 <p>You may notice that we haven’t specified any other path information for <code>main</code>. Require will infer the default <code>baseUrl</code> using the path from our <code>data-main</code> attribute in index.html. In other words, our <code>baseUrl</code> is <code>app/</code> and any scripts we require will be loaded relative to this location. We could use the <code>baseUrl</code> option to override this default if we wanted to use a different location.</p>
 <p>The next block is <code>paths</code>, which we can use to specify paths relative to the <code>baseUrl</code> as well as the paths/aliases to dependencies we’re likely to regularly reference.</p>
 <p>After this comes <code>shim</code>, an important part of our RequireJS configuration which allows us to load libraries which are not AMD compliant. The basic idea here is that rather than requiring all libraries to implement support for AMD, the <code>shim</code> takes care of the hard work for us.</p>
@@ -6649,7 +6649,7 @@ Done, without errors.</code></pre>
         }
     }
 };</code></pre>
-<p>The <code>jam</code> object is to support configuration of <a href="http://jamjs.org/">Jam</a> - a package manager for the front-end which helps instal, upgrade and configurate the dependencies used by your project. It is currently the package manager of choice for Backbone Boilerplate.</p>
+<p>The <code>jam</code> object is to support configuration of <a href="http://jamjs.org/">Jam</a> - a package manager for the front-end which helps install, upgrade and configure the dependencies used by your project. It is currently the package manager of choice for Backbone Boilerplate.</p>
 <p>Under the <code>packages</code> array, a number of dependencies are specified for inclusion, such as Backbone, the Backbone.LayoutManager plugin, jQuery and Lo-dash.</p>
 <p>For those curious about <a href="https://github.com/tbranyen/backbone.layoutmanager">Backbone.LayoutManager</a>, it’s a Backbone plugin that provides a foundation for assembling layouts and views within Backbone.</p>
 <p>Additional packages you install using Jam will have a corresponding entry added to <code>packages</code>.</p>
@@ -6769,7 +6769,7 @@ Done, without errors.</code></pre>
         <span class="dt">el</span>: <span class="st">&quot;#main&quot;</span>
       }, options));
 
-      <span class="co">// Cache the refererence.</span>
+      <span class="co">// Cache the reference.</span>
       <span class="kw">return</span> <span class="kw">this</span>.<span class="fu">layout</span> = layout;
     }
   }, <span class="kw">Backbone</span>.<span class="fu">Events</span>);
@@ -7225,7 +7225,7 @@ define([
 <p>Other strategies than the one used in the function <code>cleanupPossiblePageDuplicationInDOM</code> to cleanup the DOM are viable. To only remove the old page having the same id as the current from the DOM, when it was already requested before, would also be a working strategy of preventing DOM duplication. Depending on what fits best to your application needs, it is also possibly a one-banana problem to exchange it using a caching mechanism.</p>
 <p>Next, <code>BasicView</code> collects all template parameters from the concrete View implementation and inserts the HTML of the requested page into the body. This is done in steps 4, 5, 6, and 7 in the diagram above (between lines 23 and 51 in the source listing).</p>
 <p>Additionally, the <code>data-role</code> will be set on the jQuery Mobile page. Commonly used attribute values are page, dialog, or popup.</p>
-<p>As you can see, (starting at line 74), the <code>goBackInHistory</code> function contains a manual implementation to handle the back button’s action. In certain scenarios, the back button navigation functionality of jQuery Mobile was not working with older versions and disabled jQMobile’s navigation sytem.</p>
+<p>As you can see, (starting at line 74), the <code>goBackInHistory</code> function contains a manual implementation to handle the back button’s action. In certain scenarios, the back button navigation functionality of jQuery Mobile was not working with older versions and disabled jQMobile’s navigation system.</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"> <span class="dv">1</span> define([
  <span class="dv">2</span>     <span class="st">&quot;lodash&quot;</span>,
  <span class="dv">3</span>     <span class="st">&quot;backbone&quot;</span>,
@@ -8093,7 +8093,7 @@ expect(<span class="ch">&#39;click&#39;</span>).<span class="fu">toHaveBeenTrigg
   }
   <span class="kw">return</span> <span class="kw">this</span>;
 }</code></pre>
-<p>However, this can get unwieldily fairly quickly. As the level of complexity and logic in our templates increase, so do the challenges associated with testing them. We can ease this process by taking advantage of modern templating libraries, many of which have already been demonstrated to work well with testing solutions such as Jasmine.</p>
+<p>However, this can get unwieldy fairly quickly. As the level of complexity and logic in our templates increase, so do the challenges associated with testing them. We can ease this process by taking advantage of modern templating libraries, many of which have already been demonstrated to work well with testing solutions such as Jasmine.</p>
 <p>JavaScript templating systems (such as <a href="http://handlebarsjs.com/">Handlebars</a>, <a href="http://mustache.github.com/">Mustache</a>, and Underscore’s own <a href="http://underscorejs.org/#template">micro-templating</a>) support conditional logic in template strings. What this effectively means is that we can add if/else/ternery expressions inline which can then be evaluated as needed, allowing us to build even more powerful templates.</p>
 <p>In our case, we are going to use the micro-templating found in Underscore.js as no additional files are required to use it and we can easily modify our existing specs to use it without a great deal of effort.</p>
 <p>Assuming our template is defined using a script tag of ID <code>myTemplate</code>:</p>
@@ -9051,7 +9051,7 @@ test( <span class="ch">&#39;Should bind Collection events to View creation.&#39;
 <p>Let’s explore Views a little further using a simple JavaScript example:</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="co">// DOM View</span>
 <span class="kw">var</span> View = <span class="kw">Cranium</span>.<span class="fu">View</span> = <span class="kw">function</span> (options) {
-  <span class="co">// Mix in options object (e.g extending functionallity)</span>
+  <span class="co">// Mix in options object (e.g extending functionality)</span>
   <span class="kw">_</span>.<span class="fu">extend</span>(<span class="kw">this</span>, options); 
   <span class="kw">this</span>.<span class="fu">id</span> = <span class="kw">_</span>.<span class="fu">uniqueId</span>(<span class="ch">&#39;view&#39;</span>);
 };
@@ -9068,7 +9068,7 @@ test( <span class="ch">&#39;Should bind Collection events to View creation.&#39;
 
 <span class="co">// Controller tying together a model and view</span>
 <span class="kw">var</span> Controller = <span class="kw">Cranium</span>.<span class="fu">Controller</span> = <span class="kw">function</span>(options){
-  <span class="co">// Mix in options object (e.g extending functionallity)</span>
+  <span class="co">// Mix in options object (e.g extending functionality)</span>
   <span class="kw">_</span>.<span class="fu">extend</span>(<span class="kw">this</span>, options); 
   <span class="kw">this</span>.<span class="fu">id</span> = <span class="kw">_</span>.<span class="fu">uniqueId</span>(<span class="ch">&#39;controller&#39;</span>);
   <span class="kw">var</span> parts, selector, eventType;

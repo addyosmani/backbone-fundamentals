@@ -1,6 +1,6 @@
 # Backbone Extensions
 
-Backbone is flexible, simple, and powerful. However, you may find that the complexity of the application you are working on requires more than what it provides out of the box. There are certain concerns which it just doesn't address directly as one of it's goals is to be minimalist. 
+Backbone is flexible, simple, and powerful. However, you may find that the complexity of the application you are working on requires more than what it provides out of the box. There are certain concerns which it just doesn't address directly as one of its goals is to be minimalist.
 
 Take for example Views, which provide a default `render` method which does nothing and produces no real results when called, despite most implementations using it to generate the HTML that the view manages. Also, Models and Collections have no built-in way of handling nested hierarchies - if you require this functionality, you need to write it yourself or use a plugin.
 
@@ -14,7 +14,7 @@ In this section of the book we will look at two popular Backbone add-ons: Marion
 
 As we've seen, Backbone provides a great set of building blocks for our JavaScript applications. It gives us the core constructs that are needed to build small to mid-sized apps, organize jQuery DOM events, or create single page apps that support mobile devices and large scale enterprise needs. But Backbone is not a complete framework. It's a set of building blocks that leaves much of the application design, architecture, and scalability to the developer, including memory management, view management, and more.
 
-[MarionetteJS](http://marionettejs.com) (a.k.a Backbone.Marionette) provides many of the features that the non-trivial application developer needs, above what Backbone itself provides. It is a composite application library that aims to simplify the construction of large scale applications. It does this by providing a collection of common design and implementation patterns found in the applications that the creator, [Derick Bailey](http://lostechies.com/derickbailey/), and many other [contributors](https://github.com/marionettejs/backbone.marionette/graphs/contributors) have been using to build Backbone apps.
+[MarionetteJS](http://marionettejs.com) (a.k.a. Backbone.Marionette) provides many of the features that the non-trivial application developer needs, above what Backbone itself provides. It is a composite application library that aims to simplify the construction of large scale applications. It does this by providing a collection of common design and implementation patterns found in the applications that the creator, [Derick Bailey](http://lostechies.com/derickbailey/), and many other [contributors](https://github.com/marionettejs/backbone.marionette/graphs/contributors) have been using to build Backbone apps.
  
 
 Marionette's key benefits include:
