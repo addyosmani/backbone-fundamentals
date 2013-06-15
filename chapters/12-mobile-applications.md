@@ -391,7 +391,7 @@ Next, `BasicView` collects all template parameters from the concrete View implem
 Additionally, the `data-role` will be set on the jQuery Mobile page. Commonly used attribute values are
 page, dialog, or popup.
 
-As you can see, (starting at line 74), the `goBackInHistory` function contains a manual implementation to handle the back button's action. In certain scenarios, the back button navigation functionality of jQuery Mobile was not working with older versions and disabled jQMobile's navigation sytem.
+As you can see, (starting at line 74), the `goBackInHistory` function contains a manual implementation to handle the back button's action. In certain scenarios, the back button navigation functionality of jQuery Mobile was not working with older versions and disabled jQMobile's navigation system.
 
 
 ```javascript

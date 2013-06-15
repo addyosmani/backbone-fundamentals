@@ -1143,7 +1143,7 @@ var ListView = Backbone.View.extend({
     // display in our list
     var items = this.model.get('items');
 
-    // Loop through each our items using the Underscore
+    // Loop through each of our items using the Underscore
     // _.each iterator
     _.each(items, function(item){
 
@@ -1653,7 +1653,7 @@ console.log(People.indexOf(tim) === 1); // true
 console.log(People.indexOf(tom) === 2); // true
 ```
 
-**`any()`: Confirm if any of the values in a collection pass an iterator truth test**
+**`any()`: confirm if any of the values in a collection pass an iterator truth test**
 
 ```javascript
 Todos.any(function(model){
@@ -4359,7 +4359,7 @@ In this chapter we made our application persistent by binding it to a server usi
 
 # Backbone Extensions
 
-Backbone is flexible, simple, and powerful. However, you may find that the complexity of the application you are working on requires more than what it provides out of the box. There are certain concerns which it just doesn't address directly as one of it's goals is to be minimalist. 
+Backbone is flexible, simple, and powerful. However, you may find that the complexity of the application you are working on requires more than what it provides out of the box. There are certain concerns which it just doesn't address directly as one of its goals is to be minimalist.
 
 Take for example Views, which provide a default `render` method which does nothing and produces no real results when called, despite most implementations using it to generate the HTML that the view manages. Also, Models and Collections have no built-in way of handling nested hierarchies - if you require this functionality, you need to write it yourself or use a plugin.
 
@@ -5649,7 +5649,7 @@ var OuterView = Backbone.View.extend({
 
 ```
 
-The use of `cid`s (client ids) here is useful because it illustrates separating a model and its views by having views referenced by their instances and not their attributes. It's quite common to ask for all views that satisfy an attribute on their models, but if you have recursive subviews or repeated views (a common occurrance), you can't simply ask for views by attributes. That is, unless you specify additional attributes that separate duplicates. Using `cid`s solves this problem as it allows for direct references to views.
+The use of `cid`s (client ids) here is useful because it illustrates separating a model and its views by having views referenced by their instances and not their attributes. It's quite common to ask for all views that satisfy an attribute on their models, but if you have recursive subviews or repeated views (a common occurrence), you can't simply ask for views by attributes. That is, unless you specify additional attributes that separate duplicates. Using `cid`s solves this problem as it allows for direct references to views.
 
 
 Generally speaking, more developers opt for Solution 1 or 5 as:
@@ -6491,7 +6491,7 @@ The mediator extracts the workflow from the implementation details and creates a
 
 The crux of the difference between an event aggregator and a mediator, and why these pattern names should not be interchanged with each other, is illustrated best by showing how they can be used together. The menu example for an event aggregator is the perfect place to introduce a mediator as well.
 
-Clicking a menu item may trigger a series of changes throughout an application. Some of these changes will be independent of others, and using an event aggregator for this makes sense. Some of these changes may be internally related to each other, though, and may use a mediator to enact those changes. A mediator, then, could be set up to listen to the event aggregator. It could run it’s logic and process to facilitate and coordinate many objects that are related to each other, but unrelated to the original event source.
+Clicking a menu item may trigger a series of changes throughout an application. Some of these changes will be independent of others, and using an event aggregator for this makes sense. Some of these changes may be internally related to each other, though, and may use a mediator to enact those changes. A mediator, then, could be set up to listen to the event aggregator. It could run its logic and process to facilitate and coordinate many objects that are related to each other, but unrelated to the original event source.
 
 ```javascript
 var MenuItem = Backbone.View.extend({
@@ -7748,7 +7748,7 @@ If you use `$callback`, please ensure that you did use the jsonp as a `dataType`
 
 The last thing we need to do is configure our collection's `parse()` method. We want to ensure we're returning the correct part of our JSON response containing the data our collection will be populated with, which below is `response.d.results` (for the Netflix API).
 
-You might also notice that we're setting `this.totalPages` to the total page count returned by the API. This allows us to define the maximum number of (result) pages available for the current/last request so that we can clearly display this in the UI. It also allows us to infuence whether clicking say, a 'next' button should proceed with a request or not.
+You might also notice that we're setting `this.totalPages` to the total page count returned by the API. This allows us to define the maximum number of (result) pages available for the current/last request so that we can clearly display this in the UI. It also allows us to influence whether clicking say, a 'next' button should proceed with a request or not.
 
 ```javascript
         parse: function (response) {
@@ -8305,7 +8305,7 @@ require.config({
 });
 ```
 
-The first option defined in the above config is `deps: ["../vendor/jam/require.config", "main"]`. This informs RequireJS to load up additonal RequireJS configuration as well a a main.js file, which is considered the entry point for our application.
+The first option defined in the above config is `deps: ["../vendor/jam/require.config", "main"]`. This informs RequireJS to load up additional RequireJS configuration as well a a main.js file, which is considered the entry point for our application.
 
  You may notice that we haven't specified any other path information for `main`. Require will infer the default `baseUrl` using the path from our `data-main` attribute in index.html. In other words, our `baseUrl` is `app/` and any scripts we require will be loaded relative to this location. We could use the `baseUrl` option to override this default if we wanted to use a different location.
 
@@ -8361,7 +8361,7 @@ var jam = {
 
 ```
 
-The `jam` object is to support configuration of [Jam](http://jamjs.org/) - a package manager for the front-end which helps instal, upgrade and configurate the dependencies used by your project. It is currently the package manager of choice for Backbone Boilerplate.
+The `jam` object is to support configuration of [Jam](http://jamjs.org/) - a package manager for the front-end which helps install, upgrade and configure the dependencies used by your project. It is currently the package manager of choice for Backbone Boilerplate.
 
 Under the `packages` array, a number of dependencies are specified for inclusion, such as Backbone, the Backbone.LayoutManager plugin, jQuery and Lo-dash. 
 
@@ -8497,7 +8497,7 @@ define([
         el: "#main"
       }, options));
 
-      // Cache the refererence.
+      // Cache the reference.
       return this.layout = layout;
     }
   }, Backbone.Events);
@@ -9119,7 +9119,7 @@ Next, `BasicView` collects all template parameters from the concrete View implem
 Additionally, the `data-role` will be set on the jQuery Mobile page. Commonly used attribute values are
 page, dialog, or popup.
 
-As you can see, (starting at line 74), the `goBackInHistory` function contains a manual implementation to handle the back button's action. In certain scenarios, the back button navigation functionality of jQuery Mobile was not working with older versions and disabled jQMobile's navigation sytem.
+As you can see, (starting at line 74), the `goBackInHistory` function contains a manual implementation to handle the back button's action. In certain scenarios, the back button navigation functionality of jQuery Mobile was not working with older versions and disabled jQMobile's navigation system.
 
 
 ```javascript
@@ -10334,7 +10334,7 @@ render: function() {
 ```
 
 
-However, this can get unwieldily fairly quickly. As the level of complexity and logic in our templates increase, so do the challenges associated with testing them. We can ease this process by taking advantage of modern templating libraries, many of which have already been demonstrated to work well with testing solutions such as Jasmine. 
+However, this can get unwieldy fairly quickly. As the level of complexity and logic in our templates increase, so do the challenges associated with testing them. We can ease this process by taking advantage of modern templating libraries, many of which have already been demonstrated to work well with testing solutions such as Jasmine.
 
 JavaScript templating systems (such as [Handlebars](http://handlebarsjs.com/), [Mustache](http://mustache.github.com/), and Underscore's own [micro-templating](http://underscorejs.org/#template)) support conditional logic in template strings. What this effectively means is that we can add if/else/ternery expressions inline which can then be evaluated as needed, allowing us to build even more powerful templates.
 
@@ -11574,7 +11574,7 @@ Let's explore Views a little further using a simple JavaScript example:
 ```javascript
 // DOM View
 var View = Cranium.View = function (options) {
-  // Mix in options object (e.g extending functionallity)
+  // Mix in options object (e.g extending functionality)
   _.extend(this, options); 
   this.id = _.uniqueId('view');
 };
@@ -11595,7 +11595,7 @@ Controllers are an intermediary between models and views which are classically r
 
 // Controller tying together a model and view
 var Controller = Cranium.Controller = function(options){
-  // Mix in options object (e.g extending functionallity)
+  // Mix in options object (e.g extending functionality)
   _.extend(this, options); 
   this.id = _.uniqueId('controller');
   var parts, selector, eventType;
