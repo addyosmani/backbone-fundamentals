@@ -588,7 +588,7 @@ var ListView = Backbone.View.extend({
     // display in our list
     var items = this.model.get('items');
 
-    // Loop through each our items using the Underscore
+    // Loop through each of our items using the Underscore
     // _.each iterator
     _.each(items, function(item){
 
@@ -1098,7 +1098,7 @@ console.log(People.indexOf(tim) === 1); // true
 console.log(People.indexOf(tom) === 2); // true
 ```
 
-**`any()`: Confirm if any of the values in a collection pass an iterator truth test**
+**`any()`: confirm if any of the values in a collection pass an iterator truth test**
 
 ```javascript
 Todos.any(function(model){
