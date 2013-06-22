@@ -373,6 +373,12 @@ console.log('completed: ' + myTodo.get('completed')); // completed: false
 
 An example of this (by @fivetanley) is available [here](http://jsfiddle.net/2NdDY/7/).
 
+Note also, that validation on initialization is possible but of limited use, as the object being constructed is internally marked invalid but nevertheless passed back to the caller (continuing the above example):
+
+```javascript
+var emptyTodo = new Todo(null, {validate: true});
+console.log(emptyTodo.validationError);
+```
 
 ## Views
 
