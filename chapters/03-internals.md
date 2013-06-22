@@ -212,12 +212,17 @@ Passing `{silent:true}` on change doesn't delay individual `"change:attr"` event
 
 ```javascript
 var Person = new Backbone.Model();
-Person.set({name: 'Jeremy'}, {silent: true});
+Person.on("change:name", function() { console.log('Name changed'); });
+Person.set({name: 'Andrew'});
+// log entry: Name changed
 
-console.log(!Person.hasChanged(0));
-// true
-console.log(!Person.hasChanged(''));
-// true
+Person.set({name: 'Jeremy'}, {silent: true});
+// no log entry
+
+console.log(Person.hasChanged("name"));
+// true: change was recorded
+console.log(Person.hasChanged(null));
+// true: something (anything) has changed
 ```
 
 Remember where possible it is best practice to use `Model.set()`, or direct instantiation as explained earlier.
