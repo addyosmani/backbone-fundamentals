@@ -102,7 +102,7 @@ Our example will need a div element to which we can attach a list of Todo's. It 
   </div>
   <script type="text/template" id="item-template">
     <div>
-      <input id="todo_complete" type="checkbox" <%= completed ? 'checked="checked"' : '' %>>
+      <input id="todo_complete" type="checkbox" <%= completed ? 'checked="checked"' : '' %> />
       <%- title %>
     </div>
   </script>
