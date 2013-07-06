@@ -212,12 +212,17 @@ Passing `{silent:true}` on change doesn't delay individual `"change:attr"` event
 
 ```javascript
 var Person = new Backbone.Model();
-Person.set({name: 'Jeremy'}, {silent: true});
+Person.on("change:name", function() { console.log('Name changed'); });
+Person.set({name: 'Andrew'});
+// log entry: Name changed
 
-console.log(!Person.hasChanged(0));
-// true
-console.log(!Person.hasChanged(''));
-// true
+Person.set({name: 'Jeremy'}, {silent: true});
+// no log entry
+
+console.log(Person.hasChanged("name"));
+// true: change was recorded
+console.log(Person.hasChanged(null));
+// true: something (anything) has changed
 ```
 
 Remember where possible it is best practice to use `Model.set()`, or direct instantiation as explained earlier.
@@ -368,6 +373,12 @@ console.log('completed: ' + myTodo.get('completed')); // completed: false
 
 An example of this (by @fivetanley) is available [here](http://jsfiddle.net/2NdDY/7/).
 
+Note also, that validation on initialization is possible but of limited use, as the object being constructed is internally marked invalid but nevertheless passed back to the caller (continuing the above example):
+
+```javascript
+var emptyTodo = new Todo(null, {validate: true});
+console.log(emptyTodo.validationError);
+```
 
 ## Views
 
