@@ -445,7 +445,8 @@ In the example above, `tagName` is set to 'li', resulting in creation of an li e
 ```javascript
 var TodosView = Backbone.View.extend({
   tagName: 'ul', // required, but defaults to 'div' if not set
-  className: 'container', // optional, you can assign multiple classes to this property like so: 'container homepage'
+  className: 'container', // optional, you can assign multiple classes to 
+                          // this property like so: 'container homepage'
   id: 'todos', // optional
 });
 
