@@ -1631,7 +1631,7 @@ var Todos = Backbone.Collection.extend({
 });
 ```
 
-**`indexOf()`: return the item at a particular index within a collection**
+**`indexOf()`: return the index of a particular item within a collection**
 
 ```javascript
 var People = new Backbone.Collection;
