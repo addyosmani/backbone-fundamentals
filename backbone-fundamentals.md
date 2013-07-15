@@ -1510,7 +1510,7 @@ var Todos = new Backbone.Collection([Todo])
 Todos.reset([]);
 ```
 
-The `set()` method available for Collections can also be usef ror "smart" updating of sets of models. This method attempts to perform smart updating of a collection using a specified list of models. When a model in this list isn't present in the collection, it is added. If it is, its attributes will be merged. Models which are present in the collection but not in the list are removed.
+The `set()` method available for Collections can also be used for "smart" updating of sets of models. This method attempts to perform smart updating of a collection using a specified list of models. When a model in this list isn't present in the collection, it is added. If it is, its attributes will be merged. Models which are present in the collection but not in the list are removed.
 
 ```javascript
 
