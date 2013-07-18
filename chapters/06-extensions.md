@@ -924,7 +924,7 @@ A simple example would be an `on` helper that re-rendered the generated `HelperV
         });
     });
 
-An example use of this would be to have a counter that would increment each time a button was clicked. This example makes use of the `button` helper in Thorax which simply makes a button that calls a method when clicked:
+An example use of this would be to have a counter that would increment each time a button was clicked. This example makes use of the `button` helper in Thorax which simply makes a button that triggers a view event when clicked:
 
 ```handlebars
     {{#on "incremented"}}{{i}}{/on}}
