@@ -339,7 +339,7 @@ Validation functions can be as simple or complex as necessary. If the attributes
 
 Should an error be returned:
 
-* An `invalid` event will triggered, setting the `validationError` property on the model with the value which is returned by this method. 
+* An `invalid` event will be triggered, setting the `validationError` property on the model with the value which is returned by this method. 
 * `.save()` will not continue and the attributes of the model will not be modified on the server.
 
 A more complete validation example can be seen below:
