@@ -371,7 +371,7 @@ console.log('completed: ' + myTodo.get('completed')); // completed: false
 
 **Note**: the `attributes` object passed to the `validate` function represents what the attributes would be after completing the current `set()` or `save()`. This object is distinct from the current attributes of the model and from the parameters passed to the operation. Since it is created by shallow copy, it is not possible to change any Number, String, or Boolean attribute of the input within the function, but it *is* possible to change attributes in nested objects.
 
-An example of this (by @fivetanley) is available [here](http://jsfiddle.net/2NdDY/7/).
+An example of this (by @fivetanley) is available [here](http://jsfiddle.net/2NdDY/270/).
 
 Note also, that validation on initialization is possible but of limited use, as the object being constructed is internally marked invalid but nevertheless passed back to the caller (continuing the above example):
 
