@@ -569,8 +569,15 @@ Let's try to implement the latter of these. The `render` method of a simple List
 ```javascript
 
 var ListView = Backbone.View.extend({
-  render: function(){
-    this.$el.html(this.model.toJSON());
+
+  // Compile a template for this view. In this case '...'
+  // is a placeholder for a template such as 
+  // $("#list_template").html() 
+  template: _.template(…),
+  
+  render: function() {
+    this.$el.html(this.template(this.model.attributes));
+    return this;
   }
 });
 ```
@@ -582,7 +589,7 @@ Simple enough. Let's now assume a decision is made to construct the items using 
 var ItemView = Backbone.View.extend({
   events: {},
   render: function(){
-    this.$el.html(this.model.toJSON());
+    this.$el.html(this.template(this.model.attributes));
     return this;
   }
 });
