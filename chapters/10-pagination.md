@@ -508,7 +508,7 @@ var aClientPager = new MyClientPager([{id: 1, title: 'foo'}, {id: 2, title: 'bar
 aClientPager.bootstrap();
 ```
 
-Note: If you intend to bootstrap a clientPager, there is no need to specify a 'paginator_core' object in your configuration (since you should have already populated the clientPager with the entirety of it's necessary data)
+Note: If you intend to bootstrap a clientPager, there is no need to specify a 'paginator_core' object in your configuration (since you should have already populated the clientPager with the entirety of its necessary data)
 
 **Backbone.Paginator.requestPager:**
 
