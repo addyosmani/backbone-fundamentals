@@ -115,7 +115,7 @@ And that's it - that's all you need to get the exact same behaviour as the previ
 
 ### Memory Management
 
-In addition to the reduction of code needed to define a view, Marionette includes some advanced memory management in all of its views, making the job of cleaning up a view instance and it's event handlers easy.
+In addition to the reduction of code needed to define a view, Marionette includes some advanced memory management in all of its views, making the job of cleaning up a view instance and its event handlers easy.
 
 Consider the following view implementation:
 
