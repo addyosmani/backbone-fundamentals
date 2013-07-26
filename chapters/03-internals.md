@@ -964,14 +964,14 @@ Note that using `Collection.reset()` doesn't fire any `add` or `remove` events. 
 Also note that listening to a [reset](http://backbonejs.org/#Collection-reset) event, the list of previous models is available in `options.previousModels`, for convenience.
 
 ```javascript
-var Todo = new Backbone.Model();
-var Todos = new Backbone.Collection([Todo])
-.on('reset', function(Todos, options) {
+var todo = new Backbone.Model();
+var todos = new Backbone.Collection([todo])
+.on('reset', function(todos, options) {
   console.log(options.previousModels);
-  console.log([Todo]);
-  console.log(options.previousModels[0] === Todo); // true
+  console.log([todo]);
+  console.log(options.previousModels[0] === todo); // true
 });
-Todos.reset([]);
+todos.reset([]);
 ```
 
 The `set()` method available for Collections can also be used for "smart" updating of sets of models. This method attempts to perform smart updating of a collection using a specified list of models. When a model in this list isn't present in the collection, it is added. If it is, its attributes will be merged. Models which are present in the collection but not in the list are removed.
