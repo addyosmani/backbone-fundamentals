@@ -337,7 +337,7 @@ In most cases, the view removal should not affect any associated models. For exa
 
 (Thanks to [dira](http://stackoverflow.com/users/906136/dira) for this tip)
 
-Note: You may also be interested in reading the about Marionette Composite Views in the Extensions part of the book.
+Note: You may also be interested in reading about the Marionette Composite Views in the Extensions part of the book.
 
 #### Rendering View Hierarchies
 
