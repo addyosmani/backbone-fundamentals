@@ -348,7 +348,7 @@ I've called this collection `Cart`, as it's a group of items. As the `Item` mode
 Finally, let's have a look at the view for this collection. (This file is much bigger in the application, but I've taken some bits out so it's easier to examine).
 
 ```javascript
-define(["lib/backbone", "models/item", "views/itemview"], function(Backbone, Item, ItemView) {
+define(["lib/backbone", "views/itemview"], function(Backbone, ItemView) {
   var ItemCollectionView = Backbone.View.extend({
     el: '#yourcart',
     initialize: function(collection) {
