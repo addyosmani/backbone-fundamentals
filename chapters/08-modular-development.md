@@ -137,7 +137,7 @@ Addy's post on [Writing Modular JS](http://addyosmani.com/writing-modular-js/) c
 Before using RequireJS and Backbone we will first set up a very basic RequireJS project to demonstrate how it works. The first thing to do is to [Download RequireJS](http://requirejs.org/docs/download.html#requirejs). When you load in the RequireJS script in your HTML file, you need to also tell it where your main JavaScript file is located. Typically this will be called something like "app.js", and is the main entry point for your application. You do this by adding in a `data-main` attribute to the `script` tag:
 
 ```html
-<script data-main="app.js" src="lib/require.js"></script>
+<script data-main="app" src="lib/require.js"></script>
 ```
 
 Now, RequireJS will automatically load `app.js` for you.
