@@ -455,7 +455,7 @@ We have added the logic for creating new todos, editing them, and filtering them
 
 * `initialize()`: We've bound callbacks to several additional events:
   * We've bound a `filterOne()` callback on the Todos collection for a `change:completed` event. This listens for changes to the completed flag for any model in the collection. The affected todo is passed to the callback which triggers a custom `visible` event on the model.
-  * We've bound a `filterAll()` callback for a `filter` event, which works a little similar to addOne() and addAll(). It’s responsibility is to toggle which todo items are visible based on the filter currently selected in the UI (all, completed or remaining) via calls to filterOne().
+  * We've bound a `filterAll()` callback for a `filter` event, which works a little similar to addOne() and addAll(). Its responsibility is to toggle which todo items are visible based on the filter currently selected in the UI (all, completed or remaining) via calls to filterOne().
   * We've used the special `all` event to bind any event triggered on the Todos collection to the view's render method (discussed below).
 
 The `initialize()` method completes by fetching the previously saved todos from localStorage.
