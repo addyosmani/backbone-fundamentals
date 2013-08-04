@@ -337,7 +337,7 @@ In most cases, the view removal should not affect any associated models. For exa
 
 (Thanks to [dira](http://stackoverflow.com/users/906136/dira) for this tip)
 
-Note: You may also be interested in reading the about Marionette Composite Views in the Extensions part of the book.
+Note: You may also be interested in reading about the Marionette Composite Views in the Extensions part of the book.
 
 #### Rendering View Hierarchies
 
@@ -974,7 +974,7 @@ The difference, then, is why these two patterns are both using events. The event
 
 Both the event aggregator and mediator, by design, use a third-party object to facilitate things. The event aggregator itself is a third-party to the event publisher and the event subscriber. It acts as a central hub for events to pass through. The mediator is also a third party to other objects, though. So where is the difference? Why don’t we call an event aggregator a mediator? The answer largely comes down to where the application logic and workflow is coded.
 
-In the case of an event aggregator, the third party object is there only to facilitate the pass-through of events from an unknown number of sources to an unknown number of handlers. All workflow and business logic that needs to be kicked off is put directly into the the object that triggers the events and the objects that handle the events.
+In the case of an event aggregator, the third party object is there only to facilitate the pass-through of events from an unknown number of sources to an unknown number of handlers. All workflow and business logic that needs to be kicked off is put directly into the object that triggers the events and the objects that handle the events.
 
 In the case of the mediator, though, the business logic and workflow is aggregated into the mediator itself. The mediator decides when an object should have it’s methods called and attributes updated based on factors that the mediator knows about. It encapsulates the workflow and process, coordinating multiple objects to produce the desired system behaviour. The individual objects involved in this workflow each know how to perform their own task. But it’s the mediator that tells the objects when to perform the tasks by making decisions at a higher level than the individual objects.
 
