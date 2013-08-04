@@ -383,7 +383,7 @@ The outline for this section looks like this:
 
 Download and install node.js from nodejs.org. The node package manager (npm) will be installed as well.
 
-Download and install MongoDB from mongodb.org. There are detailed installation guides [on the website](http://docs.mongodb.org/manual/installation/).
+Download, install, and run MongoDB from mongodb.org (you need Mongo to be running to store data in a Mongo database). There are detailed installation guides [on the website](http://docs.mongodb.org/manual/installation/).
 
 ###Install node modules
 
