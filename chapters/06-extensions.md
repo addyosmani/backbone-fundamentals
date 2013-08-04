@@ -189,7 +189,7 @@ var ZombieView = Backbone.View.extend({
 
   initialize: function() {
     // bind the model change to re-render this view
-    this.model.on('change', this.render, this);
+    this.listenTo(this.model, 'change', this.render);
   },
 
   close: function() {
