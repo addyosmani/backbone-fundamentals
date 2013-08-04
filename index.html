@@ -1537,7 +1537,9 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <pre class="sourceCode javascript"><code class="sourceCode javascript">
 <span class="co">// Define a model of type &#39;Beatle&#39; with a &#39;job&#39; attribute</span>
 <span class="kw">var</span> Beatle = <span class="kw">Backbone.Model</span>.<span class="fu">extend</span>({
-  <span class="dt">job</span>: <span class="ch">&#39;musician&#39;</span>
+  <span class="dt">defaults</span>: {
+    <span class="dt">job</span>: <span class="ch">&#39;musician&#39;</span>
+  }
 });
 
 <span class="co">// Create models for each member of the Beatles</span>
@@ -3327,7 +3329,7 @@ $(<span class="kw">function</span>() {
 </ul>
 <h3 id="install-node.js-npm-and-mongodb"><a href="#TOC">Install node.js, npm, and MongoDB</a></h3>
 <p>Download and install node.js from nodejs.org. The node package manager (npm) will be installed as well.</p>
-<p>Download and install MongoDB from mongodb.org. There are detailed installation guides <a href="http://docs.mongodb.org/manual/installation/">on the website</a>.</p>
+<p>Download, install, and run MongoDB from mongodb.org (you need Mongo to be running to store data in a Mongo database). There are detailed installation guides <a href="http://docs.mongodb.org/manual/installation/">on the website</a>.</p>
 <h3 id="install-node-modules"><a href="#TOC">Install node modules</a></h3>
 <p>Create a file called <code>package.json</code> in the root of your project. It should look like</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript">{
@@ -3881,7 +3883,7 @@ zombieView = <span class="kw">new</span> ZombieView({
 
   <span class="dt">initialize</span>: <span class="kw">function</span>() {
     <span class="co">// bind the model change to re-render this view</span>
-    <span class="kw">this</span>.<span class="fu">model</span>.<span class="fu">on</span>(<span class="ch">&#39;change&#39;</span>, <span class="kw">this</span>.<span class="fu">render</span>, <span class="kw">this</span>);
+    <span class="kw">this</span>.<span class="fu">listenTo</span>(<span class="kw">this</span>.<span class="fu">model</span>, <span class="ch">&#39;change&#39;</span>, <span class="kw">this</span>.<span class="fu">render</span>);
   },
 
   <span class="dt">close</span>: <span class="kw">function</span>() {
@@ -4857,7 +4859,7 @@ NewChildView = <span class="kw">Backbone.View</span>.<span class="fu">extend</sp
 <p>Here, a close() method for views is implemented which disposes of a view when it is no longer needed or needs to be reset.</p>
 <p>In most cases, the view removal should not affect any associated models. For example, if you are working on a blogging application and you remove a view with comments, perhaps another view in your app shows a selection of comments and resetting the collection would affect those views as well.</p>
 <p>(Thanks to <a href="http://stackoverflow.com/users/906136/dira">dira</a> for this tip)</p>
-<p>Note: You may also be interested in reading the about Marionette Composite Views in the Extensions part of the book.</p>
+<p>Note: You may also be interested in reading about the Marionette Composite Views in the Extensions part of the book.</p>
 <h4 id="rendering-view-hierarchies"><a href="#TOC">Rendering View Hierarchies</a></h4>
 <p><strong>Problem</strong></p>
 <p>Let us say you have a Collection, where each item in the Collection could itself be a Collection. You can render each item in the Collection, and indeed can render any items which themselves are Collections. The problem you might have is how to render HTML that reflects the hierarchical nature of the data structure.</p>
@@ -5307,7 +5309,7 @@ $(<span class="kw">function</span>($) {
 <p>The difference, then, is why these two patterns are both using events. The event aggregator, as a pattern, is designed to deal with events. The mediator, though, only uses them because it’s convenient.</p>
 <h6 id="third-party-objects"><a href="#TOC">Third-Party Objects</a></h6>
 <p>Both the event aggregator and mediator, by design, use a third-party object to facilitate things. The event aggregator itself is a third-party to the event publisher and the event subscriber. It acts as a central hub for events to pass through. The mediator is also a third party to other objects, though. So where is the difference? Why don’t we call an event aggregator a mediator? The answer largely comes down to where the application logic and workflow is coded.</p>
-<p>In the case of an event aggregator, the third party object is there only to facilitate the pass-through of events from an unknown number of sources to an unknown number of handlers. All workflow and business logic that needs to be kicked off is put directly into the the object that triggers the events and the objects that handle the events.</p>
+<p>In the case of an event aggregator, the third party object is there only to facilitate the pass-through of events from an unknown number of sources to an unknown number of handlers. All workflow and business logic that needs to be kicked off is put directly into the object that triggers the events and the objects that handle the events.</p>
 <p>In the case of the mediator, though, the business logic and workflow is aggregated into the mediator itself. The mediator decides when an object should have it’s methods called and attributes updated based on factors that the mediator knows about. It encapsulates the workflow and process, coordinating multiple objects to produce the desired system behaviour. The individual objects involved in this workflow each know how to perform their own task. But it’s the mediator that tells the objects when to perform the tasks by making decisions at a higher level than the individual objects.</p>
 <p>An event aggregator facilitates a <q>fire and forget</q> model of communication. The object triggering the event doesn’t care if there are any subscribers. It just fires the event and moves on. A mediator, though, might use events to make decisions, but it is definitely not <q>fire and forget</q>. A mediator pays attention to a known set of input or activities so that it can facilitate and coordinate additional behavior with a known set of actors (objects).</p>
 <h5 id="relationships-when-to-use-which"><a href="#TOC">Relationships: When To Use Which</a></h5>
@@ -5451,7 +5453,7 @@ require( [<span class="ch">&#39;foo&#39;</span>, <span class="ch">&#39;bar&#39;<
 <p>Addy’s post on <a href="http://addyosmani.com/writing-modular-js/">Writing Modular JS</a> covers the AMD specification in much more detail. Defining and using modules will be covered in this book shortly when we look at more structured examples of using RequireJS.</p>
 <h3 id="getting-started-with-requirejs"><a href="#TOC">Getting Started with RequireJS</a></h3>
 <p>Before using RequireJS and Backbone we will first set up a very basic RequireJS project to demonstrate how it works. The first thing to do is to <a href="http://requirejs.org/docs/download.html#requirejs">Download RequireJS</a>. When you load in the RequireJS script in your HTML file, you need to also tell it where your main JavaScript file is located. Typically this will be called something like <q>app.js</q>, and is the main entry point for your application. You do this by adding in a <code>data-main</code> attribute to the <code>script</code> tag:</p>
-<pre class="sourceCode html"><code class="sourceCode html"><span class="kw">&lt;script</span><span class="ot"> data-main=</span><span class="st">&quot;app.js&quot;</span><span class="ot"> src=</span><span class="st">&quot;lib/require.js&quot;</span><span class="kw">&gt;&lt;/script&gt;</span></code></pre>
+<pre class="sourceCode html"><code class="sourceCode html"><span class="kw">&lt;script</span><span class="ot"> data-main=</span><span class="st">&quot;app&quot;</span><span class="ot"> src=</span><span class="st">&quot;lib/require.js&quot;</span><span class="kw">&gt;&lt;/script&gt;</span></code></pre>
 <p>Now, RequireJS will automatically load <code>app.js</code> for you.</p>
 <h4 id="requirejs-configuration"><a href="#TOC">RequireJS Configuration</a></h4>
 <p>In the main JavaScript file that you load with the <code>data-main</code> attribute you can configure how RequireJS loads the rest of your application. This is done by calling <code>require.config</code>, and passing in an object:</p>
@@ -5590,7 +5592,7 @@ require( [<span class="ch">&#39;foo&#39;</span>, <span class="ch">&#39;bar&#39;<
 });</code></pre>
 <p>I’ve called this collection <code>Cart</code>, as it’s a group of items. As the <code>Item</code> model is the second dependency, I can bind the variable <code>Item</code> to it by declaring it as the second argument to the callback function. I can then refer to this within my collection implementation.</p>
 <p>Finally, let’s have a look at the view for this collection. (This file is much bigger in the application, but I’ve taken some bits out so it’s easier to examine).</p>
-<pre class="sourceCode javascript"><code class="sourceCode javascript">define([<span class="st">&quot;lib/backbone&quot;</span>, <span class="st">&quot;models/item&quot;</span>, <span class="st">&quot;views/itemview&quot;</span>], <span class="kw">function</span>(Backbone, Item, ItemView) {
+<pre class="sourceCode javascript"><code class="sourceCode javascript">define([<span class="st">&quot;lib/backbone&quot;</span>, <span class="st">&quot;views/itemview&quot;</span>], <span class="kw">function</span>(Backbone, ItemView) {
   <span class="kw">var</span> ItemCollectionView = <span class="kw">Backbone.View</span>.<span class="fu">extend</span>({
     <span class="dt">el</span>: <span class="ch">&#39;#yourcart&#39;</span>,
     <span class="dt">initialize</span>: <span class="kw">function</span>(collection) {
