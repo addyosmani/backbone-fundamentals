@@ -46,7 +46,7 @@ pdf: markdown
 		--normalize \
 		--smart \
 		--toc \
-		--latex-engine=xelatex 
+		--latex-engine=`which xelatex` 
 
 mobi: epub
 	# Download: http://www.amazon.com/gp/feature.html?ie=UTF8&docId=1000765211
