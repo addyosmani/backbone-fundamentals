@@ -1535,7 +1535,9 @@ The `set()` method available for Collections can also be used for "smart" updati
 
 // Define a model of type 'Beatle' with a 'job' attribute
 var Beatle = Backbone.Model.extend({
-  job: 'musician'
+  defaults: {
+    job: 'musician'
+  }
 });
 
 // Create models for each member of the Beatles
@@ -3790,7 +3792,7 @@ The outline for this section looks like this:
 
 Download and install node.js from nodejs.org. The node package manager (npm) will be installed as well.
 
-Download and install MongoDB from mongodb.org. There are detailed installation guides [on the website](http://docs.mongodb.org/manual/installation/).
+Download, install, and run MongoDB from mongodb.org (you need Mongo to be running to store data in a Mongo database). There are detailed installation guides [on the website](http://docs.mongodb.org/manual/installation/).
 
 ###Install node modules
 
@@ -4567,7 +4569,7 @@ var ZombieView = Backbone.View.extend({
 
   initialize: function() {
     // bind the model change to re-render this view
-    this.model.on('change', this.render, this);
+    this.listenTo(this.model, 'change', this.render);
   },
 
   close: function() {
@@ -5841,7 +5843,7 @@ In most cases, the view removal should not affect any associated models. For exa
 
 (Thanks to [dira](http://stackoverflow.com/users/906136/dira) for this tip)
 
-Note: You may also be interested in reading the about Marionette Composite Views in the Extensions part of the book.
+Note: You may also be interested in reading about the Marionette Composite Views in the Extensions part of the book.
 
 #### Rendering View Hierarchies
 
@@ -6478,7 +6480,7 @@ The difference, then, is why these two patterns are both using events. The event
 
 Both the event aggregator and mediator, by design, use a third-party object to facilitate things. The event aggregator itself is a third-party to the event publisher and the event subscriber. It acts as a central hub for events to pass through. The mediator is also a third party to other objects, though. So where is the difference? Why don’t we call an event aggregator a mediator? The answer largely comes down to where the application logic and workflow is coded.
 
-In the case of an event aggregator, the third party object is there only to facilitate the pass-through of events from an unknown number of sources to an unknown number of handlers. All workflow and business logic that needs to be kicked off is put directly into the the object that triggers the events and the objects that handle the events.
+In the case of an event aggregator, the third party object is there only to facilitate the pass-through of events from an unknown number of sources to an unknown number of handlers. All workflow and business logic that needs to be kicked off is put directly into the object that triggers the events and the objects that handle the events.
 
 In the case of the mediator, though, the business logic and workflow is aggregated into the mediator itself. The mediator decides when an object should have it’s methods called and attributes updated based on factors that the mediator knows about. It encapsulates the workflow and process, coordinating multiple objects to produce the desired system behaviour. The individual objects involved in this workflow each know how to perform their own task. But it’s the mediator that tells the objects when to perform the tasks by making decisions at a higher level than the individual objects.
 
@@ -6691,7 +6693,7 @@ Addy's post on [Writing Modular JS](http://addyosmani.com/writing-modular-js/) c
 Before using RequireJS and Backbone we will first set up a very basic RequireJS project to demonstrate how it works. The first thing to do is to [Download RequireJS](http://requirejs.org/docs/download.html#requirejs). When you load in the RequireJS script in your HTML file, you need to also tell it where your main JavaScript file is located. Typically this will be called something like "app.js", and is the main entry point for your application. You do this by adding in a `data-main` attribute to the `script` tag:
 
 ```html
-<script data-main="app.js" src="lib/require.js"></script>
+<script data-main="app" src="lib/require.js"></script>
 ```
 
 Now, RequireJS will automatically load `app.js` for you.
@@ -6902,7 +6904,7 @@ I've called this collection `Cart`, as it's a group of items. As the `Item` mode
 Finally, let's have a look at the view for this collection. (This file is much bigger in the application, but I've taken some bits out so it's easier to examine).
 
 ```javascript
-define(["lib/backbone", "models/item", "views/itemview"], function(Backbone, Item, ItemView) {
+define(["lib/backbone", "views/itemview"], function(Backbone, ItemView) {
   var ItemCollectionView = Backbone.View.extend({
     el: '#yourcart',
     initialize: function(collection) {
