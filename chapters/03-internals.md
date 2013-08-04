@@ -980,7 +980,9 @@ The `set()` method available for Collections can also be used for "smart" updati
 
 // Define a model of type 'Beatle' with a 'job' attribute
 var Beatle = Backbone.Model.extend({
-  job: 'musician'
+  defaults: {
+    job: 'musician'
+  }
 });
 
 // Create models for each member of the Beatles
