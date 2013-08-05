@@ -157,7 +157,7 @@ var TodoView = Backbone.View.extend({
     // Later we'll look at:
     // this.listenTo(someCollection, 'all', this.render);
     // but you can actually run this example right now by
-    // calling TodoView.render();
+    // calling todoView.render();
   },
 
   // Re-render the titles of the todo item.
