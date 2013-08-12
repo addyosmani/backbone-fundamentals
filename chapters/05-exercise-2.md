@@ -869,7 +869,7 @@ Reloading the page again should look quite decent:
 
 Now go ahead and delete a book and then reload the page: Tadaa! the deleted book is back! Not cool, why is this? This happens because when we get the BookModels from the server they have an _id attribute (notice the underscore), but Backbone expects an id attribute (no underscore). Since no id attribute is present, Backbone sees this model as new and deleting a new model doesn’t need any synchronization.
 
-To fix this we can use the parse function of Backbone.Model. The parse function let's you edit the server response before it is passed to the Model constructor. Add a parse method to the Book model:
+To fix this we can use the parse function of Backbone.Model. The parse function lets you edit the server response before it is passed to the Model constructor. Add a parse method to the Book model:
 
 ```javascript
 parse: function( response ) {
