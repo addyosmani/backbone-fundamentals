@@ -17,7 +17,7 @@ Begin with the fundamentals, work your way through the exercises, and learn how 
 
 Improving developer education is important to me, which is why this book is released under a Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported [license](http://creativecommons.org/licenses/by-nc-sa/3.0/). This means you can purchase or grab a copy of the book for [free](http://addyosmani.github.com/backbone-fundamentals/) or help to further [improve](https://github.com/addyosmani/backbone-fundamentals/) it. Corrections to existing material are always welcome and I hope that together we can provide the community with an up-to-date resource that is of help. 
 
-My extended thanks go out to [Jeremy Ashkenas](https://github.com/jashkenas) and [DocumentCloud](documentcloud.org) for creating Backbone.js and [these](https://github.com/addyosmani/backbone-fundamentals/contributors) members of the community for their assistance making this project far better than I could have imagined.
+My extended thanks go out to [Jeremy Ashkenas](https://github.com/jashkenas) and [DocumentCloud](http://www.documentcloud.org) for creating Backbone.js and [these](https://github.com/addyosmani/backbone-fundamentals/contributors) members of the community for their assistance making this project far better than I could have imagined.
 
 ## Target Audience
 
@@ -177,7 +177,7 @@ Here is a peek at what you will be learning in each chapter:
 
 <i>Chapter 16, Resources</i> provides references to additional Backbone-related resources.
 
-<i>Chapter 17, Conclusions</i> wraps up the our tour through the world of Backbone.js development.
+<i>Chapter 17, Conclusions</i> wraps up our tour through the world of Backbone.js development.
 
 <i>Chapter 18, Appendix</i> returns to our design pattern discussion by contrasting MVC with the Model-View-Presenter (MVP) pattern and examines how Backbone.js relates to both. A walkthrough of writing a Backbone-like library from scratch and other topics are also covered.
 
@@ -223,7 +223,7 @@ At its core are the three MVC components we would expect - the Model, View and C
 * Views represent your user interface, often taking the form of HTML that will be sent down to the browser. They're used to present application data to anything making requests from your application. 
 * Controllers offer the glue between models and views. Their responsibility is to process requests from the browser, ask your models for data and then supply this data to views so that they may be presented to the browser. 
 
-Although there's a clear separation of concerns that is MVC-like in Rails, it is actually using a different pattern called [Model2](http://en.wikipedia.org/wiki/Model2). Justifications for this include that Rails does not notify views from the model and controllers just pass model data directly to the view.
+Although there's a clear separation of concerns that is MVC-like in Rails, it is actually using a different pattern called [Model2](http://en.wikipedia.org/wiki/Model2). One reason for this is that Rails does not notify views from the model or controllers - it just passes model data directly to the view.
 
 That said, even for the server-side workflow of receiving a request from a URL, baking out an HTML page as a response and separating your business logic from your interface has many benefits. In the same way that keeping your UI cleanly separate from your database records is useful in server-side frameworks, it's equally as useful to keep your UI cleanly separated from your data models in JavaScript (as we will read more about shortly).
 
@@ -233,7 +233,7 @@ When the Front Controller receives an HTTP request it analyzes it and decides wh
 
 For example, let's say we have our blog on `www.example.com` and we want to edit an article (with `id=43`) and request `http://www.example.com/article/edit/43`:
 
-On the server side, the Front Controller would analyze the URL and invoke the Article Controller (corresponding to the `/article/` part of the URI) and its Edit Action (corresponding to the `/edit/` part of the URI). Within the Action there would be a call to, let's say, the Articles Model and its `Articles::getEntry(43)` method (43 corresponding to the `/43` at the end of the URI). This would return the blog article data from the database for edit. The Article Controller would then load the (`article/edit`) View which would include logic for injecting the article's data into a form suitable for editing its content, title, and other (meta) data. Finally, the resulting HTML response would be returned to the browser.
+On the server side, the Front Controller would analyze the URL and invoke the Article Controller (corresponding to the `/article/` part of the URI) and its Edit Action (corresponding to the `/edit/` part of the URI). Within the Action there would be a call to, let's say, the Articles Model and its `Articles::getEntry(43)` method (43 corresponding to the `/43` at the end of the URI). This would return the blog article data from the database for editing. The Article Controller would then load the (`article/edit`) View which would include logic for injecting the article's data into a form suitable for editing its content, title, and other (meta) data. Finally, the resulting HTML response would be returned to the browser.
 
 As you can imagine, a similar flow is necessary with POST requests after we press a save button in a form. The POST action URI would look like `/article/save/43`. The request would go through the same Controller, but this time the Save Action would be invoked (due to the `/save/` URI chunk), the Articles Model would save the edited article to the database with `Articles::saveEntry(43)`, and the browser would be redirected to the `/article/edit/43` URI for further editing.
 
@@ -286,7 +286,7 @@ Our example will need a div element to which we can attach a list of Todo's. It 
   <script type="text/template" id="item-template">
     <div>
       <input id="todo_complete" type="checkbox" <%= completed ? 'checked="checked"' : '' %> />
-      <%- title %>
+      <%= title %>
     </div>
   </script>
   <script src="jquery.js"></script>
@@ -309,8 +309,8 @@ var Todo = Backbone.Model.extend({
   }
 });
 
-// Instantiate the Todo Model with a title, allowing completed attribute
-// to default to false
+// Instantiate the Todo Model with a title, with the completed attribute
+// defaulting to false
 var myTodo = new Todo({
   title: 'Check attributes property of the logged models in the console.'
 });
@@ -340,7 +340,7 @@ var TodoView = Backbone.View.extend({
     // Later we'll look at:
     // this.listenTo(someCollection, 'all', this.render);
     // but you can actually run this example right now by
-    // calling TodoView.render();
+    // calling todoView.render();
   },
 
   // Re-render the titles of the todo item.
@@ -467,7 +467,7 @@ It is also worth noting that in classical web development, navigating between in
 
 In our Todo application, a Controller would be responsible for handling changes the user made in the edit View for a particular Todo, updating a specific Todo Model when a user has finished editing.
 
-It's with Controllers that most JavaScript MVC frameworks depart from the traditional interpretation of the MVC pattern. The reasons for this vary, but in my opinion, Javascript framework authors likely initially looked at server-side interpretations of MVC (such as Ruby on Rails), realized that the approach didn't translate 1:1 on the client-side, and so re-interpreted the C in MVC to solve their state management problem. This was a clever approach, but it can make it hard for developers coming to MVC for the first time to understand both the classical MVC pattern and the "proper" role of Controllers in other JavaScript frameworks.
+It's with Controllers that most JavaScript MVC frameworks depart from the traditional interpretation of the MVC pattern. The reasons for this vary, but in my opinion, JavaScript framework authors likely initially looked at server-side interpretations of MVC (such as Ruby on Rails), realized that the approach didn't translate 1:1 on the client-side, and so re-interpreted the C in MVC to solve their state management problem. This was a clever approach, but it can make it hard for developers coming to MVC for the first time to understand both the classical MVC pattern and the "proper" role of Controllers in other JavaScript frameworks.
 
 So does Backbone.js have Controllers? Not really. Backbone's Views typically contain "Controller" logic, and Routers are used to help manage application state, but neither are true Controllers according to classical MVC.
 
@@ -905,8 +905,8 @@ var Todo = Backbone.Model.extend({
     completed: false
   },
 
-  validate: function(attribs){
-    if(attribs.title === undefined){
+  validate: function(attributes){
+    if(attributes.title === undefined){
         return "Remember to set a title for your todo.";
     }
   },
@@ -958,7 +958,7 @@ var TodoView = Backbone.View.extend({
     'blur .edit':   'close'
   },
 
-  // Re-render the titles of the todo item.
+  // Re-render the title of the todo item.
   render: function() {
     this.$el.html( this.todoTpl( this.model.toJSON() ) );
     this.input = this.$('.edit');
@@ -1320,7 +1320,7 @@ Each model in Backbone has an `id`, which is a unique identifier that is either 
 
 The main difference between them is that the `cid` is generated by Backbone; it is helpful when you don't have a true id - this may be the case if your model has yet to be saved to the server or you aren't saving it to a database.
 
-The `idAttribute` is the identifying attribute of the model returned from the server (i.e., the `id` in your database). This tells Backbone which data field from the server should be used to populate the `id` property (think of it as a mapper). By default, it assumes `id`, but this can be customized as needed. For instance, if your server sets a unique attribute on your model named "userId" then you would set `idAttribute` to "userId" in your model definition.
+The `idAttribute` is the identifying attribute name of the model returned from the server (i.e., the `id` in your database). This tells Backbone which data field from the server should be used to populate the `id` property (think of it as a mapper). By default, it assumes `id`, but this can be customized as needed. For instance, if your server sets a unique attribute on your model named "userId" then you would set `idAttribute` to "userId" in your model definition.
 
 The value of a model's idAttribute should be set by the server when the model is saved. After this point you shouldn't need to set it manually, unless further control is required. 
 
@@ -1529,7 +1529,7 @@ var Todos = new Backbone.Collection([Todo])
 Todos.reset([]);
 ```
 
-The `set()` method available for Collections can also be used for "smart" updating of sets of models. This method attempts to perform smart updating of a collection using a specified list of models. When a model in this list isn't present in the collection, it is added. If it is, its attributes will be merged. Models which are present in the collection but not in the list are removed.
+The `set()` method available for Collections can also be used for "smart" updating of sets of models. This method attempts to perform smart updating of a collection using a specified list of models. When a model in this list isn't present in the collection, it is added. If it's present, its attributes will be merged. Models which are present in the collection but not in the list are removed.
 
 ```javascript
 
@@ -1599,6 +1599,7 @@ sortedByAlphabet.forEach(function(model){
   console.log(model.get('title'));
 });
 // Above logs:
+// - Now sorted:
 // go to Austria.
 // go to Belgium.
 // go to China.
@@ -1652,7 +1653,7 @@ var Todos = Backbone.Collection.extend({
 });
 ```
 
-**`indexOf()`: return the item at a particular index within a collection**
+**`indexOf()`: return the index of a particular item within a collection**
 
 ```javascript
 var People = new Backbone.Collection;
@@ -1774,10 +1775,10 @@ console.log(pairs[1]);
 var todo = new Todo({title: 'go to Austria.'});
 console.log(todo.invert());
 
-// logs: {go to Austria.: "title", false: "completed"}
+// logs: {'go to Austria.': 'title', 'false': 'completed'}
 ```
 
-The complete list of what Underscore can do can be found in its official [docs](http://documentcloud.github.com/underscore/).
+The complete list of what Underscore can do can be found in its official [documentation](http://documentcloud.github.com/underscore/).
 
 #### Chainable API
 
@@ -1819,7 +1820,7 @@ console.log(names); // logs: ['John', 'Harry', 'Steve']
 
 ## RESTful Persistence
 
-Thus far, all of our example data has been created in the browser. For most single page applications, the models are derived from a data set residing on a server. This is an area in which Backbone dramatically simplifies the code you need to write to perform RESTful synchronization with a server through a simple API on its models and collections.
+Thus far, all of our example data has been created in the browser. For most single page applications, the models are derived from a data store residing on a server. This is an area in which Backbone dramatically simplifies the code you need to write to perform RESTful synchronization with a server through a simple API on its models and collections.
 
 **Fetching models from the server**
 
@@ -2609,7 +2610,7 @@ What this translates to is that if you require working with anything beyond mode
 
 In this chapter we have introduced you to the components you will be using to build applications with Backbone: Models, Views, Collections, and Routers. We've also explored the Events mix-in that Backbone uses to enhance all components with publish-subscribe capabilities and seen how it can be used with arbitrary objects. Finally, we saw how Backbone leverages the Underscore.js and jQuery/Zepto APIs to add rich manipulation and persistence features to Backbone Collections and Models.
 
-Backbone has many operations and options beyond those we have covered here and is always evolving, so be sure to visit the official [documentation](http://backbonejs.org/) for more details and the latest features. In the next chapter you will start to get your hands dirty as we walk you through implementation of your first Backbone application.
+Backbone has many operations and options beyond those we have covered here and is always evolving, so be sure to visit the official [documentation](http://backbonejs.org/) for more details and the latest features. In the next chapter you will start to get your hands dirty as we walk you through the implementation of your first Backbone application.
 
 
 
@@ -4278,7 +4279,7 @@ Reloading the page again should look quite decent:
 
 Now go ahead and delete a book and then reload the page: Tadaa! the deleted book is back! Not cool, why is this? This happens because when we get the BookModels from the server they have an _id attribute (notice the underscore), but Backbone expects an id attribute (no underscore). Since no id attribute is present, Backbone sees this model as new and deleting a new model doesn’t need any synchronization.
 
-To fix this we can use the parse function of Backbone.Model. The parse function let's you edit the server response before it is passed to the Model constructor. Add a parse method to the Book model:
+To fix this we can use the parse function of Backbone.Model. The parse function lets you edit the server response before it is passed to the Model constructor. Add a parse method to the Book model:
 
 ```javascript
 parse: function( response ) {
@@ -6482,7 +6483,7 @@ Both the event aggregator and mediator, by design, use a third-party object to f
 
 In the case of an event aggregator, the third party object is there only to facilitate the pass-through of events from an unknown number of sources to an unknown number of handlers. All workflow and business logic that needs to be kicked off is put directly into the object that triggers the events and the objects that handle the events.
 
-In the case of the mediator, though, the business logic and workflow is aggregated into the mediator itself. The mediator decides when an object should have it’s methods called and attributes updated based on factors that the mediator knows about. It encapsulates the workflow and process, coordinating multiple objects to produce the desired system behaviour. The individual objects involved in this workflow each know how to perform their own task. But it’s the mediator that tells the objects when to perform the tasks by making decisions at a higher level than the individual objects.
+In the case of the mediator, though, the business logic and workflow is aggregated into the mediator itself. The mediator decides when an object should have its methods called and attributes updated based on factors that the mediator knows about. It encapsulates the workflow and process, coordinating multiple objects to produce the desired system behaviour. The individual objects involved in this workflow each know how to perform their own task. But it’s the mediator that tells the objects when to perform the tasks by making decisions at a higher level than the individual objects.
 
 An event aggregator facilitates a “fire and forget” model of communication. The object triggering the event doesn’t care if there are any subscribers. It just fires the event and moves on. A mediator, though, might use events to make decisions, but it is definitely not “fire and forget”. A mediator pays attention to a known set of input or activities so that it can facilitate and coordinate additional behavior with a known set of actors (objects).
 
@@ -6494,11 +6495,11 @@ Understanding the similarities and differences between an event aggregator and m
 
 In general, an event aggregator is used when you either have too many objects to listen to directly, or you have objects that are entirely unrelated.
 
-When two objects have a direct relationship already – say, a parent view and child view – then there might be little benefit in using an event aggregator. Have the child view trigger an event and the parent view can handle the event. This is most commonly seen in Backbone’s Collection and Model, where all Model events are bubbled up to and through it’s parent Collection. A Collection often uses model events to modify the state of itself or other models. Handling “selected” items in a collection is a good example of this.
+When two objects have a direct relationship already – say, a parent view and child view – then there might be little benefit in using an event aggregator. Have the child view trigger an event and the parent view can handle the event. This is most commonly seen in Backbone’s Collection and Model, where all Model events are bubbled up to and through its parent Collection. A Collection often uses model events to modify the state of itself or other models. Handling “selected” items in a collection is a good example of this.
 
 jQuery’s on method as an event aggregator is a great example of too many objects to listen to. If you have 10, 20 or 200 DOM elements that can trigger a “click” event, it might be a bad idea to set up a listener on all of them individually. This could quickly deteriorate performance of the application and user experience. Instead, using jQuery’s on method allows us to aggregate all of the events and reduce the overhead of 10, 20, or 200 event handlers down to 1.
 
-Indirect relationships are also a great time to use event aggregators. In Backbone applications, it is very common to have multiple view objects that need to communicate, but have no direct relationship. For example, a menu system might have a view that handles the menu item clicks. But we don’t want the menu to be directly tied to the content views that show all of the details and information when a menu item is clicked. Having the content and menu coupled together would make the code very difficult to maintain, in the long run. Instead, we can use an event aggregator to trigger “menu:click:foo” events, and have a “foo” object handle the click event to show it’s content on the screen.
+Indirect relationships are also a great time to use event aggregators. In Backbone applications, it is very common to have multiple view objects that need to communicate, but have no direct relationship. For example, a menu system might have a view that handles the menu item clicks. But we don’t want the menu to be directly tied to the content views that show all of the details and information when a menu item is clicked. Having the content and menu coupled together would make the code very difficult to maintain, in the long run. Instead, we can use an event aggregator to trigger “menu:click:foo” events, and have a “foo” object handle the click event to show its content on the screen.
 
 ######Mediator Use
 
