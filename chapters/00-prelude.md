@@ -16,7 +16,7 @@ Begin with the fundamentals, work your way through the exercises, and learn how 
 
 Improving developer education is important to me, which is why this book is released under a Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported [license](http://creativecommons.org/licenses/by-nc-sa/3.0/). This means you can purchase or grab a copy of the book for [free](http://addyosmani.github.com/backbone-fundamentals/) or help to further [improve](https://github.com/addyosmani/backbone-fundamentals/) it. Corrections to existing material are always welcome and I hope that together we can provide the community with an up-to-date resource that is of help. 
 
-My extended thanks go out to [Jeremy Ashkenas](https://github.com/jashkenas) and [DocumentCloud](documentcloud.org) for creating Backbone.js and [these](https://github.com/addyosmani/backbone-fundamentals/contributors) members of the community for their assistance making this project far better than I could have imagined.
+My extended thanks go out to [Jeremy Ashkenas](https://github.com/jashkenas) and [DocumentCloud](http://www.documentcloud.org) for creating Backbone.js and [these](https://github.com/addyosmani/backbone-fundamentals/contributors) members of the community for their assistance making this project far better than I could have imagined.
 
 ## Target Audience
 
