@@ -59,7 +59,7 @@ Note: If you want to follow along, create a directory structure as demonstrated 
 2. Download jQuery, Underscore, Backbone, and Backbone LocalStorage from their respective web sites and place them under js/lib
 3. Create the directories js/models, js/collections, js/views, and js/routers
 
-You will also need [base.css](https://raw.github.com/addyosmani/todomvc/gh-pages/assets/base.css) and [bg.png](https://raw.github.com/addyosmani/todomvc/gh-pages/assets/bg.png), which should live in an assets directory. And remember that you can see a demo of the final application at [TodoMVC.com](http://todomvc.com).
+You will also need [base.css](https://raw.github.com/tastejs/todomvc-common/master/base.css) and [bg.png](https://raw.github.com/tastejs/todomvc-common/master/bg.png), which should live in an assets directory. And remember that you can see a demo of the final application at [TodoMVC.com](http://todomvc.com).
 
 We will be creating the application JavaScript files during the tutorial. Don't worry about the two 'text/template' script elements - we will replace those soon!
 
@@ -734,7 +734,7 @@ Now let's look at what happens when we click on a todo's destroy button:
 
 That's all there is to it!
 
-If you want to see an example of those, see the [complete source](https://github.com/addyosmani/todomvc/tree/gh-pages/architecture-examples/backbone).
+If you want to see an example of those, see the [complete source](https://github.com/tastejs/todomvc/tree/gh-pages/architecture-examples/backbone).
 
 ## Todo routing
 
