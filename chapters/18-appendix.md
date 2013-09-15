@@ -517,7 +517,7 @@ In case you were wondering, here is the original DocumentCloud (remember those g
 })();
 ```
 
-As you can see, they opt for declaring a top-level namespace on the `window` called `dc`, a short-form name of their app, followed by nested namesapces for the controllers, models, UI and other pieces of their application.
+As you can see, they opt for declaring a top-level namespace on the `window` called `dc`, a short-form name of their app, followed by nested namespaces for the controllers, models, UI and other pieces of their application.
 
 **Recommendation**
 
