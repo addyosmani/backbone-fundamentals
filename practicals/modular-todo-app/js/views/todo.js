@@ -7,7 +7,7 @@ define([
   var TodoView = Backbone.View.extend({
 
     //... is a list tag.
-    tagName:  "li",
+    tagName:  'li',
 
     // Cache the template function for a single item.
     template: _.template(todosTemplate),
@@ -52,14 +52,14 @@ define([
 
     // Switch this view into `"editing"` mode, displaying the input field.
     edit: function() {
-      this.$el.addClass("editing");
+      this.$el.addClass('editing');
       this.$input.focus();
     },
 
     // Close the `"editing"` mode, saving changes to the todo.
     close: function() {
       this.model.save({content: this.$input.val()});
-      this.$el.removeClass("editing");
+      this.$el.removeClass('editing');
     },
 
     // If you hit `enter`, we're through editing the item.
