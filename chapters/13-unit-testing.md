@@ -671,7 +671,7 @@ Backbone views typically create empty DOM elements once initialized, however the
 ```javascript
 it('Should be tied to a DOM element when created, based off the property provided.', function() {
     //what html element tag name represents this view?
-    expect(todoView.el.tagName.toLowerCase()).toBe('li');
+    expect(this.todoView.el.tagName.toLowerCase()).toBe('li');
 });
 ```
 
@@ -686,8 +686,8 @@ var todoView = Backbone.View.extend({
 If instead of testing against the ```tagName``` you would prefer to use a className instead, we can take advantage of jasmine-jquery's ```toHaveClass()``` matcher:
 
 ```
-it('Should have a class of "todos"'), function(){
-   expect(this.view.$el).toHaveClass('todos');
+it('Should have a class of "todos"', function(){
+   expect(this.todoView.$el).toHaveClass('todos');
 });
 ```
 
