@@ -698,10 +698,10 @@ You may have noticed that in ```beforeEach()```, we passed our view an initial (
 ```javascript
 it('Is backed by a model instance, which provides the data.', function() {
 
-    expect(todoView.model).toBeDefined();
+    expect(this.todoView.model).toBeDefined();
 
     // what's the value for Todo.get('done') here?
-    expect(todoView.model.get('done')).toBe(false); //or toBeFalsy()
+    expect(this.todoView.model.get('done')).toBe(false); //or toBeFalsy()
 });
 ```
 
