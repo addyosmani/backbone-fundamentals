@@ -91,9 +91,9 @@ var myView = new MyView({
   model: Derick
 });
 
+myView.setElement("#content");
 myView.render();
 
-$('#content').html(myView.el);
 ```
 
 This is a standard set up for defining, building, rendering, and displaying a view with Backbone. This is also what we call "boilerplate code" - code that is repeated over and over and over again, across every project and every implementation with the same functionality. It gets to be tedious and repetitious very quickly.
