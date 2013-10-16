@@ -556,8 +556,8 @@ app.post( '/api/books', function( request, response ) {
 		} else {
 			return console.log( err );
 		}
+		return response.send( book );
 	});
-	return response.send( book );
 });
 ```
 
@@ -742,8 +742,8 @@ app.post( '/api/books', function( request, response ) {
 		} else {
 			return console.log( err );
 		}
+		return response.send( book );
 	});
-	return response.send( book );
 });
 
 //Update a book
