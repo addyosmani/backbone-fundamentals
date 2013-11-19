@@ -360,57 +360,75 @@ Note that Marionette modules (such as the below) offer a simple module system wh
 
 ```javascript
 TodoMVC.module('Layout', function(Layout, App, Backbone, Marionette, $, _) {
-
+  
   // Layout Header View
   // ------------------
 
-  Layout.Header = Marionette.ItemView.extend({
+  Layout.Header = Backbone.Marionette.ItemView.extend({
     template: '#template-header',
 
-    // UI bindings create cached attributes that
-    // point to jQuery selected objects
+    // UI Bindings create cached attributes that
+    // point to jQuery selected objects.
     ui: {
       input: '#new-todo'
     },
 
     events: {
-      'keypress #new-todo':   'onInputKeypress'
+      'keypress #new-todo': 'onInputKeypress',
+      'blur #new-todo': 'onTodoBlur'
     },
 
-    onInputKeypress: function(evt) {
+    onTodoBlur: function(){
+      var todoText = this.ui.input.val().trim();
+      this.createTodo(todoText);
+    },
+
+    onInputKeypress: function(e) {
       var ENTER_KEY = 13;
       var todoText = this.ui.input.val().trim();
 
-      if (evt.which === ENTER_KEY && todoText) {
-        this.collection.create({
-          title: todoText
-        });
-        this.ui.input.val('');
-      }
+      if ( e.which === ENTER_KEY && todoText ) {
+        this.createTodo(todoText);
+        }
+      },
+
+    completeAdd: function() {
+      this.ui.input.val('');
+    },
+
+    createTodo: function(todoText) {
+      if (todoText.trim() === ""){ return; }
+
+      this.collection.create({
+        title: todoText
+      });
+
+      this.completeAdd();
     }
   });
 
   // Layout Footer View
   // ------------------
-  
 
   Layout.Footer = Marionette.Layout.extend({
     template: '#template-footer',
 
-    // UI bindings create cached attributes that
-    // point to jQuery selected objects
+    // UI Bindings create cached attributes that
+    // point to jQuery selected objects.
     ui: {
-      count: '#todo-count strong',
-      filters: '#filters a'
+      todoCount: '#todo-count .count',
+      todoCountLabel: '#todo-count .label',
+      clearCount: '#clear-completed .count',
+      filters: "#filters a"
     },
 
     events: {
-      'click #clear-completed': 'onClearClick'
+      "click #clear-completed": "onClearClick"
     },
 
     initialize: function() {
-      this.listenTo(App.vent, 'todoList:filter', this.updateFilterSelection);
-      this.listenTo(this.collection, 'all', this.updateCount);
+      this.bindTo( App.vent, "todoList: filter", this.updateFilterSelection, this );
+      this.bindTo( this.collection, 'all', this.updateCount, this );
     },
 
     onRender: function() {
@@ -418,21 +436,19 @@ TodoMVC.module('Layout', function(Layout, App, Backbone, Marionette, $, _) {
     },
 
     updateCount: function() {
-      var count = this.collection.getActive().length;
-      this.ui.count.html(count);
+      var activeCount = this.collection.getActive().length,
+      completedCount = this.collection.getCompleted().length;
+      this.ui.todoCount.html(activeCount);
 
-      if (count === 0) {
-        this.$el.parent().hide();
-      } else {
-        this.$el.parent().show();
-      }
+      this.ui.todoCountLabel.html(activeCount === 1 ? 'item' : 'items');
+      this.ui.clearCount.html(completedCount === 0 ? '' : '(' + completedCount + ')');
     },
 
-    updateFilterSelection: function(filter) {
+    updateFilterSelection: function( filter ) {
       this.ui.filters
         .removeClass('selected')
-        .filter('[href="#' + filter + '"]')
-        .addClass('selected');
+        .filter( '[href="#' + filter + '"]')
+        .addClass( 'selected' );
     },
 
     onClearClick: function() {
@@ -507,7 +523,8 @@ TodoMVC.module('TodoList', function(TodoList, App, Backbone, Marionette, $, _) {
       this.showHeader(this.todoList);
       this.showFooter(this.todoList);
       this.showTodoList(this.todoList);
-
+      
+  App.bindTo(this.todoList, 'reset add remove', this.toggleFooter, this);
       this.todoList.fetch();
     },
 
@@ -529,6 +546,10 @@ TodoMVC.module('TodoList', function(TodoList, App, Backbone, Marionette, $, _) {
       App.main.show(new TodoList.Views.ListView({
         collection: todoList
       }));
+    },
+    
+    toggleFooter: function() {
+      App.footer.$el.toggle(this.todoList.length);
     },
 
     // Set the filter to show complete or all items
@@ -606,17 +627,22 @@ TodoMVC.module('TodoList.Views', function(Views, App, Backbone, Marionette, $, _
         'click .destroy': 'destroy',
         'dblclick label': 'onEditClick',
         'keypress .edit': 'onEditKeypress',
+        'blur .edit'    : 'onEditBlur',
         'click .toggle' : 'toggle'
       },
 
       initialize: function() {
-        this.listenTo(this.model, 'change', this.render);
+        this.bindTo(this.model, 'change', this.render, this);
       },
 
       onRender: function() {
-        this.$el.removeClass('active completed');
-        if (this.model.get('completed')) this.$el.addClass('completed');
-        else this.$el.addClass('active');
+        this.$el.removeClass( 'active completed' );
+      
+        if ( this.model.get( 'completed' )) {
+          this.$el.addClass( 'completed' );
+        } else { 
+          this.$el.addClass( 'active' );
+        }
       },
 
       destroy: function() {
@@ -631,15 +657,37 @@ TodoMVC.module('TodoList.Views', function(Views, App, Backbone, Marionette, $, _
         this.$el.addClass('editing');
         this.ui.edit.focus();
       },
+      
+      updateTodo : function() {
+        var todoText = this.ui.edit.val();
+        if (todoText === '') {
+          return this.destroy();
+        }
+        this.setTodoText(todoText);
+        this.completeEdit();
+      },
 
-      onEditKeypress: function(evt) {
+      onEditBlur: function(e){
+        this.updateTodo();
+      },
+
+      onEditKeypress: function(e) {
         var ENTER_KEY = 13;
         var todoText = this.ui.edit.val().trim();
 
-        if ( evt.which === ENTER_KEY && todoText ) {
+        if ( e.which === ENTER_KEY && todoText ) {
           this.model.set('title', todoText).save();
           this.$el.removeClass('editing');
         }
+      },
+      
+      setTodoText: function(todoText){
+        if (todoText.trim() === ""){ return; }
+        this.model.set('title', todoText).save();
+      },
+
+      completeEdit: function(){
+        this.$el.removeClass('editing');
       }
   });
 
@@ -649,7 +697,7 @@ TodoMVC.module('TodoList.Views', function(Views, App, Backbone, Marionette, $, _
   // Controls the rendering of the list of items, including the
   // filtering of active vs completed items for display.
 
-  Views.ListView = Marionette.CompositeView.extend({
+  Views.ListView = Backbone.Marionette.CompositeView.extend({
       template: '#template-todoListCompositeView',
       itemView: Views.ItemView,
       itemViewContainer: '#todo-list',
@@ -663,7 +711,7 @@ TodoMVC.module('TodoList.Views', function(Views, App, Backbone, Marionette, $, _
       },
 
       initialize: function() {
-        this.listenTo(this.collection, 'all', this.update);
+        this.bindTo(this.collection, 'all', this.update, this);
       },
 
       onRender: function() {
@@ -671,19 +719,17 @@ TodoMVC.module('TodoList.Views', function(Views, App, Backbone, Marionette, $, _
       },
 
       update: function() {
-        function reduceCompleted(left, right) { return left && right.get('completed'); }
+        function reduceCompleted(left, right) { 
+          return left && right.get('completed'); 
+        }
+        
         var allCompleted = this.collection.reduce(reduceCompleted,true);
         this.ui.toggle.prop('checked', allCompleted);
-
-        if (this.collection.length === 0) {
-          this.$el.parent().hide();
-        } else {
-          this.$el.parent().show();
-        }
+        this.$el.parent().toggle(!!this.collection.length);
       },
 
-      onToggleAllClick: function(evt) {
-        var isChecked = evt.currentTarget.checked;
+      onToggleAllClick: function(e) {
+        var isChecked = e.currentTarget.checked;
         this.collection.each(function(todo) {
           todo.save({'completed': isChecked});
         });
@@ -709,16 +755,21 @@ At the end of the last code block, you will also notice an event handler using `
 
 Finally, we define the model and collection for representing our Todo items. These are semantically not very different from the original versions we used in our first exercise and have been re-written to better fit in with Derick's preferred style of coding.
 
-**Todos.js:**
+**TodoMVC.Todos.js:**
 
 ```javascript
 TodoMVC.module('Todos', function(Todos, App, Backbone, Marionette, $, _) {
+
+  // Local Variables
+  // ---------------
+
+  var localStorageKey = 'todos-backbone-marionettejs';
 
   // Todo Model
   // ----------
   
   Todos.Todo = Backbone.Model.extend({
-    localStorage: new Backbone.LocalStorage('todos-backbone'),
+    localStorage: new Backbone.LocalStorage(localStorageKey),
 
     defaults: {
       title: '',
@@ -727,7 +778,9 @@ TodoMVC.module('Todos', function(Todos, App, Backbone, Marionette, $, _) {
     },
 
     initialize: function() {
-      if (this.isNew()) this.set('created', Date.now());
+      if (this.isNew()) {
+        this.set('created', Date.now());
+      }
     },
 
     toggle: function() {
@@ -745,7 +798,7 @@ TodoMVC.module('Todos', function(Todos, App, Backbone, Marionette, $, _) {
   Todos.TodoList = Backbone.Collection.extend({
     model: Todos.Todo,
 
-    localStorage: new Backbone.LocalStorage('todos-backbone'),
+    localStorage: new Backbone.LocalStorage(localStorageKey),
 
     getCompleted: function() {
       return this.filter(this._isCompleted);
