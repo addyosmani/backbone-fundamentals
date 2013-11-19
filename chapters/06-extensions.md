@@ -409,7 +409,7 @@ TodoMVC.module('Layout', function(Layout, App, Backbone, Marionette, $, _) {
     },
 
     initialize: function() {
-      this.listenTo(App.vent, 'todoList:filter', this.updateFilterSelection);
+      this.listenTo(App.event, 'todoList:filter', this.updateFilterSelection);
       this.listenTo(this.collection, 'all', this.updateCount);
     },
 
