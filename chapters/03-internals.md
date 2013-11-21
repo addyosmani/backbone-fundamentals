@@ -640,6 +640,7 @@ var TodoView = Backbone.View.extend({
   events: {
     'click .toggle': 'toggleCompleted',
     'dblclick label': 'edit',
+    'keypress .edit': 'updateOnEnter',
     'click .destroy': 'clear',
     'blur .edit': 'close'
   },
