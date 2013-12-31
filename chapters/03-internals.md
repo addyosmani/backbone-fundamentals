@@ -519,7 +519,7 @@ The "el" property represents the markup portion of the view that will be rendere
 // as follows (just to demonstrate it can be done):
 var view = new Backbone.View;
 view.setElement('<p><a><b>test</b></a></p>');
-view.$('a b').html(); // outputs "test"
+console.log(view.$('a b').html()); // outputs "test"
 ```
 
 **Understanding `render()`**
