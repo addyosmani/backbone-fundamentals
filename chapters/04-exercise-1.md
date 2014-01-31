@@ -99,10 +99,10 @@ We'll start by filling in the #item-template which will be used to display indiv
   <script type="text/template" id="item-template">
     <div class="view">
       <input class="toggle" type="checkbox" <%= completed ? 'checked' : '' %>>
-      <label><%- title %></label>
+      <label><%= title %></label>
       <button class="destroy"></button>
     </div>
-    <input class="edit" value="<%- title %>">
+    <input class="edit" value="<%= title %>">
   </script>
 ```
 
