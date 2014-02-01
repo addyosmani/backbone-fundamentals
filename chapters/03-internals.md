@@ -923,8 +923,8 @@ TodosCollection.set([
 ]);
 
 // Above logs:
-// Removed go to Disneyland.
 // Completed go to Jamaica.
+// Removed go to Disneyland.
 // Added go to Disney World.
 ```
 
