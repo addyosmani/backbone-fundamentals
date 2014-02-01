@@ -34,8 +34,4 @@ Note: At this time, generating all of the above formats should be straight-forwa
 
 #### Linux Debian based distros:
 
-* <code>apt-get install pandoc</code>
-* <code>apt-get install texlive-latex-base</code>
-* <code>apt-get install texlive-fonts-recommended</code>
-* <code>apt-get install cm-super</code>
-* <code>apt-get install etoolbox</code>
+<code>apt-get install pandoc texlive-latex-base texlive-fonts-recommended cm-super etoolbox</code>
