@@ -688,7 +688,7 @@ var Backbone19 = Backbone.noConflict();
 
 **Problem**
 
-How does inheritence work with Backbone? How can I share code between similar models and views? How can I call methods that have been overridden?
+How does inheritance work with Backbone? How can I share code between similar models and views? How can I call methods that have been overridden?
 
 **Solution**
 
