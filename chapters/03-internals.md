@@ -987,19 +987,19 @@ var Beatle = Backbone.Model.extend({
 });
 
 // Create models for each member of the Beatles
-var John = new Beatle({ firstName: 'John', lastName: 'Lennon'});
-var Paul = new Beatle({ firstName: 'Paul', lastName: 'McCartney'});
-var George = new Beatle({ firstName: 'George', lastName: 'Harrison'});
-var Ringo = new Beatle({ firstName: 'Ringo', lastName: 'Starr'});
+var john = new Beatle({ firstName: 'John', lastName: 'Lennon'});
+var paul = new Beatle({ firstName: 'Paul', lastName: 'McCartney'});
+var george = new Beatle({ firstName: 'George', lastName: 'Harrison'});
+var ringo = new Beatle({ firstName: 'Ringo', lastName: 'Starr'});
 
 // Create a collection using our models
-var theBeatles = new Backbone.Collection([John, Paul, George, Ringo]);
+var theBeatles = new Backbone.Collection([john, paul, george, ringo]);
 
 // Create a separate model for Pete Best
-var Pete = new Beatle({ firstName: 'Pete', lastName: 'Best'});
+var pete = new Beatle({ firstName: 'Pete', lastName: 'Best'});
 
 // Update the collection
-theBeatles.set([John, Paul, George, Pete]);
+theBeatles.set([john, paul, george, pete]);
 
 // Fires a `remove` event for 'Ringo', and an `add` event for 'Pete'.
 // Updates any of John, Paul and Georges's attributes that may have
@@ -1013,16 +1013,16 @@ Backbone takes full advantage of its hard dependency on Underscore by making man
 **`forEach`: iterate over collections**
 
 ```javascript
-var Todos = new Backbone.Collection();
+var todos = new Backbone.Collection();
 
-Todos.add([
+todos.add([
   { title: 'go to Belgium.', completed: false },
   { title: 'go to China.', completed: false },
   { title: 'go to Austria.', completed: true }
 ]);
 
 // iterate over models in the collection
-Todos.forEach(function(model){
+todos.forEach(function(model){
   console.log(model.get('title'));
 });
 // Above logs:
@@ -1035,7 +1035,7 @@ Todos.forEach(function(model){
 
 ```javascript
 // sort collection
-var sortedByAlphabet = Todos.sortBy(function (todo) {
+var sortedByAlphabet = todos.sortBy(function (todo) {
     return todo.get("title").toLowerCase();
 });
 
@@ -1055,7 +1055,7 @@ sortedByAlphabet.forEach(function(model){
 
 ```javascript
 var count = 1;
-console.log(Todos.map(function(model){
+console.log(todos.map(function(model){
   return count++ + ". " + model.get('title');
 }));
 // Above logs:
@@ -1067,11 +1067,11 @@ console.log(Todos.map(function(model){
 **`min()`/`max()`: retrieve item with the min or max value of an attribute**
 
 ```javascript
-Todos.max(function(model){
+todos.max(function(model){
   return model.id;
 }).id;
 
-Todos.min(function(model){
+todos.min(function(model){
   return model.id;
 }).id;
 ```
@@ -1079,7 +1079,7 @@ Todos.min(function(model){
 **`pluck()`: extract a specific attribute**
 
 ```javascript
-var captions = Todos.pluck('caption');
+var captions = todos.pluck('caption');
 // returns list of captions
 ```
 
@@ -1102,9 +1102,9 @@ var Todos = Backbone.Collection.extend({
 **`indexOf()`: return the index of a particular item within a collection**
 
 ```javascript
-var People = new Backbone.Collection;
+var people = new Backbone.Collection;
 
-People.comparator = function(a, b) {
+people.comparator = function(a, b) {
   return a.get('name') < b.get('name') ? -1 : 1;
 };
 
@@ -1112,24 +1112,24 @@ var tom = new Backbone.Model({name: 'Tom'});
 var rob = new Backbone.Model({name: 'Rob'});
 var tim = new Backbone.Model({name: 'Tim'});
 
-People.add(tom);
-People.add(rob);
-People.add(tim);
+people.add(tom);
+people.add(rob);
+people.add(tim);
 
-console.log(People.indexOf(rob) === 0); // true
-console.log(People.indexOf(tim) === 1); // true
-console.log(People.indexOf(tom) === 2); // true
+console.log(people.indexOf(rob) === 0); // true
+console.log(people.indexOf(tim) === 1); // true
+console.log(people.indexOf(tom) === 2); // true
 ```
 
 **`any()`: confirm if any of the values in a collection pass an iterator truth test**
 
 ```javascript
-Todos.any(function(model){
+todos.any(function(model){
   return model.id === 100;
 });
 
 // or
-Todos.some(function(model){
+todos.some(function(model){
   return model.id === 100;
 });
 ```
@@ -1137,31 +1137,31 @@ Todos.some(function(model){
 **`size()`: return the size of a collection**
 
 ```javascript
-Todos.size();
+todos.size();
 
 // equivalent to
-Todos.length;
+todos.length;
 ```
 
 **`isEmpty()`: determine whether a collection is empty**
 
 ```javascript
-var isEmpty = Todos.isEmpty();
+var isEmpty = todos.isEmpty();
 ```
 
 **`groupBy()`: group a collection into groups of like items**
 
 ```javascript
-var Todos = new Backbone.Collection();
+var todos = new Backbone.Collection();
 
-Todos.add([
+todos.add([
   { title: 'go to Belgium.', completed: false },
   { title: 'go to China.', completed: false },
   { title: 'go to Austria.', completed: true }
 ]);
 
 // create groups of completed and incomplete models
-var byCompleted = Todos.groupBy('completed');
+var byCompleted = todos.groupBy('completed');
 var completed = new Backbone.Collection(byCompleted[true]);
 console.log(completed.pluck('title'));
 // logs: ["go to Austria."]
@@ -1345,8 +1345,8 @@ todo2.destroy(); // sends HTTP DELETE to /todos/2 and removes from collection
 Calling `destroy` on a Model will return `false` if the model `isNew`:
 
 ```javascript
-var Todo = new Backbone.Model();
-console.log(Todo.destroy());
+var todo = new Backbone.Model();
+console.log(todo.destroy());
 // false
 ```
 
