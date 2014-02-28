@@ -1868,7 +1868,7 @@ A "route" event is also triggered on the router in addition to being fired on Ba
 ```javascript
 Backbone.history.on('route', onRoute);
 
-// Trigger 'route' event on router instance."
+// Trigger 'route' event on router instance.
 router.on('route', function(name, args) {
   console.log(name === 'routeEvent'); 
 });
