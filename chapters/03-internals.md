@@ -2023,7 +2023,7 @@ Backbone.sync = function(method, model, options) {
       return MyAPI.destroy(model, success, error);
 
     case 'read':
-      if (model.attributes[model.idAttribute]) {
+      if (model.cid) {
         return MyAPI.find(model, success, error);
       } else {
         return MyAPI.findAll(model, success, error);
