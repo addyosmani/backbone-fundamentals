@@ -412,7 +412,7 @@ URL routing, DOM events (e.g., mouse clicks), and Model events (e.g., attribute 
 
 * Users interact with Views, which usually means reading and editing Model data. For example, in our Todo application, Todo Model viewing happens in the user interface in the list of all Todo items. Within it, each Todo is rendered with its title and completed checkbox. Model editing is done through an "edit" View where a user who has selected a specific Todo edits its title in a form.
 
-* We define a ```render()``` utility within our View which is responsible for rendering the contents of the ```Model``` using a JavaScript templating engine (provided by Underscore.js) and updating the contents of our View, referenced by ```this.el```.
+* We define a ```render()``` utility within our View which is responsible for rendering the contents of the ```Model``` using a JavaScript templating engine (provided by Underscore.js) and updating the contents of our View, referenced by ```this.$el```.
 
 * We then add our ```render()``` callback as a Model subscriber, so the View can be triggered to update when the Model changes.
 
@@ -446,7 +446,7 @@ Let's compare two examples of HTML templates. One is implemented using the popul
 ```html
 <div class="view">
   <input class="toggle" type="checkbox" <%= completed ? 'checked' : '' %>>
-  <label><%- title %></label>
+  <label><%= title %></label>
   <button class="destroy"></button>
 </div>
 <input class="edit" value="<%= title %>">
@@ -1002,7 +1002,7 @@ var TodosView = Backbone.View.extend({
   tagName: 'ul', // required, but defaults to 'div' if not set
   className: 'container', // optional, you can assign multiple classes to 
                           // this property like so: 'container homepage'
-  id: 'todos', // optional
+  id: 'todos' // optional
 });
 
 var todosView = new TodosView();
@@ -1074,7 +1074,7 @@ The "el" property represents the markup portion of the view that will be rendere
 // as follows (just to demonstrate it can be done):
 var view = new Backbone.View;
 view.setElement('<p><a><b>test</b></a></p>');
-view.$('a b').html(); // outputs "test"
+console.log(view.$('a b').html()); // outputs "test"
 ```
 
 **Understanding `render()`**
@@ -1195,6 +1195,7 @@ var TodoView = Backbone.View.extend({
   events: {
     'click .toggle': 'toggleCompleted',
     'dblclick label': 'edit',
+    'keypress .edit': 'updateOnEnter',
     'click .destroy': 'clear',
     'blur .edit': 'close'
   },
@@ -1477,8 +1478,8 @@ TodosCollection.set([
 ]);
 
 // Above logs:
-// Removed go to Disneyland.
 // Completed go to Jamaica.
+// Removed go to Disneyland.
 // Added go to Disney World.
 ```
 
@@ -1519,14 +1520,14 @@ Note that using `Collection.reset()` doesn't fire any `add` or `remove` events. 
 Also note that listening to a [reset](http://backbonejs.org/#Collection-reset) event, the list of previous models is available in `options.previousModels`, for convenience.
 
 ```javascript
-var Todo = new Backbone.Model();
-var Todos = new Backbone.Collection([Todo])
-.on('reset', function(Todos, options) {
+var todo = new Backbone.Model();
+var todos = new Backbone.Collection([todo])
+.on('reset', function(todos, options) {
   console.log(options.previousModels);
-  console.log([Todo]);
-  console.log(options.previousModels[0] === Todo); // true
+  console.log([todo]);
+  console.log(options.previousModels[0] === todo); // true
 });
-Todos.reset([]);
+todos.reset([]);
 ```
 
 The `set()` method available for Collections can also be used for "smart" updating of sets of models. This method attempts to perform smart updating of a collection using a specified list of models. When a model in this list isn't present in the collection, it is added. If it's present, its attributes will be merged. Models which are present in the collection but not in the list are removed.
@@ -1541,19 +1542,19 @@ var Beatle = Backbone.Model.extend({
 });
 
 // Create models for each member of the Beatles
-var John = new Beatle({ firstName: 'John', lastName: 'Lennon'});
-var Paul = new Beatle({ firstName: 'Paul', lastName: 'McCartney'});
-var George = new Beatle({ firstName: 'George', lastName: 'Harrison'});
-var Ringo = new Beatle({ firstName: 'Ringo', lastName: 'Starr'});
+var john = new Beatle({ firstName: 'John', lastName: 'Lennon'});
+var paul = new Beatle({ firstName: 'Paul', lastName: 'McCartney'});
+var george = new Beatle({ firstName: 'George', lastName: 'Harrison'});
+var ringo = new Beatle({ firstName: 'Ringo', lastName: 'Starr'});
 
 // Create a collection using our models
-var theBeatles = new Backbone.Collection([John, Paul, George, Ringo]);
+var theBeatles = new Backbone.Collection([john, paul, george, ringo]);
 
 // Create a separate model for Pete Best
-var Pete = new Beatle({ firstName: 'Pete', lastName: 'Best'});
+var pete = new Beatle({ firstName: 'Pete', lastName: 'Best'});
 
 // Update the collection
-theBeatles.set([John, Paul, George, Pete]);
+theBeatles.set([john, paul, george, pete]);
 
 // Fires a `remove` event for 'Ringo', and an `add` event for 'Pete'.
 // Updates any of John, Paul and Georges's attributes that may have
@@ -1567,16 +1568,16 @@ Backbone takes full advantage of its hard dependency on Underscore by making man
 **`forEach`: iterate over collections**
 
 ```javascript
-var Todos = new Backbone.Collection();
+var todos = new Backbone.Collection();
 
-Todos.add([
+todos.add([
   { title: 'go to Belgium.', completed: false },
   { title: 'go to China.', completed: false },
   { title: 'go to Austria.', completed: true }
 ]);
 
 // iterate over models in the collection
-Todos.forEach(function(model){
+todos.forEach(function(model){
   console.log(model.get('title'));
 });
 // Above logs:
@@ -1589,7 +1590,7 @@ Todos.forEach(function(model){
 
 ```javascript
 // sort collection
-var sortedByAlphabet = Todos.sortBy(function (todo) {
+var sortedByAlphabet = todos.sortBy(function (todo) {
     return todo.get("title").toLowerCase();
 });
 
@@ -1609,7 +1610,7 @@ sortedByAlphabet.forEach(function(model){
 
 ```javascript
 var count = 1;
-console.log(Todos.map(function(model){
+console.log(todos.map(function(model){
   return count++ + ". " + model.get('title');
 }));
 // Above logs:
@@ -1621,11 +1622,11 @@ console.log(Todos.map(function(model){
 **`min()`/`max()`: retrieve item with the min or max value of an attribute**
 
 ```javascript
-Todos.max(function(model){
+todos.max(function(model){
   return model.id;
 }).id;
 
-Todos.min(function(model){
+todos.min(function(model){
   return model.id;
 }).id;
 ```
@@ -1633,7 +1634,7 @@ Todos.min(function(model){
 **`pluck()`: extract a specific attribute**
 
 ```javascript
-var captions = Todos.pluck('caption');
+var captions = todos.pluck('caption');
 // returns list of captions
 ```
 
@@ -1656,9 +1657,9 @@ var Todos = Backbone.Collection.extend({
 **`indexOf()`: return the index of a particular item within a collection**
 
 ```javascript
-var People = new Backbone.Collection;
+var people = new Backbone.Collection;
 
-People.comparator = function(a, b) {
+people.comparator = function(a, b) {
   return a.get('name') < b.get('name') ? -1 : 1;
 };
 
@@ -1666,24 +1667,24 @@ var tom = new Backbone.Model({name: 'Tom'});
 var rob = new Backbone.Model({name: 'Rob'});
 var tim = new Backbone.Model({name: 'Tim'});
 
-People.add(tom);
-People.add(rob);
-People.add(tim);
+people.add(tom);
+people.add(rob);
+people.add(tim);
 
-console.log(People.indexOf(rob) === 0); // true
-console.log(People.indexOf(tim) === 1); // true
-console.log(People.indexOf(tom) === 2); // true
+console.log(people.indexOf(rob) === 0); // true
+console.log(people.indexOf(tim) === 1); // true
+console.log(people.indexOf(tom) === 2); // true
 ```
 
 **`any()`: confirm if any of the values in a collection pass an iterator truth test**
 
 ```javascript
-Todos.any(function(model){
+todos.any(function(model){
   return model.id === 100;
 });
 
 // or
-Todos.some(function(model){
+todos.some(function(model){
   return model.id === 100;
 });
 ```
@@ -1691,31 +1692,31 @@ Todos.some(function(model){
 **`size()`: return the size of a collection**
 
 ```javascript
-Todos.size();
+todos.size();
 
 // equivalent to
-Todos.length;
+todos.length;
 ```
 
 **`isEmpty()`: determine whether a collection is empty**
 
 ```javascript
-var isEmpty = Todos.isEmpty();
+var isEmpty = todos.isEmpty();
 ```
 
 **`groupBy()`: group a collection into groups of like items**
 
 ```javascript
-var Todos = new Backbone.Collection();
+var todos = new Backbone.Collection();
 
-Todos.add([
+todos.add([
   { title: 'go to Belgium.', completed: false },
   { title: 'go to China.', completed: false },
   { title: 'go to Austria.', completed: true }
 ]);
 
 // create groups of completed and incomplete models
-var byCompleted = Todos.groupBy('completed');
+var byCompleted = todos.groupBy('completed');
 var completed = new Backbone.Collection(byCompleted[true]);
 console.log(completed.pluck('title'));
 // logs: ["go to Austria."]
@@ -1899,8 +1900,8 @@ todo2.destroy(); // sends HTTP DELETE to /todos/2 and removes from collection
 Calling `destroy` on a Model will return `false` if the model `isNew`:
 
 ```javascript
-var Todo = new Backbone.Model();
-console.log(Todo.destroy());
+var todo = new Backbone.Model();
+console.log(todo.destroy());
 // false
 ```
 
@@ -2266,11 +2267,11 @@ var TodoRouter = Backbone.Router.extend({
         idea to leave them at the end of a URL otherwise you may need to apply regular
         expression parsing on your fragment */
 
-        "*other"    : "defaultRoute"
+        "*other"    : "defaultRoute",
         /* This is a default route that also uses a *splat. Consider the
         default route a wildcard for URLs that are either not matched or where
         the user has incorrectly typed in a route path manually */
-        /* Sample usage: http://example.com/# <anything> */,
+        /* Sample usage: http://example.com/# <anything> */
 
         "optional(/:item)": "optionalItem",
         "named/optional/(y:z)": "namedOptionalItem"
@@ -2433,7 +2434,7 @@ Backbone.history.checkUrl();
 
 ## Backbone’s Sync API
 
-We previously discussed how Backbone supports RESTful persistence via its `fetch()` and `create()` methods on Collections and `save()`, and `delete()` methods on Models. Now we are going to take a closer look at Backbone's sync method which underlies these operations.
+We previously discussed how Backbone supports RESTful persistence via its `fetch()` and `create()` methods on Collections and `save()`, and `destroy()` methods on Models. Now we are going to take a closer look at Backbone's sync method which underlies these operations.
 
 The Backbone.sync method is an integral part of Backbone.js. It assumes a jQuery-like `$.ajax()` method, so HTTP parameters are organized based on jQuery’s API. Since some legacy servers may not support JSON-formatted requests and HTTP PUT and DELETE operations, Backbone can be configured to emulate these capabilities using the two configuration variables shown below with their default values:
 
@@ -2577,7 +2578,7 @@ Backbone.sync = function(method, model, options) {
       return MyAPI.destroy(model, success, error);
 
     case 'read':
-      if (model.attributes[model.idAttribute]) {
+      if (model.cid) {
         return MyAPI.find(model, success, error);
       } else {
         return MyAPI.findAll(model, success, error);
@@ -2715,10 +2716,10 @@ We'll start by filling in the #item-template which will be used to display indiv
   <script type="text/template" id="item-template">
     <div class="view">
       <input class="toggle" type="checkbox" <%= completed ? 'checked' : '' %>>
-      <label><%- title %></label>
+      <label><%= title %></label>
       <button class="destroy"></button>
     </div>
-    <input class="edit" value="<%- title %>">
+    <input class="edit" value="<%= title %>">
   </script>
 ```
 
@@ -3350,7 +3351,7 @@ Now let's look at what happens when we click on a todo's destroy button:
 
 That's all there is to it!
 
-If you want to see an example of those, see the [complete source](https://github.com/addyosmani/todomvc/tree/gh-pages/architecture-examples/backbone).
+If you want to see an example of those, see the [complete source](https://github.com/tastejs/todomvc/tree/gh-pages/architecture-examples/backbone).
 
 ## Todo routing
 
@@ -3966,8 +3967,8 @@ app.post( '/api/books', function( request, response ) {
 		} else {
 			return console.log( err );
 		}
+		return response.send( book );
 	});
-	return response.send( book );
 });
 ```
 
@@ -4152,8 +4153,8 @@ app.post( '/api/books', function( request, response ) {
 		} else {
 			return console.log( err );
 		}
+		return response.send( book );
 	});
-	return response.send( book );
 });
 
 //Update a book
@@ -4472,9 +4473,9 @@ var myView = new MyView({
   model: Derick
 });
 
+myView.setElement("#content");
 myView.render();
 
-$('#content').html(myView.el);
 ```
 
 This is a standard set up for defining, building, rendering, and displaying a view with Backbone. This is also what we call "boilerplate code" - code that is repeated over and over and over again, across every project and every implementation with the same functionality. It gets to be tedious and repetitious very quickly.
@@ -4570,7 +4571,7 @@ var ZombieView = Backbone.View.extend({
 
   initialize: function() {
     // bind the model change to re-render this view
-    this.listenTo(this.model, 'change', this.render);
+    this.model.on('change', this.render, this);
   },
 
   close: function() {
@@ -4741,57 +4742,75 @@ Note that Marionette modules (such as the below) offer a simple module system wh
 
 ```javascript
 TodoMVC.module('Layout', function(Layout, App, Backbone, Marionette, $, _) {
-
+  
   // Layout Header View
   // ------------------
 
-  Layout.Header = Marionette.ItemView.extend({
+  Layout.Header = Backbone.Marionette.ItemView.extend({
     template: '#template-header',
 
-    // UI bindings create cached attributes that
-    // point to jQuery selected objects
+    // UI Bindings create cached attributes that
+    // point to jQuery selected objects.
     ui: {
       input: '#new-todo'
     },
 
     events: {
-      'keypress #new-todo':   'onInputKeypress'
+      'keypress #new-todo': 'onInputKeypress',
+      'blur #new-todo': 'onTodoBlur'
     },
 
-    onInputKeypress: function(evt) {
+    onTodoBlur: function(){
+      var todoText = this.ui.input.val().trim();
+      this.createTodo(todoText);
+    },
+
+    onInputKeypress: function(e) {
       var ENTER_KEY = 13;
       var todoText = this.ui.input.val().trim();
 
-      if (evt.which === ENTER_KEY && todoText) {
-        this.collection.create({
-          title: todoText
-        });
-        this.ui.input.val('');
-      }
+      if ( e.which === ENTER_KEY && todoText ) {
+        this.createTodo(todoText);
+        }
+      },
+
+    completeAdd: function() {
+      this.ui.input.val('');
+    },
+
+    createTodo: function(todoText) {
+      if (todoText.trim() === ""){ return; }
+
+      this.collection.create({
+        title: todoText
+      });
+
+      this.completeAdd();
     }
   });
 
   // Layout Footer View
   // ------------------
-  
 
   Layout.Footer = Marionette.Layout.extend({
     template: '#template-footer',
 
-    // UI bindings create cached attributes that
-    // point to jQuery selected objects
+    // UI Bindings create cached attributes that
+    // point to jQuery selected objects.
     ui: {
-      count: '#todo-count strong',
-      filters: '#filters a'
+      todoCount: '#todo-count .count',
+      todoCountLabel: '#todo-count .label',
+      clearCount: '#clear-completed .count',
+      filters: "#filters a"
     },
 
     events: {
-      'click #clear-completed': 'onClearClick'
+      "click #clear-completed": "onClearClick"
     },
 
     initialize: function() {
-      this.listenTo(App.vent, 'todoList:filter', this.updateFilterSelection);
-      this.listenTo(this.collection, 'all', this.updateCount);
+      this.bindTo( App.vent, "todoList: filter", this.updateFilterSelection, this );
+      this.bindTo( this.collection, 'all', this.updateCount, this );
     },
 
     onRender: function() {
@@ -4799,21 +4818,19 @@ TodoMVC.module('Layout', function(Layout, App, Backbone, Marionette, $, _) {
     },
 
     updateCount: function() {
-      var count = this.collection.getActive().length;
-      this.ui.count.html(count);
+      var activeCount = this.collection.getActive().length,
+      completedCount = this.collection.getCompleted().length;
+      this.ui.todoCount.html(activeCount);
 
-      if (count === 0) {
-        this.$el.parent().hide();
-      } else {
-        this.$el.parent().show();
-      }
+      this.ui.todoCountLabel.html(activeCount === 1 ? 'item' : 'items');
+      this.ui.clearCount.html(completedCount === 0 ? '' : '(' + completedCount + ')');
     },
 
-    updateFilterSelection: function(filter) {
+    updateFilterSelection: function( filter ) {
       this.ui.filters
         .removeClass('selected')
-        .filter('[href="#' + filter + '"]')
-        .addClass('selected');
+        .filter( '[href="#' + filter + '"]')
+        .addClass( 'selected' );
     },
 
     onClearClick: function() {
@@ -4888,7 +4905,8 @@ TodoMVC.module('TodoList', function(TodoList, App, Backbone, Marionette, $, _) {
       this.showHeader(this.todoList);
       this.showFooter(this.todoList);
       this.showTodoList(this.todoList);
-
+      
+  App.bindTo(this.todoList, 'reset add remove', this.toggleFooter, this);
       this.todoList.fetch();
     },
 
@@ -4910,6 +4928,10 @@ TodoMVC.module('TodoList', function(TodoList, App, Backbone, Marionette, $, _) {
       App.main.show(new TodoList.Views.ListView({
         collection: todoList
       }));
+    },
+    
+    toggleFooter: function() {
+      App.footer.$el.toggle(this.todoList.length);
     },
 
     // Set the filter to show complete or all items
@@ -4987,17 +5009,22 @@ TodoMVC.module('TodoList.Views', function(Views, App, Backbone, Marionette, $, _
         'click .destroy': 'destroy',
         'dblclick label': 'onEditClick',
         'keypress .edit': 'onEditKeypress',
+        'blur .edit'    : 'onEditBlur',
         'click .toggle' : 'toggle'
       },
 
       initialize: function() {
-        this.listenTo(this.model, 'change', this.render);
+        this.bindTo(this.model, 'change', this.render, this);
       },
 
       onRender: function() {
-        this.$el.removeClass('active completed');
-        if (this.model.get('completed')) this.$el.addClass('completed');
-        else this.$el.addClass('active');
+        this.$el.removeClass( 'active completed' );
+      
+        if ( this.model.get( 'completed' )) {
+          this.$el.addClass( 'completed' );
+        } else { 
+          this.$el.addClass( 'active' );
+        }
       },
 
       destroy: function() {
@@ -5012,15 +5039,37 @@ TodoMVC.module('TodoList.Views', function(Views, App, Backbone, Marionette, $, _
         this.$el.addClass('editing');
         this.ui.edit.focus();
       },
+      
+      updateTodo : function() {
+        var todoText = this.ui.edit.val();
+        if (todoText === '') {
+          return this.destroy();
+        }
+        this.setTodoText(todoText);
+        this.completeEdit();
+      },
 
-      onEditKeypress: function(evt) {
+      onEditBlur: function(e){
+        this.updateTodo();
+      },
+
+      onEditKeypress: function(e) {
         var ENTER_KEY = 13;
         var todoText = this.ui.edit.val().trim();
 
-        if ( evt.which === ENTER_KEY && todoText ) {
+        if ( e.which === ENTER_KEY && todoText ) {
           this.model.set('title', todoText).save();
           this.$el.removeClass('editing');
         }
+      },
+      
+      setTodoText: function(todoText){
+        if (todoText.trim() === ""){ return; }
+        this.model.set('title', todoText).save();
+      },
+
+      completeEdit: function(){
+        this.$el.removeClass('editing');
       }
   });
 
@@ -5030,7 +5079,7 @@ TodoMVC.module('TodoList.Views', function(Views, App, Backbone, Marionette, $, _
   // Controls the rendering of the list of items, including the
   // filtering of active vs completed items for display.
 
-  Views.ListView = Marionette.CompositeView.extend({
+  Views.ListView = Backbone.Marionette.CompositeView.extend({
       template: '#template-todoListCompositeView',
       itemView: Views.ItemView,
       itemViewContainer: '#todo-list',
@@ -5044,7 +5093,7 @@ TodoMVC.module('TodoList.Views', function(Views, App, Backbone, Marionette, $, _
       },
 
       initialize: function() {
-        this.listenTo(this.collection, 'all', this.update);
+        this.bindTo(this.collection, 'all', this.update, this);
       },
 
       onRender: function() {
@@ -5052,19 +5101,17 @@ TodoMVC.module('TodoList.Views', function(Views, App, Backbone, Marionette, $, _
       },
 
       update: function() {
-        function reduceCompleted(left, right) { return left && right.get('completed'); }
+        function reduceCompleted(left, right) { 
+          return left && right.get('completed'); 
+        }
+        
         var allCompleted = this.collection.reduce(reduceCompleted,true);
         this.ui.toggle.prop('checked', allCompleted);
-
-        if (this.collection.length === 0) {
-          this.$el.parent().hide();
-        } else {
-          this.$el.parent().show();
-        }
+        this.$el.parent().toggle(!!this.collection.length);
       },
 
-      onToggleAllClick: function(evt) {
-        var isChecked = evt.currentTarget.checked;
+      onToggleAllClick: function(e) {
+        var isChecked = e.currentTarget.checked;
         this.collection.each(function(todo) {
           todo.save({'completed': isChecked});
         });
@@ -5090,16 +5137,21 @@ At the end of the last code block, you will also notice an event handler using `
 
 Finally, we define the model and collection for representing our Todo items. These are semantically not very different from the original versions we used in our first exercise and have been re-written to better fit in with Derick's preferred style of coding.
 
-**Todos.js:**
+**TodoMVC.Todos.js:**
 
 ```javascript
 TodoMVC.module('Todos', function(Todos, App, Backbone, Marionette, $, _) {
+
+  // Local Variables
+  // ---------------
+
+  var localStorageKey = 'todos-backbone-marionettejs';
 
   // Todo Model
   // ----------
   
   Todos.Todo = Backbone.Model.extend({
-    localStorage: new Backbone.LocalStorage('todos-backbone'),
+    localStorage: new Backbone.LocalStorage(localStorageKey),
 
     defaults: {
       title: '',
@@ -5108,7 +5160,9 @@ TodoMVC.module('Todos', function(Todos, App, Backbone, Marionette, $, _) {
     },
 
     initialize: function() {
-      if (this.isNew()) this.set('created', Date.now());
+      if (this.isNew()) {
+        this.set('created', Date.now());
+      }
     },
 
     toggle: function() {
@@ -5126,7 +5180,7 @@ TodoMVC.module('Todos', function(Todos, App, Backbone, Marionette, $, _) {
   Todos.TodoList = Backbone.Collection.extend({
     model: Todos.Todo,
 
-    localStorage: new Backbone.LocalStorage('todos-backbone'),
+    localStorage: new Backbone.LocalStorage(localStorageKey),
 
     getCompleted: function() {
       return this.filter(this._isCompleted);
@@ -6195,7 +6249,7 @@ var Backbone19 = Backbone.noConflict();
 
 **Problem**
 
-How does inheritence work with Backbone? How can I share code between similar models and views? How can I call methods that have been overridden?
+How does inheritance work with Backbone? How can I share code between similar models and views? How can I call methods that have been overridden?
 
 **Solution**
 
@@ -10161,7 +10215,7 @@ Backbone views typically create empty DOM elements once initialized, however the
 ```javascript
 it('Should be tied to a DOM element when created, based off the property provided.', function() {
     //what html element tag name represents this view?
-    expect(todoView.el.tagName.toLowerCase()).toBe('li');
+    expect(this.todoView.el.tagName.toLowerCase()).toBe('li');
 });
 ```
 
@@ -10176,8 +10230,8 @@ var todoView = Backbone.View.extend({
 If instead of testing against the ```tagName``` you would prefer to use a className instead, we can take advantage of jasmine-jquery's ```toHaveClass()``` matcher:
 
 ```
-it('Should have a class of "todos"'), function(){
-   expect(this.view.$el).toHaveClass('todos');
+it('Should have a class of "todos"', function(){
+   expect(this.todoView.$el).toHaveClass('todos');
 });
 ```
 
@@ -10188,10 +10242,10 @@ You may have noticed that in ```beforeEach()```, we passed our view an initial (
 ```javascript
 it('Is backed by a model instance, which provides the data.', function() {
 
-    expect(todoView.model).toBeDefined();
+    expect(this.todoView.model).toBeDefined();
 
     // what's the value for Todo.get('done') here?
-    expect(todoView.model.get('done')).toBe(false); //or toBeFalsy()
+    expect(this.todoView.model.get('done')).toBe(false); //or toBeFalsy()
 });
 ```
 
@@ -11998,7 +12052,7 @@ In case you were wondering, here is the original DocumentCloud (remember those g
 })();
 ```
 
-As you can see, they opt for declaring a top-level namespace on the `window` called `dc`, a short-form name of their app, followed by nested namesapces for the controllers, models, UI and other pieces of their application.
+As you can see, they opt for declaring a top-level namespace on the `window` called `dc`, a short-form name of their app, followed by nested namespaces for the controllers, models, UI and other pieces of their application.
 
 **Recommendation**
 
