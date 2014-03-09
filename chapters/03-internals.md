@@ -663,7 +663,7 @@ var TodoView = Backbone.View.extend({
 });
 ```
 
-`_.bind` only works on one method at a time, but supports currying and as it returns the bound function means that you can use `_.bind` on an anonymous function.
+`_.bind` only works on one method at a time, but effectively binds a function to an object so that anytime the function is called the value of `this` will be the object. `_.bind` also supports passing in arguments to the function in order to fill them in advance - a technique known as [partial application](http://benalman.com/news/2012/09/partial-application-in-javascript/).
 
 
 ## Collections
