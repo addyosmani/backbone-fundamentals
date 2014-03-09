@@ -46,6 +46,7 @@ None of this work would have been possible without the time and effort invested 
 * [Jack Franklin](https://github.com/jackfranklin)
 * [David Amend](https://github.com/raDiesle)
 * [Mike Ball](https://github.com/mdb)
+* Will Sulzer
 * [Uģis Ozols](https://github.com/ugisozols)
 * [Björn Ekengren](https://github.com/Ekengren)
 
