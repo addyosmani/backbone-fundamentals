@@ -356,7 +356,7 @@ Walmart chose Backbone to power their mobile web applications, creating two new 
 ![](img/walmart-mobile.png)
 
 
-*AirBnb*
+*Airbnb*
 
 Airbnb developed their mobile web app using Backbone and now use it across many of their products.
 
