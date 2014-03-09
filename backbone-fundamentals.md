@@ -47,10 +47,15 @@ None of this work would have been possible without the time and effort invested 
 * [Jack Franklin](https://github.com/jackfranklin)
 * [David Amend](https://github.com/raDiesle)
 * [Mike Ball](https://github.com/mdb)
+* Will Sulzer
 * [Uģis Ozols](https://github.com/ugisozols)
 * [Björn Ekengren](https://github.com/Ekengren)
 
 as well as our other excellent [contributors](https://github.com/addyosmani/backbone-fundamentals/graphs/contributors) that made this project possible.
+
+## Target Version
+
+Developing Backbone.js Applications targets Backbone.js 1.0.0 (and Underscore 1.5.1) and will actively attempt to stay up to date with more recent versions of these libraries. Where possible, if you find using a newer version of Backbone breaks an example, please consult the official guide to [upgrading](http://backbonejs.org/#upgrading) as it contains instructions for how to work around breaking changes. StackOverflow also contains many excellent examples of how other users are handling updating their code.
 
 ## Reading
 
@@ -539,7 +544,7 @@ Walmart chose Backbone to power their mobile web applications, creating two new 
 ![](img/walmart-mobile.png)
 
 
-*AirBnb*
+*Airbnb*
 
 Airbnb developed their mobile web app using Backbone and now use it across many of their products.
 
@@ -958,6 +963,12 @@ var TodoView = Backbone.View.extend({
     'blur .edit':   'close'
   },
 
+  initialize: function (options) {
+    // In Backbone 1.1.0, if you want to access passed options in
+    // your view, you will need to save them as follows:
+    this.options = options || {};
+  },
+
   // Re-render the title of the todo item.
   render: function() {
     this.$el.html( this.todoTpl( this.model.toJSON() ) );
@@ -1218,7 +1229,7 @@ var TodoView = Backbone.View.extend({
 });
 ```
 
-`_.bind` only works on one method at a time, but supports currying and as it returns the bound function means that you can use `_.bind` on an anonymous function.
+`_.bind` only works on one method at a time, but effectively binds a function to an object so that anytime the function is called the value of `this` will be the object. `_.bind` also supports passing in arguments to the function in order to fill them in advance - a technique known as [partial application](http://benalman.com/news/2012/09/partial-application-in-javascript/).
 
 
 ## Collections
@@ -11579,7 +11590,14 @@ var Events = Cranium.Events = {
   },
   // Unregisters an event type and its listener
   off: function(topic) {
-    delete Cranium.Events.channels[topic];
+    var topic;
+    for (topic in Cranium.Events.channels) {
+      if (Cranium.Events.channels.hasOwnProperty(topic)) {
+        if (topic.split("-")[0] == events) {
+          delete Cranium.Events.channels[topic]; 
+        }
+      }
+    }
   }            
 };
 ```
