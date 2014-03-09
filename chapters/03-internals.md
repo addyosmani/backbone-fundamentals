@@ -403,6 +403,12 @@ var TodoView = Backbone.View.extend({
     'blur .edit':   'close'
   },
 
+  initialize: function (options) {
+    // In Backbone 1.1.0, if you want to access passed options in
+    // your view, you will need to save them as follows:
+    this.options = options || {};
+  },
+
   // Re-render the title of the todo item.
   render: function() {
     this.$el.html( this.todoTpl( this.model.toJSON() ) );

@@ -52,6 +52,10 @@ None of this work would have been possible without the time and effort invested 
 
 as well as our other excellent [contributors](https://github.com/addyosmani/backbone-fundamentals/graphs/contributors) that made this project possible.
 
+## Target Version
+
+Developing Backbone.js Applications targets Backbone.js 1.0.0 (and Underscore 1.5.1) and will actively attempt to stay up to date with more recent versions of these libraries. Where possible, if you find using a newer version of Backbone breaks an example, please consult the official guide to [upgrading](http://backbonejs.org/#upgrading) as it contains instructions for how to work around breaking changes. StackOverflow also contains many excellent examples of how other users are handling updating their code.
+
 ## Reading
 
 I assume your level of knowledge about JavaScript goes beyond the basics and as such certain topics such as object literals are skipped. If you need to learn more about the language, I am happy to suggest:
