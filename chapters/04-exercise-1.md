@@ -148,7 +148,7 @@ The `Todo` model is remarkably straightforward. First, a todo has two attributes
 
   // Todo Model
   // ----------
-  // Our basic **Todo** model has `title`, `order`, and `completed` attributes.
+  // Our basic **Todo** model has `title` and `completed` attributes.
 
   app.Todo = Backbone.Model.extend({
 
