@@ -44,7 +44,14 @@ var Events = Cranium.Events = {
   },
   // Unregisters an event type and its listener
   off: function(topic) {
-    delete Cranium.Events.channels[topic];
+    var topic;
+    for (topic in Cranium.Events.channels) {
+      if (Cranium.Events.channels.hasOwnProperty(topic)) {
+        if (topic.split("-")[0] == events) {
+          delete Cranium.Events.channels[topic]; 
+        }
+      }
+    }
   }            
 };
 ```
