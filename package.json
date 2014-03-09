@@ -1,0 +1,20 @@
+{
+  "name": "backbone-fundamentals",
+  "version": "1.0.5",
+  "description": "Developing Backbone.js Applications book",
+  "main": "index.html",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/addyosmani/backbone-fundamentals.git"
+  },
+  "keywords": [
+    "backbone",
+    "backbone.js"
+  ],
+  "author": "Addy Osmani",
+  "license": "Creative Commons Attribution-Noncommercial-No Derivative Works 3.0",
+  "bugs": {
+    "url": "https://github.com/addyosmani/backbone-fundamentals/issues"
+  },
+  "homepage": "https://github.com/addyosmani/backbone-fundamentals"
+}
