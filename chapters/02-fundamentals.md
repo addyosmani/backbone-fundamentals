@@ -331,34 +331,34 @@ If you are interested in learning more about the variation of MVC which Backbone
 
 *Disqus*
 
-Disqus chose Backbone.js to power the latest version of their commenting widget. They felt it was the right choice for their distributed web app, given Backbone's small footprint and ease of extensibility.
+Disqus chose Backbone.js to power the latest version of its commenting widget. The Disqus team felt it was the right choice for their distributed web app, given Backbone's small footprint and ease of extensibility.
 
 ![](img/disqus.png)
 
 
 *Khan Academy*
 
-Offering a web app that aims to provide free world-class education to anyone anywhere, Khan use Backbone to keep their frontend code both modular and organized.
+Offering a web app that aims to provide free world-class education to anyone anywhere, Khan Academy uses Backbone to keep its frontend code both modular and organized.
 
 ![](img/khan-academy.png)
 
 
 *MetaLab*
 
-MetaLab created Flow, a task management app for teams using Backbone. Their workspace uses Backbone to create task views, activities, accounts, tags and more.
+MetaLab created Flow, a task management app for teams using Backbone. Its workspace uses Backbone to create task views, activities, accounts, tags and more.
 
 ![](img/flow.png)
 
 *Walmart Mobile*
 
-Walmart chose Backbone to power their mobile web applications, creating two new extension frameworks in the process - Thorax and Lumbar. We'll be discussing both of these later in the book.
+Walmart chose Backbone to power its mobile web applications, creating two new extension frameworks in the process - Thorax and Lumbar. We'll be discussing both of these later in the book.
 
 ![](img/walmart-mobile.png)
 
 
 *Airbnb*
 
-Airbnb developed their mobile web app using Backbone and now use it across many of their products.
+Airbnb developed its mobile web app using Backbone and now uses it across many of its products.
 
 ![](img/airbnb.png)
 
