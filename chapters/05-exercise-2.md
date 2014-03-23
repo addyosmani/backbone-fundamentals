@@ -552,11 +552,11 @@ app.post( '/api/books', function( request, response ) {
 	});
 	book.save( function( err ) {
 		if( !err ) {
-			return console.log( 'created' );
-		} else {
-			return console.log( err );
-		}
-		return response.send( book );
+			console.log( 'created' );
+    	return response.send( book );
+    } else {
+      console.log( err );
+    }
 	});
 });
 ```
@@ -640,10 +640,10 @@ app.put( '/api/books/:id', function( request, response ) {
 		return book.save( function( err ) {
 			if( !err ) {
 				console.log( 'book updated' );
-			} else {
-				console.log( err );
-			}
-			return response.send( book );
+    		return response.send( book );
+    	} else {
+    		console.log( err );
+    	}
 		});
 	});
 });
