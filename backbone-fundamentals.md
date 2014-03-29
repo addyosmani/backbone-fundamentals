@@ -519,34 +519,34 @@ If you are interested in learning more about the variation of MVC which Backbone
 
 *Disqus*
 
-Disqus chose Backbone.js to power the latest version of their commenting widget. They felt it was the right choice for their distributed web app, given Backbone's small footprint and ease of extensibility.
+Disqus chose Backbone.js to power the latest version of its commenting widget. The Disqus team felt it was the right choice for their distributed web app, given Backbone's small footprint and ease of extensibility.
 
 ![](img/disqus.png)
 
 
 *Khan Academy*
 
-Offering a web app that aims to provide free world-class education to anyone anywhere, Khan use Backbone to keep their frontend code both modular and organized.
+Offering a web app that aims to provide free world-class education to anyone anywhere, Khan Academy uses Backbone to keep its frontend code both modular and organized.
 
 ![](img/khan-academy.png)
 
 
 *MetaLab*
 
-MetaLab created Flow, a task management app for teams using Backbone. Their workspace uses Backbone to create task views, activities, accounts, tags and more.
+MetaLab created Flow, a task management app for teams using Backbone. Its workspace uses Backbone to create task views, activities, accounts, tags and more.
 
 ![](img/flow.png)
 
 *Walmart Mobile*
 
-Walmart chose Backbone to power their mobile web applications, creating two new extension frameworks in the process - Thorax and Lumbar. We'll be discussing both of these later in the book.
+Walmart chose Backbone to power its mobile web applications, creating two new extension frameworks in the process - Thorax and Lumbar. We'll be discussing both of these later in the book.
 
 ![](img/walmart-mobile.png)
 
 
 *Airbnb*
 
-Airbnb developed their mobile web app using Backbone and now use it across many of their products.
+Airbnb developed its mobile web app using Backbone and now uses it across many of its products.
 
 ![](img/airbnb.png)
 
@@ -3974,11 +3974,11 @@ app.post( '/api/books', function( request, response ) {
 	});
 	book.save( function( err ) {
 		if( !err ) {
-			return console.log( 'created' );
-		} else {
-			return console.log( err );
-		}
-		return response.send( book );
+			console.log( 'created' );
+    	return response.send( book );
+    } else {
+      console.log( err );
+    }
 	});
 });
 ```
@@ -4062,10 +4062,10 @@ app.put( '/api/books/:id', function( request, response ) {
 		return book.save( function( err ) {
 			if( !err ) {
 				console.log( 'book updated' );
-			} else {
-				console.log( err );
-			}
-			return response.send( book );
+    		return response.send( book );
+    	} else {
+    		console.log( err );
+    	}
 		});
 	});
 });
@@ -9395,7 +9395,7 @@ In special situations you will need to take action on a triggered jQuery Mobile 
 
 ```javascript
 $('#myPage').live('pagebeforecreate', function(event){
-         console.log(page was inserted into the DOM');
+         console.log('page was inserted into the DOM');
    	//run your own enhancement scripting here...
           // prevent the page plugin from making its manipulations
   	return false;
@@ -9727,7 +9727,7 @@ it('the callback should be executed on success', function () {
 function getTodo(id, callback) {
     $.ajax({
         type: 'GET',
-        url: '/todos/'' + id,
+        url: '/todos/' + id,
         dataType: 'json',
         success: callback
     });
