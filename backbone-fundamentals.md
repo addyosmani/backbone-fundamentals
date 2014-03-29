@@ -519,34 +519,34 @@ If you are interested in learning more about the variation of MVC which Backbone
 
 *Disqus*
 
-Disqus chose Backbone.js to power the latest version of their commenting widget. They felt it was the right choice for their distributed web app, given Backbone's small footprint and ease of extensibility.
+Disqus chose Backbone.js to power the latest version of its commenting widget. The Disqus team felt it was the right choice for their distributed web app, given Backbone's small footprint and ease of extensibility.
 
 ![](img/disqus.png)
 
 
 *Khan Academy*
 
-Offering a web app that aims to provide free world-class education to anyone anywhere, Khan use Backbone to keep their frontend code both modular and organized.
+Offering a web app that aims to provide free world-class education to anyone anywhere, Khan Academy uses Backbone to keep its frontend code both modular and organized.
 
 ![](img/khan-academy.png)
 
 
 *MetaLab*
 
-MetaLab created Flow, a task management app for teams using Backbone. Their workspace uses Backbone to create task views, activities, accounts, tags and more.
+MetaLab created Flow, a task management app for teams using Backbone. Its workspace uses Backbone to create task views, activities, accounts, tags and more.
 
 ![](img/flow.png)
 
 *Walmart Mobile*
 
-Walmart chose Backbone to power their mobile web applications, creating two new extension frameworks in the process - Thorax and Lumbar. We'll be discussing both of these later in the book.
+Walmart chose Backbone to power its mobile web applications, creating two new extension frameworks in the process - Thorax and Lumbar. We'll be discussing both of these later in the book.
 
 ![](img/walmart-mobile.png)
 
 
 *Airbnb*
 
-Airbnb developed their mobile web app using Backbone and now use it across many of their products.
+Airbnb developed its mobile web app using Backbone and now uses it across many of its products.
 
 ![](img/airbnb.png)
 
@@ -5744,7 +5744,7 @@ Generally speaking, more developers opt for Solution 1 or 5 as:
 * The majority of their views may already rely on being in the DOM in their render() method
 * When the OuterView is re-rendered, views don't have to be re-initialized where re-initialization has the potential to cause memory leaks and issues with existing bindings
 
-The Backbone extensions [Marionette](#marionette) and [Thorax](#thorax) provide logic for nesting views, and rendering collections where each item has an associated view. Marionette provides APIs in JavaScript while Thorax provides APIs via Handlebars template helpers. We will examine both of these in an upcoming chapter.
+The Backbone extensions [Marionette](#marionettejs-backbone.marionette) and [Thorax](#thorax) provide logic for nesting views, and rendering collections where each item has an associated view. Marionette provides APIs in JavaScript while Thorax provides APIs via Handlebars template helpers. We will examine both of these in an upcoming chapter.
 
 (Thanks to [Lukas](http://stackoverflow.com/users/299189/lukas)  and [Ian Taylor](http://stackoverflow.com/users/154765/ian-storm-taylor) for these tips).
 
