@@ -172,7 +172,7 @@ it('the callback should be executed on success', function () {
 function getTodo(id, callback) {
     $.ajax({
         type: 'GET',
-        url: '/todos/'' + id,
+        url: '/todos/' + id,
         dataType: 'json',
         success: callback
     });
