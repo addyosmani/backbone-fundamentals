@@ -504,7 +504,7 @@ Now let’s look at the `TodoView` view. This will be in charge of individual To
 
     // Re-renders the titles of the todo item.
     render: function() {
-      this.$el.html( this.template( this.model.toJSON() ) );
+      this.$el.html( this.template( this.model.attributes ) );
       this.$input = this.$('.edit');
       return this;
     },
@@ -652,7 +652,7 @@ The next part of our tutorial is going to cover completing and deleting todos. T
 
     // Re-render the titles of the todo item.
     render: function() {
-      this.$el.html( this.template( this.model.toJSON() ) );
+      this.$el.html( this.template( this.model.attributes ) );
 
       this.$el.toggleClass( 'completed', this.model.get('completed') ); // NEW
       this.toggleVisible();                                             // NEW
