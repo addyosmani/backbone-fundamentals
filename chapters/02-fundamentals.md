@@ -28,17 +28,17 @@ Martin Fowler has done an excellent job of writing about the [origins](http://ma
 
 ### MVC Applied To The Web
 
-The web heavily relies on the HTTP protocol, which is stateless. This means that there is not a constantly open connection between the browser and server; each request instantiates a new communication channel between the two. Once the request initiator (e.g. a browser) gets a response the connection is closed. This fact creates a completely different context when compared to the one of the operating systems on which many of the original MVC ideas were developed. The MVC implementation has to conform to the web context. 
+The web heavily relies on the HTTP protocol, which is stateless. This means that there is not a constantly open connection between the browser and server; each request instantiates a new communication channel between the two. Once the request initiator (e.g. a browser) gets a response the connection is closed. This fact creates a completely different context when compared to the one of the operating systems on which many of the original MVC ideas were developed. The MVC implementation has to conform to the web context.
 
-An example of a server-side web application framework which tries to apply MVC to the web context is [Ruby On Rails](http://guides.rubyonrails.org/). 
+An example of a server-side web application framework which tries to apply MVC to the web context is [Ruby On Rails](http://guides.rubyonrails.org/).
 
 ![](img/rails_mvc.png)
 
 At its core are the three MVC components we would expect - the Model, View and Controller architecture. In Rails:
 
-* Models represent the data in an application and are typically used to manage rules for interacting with a specific database table. You generally have one table corresponding to one model with much of your application's business logic living within these models. 
-* Views represent your user interface, often taking the form of HTML that will be sent down to the browser. They're used to present application data to anything making requests from your application. 
-* Controllers offer the glue between models and views. Their responsibility is to process requests from the browser, ask your models for data and then supply this data to views so that they may be presented to the browser. 
+* Models represent the data in an application and are typically used to manage rules for interacting with a specific database table. You generally have one table corresponding to one model with much of your application's business logic living within these models.
+* Views represent your user interface, often taking the form of HTML that will be sent down to the browser. They're used to present application data to anything making requests from your application.
+* Controllers offer the glue between models and views. Their responsibility is to process requests from the browser, ask your models for data and then supply this data to views so that they may be presented to the browser.
 
 Although there's a clear separation of concerns that is MVC-like in Rails, it is actually using a different pattern called [Model2](http://en.wikipedia.org/wiki/Model2). One reason for this is that Rails does not notify views from the model or controllers - it just passes model data directly to the view.
 
@@ -66,13 +66,13 @@ The Server receives an HTTP request and routes it through a single entry point. 
 
 Several [studies](http://radar.oreilly.com/2009/07/velocity-making-your-site-fast.html) have confirmed that improvements to latency can have a positive impact on the usage and user engagement of sites and apps. This is at odds with the traditional approach to web app development which is very server-centric, requiring a complete page reload to move from one page to the next. Even with heavy caching in place, the browser still has to parse the CSS, JavaScript, and HTML and render the interface to the screen.
 
-In addition to resulting in a great deal of duplicated content being served back to the user, this approach affects both latency and the general responsiveness of the user experience. A trend to improve perceived latency in the past few years has been to move towards building Single Page Applications (SPAs) - apps which after an initial page load are able to handle subsequent navigations and requests for data without the need for a complete reload. 
+In addition to resulting in a great deal of duplicated content being served back to the user, this approach affects both latency and the general responsiveness of the user experience. A trend to improve perceived latency in the past few years has been to move towards building Single Page Applications (SPAs) - apps which after an initial page load are able to handle subsequent navigations and requests for data without the need for a complete reload.
 
 When a user navigates to a new view, additional content required for the view is requested using an XHR (XMLHttpRequest), typically communicating with a server-side REST API or endpoint. [Ajax](https://en.wikipedia.org/wiki/Ajax_(programming)) (Asynchronous JavaScript and XML) makes communication with the server asynchronous so that data is transferred and processed in the background, allowing the user to work on other parts of a page without interaction. This improves usability and responsiveness.
 
 SPAs can also take advantage of browser features like the [History API](http://diveintohtml5.info/history.html) to update the address seen in the location bar when moving from one view to another. These URLs also make it possible to bookmark and share a particular application state, without the need to navigate to completely new pages.
 
-The typical SPA consists of smaller pieces of interface representing logical entities, all of which have their own UI, business logic and data. A good example is a basket in a shopping web application which can have items added to it. This basket might be presented to the user in a box in the top right corner of the page (see the picture below): 
+The typical SPA consists of smaller pieces of interface representing logical entities, all of which have their own UI, business logic and data. A good example is a basket in a shopping web application which can have items added to it. This basket might be presented to the user in a box in the top right corner of the page (see the picture below):
 
 ![](img/wireframe_e_commerce.png)
 
@@ -163,12 +163,12 @@ var TodoView = Backbone.View.extend({
   // Re-render the titles of the todo item.
   render: function() {
     this.$el.html( this.todoTpl( this.model.toJSON() ) );
-    // $el here is a reference to the jQuery element 
+    // $el here is a reference to the jQuery element
     // associated with the view, todoTpl is a reference
-    // to an Underscore template and toJSON() returns an 
+    // to an Underscore template and toJSON() returns an
     // object containing the model's attributes
     // Altogether, the statement is replacing the HTML of
-    // a DOM element with the result of instantiating a 
+    // a DOM element with the result of instantiating a
     // template with the model's attributes.
     this.input = this.$('.edit');
     return this;
@@ -183,7 +183,7 @@ var TodoView = Backbone.View.extend({
   },
 
   updateOnEnter: function( e ) {
-    // executed on each keypress when in todo edit mode, 
+    // executed on each keypress when in todo edit mode,
     // but we'll wait for enter to get in action
   }
 });
@@ -196,13 +196,13 @@ TodoView is defined by extending Backbone.View and is instantiated with an assoc
 
 So far, we have seen that Backbone.Model implements the Model aspect of MVC and Backbone.View implements the View. However, as we noted earlier, Backbone departs from traditional MVC when it comes to Controllers - there is no Backbone.Controller!
 
-Instead, the Controller responsibility is addressed within the View. Recall that Controllers respond to requests and perform appropriate actions which may result in changes to the Model and updates to the View. In a single-page application, rather than having requests in the traditional sense, we have events. Events can be traditional browser DOM events (e.g., clicks) or internal application events such as Model changes. 
+Instead, the Controller responsibility is addressed within the View. Recall that Controllers respond to requests and perform appropriate actions which may result in changes to the Model and updates to the View. In a single-page application, rather than having requests in the traditional sense, we have events. Events can be traditional browser DOM events (e.g., clicks) or internal application events such as Model changes.
 
 In our TodoView, the ```events``` attribute fulfills the role of the Controller configuration, defining how events occurring within the View's DOM element are to be routed to event-handling methods defined in the View.
 
 While in this instance events help us relate Backbone to the MVC pattern, we will see them playing a much larger role in our SPA applications. Backbone.Event is a fundamental Backbone component which is mixed into both Backbone.Model and Backbone.View, providing them with rich event management capabilities. Note that the traditional controller role (Smalltalk-80 style) is performed by the template, not by the Backbone.View.
 
-This completes our first encounter with Backbone.js. The remainder of this book will explore the many features of the framework which build on these simple constructs. Before moving on, let's take a look at common features of JavaScript MV* frameworks.
+This completes our first encounter with Backbone.js. The remainder of this book will explore the many features which build on these simple constructs. Before moving on, let's take a look at common features of JavaScript MV* libraries and frameworks.
 
 ### Implementation Specifics
 
@@ -288,11 +288,11 @@ It's with Controllers that most JavaScript MVC frameworks depart from the tradit
 
 So does Backbone.js have Controllers? Not really. Backbone's Views typically contain "Controller" logic, and Routers are used to help manage application state, but neither are true Controllers according to classical MVC.
 
-In this respect, contrary to what might be mentioned in the official documentation or in blog posts, Backbone isn't truly an MVC framework. It's in fact better to see it a member of the MV* family which approaches architecture in its own way. There is of course nothing wrong with this, but it is important to distinguish between classical MVC and MV* should you be relying on discussions of MVC to help with your Backbone projects.
+In this respect, contrary to what might be mentioned in the official documentation or in blog posts, Backbone isn't truly an MVC library. It's in fact better to see it a member of the MV* family which approaches architecture in its own way. There is of course nothing wrong with this, but it is important to distinguish between classical MVC and MV* should you be relying on discussions of MVC to help with your Backbone projects.
 
 ## What does MVC give us?
 
-To summarize, the MVC pattern helps you keep your application logic separate from your user interface, making it easier to change and maintain both. Thanks to this separation of logic, it is more clear where changes to your data, interface, or business logic need to be made and for what your unit tests should be written. 
+To summarize, the MVC pattern helps you keep your application logic separate from your user interface, making it easier to change and maintain both. Thanks to this separation of logic, it is more clear where changes to your data, interface, or business logic need to be made and for what your unit tests should be written.
 
 ### Delving Deeper into MVC
 

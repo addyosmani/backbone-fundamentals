@@ -25,7 +25,7 @@ which just relies on jQuery. We could use this in a real example as follows:
 
 ```javascript
 ...
-initialize : function () { 
+initialize : function () {
     //...
 },
 
@@ -68,11 +68,11 @@ render : function () {
 }
 ```
 
-Here we are creating subviews in the parent view's `initialize()` method and rendering the subviews in the parent's `render()` method. The elements managed by the subviews exist in the parent's template and the `View.setElement()` method is used to re-assign the element associated with each subview. 
+Here we are creating subviews in the parent view's `initialize()` method and rendering the subviews in the parent's `render()` method. The elements managed by the subviews exist in the parent's template and the `View.setElement()` method is used to re-assign the element associated with each subview.
 
 `setElement()` changes a view's element, including re-delegating event handlers by removing them from the old element and binding them to the new element. Note that `setElement()` returns the view, allowing us to chain the call to `render()`.
 
-This works and has some positive qualities: you don't need to worry about maintaining the order of your DOM elements when appending, views are initialized early, and the render() method doesn't need to take on too many responsibilities at once. 
+This works and has some positive qualities: you don't need to worry about maintaining the order of your DOM elements when appending, views are initialized early, and the render() method doesn't need to take on too many responsibilities at once.
 
 Unfortunately, downsides are that you can't set the `tagName` property of subviews and events need to be re-delegated. The first solution doesn't suffer from this problem.
 
@@ -155,7 +155,7 @@ var OuterView = Backbone.View.extend({
     },
 
     render: function() {
-        this.$el.html('<div data-view-cid="' + this.child.cid + '"></div>');        
+        this.$el.html('<div data-view-cid="' + this.child.cid + '"></div>');
         _.each(this.children, function(view, cid) {
             this.$('[data-view-cid="' + cid + '"]').replaceWith(view.el);
         }, this);
@@ -204,9 +204,9 @@ ModelA = Backbone.Model.extend({
 }
 ```
 
-This allows you to reach the parent model in any child model function through `this.parent`. 
+This allows you to reach the parent model in any child model function through `this.parent`.
 
-Now, we have already discussed a few options for how to construct nested Views using Backbone. For the sake of simplicity, let us imagine that we are creating a new child view `ViewB` from within the `initialize()` method of `ViewA` below. `ViewB` can reach out over the `ViewA` model and listen out for changes on any of its nested models. 
+Now, we have already discussed a few options for how to construct nested Views using Backbone. For the sake of simplicity, let us imagine that we are creating a new child view `ViewB` from within the `initialize()` method of `ViewA` below. `ViewB` can reach out over the `ViewA` model and listen out for changes on any of its nested models.
 
 See inline for comments on exactly what each step is enabling:
 
@@ -262,7 +262,7 @@ In a scenario where you have a view containing another view, such as a photo gal
 
 The simplest solution is to just use `this.parentView.render();`.
 
-If however inversion of control is desired, events may be used to provide an equally valid solution. 
+If however inversion of control is desired, events may be used to provide an equally valid solution.
 
 Say we wish to begin rendering when a particular event has occurred. For the sake of example, let us call this event 'somethingHappened'. The parent view can bind notifications on the child view to know when the event has occurred. It can then render itself.
 
@@ -367,11 +367,11 @@ Backbone doesn't include support for nested models or collections out of the box
 
 **Solution**
 
-As we've seen, it's common to create collections representing groups of models using Backbone. It's also however common to wish to nest collections within models, depending on the type of application you are working on. 
+As we've seen, it's common to create collections representing groups of models using Backbone. It's also however common to wish to nest collections within models, depending on the type of application you are working on.
 
 Take for example a Building model that contains many Room models which could sit in a Rooms collection.
 
-You could expose a `this.rooms` collection for each building, allowing you to lazy-load rooms once a building has been opened. 
+You could expose a `this.rooms` collection for each building, allowing you to lazy-load rooms once a building has been opened.
 
 ```javascript
 var Building = Backbone.Model.extend({
@@ -854,7 +854,7 @@ var Note = Backbone.Model.extend({
 
 #### Event Aggregators And Mediators
 
-**Problem** 
+**Problem**
 
 How do I channel multiple event sources through a single object?
 
@@ -924,7 +924,7 @@ A Mediator is an object that coordinates interactions (logic and behavior) betwe
 
 **A Mediator For Backbone**
 
-Backbone doesn’t have the idea of a mediator built into it like a lot of other MV* frameworks do. But that doesn’t mean you can’t write one using a single line of code:
+Backbone doesn’t have the idea of a mediator built into it like a lot of MV* frameworks do. But that doesn’t mean you can’t write one using a single line of code:
 
 ```javascript
 var mediator = {};
