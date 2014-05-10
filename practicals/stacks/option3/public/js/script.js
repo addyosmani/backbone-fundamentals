@@ -142,7 +142,6 @@ $(function(){
     clear: function() {
       this.model.destroy();
     }
-
   });
 
   // The Application

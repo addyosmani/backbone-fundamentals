@@ -1,17 +1,17 @@
 define([
   'underscore', 
   'backbone', 
-  'libs/backbone/localstorage', 
+  'storage', 
   'models/todo'
   ], function(_, Backbone, Store, Todo){
-	  
+
 	var TodosCollection = Backbone.Collection.extend({
 
     // Reference to this collection's model.
     model: Todo,
 
     // Save all of the todo items under the `"todos"` namespace.
-    localStorage: new Store("todos"),
+    localStorage: new Store('todos'),
 
     // Filter down the list of all todo items that are finished.
     done: function() {
@@ -36,5 +36,5 @@ define([
     }
 
   });
-  return new TodosCollection;
+  return new TodosCollection();
 });

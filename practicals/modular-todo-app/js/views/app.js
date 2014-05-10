@@ -2,15 +2,14 @@ define([
   'jquery',
   'underscore', 
   'backbone',
-  'collections/todos',
-  'views/todos',
+  'views/todo',
   'text!templates/stats.html'
-  ], function($, _, Backbone, Todos, TodoView, statsTemplate){
+  ], function($, _, Backbone, TodoView, statsTemplate){
   var AppView = Backbone.View.extend({
 
     // Instead of generating a new element, bind to the existing skeleton of
     // the App already present in the HTML.
-    el: $("#todoapp"),
+    el: $('#todoapp'),
 
     // Our template for the line of statistics at the bottom of the app.
     statsTemplate: _.template(statsTemplate),
@@ -22,27 +21,28 @@ define([
       "click .todo-clear a": "clearCompleted"
     },
 
-    // At initialization we bind to the relevant events on the `Todos`
-    // collection, when items are added or changed. Kick things off by
+    // At initialization we listen to the relevant events on the `Todos`
+    // collection, when items are added or changed. This collection is
+    // passed on the constructor of this AppView. Kick things off by
     // loading any preexisting todos that might be saved in *localStorage*.
     initialize: function() {
       this.input    = this.$("#new-todo");
 
-      Todos.bind('add',     this.addOne, this);
-      Todos.bind('reset',   this.addAll, this);
-      Todos.bind('all',     this.render, this);
+      this.listenTo(this.collection, 'add', this.addOne);
+      this.listenTo(this.collection, 'reset', this.addAll);
+      this.listenTo(this.collection, 'all', this.render);
 
-      Todos.fetch();
+      this.collection.fetch();
     },
 
     // Re-rendering the App just means refreshing the statistics -- the rest
     // of the app doesn't change.
     render: function() {
-      var done = Todos.done().length;
+      var done = this.collection.done().length;
       this.$('#todo-stats').html(this.statsTemplate({
-        total:      Todos.length,
-        done:       Todos.done().length,
-        remaining:  Todos.remaining().length
+        total:      this.collection.length,
+        done:       this.collection.done().length,
+        remaining:  this.collection.remaining().length
       }));
     },
 
@@ -50,19 +50,19 @@ define([
     // appending its element to the `<ul>`.
     addOne: function(todo) {
       var view = new TodoView({model: todo});
-      this.$("#todo-list").append(view.render().el);
+      this.$('#todo-list').append(view.render().el);
     },
 
     // Add all items in the **Todos** collection at once.
     addAll: function() {
-      Todos.each(this.addOne);
+      this.collection.each(this.addOne);
     },
 
     // Generate the attributes for a new Todo item.
     newAttributes: function() {
       return {
         content: this.input.val(),
-        order:   Todos.nextOrder(),
+        order:   this.collection.nextOrder(),
         done:    false
       };
     },
@@ -71,25 +71,26 @@ define([
     // persisting it to *localStorage*.
     createOnEnter: function(e) {
       if (e.keyCode != 13) return;
-      Todos.create(this.newAttributes());
+      this.collection.create(this.newAttributes());
       this.input.val('');
     },
 
     // Clear all done todo items, destroying their models.
     clearCompleted: function() {
-      _.each(Todos.done(), function(todo){ todo.clear(); });
+      _.each(this.collection.done(), function(todo){ todo.clear(); });
       return false;
     },
 
     // Lazily show the tooltip that tells you to press `enter` to save
     // a new todo item, after one second.
-    showTooltip: function(e) {
-      var tooltip = this.$(".ui-tooltip-top");
-      var val = this.input.val();
+    showTooltip: function() {
+      var tooltip = this.$('.ui-tooltip-top'),
+          val = this.input.val(),
+          show;
       tooltip.fadeOut();
       if (this.tooltipTimeout) clearTimeout(this.tooltipTimeout);
-      if (val == '' || val == this.input.attr('placeholder')) return;
-      var show = function(){ tooltip.show().fadeIn(); };
+      if (val === '' || val === this.input.attr('placeholder')) return;
+      show = function(){ tooltip.show().fadeIn(); };
       this.tooltipTimeout = _.delay(show, 1000);
     }
 
