@@ -740,11 +740,11 @@ app.post( '/api/books', function( request, response ) {
 	});
 	book.save( function( err ) {
 		if( !err ) {
-			return console.log( 'created' );
+			console.log( 'created' );
+            return response.send( book );
 		} else {
 			return console.log( err );
 		}
-		return response.send( book );
 	});
 });
 
