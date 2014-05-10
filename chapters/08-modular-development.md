@@ -318,7 +318,7 @@ define( ["lib/backbone"], function ( Backbone ) {
     template: _.template($("#itemTemplate").html()),
 
     render: function() {
-      this.$el.html(this.template(this.model.toJSON()));
+      this.$el.html(this.template(this.model.attributes));
       return this;
     }
   });

@@ -411,7 +411,7 @@ var TodoView = Backbone.View.extend({
 
   // Re-render the title of the todo item.
   render: function() {
-    this.$el.html( this.todoTpl( this.model.toJSON() ) );
+    this.$el.html( this.todoTpl( this.model.attributes ) );
     this.input = this.$('.edit');
     return this;
   },
