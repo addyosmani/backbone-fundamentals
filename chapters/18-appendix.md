@@ -97,13 +97,8 @@ Cranium.Model.prototype.set = function(attrs){
     return this;
 };
 
-<<<<<<< HEAD
 // Returns clone of the Models data object
 // (used for view template rendering)
-=======
-// Returns clone of the Models data object 
-// (used for parsing payload before sending to server)
->>>>>>> aad6f38b0e95cf5a30b76a8a96d7d27d299566f7
 Cranium.Model.prototype.toJSON = function(options) {
     return _.clone(this.attributes);
 };
