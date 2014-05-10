@@ -276,7 +276,7 @@ define([
                 return "Edit Todo";
             },
             getSpecificTemplateValues : function () {
-                return this.model.toJSON();
+                return _.clone(this.model.attributes);
             },
             events : function () {
                 // merged events of BasicView, to add an older fix for back button functionality
