@@ -214,7 +214,7 @@ var todoView = new Cranium.View({
   template: _.template($('.todo-template').innerHTML),
 
   init: function (model) {
-    this.render( model.toJSON() );
+    this.render( model.attributes );
 
     this.on(model.id + 'update', this.render.bind(this));
   },
@@ -340,7 +340,7 @@ app.TodoView = Backbone.View.extend({
 
   // Re-render the titles of the todo item.
   render: function() {
-    this.$el.html( this.template( this.model.toJSON() ) );
+    this.$el.html( this.template( this.model.attributes ) );
     return this;
   },
 
