@@ -665,7 +665,7 @@ jQuery.ajax({
 		'releaseDate': new Date( 2008, 4, 1 ).getTime()
 	},
 	success: function( data, textStatus, jqXHR ) {
-		console.log( 'Post response:' );
+		console.log( 'Put response:' );
 		console.dir( data );
 		console.log( textStatus );
 		console.dir( jqXHR );
@@ -699,7 +699,7 @@ jQuery.ajax({
 	url: '/api/books/4f95a5251baa9b8a1b000001',
 	type: 'DELETE',
 	success: function( data, textStatus, jqXHR ) {
-		console.log( 'Post response:' );
+		console.log( 'Delete response:' );
 		console.dir( data );
 		console.log( textStatus );
 		console.dir( jqXHR );
