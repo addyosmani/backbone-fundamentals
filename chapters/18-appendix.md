@@ -311,7 +311,7 @@ A response to this could be that the view can also just be a View (as per MVC) b
 
 We've also seen that in Backbone the responsibility of a controller is shared with both the Backbone.View and Backbone.Router and in the following example we can actually see that aspects of that are certainly true.
 
-Here, our Backbone ```TodoView``` uses the Observer pattern to 'subscribe' to changes to a View's model in the line ```this.model.on('change',...)```. It also handles templating in the ```render()``` method, but unlike some other implementations, user interaction is also handled in the View (see ```events```).
+Here, our Backbone ```TodoView``` uses the Observer pattern to 'subscribe' to changes to a View's model in the line ```this.listenTo(this.model, 'change',...)```. It also handles templating in the ```render()``` method, but unlike some other implementations, user interaction is also handled in the View (see ```events```).
 
 
 ```javascript
@@ -334,8 +334,8 @@ app.TodoView = Backbone.View.extend({
   // a one-to-one correspondence between a **Todo** and a **TodoView** in this
   // app, we set a direct reference on the model for convenience.
   initialize: function() {
-    this.model.on( 'change', this.render, this );
-    this.model.on( 'destroy', this.remove, this );
+    this.listenTo( this.model, 'change', this.render );
+    this.listenTo( this.model, 'destroy', this.remove );
   },
 
   // Re-render the titles of the todo item.
