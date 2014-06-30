@@ -395,7 +395,7 @@ var myViews = (function(){
     return {
         TodoView: Backbone.View.extend({ .. }),
         TodosView: Backbone.View.extend({ .. }),
-        AboutView: Backbone.View.extend({ .. });
+        AboutView: Backbone.View.extend({ .. })
         //etc.
     };
 })();
