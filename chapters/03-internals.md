@@ -873,6 +873,8 @@ _.extend(TodoCounter, Backbone.Events);
 // Increment counterA, triggering an event
 var incrA = function(){ 
   TodoCounter.counterA += 1; 
+  // This triggering will not 
+  // produce any efect on the counters
   TodoCounter.trigger('event'); 
 };
 
@@ -886,7 +888,7 @@ var incrB = function(){
 TodoCounter.once('event', incrA);
 TodoCounter.once('event', incrB);
 
-// Trigger the event once again
+// Trigger the event for the first time
 TodoCounter.trigger('event');
 
 // Check out output
