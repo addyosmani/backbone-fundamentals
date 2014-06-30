@@ -144,6 +144,8 @@ var InnerView = Backbone.View.extend({
 });
 ```
 
+**Solution 5**
+
 If multiple views need to be nested at particular locations in a template, a hash of child views indexed by child view cids' should be created. In the template, use a custom HTML attribute named `data-view-cid` to create placeholder elements for each view to embed. Once the template has been rendered and its output appended to the parent view's `$el`, each placeholder can be queried for and replaced with the child view's `el`.
 
 A sample implementation containing a single child view could be written:
