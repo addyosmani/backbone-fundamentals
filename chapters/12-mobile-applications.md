@@ -276,7 +276,7 @@ define([
                 return "Edit Todo";
             },
             getSpecificTemplateValues : function () {
-                return this.model.toJSON();
+                return _.clone(this.model.attributes);
             },
             events : function () {
                 // merged events of BasicView, to add an older fix for back button functionality
@@ -580,7 +580,7 @@ In special situations you will need to take action on a triggered jQuery Mobile 
 
 ```javascript
 $('#myPage').live('pagebeforecreate', function(event){
-         console.log(page was inserted into the DOM');
+         console.log('page was inserted into the DOM');
    	//run your own enhancement scripting here...
           // prevent the page plugin from making its manipulations
   	return false;

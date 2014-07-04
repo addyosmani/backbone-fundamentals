@@ -411,7 +411,7 @@ var TodoView = Backbone.View.extend({
 
   // Re-render the title of the todo item.
   render: function() {
-    this.$el.html( this.todoTpl( this.model.toJSON() ) );
+    this.$el.html( this.todoTpl( this.model.attributes ) );
     this.input = this.$('.edit');
     return this;
   },
@@ -482,7 +482,7 @@ Note: When declaring a View, `options`, `el`, `tagName`, `id` and `className` ma
 
 **$el and $()**
 
-View logic often needs to invoke jQuery or Zepto functions on the `el` element and elements nested within it. Backbone makes it easy to do so by defining the `$el` property and `$()` function. The `view.$el` property is equivalent to `$(view.el)` and `view.$(selector)` is equivalent to `$(view.el).find(selector)`. In our TodosView example's render method, we see `this.$el` used to set the HTML of the element and `this.$()` used to find subelements of class 'edit'.
+View logic often needs to invoke jQuery or Zepto functions on the `el` element and elements nested within it. Backbone makes it easy to do so by defining the `$el` property and `$()` function. The `view.$el` property is equivalent to `$(view.el)` and `view.$(selector)` is equivalent to `$(view.el).find(selector)`. In our TodoView example's render method, we see `this.$el` used to set the HTML of the element and `this.$()` used to find subelements of class 'edit'.
 
 **setElement**
 
@@ -873,6 +873,8 @@ _.extend(TodoCounter, Backbone.Events);
 // Increment counterA, triggering an event
 var incrA = function(){ 
   TodoCounter.counterA += 1; 
+  // This triggering will not 
+  // produce any efect on the counters
   TodoCounter.trigger('event'); 
 };
 
@@ -886,7 +888,7 @@ var incrB = function(){
 TodoCounter.once('event', incrA);
 TodoCounter.once('event', incrB);
 
-// Trigger the event once again
+// Trigger the event for the first time
 TodoCounter.trigger('event');
 
 // Check out output

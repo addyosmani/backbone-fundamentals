@@ -223,7 +223,7 @@ app.BookView = Backbone.View.extend({
 
 	render: function() {
 		//this.el is what we defined in tagName. use $el to get access to jQuery html() function
-		this.$el.html( this.template( this.model.toJSON() ) );
+		this.$el.html( this.template( this.model.attributes ) );
 
 		return this;
 	}
@@ -550,13 +550,15 @@ app.post( '/api/books', function( request, response ) {
 		author: request.body.author,
 		releaseDate: request.body.releaseDate
 	});
-	book.save( function( err ) {
+	
+	return book.save( function( err ) {
 		if( !err ) {
-			return console.log( 'created' );
-		} else {
-			return console.log( err );
-		}
-		return response.send( book );
+			console.log( 'created' );
+			
+    	                return response.send( book );
+    		} else {
+      			console.log( err );
+    		}
 	});
 });
 ```
@@ -640,10 +642,10 @@ app.put( '/api/books/:id', function( request, response ) {
 		return book.save( function( err ) {
 			if( !err ) {
 				console.log( 'book updated' );
-			} else {
-				console.log( err );
-			}
-			return response.send( book );
+    		return response.send( book );
+    	} else {
+    		console.log( err );
+    	}
 		});
 	});
 });
@@ -663,7 +665,7 @@ jQuery.ajax({
 		'releaseDate': new Date( 2008, 4, 1 ).getTime()
 	},
 	success: function( data, textStatus, jqXHR ) {
-		console.log( 'Post response:' );
+		console.log( 'Put response:' );
 		console.dir( data );
 		console.log( textStatus );
 		console.dir( jqXHR );
@@ -697,7 +699,7 @@ jQuery.ajax({
 	url: '/api/books/4f95a5251baa9b8a1b000001',
 	type: 'DELETE',
 	success: function( data, textStatus, jqXHR ) {
-		console.log( 'Post response:' );
+		console.log( 'Delete response:' );
 		console.dir( data );
 		console.log( textStatus );
 		console.dir( jqXHR );
@@ -738,11 +740,11 @@ app.post( '/api/books', function( request, response ) {
 	});
 	book.save( function( err ) {
 		if( !err ) {
-			return console.log( 'created' );
+			console.log( 'created' );
+            return response.send( book );
 		} else {
 			return console.log( err );
 		}
-		return response.send( book );
 	});
 });
 

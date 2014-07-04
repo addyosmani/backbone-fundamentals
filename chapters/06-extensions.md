@@ -69,7 +69,7 @@ var MyView = Backbone.View.extend({
     var compiledTemplate = _.template(this.template);
 
     // render the template with the model data
-    var data = this.model.toJSON();
+    var data = _.clone(this.model.attributes);
     var html = compiledTemplate(data);
 
     // populate the view with the rendered html
@@ -126,7 +126,7 @@ var ZombieView = Backbone.View.extend({
   initialize: function() {
 
     // bind the model change to re-render this view
-    this.model.on('change', this.render, this);
+    this.listenTo(this.model, 'change', this.render);
 
   },
 
@@ -189,7 +189,7 @@ var ZombieView = Backbone.View.extend({
 
   initialize: function() {
     // bind the model change to re-render this view
-    this.model.on('change', this.render, this);
+    this.listenTo(this.model, 'change', this.render);
   },
 
   close: function() {

@@ -19,6 +19,10 @@ On this topic, we're going to go through a set of pagination components I (and a
 
 ### Backbone.Paginator
 
+**Note:** As of Backbone.Paginator [2.0](https://github.com/backbone-paginator/backbone.paginator/releases), the API to 
+the project has changed and includes updated which break backwards compatibility. The below section refers to Backbone.Paginator 
+1.0 which can still be downloaded [here](https://github.com/backbone-paginator/backbone.paginator/releases/tag/v1.0.0).
+
 When working with data on the client-side, the three types of pagination we are most likely to run into are:
 
 **Requests to a service layer (API)** - For example, query for results containing the term 'Paul' - if 5,000 results are available only display 20 results per page (leaving us with 250 possible result pages that can be navigated to).

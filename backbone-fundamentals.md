@@ -3972,13 +3972,15 @@ app.post( '/api/books', function( request, response ) {
 		author: request.body.author,
 		releaseDate: request.body.releaseDate
 	});
-	book.save( function( err ) {
+	
+	return book.save( function( err ) {
 		if( !err ) {
-			return console.log( 'created' );
-		} else {
-			return console.log( err );
-		}
-		return response.send( book );
+			console.log( 'created' );
+			
+    	                return response.send( book );
+    		} else {
+      			console.log( err );
+    		}
 	});
 });
 ```
@@ -4062,10 +4064,10 @@ app.put( '/api/books/:id', function( request, response ) {
 		return book.save( function( err ) {
 			if( !err ) {
 				console.log( 'book updated' );
-			} else {
-				console.log( err );
-			}
-			return response.send( book );
+    		return response.send( book );
+    	} else {
+    		console.log( err );
+    	}
 		});
 	});
 });
@@ -9395,7 +9397,7 @@ In special situations you will need to take action on a triggered jQuery Mobile 
 
 ```javascript
 $('#myPage').live('pagebeforecreate', function(event){
-         console.log(page was inserted into the DOM');
+         console.log('page was inserted into the DOM');
    	//run your own enhancement scripting here...
           // prevent the page plugin from making its manipulations
   	return false;
@@ -9727,7 +9729,7 @@ it('the callback should be executed on success', function () {
 function getTodo(id, callback) {
     $.ajax({
         type: 'GET',
-        url: '/todos/'' + id,
+        url: '/todos/' + id,
         dataType: 'json',
         success: callback
     });
@@ -9922,7 +9924,7 @@ Variables declared outside of the shared scope (i.e within the local scope `var 
 
 Now that we've reviewed some fundamentals, let's go through downloading Jasmine and getting everything set up to write tests.
 
-A standalone release of Jasmine can be [downloaded](https://github.com/pivotal/jasmine/downloads) from the official release page.
+A standalone release of Jasmine can be [downloaded](https://github.com/pivotal/jasmine/releases/) from the official release page.
 
 You'll need a file called SpecRunner.html in addition to the release. It can be downloaded from https://github.com/pivotal/jasmine/tree/master/lib/jasmine-core/example or as part of a download of the complete Jasmine [repo](https://github.com/pivotal/jasmine/zipball/master). Alternatively, you can ```git clone``` the main Jasmine repository from https://github.com/pivotal/jasmine.git.
 

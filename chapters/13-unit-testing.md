@@ -172,7 +172,7 @@ it('the callback should be executed on success', function () {
 function getTodo(id, callback) {
     $.ajax({
         type: 'GET',
-        url: '/todos/'' + id,
+        url: '/todos/' + id,
         dataType: 'json',
         success: callback
     });
@@ -367,7 +367,7 @@ Variables declared outside of the shared scope (i.e within the local scope `var 
 
 Now that we've reviewed some fundamentals, let's go through downloading Jasmine and getting everything set up to write tests.
 
-A standalone release of Jasmine can be [downloaded](https://github.com/pivotal/jasmine/downloads) from the official release page.
+A standalone release of Jasmine can be [downloaded](https://github.com/pivotal/jasmine/releases/) from the official release page.
 
 You'll need a file called SpecRunner.html in addition to the release. It can be downloaded from https://github.com/pivotal/jasmine/tree/master/lib/jasmine-core/example or as part of a download of the complete Jasmine [repo](https://github.com/pivotal/jasmine/zipball/master). Alternatively, you can ```git clone``` the main Jasmine repository from https://github.com/pivotal/jasmine.git.
 
@@ -902,7 +902,7 @@ var TodoView = Backbone.View.extend({
   },
 
   render: function() {
-    this.$el.html(this.template(this.model.toJSON()));
+    this.$el.html(this.template(this.model.attributes));
     return this;
   },
 
