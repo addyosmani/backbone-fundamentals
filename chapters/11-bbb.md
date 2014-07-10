@@ -453,7 +453,7 @@ define([
 ],
 
 // Map dependencies from above array.
-function(app) {
+function(app, Store) {
 
   // Create a new module.
   var Foo = app.module();
