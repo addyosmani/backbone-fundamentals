@@ -450,7 +450,7 @@ asyncTest('Can wire up view methods to DOM elements.', function() {
         start();
     }, 1000, 'Expected DOM Elt to exist');
 
-    // Trigget the view to toggle the 'done' status on an item or items
+    // Trigger the view to toggle the 'done' status on an item or items
     $('#todoList li input.check').click();
 
     // Check the done status for the model is true
