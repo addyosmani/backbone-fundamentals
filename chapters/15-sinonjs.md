@@ -330,9 +330,9 @@ For our collection we'll want to test that:
 * The order for Todos is numerically correct
 
 ```javascript
-  describe('Test Collection', function() {
+  module('Test Collection', {
 
-    beforeEach(function() {
+    setup: function() {
 
       // Define new todos
       this.todoOne = new Todo;
@@ -341,52 +341,47 @@ For our collection we'll want to test that:
       });
 
       // Create a new collection of todos for testing
-      return this.todos = new TodoList([this.todoOne, this.todoTwo]);
-    });
+      this.todos = new TodoList([this.todoOne, this.todoTwo]);
+    }
+  });
 
-    it('Has the Todo model', function() {
+    test('Has the Todo model', function() {
       equal(this.todos.model, Todo);
     });
 
-    it('Uses local storage', function() {
+    test('Uses local storage', function() {
       equal(this.todos.localStorage, new Store('todos-backbone'));
     });
 
-    describe('done', function() {
-      return it('returns an array of the todos that are done', function() {
+    // done
+      test('returns an array of the todos that are done', function() {
         this.todoTwo.done = true;
         deepEqual(this.todos.done(), [this.todoTwo]);
       });
-    });
 
-    describe('remaining', function() {
-      return it('returns an array of the todos that are not done', function() {
+    // remaining
+      test('returns an array of the todos that are not done', function() {
         this.todoTwo.done = true;
         deepEqual(this.todos.remaining(), [this.todoOne]);
       });
-    });
 
-    describe('clear', function() {
-      return it('destroys the current todo from local storage', function() {
+    // clear
+      test('destroys the current todo from local storage', function() {
         deepEqual(this.todos.models, [this.todoOne, this.todoTwo]);
         this.todos.clear(this.todoOne);
         deepEqual(this.todos.models, [this.todoTwo]);
       });
-    });
 
-    return describe('Order sets the order on todos ascending numerically', function() {
-      it('defaults to one when there arent any items in the collection', function() {
+    // Order sets the order on todos ascending numerically
+      test('defaults to one when there arent any items in the collection', function() {
         this.emptyTodos = new TodoApp.Collections.TodoList;
         equal(this.emptyTodos.order(), 0);
       });
 
-      return it('Increments the order by one each time', function() {
+      test('Increments the order by one each time', function() {
         equal(this.todos.order(this.todoOne), 1);
         equal(this.todos.order(this.todoTwo), 2);
       });
-    });
-
-  });
 ```
 
 
