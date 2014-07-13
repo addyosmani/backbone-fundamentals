@@ -346,27 +346,32 @@ For our collection we'll want to test that:
   });
 
     test('Has the Todo model', function() {
+      expect( 1 );
       equal(this.todos.model, Todo);
     });
 
     test('Uses local storage', function() {
+      expect( 1 );
       equal(this.todos.localStorage, new Store('todos-backbone'));
     });
 
     // done
       test('returns an array of the todos that are done', function() {
+        expect( 1 );
         this.todoTwo.done = true;
         deepEqual(this.todos.done(), [this.todoTwo]);
       });
 
     // remaining
       test('returns an array of the todos that are not done', function() {
+        expect( 1 );
         this.todoTwo.done = true;
         deepEqual(this.todos.remaining(), [this.todoOne]);
       });
 
     // clear
       test('destroys the current todo from local storage', function() {
+        expect( 2 );
         deepEqual(this.todos.models, [this.todoOne, this.todoTwo]);
         this.todos.clear(this.todoOne);
         deepEqual(this.todos.models, [this.todoTwo]);
@@ -374,11 +379,13 @@ For our collection we'll want to test that:
 
     // Order sets the order on todos ascending numerically
       test('defaults to one when there arent any items in the collection', function() {
+        expect( 1 );
         this.emptyTodos = new TodoApp.Collections.TodoList;
         equal(this.emptyTodos.order(), 0);
       });
 
       test('Increments the order by one each time', function() {
+        expect( 2 );
         equal(this.todos.order(this.todoOne), 1);
         equal(this.todos.order(this.todoTwo), 2);
       });
