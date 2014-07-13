@@ -345,44 +345,44 @@ For our collection we'll want to test that:
     });
 
     it('Has the Todo model', function() {
-      return expect(this.todos.model).toBe(Todo);
+      equal(this.todos.model, Todo);
     });
 
     it('Uses local storage', function() {
-      return expect(this.todos.localStorage).toEqual(new Store('todos-backbone'));
+      equal(this.todos.localStorage, new Store('todos-backbone'));
     });
 
     describe('done', function() {
       return it('returns an array of the todos that are done', function() {
         this.todoTwo.done = true;
-        return expect(this.todos.done()).toEqual([this.todoTwo]);
+        deepEqual(this.todos.done(), [this.todoTwo]);
       });
     });
 
     describe('remaining', function() {
       return it('returns an array of the todos that are not done', function() {
         this.todoTwo.done = true;
-        return expect(this.todos.remaining()).toEqual([this.todoOne]);
+        deepEqual(this.todos.remaining(), [this.todoOne]);
       });
     });
 
     describe('clear', function() {
       return it('destroys the current todo from local storage', function() {
-        expect(this.todos.models).toEqual([this.todoOne, this.todoTwo]);
+        deepEqual(this.todos.models, [this.todoOne, this.todoTwo]);
         this.todos.clear(this.todoOne);
-        return expect(this.todos.models).toEqual([this.todoTwo]);
+        deepEqual(this.todos.models, [this.todoTwo]);
       });
     });
 
     return describe('Order sets the order on todos ascending numerically', function() {
       it('defaults to one when there arent any items in the collection', function() {
         this.emptyTodos = new TodoApp.Collections.TodoList;
-        return expect(this.emptyTodos.order()).toEqual(0);
+        equal(this.emptyTodos.order(), 0);
       });
 
       return it('Increments the order by one each time', function() {
-        expect(this.todos.order(this.todoOne)).toEqual(1);
-        return expect(this.todos.order(this.todoTwo)).toEqual(2);
+        equal(this.todos.order(this.todoOne), 1);
+        equal(this.todos.order(this.todoTwo), 2);
       });
     });
 
