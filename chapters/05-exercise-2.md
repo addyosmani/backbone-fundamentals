@@ -434,35 +434,21 @@ Create a file named server.js in the project root containing the following code:
 ```javascript
 // Module dependencies.
 var application_root = __dirname,
-	express = require( 'express' ), //Web framework
-	path = require( 'path' ), //Utilities for dealing with file paths
-	mongoose = require( 'mongoose' ); //MongoDB integration
+    express = require( 'express' ), //Web framework
+    path = require( 'path' ), //Utilities for dealing with file paths
+    mongoose = require( 'mongoose' ); //MongoDB integration
 
 //Create server
 var app = express();
 
-// Configure server
-app.configure( function() {
-	//parses request body and populates request.body
-	app.use( express.bodyParser() );
-
-	//checks request.body for HTTP method overrides
-	app.use( express.methodOverride() );
-
-	//perform route lookup based on url and HTTP method
-	app.use( app.router );
-
-	//Where to serve static content
-	app.use( express.static( path.join( application_root, 'site') ) );
-
-	//Show all errors in development
-	app.use( express.errorHandler({ dumpExceptions: true, showStack: true }));
-});
+//Where to serve static content
+app.use( express.static( path.join( application_root, 'site') ) );
 
 //Start server
 var port = 4711;
+
 app.listen( port, function() {
-	console.log( 'Express server listening on port %d in %s mode', port, app.settings.env );
+    console.log( 'Express server listening on port %d in %s mode', port, app.settings.env );
 });
 ```
 
