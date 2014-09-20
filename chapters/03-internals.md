@@ -874,7 +874,7 @@ _.extend(TodoCounter, Backbone.Events);
 var incrA = function(){ 
   TodoCounter.counterA += 1; 
   // This triggering will not 
-  // produce any efect on the counters
+  // produce any effect on the counters
   TodoCounter.trigger('event'); 
 };
 
