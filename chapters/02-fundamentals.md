@@ -251,7 +251,7 @@ Let's compare two examples of HTML templates. One is implemented using the popul
 
 ```html
 <div class="view">
-  <input class="toggle" type="checkbox" {{#if completed}} "checked" {{/if}}>
+  <input class="toggle" type="checkbox" {{#if completed}} checked {{/if}}>
   <label>{{title}}</label>
   <button class="destroy"></button>
 </div>
