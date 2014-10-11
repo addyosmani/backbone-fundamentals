@@ -439,7 +439,7 @@ Let's compare two examples of HTML templates. One is implemented using the popul
 
 ```html
 <div class="view">
-  <input class="toggle" type="checkbox" {{#if completed}} "checked" {{/if}}>
+  <input class="toggle" type="checkbox" {{#if completed}} checked {{/if}}>
   <label>{{title}}</label>
   <button class="destroy"></button>
 </div>
@@ -1434,7 +1434,7 @@ _.extend(TodoCounter, Backbone.Events);
 var incrA = function(){ 
   TodoCounter.counterA += 1; 
   // This triggering will not 
-  // produce any efect on the counters
+  // produce any effect on the counters
   TodoCounter.trigger('event'); 
 };
 
@@ -3858,35 +3858,21 @@ Create a file named server.js in the project root containing the following code:
 ```javascript
 // Module dependencies.
 var application_root = __dirname,
-	express = require( 'express' ), //Web framework
-	path = require( 'path' ), //Utilities for dealing with file paths
-	mongoose = require( 'mongoose' ); //MongoDB integration
+    express = require( 'express' ), //Web framework
+    path = require( 'path' ), //Utilities for dealing with file paths
+    mongoose = require( 'mongoose' ); //MongoDB integration
 
 //Create server
 var app = express();
 
-// Configure server
-app.configure( function() {
-	//parses request body and populates request.body
-	app.use( express.bodyParser() );
-
-	//checks request.body for HTTP method overrides
-	app.use( express.methodOverride() );
-
-	//perform route lookup based on url and HTTP method
-	app.use( app.router );
-
-	//Where to serve static content
-	app.use( express.static( path.join( application_root, 'site') ) );
-
-	//Show all errors in development
-	app.use( express.errorHandler({ dumpExceptions: true, showStack: true }));
-});
+//Where to serve static content
+app.use( express.static( path.join( application_root, 'site') ) );
 
 //Start server
 var port = 4711;
+
 app.listen( port, function() {
-	console.log( 'Express server listening on port %d in %s mode', port, app.settings.env );
+    console.log( 'Express server listening on port %d in %s mode', port, app.settings.env );
 });
 ```
 
@@ -4478,6 +4464,15 @@ var MyView = Backbone.View.extend({
 Once this is in place, you need to create an instance of your view and pass your model into it. Then you can take the view's `el` and append it to the DOM in order to display the view.
 
 ```javascript
+
+var Person = Backbone.Model.extend({
+  defaults: {
+    "firstName": "Jeremy",
+    "lastName": "Ashkenas",
+    "email":    "jeremy@example.com"
+  }
+});
+
 var Derick = new Person({
   firstName: 'Derick',
   lastName: 'Bailey',
@@ -4540,14 +4535,6 @@ If we create two instances of this view using the same variable name for both in
 
 
 ```javascript
-
-var Person = Backbone.Model.extend({
-  defaults: {
-    "firstName": "Jeremy",
-    "lastName": "Ashkenas",
-    "email":    "jeremy@example.com"
-  }
-});
 
 var Derick = new Person({
   firstName: 'Derick',
@@ -4729,7 +4716,7 @@ TodoMVC.addRegions({
   footer: '#footer'
 });
 
-TodoMVC.on('initialize:after', function() {
+TodoMVC.on('start', function() {
   Backbone.history.start();
 });
 ```
@@ -5096,8 +5083,8 @@ TodoMVC.module('TodoList.Views', function(Views, App, Backbone, Marionette, $, _
 
   Views.ListView = Backbone.Marionette.CompositeView.extend({
       template: '#template-todoListCompositeView',
-      itemView: Views.ItemView,
-      itemViewContainer: '#todo-list',
+      childView: Views.ItemView,
+      childViewContainer: '#todo-list',
 
       ui: {
         toggle: '#toggle-all'
@@ -8686,7 +8673,7 @@ define([
 ],
 
 // Map dependencies from above array.
-function(app) {
+function(app, Store) {
 
   // Create a new module.
   var Foo = app.module();
@@ -10197,7 +10184,7 @@ expect($('#some-fixture')).to<the rest of your matcher would go here>
 
 The jasmine-jquery plugin loads fixtures from a directory named spec/javascripts/fixtures by default. If you wish to configure this path you can do so by initially setting ```jasmine.getFixtures().fixturesPath = 'your custom path'```.
 
-Finally, jasmine-jquery includes support for spying on jQuery events without the need for any extra plumbing work. This can be done using the ```spyOnEvent()``` and ```assert(eventName).toHaveBeenTriggered(selector)``` functions. For example:
+Finally, jasmine-jquery includes support for spying on jQuery events without the need for any extra plumbing work. This can be done using the ```spyOnEvent()``` and ```expect(eventName).toHaveBeenTriggeredOn(selector)``` functions. For example:
 
 ```javascript
 spyOnEvent($('#el'), 'click');
@@ -11322,9 +11309,9 @@ For our collection we'll want to test that:
 * The order for Todos is numerically correct
 
 ```javascript
-  describe('Test Collection', function() {
+  module('Test Collection', {
 
-    beforeEach(function() {
+    setup: function() {
 
       // Define new todos
       this.todoOne = new Todo;
@@ -11333,52 +11320,54 @@ For our collection we'll want to test that:
       });
 
       // Create a new collection of todos for testing
-      return this.todos = new TodoList([this.todoOne, this.todoTwo]);
-    });
-
-    it('Has the Todo model', function() {
-      return expect(this.todos.model).toBe(Todo);
-    });
-
-    it('Uses local storage', function() {
-      return expect(this.todos.localStorage).toEqual(new Store('todos-backbone'));
-    });
-
-    describe('done', function() {
-      return it('returns an array of the todos that are done', function() {
-        this.todoTwo.done = true;
-        return expect(this.todos.done()).toEqual([this.todoTwo]);
-      });
-    });
-
-    describe('remaining', function() {
-      return it('returns an array of the todos that are not done', function() {
-        this.todoTwo.done = true;
-        return expect(this.todos.remaining()).toEqual([this.todoOne]);
-      });
-    });
-
-    describe('clear', function() {
-      return it('destroys the current todo from local storage', function() {
-        expect(this.todos.models).toEqual([this.todoOne, this.todoTwo]);
-        this.todos.clear(this.todoOne);
-        return expect(this.todos.models).toEqual([this.todoTwo]);
-      });
-    });
-
-    return describe('Order sets the order on todos ascending numerically', function() {
-      it('defaults to one when there arent any items in the collection', function() {
-        this.emptyTodos = new TodoApp.Collections.TodoList;
-        return expect(this.emptyTodos.order()).toEqual(0);
-      });
-
-      return it('Increments the order by one each time', function() {
-        expect(this.todos.order(this.todoOne)).toEqual(1);
-        return expect(this.todos.order(this.todoTwo)).toEqual(2);
-      });
-    });
-
+      this.todos = new TodoList([this.todoOne, this.todoTwo]);
+    }
   });
+
+    test('Has the Todo model', function() {
+      expect( 1 );
+      equal(this.todos.model, Todo);
+    });
+
+    test('Uses local storage', function() {
+      expect( 1 );
+      equal(this.todos.localStorage, new Store('todos-backbone'));
+    });
+
+    // done
+      test('returns an array of the todos that are done', function() {
+        expect( 1 );
+        this.todoTwo.done = true;
+        deepEqual(this.todos.done(), [this.todoTwo]);
+      });
+
+    // remaining
+      test('returns an array of the todos that are not done', function() {
+        expect( 1 );
+        this.todoTwo.done = true;
+        deepEqual(this.todos.remaining(), [this.todoOne]);
+      });
+
+    // clear
+      test('destroys the current todo from local storage', function() {
+        expect( 2 );
+        deepEqual(this.todos.models, [this.todoOne, this.todoTwo]);
+        this.todos.clear(this.todoOne);
+        deepEqual(this.todos.models, [this.todoTwo]);
+      });
+
+    // Order sets the order on todos ascending numerically
+      test('defaults to one when there arent any items in the collection', function() {
+        expect( 1 );
+        this.emptyTodos = new TodoApp.Collections.TodoList;
+        equal(this.emptyTodos.order(), 0);
+      });
+
+      test('Increments the order by one each time', function() {
+        expect( 2 );
+        equal(this.todos.order(this.todoOne), 1);
+        equal(this.todos.order(this.todoTwo), 2);
+      });
 ```
 
 
@@ -11442,7 +11431,7 @@ asyncTest('Can wire up view methods to DOM elements.', function() {
         start();
     }, 1000, 'Expected DOM Elt to exist');
 
-    // Trigget the view to toggle the 'done' status on an item or items
+    // Trigger the view to toggle the 'done' status on an item or items
     $('#todoList li input.check').click();
 
     // Check the done status for the model is true
