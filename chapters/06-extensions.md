@@ -81,6 +81,15 @@ var MyView = Backbone.View.extend({
 Once this is in place, you need to create an instance of your view and pass your model into it. Then you can take the view's `el` and append it to the DOM in order to display the view.
 
 ```javascript
+
+var Person = Backbone.Model.extend({
+  defaults: {
+    "firstName": "Jeremy",
+    "lastName": "Ashkenas",
+    "email":    "jeremy@example.com"
+  }
+});
+
 var Derick = new Person({
   firstName: 'Derick',
   lastName: 'Bailey',
@@ -143,14 +152,6 @@ If we create two instances of this view using the same variable name for both in
 
 
 ```javascript
-
-var Person = Backbone.Model.extend({
-  defaults: {
-    "firstName": "Jeremy",
-    "lastName": "Ashkenas",
-    "email":    "jeremy@example.com"
-  }
-});
 
 var Derick = new Person({
   firstName: 'Derick',
