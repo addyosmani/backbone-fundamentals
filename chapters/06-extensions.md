@@ -318,7 +318,7 @@ Having learned about Marionette's high-level concepts, let's explore refactoring
 
 Our final implementation will be visually and functionally equivalent to the original app, as seen below.
 
-![](/img/marionette_todo0.png)
+![](img/marionette_todo0.png)
 
 First, we define an application object representing our base TodoMVC app. This will contain initialization code and define the default layout regions for our app. 
 
