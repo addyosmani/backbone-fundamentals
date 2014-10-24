@@ -397,7 +397,8 @@ Create a file called `package.json` in the root of your project. It should look 
 	"dependencies": {
 		"express": "~3.1.0",
 		"path": "~0.4.9",
-		"mongoose": "~3.5.5"
+		"mongoose": "~3.5.5",
+		"body-parser": "~1.9.1"
 	}
 }
 
@@ -416,6 +417,7 @@ Your folder structure should look something like this:
 ```
 node_modules/
   .bin/
+  body-parser/
   express/
   mongoose/
   path/
@@ -435,6 +437,7 @@ Create a file named server.js in the project root containing the following code:
 // Module dependencies.
 var application_root = __dirname,
     express = require( 'express' ), //Web framework
+    bodyParser = require('body-parser'); //Parser for reading request body
     path = require( 'path' ), //Utilities for dealing with file paths
     mongoose = require( 'mongoose' ); //MongoDB integration
 
@@ -443,6 +446,7 @@ var app = express();
 
 //Where to serve static content
 app.use( express.static( path.join( application_root, 'site') ) );
+app.use(bodyParser());
 
 //Start server
 var port = 4711;
