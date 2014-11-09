@@ -734,7 +734,7 @@ Now let's look at what happens when we click on a todo's destroy button:
 
 That's all there is to it!
 
-If you want to see an example of those, see the [complete source](https://github.com/tastejs/todomvc/tree/gh-pages/architecture-examples/backbone).
+If you want to see an example of those, see the [complete source](https://github.com/tastejs/todomvc/tree/gh-pages/examples/backbone).
 
 ## Todo routing
 
