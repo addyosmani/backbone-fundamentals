@@ -82,36 +82,36 @@ Topics will include MVC theory and how to build applications using Backbone's Mo
 
 Here is a peek at what you will be learning in each chapter:
 
-<i>Chapter 2, Fundamentals</i> traces the history of the MVC design pattern and introduces how it is implemented by Backbone.js and other JavaScript frameworks.
+<i>Chapter 2, Fundamentals</i>, traces the history of the MVC design pattern and introduces how it is implemented by Backbone.js and other JavaScript frameworks.
 
-<i>Chapter 3, Backbone Basics</i> covers the major features of the Backbone.js core and the technologies and techniques you will need to know in order to apply it.
+<i>Chapter 3, Backbone Basics</i>, covers the major features of the Backbone.js core and the technologies and techniques you will need to know in order to apply it.
 
-<i>Chapter 4, Exercise 1: Todos - Your First Backbone.js App</i> takes you step-by-step through development of a simple client-side Todo List application.
+<i>Chapter 4, Exercise 1: Todos - Your First Backbone.js App</i>, takes you step-by-step through development of a simple client-side Todo List application.
 
-<i>Chapter 5, Exercise 2: Book Library - Your First RESTful Backbone.js App</i> walks you through development of a Book Library application which persists its model to a server using a REST API.
+<i>Chapter 5, Exercise 2: Book Library - Your First RESTful Backbone.js App</i>, walks you through development of a Book Library application which persists its model to a server using a REST API.
 
-<i>Chapter 6, Backbone Extensions</i> describes Backbone.Marionette and Thorax, two extension frameworks which add features to Backbone.js that are useful for developing large-scale applications.
+<i>Chapter 6, Backbone Extensions</i>, describes Backbone.Marionette and Thorax, two extension frameworks which add features to Backbone.js that are useful for developing large-scale applications.
 
-<i>Chapter 7, Common Problems and Solutions</i> reviews common issues you may encounter when using Backbone.js and ways of addressing them.
+<i>Chapter 7, Common Problems and Solutions</i>, reviews common issues you may encounter when using Backbone.js and ways of addressing them.
 
-<i>Chapter 8, Modular Development</i> looks at how AMD modules and RequireJS can be used to modularize your code.
+<i>Chapter 8, Modular Development</i>, looks at how AMD modules and RequireJS can be used to modularize your code.
 
-<i>Chapter 9, Exercise 3: Todos - Your First Modular Backbone + RequireJS App</i> takes you through rewriting the app created in Exercise 1 to be more modular with the help of RequireJS.
+<i>Chapter 9, Exercise 3: Todos - Your First Modular Backbone + RequireJS App</i>, takes you through rewriting the app created in Exercise 1 to be more modular with the help of RequireJS.
 
-<i>Chapter 10, Paginating Backbone Requests & Collections</i> walks through how to use the Backbone.Paginator plugin to paginate data for your Collections.
+<i>Chapter 10, Paginating Backbone Requests & Collections</i>, walks through how to use the Backbone.Paginator plugin to paginate data for your Collections.
 
-<i>Chapter 11, Backbone Boilerplate And Grunt BBB</i> introduces powerful tools you can use to bootstrap a new Backbone.js application with boilerplate code.
+<i>Chapter 11, Backbone Boilerplate And Grunt BBB</i>, introduces powerful tools you can use to bootstrap a new Backbone.js application with boilerplate code.
 
-<i>Chapter 12, Mobile Applications</i> addresses the issues that arise when using Backbone with jQuery Mobile.
+<i>Chapter 12, Mobile Applications</i>, addresses the issues that arise when using Backbone with jQuery Mobile.
 
-<i>Chapter 13, Jasmine</i> covers how to unit test Backbone code using the Jasmine test framework.
+<i>Chapter 13, Jasmine</i>, covers how to unit test Backbone code using the Jasmine test framework.
 
-<i>Chapter 14, QUnit</i> discusses how to use QUnit for unit testing.
+<i>Chapter 14, QUnit</i>, discusses how to use QUnit for unit testing.
 
-<i>Chapter 15, SinonJS</i> discusses how to use SinonJS for unit testing your Backbone apps.
+<i>Chapter 15, SinonJS</i>, discusses how to use SinonJS for unit testing your Backbone apps.
 
-<i>Chapter 16, Resources</i> provides references to additional Backbone-related resources.
+<i>Chapter 16, Resources</i>, provides references to additional Backbone-related resources.
 
-<i>Chapter 17, Conclusions</i> wraps up our tour through the world of Backbone.js development.
+<i>Chapter 17, Conclusions</i>, wraps up our tour through the world of Backbone.js development.
 
-<i>Chapter 18, Appendix</i> returns to our design pattern discussion by contrasting MVC with the Model-View-Presenter (MVP) pattern and examines how Backbone.js relates to both. A walkthrough of writing a Backbone-like library from scratch and other topics are also covered.
+<i>Chapter 18, Appendix</i>, returns to our design pattern discussion by contrasting MVC with the Model-View-Presenter (MVP) pattern and examines how Backbone.js relates to both. A walkthrough of writing a Backbone-like library from scratch and other topics are also covered.
