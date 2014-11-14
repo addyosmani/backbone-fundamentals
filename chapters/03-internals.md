@@ -712,7 +712,7 @@ var Todo = Backbone.Model.extend({
 });
 
 var TodosCollection = Backbone.Collection.extend({
-  model: Todo,
+  model: Todo
 });
 
 var a = new Todo({ title: 'Go to Jamaica.'}),
