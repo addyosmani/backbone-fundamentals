@@ -544,8 +544,7 @@ app.post( '/api/books', function( request, response ) {
 	return book.save( function( err ) {
 		if( !err ) {
 			console.log( 'created' );
-			
-    	                return response.send( book );
+			return response.send( book );
     		} else {
       			console.log( err );
     		}
