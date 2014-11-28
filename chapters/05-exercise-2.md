@@ -437,7 +437,7 @@ Create a file named server.js in the project root containing the following code:
 // Module dependencies.
 var application_root = __dirname,
     express = require( 'express' ), //Web framework
-    bodyParser = require('body-parser'); //Parser for reading request body
+    bodyParser = require('body-parser'), //Parser for reading request body
     path = require( 'path' ), //Utilities for dealing with file paths
     mongoose = require( 'mongoose' ); //MongoDB integration
 
