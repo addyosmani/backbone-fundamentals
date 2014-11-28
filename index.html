@@ -385,23 +385,23 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <p>The goal of this book is to create an authoritative and centralized repository of information that can help those developing real-world apps with Backbone. If you come across a section or topic which you think could be improved or expanded on, please feel free to submit an issue (or better yet, a pull-request) on the book’s <a href="https://github.com/addyosmani/backbone-fundamentals">GitHub site</a>. It won’t take long and you’ll be helping other developers avoid the problems you ran into.</p>
 <p>Topics will include MVC theory and how to build applications using Backbone’s Models, Views, Collections, and Routers. I’ll also be taking you through advanced topics like modular development with Backbone.js and AMD (via RequireJS), solutions to common problems like nested views, how to solve routing problems with Backbone and jQuery Mobile, and much more.</p>
 <p>Here is a peek at what you will be learning in each chapter:</p>
-<p><i>Chapter 2, Fundamentals</i> traces the history of the MVC design pattern and introduces how it is implemented by Backbone.js and other JavaScript frameworks.</p>
-<p><i>Chapter 3, Backbone Basics</i> covers the major features of the Backbone.js core and the technologies and techniques you will need to know in order to apply it.</p>
-<p><i>Chapter 4, Exercise 1: Todos - Your First Backbone.js App</i> takes you step-by-step through development of a simple client-side Todo List application.</p>
-<p><i>Chapter 5, Exercise 2: Book Library - Your First RESTful Backbone.js App</i> walks you through development of a Book Library application which persists its model to a server using a REST API.</p>
-<p><i>Chapter 6, Backbone Extensions</i> describes Backbone.Marionette and Thorax, two extension frameworks which add features to Backbone.js that are useful for developing large-scale applications.</p>
-<p><i>Chapter 7, Common Problems and Solutions</i> reviews common issues you may encounter when using Backbone.js and ways of addressing them.</p>
-<p><i>Chapter 8, Modular Development</i> looks at how AMD modules and RequireJS can be used to modularize your code.</p>
-<p><i>Chapter 9, Exercise 3: Todos - Your First Modular Backbone + RequireJS App</i> takes you through rewriting the app created in Exercise 1 to be more modular with the help of RequireJS.</p>
-<p><i>Chapter 10, Paginating Backbone Requests &amp; Collections</i> walks through how to use the Backbone.Paginator plugin to paginate data for your Collections.</p>
-<p><i>Chapter 11, Backbone Boilerplate And Grunt BBB</i> introduces powerful tools you can use to bootstrap a new Backbone.js application with boilerplate code.</p>
-<p><i>Chapter 12, Mobile Applications</i> addresses the issues that arise when using Backbone with jQuery Mobile.</p>
-<p><i>Chapter 13, Jasmine</i> covers how to unit test Backbone code using the Jasmine test framework.</p>
-<p><i>Chapter 14, QUnit</i> discusses how to use QUnit for unit testing.</p>
-<p><i>Chapter 15, SinonJS</i> discusses how to use SinonJS for unit testing your Backbone apps.</p>
-<p><i>Chapter 16, Resources</i> provides references to additional Backbone-related resources.</p>
-<p><i>Chapter 17, Conclusions</i> wraps up our tour through the world of Backbone.js development.</p>
-<p><i>Chapter 18, Appendix</i> returns to our design pattern discussion by contrasting MVC with the Model-View-Presenter (MVP) pattern and examines how Backbone.js relates to both. A walkthrough of writing a Backbone-like library from scratch and other topics are also covered.</p>
+<p><i>Chapter 2, Fundamentals</i>, traces the history of the MVC design pattern and introduces how it is implemented by Backbone.js and other JavaScript frameworks.</p>
+<p><i>Chapter 3, Backbone Basics</i>, covers the major features of the Backbone.js core and the technologies and techniques you will need to know in order to apply it.</p>
+<p><i>Chapter 4, Exercise 1: Todos - Your First Backbone.js App</i>, takes you step-by-step through development of a simple client-side Todo List application.</p>
+<p><i>Chapter 5, Exercise 2: Book Library - Your First RESTful Backbone.js App</i>, walks you through development of a Book Library application which persists its model to a server using a REST API.</p>
+<p><i>Chapter 6, Backbone Extensions</i>, describes Backbone.Marionette and Thorax, two extension frameworks which add features to Backbone.js that are useful for developing large-scale applications.</p>
+<p><i>Chapter 7, Common Problems and Solutions</i>, reviews common issues you may encounter when using Backbone.js and ways of addressing them.</p>
+<p><i>Chapter 8, Modular Development</i>, looks at how AMD modules and RequireJS can be used to modularize your code.</p>
+<p><i>Chapter 9, Exercise 3: Todos - Your First Modular Backbone + RequireJS App</i>, takes you through rewriting the app created in Exercise 1 to be more modular with the help of RequireJS.</p>
+<p><i>Chapter 10, Paginating Backbone Requests &amp; Collections</i>, walks through how to use the Backbone.Paginator plugin to paginate data for your Collections.</p>
+<p><i>Chapter 11, Backbone Boilerplate And Grunt BBB</i>, introduces powerful tools you can use to bootstrap a new Backbone.js application with boilerplate code.</p>
+<p><i>Chapter 12, Mobile Applications</i>, addresses the issues that arise when using Backbone with jQuery Mobile.</p>
+<p><i>Chapter 13, Jasmine</i>, covers how to unit test Backbone code using the Jasmine test framework.</p>
+<p><i>Chapter 14, QUnit</i>, discusses how to use QUnit for unit testing.</p>
+<p><i>Chapter 15, SinonJS</i>, discusses how to use SinonJS for unit testing your Backbone apps.</p>
+<p><i>Chapter 16, Resources</i>, provides references to additional Backbone-related resources.</p>
+<p><i>Chapter 17, Conclusions</i>, wraps up our tour through the world of Backbone.js development.</p>
+<p><i>Chapter 18, Appendix</i>, returns to our design pattern discussion by contrasting MVC with the Model-View-Presenter (MVP) pattern and examines how Backbone.js relates to both. A walkthrough of writing a Backbone-like library from scratch and other topics are also covered.</p>
 <h1 id="fundamentals">Fundamentals</h1>
 <p>Design patterns are proven solutions to common development problems that can help us improve the organization and structure of our applications. By using patterns, we benefit from the collective experience of skilled developers who have repeatedly solved similar problems.</p>
 <p>Historically, developers creating desktop and server-class applications have had a wealth of design patterns available for them to lean on, but it’s only been in the past few years that such patterns have been applied to client-side development.</p>
@@ -420,7 +420,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <p>Developers are sometimes surprised when they learn that the Observer pattern (nowadays commonly implemented as a Publish/Subscribe system) was included as a part of MVC’s architecture decades ago. In Smalltalk-80’s MVC, the View and Controller both observe the Model: anytime the Model changes, the Views react. A simple example of this is an application backed by stock market data - for the application to show real-time information, any change to the data in its Model should result in the View being refreshed instantly.</p>
 <p>Martin Fowler has done an excellent job of writing about the <a href="http://martinfowler.com/eaaDev/uiArchs.html">origins</a> of MVC over the years and if you are interested in further historical information about Smalltalk-80’s MVC, I recommend reading his work.</p>
 <h3 id="mvc-applied-to-the-web">MVC Applied To The Web</h3>
-<p>The web heavily relies on the HTTP protocol, which is stateless. This means that there is not a constantly open connection between the browser and server; each request instantiates a new communication channel between the two. Once the request initiator (e.g. a browser) gets a response the connection is closed. This fact creates a completely different context when compared to the one of the operating systems on which many of the original MVC ideas were developed. The MVC implementation has to conform to the web context.</p>
+<p>The web heavily relies on the HTTP protocol, which is stateless. This means that there is not a constantly open connection between the browser and server; each request instantiates a new communication channel between the two. Once the request initiator (e.g. a browser) gets a response the connection is closed. This fact creates a completely different context when compared to one of the operating systems on which many of the original MVC ideas were developed. The MVC implementation has to conform to the web context.</p>
 <p>An example of a server-side web application framework which tries to apply MVC to the web context is <a href="http://guides.rubyonrails.org/">Ruby On Rails</a>.</p>
 <figure>
 <img src="img/rails_mvc.png" />
@@ -565,7 +565,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <p>URL routing, DOM events (e.g., mouse clicks), and Model events (e.g., attribute changes) all trigger handling logic in the View. The handlers update the DOM and Models, which may trigger additional events. Models are synced with Data Sources which may involve communicating with back-end servers.</p>
 <h4 id="models">Models</h4>
 <ul>
-<li><p>The built-in capabilities of Models vary across frameworks; however, it’s common for them to support validation of attributes, where attributes represent the properties of the Model, such as a Model identifier.</p></li>
+<li><p>The built-in capabilities of Models vary across frameworks. However, it’s common for them to support validation of attributes, where attributes represent the properties of the Model, such as a Model identifier.</p></li>
 <li><p>When using Models in real-world applications we generally also need a way of persisting Models. Persistence allows us to edit and update Models with the knowledge that their most recent states will be saved somewhere, for example in a web browser’s localStorage data-store or synchronized with a database.</p></li>
 <li><p>A Model may have multiple Views observing it for changes. By <em>observing</em> we mean that a View has registered an interest in being informed whenever an update is made to the Model. This allows the View to ensure that what is displayed on screen is kept in sync with the data contained in the model. Depending on your requirements, you might create a single View displaying all Model attributes, or create separate Views displaying different attributes. The important point is that the Model doesn’t care how these Views are organized, it simply announces updates to its data as necessary through the framework’s event system.</p></li>
 <li><p>It is not uncommon for modern MVC/MV* frameworks to provide a means of grouping Models together. In Backbone, these groups are called Collections. Managing Models in groups allows us to write application logic based on notifications from the group when a Model within the group changes. This avoids the need to manually observe individual Model instances. We’ll see this in action later in the book. Collections are also useful for performing any aggregate computations across more than one model.</p></li>
@@ -1207,7 +1207,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 });
 
 <span class="kw">var</span> TodosCollection = <span class="ot">Backbone</span>.<span class="ot">Collection</span>.<span class="fu">extend</span>({
-  <span class="dt">model</span>: Todo,
+  <span class="dt">model</span>: Todo
 });
 
 <span class="kw">var</span> a = <span class="kw">new</span> <span class="fu">Todo</span>({ <span class="dt">title</span>: <span class="st">&#39;Go to Jamaica.&#39;</span>}),
@@ -2293,7 +2293,7 @@ http:<span class="co">//example.com/#search/seasonal-horns/page2</span></code></
 <li>Download jQuery, Underscore, Backbone, and Backbone LocalStorage from their respective web sites and place them under js/lib</li>
 <li>Create the directories js/models, js/collections, js/views, and js/routers</li>
 </ol>
-<p>You will also need <a href="https://raw2.github.com/tastejs/todomvc/gh-pages/architecture-examples/backbone/bower_components/todomvc-common/base.css">base.css</a> and <a href="https://raw2.github.com/tastejs/todomvc/gh-pages/architecture-examples/backbone/bower_components/todomvc-common/bg.png">bg.png</a>, which should live in an assets directory. And remember that you can see a demo of the final application at <a href="http://todomvc.com">TodoMVC.com</a>.</p>
+<p>You will also need <a href="https://raw.githubusercontent.com/tastejs/todomvc/gh-pages/examples/backbone/bower_components/todomvc-common/base.css">base.css</a> and <a href="https://raw.githubusercontent.com/tastejs/todomvc/gh-pages/examples/backbone/bower_components/todomvc-common/bg.png">bg.png</a>, which should live in an assets directory. And remember that you can see a demo of the final application at <a href="http://todomvc.com">TodoMVC.com</a>.</p>
 <p>We will be creating the application JavaScript files during the tutorial. Don’t worry about the two ‘text/template’ script elements - we will replace those soon!</p>
 <h4 id="application-html">Application HTML</h4>
 <p>Now let’s populate the body of index.html. We’ll need an <code>&lt;input&gt;</code> for creating new todos, a <code>&lt;ul id=&quot;todo-list&quot; /&gt;</code> for listing the actual todos, and a footer where we can later insert statistics and links for performing operations such as clearing completed todos. We’ll add the following markup immediately inside our body tag before the script elements:</p>
@@ -2873,7 +2873,7 @@ secondTodo <span class="kw">instanceof</span> <span class="ot">app</span>.<span 
 <li>Since the AppView has its <code>render()</code> method bound to <code>all</code> events on the Todos collection, that view is rendered and the stats in the footer are updated.</li>
 </ol>
 <p>That’s all there is to it!</p>
-<p>If you want to see an example of those, see the <a href="https://github.com/tastejs/todomvc/tree/gh-pages/architecture-examples/backbone">complete source</a>.</p>
+<p>If you want to see an example of those, see the <a href="https://github.com/tastejs/todomvc/tree/gh-pages/examples/backbone">complete source</a>.</p>
 <h2 id="todo-routing">Todo routing</h2>
 <p>Finally, we move on to routing, which will allow us to easily filter the list of items that are active as well as those which have been completed. We’ll be supporting the following routes:</p>
 <pre><code>#/ (all - default)
@@ -3228,7 +3228,8 @@ addBook: <span class="kw">function</span>( e ) {
     <span class="st">&quot;dependencies&quot;</span>: {
         <span class="st">&quot;express&quot;</span>: <span class="st">&quot;~3.1.0&quot;</span>,
         <span class="st">&quot;path&quot;</span>: <span class="st">&quot;~0.4.9&quot;</span>,
-        <span class="st">&quot;mongoose&quot;</span>: <span class="st">&quot;~3.5.5&quot;</span>
+        <span class="st">&quot;mongoose&quot;</span>: <span class="st">&quot;~3.5.5&quot;</span>,
+        <span class="st">&quot;body-parser&quot;</span>: <span class="st">&quot;~1.9.1&quot;</span>
     }
 }</code></pre>
 <p>Amongst other things, this file tells npm what the dependencies are for our project. On the command line, from the root of your project, type:</p>
@@ -3237,6 +3238,7 @@ addBook: <span class="kw">function</span>( e ) {
 <p>Your folder structure should look something like this:</p>
 <pre><code>node_modules/
   .bin/
+  body-parser/
   express/
   mongoose/
   path/
@@ -3251,6 +3253,7 @@ package.json</code></pre>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="co">// Module dependencies.</span>
 <span class="kw">var</span> application_root = __dirname,
     express = <span class="fu">require</span>( <span class="st">&#39;express&#39;</span> ), <span class="co">//Web framework</span>
+    bodyParser = <span class="fu">require</span>(<span class="st">&#39;body-parser&#39;</span>), <span class="co">//Parser for reading request body</span>
     path = <span class="fu">require</span>( <span class="st">&#39;path&#39;</span> ), <span class="co">//Utilities for dealing with file paths</span>
     mongoose = <span class="fu">require</span>( <span class="st">&#39;mongoose&#39;</span> ); <span class="co">//MongoDB integration</span>
 
@@ -3259,6 +3262,7 @@ package.json</code></pre>
 
 <span class="co">//Where to serve static content</span>
 <span class="ot">app</span>.<span class="fu">use</span>( <span class="ot">express</span>.<span class="fu">static</span>( <span class="ot">path</span>.<span class="fu">join</span>( application_root, <span class="st">&#39;site&#39;</span>) ) );
+<span class="ot">app</span>.<span class="fu">use</span>(<span class="fu">bodyParser</span>());
 
 <span class="co">//Start server</span>
 <span class="kw">var</span> port = <span class="dv">4711</span>;
@@ -3330,8 +3334,7 @@ package.json</code></pre>
     <span class="kw">return</span> <span class="ot">book</span>.<span class="fu">save</span>( <span class="kw">function</span>( err ) {
         <span class="kw">if</span>( !err ) {
             <span class="ot">console</span>.<span class="fu">log</span>( <span class="st">&#39;created&#39;</span> );
-            
-                        <span class="kw">return</span> <span class="ot">response</span>.<span class="fu">send</span>( book );
+            <span class="kw">return</span> <span class="ot">response</span>.<span class="fu">send</span>( book );
             } <span class="kw">else</span> {
                 <span class="ot">console</span>.<span class="fu">log</span>( err );
             }
@@ -7562,7 +7565,7 @@ data-shadow=<span class="st">&quot;true&quot;</span> data-iconshadow=<span class
     <span class="co">// Create a new spy</span>
     <span class="kw">var</span> callback = <span class="ot">jasmine</span>.<span class="fu">createSpy</span>();
 
-    <span class="co">// Execute the spy callback if the</span>
+    <span class="co">// Exexute the spy callback if the</span>
     <span class="co">// request for Todo 15 is successful</span>
     <span class="fu">getTodo</span>(<span class="dv">15</span>, callback);
 

@@ -152,39 +152,39 @@ Topics will include MVC theory and how to build applications using Backbone's Mo
 
 Here is a peek at what you will be learning in each chapter:
 
-<i>Chapter 2, Fundamentals</i> traces the history of the MVC design pattern and introduces how it is implemented by Backbone.js and other JavaScript frameworks.
+<i>Chapter 2, Fundamentals</i>, traces the history of the MVC design pattern and introduces how it is implemented by Backbone.js and other JavaScript frameworks.
 
-<i>Chapter 3, Backbone Basics</i> covers the major features of the Backbone.js core and the technologies and techniques you will need to know in order to apply it.
+<i>Chapter 3, Backbone Basics</i>, covers the major features of the Backbone.js core and the technologies and techniques you will need to know in order to apply it.
 
-<i>Chapter 4, Exercise 1: Todos - Your First Backbone.js App</i> takes you step-by-step through development of a simple client-side Todo List application.
+<i>Chapter 4, Exercise 1: Todos - Your First Backbone.js App</i>, takes you step-by-step through development of a simple client-side Todo List application.
 
-<i>Chapter 5, Exercise 2: Book Library - Your First RESTful Backbone.js App</i> walks you through development of a Book Library application which persists its model to a server using a REST API.
+<i>Chapter 5, Exercise 2: Book Library - Your First RESTful Backbone.js App</i>, walks you through development of a Book Library application which persists its model to a server using a REST API.
 
-<i>Chapter 6, Backbone Extensions</i> describes Backbone.Marionette and Thorax, two extension frameworks which add features to Backbone.js that are useful for developing large-scale applications.
+<i>Chapter 6, Backbone Extensions</i>, describes Backbone.Marionette and Thorax, two extension frameworks which add features to Backbone.js that are useful for developing large-scale applications.
 
-<i>Chapter 7, Common Problems and Solutions</i> reviews common issues you may encounter when using Backbone.js and ways of addressing them.
+<i>Chapter 7, Common Problems and Solutions</i>, reviews common issues you may encounter when using Backbone.js and ways of addressing them.
 
-<i>Chapter 8, Modular Development</i> looks at how AMD modules and RequireJS can be used to modularize your code.
+<i>Chapter 8, Modular Development</i>, looks at how AMD modules and RequireJS can be used to modularize your code.
 
-<i>Chapter 9, Exercise 3: Todos - Your First Modular Backbone + RequireJS App</i> takes you through rewriting the app created in Exercise 1 to be more modular with the help of RequireJS.
+<i>Chapter 9, Exercise 3: Todos - Your First Modular Backbone + RequireJS App</i>, takes you through rewriting the app created in Exercise 1 to be more modular with the help of RequireJS.
 
-<i>Chapter 10, Paginating Backbone Requests & Collections</i> walks through how to use the Backbone.Paginator plugin to paginate data for your Collections.
+<i>Chapter 10, Paginating Backbone Requests & Collections</i>, walks through how to use the Backbone.Paginator plugin to paginate data for your Collections.
 
-<i>Chapter 11, Backbone Boilerplate And Grunt BBB</i> introduces powerful tools you can use to bootstrap a new Backbone.js application with boilerplate code.
+<i>Chapter 11, Backbone Boilerplate And Grunt BBB</i>, introduces powerful tools you can use to bootstrap a new Backbone.js application with boilerplate code.
 
-<i>Chapter 12, Mobile Applications</i> addresses the issues that arise when using Backbone with jQuery Mobile.
+<i>Chapter 12, Mobile Applications</i>, addresses the issues that arise when using Backbone with jQuery Mobile.
 
-<i>Chapter 13, Jasmine</i> covers how to unit test Backbone code using the Jasmine test framework.
+<i>Chapter 13, Jasmine</i>, covers how to unit test Backbone code using the Jasmine test framework.
 
-<i>Chapter 14, QUnit</i> discusses how to use QUnit for unit testing.
+<i>Chapter 14, QUnit</i>, discusses how to use QUnit for unit testing.
 
-<i>Chapter 15, SinonJS</i> discusses how to use SinonJS for unit testing your Backbone apps.
+<i>Chapter 15, SinonJS</i>, discusses how to use SinonJS for unit testing your Backbone apps.
 
-<i>Chapter 16, Resources</i> provides references to additional Backbone-related resources.
+<i>Chapter 16, Resources</i>, provides references to additional Backbone-related resources.
 
-<i>Chapter 17, Conclusions</i> wraps up our tour through the world of Backbone.js development.
+<i>Chapter 17, Conclusions</i>, wraps up our tour through the world of Backbone.js development.
 
-<i>Chapter 18, Appendix</i> returns to our design pattern discussion by contrasting MVC with the Model-View-Presenter (MVP) pattern and examines how Backbone.js relates to both. A walkthrough of writing a Backbone-like library from scratch and other topics are also covered.
+<i>Chapter 18, Appendix</i>, returns to our design pattern discussion by contrasting MVC with the Model-View-Presenter (MVP) pattern and examines how Backbone.js relates to both. A walkthrough of writing a Backbone-like library from scratch and other topics are also covered.
 
 # Fundamentals
 
@@ -216,7 +216,7 @@ Martin Fowler has done an excellent job of writing about the [origins](http://ma
 
 ### MVC Applied To The Web
 
-The web heavily relies on the HTTP protocol, which is stateless. This means that there is not a constantly open connection between the browser and server; each request instantiates a new communication channel between the two. Once the request initiator (e.g. a browser) gets a response the connection is closed. This fact creates a completely different context when compared to the one of the operating systems on which many of the original MVC ideas were developed. The MVC implementation has to conform to the web context.
+The web heavily relies on the HTTP protocol, which is stateless. This means that there is not a constantly open connection between the browser and server; each request instantiates a new communication channel between the two. Once the request initiator (e.g. a browser) gets a response the connection is closed. This fact creates a completely different context when compared to one of the operating systems on which many of the original MVC ideas were developed. The MVC implementation has to conform to the web context.
 
 An example of a server-side web application framework which tries to apply MVC to the web context is [Ruby On Rails](http://guides.rubyonrails.org/).
 
@@ -404,7 +404,7 @@ URL routing, DOM events (e.g., mouse clicks), and Model events (e.g., attribute 
 
 #### Models
 
-* The built-in capabilities of Models vary across frameworks; however, it's common for them to support validation of attributes, where attributes represent the properties of the Model, such as a Model identifier.
+* The built-in capabilities of Models vary across frameworks. However, it's common for them to support validation of attributes, where attributes represent the properties of the Model, such as a Model identifier.
 
 * When using Models in real-world applications we generally also need a way of persisting Models. Persistence allows us to edit and update Models with the knowledge that their most recent states will be saved somewhere, for example in a web browser's localStorage data-store or synchronized with a database.
 
@@ -1272,7 +1272,7 @@ var Todo = Backbone.Model.extend({
 });
 
 var TodosCollection = Backbone.Collection.extend({
-  model: Todo,
+  model: Todo
 });
 
 var a = new Todo({ title: 'Go to Jamaica.'}),
@@ -2689,7 +2689,7 @@ Note: If you want to follow along, create a directory structure as demonstrated 
 2. Download jQuery, Underscore, Backbone, and Backbone LocalStorage from their respective web sites and place them under js/lib
 3. Create the directories js/models, js/collections, js/views, and js/routers
 
-You will also need [base.css](https://raw2.github.com/tastejs/todomvc/gh-pages/architecture-examples/backbone/bower_components/todomvc-common/base.css) and [bg.png](https://raw2.github.com/tastejs/todomvc/gh-pages/architecture-examples/backbone/bower_components/todomvc-common/bg.png), which should live in an assets directory. And remember that you can see a demo of the final application at [TodoMVC.com](http://todomvc.com).
+You will also need [base.css](https://raw.githubusercontent.com/tastejs/todomvc/gh-pages/examples/backbone/bower_components/todomvc-common/base.css) and [bg.png](https://raw.githubusercontent.com/tastejs/todomvc/gh-pages/examples/backbone/bower_components/todomvc-common/bg.png), which should live in an assets directory. And remember that you can see a demo of the final application at [TodoMVC.com](http://todomvc.com).
 
 We will be creating the application JavaScript files during the tutorial. Don't worry about the two 'text/template' script elements - we will replace those soon!
 
@@ -3364,7 +3364,7 @@ Now let's look at what happens when we click on a todo's destroy button:
 
 That's all there is to it!
 
-If you want to see an example of those, see the [complete source](https://github.com/tastejs/todomvc/tree/gh-pages/architecture-examples/backbone).
+If you want to see an example of those, see the [complete source](https://github.com/tastejs/todomvc/tree/gh-pages/examples/backbone).
 
 ## Todo routing
 
@@ -3821,7 +3821,8 @@ Create a file called `package.json` in the root of your project. It should look 
 	"dependencies": {
 		"express": "~3.1.0",
 		"path": "~0.4.9",
-		"mongoose": "~3.5.5"
+		"mongoose": "~3.5.5",
+		"body-parser": "~1.9.1"
 	}
 }
 
@@ -3840,6 +3841,7 @@ Your folder structure should look something like this:
 ```
 node_modules/
   .bin/
+  body-parser/
   express/
   mongoose/
   path/
@@ -3859,6 +3861,7 @@ Create a file named server.js in the project root containing the following code:
 // Module dependencies.
 var application_root = __dirname,
     express = require( 'express' ), //Web framework
+    bodyParser = require('body-parser'), //Parser for reading request body
     path = require( 'path' ), //Utilities for dealing with file paths
     mongoose = require( 'mongoose' ); //MongoDB integration
 
@@ -3867,6 +3870,7 @@ var app = express();
 
 //Where to serve static content
 app.use( express.static( path.join( application_root, 'site') ) );
+app.use(bodyParser());
 
 //Start server
 var port = 4711;
@@ -3964,8 +3968,7 @@ app.post( '/api/books', function( request, response ) {
 	return book.save( function( err ) {
 		if( !err ) {
 			console.log( 'created' );
-			
-    	                return response.send( book );
+			return response.send( book );
     		} else {
       			console.log( err );
     		}
