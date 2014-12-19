@@ -218,17 +218,17 @@ var Jeremy = new Person({
 
 // create the first view instance
 var zombieView = new ZombieView({
-  model: Person
+  model: Jeremy
 })
 zombieView.close(); // double-tap the zombie
 
 // create a second view instance, re-using
 // the same variable name to store it
 zombieView = new ZombieView({
-  model: Person
+  model: Jeremy
 })
 
-Person.set('email', 'jeremyashkenas@example.com');
+Jeremy.set('email', 'jeremyashkenas@example.com');
 ```
 
 Now we only see one alert box when this code runs. 
