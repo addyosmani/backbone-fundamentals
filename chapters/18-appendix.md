@@ -18,7 +18,7 @@ At the heart of our JavaScript MVC implementation is an `Event` system (object) 
 var Cranium = Cranium || {};
 
 // Set DOM selection utility
-var $ = document.querySelector.bind(document) || this.jQuery || this.Zepto;
+var $ = this.jQuery || this.Zepto || document.querySelectorAll.bind(document);
 
 // Mix in to any object in order to provide it with custom events.
 var Events = Cranium.Events = {
