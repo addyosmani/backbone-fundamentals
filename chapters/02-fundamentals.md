@@ -101,10 +101,12 @@ Our example will need a div element to which we can attach a list of Todo's. It 
   <div id="todo">
   </div>
   <script type="text/template" id="item-template">
-    <div>
+    <div class="view">
       <input id="todo_complete" type="checkbox" <%= completed ? 'checked="checked"' : '' %> />
-      <%= title %>
+      <label><%= title %></label>
+      <button class="destroy"></button>
     </div>
+    <input class="edit" value="<%= title %>">
   </script>
   <script src="jquery.js"></script>
   <script src="underscore.js"></script>
