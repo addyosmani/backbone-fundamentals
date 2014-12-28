@@ -376,7 +376,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <p>Maturity in software (framework) development isn’t simply about how long a framework has been around. It’s about how solid the framework is and more importantly how well it’s evolved to fill its role. Has it become more effective at solving common problems? Does it continue to improve as developers build larger and more complex applications with it?</p>
 <h3 id="why-consider-backbone.js">Why Consider Backbone.js?</h3>
 <p>Backbone provides a minimal set of data-structuring (Models, Collections) and user interface (Views, URLs) primitives that are helpful when building dynamic applications using JavaScript. It’s not opinionated, meaning you have the freedom and flexibility to build the best experience for your web application how you see fit. You can either use the prescribed architecture it offers out of the box or extend it to meet your requirements.</p>
-<p>The library doesn’t focus on widgets or replacing the way you structure objects - it just supplies you with utilities for manipulating and querying data in your application. It also doesn’t prescribe a specific template engine - while you are free to use the Micro-templating offered by Underscore.js (one of its dependencies), views can bind to HTML constructed using your templating solution of choice.</p>
+<p>The library doesn’t focus on widgets or replacing the way you structure objects - it just supplies you with utilities for manipulating and querying data in your application. Backbone also doesn’t prescribe a specific template engine. While you are free to use the micro-templating offered by Underscore.js (Backbone’s only hard dependency), views can bind to HTML constructed using your templating solution of choice.</p>
 <p>Looking at the <a href="http://backbonejs.org/#examples">large</a> number of applications built with Backbone, it’s clear that it scales well. Backbone also works quite well with other libraries, meaning you can embed Backbone widgets in an application written with AngularJS, use it with TypeScript, or just use an individual class (like Models) as a data backer for simpler apps.</p>
 <p>There are no performance drawbacks to using Backbone to structure your application. It avoids run loops, two-way binding, and constant polling of your data structures for updates and tries to keep things simple where possible. That said, should you wish to go against the grain, you can of course implement such things on top of it. Backbone won’t stop you.</p>
 <p>With a vibrant community of plugin and extension authors, there’s a likelihood that if you’re looking to achieve some behavior Backbone is lacking, a complementary project exists that works well with it. This is made simpler by Backbone offering literate documentation of its source code, allowing anyone an opportunity to easily understand what is going on behind the scenes.</p>
@@ -470,10 +470,12 @@ code > span.er { color: #ff0000; font-weight: bold; }
   <span class="kw">&lt;div</span><span class="ot"> id=</span><span class="st">&quot;todo&quot;</span><span class="kw">&gt;</span>
   <span class="kw">&lt;/div&gt;</span>
   <span class="kw">&lt;script</span><span class="ot"> type=</span><span class="st">&quot;text/template&quot;</span><span class="ot"> id=</span><span class="st">&quot;item-template&quot;</span><span class="kw">&gt;</span>
-    &lt;div&gt;
+    &lt;div <span class="kw">class</span>=<span class="st">&quot;view&quot;</span>&gt;
       &lt;input id=<span class="st">&quot;todo_complete&quot;</span> type=<span class="st">&quot;checkbox&quot;</span> &lt;%= completed ? <span class="st">&#39;checked=&quot;checked&quot;&#39;</span> : <span class="st">&#39;&#39;</span> %&gt; <span class="ot">/&gt;</span>
-<span class="ot">      &lt;%= title %&gt;</span>
+<span class="ot">      &lt;label&gt;&lt;%= title %&gt;&lt;/label</span>&gt;
+      &lt;button <span class="kw">class</span>=<span class="st">&quot;destroy&quot;</span>&gt;&lt;<span class="ot">/button&gt;</span>
 <span class="ot">    &lt;/div</span>&gt;
+    &lt;input <span class="kw">class</span>=<span class="st">&quot;edit&quot;</span> value=<span class="st">&quot;&lt;%= title %&gt;&quot;</span>&gt;
   <span class="kw">&lt;/script&gt;</span>
   <span class="kw">&lt;script</span><span class="ot"> src=</span><span class="st">&quot;jquery.js&quot;</span><span class="kw">&gt;&lt;/script&gt;</span>
   <span class="kw">&lt;script</span><span class="ot"> src=</span><span class="st">&quot;underscore.js&quot;</span><span class="kw">&gt;&lt;/script&gt;</span>
@@ -3298,7 +3300,25 @@ package.json</code></pre>
 });
 
 <span class="co">//Models</span>
-<span class="kw">var</span> BookModel = <span class="ot">mongoose</span>.<span class="fu">model</span>( <span class="st">&#39;Book&#39;</span>, Book );</code></pre>
+<span class="kw">var</span> BookModel = <span class="ot">mongoose</span>.<span class="fu">model</span>( <span class="st">&#39;Book&#39;</span>, Book );
+
+<span class="co">// Configure server</span>
+<span class="ot">app</span>.<span class="fu">configure</span>( <span class="kw">function</span>() {
+    <span class="co">//parses request body and populates request.body</span>
+    <span class="ot">app</span>.<span class="fu">use</span>( <span class="ot">express</span>.<span class="fu">bodyParser</span>() );
+
+    <span class="co">//checks request.body for HTTP method overrides</span>
+    <span class="ot">app</span>.<span class="fu">use</span>( <span class="ot">express</span>.<span class="fu">methodOverride</span>() );
+
+    <span class="co">//perform route lookup based on url and HTTP method</span>
+    <span class="ot">app</span>.<span class="fu">use</span>( <span class="ot">app</span>.<span class="fu">router</span> );
+
+    <span class="co">//Where to serve static content</span>
+    <span class="ot">app</span>.<span class="fu">use</span>( <span class="ot">express</span>.<span class="fu">static</span>( <span class="ot">path</span>.<span class="fu">join</span>( application_root, <span class="st">&#39;site&#39;</span>) ) );
+
+    <span class="co">//Show all errors in development</span>
+    <span class="ot">app</span>.<span class="fu">use</span>( <span class="ot">express</span>.<span class="fu">errorHandler</span>({ <span class="dt">dumpExceptions</span>: <span class="kw">true</span>, <span class="dt">showStack</span>: <span class="kw">true</span> }));
+});</code></pre>
 <p>As you can see, schema definitions are quite straight forward. They can be more advanced, but this will do for us. I also extracted a model (BookModel) from Mongo. This is what we will be working with. Next up, we define a GET operation for the REST API that will return all books:</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="co">//Get a list of all books</span>
 <span class="ot">app</span>.<span class="fu">get</span>( <span class="st">&#39;/api/books&#39;</span>, <span class="kw">function</span>( request, response ) {
@@ -3787,17 +3807,17 @@ zombieView = <span class="kw">new</span> <span class="fu">ZombieView</span>({
 
 <span class="co">// create the first view instance</span>
 <span class="kw">var</span> zombieView = <span class="kw">new</span> <span class="fu">ZombieView</span>({
-  <span class="dt">model</span>: Person
+  <span class="dt">model</span>: Jeremy
 })
 <span class="ot">zombieView</span>.<span class="fu">close</span>(); <span class="co">// double-tap the zombie</span>
 
 <span class="co">// create a second view instance, re-using</span>
 <span class="co">// the same variable name to store it</span>
 zombieView = <span class="kw">new</span> <span class="fu">ZombieView</span>({
-  <span class="dt">model</span>: Person
+  <span class="dt">model</span>: Jeremy
 })
 
-<span class="ot">Person</span>.<span class="fu">set</span>(<span class="st">&#39;email&#39;</span>, <span class="st">&#39;jeremyashkenas@example.com&#39;</span>);</code></pre>
+<span class="ot">Jeremy</span>.<span class="fu">set</span>(<span class="st">&#39;email&#39;</span>, <span class="st">&#39;jeremyashkenas@example.com&#39;</span>);</code></pre>
 <p>Now we only see one alert box when this code runs.</p>
 <p>Rather than having to manually remove these event handlers, though, we can let Marionette do it for us.</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> ZombieView = <span class="ot">Marionette</span>.<span class="ot">ItemView</span>.<span class="fu">extend</span>({
@@ -5402,7 +5422,7 @@ NewChildView = <span class="ot">Backbone</span>.<span class="ot">View</span>.<sp
 });</code></pre>
 <p>The main reason you’d want to configure RequireJS is to add shims, which we’ll cover next. To see other configuration options available to you, I recommend checking out the <a href="http://requirejs.org/docs/api.html#config">RequireJS documentation</a>.</p>
 <h5 id="requirejs-shims">RequireJS Shims</h5>
-<p>Ideally, each library that we use with RequireJS will come with AMD support. That is, it uses the <code>define</code> method to define the library as a module. However, some libraries - including Backbone and one of its dependencies, Underscore - don’t do this. Fortunately RequireJS comes with a way to work around this.</p>
+<p>Ideally, each library that we use with RequireJS will come with AMD support. That is, it uses the <code>define</code> method to define the library as a module. While Backbone and Underscore have added AMD support in recent years, we’re going to show an example of how to shim a library that does not using RequireJS.</p>
 <p>To demonstrate this, first let’s shim Underscore, and then we’ll shim Backbone too. Shims are very simple to implement:</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="ot">require</span>.<span class="fu">config</span>({
     <span class="dt">shim</span>: {
@@ -8949,7 +8969,7 @@ data-shadow=<span class="st">&quot;true&quot;</span> data-iconshadow=<span class
 <span class="kw">var</span> Cranium = Cranium || {};
 
 <span class="co">// Set DOM selection utility</span>
-<span class="kw">var</span> $ = <span class="ot">document</span>.<span class="ot">querySelector</span>.<span class="fu">bind</span>(document) || <span class="kw">this</span>.<span class="fu">jQuery</span> || <span class="kw">this</span>.<span class="fu">Zepto</span>;
+<span class="kw">var</span> $ = <span class="kw">this</span>.<span class="fu">jQuery</span> || <span class="kw">this</span>.<span class="fu">Zepto</span> || <span class="ot">document</span>.<span class="ot">querySelectorAll</span>.<span class="fu">bind</span>(document);
 
 <span class="co">// Mix in to any object in order to provide it with custom events.</span>
 <span class="kw">var</span> Events = <span class="ot">Cranium</span>.<span class="fu">Events</span> = {

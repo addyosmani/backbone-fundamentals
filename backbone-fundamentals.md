@@ -133,7 +133,7 @@ Maturity in software (framework) development isn't simply about how long a frame
 
 Backbone provides a minimal set of data-structuring (Models, Collections) and user interface (Views, URLs) primitives that are helpful when building dynamic applications using JavaScript. It's not opinionated, meaning you have the freedom and flexibility to build the best experience for your web application how you see fit. You can either use the prescribed architecture it offers out of the box or extend it to meet your requirements.
 
-The library doesn't focus on widgets or replacing the way you structure objects - it just supplies you with utilities for manipulating and querying data in your application. It also doesn't prescribe a specific template engine - while you are free to use the Micro-templating offered by Underscore.js (one of its dependencies), views can bind to HTML constructed using your templating solution of choice.
+The library doesn't focus on widgets or replacing the way you structure objects - it just supplies you with utilities for manipulating and querying data in your application. Backbone also doesn't prescribe a specific template engine. While you are free to use the micro-templating offered by Underscore.js (Backbone's only hard dependency), views can bind to HTML constructed using your templating solution of choice.
 
 Looking at the [large](http://backbonejs.org/#examples) number of applications built with Backbone, it's clear that it scales well. Backbone also works quite well with other libraries, meaning you can embed Backbone widgets in an application written with AngularJS, use it with TypeScript, or just use an individual class (like Models) as a data backer for simpler apps.
 
@@ -289,10 +289,12 @@ Our example will need a div element to which we can attach a list of Todo's. It 
   <div id="todo">
   </div>
   <script type="text/template" id="item-template">
-    <div>
+    <div class="view">
       <input id="todo_complete" type="checkbox" <%= completed ? 'checked="checked"' : '' %> />
-      <%= title %>
+      <label><%= title %></label>
+      <button class="destroy"></button>
     </div>
+    <input class="edit" value="<%= title %>">
   </script>
   <script src="jquery.js"></script>
   <script src="underscore.js"></script>
@@ -3920,6 +3922,24 @@ var Book = new mongoose.Schema({
 
 //Models
 var BookModel = mongoose.model( 'Book', Book );
+
+// Configure server
+app.configure( function() {
+	//parses request body and populates request.body
+	app.use( express.bodyParser() );
+
+	//checks request.body for HTTP method overrides
+	app.use( express.methodOverride() );
+
+	//perform route lookup based on url and HTTP method
+	app.use( app.router );
+
+	//Where to serve static content
+	app.use( express.static( path.join( application_root, 'site') ) );
+
+	//Show all errors in development
+	app.use( express.errorHandler({ dumpExceptions: true, showStack: true }));
+});
 ```
 
 As you can see, schema definitions are quite straight forward. They can be more advanced, but this will do for us. I also extracted a model (BookModel) from Mongo. This is what we will be working with. Next up, we define a GET operation for the REST API that will return all books:
@@ -4604,17 +4624,17 @@ var Jeremy = new Person({
 
 // create the first view instance
 var zombieView = new ZombieView({
-  model: Person
+  model: Jeremy
 })
 zombieView.close(); // double-tap the zombie
 
 // create a second view instance, re-using
 // the same variable name to store it
 zombieView = new ZombieView({
-  model: Person
+  model: Jeremy
 })
 
-Person.set('email', 'jeremyashkenas@example.com');
+Jeremy.set('email', 'jeremyashkenas@example.com');
 ```
 
 Now we only see one alert box when this code runs. 
@@ -6781,7 +6801,7 @@ The main reason you'd want to configure RequireJS is to add shims, which we'll c
 
 ##### RequireJS Shims
 
-Ideally, each library that we use with RequireJS will come with AMD support. That is, it uses the `define` method to define the library as a module. However, some libraries - including Backbone and one of its dependencies, Underscore - don't do this. Fortunately RequireJS comes with a way to work around this.
+Ideally, each library that we use with RequireJS will come with AMD support. That is, it uses the `define` method to define the library as a module. While Backbone and Underscore have added AMD support in recent years, we're going to show an example of how to shim a library that does not using RequireJS.
 
 To demonstrate this, first let's shim Underscore, and then we'll shim Backbone too. Shims are very simple to implement:
 
@@ -11569,7 +11589,7 @@ At the heart of our JavaScript MVC implementation is an `Event` system (object) 
 var Cranium = Cranium || {};
 
 // Set DOM selection utility
-var $ = document.querySelector.bind(document) || this.jQuery || this.Zepto;
+var $ = this.jQuery || this.Zepto || document.querySelectorAll.bind(document);
 
 // Mix in to any object in order to provide it with custom events.
 var Events = Cranium.Events = {
