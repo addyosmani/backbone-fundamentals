@@ -496,6 +496,24 @@ var Book = new mongoose.Schema({
 
 //Models
 var BookModel = mongoose.model( 'Book', Book );
+
+// Configure server
+app.configure( function() {
+	//parses request body and populates request.body
+	app.use( express.bodyParser() );
+
+	//checks request.body for HTTP method overrides
+	app.use( express.methodOverride() );
+
+	//perform route lookup based on url and HTTP method
+	app.use( app.router );
+
+	//Where to serve static content
+	app.use( express.static( path.join( application_root, 'site') ) );
+
+	//Show all errors in development
+	app.use( express.errorHandler({ dumpExceptions: true, showStack: true }));
+});
 ```
 
 As you can see, schema definitions are quite straight forward. They can be more advanced, but this will do for us. I also extracted a model (BookModel) from Mongo. This is what we will be working with. Next up, we define a GET operation for the REST API that will return all books:
