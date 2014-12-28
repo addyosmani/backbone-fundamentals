@@ -160,7 +160,7 @@ The main reason you'd want to configure RequireJS is to add shims, which we'll c
 
 ##### RequireJS Shims
 
-Ideally, each library that we use with RequireJS will come with AMD support. That is, it uses the `define` method to define the library as a module. However, some libraries - including Backbone and one of its dependencies, Underscore - don't do this. Fortunately RequireJS comes with a way to work around this.
+Ideally, each library that we use with RequireJS will come with AMD support. That is, it uses the `define` method to define the library as a module. While Backbone and Underscore have added AMD support in recent years, we're going to show an example of how to shim a library that does not using RequireJS.
 
 To demonstrate this, first let's shim Underscore, and then we'll shim Backbone too. Shims are very simple to implement:
 
