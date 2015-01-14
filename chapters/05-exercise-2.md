@@ -466,7 +466,7 @@ If you open a browser on http://localhost:4711 you should see something like thi
 
 ![](img/chapter5-5.png)
 
-This is where we left off in Part 2, but we are now running on a server instead of directly from the files. Great job! We can now start defining routes (URLs) that the server should react to. This will be our REST API. Routes are defined by using app followed by one of the HTTP verbs get, put, post, and delete, which corresponds to Create, Read, Update and Delete. Let us go back to server.js and define a simple route:
+This is where we left off in Part 2, but we are now running on a server instead of directly from the files. Great job! We can now start defining routes (URLs) that the server should react to. This will be our REST API. Routes are defined by using app followed by one of the HTTP verbs get, put, post, and delete, which corresponds to Read, Create, Update and Delete. Let us go back to server.js and define a simple route:
 
 ```javascript
 // Routes
