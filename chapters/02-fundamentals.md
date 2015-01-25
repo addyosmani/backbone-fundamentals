@@ -142,8 +142,6 @@ Each Todo instance will be rendered on the page by a TodoView:
 ```javascript
 var TodoView = Backbone.View.extend({
 
-  tagName:  'li',
-
   // Cache the template function for a single item.
   todoTpl: _.template( $('#item-template').html() ),
 
@@ -194,7 +192,7 @@ var TodoView = Backbone.View.extend({
 var todoView = new TodoView({model: myTodo});
 ```
 
-TodoView is defined by extending Backbone.View and is instantiated with an associated Model. In our example, the ```render()``` method uses a template to construct the HTML for the Todo item which is placed inside an li element. Each call to ```render()``` will replace the content of the li element using the current Model data. Thus, a View instance renders the content of a DOM element using the attributes of an associated Model. Later we will see how a View can bind its ```render()``` method to Model change events, causing the View to re-render whenever the Model changes.
+TodoView is defined by extending Backbone.View and is instantiated with an associated Model. In our example, the ```render()``` method uses a template to construct the HTML for the Todo item which is placed inside the view's $el(this is set in the initialize method as $('#todo')). Each call to ```render()``` will replace the content of the $('#todo') using the current Model data. Thus, a View instance renders the content of a DOM element using the attributes of an associated Model. Later we will see how a View can bind its ```render()``` method to Model change events, causing the View to re-render whenever the Model changes.
 
 So far, we have seen that Backbone.Model implements the Model aspect of MVC and Backbone.View implements the View. However, as we noted earlier, Backbone departs from traditional MVC when it comes to Controllers - there is no Backbone.Controller!
 
