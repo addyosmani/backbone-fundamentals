@@ -12,7 +12,7 @@ This is where boilerplate solutions are useful. Rather than having to manually w
 
 ![](img/bbb.png)
 
-Out of the box, BB and Grunt-BBB provide provide us with:
+Out of the box, BB and Grunt-BBB provide us with:
 
 * Backbone, [Lodash](https://github.com/bestiejs/lodash) (an [Underscore.js](http://underscorejs.org/) alternative) and [jQuery](http://jquery.com) with an [HTML5 Boilerplate](http://html5boilerplate.com) foundation
 * Boilerplate and scaffolding support, allowing us to spend minimal time writing boilerplate for modules, collections and so on.
