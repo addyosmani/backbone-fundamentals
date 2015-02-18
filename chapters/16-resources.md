@@ -7,7 +7,7 @@
 * [Recipes With Backbone](http://recipeswithbackbone.com/)
 * [Backbone Patterns](http://ricostacruz.com/backbone-patterns/)
 * [Backbone On Rails](https://learn.thoughtbot.com/products/1-backbone-js-on-rails)
-* [MVC In JavaScript With Backbone](http://www.integralist.co.uk/posts/mvc-in-javascript-with-backbone-js/index.html)
+* [MVC In JavaScript With Backbone](http://www.integralist.co.uk/posts/backbone.html)
 * [Backbone Tutorials](http://backbonetutorials.com/)
 * [Derick Bailey's Resources For Learning Backbone](http://lostechies.com/derickbailey/2011/09/13/resources-for-and-how-i-learned-backbone-js/)
 
