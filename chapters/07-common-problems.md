@@ -773,7 +773,7 @@ var PanelAdvanced = Panel.extend({
   }
 });
 
-// We can also inherit PanelAdvaned if needed
+// We can also inherit PanelAdvanced if needed
 var PanelAdvancedExtra = PanelAdvanced.extend({
   initialize: function(options){
     PanelAdvanced.prototype.initialize.call(this, [options]);
