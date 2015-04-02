@@ -37,10 +37,10 @@ rtf: markdown
 		--smart
 
 pdf: markdown
-	# You need `pdflatex`
+	# You need `xelatex`
 	# OS X: http://www.tug.org/mactex/
-	# Then find its path: find /usr/ -name "pdflatex"
-	# Then symlink it: ln -s /path/to/pdflatex /usr/local/bin
+	# Then find its path: find /usr/ -name "xelatex"
+	# Then symlink it: ln -s /path/to/xelatex /usr/local/bin
 	pandoc -s $(filename).md -o $(filename).pdf \
 		--title-prefix $(title) \
 		--normalize \
