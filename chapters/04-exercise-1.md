@@ -757,6 +757,8 @@ When the route changes, the todo list will be filtered on a model level and the 
   // Todo Router
   // ----------
 
+  var app = app || {};
+
   var Workspace = Backbone.Router.extend({
     routes:{
       '*filter': 'setFilter'
