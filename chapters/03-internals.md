@@ -319,7 +319,7 @@ var Person = new Backbone.Model({name: 'Jeremy'});
 // Validate the model name
 Person.validate = function(attrs) {
   if (!attrs.name) {
-    return 'I need your name';
+    return console.log(’I need your name’);
   }
 };
 
@@ -352,7 +352,7 @@ var Todo = Backbone.Model.extend({
 
   validate: function(attributes){
     if(attributes.title === undefined){
-        return "Remember to set a title for your todo.";
+        return console.log(”Remember to set a title for your todo.”);
     }
   },
 
