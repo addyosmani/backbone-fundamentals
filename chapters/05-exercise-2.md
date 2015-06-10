@@ -558,14 +558,14 @@ app.post( '/api/books', function( request, response ) {
 		author: request.body.author,
 		releaseDate: request.body.releaseDate
 	});
-	
+
 	return book.save( function( err ) {
 		if( !err ) {
 			console.log( 'created' );
 			return response.send( book );
-    		} else {
-      			console.log( err );
-    		}
+		} else {
+  			console.log( err );
+		}
 	});
 });
 ```
@@ -649,10 +649,10 @@ app.put( '/api/books/:id', function( request, response ) {
 		return book.save( function( err ) {
 			if( !err ) {
 				console.log( 'book updated' );
-    		return response.send( book );
-    	} else {
-    		console.log( err );
-    	}
+	    		return response.send( book );
+	    	} else {
+	    		console.log( err );
+	    	}
 		});
 	});
 });
@@ -826,9 +826,9 @@ url             HTTP Method  Operation
 To have our application retrieve the Book models from the server on page load, we need to update the LibraryView. The Backbone documentation recommends inserting all models when the page is generated on the server side, rather than fetching them from the client side once the page is loaded. Since this chapter is trying to give you a more complete picture of how to communicate with a server, we will go ahead and ignore that recommendation. Go to the LibraryView declaration and update the initialize function as follows:
 
 ```javascript
-initialize: function() {
-	this.collection = new app.Library();
-	this.collection.fetch({reset: true}); // NEW
+initialize: function() {					// UPDATED
+	this.collection = new app.Library();	// UPDATED
+	this.collection.fetch({reset: true}); 	// NEW
 	this.render();
 
 	this.listenTo( this.collection, 'add', this.renderBook );
@@ -844,7 +844,7 @@ Now that we are populating our Library from the database using `this.collection.
 var app = app || {};
 
 $(function() {
-	new app.LibraryView();
+	new app.LibraryView();	// UPDATED
 });
 ```
 
