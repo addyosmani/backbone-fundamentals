@@ -31,7 +31,7 @@ Notes on build tool steps:
 
 To get started we're going to install Grunt-BBB, which will include Backbone Boilerplate and any third-party dependencies it might need such as the Grunt build tool.
 
-We can install Grunt-bBB via NPM by running:
+We can install Grunt-BBB via NPM by running:
 
 ```shell
 npm install -g bbb
