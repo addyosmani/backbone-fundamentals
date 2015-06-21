@@ -431,8 +431,8 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <li>Views represent your user interface, often taking the form of HTML that will be sent down to the browser. They’re used to present application data to anything making requests from your application.</li>
 <li>Controllers offer the glue between models and views. Their responsibility is to process requests from the browser, ask your models for data and then supply this data to views so that they may be presented to the browser.</li>
 </ul>
-<p>Although there’s a clear separation of concerns that is MVC-like in Rails, it is actually using a different pattern called <a href="http://en.wikipedia.org/wiki/Model2">Model2</a>. One reason for this is that Rails does not notify views from the model or controllers - it just passes model data directly to the view.</p>
-<p>That said, even for the server-side workflow of receiving a request from a URL, baking out an HTML page as a response and separating your business logic from your interface has many benefits. In the same way that keeping your UI cleanly separate from your database records is useful in server-side frameworks, it’s equally as useful to keep your UI cleanly separated from your data models in JavaScript (as we will read more about shortly).</p>
+<p>Although there’s a clear separation of concerns that is MVC-like in Rails, it is actually using a different pattern called <a href="https://en.wikipedia.org/wiki/JSP_model_2_architecture">Model2</a>. One reason for this is that Rails does not notify views from the model or controllers - it just passes model data directly to the view.</p>
+<p>That said, even for the server-side workflow of receiving a request from a URL, baking out an HTML page as a response and separating your business logic from your interface has many benefits. In the same way that keeping your UI cleanly separated from your database records is useful in server-side frameworks, it’s equally as useful to keep your UI cleanly separated from your data models in JavaScript (as we will read more about shortly).</p>
 <p>Other server-side implementations of MVC (such as the PHP <a href="http://zend.com">Zend</a> framework) also implement the <a href="http://en.wikipedia.org/wiki/Front_Controller_pattern">Front Controller</a> design pattern. This pattern layers an MVC stack behind a single point of entry. This single point of entry means that all HTTP requests (e.g., <code>http://www.example.com</code>, <code>http://www.example.com/whichever-page/</code>, etc.) are routed by the server’s configuration to the same handler, independent of the URI.</p>
 <p>When the Front Controller receives an HTTP request it analyzes it and decides which class (Controller) and method (Action) to invoke. The selected Controller Action takes over and interacts with the appropriate Model to fulfill the request. The Controller receives data back from the Model, loads an appropriate View, injects the Model data into it, and returns the response to the browser.</p>
 <p>For example, let’s say we have our blog on <code>www.example.com</code> and we want to edit an article (with <code>id=43</code>) and request <code>http://www.example.com/article/edit/43</code>:</p>
@@ -443,7 +443,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <figure>
 <img src="img/webmvcflow_bacic.png" />
 </figure>
-<p>The Server receives an HTTP request and routes it through a single entry point. At that entry point, the Front Controller analyzes the request and based on it invokes an Action of the appropriate Controller. This process is called routing. The Action Model is asked to return and/or save submitted data. The Model communicates with the data source (e.g., database or API). Once the Model completes its work it returns data to the Controller which then loads the appropriate View. The View executes presentation logic (loops through articles and prints titles, content, etc.) using the supplied data. In the end, an HTTP response is returned to the browser.</p>
+<p>The Server receives an HTTP request and routes it through a single entry point. At that entry point, the Front Controller analyzes the request and, based on it, invokes an Action of the appropriate Controller. This process is called routing. The Action Model is asked to return and/or save submitted data. The Model communicates with the data source (e.g., database or API). Once the Model completes its work it returns data to the Controller which then loads the appropriate View. The View executes presentation logic (loops through articles and prints titles, content, etc.) using the supplied data. In the end, an HTTP response is returned to the browser.</p>
 <h3 id="client-side-mvc-single-page-apps">Client-Side MVC &amp; Single Page Apps</h3>
 <p>Several <a href="http://radar.oreilly.com/2009/07/velocity-making-your-site-fast.html">studies</a> have confirmed that improvements to latency can have a positive impact on the usage and user engagement of sites and apps. This is at odds with the traditional approach to web app development which is very server-centric, requiring a complete page reload to move from one page to the next. Even with heavy caching in place, the browser still has to parse the CSS, JavaScript, and HTML and render the interface to the screen.</p>
 <p>In addition to resulting in a great deal of duplicated content being served back to the user, this approach affects both latency and the general responsiveness of the user experience. A trend to improve perceived latency in the past few years has been to move towards building Single Page Applications (SPAs) - apps which after an initial page load are able to handle subsequent navigations and requests for data without the need for a complete reload.</p>
@@ -1064,7 +1064,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <span class="co">// Apply the view to button2 using setElement</span>
 <span class="ot">view</span>.<span class="fu">setElement</span>(button2);
 
-<span class="ot">button1</span>.<span class="fu">trigger</span>(<span class="st">&#39;click&#39;</span>);
+<span class="ot">button1</span>.<span class="fu">trigger</span>(<span class="st">&#39;click&#39;</span>); 
 <span class="ot">button2</span>.<span class="fu">trigger</span>(<span class="st">&#39;click&#39;</span>); <span class="co">// returns true</span></code></pre>
 <p>The “el” property represents the markup portion of the view that will be rendered; to get the view to actually render to the page, you need to add it as a new element or append it to an existing element.</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript">
@@ -1113,7 +1113,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
   <span class="co">// is a placeholder for a template such as </span>
   <span class="co">// $(&quot;#list_template&quot;).html() </span>
   <span class="dt">template</span>: <span class="ot">_</span>.<span class="fu">template</span>(…),
-
+  
   <span class="dt">render</span>: <span class="kw">function</span>() {
     <span class="kw">this</span>.<span class="ot">$el</span>.<span class="fu">html</span>(<span class="kw">this</span>.<span class="fu">template</span>(<span class="kw">this</span>.<span class="ot">model</span>.<span class="fu">attributes</span>));
     <span class="kw">return</span> <span class="kw">this</span>;
@@ -1237,7 +1237,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <span class="ot">items</span>.<span class="fu">add</span>([{ <span class="dt">id </span>: <span class="dv">1</span>, <span class="dt">name</span>: <span class="st">&quot;Dog&quot;</span> , <span class="dt">age</span>: <span class="dv">3</span>}, { <span class="dt">id </span>: <span class="dv">2</span>, <span class="dt">name</span>: <span class="st">&quot;cat&quot;</span> , <span class="dt">age</span>: <span class="dv">2</span>}]);
 <span class="ot">items</span>.<span class="fu">add</span>([{ <span class="dt">id </span>: <span class="dv">1</span>, <span class="dt">name</span>: <span class="st">&quot;Bear&quot;</span> }], {<span class="dt">merge</span>: <span class="kw">true</span> });
 <span class="ot">items</span>.<span class="fu">add</span>([{ <span class="dt">id </span>: <span class="dv">2</span>, <span class="dt">name</span>: <span class="st">&quot;lion&quot;</span> }]); <span class="co">// merge: false</span>
-
+ 
 <span class="ot">console</span>.<span class="fu">log</span>(<span class="ot">JSON</span>.<span class="fu">stringify</span>(<span class="ot">items</span>.<span class="fu">toJSON</span>()));
 <span class="co">// [{&quot;id&quot;:1,&quot;name&quot;:&quot;Bear&quot;,&quot;age&quot;:3},{&quot;id&quot;:2,&quot;name&quot;:&quot;cat&quot;,&quot;age&quot;:2}]</span></code></pre>
 <h4 id="retrieving-models">Retrieving Models</h4>
@@ -1254,7 +1254,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <p>In client-server applications, collections contain models obtained from the server. Anytime you’re exchanging data between the client and a server, you will need a way to uniquely identify models. In Backbone, this is done using the <code>id</code>, <code>cid</code>, and <code>idAttribute</code> properties.</p>
 <p>Each model in Backbone has an <code>id</code>, which is a unique identifier that is either an integer or string (e.g., a UUID). Models also have a <code>cid</code> (client id) which is automatically generated by Backbone when the model is created. Either identifier can be used to retrieve a model from a collection.</p>
 <p>The main difference between them is that the <code>cid</code> is generated by Backbone; it is helpful when you don’t have a true id - this may be the case if your model has yet to be saved to the server or you aren’t saving it to a database.</p>
-<p>The <code>idAttribute</code> is the identifying attribute name of the model returned from the server (i.e., the <code>id</code> in your database). This tells Backbone which data field from the server should be used to populate the <code>id</code> property (think of it as a mapper). By default, it assumes <code>id</code>, but this can be customized as needed. For instance, if your server sets a unique attribute on your model named “userId” then you would set <code>idAttribute</code> to “userId” in your model definition.</p>
+<p>The <code>idAttribute</code> is the identifying attribute name of the model returned from the server (i.e. the <code>id</code> in your database). This tells Backbone which data field from the server should be used to populate the <code>id</code> property (think of it as a mapper). By default, it assumes <code>id</code>, but this can be customized as needed. For instance, if your server sets a unique attribute on your model named “userId” then you would set <code>idAttribute</code> to “userId” in your model definition.</p>
 <p>The value of a model’s idAttribute should be set by the server when the model is saved. After this point you shouldn’t need to set it manually, unless further control is required.</p>
 <p>Internally, <code>Backbone.Collection</code> contains an array of models enumerated by their <code>id</code> property, if the model instances happen to have one. When <code>collection.get(id)</code> is called, this array is checked for existence of the model instance with the corresponding <code>id</code>.</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="co">// extends the previous example</span>
@@ -1332,16 +1332,16 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <span class="ot">_</span>.<span class="fu">extend</span>(TodoCounter, <span class="ot">Backbone</span>.<span class="fu">Events</span>);
 
 <span class="co">// Increment counterA, triggering an event</span>
-<span class="kw">var</span> incrA = <span class="kw">function</span>(){
-  <span class="ot">TodoCounter</span>.<span class="fu">counterA</span> += <span class="dv">1</span>;
+<span class="kw">var</span> incrA = <span class="kw">function</span>(){ 
+  <span class="ot">TodoCounter</span>.<span class="fu">counterA</span> += <span class="dv">1</span>; 
   <span class="co">// This triggering will not </span>
   <span class="co">// produce any effect on the counters</span>
-  <span class="ot">TodoCounter</span>.<span class="fu">trigger</span>(<span class="st">&#39;event&#39;</span>);
+  <span class="ot">TodoCounter</span>.<span class="fu">trigger</span>(<span class="st">&#39;event&#39;</span>); 
 };
 
 <span class="co">// Increment counterB</span>
-<span class="kw">var</span> incrB = <span class="kw">function</span>(){
-  <span class="ot">TodoCounter</span>.<span class="fu">counterB</span> += <span class="dv">1</span>;
+<span class="kw">var</span> incrB = <span class="kw">function</span>(){ 
+  <span class="ot">TodoCounter</span>.<span class="fu">counterB</span> += <span class="dv">1</span>; 
 };
 
 <span class="co">// Use once rather than having to explicitly unbind</span>
@@ -1511,8 +1511,8 @@ code > span.er { color: #ff0000; font-weight: bold; }
   <span class="dt">model</span>: Todo,
   <span class="dt">filterById</span>: <span class="kw">function</span>(ids){
     <span class="kw">return</span> <span class="kw">this</span>.<span class="ot">models</span>.<span class="fu">filter</span>(
-      <span class="kw">function</span>(c) {
-        <span class="kw">return</span> <span class="ot">_</span>.<span class="fu">contains</span>(ids, <span class="ot">c</span>.<span class="fu">id</span>);
+      <span class="kw">function</span>(c) { 
+        <span class="kw">return</span> <span class="ot">_</span>.<span class="fu">contains</span>(ids, <span class="ot">c</span>.<span class="fu">id</span>); 
       })
   }
 });</code></pre>
@@ -1647,7 +1647,7 @@ collection
 <span class="kw">var</span> todos = <span class="kw">new</span> <span class="fu">TodosCollection</span>();
 <span class="ot">todos</span>.<span class="fu">fetch</span>(); <span class="co">// sends HTTP GET to /todos</span></code></pre>
 <p><strong>Saving models to the server</strong></p>
-<p>While Backbone can retrieve an entire collection of models from the server at once, updates to models are performed individually using the model’s <code>save()</code> method. When <code>save()</code> is called on a model that was fetched from the server, it constructs a URL by appending the model’s id to the collection’s URL and sends an HTTP PUT to the server. If the model is a new instance that was created in the browser (i.e., it doesn’t have an id) then an HTTP POST is sent to the collection’s URL. <code>Collections.create()</code> can be used to create a new model, add it to the collection, and send it to the server in a single method call.</p>
+<p>While Backbone can retrieve an entire collection of models from the server at once, updates to models are performed individually using the model’s <code>save()</code> method. When <code>save()</code> is called on a model that was fetched from the server, it constructs a URL by appending the model’s id to the collection’s URL and sends an HTTP PUT to the server. If the model is a new instance that was created in the browser (i.e. it doesn’t have an id) then an HTTP POST is sent to the collection’s URL. <code>Collections.create()</code> can be used to create a new model, add it to the collection, and send it to the server in a single method call.</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> Todo = <span class="ot">Backbone</span>.<span class="ot">Model</span>.<span class="fu">extend</span>({
   <span class="dt">defaults</span>: {
     <span class="dt">title</span>: <span class="st">&#39;&#39;</span>,
@@ -1694,7 +1694,7 @@ collection
 <span class="co">// false</span></code></pre>
 <p><strong>Options</strong></p>
 <p>Each RESTful API method accepts a variety of options. Most importantly, all methods accept success and error callbacks which can be used to customize the handling of server responses.</p>
-<p>Specifying the <code>{patch: true}</code> option to <code>Model.save()</code> will cause it to use HTTP PATCH to send only the changed attributes (i.e partial updates) to the server instead of the entire model i.e <code>model.save(attrs, {patch: true})</code>:</p>
+<p>Specifying the <code>{patch: true}</code> option to <code>Model.save()</code> will cause it to use HTTP PATCH to send only the changed attributes (i.e. partial updates) to the server instead of the entire model; i.e. <code>model.save(attrs, {patch: true})</code>:</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="co">// Save partial using PATCH</span>
 <span class="ot">model</span>.<span class="fu">clear</span>().<span class="fu">set</span>({<span class="dt">id</span>: <span class="dv">1</span>, <span class="dt">a</span>: <span class="dv">1</span>, <span class="dt">b</span>: <span class="dv">2</span>, <span class="dt">c</span>: <span class="dv">3</span>, <span class="dt">d</span>: <span class="dv">4</span>});
 <span class="ot">model</span>.<span class="fu">save</span>();
@@ -1839,7 +1839,7 @@ collection
 <span class="ot">_</span>.<span class="fu">extend</span>(ourObject, <span class="ot">Backbone</span>.<span class="fu">Events</span>);
 
 <span class="kw">function</span> <span class="fu">doAction</span> (action, duration) {
-  <span class="ot">console</span>.<span class="fu">log</span>(<span class="st">&quot;We are &quot;</span> + action + <span class="st">&#39; for &#39;</span> + duration );
+  <span class="ot">console</span>.<span class="fu">log</span>(<span class="st">&quot;We are &quot;</span> + action + <span class="st">&#39; for &#39;</span> + duration ); 
 }
 
 <span class="co">// Add event listeners</span>
@@ -2100,7 +2100,7 @@ http:<span class="co">//example.com/#search/seasonal-horns/page2</span></code></
 
 <span class="co">// Trigger &#39;route&#39; event on router instance.</span>
 <span class="ot">router</span>.<span class="fu">on</span>(<span class="st">&#39;route&#39;</span>, <span class="kw">function</span>(name, args) {
-  <span class="ot">console</span>.<span class="fu">log</span>(name === <span class="st">&#39;routeEvent&#39;</span>);
+  <span class="ot">console</span>.<span class="fu">log</span>(name === <span class="st">&#39;routeEvent&#39;</span>); 
 });
 
 <span class="ot">location</span>.<span class="fu">replace</span>(<span class="st">&#39;http://example.com#route-event/x&#39;</span>);
@@ -2122,18 +2122,18 @@ http:<span class="co">//example.com/#search/seasonal-horns/page2</span></code></
     <span class="dt">author </span>: <span class="st">&quot;Bill Shakespeare&quot;</span>,
     <span class="dt">length </span>: <span class="dv">123</span>
 };
-
+  
 <span class="co">// Create a new Library instance</span>
 <span class="kw">var</span> library = <span class="kw">new</span> Library;
 
 <span class="co">// Create a new instance of a model within our collection</span>
 <span class="ot">library</span>.<span class="fu">create</span>(attrs, {<span class="dt">wait</span>: <span class="kw">false</span>});
-
+  
 <span class="co">// Update with just emulateHTTP</span>
 <span class="ot">library</span>.<span class="fu">first</span>().<span class="fu">save</span>({<span class="dt">id</span>: <span class="st">&#39;2-the-tempest&#39;</span>, <span class="dt">author</span>: <span class="st">&#39;Tim Shakespeare&#39;</span>}, {
   <span class="dt">emulateHTTP</span>: <span class="kw">true</span>
 });
-
+    
 <span class="co">// Check the ajaxSettings being used for our request</span>
 <span class="ot">console</span>.<span class="fu">log</span>(<span class="kw">this</span>.<span class="ot">ajaxSettings</span>.<span class="fu">url</span> === <span class="st">&#39;/library/2-the-tempest&#39;</span>); <span class="co">// true</span>
 <span class="ot">console</span>.<span class="fu">log</span>(<span class="kw">this</span>.<span class="ot">ajaxSettings</span>.<span class="fu">type</span> === <span class="st">&#39;POST&#39;</span>); <span class="co">// true</span>
@@ -2295,7 +2295,7 @@ http:<span class="co">//example.com/#search/seasonal-horns/page2</span></code></
 <li>Download jQuery, Underscore, Backbone, and Backbone LocalStorage from their respective web sites and place them under js/lib</li>
 <li>Create the directories js/models, js/collections, js/views, and js/routers</li>
 </ol>
-<p>You will also need <a href="https://raw.githubusercontent.com/addyosmani/todomvc-backbone-es6/gh-pages/app/bower_components/todomvc-common/base.css">base.css</a> and <a href="https://raw.githubusercontent.com/addyosmani/todomvc-backbone-es6/gh-pages/app/bower_components/todomvc-common/bg.png">bg.png</a>, which should live in an assets directory. And remember that you can see a demo of the final application at <a href="http://todomvc.com">TodoMVC.com</a>.</p>
+<p>You will also need <a href="https://raw.githubusercontent.com/tastejs/todomvc/gh-pages/examples/backbone/bower_components/todomvc-common/base.css">base.css</a> and <a href="https://raw.githubusercontent.com/tastejs/todomvc/gh-pages/examples/backbone/bower_components/todomvc-common/bg.png">bg.png</a>, which should live in an assets directory. And remember that you can see a demo of the final application at <a href="http://todomvc.com">TodoMVC.com</a>.</p>
 <p>We will be creating the application JavaScript files during the tutorial. Don’t worry about the two ‘text/template’ script elements - we will replace those soon!</p>
 <h4 id="application-html">Application HTML</h4>
 <p>Now let’s populate the body of index.html. We’ll need an <code>&lt;input&gt;</code> for creating new todos, a <code>&lt;ul id=&quot;todo-list&quot; /&gt;</code> for listing the actual todos, and a footer where we can later insert statistics and links for performing operations such as clearing completed todos. We’ll add the following markup immediately inside our body tag before the script elements:</p>
@@ -2712,7 +2712,7 @@ http:<span class="co">//example.com/#search/seasonal-horns/page2</span></code></
     }
   });</code></pre>
 <p>In the <code>initialize()</code> constructor, we set up a listener that monitors a todo model’s <code>change</code> event. As a result, when the todo gets updated, the application will re-render the view and visually reflect its changes. Note that the model passed in the arguments hash by our AppView is automatically available to us as <code>this.model</code>.</p>
-<p>In the <code>render()</code> method, we render our Underscore.js <code>#item-template</code>, which was previously compiled into this.template using Underscore’s <code>_.template()</code> method. This returns an HTML fragment that replaces the content of the view’s element (an li element was implicitly created for us based on the <code>tagName</code> property). In other words, the rendered template is now present under <code>this.el</code> and can be appended to the todo list in the user interface. <code>render()</code> finishes by caching the input element within the instantiated template into <code>this.input</code>.</p>
+<p>In the <code>render()</code> method, we render our Underscore.js <code>#item-template</code>, which was previously compiled into this.template using Underscore’s <code>_.template()</code> method. This returns an HTML fragment that replaces the content of the view’s element (an li element was implicitly created for us based on the <code>tagName</code> property). In other words, the rendered template is now present under <code>this.el</code> and can be appended to the todo list in the user interface. <code>render()</code> finishes by caching the input element within the instantiated template into <code>this.$input</code>.</p>
 <p>Our events hash includes three callbacks:</p>
 <ul>
 <li><code>edit()</code>: changes the current view into editing mode when a user double-clicks on an existing item in the todo list. This allows them to change the existing value of the item’s title attribute.</li>
@@ -2891,6 +2891,8 @@ secondTodo <span class="kw">instanceof</span> <span class="ot">app</span>.<span 
   <span class="co">// Todo Router</span>
   <span class="co">// ----------</span>
 
+  <span class="kw">var</span> app = app || {};
+
   <span class="kw">var</span> Workspace = <span class="ot">Backbone</span>.<span class="ot">Router</span>.<span class="fu">extend</span>({
     <span class="dt">routes</span>:{
       <span class="st">&#39;*filter&#39;</span>: <span class="st">&#39;setFilter&#39;</span>
@@ -2919,10 +2921,10 @@ secondTodo <span class="kw">instanceof</span> <span class="ot">app</span>.<span 
 <p>Later on in the book, we’ll learn how to further modularize this application using RequireJS, swap out our persistence layer to a database back-end, and finally unit test the application with a few different testing frameworks.</p>
 <h1 id="exercise-2-book-library---your-first-restful-backbone.js-app">Exercise 2: Book Library - Your First RESTful Backbone.js App</h1>
 <p>While our first application gave us a good taste of how Backbone.js applications are made, most real-world applications will want to communicate with a back-end of some sort. Let’s reinforce what we have already learned with another example, but this time we will also create a RESTful API for our application to talk to.</p>
-<p>In this exercise we will build a library application for managing digital books using Backbone. For each book we will store the title, author, date of release, and some keywords. We’ll also show a picture of the cover.</p>
+<p>In this exercise, we will build a library application for managing digital books using Backbone. For each book, we will store the title, author, date of release, and some keywords. We’ll also show a picture of the cover.</p>
 <h2 id="setting-up">Setting up</h2>
-<p>First we need to create a folder structure for our project. To keep the front-end and back-end separate, we will create a folder called <em>site</em> for our client in the project root. Within it we will create css, img, and js directories.</p>
-<p>As with the last example we will split our JavaScript files by their function, so under the js directory create folders named lib, models, collections, and views. Your directory hierarchy should look like this:</p>
+<p>First, we need to create a folder structure for our project. To keep the front-end and back-end separate, we will create a folder called <em>site</em> for our client in the project root. Within it, we will create css, img, and js directories.</p>
+<p>As with the last example, we will split our JavaScript files by their function, so under the js directory create folders named lib, models, collections, and views. Your directory hierarchy should look like this:</p>
 <pre><code>site/
     css/
     img/
@@ -2954,7 +2956,7 @@ secondTodo <span class="kw">instanceof</span> <span class="ot">app</span>.<span 
         <span class="kw">&lt;script</span><span class="ot"> src=</span><span class="st">&quot;js/app.js&quot;</span><span class="kw">&gt;&lt;/script&gt;</span>
     <span class="kw">&lt;/body&gt;</span>
 <span class="kw">&lt;/html&gt;</span></code></pre>
-<p>We should also add in the HTML for the user interface. We’ll want a form for adding a new book so add the following immediately inside the <code>body</code> element:</p>
+<p>We should also add in the HTML for the user interface. We’ll want a form for adding a new book, so add the following immediately inside the <code>body</code> element:</p>
 <pre class="sourceCode html"><code class="sourceCode html"><span class="kw">&lt;div</span><span class="ot"> id=</span><span class="st">&quot;books&quot;</span><span class="kw">&gt;</span>
     <span class="kw">&lt;form</span><span class="ot"> id=</span><span class="st">&quot;addBook&quot;</span><span class="ot"> action=</span><span class="st">&quot;#&quot;</span><span class="kw">&gt;</span>
         <span class="kw">&lt;div&gt;</span>
@@ -3065,7 +3067,7 @@ secondTodo <span class="kw">instanceof</span> <span class="ot">app</span>.<span 
 <figure>
 <img src="img/chapter5-2.png" />
 </figure>
-<p>So this is what we want the final result to look like, but with more books. Go ahead and copy the bookContainer div a few more times if you would like to see what it looks like. Now we are ready to start developing the actual application.</p>
+<p>So this is what we want the final result to look like, but with more books. Go ahead and copy the bookContainer div a few more times if you would like to see what it looks like. Now, we are ready to start developing the actual application.</p>
 <h4 id="creating-the-model-collection-views-and-app">Creating the Model, Collection, Views, and App</h4>
 <p>First, we’ll need a model of a book and a collection to hold the list. These are both very simple, with the model only declaring some defaults:</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="co">// site/js/models/book.js</span>
@@ -3134,7 +3136,7 @@ secondTodo <span class="kw">instanceof</span> <span class="ot">app</span>.<span 
         <span class="kw">this</span>.<span class="ot">$el</span>.<span class="fu">append</span>( <span class="ot">bookView</span>.<span class="fu">render</span>().<span class="fu">el</span> );
     }
 });</code></pre>
-<p>Note that in the initialize function we accept an array of data that we pass to the app.Library constructor. We’ll use this to populate our collection with some sample data so that we can see everything is working correctly. Finally, we have the entry point for our code, along with the sample data:</p>
+<p>Note that in the initialize function, we accept an array of data that we pass to the app.Library constructor. We’ll use this to populate our collection with some sample data so that we can see everything is working correctly. Finally, we have the entry point for our code, along with the sample data:</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="co">// site/js/app.js</span>
 
 <span class="kw">var</span> app = app || {};
@@ -3151,15 +3153,15 @@ secondTodo <span class="kw">instanceof</span> <span class="ot">app</span>.<span 
     <span class="kw">new</span> <span class="ot">app</span>.<span class="fu">LibraryView</span>( books );
 });</code></pre>
 <p>Our app just passes the sample data to a new instance of app.LibraryView that it creates. Since the <code>initialize()</code> constructor in LibraryView invokes the view’s <code>render()</code> method, all the books in the library will be displayed. Since we are passing our entry point as a callback to jQuery (in the form of its $ alias), the function will execute when the DOM is ready.</p>
-<p>If you view index.html in a browser you should see something like this:</p>
+<p>If you view index.html in a browser, you should see something like this:</p>
 <figure>
 <img src="img/chapter5-3.png" />
 </figure>
 <p>This is a complete Backbone application, though it doesn’t yet do anything interesting.</p>
 <h2 id="wiring-in-the-interface">Wiring in the interface</h2>
-<p>Now we’ll add some functionality to the useless form at the top and the delete buttons on each book.</p>
+<p>Now, we’ll add some functionality to the useless form at the top and the delete buttons on each book.</p>
 <h3 id="adding-models">Adding models</h3>
-<p>When the user clicks the add button we want to take the data in the form and use it to create a new model. In the LibraryView we need to add an event handler for the click event:</p>
+<p>When the user clicks the add button, we want to take the data in the form and use it to create a new model. In the LibraryView, we need to add an event handler for the click event:</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript">events:{
     <span class="st">&#39;click #add&#39;</span>:<span class="st">&#39;addBook&#39;</span>
 },
@@ -3178,12 +3180,12 @@ addBook: <span class="kw">function</span>( e ) {
 
     <span class="kw">this</span>.<span class="ot">collection</span>.<span class="fu">add</span>( <span class="kw">new</span> <span class="ot">app</span>.<span class="fu">Book</span>( formData ) );
 },</code></pre>
-<p>We select all the input elements of the form that have a value and iterate over them using jQuery’s each. Since we used the same names for ids in our form as the keys on our Book model we can simply store them directly in the formData object. We then create a new Book from the data and add it to the collection. We skip fields without a value so that the defaults will be applied.</p>
+<p>We select all the input elements of the form that have a value and iterate over them using jQuery’s each. Since we used the same names for ids in our form as the keys on our Book model, we can simply store them directly in the formData object. We then create a new Book from the data and add it to the collection. We skip fields without a value so that the defaults will be applied.</p>
 <p>Backbone passes an event object as a parameter to the event-handling function. This is useful for us in this case since we don’t want the form to actually submit and reload the page. Adding a call to <code>preventDefault</code> on the event in the <code>addBook</code> function takes care of this for us.</p>
-<p>Now we just need to make the view render again when a new model is added. To do this, we put</p>
+<p>Now, we just need to make the view render again when a new model is added. To do this, we put</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">this</span>.<span class="fu">listenTo</span>( <span class="kw">this</span>.<span class="fu">collection</span>, <span class="st">&#39;add&#39;</span>, <span class="kw">this</span>.<span class="fu">renderBook</span> );</code></pre>
 <p>in the initialize function of LibraryView.</p>
-<p>Now you should be ready to take the application for a spin.</p>
+<p>Now, you should be ready to take the application for a spin.</p>
 <figure>
 <img src="img/chapter5-4.png" />
 </figure>
@@ -3203,7 +3205,7 @@ addBook: <span class="kw">function</span>( e ) {
     },</code></pre>
 <p>You should now be able to add and remove books from the library.</p>
 <h2 id="creating-the-back-end">Creating the back-end</h2>
-<p>Now we need to make a small detour and set up a server with a REST api. Since this is a JavaScript book we will use JavaScript to create the server using node.js. If you are more comfortable in setting up a REST server in another language, this is the API you need to conform to:</p>
+<p>Now, we need to make a small detour and set up a server with a REST api. Since this is a JavaScript book, we will use JavaScript to create the server using node.js. If you are more comfortable in setting up a REST server in another language, this is the API you need to conform to:</p>
 <pre><code>url             HTTP Method  Operation
 /api/books      GET          Get an array of all books
 /api/books/:id  GET          Get the book with id of :id
@@ -3283,7 +3285,7 @@ package.json</code></pre>
 <span class="ot">app</span>.<span class="fu">get</span>( <span class="st">&#39;/api&#39;</span>, <span class="kw">function</span>( request, response ) {
     <span class="ot">response</span>.<span class="fu">send</span>( <span class="st">&#39;Library API is running&#39;</span> );
 });</code></pre>
-<p>The get function takes a URL as the first parameter and a function as the second. The function will be called with request and response objects. Now you can restart node and go to our specified URL:</p>
+<p>The get function takes a URL as the first parameter and a function as the second. The function will be called with request and response objects. Now, you can restart node and go to our specified URL:</p>
 <figure>
 <img src="img/chapter5-6.png" />
 </figure>
@@ -3330,8 +3332,8 @@ package.json</code></pre>
         }
     });
 });</code></pre>
-<p>The find function of Model is defined like this: <code>function find (conditions, fields, options, callback)</code> – but since we want a function that returns all books we only need the callback parameter. The callback will be called with an error object and an array of found objects. If there was no error we return the array of objects to the client using the <code>send</code> function of the response object, otherwise we log the error to the console.</p>
-<p>To test our API we need to do a little typing in a JavaScript console. Restart node and go to localhost:4711 in your browser. Open up the JavaScript console. If you are using Google Chrome, go to View-&gt;Developer-&gt;JavaScript Console. If you are using Firefox, install Firebug and go to View-&gt;Firebug. Most other browsers will have a similar console. In the console type the following:</p>
+<p>The find function of Model is defined like this: <code>function find (conditions, fields, options, callback)</code> – but since we want a function that returns all books we only need the callback parameter. The callback will be called with an error object and an array of found objects. If there was no error, we return the array of objects to the client using the <code>send</code> function of the response object. Otherwise, we log the error to the console.</p>
+<p>To test our API, we need to do a little typing in a JavaScript console. Restart node and go to localhost:4711 in your browser. Open up the JavaScript console. If you are using Google Chrome, go to View-&gt;Developer-&gt;JavaScript Console. If you are using Firefox, install Firebug and go to View-&gt;Firebug. Most other browsers will have a similar console. In the console type the following:</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="ot">jQuery</span>.<span class="fu">get</span>( <span class="st">&#39;/api/books/&#39;</span>, <span class="kw">function</span>( data, textStatus, jqXHR ) {
     <span class="ot">console</span>.<span class="fu">log</span>( <span class="st">&#39;Get response:&#39;</span> );
     <span class="ot">console</span>.<span class="fu">dir</span>( data );
@@ -3355,9 +3357,9 @@ package.json</code></pre>
         <span class="kw">if</span>( !err ) {
             <span class="ot">console</span>.<span class="fu">log</span>( <span class="st">&#39;created&#39;</span> );
             <span class="kw">return</span> <span class="ot">response</span>.<span class="fu">send</span>( book );
-            } <span class="kw">else</span> {
-                <span class="ot">console</span>.<span class="fu">log</span>( err );
-            }
+        } <span class="kw">else</span> {
+            <span class="ot">console</span>.<span class="fu">log</span>( err );
+        }
     });
 });</code></pre>
 <p>We start by creating a new BookModel, passing an object with title, author, and releaseDate attributes. The data are collected from request.body. This means that anyone calling this operation in the API needs to supply a JSON object containing the title, author, and releaseDate attributes. Actually, the caller can omit any or all attributes since we have not made any of them mandatory.</p>
@@ -3381,7 +3383,7 @@ package.json</code></pre>
 });</code></pre>
 <p>You should now get a one-element array back from our server. You may wonder about this line:</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="st">&#39;releaseDate&#39;</span>: <span class="kw">new</span> <span class="fu">Date</span>(<span class="dv">2008</span>, <span class="dv">4</span>, <span class="dv">1</span>).<span class="fu">getTime</span>()</code></pre>
-<p>MongoDB expects dates in UNIX time format (milliseconds from the start of Jan 1st 1970 UTC), so we have to convert dates before posting. The object we get back however, contains a JavaScript Date object. Also note the _id attribute of the returned object.</p>
+<p>MongoDB expects dates in UNIX time format (milliseconds from the start of Jan 1st 1970 UTC), so we have to convert dates before posting. The object we get back, however, contains a JavaScript Date object. Also note the _id attribute of the returned object.</p>
 <figure>
 <img src="img/chapter5-8.png" />
 </figure>
@@ -3396,7 +3398,7 @@ package.json</code></pre>
         }
     });
 });</code></pre>
-<p>Here we use colon notation (:id) to tell Express that this part of the route is dynamic. We also use the <code>findById</code> function on BookModel to get a single result. If you restart node, you can get a single book by adding the id previously returned to the URL like this:</p>
+<p>Here, we use colon notation (:id) to tell Express that this part of the route is dynamic. We also use the <code>findById</code> function on BookModel to get a single result. If you restart node, you can get a single book by adding the id previously returned to the URL like this:</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="ot">jQuery</span>.<span class="fu">get</span>( <span class="st">&#39;/api/books/4f95a8cb1baa9b8a1b000006&#39;</span>, <span class="kw">function</span>( data, textStatus, jqXHR ) {
     <span class="ot">console</span>.<span class="fu">log</span>( <span class="st">&#39;Get response:&#39;</span> );
     <span class="ot">console</span>.<span class="fu">dir</span>( data );
@@ -3415,15 +3417,15 @@ package.json</code></pre>
         <span class="kw">return</span> <span class="ot">book</span>.<span class="fu">save</span>( <span class="kw">function</span>( err ) {
             <span class="kw">if</span>( !err ) {
                 <span class="ot">console</span>.<span class="fu">log</span>( <span class="st">&#39;book updated&#39;</span> );
-            <span class="kw">return</span> <span class="ot">response</span>.<span class="fu">send</span>( book );
-        } <span class="kw">else</span> {
-            <span class="ot">console</span>.<span class="fu">log</span>( err );
-        }
+                <span class="kw">return</span> <span class="ot">response</span>.<span class="fu">send</span>( book );
+            } <span class="kw">else</span> {
+                <span class="ot">console</span>.<span class="fu">log</span>( err );
+            }
         });
     });
 });</code></pre>
 <p>This is a little larger than previous ones, but is also pretty straight forward – we find a book by id, update its properties, save it, and send it back to the client.</p>
-<p>To test this we need to use the more general jQuery ajax function. Again, in these examples you will need to replace the id property with one that matches an item in your own database:</p>
+<p>To test this, we need to use the more general jQuery ajax function. Again, in these examples, you will need to replace the id property with one that matches an item in your own database:</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="ot">jQuery</span>.<span class="fu">ajax</span>({
     <span class="dt">url</span>: <span class="st">&#39;/api/books/4f95a8cb1baa9b8a1b000006&#39;</span>,
     <span class="dt">type</span>: <span class="st">&#39;PUT&#39;</span>,
@@ -3439,7 +3441,7 @@ package.json</code></pre>
         <span class="ot">console</span>.<span class="fu">dir</span>( jqXHR );
     }
 });</code></pre>
-<p>Finally we create the delete route:</p>
+<p>Finally, we create the delete route:</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="co">//Delete a book</span>
 <span class="ot">app</span>.<span class="fu">delete</span>( <span class="st">&#39;/api/books/:id&#39;</span>, <span class="kw">function</span>( request, response ) {
     <span class="ot">console</span>.<span class="fu">log</span>( <span class="st">&#39;Deleting book with id: &#39;</span> + <span class="ot">request</span>.<span class="ot">params</span>.<span class="fu">id</span> );
@@ -3465,12 +3467,12 @@ package.json</code></pre>
         <span class="ot">console</span>.<span class="fu">dir</span>( jqXHR );
     }
 });</code></pre>
-<p>So now our REST API is complete – we have support for all four HTTP verbs. What’s next? Well, until now I have left out the keywords part of our books. This is a bit more complicated since a book could have several keywords and we don’t want to represent them as a string, but rather an array of strings. To do that we need another schema. Add a Keywords schema right above our Book schema:</p>
+<p>So now our REST API is complete – we have support for all four HTTP verbs. What’s next? Well, until now I have left out the keywords part of our books. This is a bit more complicated since a book could have several keywords and we don’t want to represent them as a string, but rather an array of strings. To do that, we need another schema. Add a Keywords schema right above our Book schema:</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="co">//Schemas</span>
 <span class="kw">var</span> Keywords = <span class="kw">new</span> <span class="ot">mongoose</span>.<span class="fu">Schema</span>({
     <span class="dt">keyword</span>: String
 });</code></pre>
-<p>To add a sub schema to an existing schema we use brackets notation like so:</p>
+<p>To add a sub schema to an existing schema, we use brackets notation like so:</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> Book = <span class="kw">new</span> <span class="ot">mongoose</span>.<span class="fu">Schema</span>({
     <span class="dt">title</span>: String,
     <span class="dt">author</span>: String,
@@ -3532,7 +3534,7 @@ package.json</code></pre>
 });</code></pre>
 <p>You now have a fully functional REST server that we can hook into from our front-end.</p>
 <h2 id="talking-to-the-server">Talking to the server</h2>
-<p>In this part we will cover connecting our Backbone application to the server through the REST API.</p>
+<p>In this part, we will cover connecting our Backbone application to the server through the REST API.</p>
 <p>As we mentioned in chapter 3 <em>Backbone Basics</em>, we can retrieve models from a server using <code>collection.fetch()</code> by setting <code>collection.url</code> to be the URL of the API endpoint. Let’s update the Library collection to do that now:</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> app = app || {};
 
@@ -3547,10 +3549,10 @@ package.json</code></pre>
 /api/books      POST         Add a new book and return the book with an id attribute added
 /api/books/:id  PUT          Update the book with id of :id
 /api/books/:id  DELETE       Delete the book with id of :id</code></pre>
-<p>To have our application retrieve the Book models from the server on page load we need to update the LibraryView. The Backbone documentation recommends inserting all models when the page is generated on the server side, rather than fetching them from the client side once the page is loaded. Since this chapter is trying to give you a more complete picture of how to communicate with a server, we will go ahead and ignore that recommendation. Go to the LibraryView declaration and update the initialize function as follows:</p>
-<pre class="sourceCode javascript"><code class="sourceCode javascript">initialize: <span class="kw">function</span>() {
-    <span class="kw">this</span>.<span class="fu">collection</span> = <span class="kw">new</span> <span class="ot">app</span>.<span class="fu">Library</span>();
-    <span class="kw">this</span>.<span class="ot">collection</span>.<span class="fu">fetch</span>({<span class="dt">reset</span>: <span class="kw">true</span>}); <span class="co">// NEW</span>
+<p>To have our application retrieve the Book models from the server on page load, we need to update the LibraryView. The Backbone documentation recommends inserting all models when the page is generated on the server side, rather than fetching them from the client side once the page is loaded. Since this chapter is trying to give you a more complete picture of how to communicate with a server, we will go ahead and ignore that recommendation. Go to the LibraryView declaration and update the initialize function as follows:</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript">initialize: <span class="kw">function</span>() {                    <span class="co">// UPDATED</span>
+    <span class="kw">this</span>.<span class="fu">collection</span> = <span class="kw">new</span> <span class="ot">app</span>.<span class="fu">Library</span>();    <span class="co">// UPDATED</span>
+    <span class="kw">this</span>.<span class="ot">collection</span>.<span class="fu">fetch</span>({<span class="dt">reset</span>: <span class="kw">true</span>});   <span class="co">// NEW</span>
     <span class="kw">this</span>.<span class="fu">render</span>();
 
     <span class="kw">this</span>.<span class="fu">listenTo</span>( <span class="kw">this</span>.<span class="fu">collection</span>, <span class="st">&#39;add&#39;</span>, <span class="kw">this</span>.<span class="fu">renderBook</span> );
@@ -3562,17 +3564,17 @@ package.json</code></pre>
 <span class="kw">var</span> app = app || {};
 
 <span class="fu">$</span>(<span class="kw">function</span>() {
-    <span class="kw">new</span> <span class="ot">app</span>.<span class="fu">LibraryView</span>();
+    <span class="kw">new</span> <span class="ot">app</span>.<span class="fu">LibraryView</span>();  <span class="co">// UPDATED</span>
 });</code></pre>
-<p>We have also added a listener on the reset event. We need to do this since the models are fetched asynchronously after the page is rendered. When the fetch completes, Backbone fires the reset event, as requested by the <code>reset: true</code> option, and our listener re-renders the view. If you reload the page now you should see all books that are stored on the server:</p>
+<p>We have also added a listener on the reset event. We need to do this since the models are fetched asynchronously after the page is rendered. When the fetch completes, Backbone fires the reset event, as requested by the <code>reset: true</code> option, and our listener re-renders the view. If you reload the page now, you should see all books that are stored on the server:</p>
 <figure>
 <img src="img/chapter5-9.png" />
 </figure>
-<p>As you can see the date and keywords look a bit weird. The date delivered from the server is converted into a JavaScript Date object and when applied to the underscore template it will use the toString() function to display it. There isn’t very good support for formatting dates in JavaScript so we will use the dateFormat jQuery plugin to fix this. Go ahead and download it from <a href="http://github.com/phstc/jquery-dateFormat">here</a> and put it in your site/js/lib folder. Update the book template so that the date is displayed with:</p>
+<p>As you can see, the date and keywords look a bit weird. The date delivered from the server is converted into a JavaScript Date object and when applied to the underscore template, it will use the toString() function to display it. There isn’t very good support for formatting dates in JavaScript so we will use the dateFormat jQuery plugin to fix this. Go ahead and download it from <a href="http://github.com/phstc/jquery-dateFormat">here</a> and put it in your site/js/lib folder. Update the book template so that the date is displayed with:</p>
 <pre class="sourceCode html"><code class="sourceCode html"><span class="kw">&lt;li&gt;</span><span class="er">&lt;</span>%= $.format.date( new Date( releaseDate ), &#39;MMMM yyyy&#39; ) %&gt;<span class="kw">&lt;/li&gt;</span></code></pre>
 <p>and add a script element for the plugin</p>
 <pre class="sourceCode html"><code class="sourceCode html"><span class="kw">&lt;script</span><span class="ot"> src=</span><span class="st">&quot;js/lib/jquery-dateFormat-1.0.js&quot;</span><span class="kw">&gt;&lt;/script&gt;</span></code></pre>
-<p>Now the date on the page should look a bit better. How about the keywords? Since we are receiving the keywords in an array we need to execute some code that generates a string of separated keywords. To do that we can omit the equals character in the template tag which will let us execute code that doesn’t display anything:</p>
+<p>Now, the date on the page should look a bit better. How about the keywords? Since we are receiving the keywords in an array we need to execute some code that generates a string of separated keywords. To do that, we can omit the equals character in the template tag which will let us execute code that doesn’t display anything:</p>
 <pre class="sourceCode html"><code class="sourceCode html"><span class="kw">&lt;li&gt;</span><span class="er">&lt;</span>% _.each( keywords, function( keyobj ) {%&gt; <span class="er">&lt;</span>%= keyobj.keyword %&gt;<span class="er">&lt;</span>% } ); %&gt;<span class="kw">&lt;/li&gt;</span></code></pre>
 <p>Here I iterate over the keywords array using the Underscore <code>each</code> function and print out every single keyword. Note that I display the keyword using the &lt;%= tag. This will display the keywords with spaces between them.</p>
 <p>Reloading the page again should look quite decent:</p>
@@ -3580,18 +3582,18 @@ package.json</code></pre>
 <img src="img/chapter5-10.png" />
 </figure>
 <p>Now go ahead and delete a book and then reload the page: Tadaa! the deleted book is back! Not cool, why is this? This happens because when we get the BookModels from the server they have an _id attribute (notice the underscore), but Backbone expects an id attribute (no underscore). Since no id attribute is present, Backbone sees this model as new and deleting a new model doesn’t need any synchronization.</p>
-<p>To fix this we can use the parse function of Backbone.Model. The parse function lets you edit the server response before it is passed to the Model constructor. Add a parse method to the Book model:</p>
+<p>To fix this, we can use the parse function of Backbone.Model. The parse function lets you edit the server response before it is passed to the Model constructor. Add a parse method to the Book model:</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript">parse: <span class="kw">function</span>( response ) {
     <span class="ot">response</span>.<span class="fu">id</span> = <span class="ot">response</span>.<span class="fu">_id</span>;
     <span class="kw">return</span> response;
 }</code></pre>
-<p>Simply copy the value of _id to the needed id attribute. If you reload the page you will see that models are actually deleted on the server when you press the delete button.</p>
+<p>Simply copy the value of _id to the needed id attribute. If you reload the page, you will see that models are actually deleted on the server when you press the delete button.</p>
 <p>Another, simpler way of making Backbone recognize <em>id as its unique identifier is to set the idAttribute of the model to</em>id.</p>
-<p>If you now try to add a new book using the form you’ll notice that it is a similar story to delete – models won’t get persisted on the server. This is because Backbone.Collection.add doesn’t automatically sync, but it is easy to fix. In the LibraryView we find in <code>views/library.js</code> change the line reading:</p>
+<p>If you now try to add a new book using the form, you’ll notice that it is a similar story to delete – models won’t get persisted on the server. This is because Backbone.Collection.add doesn’t automatically sync, but it is easy to fix. In the LibraryView, we find in <code>views/library.js</code> change the line reading:</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">this</span>.<span class="ot">collection</span>.<span class="fu">add</span>( <span class="kw">new</span> <span class="fu">Book</span>( formData ) );</code></pre>
 <p>…to:</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">this</span>.<span class="ot">collection</span>.<span class="fu">create</span>( formData );</code></pre>
-<p>Now newly created books will get persisted. Actually, they probably won’t if you enter a date. The server expects a date in UNIX timestamp format (milliseconds since Jan 1, 1970). Also, any keywords you enter won’t be stored since the server expects an array of objects with the attribute ‘keyword’.</p>
+<p>Now, newly created books will get persisted. Actually, they probably won’t if you enter a date. The server expects a date in UNIX timestamp format (milliseconds since Jan 1, 1970). Also, any keywords you enter won’t be stored since the server expects an array of objects with the attribute ‘keyword’.</p>
 <p>We’ll start by fixing the date issue. We don’t really want the users to manually enter a date in a specific format, so we’ll use the standard datepicker from jQuery UI. Go ahead and create a custom jQuery UI download containing datepicker from <a href="http://jqueryui.com/download/">here</a>. Add the css theme to site/css/ and the JavaScript to site/js/lib. Link to them in index.html:</p>
 <pre class="sourceCode html"><code class="sourceCode html"><span class="kw">&lt;link</span><span class="ot"> rel=</span><span class="st">&quot;stylesheet&quot;</span><span class="ot"> href=</span><span class="st">&quot;css/cupertino/jquery-ui-1.10.0.custom.css&quot;</span><span class="kw">&gt;</span></code></pre>
 <p>“cupertino” is the name of the style I chose when downloading jQuery UI.</p>
@@ -3637,12 +3639,12 @@ package.json</code></pre>
 },</code></pre>
 <p>Our change adds two checks to the form input fields. First, we’re checking if the current element is the keywords input field, in which case we’re splitting the string on each space and creating an array of keyword objects.</p>
 <p>Then we’re checking if the current element is the releaseDate input field, in which case we’re calling <code>datePicker(“getDate”)</code> which returns a Date object. We then use the <code>getTime</code> function on that to get the time in milliseconds.</p>
-<p>Now you should be able to add new books with both a release date and keywords!</p>
+<p>Now, you should be able to add new books with both a release date and keywords!</p>
 <figure>
 <img src="img/chapter5-12.png" />
 </figure>
 <h3 id="summary-3">Summary</h3>
-<p>In this chapter we made our application persistent by binding it to a server using a REST API. We also looked at some problems that might occur when serializing and deserializing data and their solutions. We looked at the dateFormat and the datepicker jQuery plugins and how to do some more advanced things in our Underscore templates. The code is available <a href="https://github.com/addyosmani/backbone-fundamentals/tree/gh-pages/practicals/exercise-2">here</a>.</p>
+<p>In this chapter, we made our application persistent by binding it to a server using a REST API. We also looked at some problems that might occur when serializing and deserializing data and their solutions. We looked at the dateFormat and the datepicker jQuery plugins and how to do some more advanced things in our Underscore templates. The code is available <a href="https://github.com/addyosmani/backbone-fundamentals/tree/gh-pages/practicals/exercise-2">here</a>.</p>
 <h1 id="backbone-extensions">Backbone Extensions</h1>
 <p>Backbone is flexible, simple, and powerful. However, you may find that the complexity of the application you are working on requires more than what it provides out of the box. There are certain concerns which it just doesn’t address directly as one of its goals is to be minimalist.</p>
 <p>Take for example Views, which provide a default <code>render</code> method which does nothing and produces no real results when called, despite most implementations using it to generate the HTML that the view manages. Also, Models and Collections have no built-in way of handling nested hierarchies - if you require this functionality, you need to write it yourself or use a plugin.</p>
@@ -3908,7 +3910,7 @@ zombieView = <span class="kw">new</span> <span class="fu">ZombieView</span>({
 <p>Note that Marionette modules (such as the below) offer a simple module system which is used to create privacy and encapsulation in Marionette apps. These certainly don’t have to be used however, and later on in this section we’ll provide links to alternative implementations using RequireJS + AMD instead.</p>
 <p><strong>TodoMVC.Layout.js:</strong></p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="ot">TodoMVC</span>.<span class="fu">module</span>(<span class="st">&#39;Layout&#39;</span>, <span class="kw">function</span>(Layout, App, Backbone, Marionette, $, _) {
-
+  
   <span class="co">// Layout Header View</span>
   <span class="co">// ------------------</span>
 
@@ -4045,7 +4047,7 @@ zombieView = <span class="kw">new</span> <span class="fu">ZombieView</span>({
   <span class="co">//</span>
   <span class="co">// Control the workflow and logic that exists at the application</span>
   <span class="co">// level, above the implementation detail of views and models</span>
-
+  
   <span class="ot">TodoList</span>.<span class="fu">Controller</span> = <span class="kw">function</span>() {
     <span class="kw">this</span>.<span class="fu">todoList</span> = <span class="kw">new</span> <span class="ot">App</span>.<span class="ot">Todos</span>.<span class="fu">TodoList</span>();
   };
@@ -4058,7 +4060,7 @@ zombieView = <span class="kw">new</span> <span class="fu">ZombieView</span>({
       <span class="kw">this</span>.<span class="fu">showHeader</span>(<span class="kw">this</span>.<span class="fu">todoList</span>);
       <span class="kw">this</span>.<span class="fu">showFooter</span>(<span class="kw">this</span>.<span class="fu">todoList</span>);
       <span class="kw">this</span>.<span class="fu">showTodoList</span>(<span class="kw">this</span>.<span class="fu">todoList</span>);
-
+      
   <span class="ot">App</span>.<span class="fu">bindTo</span>(<span class="kw">this</span>.<span class="fu">todoList</span>, <span class="st">&#39;reset add remove&#39;</span>, <span class="kw">this</span>.<span class="fu">toggleFooter</span>, <span class="kw">this</span>);
       <span class="kw">this</span>.<span class="ot">todoList</span>.<span class="fu">fetch</span>();
     },
@@ -4082,7 +4084,7 @@ zombieView = <span class="kw">new</span> <span class="fu">ZombieView</span>({
         <span class="dt">collection</span>: todoList
       }));
     },
-
+    
     <span class="dt">toggleFooter</span>: <span class="kw">function</span>() {
       <span class="ot">App</span>.<span class="ot">footer</span>.<span class="ot">$el</span>.<span class="fu">toggle</span>(<span class="kw">this</span>.<span class="ot">todoList</span>.<span class="fu">length</span>);
     },
@@ -4099,7 +4101,7 @@ zombieView = <span class="kw">new</span> <span class="fu">ZombieView</span>({
   <span class="co">// Get the TodoList up and running by initializing the mediator</span>
   <span class="co">// when the the application is started, pulling in all of the</span>
   <span class="co">// existing Todo items and displaying them.</span>
-
+  
   <span class="ot">TodoList</span>.<span class="fu">addInitializer</span>(<span class="kw">function</span>() {
 
     <span class="kw">var</span> controller = <span class="kw">new</span> <span class="ot">TodoList</span>.<span class="fu">Controller</span>();
@@ -4157,10 +4159,10 @@ zombieView = <span class="kw">new</span> <span class="fu">ZombieView</span>({
 
       <span class="dt">onRender</span>: <span class="kw">function</span>() {
         <span class="kw">this</span>.<span class="ot">$el</span>.<span class="fu">removeClass</span>( <span class="st">&#39;active completed&#39;</span> );
-
+      
         <span class="kw">if</span> ( <span class="kw">this</span>.<span class="ot">model</span>.<span class="fu">get</span>( <span class="st">&#39;completed&#39;</span> )) {
           <span class="kw">this</span>.<span class="ot">$el</span>.<span class="fu">addClass</span>( <span class="st">&#39;completed&#39;</span> );
-        } <span class="kw">else</span> {
+        } <span class="kw">else</span> { 
           <span class="kw">this</span>.<span class="ot">$el</span>.<span class="fu">addClass</span>( <span class="st">&#39;active&#39;</span> );
         }
       },
@@ -4177,7 +4179,7 @@ zombieView = <span class="kw">new</span> <span class="fu">ZombieView</span>({
         <span class="kw">this</span>.<span class="ot">$el</span>.<span class="fu">addClass</span>(<span class="st">&#39;editing&#39;</span>);
         <span class="kw">this</span>.<span class="ot">ui</span>.<span class="ot">edit</span>.<span class="fu">focus</span>();
       },
-
+      
       <span class="dt">updateTodo </span>: <span class="kw">function</span>() {
         <span class="kw">var</span> todoText = <span class="kw">this</span>.<span class="ot">ui</span>.<span class="ot">edit</span>.<span class="fu">val</span>();
         <span class="kw">if</span> (todoText === <span class="st">&#39;&#39;</span>) {
@@ -4200,7 +4202,7 @@ zombieView = <span class="kw">new</span> <span class="fu">ZombieView</span>({
           <span class="kw">this</span>.<span class="ot">$el</span>.<span class="fu">removeClass</span>(<span class="st">&#39;editing&#39;</span>);
         }
       },
-
+      
       <span class="dt">setTodoText</span>: <span class="kw">function</span>(todoText){
         <span class="kw">if</span> (<span class="ot">todoText</span>.<span class="fu">trim</span>() === <span class="st">&quot;&quot;</span>){ <span class="kw">return</span>; }
         <span class="kw">this</span>.<span class="ot">model</span>.<span class="fu">set</span>(<span class="st">&#39;title&#39;</span>, todoText).<span class="fu">save</span>();
@@ -4239,10 +4241,10 @@ zombieView = <span class="kw">new</span> <span class="fu">ZombieView</span>({
       },
 
       <span class="dt">update</span>: <span class="kw">function</span>() {
-        <span class="kw">function</span> <span class="fu">reduceCompleted</span>(left, right) {
-          <span class="kw">return</span> left &amp;&amp; <span class="ot">right</span>.<span class="fu">get</span>(<span class="st">&#39;completed&#39;</span>);
+        <span class="kw">function</span> <span class="fu">reduceCompleted</span>(left, right) { 
+          <span class="kw">return</span> left &amp;&amp; <span class="ot">right</span>.<span class="fu">get</span>(<span class="st">&#39;completed&#39;</span>); 
         }
-
+        
         <span class="kw">var</span> allCompleted = <span class="kw">this</span>.<span class="ot">collection</span>.<span class="fu">reduce</span>(reduceCompleted,<span class="kw">true</span>);
         <span class="kw">this</span>.<span class="ot">ui</span>.<span class="ot">toggle</span>.<span class="fu">prop</span>(<span class="st">&#39;checked&#39;</span>, allCompleted);
         <span class="kw">this</span>.<span class="ot">$el</span>.<span class="fu">parent</span>().<span class="fu">toggle</span>(!!<span class="kw">this</span>.<span class="ot">collection</span>.<span class="fu">length</span>);
@@ -4261,7 +4263,7 @@ zombieView = <span class="kw">new</span> <span class="fu">ZombieView</span>({
   <span class="co">//</span>
   <span class="co">// Handler for filtering the list of items by showing and</span>
   <span class="co">// hiding through the use of various CSS classes</span>
-
+  
   <span class="ot">App</span>.<span class="ot">vent</span>.<span class="fu">on</span>(<span class="st">&#39;todoList:filter&#39;</span>,<span class="kw">function</span>(filter) {
     filter = filter || <span class="st">&#39;all&#39;</span>;
     <span class="fu">$</span>(<span class="st">&#39;#todoapp&#39;</span>).<span class="fu">attr</span>(<span class="st">&#39;class&#39;</span>, <span class="st">&#39;filter-&#39;</span> + filter);
@@ -4280,7 +4282,7 @@ zombieView = <span class="kw">new</span> <span class="fu">ZombieView</span>({
 
   <span class="co">// Todo Model</span>
   <span class="co">// ----------</span>
-
+  
   <span class="ot">Todos</span>.<span class="fu">Todo</span> = <span class="ot">Backbone</span>.<span class="ot">Model</span>.<span class="fu">extend</span>({
     <span class="dt">localStorage</span>: <span class="kw">new</span> <span class="ot">Backbone</span>.<span class="fu">LocalStorage</span>(localStorageKey),
 
@@ -4300,8 +4302,8 @@ zombieView = <span class="kw">new</span> <span class="fu">ZombieView</span>({
       <span class="kw">return</span> <span class="kw">this</span>.<span class="fu">set</span>(<span class="st">&#39;completed&#39;</span>, !<span class="kw">this</span>.<span class="fu">isCompleted</span>());
     },
 
-    <span class="dt">isCompleted</span>: <span class="kw">function</span>() {
-      <span class="kw">return</span> <span class="kw">this</span>.<span class="fu">get</span>(<span class="st">&#39;completed&#39;</span>);
+    <span class="dt">isCompleted</span>: <span class="kw">function</span>() { 
+      <span class="kw">return</span> <span class="kw">this</span>.<span class="fu">get</span>(<span class="st">&#39;completed&#39;</span>); 
     }
   });
 
@@ -4402,7 +4404,7 @@ zombieView = <span class="kw">new</span> <span class="fu">ZombieView</span>({
         <span class="dt">name</span>: <span class="st">&#39;child&#39;</span>,
         <span class="dt">template</span>: ...
     });
-
+  
     <span class="kw">var</span> parent = <span class="kw">new</span> <span class="ot">Thorax</span>.<span class="fu">View</span>({
         <span class="dt">template</span>: <span class="ot">Handlebars</span>.<span class="fu">compile</span>(<span class="st">&#39;{{view &quot;child&quot; key=&quot;value&quot;}}&#39;</span>)
     });</code></pre>
@@ -4631,7 +4633,7 @@ render : <span class="kw">function</span> () {
 
     <span class="dt">render</span>: <span class="kw">function</span>() {
         <span class="co">// Detach InnerView before reseting OuterView&#39;s $el</span>
-        <span class="kw">this</span>.<span class="ot">inner</span>.<span class="ot">$el</span>.<span class="fu">detach</span>();
+        <span class="kw">this</span>.<span class="ot">inner</span>.<span class="ot">$el</span>.<span class="fu">detach</span>(); 
 
         <span class="co">// or this.$el.empty() if you have no template</span>
         <span class="co">// this.$el.html(template); </span>
@@ -5114,16 +5116,16 @@ NewChildView = <span class="ot">Backbone</span>.<span class="ot">View</span>.<sp
 
 <span class="kw">var</span> PanelAdvanced = <span class="ot">Panel</span>.<span class="fu">extend</span>({
   <span class="dt">initialize</span>: <span class="kw">function</span>(options){
-    <span class="ot">Panel</span>.<span class="ot">prototype</span>.<span class="ot">initialize</span>.<span class="fu">call</span>(<span class="kw">this</span>, [options]);
+    <span class="ot">Panel</span>.<span class="ot">prototype</span>.<span class="ot">initialize</span>.<span class="fu">call</span>(<span class="kw">this</span>, options);
     <span class="ot">console</span>.<span class="fu">log</span>(<span class="st">&#39;PanelAdvanced initialized&#39;</span>);
     <span class="ot">console</span>.<span class="fu">log</span>(<span class="kw">this</span>.<span class="fu">foo</span>); <span class="co">// Log: bar</span>
   }
 });
 
-<span class="co">// We can also inherit PanelAdvaned if needed</span>
+<span class="co">// We can also inherit PanelAdvanced if needed</span>
 <span class="kw">var</span> PanelAdvancedExtra = <span class="ot">PanelAdvanced</span>.<span class="fu">extend</span>({
   <span class="dt">initialize</span>: <span class="kw">function</span>(options){
-    <span class="ot">PanelAdvanced</span>.<span class="ot">prototype</span>.<span class="ot">initialize</span>.<span class="fu">call</span>(<span class="kw">this</span>, [options]);
+    <span class="ot">PanelAdvanced</span>.<span class="ot">prototype</span>.<span class="ot">initialize</span>.<span class="fu">call</span>(<span class="kw">this</span>, options);
     <span class="ot">console</span>.<span class="fu">log</span>(<span class="st">&#39;PanelAdvancedExtra initialized&#39;</span>);
   }
 });
@@ -5329,7 +5331,7 @@ NewChildView = <span class="ot">Backbone</span>.<span class="ot">View</span>.<sp
 <p>Every time the browser loads in a file you’ve referenced in a <code>&lt;script&gt;</code> tag, it makes an HTTP request to load the file’s contents. It has to make a new HTTP request for each file you want to load, which causes problems.</p>
 <ul>
 <li>Browsers are limited in how many parallel requests they can make, so often it’s slow to load multiple files, as it can only do a certain number at a time. This number depends on the user’s settings and browser, but is usually around 4-8. When working on Backbone applications it’s good to split your app into multiple JS files, so it’s easy to hit that limit quickly. This can be negated by minifying your code into one file as part of a build process, but does not help with the next point.</li>
-<li>Scripts are loaded synchronously. This means that the browser cannot continue page rendering while the script is loading, .</li>
+<li>Scripts are loaded synchronously. This means that the browser cannot continue page rendering while the script is loading.</li>
 </ul>
 <p>What tools like RequireJS do is load scripts asynchronously. This means we have to adjust our code slightly, you can’t just swap out <code>&lt;script&gt;</code> elements for a small piece of RequireJS code, but the benefits are very worthwhile:</p>
 <ul>
@@ -5655,7 +5657,7 @@ NewChildView = <span class="ot">Backbone</span>.<span class="ot">View</span>.<sp
         {
             name: &#39;app&#39;,
             exclude: [
-                // If you prefer not to include certain
+                // If you prefer not to include certain 
                 // libs exclude them here
             ]
         }</code></pre>
@@ -6072,7 +6074,7 @@ Backbone.history.start({
 <p>Pagination is almost certainly content and context-specific, but as Faruk Ates has <a href="https://gist.github.com/mislav/622561">previously</a> pointed out the principles of good pagination apply no matter what the content or context is. As with everything extensible when it comes to Backbone, you can write your own pagination to address many of these content-specific types of pagination problems. That said, you’ll probably spend quite a bit of time on this and sometimes you just want to use a tried and tested solution that just works.</p>
 <p>On this topic, we’re going to go through a set of pagination components I (and a group of <a href="https://github.com/addyosmani/backbone.paginator/contributors">contributors</a>) wrote for Backbone.js, which should hopefully come in useful if you’re working on applications which need to page Backbone Collections. They’re part of an extension called <a href="http://github.com/addyosmani/backbone.paginator">Backbone.Paginator</a>.</p>
 <h3 id="backbone.paginator">Backbone.Paginator</h3>
-<p><strong>Note:</strong> As of Backbone.Paginator <a href="https://github.com/backbone-paginator/backbone.paginator/releases">2.0</a>, the API to the project has changed and includes updated which break backwards compatibility. The below section refers to Backbone.Paginator 1.0 which can still be downloaded <a href="https://github.com/backbone-paginator/backbone.paginator/releases/tag/v1.0.0">here</a>.</p>
+<p><strong>Note:</strong> As of Backbone.Paginator <a href="https://github.com/backbone-paginator/backbone.paginator/releases">2.0</a>, the API to the project has changed and includes updates which break backwards compatibility. The below section refers to Backbone.Paginator 1.0 which can still be downloaded <a href="https://github.com/backbone-paginator/backbone.paginator/releases/tag/v1.0.0">here</a>.</p>
 <p>When working with data on the client-side, the three types of pagination we are most likely to run into are:</p>
 <p><strong>Requests to a service layer (API)</strong> - For example, query for results containing the term ‘Paul’ - if 5,000 results are available only display 20 results per page (leaving us with 250 possible result pages that can be navigated to).</p>
 <p>This problem actually has quite a great deal more to it, such as maintaining persistence of other URL parameters (e.g sort, query, order) which can change based on a user’s search configuration in a UI. One also has to think of a clean way of hooking views up to this pagination so you can easily navigate between pages (e.g., First, Last, Next, Previous, 1,2,3), manage the number of results displayed per page and so on.</p>
@@ -6450,7 +6452,7 @@ Backbone.history.start({
 <p>Note: Both the clientPager and requestPager <code>bootstrap</code> function will accept an options param that will be extended by your Backbone.Paginator instance. However the ‘totalRecords’ property will be set implicitly by the clientPager.</p>
 <p><a href="http://ricostacruz.com/backbone-patterns/#bootstrapping_data">More on Backbone bootstrapping</a></p>
 <h3 id="styling">Styling</h3>
-<p>You’re of course free to customize the overall look and feel of the paginators as much as you wish. By default, all sample applications make use of the <a href="http://twitter.github.com/bootstrap">Twitter Bootstrap</a> for styling links, buttons and drop-downs.</p>
+<p>You’re of course free to customize the overall look and feel of the paginators as much as you wish. By default, all sample applications make use of <a href="http://twitter.github.com/bootstrap">Twitter Bootstrap</a> for styling links, buttons and drop-downs.</p>
 <p>CSS classes are available to style record counts, filters, sorting and more:</p>
 <figure>
 <img src="img/paginator-styling2.png" />
@@ -6473,7 +6475,7 @@ Backbone.history.start({
 <figure>
 <img src="img/bbb.png" />
 </figure>
-<p>Out of the box, BB and Grunt-BBB provide provide us with:</p>
+<p>Out of the box, BB and Grunt-BBB provide us with:</p>
 <ul>
 <li>Backbone, <a href="https://github.com/bestiejs/lodash">Lodash</a> (an <a href="http://underscorejs.org/">Underscore.js</a> alternative) and <a href="http://jquery.com">jQuery</a> with an <a href="http://html5boilerplate.com">HTML5 Boilerplate</a> foundation</li>
 <li>Boilerplate and scaffolding support, allowing us to spend minimal time writing boilerplate for modules, collections and so on.</li>
@@ -6489,7 +6491,7 @@ Backbone.history.start({
 <h2 id="getting-started">Getting Started</h2>
 <h3 id="backbone-boilerplate-and-grunt-bbb-1">Backbone Boilerplate and Grunt-BBB</h3>
 <p>To get started we’re going to install Grunt-BBB, which will include Backbone Boilerplate and any third-party dependencies it might need such as the Grunt build tool.</p>
-<p>We can install Grunt-bBB via NPM by running:</p>
+<p>We can install Grunt-BBB via NPM by running:</p>
 <pre class="shell"><code>npm install -g bbb</code></pre>
 <p>That’s it. We should now be good to go.</p>
 <p>A typical workflow for using grunt-bbb, which we will use later on is:</p>
@@ -6985,7 +6987,7 @@ Done, without errors.</code></pre>
      <span class="kw">&lt;p&gt;</span>Page content goes here.<span class="kw">&lt;/p&gt;</span>
      <span class="kw">&lt;form&gt;</span>
        <span class="kw">&lt;label</span><span class="ot"> for=</span><span class="st">&quot;slider-1&quot;</span><span class="kw">&gt;</span>Slider with tooltip:<span class="kw">&lt;/label&gt;</span>
-       <span class="kw">&lt;input</span><span class="ot"> type=</span><span class="st">&quot;range&quot;</span><span class="ot"> name=</span><span class="st">&quot;slider-1&quot;</span><span class="ot"> id=</span><span class="st">&quot;slider-1&quot;</span><span class="ot"> min=</span><span class="st">&quot;0&quot;</span><span class="ot"> max=</span><span class="st">&quot;100&quot;</span><span class="ot"> value=</span><span class="st">&quot;50&quot;</span>
+       <span class="kw">&lt;input</span><span class="ot"> type=</span><span class="st">&quot;range&quot;</span><span class="ot"> name=</span><span class="st">&quot;slider-1&quot;</span><span class="ot"> id=</span><span class="st">&quot;slider-1&quot;</span><span class="ot"> min=</span><span class="st">&quot;0&quot;</span><span class="ot"> max=</span><span class="st">&quot;100&quot;</span><span class="ot"> value=</span><span class="st">&quot;50&quot;</span> 
 <span class="ot">        data-popup-enabled=</span><span class="st">&quot;true&quot;</span><span class="kw">&gt;</span>
      <span class="kw">&lt;/form&gt;</span>
   <span class="kw">&lt;/div&gt;</span>
@@ -7013,7 +7015,7 @@ Done, without errors.</code></pre>
   ...
   <span class="kw">&lt;div</span><span class="ot"> data-role=</span><span class="st">&quot;page&quot;</span><span class="ot"> id=</span><span class="st">&quot;firstpage&quot;</span><span class="kw">&gt;</span>
     ...
-   <span class="kw">&lt;div</span><span class="ot"> data-role=</span><span class="st">&quot;content&quot;</span><span class="kw">&gt;</span>
+   <span class="kw">&lt;div</span><span class="ot"> data-role=</span><span class="st">&quot;content&quot;</span><span class="kw">&gt;</span> 
      <span class="kw">&lt;a</span><span class="ot"> href=</span><span class="st">&quot;#secondpage&quot;</span><span class="kw">&gt;</span>go to secondpage<span class="kw">&lt;/a&gt;</span>
    <span class="kw">&lt;/div&gt;</span>
   <span class="kw">&lt;/div&gt;</span>
@@ -7149,7 +7151,7 @@ Done, without errors.</code></pre>
     <span class="st">&quot;backbone&quot;</span>, <span class="st">&quot;modules/view/abstract/BasicView&quot;</span>],
     <span class="kw">function</span> (Backbone, BasicView) {
         <span class="kw">return</span> <span class="ot">BasicView</span>.<span class="fu">extend</span>({
-            <span class="dt">id </span>: <span class="st">&quot;editTodoView&quot;</span>,
+            <span class="dt">id </span>: <span class="st">&quot;editTodoView&quot;</span>, 
             <span class="dt">getHeaderTitle </span>: <span class="kw">function</span> () {
                 <span class="kw">return</span> <span class="st">&quot;Edit Todo&quot;</span>;
             },
@@ -7233,7 +7235,7 @@ Done, without errors.</code></pre>
  <span class="dv">4</span>     <span class="st">&quot;handlebars&quot;</span>,
  <span class="dv">5</span>     <span class="st">&quot;handlebars_helpers&quot;</span>
  <span class="dv">6</span> ],
- <span class="dv">7</span>
+ <span class="dv">7</span> 
  <span class="dv">8</span> <span class="kw">function</span> (_, Backbone, Handlebars) {
  <span class="dv">9</span>     <span class="kw">var</span> BasicView = <span class="ot">Backbone</span>.<span class="ot">View</span>.<span class="fu">extend</span>({
 <span class="dv">10</span>         <span class="dt">initialize</span>: <span class="kw">function</span> () {
@@ -7305,15 +7307,15 @@ Done, without errors.</code></pre>
 <span class="dv">76</span>             <span class="kw">return</span> <span class="kw">false</span>;
 <span class="dv">77</span>         }
 <span class="dv">78</span>     });
-<span class="dv">79</span>
+<span class="dv">79</span> 
 <span class="dv">80</span>     <span class="kw">return</span> BasicView;
 <span class="dv">81</span> });</code></pre>
 <p><em>BasicView.js</em></p>
 <p>After the dynamic HTML is added to the DOM, <code>$.mobile.changePage</code> has to be applied at step 8 (code line 54).</p>
 <p>This is the most important API call, because it triggers the jQuery Mobile component creation for the current page.</p>
 <p>Next, the page will be displayed to the user at step 9.</p>
-<pre class="sourceCode javascript"><code class="sourceCode javascript">&lt;a data-mini=<span class="st">&quot;true&quot;</span> data-role=<span class="st">&quot;button&quot;</span> href=<span class="st">&quot;#&quot;</span> id=<span class="st">&quot;saveDescription&quot;</span> data-corners=<span class="st">&quot;true&quot;</span>
-data-shadow=<span class="st">&quot;true&quot;</span> data-iconshadow=<span class="st">&quot;true&quot;</span> data-wrapperels=<span class="st">&quot;span&quot;</span> data-theme=<span class="st">&quot;c&quot;</span>
+<pre class="sourceCode javascript"><code class="sourceCode javascript">&lt;a data-mini=<span class="st">&quot;true&quot;</span> data-role=<span class="st">&quot;button&quot;</span> href=<span class="st">&quot;#&quot;</span> id=<span class="st">&quot;saveDescription&quot;</span> data-corners=<span class="st">&quot;true&quot;</span> 
+data-shadow=<span class="st">&quot;true&quot;</span> data-iconshadow=<span class="st">&quot;true&quot;</span> data-wrapperels=<span class="st">&quot;span&quot;</span> data-theme=<span class="st">&quot;c&quot;</span> 
 <span class="kw">class</span>=<span class="st">&quot;ui-btn ui-shadow ui-btn-corner-all ui-mini ui-btn-up-c&quot;</span>&gt;
     &lt;span <span class="kw">class</span>=<span class="st">&quot;ui-btn-inner&quot;</span>&gt;
          &lt;span <span class="kw">class</span>=<span class="st">&quot;ui-btn-text&quot;</span>&gt;Save&lt;<span class="ot">/span&gt;</span>
@@ -7681,7 +7683,7 @@ data-shadow=<span class="st">&quot;true&quot;</span> data-iconshadow=<span class
 
         <span class="co">// Navigate to a URL</span>
         <span class="kw">this</span>.<span class="ot">router</span>.<span class="fu">navigate</span>(<span class="st">&#39;/js/spec/SpecRunner.html&#39;</span>);
-   });
+   }); 
 
    <span class="fu">afterEach</span>(<span class="kw">function</span>(){
 
@@ -7719,13 +7721,13 @@ data-shadow=<span class="st">&quot;true&quot;</span> data-iconshadow=<span class
 <h2 id="shared-scope">Shared scope</h2>
 <p>Let’s imagine we have a Suite where we wish to check for the existence of a new Todo item instance. This could be done by duplicating the spec as follows:</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="fu">describe</span>(<span class="st">&quot;Todo tests&quot;</span>, <span class="kw">function</span>(){
-
+   
    <span class="co">// Spec</span>
    <span class="fu">it</span>(<span class="st">&quot;Should be defined when we create it&quot;</span>, <span class="kw">function</span>(){
         <span class="co">// A Todo item we are testing</span>
         <span class="kw">var</span> todo = <span class="kw">new</span> <span class="fu">Todo</span>(<span class="st">&quot;Get the milk&quot;</span>, <span class="st">&quot;Tuesday&quot;</span>);
         <span class="fu">expect</span>(todo).<span class="fu">toBeDefined</span>();
-   });
+   }); 
 
    <span class="fu">it</span>(<span class="st">&quot;Should have the correct title&quot;</span>, <span class="kw">function</span>(){
         <span class="co">// Where we introduce code duplication</span>
@@ -7737,7 +7739,7 @@ data-shadow=<span class="st">&quot;true&quot;</span> data-iconshadow=<span class
 <p>As you can see, we’ve introduced duplication that should ideally be refactored into something cleaner. We can do this using Jasmine’s Suite (Shared) Functional Scope.</p>
 <p>All of the specs within the same Suite share the same functional scope, meaning that variables declared within the Suite itself are available to all of the Specs in that suite. This gives us a way to work around our duplication problem by moving the creation of our Todo objects into the common functional scope:</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="fu">describe</span>(<span class="st">&quot;Todo tests&quot;</span>, <span class="kw">function</span>(){
-
+    
     <span class="co">// The instance of Todo, the object we wish to test</span>
     <span class="co">// is now in the shared functional scope</span>
     <span class="kw">var</span> todo = <span class="kw">new</span> <span class="fu">Todo</span>(<span class="st">&quot;Get the milk&quot;</span>, <span class="st">&quot;Tuesday&quot;</span>);
@@ -8637,7 +8639,7 @@ data-shadow=<span class="st">&quot;true&quot;</span> data-iconshadow=<span class
 
     <span class="co">// Let&#39;s reset the relationship to use a stub</span>
     <span class="kw">this</span>.<span class="ot">todos</span>.<span class="fu">model</span> = Todo;
-
+    
     <span class="co">// add a model</span>
     <span class="kw">this</span>.<span class="ot">todos</span>.<span class="fu">add</span>({
       <span class="dt">id</span>: <span class="dv">2</span>,
@@ -8927,7 +8929,7 @@ data-shadow=<span class="st">&quot;true&quot;</span> data-iconshadow=<span class
 <li><a href="http://recipeswithbackbone.com/">Recipes With Backbone</a></li>
 <li><a href="http://ricostacruz.com/backbone-patterns/">Backbone Patterns</a></li>
 <li><a href="https://learn.thoughtbot.com/products/1-backbone-js-on-rails">Backbone On Rails</a></li>
-<li><a href="http://www.integralist.co.uk/posts/mvc-in-javascript-with-backbone-js/index.html">MVC In JavaScript With Backbone</a></li>
+<li><a href="http://www.integralist.co.uk/posts/backbone.html">MVC In JavaScript With Backbone</a></li>
 <li><a href="http://backbonetutorials.com/">Backbone Tutorials</a></li>
 <li><a href="http://lostechies.com/derickbailey/2011/09/13/resources-for-and-how-i-learned-backbone-js/">Derick Bailey’s Resources For Learning Backbone</a></li>
 </ul>
@@ -8945,17 +8947,17 @@ data-shadow=<span class="st">&quot;true&quot;</span> data-iconshadow=<span class
 <li><a href="https://github.com/n-time/backbone.validations">Backbone Validations - HTML5 inspired validations</a></li>
 </ul>
 <h1 id="conclusions-3">Conclusions</h1>
-<p>I hope that you’ve found this introduction to Backbone.js of value. What you’ve hopefully learned is that while building a JavaScript-heavy application using nothing more than a DOM manipulation library (such as jQuery) is certainly a possible feat, it is difficult to build anything non-trivial without any formal structure in place. Your nested pile of jQuery callbacks and DOM elements are unlikely to scale and they can be very difficult to maintain as your application grows.</p>
-<p>The beauty of Backbone.js is its simplicity. It’s very small given the functionality and flexibility it provides, which is evident if you begin to study the Backbone.js source. In the words of Jeremy Ashkenas, “The essential premise at the heart of Backbone has always been to try and discover the minimal set of data-structuring (Models and Collections) and user interface (Views and URLs) primitives that are useful when building web applications with JavaScript.” It just helps you improve the structure of your applications, helping you better separate concerns. There isn’t anything more to it than that.</p>
+<p>I hope that you’ve found this introduction to Backbone.js of value. What you’ve hopefully learned is that while building a JavaScript-heavy application using nothing more than a DOM manipulation library (such as jQuery) is certainly a possible feat, it is difficult to build anything non-trivial without any formal structure in place. Your nested pile of jQuery callbacks and DOM elements are unlikely to scale, and they can be very difficult to maintain as your application grows.</p>
+<p>The beauty of Backbone.js is its simplicity. It’s very small given the functionality and flexibility it provides, which is evident if you begin to study the Backbone.js source. In the words of Jeremy Ashkenas, “The essential premise at the heart of Backbone has always been to try and discover the minimal set of data-structuring (Models and Collections) and user interface (Views and URLs) primitives that are useful when building web applications with JavaScript.” It just helps you improve the structure of your applications, thereby helping you better separate concerns. There isn’t anything more to it than that.</p>
 <p>Backbone offers Models with key-value bindings and events, Collections with an API of rich enumerable methods, declarative Views with event handling and a simple way to connect an existing API to your client-side application over a RESTful JSON interface. Use it and you can abstract away data into sane models and your DOM manipulation into views, binding them together using nothing more than events.</p>
-<p>Almost any developer working on JavaScript applications for a while will ultimately create a similar solution on their own if they value architecture and maintainability. The alternative to using it or something similar is rolling your own - often a process that involves glueing together a diverse set of libraries that weren’t built to work together. You might use jQuery BBQ for history management and Handlebars for templating, while writing abstracts for organizing and testing code by yourself.</p>
-<p>Contrast this with Backbone, which has <a href="http://en.wikipedia.org/wiki/Literate_programming">literate</a> <a href="http://backbonejs.org/docs/backbone.html">documentation</a> of the source code, a thriving community of both users and hackers, and a large number of questions about it asked and answered daily on sites like <a href="http://stackoverflow.com/search?q=backbone">Stack Overflow</a>. Rather than re-inventing the wheel there are many advantages to structuring your application using a solution based on the collective knowledge and experience of an entire community.</p>
-<p>In addition to helping provide sane structure to your applications, Backbone is highly extensible supporting more custom architecture should you require more than what is prescribed out of the box. This is evident by the number of extensions and plugins which have been released for it over the past year, including those which we have touched upon such as MarionetteJS and Thorax.</p>
+<p>Almost any developer working on JavaScript applications for a while will ultimately create a similar solution on their own if they value architecture and maintainability. The alternative to using Backbone or something similar is rolling your own - often a process that involves glueing together a diverse set of libraries that weren’t built to work together. You might use jQuery BBQ for history management and Handlebars for templating, while writing abstracts for organizing and testing code by yourself.</p>
+<p>Contrast this with Backbone, which has <a href="http://en.wikipedia.org/wiki/Literate_programming">literate</a> <a href="http://backbonejs.org/docs/backbone.html">documentation</a> of the source code, a thriving community of both users and hackers, and a large number of questions about it asked and answered daily on sites like <a href="http://stackoverflow.com/search?q=backbone">Stack Overflow</a>. Rather than re-inventing the wheel, there are many advantages to structuring your application using a solution based on the collective knowledge and experience of an entire community.</p>
+<p>In addition to helping provide sane structure to your applications, Backbone is highly extensible. Backbone supports more custom architecture should you require more than what is prescribed out of the box. This is evident by the number of Backbone extensions and plugins which have been released over the past year, including those which we have touched upon such as MarionetteJS and Thorax.</p>
 <p>These days Backbone.js powers many complex web applications, ranging from the LinkedIn <a href="http://touch.www.linkedin.com/mobile.html">mobile app</a> to popular RSS readers such as <a href="http://newsblur.com">NewsBlur</a> through to social commentary widgets such as <a href="http://disqus.com/">Disqus</a>. This small library of simple, but sane abstractions has helped to create a new generation of rich web applications, and I and my collaborators hope that in time it can help you too.</p>
 <p>If you’re wondering whether it is worth using Backbone on a project, ask yourself whether what you are building is complex enough to merit using it. Are you hitting the limits of your ability to organize your code? Will your application have regular changes to what is displayed in the UI without a trip back to the server for new pages? Would you benefit from a separation of concerns? If so, a solution like Backbone may be able to help.</p>
-<p>Google’s GMail is often cited as an example of a well built single-page app. If you’ve used it, you might have noticed that it requests a large initial chunk, representing most of the JavaScript, CSS and HTML most users will need and everything extra needed after that occurs in the background. GMail can easily switch between your inbox to your spam folder without needing the whole page to be re-rendered. Libraries like Backbone make it easier for web developers to create experiences like this.</p>
-<p>That said, Backbone won’t be able to help if you’re planning on building something which isn’t worth the learning curve associated with a library. If your application or site will still be using the server to do the heavy lifting of constructing and serving complete pages to the browser, you may find just using plain JavaScript or jQuery for simple effects or interactions to be more appropriate. Spend time assessing how suitable Backbone might be for you and make the right choice on a per-project basis.</p>
-<p>Backbone is neither difficult to learn nor use, however the time and effort you spend learning how to structure applications using it will be well worth it. While reading this book will equip you with the fundamentals needed to understand the library, the best way to learn is to try building your own real-world applications. You will hopefully find that the end product is cleaner, better organized and more maintainable code.</p>
+<p>Google’s GMail is often cited as an example of a well-built single-page app. If you’ve used it, you might have noticed that it requests a large initial chunk of data, representing most of the JavaScript, CSS and HTML most users will need. Everything extra needed after that occurs in the background. GMail can easily switch between your inbox to your spam folder without needing the whole page to be re-rendered. Libraries like Backbone make it easier for web developers to create experiences like this.</p>
+<p>That said, Backbone won’t be able to help if you’re planning on building something which isn’t worth the learning curve associated with a library. If your application or site will still be using the server to do the heavy lifting of constructing and serving complete pages to the browser, you may find just using plain JavaScript or jQuery for simple effects or interactions to be more appropriate. Spend time assessing how suitable Backbone might be for your application and make the right choice on a per-project basis.</p>
+<p>Backbone is neither difficult to learn nor to use. However, the time and effort you spend learning how to structure applications using it will be well worth it. While reading this book will equip you with the fundamentals needed to understand the library, the best way to learn is to try building your own real-world applications. You will hopefully find that the end product contains cleaner, better organized and more maintainable code.</p>
 <p>With that, I wish you the very best with your onward journey into the world of Backbone and will leave you with a quote from American writer <a href="http://en.wikipedia.org/wiki/Henry_Miller">Henry Miller</a> - “One’s destination is never a place, but a new way of seeing things.”</p>
 <h1 id="appendix">Appendix</h1>
 <h2 id="a-simple-javascript-mvc-implementation">A Simple JavaScript MVC Implementation</h2>
