@@ -20,7 +20,7 @@ On this topic, we're going to go through a set of pagination components I (and a
 ### Backbone.Paginator
 
 **Note:** As of Backbone.Paginator [2.0](https://github.com/backbone-paginator/backbone.paginator/releases), the API to 
-the project has changed and includes updated which break backwards compatibility. The below section refers to Backbone.Paginator 
+the project has changed and includes updates which break backwards compatibility. The below section refers to Backbone.Paginator 
 1.0 which can still be downloaded [here](https://github.com/backbone-paginator/backbone.paginator/releases/tag/v1.0.0).
 
 When working with data on the client-side, the three types of pagination we are most likely to run into are:
@@ -532,7 +532,7 @@ Note: Both the clientPager and requestPager ```bootstrap``` function will accept
 
 ### Styling
 
-You're of course free to customize the overall look and feel of the paginators as much as you wish. By default, all sample applications make use of the [Twitter Bootstrap](http://twitter.github.com/bootstrap) for styling links, buttons and drop-downs. 
+You're of course free to customize the overall look and feel of the paginators as much as you wish. By default, all sample applications make use of [Twitter Bootstrap](http://twitter.github.com/bootstrap) for styling links, buttons and drop-downs. 
 
 CSS classes are available to style record counts, filters, sorting and more:
 
