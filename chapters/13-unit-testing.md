@@ -617,7 +617,7 @@ jasmine-jquery also includes a fixtures module that can be used to load arbitrar
 Include some HTML in an external fixtures file:
 
 some.fixture.html:
-```<div id="sample-fixture">some HTML content</div>```
+```<div id="some-fixture">some HTML content</div>```
 
 Then inside our actual test we would load it as follows:
 
