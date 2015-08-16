@@ -32,7 +32,7 @@ First, we'll set up the header and the basic application dependencies: [jQuery](
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <title>Backbone.js • TodoMVC</title>
-  <link rel="stylesheet" href="assets/base.css">
+  <link rel="stylesheet" href="assets/index.css">
 </head>
 <body>
   <script type="text/template" id="item-template"></script>
@@ -59,7 +59,7 @@ Note: If you want to follow along, create a directory structure as demonstrated 
 2. Download jQuery, Underscore, Backbone, and Backbone LocalStorage from their respective web sites and place them under js/lib
 3. Create the directories js/models, js/collections, js/views, and js/routers
 
-You will also need [base.css](https://raw.githubusercontent.com/tastejs/todomvc/gh-pages/examples/backbone/bower_components/todomvc-common/base.css) and [bg.png](https://raw.githubusercontent.com/tastejs/todomvc/gh-pages/examples/backbone/bower_components/todomvc-common/bg.png), which should live in an assets directory. And remember that you can see a demo of the final application at [TodoMVC.com](http://todomvc.com).
+You will also need [index.css](https://raw.githubusercontent.com/tastejs/todomvc/gh-pages/examples/backbone/node_modules/todomvc-app-css/index.css), which should live in an assets directory. And remember that you can see a demo of the final application at [TodoMVC.com](http://todomvc.com).
 
 We will be creating the application JavaScript files during the tutorial. Don't worry about the two 'text/template' script elements - we will replace those soon!
 
