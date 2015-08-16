@@ -133,7 +133,7 @@ Maturity in software (framework) development isn't simply about how long a frame
 
 Backbone provides a minimal set of data-structuring (Models, Collections) and user interface (Views, URLs) primitives that are helpful when building dynamic applications using JavaScript. It's not opinionated, meaning you have the freedom and flexibility to build the best experience for your web application how you see fit. You can either use the prescribed architecture it offers out of the box or extend it to meet your requirements.
 
-The library doesn't focus on widgets or replacing the way you structure objects - it just supplies you with utilities for manipulating and querying data in your application. Backbone also doesn't prescribe a specific template engine. While you are free to use the micro-templating offered by Underscore.js (Backbone's only hard dependency), views can bind to HTML constructed using your templating solution of choice.
+The library doesn't focus on widgets or replace the way you structure objects - it just supplies you with utilities for manipulating and querying data in your application. Backbone also doesn't prescribe a specific template engine. While you are free to use the micro-templating offered by Underscore.js (Backbone's only hard dependency), views can bind to HTML constructed using your templating solution of choice.
 
 Looking at the [large](http://backbonejs.org/#examples) number of applications built with Backbone, it's clear that it scales well. Backbone also works quite well with other libraries, meaning you can embed Backbone widgets in an application written with AngularJS, use it with TypeScript, or just use an individual class (like Models) as a data backer for simpler apps.
 
@@ -488,7 +488,7 @@ To summarize, the MVC pattern helps you keep your application logic separate fro
 
 Right now, you likely have a basic understanding of what the MVC pattern provides, but for the curious, we'll explore it a little further.
 
-The GoF (Gang of Four) do not refer to MVC as a design pattern, but rather consider it a "set of classes to build a user interface." In their view, it's actually a variation of three other classical design patterns: the Observer (Publish/Subscribe), Strategy, and Composite patterns. Depending on how MVC has been implemented in a framework, it may also use the Factory and Decorator patterns. I've covered some of these patterns in my other free book, "JavaScript Design Patterns For Beginners" if you would like to read about them further.
+The GoF (Gang of Four) do not refer to MVC as a design pattern, but rather consider it a "set of classes to build a user interface." In their view, it's actually a variation of three other classical design patterns: the Observer (Publish/Subscribe), Strategy, and Composite patterns. Depending on how MVC has been implemented in a framework, it may also use the Factory and Decorator patterns. I've covered some of these patterns in my other free book, "[JavaScript Design Patterns For Beginners](http://addyosmani.com/resources/essentialjsdesignpatterns/book)" if you would like to read about them further.
 
 As we've discussed, Models represent application data, while Views handle what the user is presented on screen. As such, MVC relies on Publish/Subscribe for some of its core communication (something that surprisingly isn't covered in many articles about the MVC pattern). When a Model is changed it "publishes" to the rest of the application that it has been updated. The "subscriber," generally a Controller, then updates the View accordingly. The observer-viewer nature of this relationship is what facilitates multiple Views being attached to the same Model.
 
@@ -2664,7 +2664,7 @@ First, we'll set up the header and the basic application dependencies: [jQuery](
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <title>Backbone.js • TodoMVC</title>
-  <link rel="stylesheet" href="assets/base.css">
+  <link rel="stylesheet" href="assets/index.css">
 </head>
 <body>
   <script type="text/template" id="item-template"></script>
@@ -2691,7 +2691,7 @@ Note: If you want to follow along, create a directory structure as demonstrated 
 2. Download jQuery, Underscore, Backbone, and Backbone LocalStorage from their respective web sites and place them under js/lib
 3. Create the directories js/models, js/collections, js/views, and js/routers
 
-You will also need [base.css](https://raw.githubusercontent.com/tastejs/todomvc/gh-pages/examples/backbone/bower_components/todomvc-common/base.css) and [bg.png](https://raw.githubusercontent.com/tastejs/todomvc/gh-pages/examples/backbone/bower_components/todomvc-common/bg.png), which should live in an assets directory. And remember that you can see a demo of the final application at [TodoMVC.com](http://todomvc.com).
+You will also need [index.css](https://raw.githubusercontent.com/tastejs/todomvc/gh-pages/examples/backbone/node_modules/todomvc-app-css/index.css), which should live in an assets directory. And remember that you can see a demo of the final application at [TodoMVC.com](http://todomvc.com).
 
 We will be creating the application JavaScript files during the tutorial. Don't worry about the two 'text/template' script elements - we will replace those soon!
 
@@ -7274,7 +7274,7 @@ The rest of the tutorial will now focus on the JavaScript side of the practical.
 
 ### Configuration options
 
-If you've read the earlier chapter on AMD, you may have noticed that explicitly needing to define each dependency as a Backbone module (view, collection or other module) can get a little tedious. This can however be improved.
+If you've read the earlier chapter on AMD, you may have noticed that explicitly needing to define each dependency a Backbone module (view, collection or other module) may require with it can get a little tedious. This can however be improved.
 
 In order to simplify referencing common paths the modules in our application may use, we use a RequireJS [configuration object](http://requirejs.org/docs/api.html#config), which is typically defined as a top-level script file. Configuration objects have a number of useful capabilities, the most useful being mode name-mapping. Name-maps are basically a key:value pair, where the key defines the alias you wish to use for a path and the value represents the true location of the path.
 
