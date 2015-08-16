@@ -1064,7 +1064,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <span class="co">// Apply the view to button2 using setElement</span>
 <span class="ot">view</span>.<span class="fu">setElement</span>(button2);
 
-<span class="ot">button1</span>.<span class="fu">trigger</span>(<span class="st">&#39;click&#39;</span>); 
+<span class="ot">button1</span>.<span class="fu">trigger</span>(<span class="st">&#39;click&#39;</span>);
 <span class="ot">button2</span>.<span class="fu">trigger</span>(<span class="st">&#39;click&#39;</span>); <span class="co">// returns true</span></code></pre>
 <p>The “el” property represents the markup portion of the view that will be rendered; to get the view to actually render to the page, you need to add it as a new element or append it to an existing element.</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript">
@@ -1113,7 +1113,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
   <span class="co">// is a placeholder for a template such as </span>
   <span class="co">// $(&quot;#list_template&quot;).html() </span>
   <span class="dt">template</span>: <span class="ot">_</span>.<span class="fu">template</span>(…),
-  
+
   <span class="dt">render</span>: <span class="kw">function</span>() {
     <span class="kw">this</span>.<span class="ot">$el</span>.<span class="fu">html</span>(<span class="kw">this</span>.<span class="fu">template</span>(<span class="kw">this</span>.<span class="ot">model</span>.<span class="fu">attributes</span>));
     <span class="kw">return</span> <span class="kw">this</span>;
@@ -1237,7 +1237,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <span class="ot">items</span>.<span class="fu">add</span>([{ <span class="dt">id </span>: <span class="dv">1</span>, <span class="dt">name</span>: <span class="st">&quot;Dog&quot;</span> , <span class="dt">age</span>: <span class="dv">3</span>}, { <span class="dt">id </span>: <span class="dv">2</span>, <span class="dt">name</span>: <span class="st">&quot;cat&quot;</span> , <span class="dt">age</span>: <span class="dv">2</span>}]);
 <span class="ot">items</span>.<span class="fu">add</span>([{ <span class="dt">id </span>: <span class="dv">1</span>, <span class="dt">name</span>: <span class="st">&quot;Bear&quot;</span> }], {<span class="dt">merge</span>: <span class="kw">true</span> });
 <span class="ot">items</span>.<span class="fu">add</span>([{ <span class="dt">id </span>: <span class="dv">2</span>, <span class="dt">name</span>: <span class="st">&quot;lion&quot;</span> }]); <span class="co">// merge: false</span>
- 
+
 <span class="ot">console</span>.<span class="fu">log</span>(<span class="ot">JSON</span>.<span class="fu">stringify</span>(<span class="ot">items</span>.<span class="fu">toJSON</span>()));
 <span class="co">// [{&quot;id&quot;:1,&quot;name&quot;:&quot;Bear&quot;,&quot;age&quot;:3},{&quot;id&quot;:2,&quot;name&quot;:&quot;cat&quot;,&quot;age&quot;:2}]</span></code></pre>
 <h4 id="retrieving-models">Retrieving Models</h4>
@@ -1332,16 +1332,16 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <span class="ot">_</span>.<span class="fu">extend</span>(TodoCounter, <span class="ot">Backbone</span>.<span class="fu">Events</span>);
 
 <span class="co">// Increment counterA, triggering an event</span>
-<span class="kw">var</span> incrA = <span class="kw">function</span>(){ 
-  <span class="ot">TodoCounter</span>.<span class="fu">counterA</span> += <span class="dv">1</span>; 
+<span class="kw">var</span> incrA = <span class="kw">function</span>(){
+  <span class="ot">TodoCounter</span>.<span class="fu">counterA</span> += <span class="dv">1</span>;
   <span class="co">// This triggering will not </span>
   <span class="co">// produce any effect on the counters</span>
-  <span class="ot">TodoCounter</span>.<span class="fu">trigger</span>(<span class="st">&#39;event&#39;</span>); 
+  <span class="ot">TodoCounter</span>.<span class="fu">trigger</span>(<span class="st">&#39;event&#39;</span>);
 };
 
 <span class="co">// Increment counterB</span>
-<span class="kw">var</span> incrB = <span class="kw">function</span>(){ 
-  <span class="ot">TodoCounter</span>.<span class="fu">counterB</span> += <span class="dv">1</span>; 
+<span class="kw">var</span> incrB = <span class="kw">function</span>(){
+  <span class="ot">TodoCounter</span>.<span class="fu">counterB</span> += <span class="dv">1</span>;
 };
 
 <span class="co">// Use once rather than having to explicitly unbind</span>
@@ -1511,8 +1511,8 @@ code > span.er { color: #ff0000; font-weight: bold; }
   <span class="dt">model</span>: Todo,
   <span class="dt">filterById</span>: <span class="kw">function</span>(ids){
     <span class="kw">return</span> <span class="kw">this</span>.<span class="ot">models</span>.<span class="fu">filter</span>(
-      <span class="kw">function</span>(c) { 
-        <span class="kw">return</span> <span class="ot">_</span>.<span class="fu">contains</span>(ids, <span class="ot">c</span>.<span class="fu">id</span>); 
+      <span class="kw">function</span>(c) {
+        <span class="kw">return</span> <span class="ot">_</span>.<span class="fu">contains</span>(ids, <span class="ot">c</span>.<span class="fu">id</span>);
       })
   }
 });</code></pre>
@@ -1839,7 +1839,7 @@ collection
 <span class="ot">_</span>.<span class="fu">extend</span>(ourObject, <span class="ot">Backbone</span>.<span class="fu">Events</span>);
 
 <span class="kw">function</span> <span class="fu">doAction</span> (action, duration) {
-  <span class="ot">console</span>.<span class="fu">log</span>(<span class="st">&quot;We are &quot;</span> + action + <span class="st">&#39; for &#39;</span> + duration ); 
+  <span class="ot">console</span>.<span class="fu">log</span>(<span class="st">&quot;We are &quot;</span> + action + <span class="st">&#39; for &#39;</span> + duration );
 }
 
 <span class="co">// Add event listeners</span>
@@ -2100,7 +2100,7 @@ http:<span class="co">//example.com/#search/seasonal-horns/page2</span></code></
 
 <span class="co">// Trigger &#39;route&#39; event on router instance.</span>
 <span class="ot">router</span>.<span class="fu">on</span>(<span class="st">&#39;route&#39;</span>, <span class="kw">function</span>(name, args) {
-  <span class="ot">console</span>.<span class="fu">log</span>(name === <span class="st">&#39;routeEvent&#39;</span>); 
+  <span class="ot">console</span>.<span class="fu">log</span>(name === <span class="st">&#39;routeEvent&#39;</span>);
 });
 
 <span class="ot">location</span>.<span class="fu">replace</span>(<span class="st">&#39;http://example.com#route-event/x&#39;</span>);
@@ -2122,18 +2122,18 @@ http:<span class="co">//example.com/#search/seasonal-horns/page2</span></code></
     <span class="dt">author </span>: <span class="st">&quot;Bill Shakespeare&quot;</span>,
     <span class="dt">length </span>: <span class="dv">123</span>
 };
-  
+
 <span class="co">// Create a new Library instance</span>
 <span class="kw">var</span> library = <span class="kw">new</span> Library;
 
 <span class="co">// Create a new instance of a model within our collection</span>
 <span class="ot">library</span>.<span class="fu">create</span>(attrs, {<span class="dt">wait</span>: <span class="kw">false</span>});
-  
+
 <span class="co">// Update with just emulateHTTP</span>
 <span class="ot">library</span>.<span class="fu">first</span>().<span class="fu">save</span>({<span class="dt">id</span>: <span class="st">&#39;2-the-tempest&#39;</span>, <span class="dt">author</span>: <span class="st">&#39;Tim Shakespeare&#39;</span>}, {
   <span class="dt">emulateHTTP</span>: <span class="kw">true</span>
 });
-    
+
 <span class="co">// Check the ajaxSettings being used for our request</span>
 <span class="ot">console</span>.<span class="fu">log</span>(<span class="kw">this</span>.<span class="ot">ajaxSettings</span>.<span class="fu">url</span> === <span class="st">&#39;/library/2-the-tempest&#39;</span>); <span class="co">// true</span>
 <span class="ot">console</span>.<span class="fu">log</span>(<span class="kw">this</span>.<span class="ot">ajaxSettings</span>.<span class="fu">type</span> === <span class="st">&#39;POST&#39;</span>); <span class="co">// true</span>
@@ -3910,7 +3910,7 @@ zombieView = <span class="kw">new</span> <span class="fu">ZombieView</span>({
 <p>Note that Marionette modules (such as the below) offer a simple module system which is used to create privacy and encapsulation in Marionette apps. These certainly don’t have to be used however, and later on in this section we’ll provide links to alternative implementations using RequireJS + AMD instead.</p>
 <p><strong>TodoMVC.Layout.js:</strong></p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="ot">TodoMVC</span>.<span class="fu">module</span>(<span class="st">&#39;Layout&#39;</span>, <span class="kw">function</span>(Layout, App, Backbone, Marionette, $, _) {
-  
+
   <span class="co">// Layout Header View</span>
   <span class="co">// ------------------</span>
 
@@ -4047,7 +4047,7 @@ zombieView = <span class="kw">new</span> <span class="fu">ZombieView</span>({
   <span class="co">//</span>
   <span class="co">// Control the workflow and logic that exists at the application</span>
   <span class="co">// level, above the implementation detail of views and models</span>
-  
+
   <span class="ot">TodoList</span>.<span class="fu">Controller</span> = <span class="kw">function</span>() {
     <span class="kw">this</span>.<span class="fu">todoList</span> = <span class="kw">new</span> <span class="ot">App</span>.<span class="ot">Todos</span>.<span class="fu">TodoList</span>();
   };
@@ -4060,7 +4060,7 @@ zombieView = <span class="kw">new</span> <span class="fu">ZombieView</span>({
       <span class="kw">this</span>.<span class="fu">showHeader</span>(<span class="kw">this</span>.<span class="fu">todoList</span>);
       <span class="kw">this</span>.<span class="fu">showFooter</span>(<span class="kw">this</span>.<span class="fu">todoList</span>);
       <span class="kw">this</span>.<span class="fu">showTodoList</span>(<span class="kw">this</span>.<span class="fu">todoList</span>);
-      
+
   <span class="ot">App</span>.<span class="fu">bindTo</span>(<span class="kw">this</span>.<span class="fu">todoList</span>, <span class="st">&#39;reset add remove&#39;</span>, <span class="kw">this</span>.<span class="fu">toggleFooter</span>, <span class="kw">this</span>);
       <span class="kw">this</span>.<span class="ot">todoList</span>.<span class="fu">fetch</span>();
     },
@@ -4084,7 +4084,7 @@ zombieView = <span class="kw">new</span> <span class="fu">ZombieView</span>({
         <span class="dt">collection</span>: todoList
       }));
     },
-    
+
     <span class="dt">toggleFooter</span>: <span class="kw">function</span>() {
       <span class="ot">App</span>.<span class="ot">footer</span>.<span class="ot">$el</span>.<span class="fu">toggle</span>(<span class="kw">this</span>.<span class="ot">todoList</span>.<span class="fu">length</span>);
     },
@@ -4101,7 +4101,7 @@ zombieView = <span class="kw">new</span> <span class="fu">ZombieView</span>({
   <span class="co">// Get the TodoList up and running by initializing the mediator</span>
   <span class="co">// when the the application is started, pulling in all of the</span>
   <span class="co">// existing Todo items and displaying them.</span>
-  
+
   <span class="ot">TodoList</span>.<span class="fu">addInitializer</span>(<span class="kw">function</span>() {
 
     <span class="kw">var</span> controller = <span class="kw">new</span> <span class="ot">TodoList</span>.<span class="fu">Controller</span>();
@@ -4159,10 +4159,10 @@ zombieView = <span class="kw">new</span> <span class="fu">ZombieView</span>({
 
       <span class="dt">onRender</span>: <span class="kw">function</span>() {
         <span class="kw">this</span>.<span class="ot">$el</span>.<span class="fu">removeClass</span>( <span class="st">&#39;active completed&#39;</span> );
-      
+
         <span class="kw">if</span> ( <span class="kw">this</span>.<span class="ot">model</span>.<span class="fu">get</span>( <span class="st">&#39;completed&#39;</span> )) {
           <span class="kw">this</span>.<span class="ot">$el</span>.<span class="fu">addClass</span>( <span class="st">&#39;completed&#39;</span> );
-        } <span class="kw">else</span> { 
+        } <span class="kw">else</span> {
           <span class="kw">this</span>.<span class="ot">$el</span>.<span class="fu">addClass</span>( <span class="st">&#39;active&#39;</span> );
         }
       },
@@ -4179,7 +4179,7 @@ zombieView = <span class="kw">new</span> <span class="fu">ZombieView</span>({
         <span class="kw">this</span>.<span class="ot">$el</span>.<span class="fu">addClass</span>(<span class="st">&#39;editing&#39;</span>);
         <span class="kw">this</span>.<span class="ot">ui</span>.<span class="ot">edit</span>.<span class="fu">focus</span>();
       },
-      
+
       <span class="dt">updateTodo </span>: <span class="kw">function</span>() {
         <span class="kw">var</span> todoText = <span class="kw">this</span>.<span class="ot">ui</span>.<span class="ot">edit</span>.<span class="fu">val</span>();
         <span class="kw">if</span> (todoText === <span class="st">&#39;&#39;</span>) {
@@ -4202,7 +4202,7 @@ zombieView = <span class="kw">new</span> <span class="fu">ZombieView</span>({
           <span class="kw">this</span>.<span class="ot">$el</span>.<span class="fu">removeClass</span>(<span class="st">&#39;editing&#39;</span>);
         }
       },
-      
+
       <span class="dt">setTodoText</span>: <span class="kw">function</span>(todoText){
         <span class="kw">if</span> (<span class="ot">todoText</span>.<span class="fu">trim</span>() === <span class="st">&quot;&quot;</span>){ <span class="kw">return</span>; }
         <span class="kw">this</span>.<span class="ot">model</span>.<span class="fu">set</span>(<span class="st">&#39;title&#39;</span>, todoText).<span class="fu">save</span>();
@@ -4241,10 +4241,10 @@ zombieView = <span class="kw">new</span> <span class="fu">ZombieView</span>({
       },
 
       <span class="dt">update</span>: <span class="kw">function</span>() {
-        <span class="kw">function</span> <span class="fu">reduceCompleted</span>(left, right) { 
-          <span class="kw">return</span> left &amp;&amp; <span class="ot">right</span>.<span class="fu">get</span>(<span class="st">&#39;completed&#39;</span>); 
+        <span class="kw">function</span> <span class="fu">reduceCompleted</span>(left, right) {
+          <span class="kw">return</span> left &amp;&amp; <span class="ot">right</span>.<span class="fu">get</span>(<span class="st">&#39;completed&#39;</span>);
         }
-        
+
         <span class="kw">var</span> allCompleted = <span class="kw">this</span>.<span class="ot">collection</span>.<span class="fu">reduce</span>(reduceCompleted,<span class="kw">true</span>);
         <span class="kw">this</span>.<span class="ot">ui</span>.<span class="ot">toggle</span>.<span class="fu">prop</span>(<span class="st">&#39;checked&#39;</span>, allCompleted);
         <span class="kw">this</span>.<span class="ot">$el</span>.<span class="fu">parent</span>().<span class="fu">toggle</span>(!!<span class="kw">this</span>.<span class="ot">collection</span>.<span class="fu">length</span>);
@@ -4263,7 +4263,7 @@ zombieView = <span class="kw">new</span> <span class="fu">ZombieView</span>({
   <span class="co">//</span>
   <span class="co">// Handler for filtering the list of items by showing and</span>
   <span class="co">// hiding through the use of various CSS classes</span>
-  
+
   <span class="ot">App</span>.<span class="ot">vent</span>.<span class="fu">on</span>(<span class="st">&#39;todoList:filter&#39;</span>,<span class="kw">function</span>(filter) {
     filter = filter || <span class="st">&#39;all&#39;</span>;
     <span class="fu">$</span>(<span class="st">&#39;#todoapp&#39;</span>).<span class="fu">attr</span>(<span class="st">&#39;class&#39;</span>, <span class="st">&#39;filter-&#39;</span> + filter);
@@ -4282,7 +4282,7 @@ zombieView = <span class="kw">new</span> <span class="fu">ZombieView</span>({
 
   <span class="co">// Todo Model</span>
   <span class="co">// ----------</span>
-  
+
   <span class="ot">Todos</span>.<span class="fu">Todo</span> = <span class="ot">Backbone</span>.<span class="ot">Model</span>.<span class="fu">extend</span>({
     <span class="dt">localStorage</span>: <span class="kw">new</span> <span class="ot">Backbone</span>.<span class="fu">LocalStorage</span>(localStorageKey),
 
@@ -4302,8 +4302,8 @@ zombieView = <span class="kw">new</span> <span class="fu">ZombieView</span>({
       <span class="kw">return</span> <span class="kw">this</span>.<span class="fu">set</span>(<span class="st">&#39;completed&#39;</span>, !<span class="kw">this</span>.<span class="fu">isCompleted</span>());
     },
 
-    <span class="dt">isCompleted</span>: <span class="kw">function</span>() { 
-      <span class="kw">return</span> <span class="kw">this</span>.<span class="fu">get</span>(<span class="st">&#39;completed&#39;</span>); 
+    <span class="dt">isCompleted</span>: <span class="kw">function</span>() {
+      <span class="kw">return</span> <span class="kw">this</span>.<span class="fu">get</span>(<span class="st">&#39;completed&#39;</span>);
     }
   });
 
@@ -4404,7 +4404,7 @@ zombieView = <span class="kw">new</span> <span class="fu">ZombieView</span>({
         <span class="dt">name</span>: <span class="st">&#39;child&#39;</span>,
         <span class="dt">template</span>: ...
     });
-  
+
     <span class="kw">var</span> parent = <span class="kw">new</span> <span class="ot">Thorax</span>.<span class="fu">View</span>({
         <span class="dt">template</span>: <span class="ot">Handlebars</span>.<span class="fu">compile</span>(<span class="st">&#39;{{view &quot;child&quot; key=&quot;value&quot;}}&#39;</span>)
     });</code></pre>
@@ -4633,7 +4633,7 @@ render : <span class="kw">function</span> () {
 
     <span class="dt">render</span>: <span class="kw">function</span>() {
         <span class="co">// Detach InnerView before reseting OuterView&#39;s $el</span>
-        <span class="kw">this</span>.<span class="ot">inner</span>.<span class="ot">$el</span>.<span class="fu">detach</span>(); 
+        <span class="kw">this</span>.<span class="ot">inner</span>.<span class="ot">$el</span>.<span class="fu">detach</span>();
 
         <span class="co">// or this.$el.empty() if you have no template</span>
         <span class="co">// this.$el.html(template); </span>
@@ -5657,7 +5657,7 @@ NewChildView = <span class="ot">Backbone</span>.<span class="ot">View</span>.<sp
         {
             name: &#39;app&#39;,
             exclude: [
-                // If you prefer not to include certain 
+                // If you prefer not to include certain
                 // libs exclude them here
             ]
         }</code></pre>
@@ -6987,7 +6987,7 @@ Done, without errors.</code></pre>
      <span class="kw">&lt;p&gt;</span>Page content goes here.<span class="kw">&lt;/p&gt;</span>
      <span class="kw">&lt;form&gt;</span>
        <span class="kw">&lt;label</span><span class="ot"> for=</span><span class="st">&quot;slider-1&quot;</span><span class="kw">&gt;</span>Slider with tooltip:<span class="kw">&lt;/label&gt;</span>
-       <span class="kw">&lt;input</span><span class="ot"> type=</span><span class="st">&quot;range&quot;</span><span class="ot"> name=</span><span class="st">&quot;slider-1&quot;</span><span class="ot"> id=</span><span class="st">&quot;slider-1&quot;</span><span class="ot"> min=</span><span class="st">&quot;0&quot;</span><span class="ot"> max=</span><span class="st">&quot;100&quot;</span><span class="ot"> value=</span><span class="st">&quot;50&quot;</span> 
+       <span class="kw">&lt;input</span><span class="ot"> type=</span><span class="st">&quot;range&quot;</span><span class="ot"> name=</span><span class="st">&quot;slider-1&quot;</span><span class="ot"> id=</span><span class="st">&quot;slider-1&quot;</span><span class="ot"> min=</span><span class="st">&quot;0&quot;</span><span class="ot"> max=</span><span class="st">&quot;100&quot;</span><span class="ot"> value=</span><span class="st">&quot;50&quot;</span>
 <span class="ot">        data-popup-enabled=</span><span class="st">&quot;true&quot;</span><span class="kw">&gt;</span>
      <span class="kw">&lt;/form&gt;</span>
   <span class="kw">&lt;/div&gt;</span>
@@ -7015,7 +7015,7 @@ Done, without errors.</code></pre>
   ...
   <span class="kw">&lt;div</span><span class="ot"> data-role=</span><span class="st">&quot;page&quot;</span><span class="ot"> id=</span><span class="st">&quot;firstpage&quot;</span><span class="kw">&gt;</span>
     ...
-   <span class="kw">&lt;div</span><span class="ot"> data-role=</span><span class="st">&quot;content&quot;</span><span class="kw">&gt;</span> 
+   <span class="kw">&lt;div</span><span class="ot"> data-role=</span><span class="st">&quot;content&quot;</span><span class="kw">&gt;</span>
      <span class="kw">&lt;a</span><span class="ot"> href=</span><span class="st">&quot;#secondpage&quot;</span><span class="kw">&gt;</span>go to secondpage<span class="kw">&lt;/a&gt;</span>
    <span class="kw">&lt;/div&gt;</span>
   <span class="kw">&lt;/div&gt;</span>
@@ -7151,7 +7151,7 @@ Done, without errors.</code></pre>
     <span class="st">&quot;backbone&quot;</span>, <span class="st">&quot;modules/view/abstract/BasicView&quot;</span>],
     <span class="kw">function</span> (Backbone, BasicView) {
         <span class="kw">return</span> <span class="ot">BasicView</span>.<span class="fu">extend</span>({
-            <span class="dt">id </span>: <span class="st">&quot;editTodoView&quot;</span>, 
+            <span class="dt">id </span>: <span class="st">&quot;editTodoView&quot;</span>,
             <span class="dt">getHeaderTitle </span>: <span class="kw">function</span> () {
                 <span class="kw">return</span> <span class="st">&quot;Edit Todo&quot;</span>;
             },
@@ -7235,7 +7235,7 @@ Done, without errors.</code></pre>
  <span class="dv">4</span>     <span class="st">&quot;handlebars&quot;</span>,
  <span class="dv">5</span>     <span class="st">&quot;handlebars_helpers&quot;</span>
  <span class="dv">6</span> ],
- <span class="dv">7</span> 
+ <span class="dv">7</span>
  <span class="dv">8</span> <span class="kw">function</span> (_, Backbone, Handlebars) {
  <span class="dv">9</span>     <span class="kw">var</span> BasicView = <span class="ot">Backbone</span>.<span class="ot">View</span>.<span class="fu">extend</span>({
 <span class="dv">10</span>         <span class="dt">initialize</span>: <span class="kw">function</span> () {
@@ -7307,15 +7307,15 @@ Done, without errors.</code></pre>
 <span class="dv">76</span>             <span class="kw">return</span> <span class="kw">false</span>;
 <span class="dv">77</span>         }
 <span class="dv">78</span>     });
-<span class="dv">79</span> 
+<span class="dv">79</span>
 <span class="dv">80</span>     <span class="kw">return</span> BasicView;
 <span class="dv">81</span> });</code></pre>
 <p><em>BasicView.js</em></p>
 <p>After the dynamic HTML is added to the DOM, <code>$.mobile.changePage</code> has to be applied at step 8 (code line 54).</p>
 <p>This is the most important API call, because it triggers the jQuery Mobile component creation for the current page.</p>
 <p>Next, the page will be displayed to the user at step 9.</p>
-<pre class="sourceCode javascript"><code class="sourceCode javascript">&lt;a data-mini=<span class="st">&quot;true&quot;</span> data-role=<span class="st">&quot;button&quot;</span> href=<span class="st">&quot;#&quot;</span> id=<span class="st">&quot;saveDescription&quot;</span> data-corners=<span class="st">&quot;true&quot;</span> 
-data-shadow=<span class="st">&quot;true&quot;</span> data-iconshadow=<span class="st">&quot;true&quot;</span> data-wrapperels=<span class="st">&quot;span&quot;</span> data-theme=<span class="st">&quot;c&quot;</span> 
+<pre class="sourceCode javascript"><code class="sourceCode javascript">&lt;a data-mini=<span class="st">&quot;true&quot;</span> data-role=<span class="st">&quot;button&quot;</span> href=<span class="st">&quot;#&quot;</span> id=<span class="st">&quot;saveDescription&quot;</span> data-corners=<span class="st">&quot;true&quot;</span>
+data-shadow=<span class="st">&quot;true&quot;</span> data-iconshadow=<span class="st">&quot;true&quot;</span> data-wrapperels=<span class="st">&quot;span&quot;</span> data-theme=<span class="st">&quot;c&quot;</span>
 <span class="kw">class</span>=<span class="st">&quot;ui-btn ui-shadow ui-btn-corner-all ui-mini ui-btn-up-c&quot;</span>&gt;
     &lt;span <span class="kw">class</span>=<span class="st">&quot;ui-btn-inner&quot;</span>&gt;
          &lt;span <span class="kw">class</span>=<span class="st">&quot;ui-btn-text&quot;</span>&gt;Save&lt;<span class="ot">/span&gt;</span>
@@ -7578,9 +7578,9 @@ data-shadow=<span class="st">&quot;true&quot;</span> data-iconshadow=<span class
 <p>This example of the first kind of test shows how to fake an AJAX request and verify that the request was both calling the correct URL and executed a callback where one was provided.</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="fu">it</span>(<span class="st">&#39;the callback should be executed on success&#39;</span>, <span class="kw">function</span> () {
 
-    <span class="co">// `andCallFake()` calls a passed function when a spy</span>
+    <span class="co">// `and.callFake()` calls a passed function when a spy</span>
     <span class="co">// has been called</span>
-    <span class="fu">spyOn</span>($, <span class="st">&#39;ajax&#39;</span>).<span class="fu">andCallFake</span>(<span class="kw">function</span>(options) {
+    <span class="fu">spyOn</span>($, <span class="st">&#39;ajax&#39;</span>).<span class="fu">and.callFake</span>(<span class="kw">function</span>(options) {
         <span class="ot">options</span>.<span class="fu">success</span>();
     });
 
@@ -7683,7 +7683,7 @@ data-shadow=<span class="st">&quot;true&quot;</span> data-iconshadow=<span class
 
         <span class="co">// Navigate to a URL</span>
         <span class="kw">this</span>.<span class="ot">router</span>.<span class="fu">navigate</span>(<span class="st">&#39;/js/spec/SpecRunner.html&#39;</span>);
-   }); 
+   });
 
    <span class="fu">afterEach</span>(<span class="kw">function</span>(){
 
@@ -7721,13 +7721,13 @@ data-shadow=<span class="st">&quot;true&quot;</span> data-iconshadow=<span class
 <h2 id="shared-scope">Shared scope</h2>
 <p>Let’s imagine we have a Suite where we wish to check for the existence of a new Todo item instance. This could be done by duplicating the spec as follows:</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="fu">describe</span>(<span class="st">&quot;Todo tests&quot;</span>, <span class="kw">function</span>(){
-   
+
    <span class="co">// Spec</span>
    <span class="fu">it</span>(<span class="st">&quot;Should be defined when we create it&quot;</span>, <span class="kw">function</span>(){
         <span class="co">// A Todo item we are testing</span>
         <span class="kw">var</span> todo = <span class="kw">new</span> <span class="fu">Todo</span>(<span class="st">&quot;Get the milk&quot;</span>, <span class="st">&quot;Tuesday&quot;</span>);
         <span class="fu">expect</span>(todo).<span class="fu">toBeDefined</span>();
-   }); 
+   });
 
    <span class="fu">it</span>(<span class="st">&quot;Should have the correct title&quot;</span>, <span class="kw">function</span>(){
         <span class="co">// Where we introduce code duplication</span>
@@ -7739,7 +7739,7 @@ data-shadow=<span class="st">&quot;true&quot;</span> data-iconshadow=<span class
 <p>As you can see, we’ve introduced duplication that should ideally be refactored into something cleaner. We can do this using Jasmine’s Suite (Shared) Functional Scope.</p>
 <p>All of the specs within the same Suite share the same functional scope, meaning that variables declared within the Suite itself are available to all of the Specs in that suite. This gives us a way to work around our duplication problem by moving the creation of our Todo objects into the common functional scope:</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="fu">describe</span>(<span class="st">&quot;Todo tests&quot;</span>, <span class="kw">function</span>(){
-    
+
     <span class="co">// The instance of Todo, the object we wish to test</span>
     <span class="co">// is now in the shared functional scope</span>
     <span class="kw">var</span> todo = <span class="kw">new</span> <span class="fu">Todo</span>(<span class="st">&quot;Get the milk&quot;</span>, <span class="st">&quot;Tuesday&quot;</span>);
@@ -8639,7 +8639,7 @@ data-shadow=<span class="st">&quot;true&quot;</span> data-iconshadow=<span class
 
     <span class="co">// Let&#39;s reset the relationship to use a stub</span>
     <span class="kw">this</span>.<span class="ot">todos</span>.<span class="fu">model</span> = Todo;
-    
+
     <span class="co">// add a model</span>
     <span class="kw">this</span>.<span class="ot">todos</span>.<span class="fu">add</span>({
       <span class="dt">id</span>: <span class="dv">2</span>,

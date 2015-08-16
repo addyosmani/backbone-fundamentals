@@ -229,7 +229,7 @@ jasmine.any = function(clazz) {
  * }
  *
  * // foo.not(val) will return val
- * spyOn(foo, 'not').andCallFake(function(value) {return value;});
+ * spyOn(foo, 'not').and.callFake(function(value) {return value;});
  *
  * // mock example
  * foo.not(7 == 7);
@@ -346,7 +346,7 @@ jasmine.Spy.prototype.andThrow = function(exceptionMsg) {
  *
  * @param {Function} fakeFunc
  */
-jasmine.Spy.prototype.andCallFake = function(fakeFunc) {
+jasmine.Spy.prototype.and.callFake = function(fakeFunc) {
   this.plan = fakeFunc;
   return this;
 };
@@ -996,7 +996,7 @@ jasmine.Block = function(env, func, spec) {
   this.spec = spec;
 };
 
-jasmine.Block.prototype.execute = function(onComplete) {  
+jasmine.Block.prototype.execute = function(onComplete) {
   try {
     this.func.apply(this.spec);
   } catch (e) {
@@ -1036,7 +1036,7 @@ jasmine.JsApiReporter.prototype.summarize_ = function(suiteOrSpec) {
     type: isSuite ? 'suite' : 'spec',
     children: []
   };
-  
+
   if (isSuite) {
     var children = suiteOrSpec.children();
     for (var i = 0; i < children.length; i++) {
@@ -1652,7 +1652,7 @@ jasmine.PrettyPrinter.prototype.format = function(value) {
 jasmine.PrettyPrinter.prototype.iterateObject = function(obj, fn) {
   for (var property in obj) {
     if (property == '__Jasmine_been_here_before__') continue;
-    fn(property, obj.__lookupGetter__ ? (obj.__lookupGetter__(property) !== jasmine.undefined && 
+    fn(property, obj.__lookupGetter__ ? (obj.__lookupGetter__(property) !== jasmine.undefined &&
                                          obj.__lookupGetter__(property) !== null) : false);
   }
 };
@@ -1755,7 +1755,7 @@ jasmine.Queue.prototype.next_ = function() {
 
   while (goAgain) {
     goAgain = false;
-    
+
     if (self.index < self.blocks.length && !this.abort) {
       var calledSynchronously = true;
       var completedSynchronously = false;
@@ -1793,7 +1793,7 @@ jasmine.Queue.prototype.next_ = function() {
       if (completedSynchronously) {
         onComplete();
       }
-      
+
     } else {
       self.running = false;
       if (self.onComplete) {

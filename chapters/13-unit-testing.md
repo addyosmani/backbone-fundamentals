@@ -147,9 +147,9 @@ This example of the first kind of test shows how to fake an AJAX request and ver
 ```javascript
 it('the callback should be executed on success', function () {
 
-    // `andCallFake()` calls a passed function when a spy
+    // `.and.callFake()` calls a passed function when a spy
     // has been called
-    spyOn($, 'ajax').andCallFake(function(options) {
+    spyOn($, 'ajax').and.callFake(function(options) {
         options.success();
     });
 
@@ -162,7 +162,7 @@ it('the callback should be executed on success', function () {
 
     // Verify that the URL of the most recent call
     // matches our expected Todo item.
-    expect($.ajax.mostRecentCall.args[0]['url']).toEqual('/todos/15');
+    expect($.ajax.calls.mostRecent().args[0]['url']).toEqual('/todos/15');
 
     // `expect(x).toHaveBeenCalled()` will pass if `x` is a
     // spy and was called.
