@@ -18,7 +18,7 @@ If you would like to submit pull requests, please feel free to apply them agains
 
 ## Reviews
 
-If you are interested in leaving a review to let others know what you thoughts of the book this can be done through [O'Reilly](http://shop.oreilly.com/product/0636920025344/ReviewSubmit.do?sortby=publicationDate?pageId=0636920025344.IP).
+If you are interested in leaving a review to share your opinion on the book with others (it's always appreciated!), you can do so through [O'Reilly](http://shop.oreilly.com/product/0636920025344/ReviewSubmit.do?sortby=publicationDate?pageId=0636920025344.IP).
 
 ## Building
 
