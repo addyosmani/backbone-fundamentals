@@ -208,7 +208,7 @@ Models expose an `.attributes` attribute which represents an internal hash conta
 
 Setting values through the `.attributes` attribute on a model bypasses triggers bound to the model.
 
-Passing `{silent:true}` on change doesn't delay individual `"change:attr"` events. Instead they are silenced entirely:
+Passing `{silent:true}` on set doesn't delay individual `"change:attr"` events. Instead they are silenced entirely:
 
 ```javascript
 var Person = new Backbone.Model();
