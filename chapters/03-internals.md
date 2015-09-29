@@ -18,8 +18,8 @@ You can paste the following into your text editor of choice, replacing the comme
 <body>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-<script src="http://documentcloud.github.com/underscore/underscore-min.js"></script>
-<script src="http://documentcloud.github.com/backbone/backbone-min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.2.3/backbone-min.js"></script>
 <script>
   // Your code goes here
 </script>
@@ -31,12 +31,12 @@ You can then save and run the file in your browser of choice, such as Chrome or 
 
 Most examples can also be run directly from within the console in your browser's developer tools, assuming you've loaded the boilerplate HTML page so that Backbone and its dependencies are available for use.
 
-For Chrome, you can open up the DevTools via the Chrome menu in the top right hand corner: select "Tools > Developer Tools" or alternatively use the Control + Shift + I shortcut on Windows/Linux or Command + Option + I on Mac. 
+For Chrome, you can open up the DevTools via the Chrome menu in the top right hand corner: select "Tools > Developer Tools" or alternatively use the Control + Shift + I shortcut on Windows/Linux or Command + Option + I on Mac.
 
 ![](img/devtools.png)
 
 Next, switch to the Console tab, from where you can enter in and run any piece of JavaScript code by hitting the return key. You can also use the Console as a multi-line editor using the Shift + Enter shortcut on Windows/Linux, or Ctrl + Enter shortcut on Mac to move from the end of one line to the start of another.
- 
+
 
 ## Models
 
@@ -112,7 +112,7 @@ var todo3 = new Todo({
   completed: true
 });
 
-// Following logs: {"title":"This todo is done, so take no action on this one.","completed":true} 
+// Following logs: {"title":"This todo is done, so take no action on this one.","completed":true}
 console.log(JSON.stringify(todo3));
 ```
 
@@ -156,7 +156,7 @@ var Todo = Backbone.Model.extend({
 
 var todo1 = new Todo();
 var todo1Attributes = todo1.toJSON();
-// Following logs: {"title":"","completed":false} 
+// Following logs: {"title":"","completed":false}
 console.log(todo1Attributes);
 
 var todo2 = new Todo({
@@ -335,11 +335,11 @@ Person.unset('name', {validate: true});
 
 Above, we also use the `unset()` method, which removes an attribute by deleting it from the internal model attributes hash.
 
-Validation functions can be as simple or complex as necessary. If the attributes provided are valid, nothing should be returned from `.validate()`. If they are invalid, an error value should be returned instead. 
+Validation functions can be as simple or complex as necessary. If the attributes provided are valid, nothing should be returned from `.validate()`. If they are invalid, an error value should be returned instead.
 
 Should an error be returned:
 
-* An `invalid` event will be triggered, setting the `validationError` property on the model with the value which is returned by this method. 
+* An `invalid` event will be triggered, setting the `validationError` property on the model with the value which is returned by this method.
 * `.save()` will not continue and the attributes of the model will not be modified on the server.
 
 A more complete validation example can be seen below:
@@ -438,7 +438,7 @@ console.log(todoView.el); // logs <li></li>
 
 #### What is `el`?
 
-The central property of a view is `el` (the value logged in the last statement of the example). What is `el` and how is it defined? 
+The central property of a view is `el` (the value logged in the last statement of the example). What is `el` and how is it defined?
 
 `el` is basically a reference to a DOM element and all views must have one. Views can use `el` to compose their element's content and then insert it into the DOM all at once, which makes for faster rendering because the browser performs the minimum required number of reflows and repaints.
 
@@ -451,7 +451,7 @@ In the example above, `tagName` is set to 'li', resulting in creation of an li e
 ```javascript
 var TodosView = Backbone.View.extend({
   tagName: 'ul', // required, but defaults to 'div' if not set
-  className: 'container', // optional, you can assign multiple classes to 
+  className: 'container', // optional, you can assign multiple classes to
                           // this property like so: 'container homepage'
   id: 'todos' // optional
 });
@@ -486,7 +486,7 @@ View logic often needs to invoke jQuery or Zepto functions on the `el` element a
 
 **setElement**
 
-If you need to apply an existing Backbone view to a different DOM element `setElement` can be used for this purpose. Overriding this.el needs to both change the DOM reference and re-bind events to the new element (and unbind from the old). 
+If you need to apply an existing Backbone view to a different DOM element `setElement` can be used for this purpose. Overriding this.el needs to both change the DOM reference and re-bind events to the new element (and unbind from the old).
 
 `setElement` will create a cached `$el` reference for you, moving the delegated events for a view from the old element to the new one.
 
@@ -513,7 +513,7 @@ var view = new View({el: button1});
 // Apply the view to button2 using setElement
 view.setElement(button2);
 
-button1.trigger('click'); 
+button1.trigger('click');
 button2.trigger('click'); // returns true
 ```
 
@@ -577,10 +577,10 @@ Let's try to implement the latter of these. The `render` method of a simple List
 var ListView = Backbone.View.extend({
 
   // Compile a template for this view. In this case '...'
-  // is a placeholder for a template such as 
-  // $("#list_template").html() 
+  // is a placeholder for a template such as
+  // $("#list_template").html()
   template: _.template(…),
-  
+
   render: function() {
     this.$el.html(this.template(this.model.attributes));
     return this;
@@ -617,12 +617,12 @@ var ListView = Backbone.View.extend({
     // _.each iterator
     _.each(items, function(item){
 
-      // Create a new instance of the ItemView, passing 
+      // Create a new instance of the ItemView, passing
       // it a specific model item
       var itemView = new ItemView({ model: item });
       // The itemView's DOM element is appended after it
       // has been rendered. Here, the 'return this' is helpful
-      // as the itemView renders its model. Later, we ask for 
+      // as the itemView renders its model. Later, we ask for
       // its output ("el")
       this.$el.append( itemView.render().el );
     }, this);
@@ -652,7 +652,7 @@ var TodoView = Backbone.View.extend({
   },
 ```
 
-What isn't instantly obvious is that while Backbone uses jQuery's `.delegate()` underneath, it goes further by extending it so that `this` always refers to the current view object within callback functions. The only thing to really keep in mind is that any string callback supplied to the events attribute must have a corresponding function with the same name within the scope of your view. 
+What isn't instantly obvious is that while Backbone uses jQuery's `.delegate()` underneath, it goes further by extending it so that `this` always refers to the current view object within callback functions. The only thing to really keep in mind is that any string callback supplied to the events attribute must have a corresponding function with the same name within the scope of your view.
 
 The declarative, delegated jQuery events means that you don't have to worry about whether a particular element has been rendered to the DOM yet or not. Usually with jQuery you have to worry about "presence or absence in the DOM" all the time when binding events.
 
@@ -745,7 +745,7 @@ var items = new Backbone.Collection;
 items.add([{ id : 1, name: "Dog" , age: 3}, { id : 2, name: "cat" , age: 2}]);
 items.add([{ id : 1, name: "Bear" }], {merge: true });
 items.add([{ id : 2, name: "lion" }]); // merge: false
- 
+
 console.log(JSON.stringify(items.toJSON()));
 // [{"id":1,"name":"Bear","age":3},{"id":2,"name":"cat","age":2}]
 ```
@@ -768,13 +768,13 @@ console.log(todo2 === myTodo); // true
 
 In client-server applications, collections contain models obtained from the server. Anytime you're exchanging data between the client and a server, you will need a way to uniquely identify models. In Backbone, this is done using the `id`, `cid`, and `idAttribute` properties.
 
-Each model in Backbone has an `id`, which is a unique identifier that is either an integer or string (e.g., a UUID). Models also have a `cid` (client id) which is automatically generated by Backbone when the model is created. Either identifier can be used to retrieve a model from a collection. 
+Each model in Backbone has an `id`, which is a unique identifier that is either an integer or string (e.g., a UUID). Models also have a `cid` (client id) which is automatically generated by Backbone when the model is created. Either identifier can be used to retrieve a model from a collection.
 
 The main difference between them is that the `cid` is generated by Backbone; it is helpful when you don't have a true id - this may be the case if your model has yet to be saved to the server or you aren't saving it to a database.
 
 The `idAttribute` is the identifying attribute name of the model returned from the server (i.e. the `id` in your database). This tells Backbone which data field from the server should be used to populate the `id` property (think of it as a mapper). By default, it assumes `id`, but this can be customized as needed. For instance, if your server sets a unique attribute on your model named "userId" then you would set `idAttribute` to "userId" in your model definition.
 
-The value of a model's idAttribute should be set by the server when the model is saved. After this point you shouldn't need to set it manually, unless further control is required. 
+The value of a model's idAttribute should be set by the server when the model is saved. After this point you shouldn't need to set it manually, unless further control is required.
 
 Internally, `Backbone.Collection` contains an array of models enumerated by their `id` property, if the model instances happen to have one. When `collection.get(id)` is called, this array is checked for existence of the model instance with the corresponding `id`.
 
@@ -783,7 +783,7 @@ Internally, `Backbone.Collection` contains an array of models enumerated by thei
 
 var todoCid = todos.get(todo2.cid);
 
-// As mentioned in previous example, 
+// As mentioned in previous example,
 // models are passed by reference
 console.log(todoCid === myTodo); // true
 ```
@@ -859,7 +859,7 @@ function stateChanged(){
 }
 
 myTodo.set({title: 'Get the groceries'});
-// The title was changed! 
+// The title was changed!
 ```
 
 Backbone events also support a [once()](http://backbonejs.org/#Events-once) method, which ensures that a callback only fires one time when a notification arrives. It is similar to Node's [once](http://nodejs.org/api/events.html#events_emitter_once_event_listener), or jQuery's [one](http://api.jquery.com/one/). This is particularly useful for when you want to say "the next time something happens, do this".
@@ -871,16 +871,16 @@ var TodoCounter = { counterA: 0, counterB: 0 };
 _.extend(TodoCounter, Backbone.Events);
 
 // Increment counterA, triggering an event
-var incrA = function(){ 
-  TodoCounter.counterA += 1; 
-  // This triggering will not 
+var incrA = function(){
+  TodoCounter.counterA += 1;
+  // This triggering will not
   // produce any effect on the counters
-  TodoCounter.trigger('event'); 
+  TodoCounter.trigger('event');
 };
 
 // Increment counterB
-var incrB = function(){ 
-  TodoCounter.counterB += 1; 
+var incrB = function(){
+  TodoCounter.counterB += 1;
 };
 
 // Use once rather than having to explicitly unbind
@@ -1100,8 +1100,8 @@ var Todos = Backbone.Collection.extend({
   model: Todo,
   filterById: function(ids){
     return this.models.filter(
-      function(c) { 
-        return _.contains(ids, c.id); 
+      function(c) {
+        return _.contains(ids, c.id);
       })
   }
 });
@@ -1360,7 +1360,7 @@ console.log(todo.destroy());
 
 **Options**
 
-Each RESTful API method accepts a variety of options. Most importantly, all methods accept success and error callbacks which can be used to customize the handling of server responses. 
+Each RESTful API method accepts a variety of options. Most importantly, all methods accept success and error callbacks which can be used to customize the handling of server responses.
 
 Specifying the `{patch: true}` option to `Model.save()` will cause it to use HTTP PATCH to send only the changed attributes (i.e. partial updates) to the server instead of the entire model; i.e. `model.save(attrs, {patch: true})`:
 
@@ -1553,7 +1553,7 @@ var ourObject = {};
 _.extend(ourObject, Backbone.Events);
 
 function doAction (action, duration) {
-  console.log("We are " + action + ' for ' + duration ); 
+  console.log("We are " + action + ' for ' + duration );
 }
 
 // Add event listeners
@@ -1594,7 +1594,7 @@ c.trigger('everything');
 
 `stopListening()` can also be used to selectively stop listening based on the event, model, or callback handler.
 
-If you use `on` and `off` and remove views and their corresponding models at the same time, there are generally no problems. But a problem arises when you remove a view that had registered to be notified about events on a model, but you don't remove the model or call `off` to remove the view's event handler. Since the model has a reference to the view's callback function, the JavaScript garbage collector cannot remove the view from memory. This is called a "ghost view" and is a form of memory leak which is common since the models generally tend to outlive the corresponding views during an application's lifecycle. For details on the topic and a solution, check this [excellent article](http://lostechies.com/derickbailey/2011/09/15/zombies-run-managing-page-transitions-in-backbone-apps/) by Derick Bailey. 
+If you use `on` and `off` and remove views and their corresponding models at the same time, there are generally no problems. But a problem arises when you remove a view that had registered to be notified about events on a model, but you don't remove the model or call `off` to remove the view's event handler. Since the model has a reference to the view's callback function, the JavaScript garbage collector cannot remove the view from memory. This is called a "ghost view" and is a form of memory leak which is common since the models generally tend to outlive the corresponding views during an application's lifecycle. For details on the topic and a solution, check this [excellent article](http://lostechies.com/derickbailey/2011/09/15/zombies-run-managing-page-transitions-in-backbone-apps/) by Derick Bailey.
 
 Practically, every `on` called on an object also requires an `off` to be called in order for the garbage collector to do its job. `listenTo()` changes that, allowing Views to bind to Model notifications and unbind from all of them with just one call - `stopListening()`.
 
@@ -1796,7 +1796,7 @@ Backbone.history.start();
 
 // Go to and check console:
 // http://localhost/#search/job/p3   logs: Page number: 3 of the results for todos containing the word: job
-// http://localhost/#search/job      logs: Page number: 1 of the results for todos containing the word: job 
+// http://localhost/#search/job      logs: Page number: 1 of the results for todos containing the word: job
 // etc.
 ```
 
@@ -1878,7 +1878,7 @@ Backbone.history.on('route', onRoute);
 
 // Trigger 'route' event on router instance.
 router.on('route', function(name, args) {
-  console.log(name === 'routeEvent'); 
+  console.log(name === 'routeEvent');
 });
 
 location.replace('http://example.com#route-event/x');
@@ -1910,18 +1910,18 @@ var attrs = {
     author : "Bill Shakespeare",
     length : 123
 };
-  
+
 // Create a new Library instance
 var library = new Library;
 
 // Create a new instance of a model within our collection
 library.create(attrs, {wait: false});
-  
+
 // Update with just emulateHTTP
 library.first().save({id: '2-the-tempest', author: 'Tim Shakespeare'}, {
   emulateHTTP: true
 });
-    
+
 // Check the ajaxSettings being used for our request
 console.log(this.ajaxSettings.url === '/library/2-the-tempest'); // true
 console.log(this.ajaxSettings.type === 'POST'); // true
