@@ -1232,7 +1232,7 @@ console.log(todo.invert());
 // logs: {'go to Austria.': 'title', 'false': 'completed'}
 ```
 
-The complete list of what Underscore can do can be found in its official [documentation](http://documentcloud.github.com/underscore/).
+The complete list of what Underscore can do can be found in its official [documentation](http://underscorejs.org/).
 
 #### Chainable API
 
