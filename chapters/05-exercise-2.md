@@ -445,7 +445,7 @@ var application_root = __dirname,
 var app = express();
 
 //Where to serve static content
-app.use( express.static( path.join( application_root, 'site') ) );
+app.use( express.static( path.join( application_root,'../', 'site') ) );
 app.use(bodyParser());
 
 //Start server
@@ -509,7 +509,7 @@ app.configure( function() {
 	app.use( app.router );
 
 	//Where to serve static content
-	app.use( express.static( path.join( application_root, 'site') ) );
+	app.use( express.static( path.join( application_root, '../', site') ) );
 
 	//Show all errors in development
 	app.use( express.errorHandler({ dumpExceptions: true, showStack: true }));
