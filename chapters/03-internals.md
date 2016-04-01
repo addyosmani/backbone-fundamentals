@@ -1099,7 +1099,7 @@ var captions = todos.pluck('caption');
 var Todos = Backbone.Collection.extend({
   model: Todo,
   filterById: function(ids){
-    return this.models.filter(
+    return this.filter(
       function(c) { 
         return _.contains(ids, c.id); 
       })
