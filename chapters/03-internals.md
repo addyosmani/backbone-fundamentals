@@ -1899,6 +1899,12 @@ Backbone.emulateJSON = false; // set to true if server cannot handle application
 The inline Backbone.emulateHTTP option should be set to true if extended HTTP methods are not supported by the server. The Backbone.emulateJSON option should be set to true if the server does not understand the MIME type for JSON.
 
 ```javascript
+// Overwriting jQuery ajax method - now actual request will be made
+var ajaxSettings;
+$.ajax = function (ajaxRequest) {
+    ajaxSettings = ajaxRequest;
+};
+
 // Create a new library collection
 var Library = Backbone.Collection.extend({
     url : function() { return '/library'; }
@@ -1910,25 +1916,25 @@ var attrs = {
     author : "Bill Shakespeare",
     length : 123
 };
-  
+
 // Create a new Library instance
 var library = new Library;
 
 // Create a new instance of a model within our collection
 library.create(attrs, {wait: false});
-  
+
 // Update with just emulateHTTP
 library.first().save({id: '2-the-tempest', author: 'Tim Shakespeare'}, {
   emulateHTTP: true
 });
-    
+
 // Check the ajaxSettings being used for our request
-console.log(this.ajaxSettings.url === '/library/2-the-tempest'); // true
-console.log(this.ajaxSettings.type === 'POST'); // true
-console.log(this.ajaxSettings.contentType === 'application/json'); // true
+console.log(ajaxSettings.url === '/library/2-the-tempest'); // true
+console.log(ajaxSettings.type === 'POST'); // true
+console.log(ajaxSettings.contentType === 'application/json'); // true
 
 // Parse the data for the request to confirm it is as expected
-var data = JSON.parse(this.ajaxSettings.data);
+var data = JSON.parse(ajaxSettings.data);
 console.log(data.id === '2-the-tempest');  // true
 console.log(data.author === 'Tim Shakespeare'); // true
 console.log(data.length === 123); // true
@@ -1941,14 +1947,14 @@ library.first().save({id: '2-the-tempest', author: 'Tim Shakespeare'}, {
   emulateJSON: true
 });
 
-console.log(this.ajaxSettings.url === '/library/2-the-tempest'); // true
-console.log(this.ajaxSettings.type === 'PUT'); // true
-console.log(this.ajaxSettings.contentType ==='application/x-www-form-urlencoded'); // true
+console.log(ajaxSettings.url === '/library/2-the-tempest'); // true
+console.log(ajaxSettings.type === 'PUT'); // true
+console.log(ajaxSettings.contentType ==='application/x-www-form-urlencoded'); // true
 
-var data = JSON.parse(this.ajaxSettings.data.model);
-console.log(data.id === '2-the-tempest');
-console.log(data.author ==='Tim Shakespeare');
-console.log(data.length === 123);
+var data = JSON.parse(ajaxSettings.data.model);
+console.log(data.id === '2-the-tempest'); // true
+console.log(data.author ==='Tim Shakespeare'); // true
+console.log(data.length === 123); // true
 ```
 
 `Backbone.sync` is called every time Backbone tries to read, save, or delete models. It uses jQuery or Zepto's `$.ajax()` implementations to make these RESTful requests, however this can be overridden as per your needs.
