@@ -634,7 +634,7 @@ The next part of our tutorial is going to cover completing and deleting todos. T
 
     // The DOM events specific to an item.
     events: {
-      'click .toggle': 'togglecompleted', // NEW
+      'click .toggle': 'toggleCompleted', // NEW
       'dblclick label': 'edit',
       'click .destroy': 'clear',           // NEW
       'keypress .edit': 'updateOnEnter',
