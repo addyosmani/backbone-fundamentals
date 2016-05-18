@@ -2,7 +2,7 @@
 
 ## A Simple JavaScript MVC Implementation
 
-A comprehensive discussion of Backbone's implementation is beyond the scope of this book. We can, however, present a simple MVC library - which we will call Cranium.js - that illustrates how frameworks such as Backbone implement the MVC pattern. 
+A comprehensive discussion of Backbone's implementation is beyond the scope of this book. We can, however, present a simple MVC library - which we will call Cranium.js - that illustrates how libraries such as Backbone implement the MVC pattern.
 
 Like Backbone, we will rely on [Underscore](http://underscorejs.org "Underscore.js") for inheritance and templating.
 
@@ -18,7 +18,7 @@ At the heart of our JavaScript MVC implementation is an `Event` system (object) 
 var Cranium = Cranium || {};
 
 // Set DOM selection utility
-var $ = document.querySelector.bind(document) || this.jQuery || this.Zepto;
+var $ = this.jQuery || this.Zepto || document.querySelectorAll.bind(document);
 
 // Mix in to any object in order to provide it with custom events.
 var Events = Cranium.Events = {
@@ -44,8 +44,15 @@ var Events = Cranium.Events = {
   },
   // Unregisters an event type and its listener
   off: function(topic) {
-    delete Cranium.Events.channels[topic];
-  }            
+    var topic;
+    for (topic in Cranium.Events.channels) {
+      if (Cranium.Events.channels.hasOwnProperty(topic)) {
+        if (topic.split("-")[0] == events) {
+          delete Cranium.Events.channels[topic];
+        }
+      }
+    }
+  }
 };
 ```
 
@@ -65,8 +72,8 @@ Let's see a simple implementation of the Model:
 
 // Attributes represents data, model's properties.
 // These are to be passed at Model instantiation.
-// Also we are creating id for each Model instance 
-// so that it can identify itself (e.g. on chage 
+// Also we are creating id for each Model instance
+// so that it can identify itself (e.g. on chage
 // announcements)
 var Model = Cranium.Model = function (attributes) {
     this.id = _.uniqueId('model');
@@ -90,7 +97,7 @@ Cranium.Model.prototype.set = function(attrs){
     return this;
 };
 
-// Returns clone of the Models data object 
+// Returns clone of the Models data object
 // (used for view template rendering)
 Cranium.Model.prototype.toJSON = function(options) {
     return _.clone(this.attributes);
@@ -100,7 +107,7 @@ Cranium.Model.prototype.toJSON = function(options) {
 // and passes the new data
 Cranium.Model.prototype.change = function(attrs){
     this.trigger(this.id + 'update', attrs);
-}; 
+};
 
 // Mix in Event system
 _.extend(Cranium.Model.prototype, Cranium.Events);
@@ -115,8 +122,8 @@ Let's explore Views a little further using a simple JavaScript example:
 ```javascript
 // DOM View
 var View = Cranium.View = function (options) {
-  // Mix in options object (e.g extending functionallity)
-  _.extend(this, options); 
+  // Mix in options object (e.g extending functionality)
+  _.extend(this, options);
   this.id = _.uniqueId('view');
 };
 
@@ -126,7 +133,7 @@ _.extend(Cranium.View.prototype, Cranium.Events);
 
 ### Controllers
 
-Controllers are an intermediary between models and views which are classically responsible for two tasks: 
+Controllers are an intermediary between models and views which are classically responsible for two tasks:
 
 * they update the view when the model changes
 * they update the model when the user manipulates the view
@@ -136,12 +143,12 @@ Controllers are an intermediary between models and views which are classically r
 
 // Controller tying together a model and view
 var Controller = Cranium.Controller = function(options){
-  // Mix in options object (e.g extending functionallity)
-  _.extend(this, options); 
+  // Mix in options object (e.g extending functionality)
+  _.extend(this, options);
   this.id = _.uniqueId('controller');
   var parts, selector, eventType;
 
-  // Parses Events object passed during the definition of the 
+  // Parses Events object passed during the definition of the
   // controller and maps it to the defined method to handle it;
   if(this.events){
     _.each(this.events, function(method, eventName){
@@ -150,7 +157,7 @@ var Controller = Cranium.Controller = function(options){
       eventType = parts[1];
       $(selector)['on' + eventType] = this[method];
     }.bind(this));
-  }    
+  }
 };
 ```
 
@@ -207,7 +214,7 @@ var todoView = new Cranium.View({
   template: _.template($('.todo-template').innerHTML),
 
   init: function (model) {
-    this.render( model.toJSON() );
+    this.render( model.attributes );
 
     this.on(model.id + 'update', this.render.bind(this));
   },
@@ -223,7 +230,7 @@ var todoController = new Cranium.Controller({
 
   // and the view to observe this model
   view:  todoView,
-  
+
   events: {
     "#todo.click" : "toggleComplete"
   },
@@ -304,7 +311,7 @@ A response to this could be that the view can also just be a View (as per MVC) b
 
 We've also seen that in Backbone the responsibility of a controller is shared with both the Backbone.View and Backbone.Router and in the following example we can actually see that aspects of that are certainly true.
 
-Here, our Backbone ```TodoView``` uses the Observer pattern to 'subscribe' to changes to a View's model in the line ```this.model.on('change',...)```. It also handles templating in the ```render()``` method, but unlike some other implementations, user interaction is also handled in the View (see ```events```).
+Here, our Backbone ```TodoView``` uses the Observer pattern to 'subscribe' to changes to a View's model in the line ```this.listenTo(this.model, 'change',...)```. It also handles templating in the ```render()``` method, but unlike some other implementations, user interaction is also handled in the View (see ```events```).
 
 
 ```javascript
@@ -327,13 +334,13 @@ app.TodoView = Backbone.View.extend({
   // a one-to-one correspondence between a **Todo** and a **TodoView** in this
   // app, we set a direct reference on the model for convenience.
   initialize: function() {
-    this.model.on( 'change', this.render, this );
-    this.model.on( 'destroy', this.remove, this );
+    this.listenTo( this.model, 'change', this.render );
+    this.listenTo( this.model, 'destroy', this.remove );
   },
 
   // Re-render the titles of the todo item.
   render: function() {
-    this.$el.html( this.template( this.model.toJSON() ) );
+    this.$el.html( this.template( this.model.attributes ) );
     return this;
   },
 
@@ -346,7 +353,7 @@ app.TodoView = Backbone.View.extend({
 
 Another (quite different) opinion is that Backbone more closely resembles [Smalltalk-80 MVC](http://martinfowler.com/eaaDev/uiArchs.html#ModelViewController), which we went through earlier.
 
-As MarionetteJS author Derick Bailey has [written](http://lostechies.com/derickbailey/2011/12/23/backbone-js-is-not-an-mvc-framework/), it's ultimately best not to force Backbone to fit any specific design patterns. Design patterns should be considered flexible guides to how applications may be structured and in this respect, Backbone doesn't fit either MVC nor MVP perfectly. Instead, it borrows some of the best concepts from multiple architectural patterns and creates a flexible framework that just works well. Call it **the Backbone way**, MV* or whatever helps reference its flavor of application architecture.
+As MarionetteJS author Derick Bailey has [written](http://lostechies.com/derickbailey/2011/12/23/backbone-js-is-not-an-mvc-framework/), it's ultimately best not to force Backbone to fit any specific design patterns. Design patterns should be considered flexible guides to how applications may be structured and in this respect, Backbone doesn't fit either MVC nor MVP perfectly. Instead, it borrows some of the best concepts from multiple architectural patterns and creates a flexible library that just works well. Call it **the Backbone way**, MV* or whatever helps reference its flavor of application architecture.
 
 It *is* however worth understanding where and why these concepts originated, so I hope that my explanations of MVC and MVP have been of help. Most structural JavaScript frameworks will adopt their own take on classical patterns, either intentionally or by accident, but the important thing is that they help us develop applications which are organized, clean and can be easily maintained.
 
@@ -388,7 +395,7 @@ var myViews = (function(){
     return {
         TodoView: Backbone.View.extend({ .. }),
         TodosView: Backbone.View.extend({ .. }),
-        AboutView: Backbone.View.extend({ .. });
+        AboutView: Backbone.View.extend({ .. })
         //etc.
     };
 })();
@@ -517,7 +524,7 @@ In case you were wondering, here is the original DocumentCloud (remember those g
 })();
 ```
 
-As you can see, they opt for declaring a top-level namespace on the `window` called `dc`, a short-form name of their app, followed by nested namesapces for the controllers, models, UI and other pieces of their application.
+As you can see, they opt for declaring a top-level namespace on the `window` called `dc`, a short-form name of their app, followed by nested namespaces for the controllers, models, UI and other pieces of their application.
 
 **Recommendation**
 
@@ -544,7 +551,7 @@ So, setting `Backbone.$ = myLibrary;` will allow you to use any custom DOM-manip
 
 ### Utilities
 
-Underscore.js is heavily used in Backbone behind the scenes for everything from object extension to event binding. As the entire library is generally included, we get free access to a number of useful utilities we can use on Collections such as filtering `_.filter()`, sorting `_.sortBy()`, mapping `_.map()` and so on. 
+Underscore.js is heavily used in Backbone behind the scenes for everything from object extension to event binding. As the entire library is generally included, we get free access to a number of useful utilities we can use on Collections such as filtering `_.filter()`, sorting `_.sortBy()`, mapping `_.map()` and so on.
 
 From the source:
 
@@ -568,7 +575,7 @@ However, for a complete linked list of methods supported, see the [official docu
 
 ### RESTful persistence
 
-Models and collections in Backbone can be "sync"ed with the server using the `fetch`, `save` and `destroy` methods. All of these methods delegate back to the `Backbone.sync` function, which actually wraps jQuery/Zepto's `$.ajax` function, calling GET, POST and DELETE for the respective persistence methods on Backbone models. 
+Models and collections in Backbone can be "sync"ed with the server using the `fetch`, `save` and `destroy` methods. All of these methods delegate back to the `Backbone.sync` function, which actually wraps jQuery/Zepto's `$.ajax` function, calling GET, POST and DELETE for the respective persistence methods on Backbone models.
 
 From the the source for `Backbone.sync`:
 
@@ -580,12 +587,12 @@ var methodMap = {
   'delete': 'DELETE',
   'read':   'GET'
 };
-  
+
 Backbone.sync = function(method, model, options) {
     var type = methodMap[method];
 
     // ... Followed by lots of Backbone.js configuration, then..
-    
+
     // Make the request, allowing the user to override any Ajax options.
     var xhr = options.xhr = Backbone.ajax(_.extend(params, options));
     model.trigger('request', model, xhr, options);
@@ -594,7 +601,7 @@ Backbone.sync = function(method, model, options) {
 
 ### Routing
 
-Calls to `Backbone.History.start` rely on jQuery/Zepto binding `popState` or `hashchange` event listeners back to the window object. 
+Calls to `Backbone.History.start` rely on jQuery/Zepto binding `popState` or `hashchange` event listeners back to the window object.
 
 From the source for `Backbone.history.start`:
 
@@ -620,7 +627,7 @@ From the source for `Backbone.history.start`:
 
 Backbone is just one of many different solutions available for structuring your application and we're by no means advocating it as the be all and end all. It's served the authors of this book well in building many simple and complex web applications and we hope that it can serve you equally as well. The answer to the question 'Is Backbone better than X?' generally has a lot more to do with what kind of application you're building.
 
-AngularJS and Ember.js are examples of powerful alternatives but differ from Backbone in that there are more opinionated. For some projects this can be useful and for others, perhaps not. The important thing to remember is that there is no library or framework that's going to be the best solution for every use-case and so it's important to learn about the tools at your disposal and decide which one is best on a project-by-project basis. 
+AngularJS and Ember.js are examples of powerful alternatives but differ from Backbone in that there are more opinionated. For some projects this can be useful and for others, perhaps not. The important thing to remember is that there is no library or framework that's going to be the best solution for every use-case and so it's important to learn about the tools at your disposal and decide which one is best on a project-by-project basis.
 
 Choose the right tool for the right job. This is why we recommend spending some time doing a little due diligence. Consider productivity, ease of use, testability, community and documentation. If you're looking for more concrete comparisons between frameworks, read:
 
@@ -631,7 +638,7 @@ The authors behind Backbone.js, AngularJS and Ember have also discussed some of 
 
 * [Jeremy Ashkenas on Why Backbone?](http://backbonejs.org/#FAQ-why-backbone)
 * [Tom Dale on Why Ember.js vs. AngularJS](http://www.quora.com/Ember-js/Which-one-of-angular-js-and-ember-js-is-the-better-choice/answer/Tom-Dale)
-* [Brian Ford & Jeremy Ashkenas on Backbone vs. Angular (discussion)](http://www.reddit.com/r/javascript/comments/17h22w/an_introduction_to_angular_for_backbone_developers/) 
+* [Brian Ford & Jeremy Ashkenas on Backbone vs. Angular (discussion)](http://www.reddit.com/r/javascript/comments/17h22w/an_introduction_to_angular_for_backbone_developers/)
 
 The solution you opt for may need to support building non-trivial features and could end up being used to maintain the app for years to come so think about things like:
 
@@ -640,7 +647,7 @@ The solution you opt for may need to support building non-trivial features and c
 Spend time reviewing both the source code of the framework and official list of features to see how well they fit with your requirements. There will be projects that may require modifying or extending the underlying source and thus make sure that if this might be the case, you’ve performed due diligence on the code.
 Has the framework been proven in production?
 
-i.e Have developers actually built and deployed large applications with it that are publicly accessible? Backbone has a strong portfolio of these (SoundCloud, LinkedIn, Walmart) but not all frameworks do. Ember is used in number of large apps, including the new version of ZenDesk. AngularJS has been used to build the YouTube app for PS3 amongst other places. It’s not only important to know that a framework works in production, but also being able to look at real world code and be inspired by what can be built with it.
+i.e Have developers actually built and deployed large applications with it that are publicly accessible? Backbone has a strong portfolio of these (SoundCloud, LinkedIn, Walmart) but not all libraries and frameworks do. Ember is used in number of large apps, including the new version of ZenDesk. AngularJS has been used to build the YouTube app for PS3 amongst other places. It’s not only important to know that a library or framework works in production, but also being able to look at real world code and be inspired by what can be built with it.
 
 **Is the framework mature?**
 

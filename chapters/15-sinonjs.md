@@ -330,9 +330,9 @@ For our collection we'll want to test that:
 * The order for Todos is numerically correct
 
 ```javascript
-  describe('Test Collection', function() {
+  module('Test Collection', {
 
-    beforeEach(function() {
+    setup: function() {
 
       // Define new todos
       this.todoOne = new Todo;
@@ -341,52 +341,54 @@ For our collection we'll want to test that:
       });
 
       // Create a new collection of todos for testing
-      return this.todos = new TodoList([this.todoOne, this.todoTwo]);
-    });
-
-    it('Has the Todo model', function() {
-      return expect(this.todos.model).toBe(Todo);
-    });
-
-    it('Uses local storage', function() {
-      return expect(this.todos.localStorage).toEqual(new Store('todos-backbone'));
-    });
-
-    describe('done', function() {
-      return it('returns an array of the todos that are done', function() {
-        this.todoTwo.done = true;
-        return expect(this.todos.done()).toEqual([this.todoTwo]);
-      });
-    });
-
-    describe('remaining', function() {
-      return it('returns an array of the todos that are not done', function() {
-        this.todoTwo.done = true;
-        return expect(this.todos.remaining()).toEqual([this.todoOne]);
-      });
-    });
-
-    describe('clear', function() {
-      return it('destroys the current todo from local storage', function() {
-        expect(this.todos.models).toEqual([this.todoOne, this.todoTwo]);
-        this.todos.clear(this.todoOne);
-        return expect(this.todos.models).toEqual([this.todoTwo]);
-      });
-    });
-
-    return describe('Order sets the order on todos ascending numerically', function() {
-      it('defaults to one when there arent any items in the collection', function() {
-        this.emptyTodos = new TodoApp.Collections.TodoList;
-        return expect(this.emptyTodos.order()).toEqual(0);
-      });
-
-      return it('Increments the order by one each time', function() {
-        expect(this.todos.order(this.todoOne)).toEqual(1);
-        return expect(this.todos.order(this.todoTwo)).toEqual(2);
-      });
-    });
-
+      this.todos = new TodoList([this.todoOne, this.todoTwo]);
+    }
   });
+
+    test('Has the Todo model', function() {
+      expect( 1 );
+      equal(this.todos.model, Todo);
+    });
+
+    test('Uses local storage', function() {
+      expect( 1 );
+      equal(this.todos.localStorage, new Store('todos-backbone'));
+    });
+
+    // done
+      test('returns an array of the todos that are done', function() {
+        expect( 1 );
+        this.todoTwo.done = true;
+        deepEqual(this.todos.done(), [this.todoTwo]);
+      });
+
+    // remaining
+      test('returns an array of the todos that are not done', function() {
+        expect( 1 );
+        this.todoTwo.done = true;
+        deepEqual(this.todos.remaining(), [this.todoOne]);
+      });
+
+    // clear
+      test('destroys the current todo from local storage', function() {
+        expect( 2 );
+        deepEqual(this.todos.models, [this.todoOne, this.todoTwo]);
+        this.todos.clear(this.todoOne);
+        deepEqual(this.todos.models, [this.todoTwo]);
+      });
+
+    // Order sets the order on todos ascending numerically
+      test('defaults to one when there arent any items in the collection', function() {
+        expect( 1 );
+        this.emptyTodos = new TodoApp.Collections.TodoList;
+        equal(this.emptyTodos.order(), 0);
+      });
+
+      test('Increments the order by one each time', function() {
+        expect( 2 );
+        equal(this.todos.order(this.todoOne), 1);
+        equal(this.todos.order(this.todoTwo), 2);
+      });
 ```
 
 
@@ -450,7 +452,7 @@ asyncTest('Can wire up view methods to DOM elements.', function() {
         start();
     }, 1000, 'Expected DOM Elt to exist');
 
-    // Trigget the view to toggle the 'done' status on an item or items
+    // Trigger the view to toggle the 'done' status on an item or items
     $('#todoList li input.check').click();
 
     // Check the done status for the model is true

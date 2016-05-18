@@ -1,6 +1,6 @@
 # Backbone Extensions
 
-Backbone is flexible, simple, and powerful. However, you may find that the complexity of the application you are working on requires more than what it provides out of the box. There are certain concerns which it just doesn't address directly as one of it's goals is to be minimalist. 
+Backbone is flexible, simple, and powerful. However, you may find that the complexity of the application you are working on requires more than what it provides out of the box. There are certain concerns which it just doesn't address directly as one of its goals is to be minimalist.
 
 Take for example Views, which provide a default `render` method which does nothing and produces no real results when called, despite most implementations using it to generate the HTML that the view manages. Also, Models and Collections have no built-in way of handling nested hierarchies - if you require this functionality, you need to write it yourself or use a plugin.
 
@@ -12,9 +12,9 @@ In this section of the book we will look at two popular Backbone add-ons: Marion
 
 *By Derick Bailey & Addy Osmani*
 
-As we've seen, Backbone provides a great set of building blocks for our JavaScript applications. It gives us the core constructs that are needed to build small to mid-sized apps, organize jQuery DOM events, or create single page apps that support mobile devices and large scale enterprise needs. But Backbone is not a complete framework. It's a set of building blocks that leaves much of the application design, architecture, and scalability to the developer, including memory management, view management, and more.
+As we've seen, Backbone provides a great set of building blocks for our JavaScript applications. It gives us the core constructs that are needed to build small to mid-sized apps, organize jQuery DOM events, or create single page apps that support mobile devices and large scale enterprise needs. But Backbone is not a complete framework, it's a library - a set of building blocks that leaves much of the application design, architecture, and scalability to the developer, including memory management, view management, and more.
 
-[MarionetteJS](http://marionettejs.com) (a.k.a Backbone.Marionette) provides many of the features that the non-trivial application developer needs, above what Backbone itself provides. It is a composite application library that aims to simplify the construction of large scale applications. It does this by providing a collection of common design and implementation patterns found in the applications that the creator, [Derick Bailey](http://lostechies.com/derickbailey/), and many other [contributors](https://github.com/marionettejs/backbone.marionette/graphs/contributors) have been using to build Backbone apps.
+[MarionetteJS](http://marionettejs.com) (a.k.a. Backbone.Marionette) provides many of the features that the non-trivial application developer needs, above what Backbone itself provides. It is a composite application library that aims to simplify the construction of large scale applications. It does this by providing a collection of common design and implementation patterns found in the applications that the creator, [Derick Bailey](http://lostechies.com/derickbailey/), and many other [contributors](https://github.com/marionettejs/backbone.marionette/graphs/contributors) have been using to build Backbone apps.
  
 
 Marionette's key benefits include:
@@ -63,13 +63,13 @@ Consider the code that it typically requires to render a view with Backbone and 
 var MyView = Backbone.View.extend({
   template: $('#my-view-template').html(),
 
-  render: function(){
+  render: function() {
 
     // compile the Underscore.js template
     var compiledTemplate = _.template(this.template);
 
     // render the template with the model data
-    var data = this.model.toJSON();
+    var data = _.clone(this.model.attributes);
     var html = compiledTemplate(data);
 
     // populate the view with the rendered html
@@ -81,6 +81,15 @@ var MyView = Backbone.View.extend({
 Once this is in place, you need to create an instance of your view and pass your model into it. Then you can take the view's `el` and append it to the DOM in order to display the view.
 
 ```javascript
+
+var Person = Backbone.Model.extend({
+  defaults: {
+    "firstName": "Jeremy",
+    "lastName": "Ashkenas",
+    "email":    "jeremy@example.com"
+  }
+});
+
 var Derick = new Person({
   firstName: 'Derick',
   lastName: 'Bailey',
@@ -89,11 +98,11 @@ var Derick = new Person({
 
 var myView = new MyView({
   model: Derick
-})
+});
 
+myView.setElement("#content");
 myView.render();
 
-$('#content').html(myView.el)
 ```
 
 This is a standard set up for defining, building, rendering, and displaying a view with Backbone. This is also what we call "boilerplate code" - code that is repeated over and over and over again, across every project and every implementation with the same functionality. It gets to be tedious and repetitious very quickly.
@@ -115,7 +124,7 @@ And that's it - that's all you need to get the exact same behaviour as the previ
 
 ### Memory Management
 
-In addition to the reduction of code needed to define a view, Marionette includes some advanced memory management in all of its views, making the job of cleaning up a view instance and it's event handlers easy.
+In addition to the reduction of code needed to define a view, Marionette includes some advanced memory management in all of its views, making the job of cleaning up a view instance and its event handlers easy.
 
 Consider the following view implementation:
 
@@ -123,14 +132,14 @@ Consider the following view implementation:
 var ZombieView = Backbone.View.extend({
   template: '#my-view-template',
 
-  initialize: function(){
+  initialize: function() {
 
     // bind the model change to re-render this view
-    this.model.on('change', this.render, this);
+    this.listenTo(this.model, 'change', this.render);
 
   },
 
-  render: function(){
+  render: function() {
 
     // This alert is going to demonstrate a problem
     alert('We`re rendering the view');
@@ -143,14 +152,6 @@ If we create two instances of this view using the same variable name for both in
 
 
 ```javascript
-
-var Person = Backbone.Model.extend({
-  defaults: {
-    "firstName": "Jeremy",
-    "lastName": "Ashkenas",
-    "email":    "jeremy@example.com"
-  }
-});
 
 var Derick = new Person({
   firstName: 'Derick',
@@ -187,17 +188,17 @@ Fixing this is easy, though. You just need to call `stopListening` when the view
 var ZombieView = Backbone.View.extend({
   template: '#my-view-template',
 
-  initialize: function(){
+  initialize: function() {
     // bind the model change to re-render this view
     this.listenTo(this.model, 'change', this.render);
   },
 
-  close: function(){
+  close: function() {
     // unbind the events that this view is listening to
     this.stopListening();
   },
 
-  render: function(){
+  render: function() {
 
     // This alert is going to demonstrate a problem
     alert('We`re rendering the view');
@@ -217,17 +218,17 @@ var Jeremy = new Person({
 
 // create the first view instance
 var zombieView = new ZombieView({
-  model: Person
+  model: Jeremy
 })
 zombieView.close(); // double-tap the zombie
 
 // create a second view instance, re-using
 // the same variable name to store it
 zombieView = new ZombieView({
-  model: Person
+  model: Jeremy
 })
 
-Person.set('email', 'jeremyashkenas@example.com');
+Jeremy.set('email', 'jeremyashkenas@example.com');
 ```
 
 Now we only see one alert box when this code runs. 
@@ -238,14 +239,14 @@ Rather than having to manually remove these event handlers, though, we can let M
 var ZombieView = Marionette.ItemView.extend({
   template: '#my-view-template',
 
-  initialize: function(){
+  initialize: function() {
 
     // bind the model change to re-render this view
     this.listenTo(this.model, 'change', this.render);
 
   },
 
-  render: function(){
+  render: function() {
 
     // This alert is going to demonstrate a problem
     alert('We`re rendering the view');
@@ -327,12 +328,12 @@ First, we define an application object representing our base TodoMVC app. This w
 var TodoMVC = new Backbone.Marionette.Application();
 
 TodoMVC.addRegions({
-  header : '#header',
-  main   : '#main',
-  footer : '#footer'
+  header: '#header',
+  main: '#main',
+  footer: '#footer'
 });
 
-TodoMVC.on('initialize:after', function(){
+TodoMVC.on('start', function() {
   Backbone.history.start();
 });
 ```
@@ -359,83 +360,99 @@ Note that Marionette modules (such as the below) offer a simple module system wh
 **TodoMVC.Layout.js:**
 
 ```javascript
-TodoMVC.module('Layout', function(Layout, App, Backbone, Marionette, $, _){
-
+TodoMVC.module('Layout', function(Layout, App, Backbone, Marionette, $, _) {
+  
   // Layout Header View
   // ------------------
 
-  Layout.Header = Marionette.ItemView.extend({
-    template : '#template-header',
+  Layout.Header = Backbone.Marionette.ItemView.extend({
+    template: '#template-header',
 
-    // UI bindings create cached attributes that
-    // point to jQuery selected objects
-    ui : {
-      input : '#new-todo'
+    // UI Bindings create cached attributes that
+    // point to jQuery selected objects.
+    ui: {
+      input: '#new-todo'
     },
 
-    events : {
-      'keypress #new-todo':   'onInputKeypress'
+    events: {
+      'keypress #new-todo': 'onInputKeypress',
+      'blur #new-todo': 'onTodoBlur'
     },
 
-    onInputKeypress : function(evt) {
+    onTodoBlur: function(){
+      var todoText = this.ui.input.val().trim();
+      this.createTodo(todoText);
+    },
+
+    onInputKeypress: function(e) {
       var ENTER_KEY = 13;
       var todoText = this.ui.input.val().trim();
 
-      if ( evt.which === ENTER_KEY && todoText ) {
-        this.collection.create({
-          title : todoText
-        });
-        this.ui.input.val('');
-      }
+      if ( e.which === ENTER_KEY && todoText ) {
+        this.createTodo(todoText);
+        }
+      },
+
+    completeAdd: function() {
+      this.ui.input.val('');
+    },
+
+    createTodo: function(todoText) {
+      if (todoText.trim() === ""){ return; }
+
+      this.collection.create({
+        title: todoText
+      });
+
+      this.completeAdd();
     }
   });
 
   // Layout Footer View
   // ------------------
-  
 
   Layout.Footer = Marionette.Layout.extend({
-    template : '#template-footer',
+    template: '#template-footer',
 
-    // UI bindings create cached attributes that
-    // point to jQuery selected objects
-    ui : {
-      count   : '#todo-count strong',
-      filters : '#filters a'
+    // UI Bindings create cached attributes that
+    // point to jQuery selected objects.
+    ui: {
+      todoCount: '#todo-count .count',
+      todoCountLabel: '#todo-count .label',
+      clearCount: '#clear-completed .count',
+      filters: "#filters a"
     },
 
-    events : {
-      'click #clear-completed' : 'onClearClick'
+    events: {
+      "click #clear-completed": "onClearClick"
     },
 
-    initialize : function() {
-      this.listenTo(App.vent, 'todoList:filter', this.updateFilterSelection);
-      this.listenTo(this.collection, 'all', this.updateCount);
+    initialize: function() {
+      this.bindTo( App.vent, "todoList: filter", this.updateFilterSelection, this );
+      this.bindTo( this.collection, 'all', this.updateCount, this );
     },
 
-    onRender : function() {
+    onRender: function() {
       this.updateCount();
     },
 
-    updateCount : function() {
-      var count = this.collection.getActive().length;
-      this.ui.count.html(count);
+    updateCount: function() {
+      var activeCount = this.collection.getActive().length,
+      completedCount = this.collection.getCompleted().length;
+      this.ui.todoCount.html(activeCount);
 
-      if (count === 0) {
-        this.$el.parent().hide();
-      } else {
-        this.$el.parent().show();
-      }
+      this.ui.todoCountLabel.html(activeCount === 1 ? 'item' : 'items');
+      this.ui.clearCount.html(completedCount === 0 ? '' : '(' + completedCount + ')');
     },
 
-    updateFilterSelection : function(filter) {
+    updateFilterSelection: function( filter ) {
       this.ui.filters
         .removeClass('selected')
-        .filter('[href="#' + filter + '"]')
-        .addClass('selected');
+        .filter( '[href="#' + filter + '"]')
+        .addClass( 'selected' );
     },
 
-    onClearClick : function() {
+    onClearClick: function() {
       var completed = this.collection.getCompleted();
       completed.forEach(function destroy(todo) {
         todo.destroy();
@@ -453,11 +470,11 @@ Recall how Backbone routes trigger methods within the Router as shown below in o
 
 ```javascript
   var Workspace = Backbone.Router.extend({
-    routes:{
+    routes: {
       '*filter': 'setFilter'
     },
 
-    setFilter: function( param ) {
+    setFilter: function(param) {
       // Set the current filter to be used
       window.app.TodoFilter = param.trim() || '';
 
@@ -476,7 +493,7 @@ The TodoList Controller, also found in this next code block, handles some of the
 **TodoMVC.TodoList.js:**
 
 ```javascript
-TodoMVC.module('TodoList', function(TodoList, App, Backbone, Marionette, $, _){
+TodoMVC.module('TodoList', function(TodoList, App, Backbone, Marionette, $, _) {
 
   // TodoList Router
   // ---------------
@@ -484,7 +501,7 @@ TodoMVC.module('TodoList', function(TodoList, App, Backbone, Marionette, $, _){
   // Handle routes to show the active vs complete todo items
 
   TodoList.Router = Marionette.AppRouter.extend({
-    appRoutes : {
+    appRoutes: {
       '*filter': 'filterItems'
     }
   });
@@ -495,7 +512,7 @@ TodoMVC.module('TodoList', function(TodoList, App, Backbone, Marionette, $, _){
   // Control the workflow and logic that exists at the application
   // level, above the implementation detail of views and models
   
-  TodoList.Controller = function(){
+  TodoList.Controller = function() {
     this.todoList = new App.Todos.TodoList();
   };
 
@@ -503,36 +520,41 @@ TodoMVC.module('TodoList', function(TodoList, App, Backbone, Marionette, $, _){
 
     // Start the app by showing the appropriate views
     // and fetching the list of todo items, if there are any
-    start: function(){
+    start: function() {
       this.showHeader(this.todoList);
       this.showFooter(this.todoList);
       this.showTodoList(this.todoList);
-
+      
+  App.bindTo(this.todoList, 'reset add remove', this.toggleFooter, this);
       this.todoList.fetch();
     },
 
-    showHeader: function(todoList){
+    showHeader: function(todoList) {
       var header = new App.Layout.Header({
         collection: todoList
       });
       App.header.show(header);
     },
 
-    showFooter: function(todoList){
+    showFooter: function(todoList) {
       var footer = new App.Layout.Footer({
         collection: todoList
       });
       App.footer.show(footer);
     },
 
-    showTodoList: function(todoList){
+    showTodoList: function(todoList) {
       App.main.show(new TodoList.Views.ListView({
-        collection : todoList
+        collection: todoList
       }));
+    },
+    
+    toggleFooter: function() {
+      App.footer.$el.toggle(this.todoList.length);
     },
 
     // Set the filter to show complete or all items
-    filterItems: function(filter){
+    filterItems: function(filter) {
       App.vent.trigger('todoList:filter', filter.trim() || '');
     }
   });
@@ -544,7 +566,7 @@ TodoMVC.module('TodoList', function(TodoList, App, Backbone, Marionette, $, _){
   // when the the application is started, pulling in all of the
   // existing Todo items and displaying them.
   
-  TodoList.addInitializer(function(){
+  TodoList.addInitializer(function() {
 
     var controller = new TodoList.Controller();
     new TodoList.Router({
@@ -580,13 +602,13 @@ Our next task is defining the actual views for individual Todo items and lists o
 
 Think of these views as being a hierarchy of parent-child models, and recursive by default. The same CompositeView type will be used to render each item in a collection that is handled by the composite view. For non-recursive hierarchies, we are able to override the item view by defining an `itemView` attribute.
 
-For our Todo List Item View, we define it as an ItemView, then our Todo List View is a CompositeView where we override the `itemView` setting and tell it to use the Todo List item View for each item in the collection.
+For our Todo List Item View, we define it as an ItemView, then our Todo List View is a CompositeView where we override the `itemView` setting and tell it to use the Todo List Item View for each item in the collection.
 
 
 TodoMVC.TodoList.Views.js
 
 ```javascript
-TodoMVC.module('TodoList.Views', function(Views, App, Backbone, Marionette, $, _){
+TodoMVC.module('TodoList.Views', function(Views, App, Backbone, Marionette, $, _) {
 
   // Todo List Item View
   // -------------------
@@ -595,51 +617,78 @@ TodoMVC.module('TodoList.Views', function(Views, App, Backbone, Marionette, $, _
   // that are made to the item, including marking completed.
 
   Views.ItemView = Marionette.ItemView.extend({
-      tagName : 'li',
-      template : '#template-todoItemView',
+      tagName: 'li',
+      template: '#template-todoItemView',
 
-      ui : {
-        edit : '.edit'
+      ui: {
+        edit: '.edit'
       },
 
-      events : {
-        'click .destroy' : 'destroy',
-        'dblclick label' : 'onEditClick',
-        'keypress .edit' : 'onEditKeypress',
-        'click .toggle'  : 'toggle'
+      events: {
+        'click .destroy': 'destroy',
+        'dblclick label': 'onEditClick',
+        'keypress .edit': 'onEditKeypress',
+        'blur .edit'    : 'onEditBlur',
+        'click .toggle' : 'toggle'
       },
 
-      initialize : function() {
-        this.listenTo(this.model, 'change', this.render);
+      initialize: function() {
+        this.bindTo(this.model, 'change', this.render, this);
       },
 
-      onRender : function() {
-        this.$el.removeClass('active completed');
-        if (this.model.get('completed')) this.$el.addClass('completed');
-        else this.$el.addClass('active');
+      onRender: function() {
+        this.$el.removeClass( 'active completed' );
+      
+        if ( this.model.get( 'completed' )) {
+          this.$el.addClass( 'completed' );
+        } else { 
+          this.$el.addClass( 'active' );
+        }
       },
 
-      destroy : function() {
+      destroy: function() {
         this.model.destroy();
       },
 
-      toggle  : function() {
+      toggle: function() {
         this.model.toggle().save();
       },
 
-      onEditClick : function() {
+      onEditClick: function() {
         this.$el.addClass('editing');
         this.ui.edit.focus();
       },
+      
+      updateTodo : function() {
+        var todoText = this.ui.edit.val();
+        if (todoText === '') {
+          return this.destroy();
+        }
+        this.setTodoText(todoText);
+        this.completeEdit();
+      },
 
-      onEditKeypress : function(evt) {
+      onEditBlur: function(e){
+        this.updateTodo();
+      },
+
+      onEditKeypress: function(e) {
         var ENTER_KEY = 13;
         var todoText = this.ui.edit.val().trim();
 
-        if ( evt.which === ENTER_KEY && todoText ) {
+        if ( e.which === ENTER_KEY && todoText ) {
           this.model.set('title', todoText).save();
           this.$el.removeClass('editing');
         }
+      },
+      
+      setTodoText: function(todoText){
+        if (todoText.trim() === ""){ return; }
+        this.model.set('title', todoText).save();
+      },
+
+      completeEdit: function(){
+        this.$el.removeClass('editing');
       }
   });
 
@@ -649,42 +698,40 @@ TodoMVC.module('TodoList.Views', function(Views, App, Backbone, Marionette, $, _
   // Controls the rendering of the list of items, including the
   // filtering of active vs completed items for display.
 
-  Views.ListView = Marionette.CompositeView.extend({
-      template : '#template-todoListCompositeView',
-      itemView : Views.ItemView,
-      itemViewContainer : '#todo-list',
+  Views.ListView = Backbone.Marionette.CompositeView.extend({
+      template: '#template-todoListCompositeView',
+      childView: Views.ItemView,
+      childViewContainer: '#todo-list',
 
-      ui : {
-        toggle : '#toggle-all'
+      ui: {
+        toggle: '#toggle-all'
       },
 
-      events : {
-        'click #toggle-all' : 'onToggleAllClick'
+      events: {
+        'click #toggle-all': 'onToggleAllClick'
       },
 
-      initialize : function() {
-        this.listenTo(this.collection, 'all', this.update);
+      initialize: function() {
+        this.bindTo(this.collection, 'all', this.update, this);
       },
 
-      onRender : function() {
+      onRender: function() {
         this.update();
       },
 
-      update : function() {
-        function reduceCompleted(left, right) { return left && right.get('completed'); }
+      update: function() {
+        function reduceCompleted(left, right) { 
+          return left && right.get('completed'); 
+        }
+        
         var allCompleted = this.collection.reduce(reduceCompleted,true);
         this.ui.toggle.prop('checked', allCompleted);
-
-        if (this.collection.length === 0) {
-          this.$el.parent().hide();
-        } else {
-          this.$el.parent().show();
-        }
+        this.$el.parent().toggle(!!this.collection.length);
       },
 
-      onToggleAllClick : function(evt) {
-        var isChecked = evt.currentTarget.checked;
-        this.collection.each(function(todo){
+      onToggleAllClick: function(e) {
+        var isChecked = e.currentTarget.checked;
+        this.collection.each(function(todo) {
           todo.save({'completed': isChecked});
         });
       }
@@ -709,28 +756,35 @@ At the end of the last code block, you will also notice an event handler using `
 
 Finally, we define the model and collection for representing our Todo items. These are semantically not very different from the original versions we used in our first exercise and have been re-written to better fit in with Derick's preferred style of coding.
 
-**Todos.js:**
+**TodoMVC.Todos.js:**
 
 ```javascript
-TodoMVC.module('Todos', function(Todos, App, Backbone, Marionette, $, _){
+TodoMVC.module('Todos', function(Todos, App, Backbone, Marionette, $, _) {
+
+  // Local Variables
+  // ---------------
+
+  var localStorageKey = 'todos-backbone-marionettejs';
 
   // Todo Model
   // ----------
   
   Todos.Todo = Backbone.Model.extend({
-    localStorage: new Backbone.LocalStorage('todos-backbone'),
+    localStorage: new Backbone.LocalStorage(localStorageKey),
 
     defaults: {
-      title     : '',
-      completed : false,
-      created   : 0
+      title: '',
+      completed: false,
+      created: 0
     },
 
-    initialize : function() {
-      if (this.isNew()) this.set('created', Date.now());
+    initialize: function() {
+      if (this.isNew()) {
+        this.set('created', Date.now());
+      }
     },
 
-    toggle  : function() {
+    toggle: function() {
       return this.set('completed', !this.isCompleted());
     },
 
@@ -745,7 +799,7 @@ TodoMVC.module('Todos', function(Todos, App, Backbone, Marionette, $, _){
   Todos.TodoList = Backbone.Collection.extend({
     model: Todos.Todo,
 
-    localStorage: new Backbone.LocalStorage('todos-backbone'),
+    localStorage: new Backbone.LocalStorage(localStorageKey),
 
     getCompleted: function() {
       return this.filter(this._isCompleted);
@@ -755,11 +809,11 @@ TodoMVC.module('Todos', function(Todos, App, Backbone, Marionette, $, _){
       return this.reject(this._isCompleted);
     },
 
-    comparator: function( todo ) {
+    comparator: function(todo) {
       return todo.get('created');
     },
 
-    _isCompleted: function(todo){
+    _isCompleted: function(todo) {
       return todo.isCompleted();
     }
   });
@@ -773,7 +827,7 @@ We finally kick-start everything off in our application index file, by calling `
 Initialization:
 
 ```javascript
-      $(function(){
+      $(function() {
         // Start the TodoMVC app (defined in js/TodoMVC.js)
         TodoMVC.start();
       });
@@ -924,10 +978,10 @@ A simple example would be an `on` helper that re-rendered the generated `HelperV
         });
     });
 
-An example use of this would be to have a counter that would increment each time a button was clicked. This example makes use of the `button` helper in Thorax which simply makes a button that calls a method when clicked:
+An example use of this would be to have a counter that would increment each time a button was clicked. This example makes use of the `button` helper in Thorax which simply makes a button that triggers a view event when clicked:
 
 ```handlebars
-    {{#on "incremented"}}{{i}}{/on}}
+    {{#on "incremented"}}{{i}}{{/on}}
     {{#button trigger="incremented"}}Add{{/button}}
 ```
 
@@ -1082,7 +1136,7 @@ A common anti-pattern in Backbone applications is to assign a `className` to a s
 
 ### Thorax Resources
 
-No Backbone related tutorial would be complete without a todo application. A [Thorax implementation of TodoMVC](http://todomvc.com/labs/architecture-examples/thorax/) is available, in addition to this far simpler example composed of this single Handlebars template:
+No Backbone related tutorial would be complete without a todo application. A [Thorax implementation of TodoMVC](http://todomvc.com/examples/thorax/) is available, in addition to this far simpler example composed of this single Handlebars template:
 
 
 ```handlebars

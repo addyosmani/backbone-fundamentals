@@ -20,7 +20,7 @@ var Keywords = new mongoose.Schema({
 var Book = new mongoose.Schema({
 	title: String,
 	author: String,
-	releaseDate: Date,
+	releaseDate: String,
 	keywords: [ Keywords ]
 });
 
@@ -86,8 +86,8 @@ app.post( '/api/books', function( request, response ) {
 		} else {
 			return console.log( err );
 		}
+		return response.send( book );
 	});
-	return response.send( book );
 });
 
 //Update a book

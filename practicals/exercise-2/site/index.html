@@ -24,7 +24,7 @@
 			<ul>
 				<li><%= title %></li>
 				<li><%= author %></li>
-				<li><%= $.format.date( new Date( releaseDate ), 'MMMM yyyy' ) %></li>
+				<li><%= isNaN(releaseDate) ? releaseDate : $.format.date(new Date(Number(releaseDate)), 'MMMM yyyy') %></li>
 				<li><% _.each( keywords, function( keyobj ) {%> <%= keyobj.keyword %><% } ); %></li>
 			</ul>
 

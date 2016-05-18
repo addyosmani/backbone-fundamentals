@@ -123,7 +123,7 @@ var TodoView = Backbone.View.extend({
     // a one-to-one correspondence between a **Todo** and a **TodoView** in this
     // app, we set a direct reference on the model for convenience.
     initialize: function() {
-      this.model.on('change', this.render, this);
+      this.listenTo(this.model, 'change', this.render);
       this.model.view = this;
     },
     ...
@@ -179,13 +179,13 @@ define([
     // a one-to-one correspondence between a **Todo** and a **TodoView** in this
     // app, we set a direct reference on the model for convenience.
     initialize: function() {
-      this.model.on('change', this.render, this);
+      this.listenTo(this.model, 'change', this.render);
       this.model.view = this;
     },
 
     // Re-render the contents of the todo item.
     render: function() {
-      this.$el.html(this.template(this.model.toJSON()));
+      this.$el.html(this.template(this.model.attributes));
       this.setContent();
       return this;
     },
@@ -474,7 +474,7 @@ For more than trivial views, DocumentCloud have a home-built asset packager call
 
 Jammit expects your JavaScript templates (JST) to live alongside any ERB templates you're using in the form of .jst files. It packages the templates into a global JST object which can be used to render templates into strings. Making Jammit aware of your templates is straight-forward - just add an entry for something like `views/**/*.jst` to your app package in assets.yml.
 
-To provide Jammit dependencies you simply write out an assets.yml file that either listed the dependencies in order or used a combination of free capture directories (for example: /**/*.js, templates/*.js, and specific files). 
+To provide Jammit dependencies you simply write out an assets.yml file that either listed the dependencies in order or used a combination of free capture directories (for example: `/**/*.js`, `templates/*.js`, and specific files). 
 
 A template using Jammit can derive it's data from the collection object that is passed to it:
 

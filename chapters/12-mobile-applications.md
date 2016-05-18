@@ -276,7 +276,7 @@ define([
                 return "Edit Todo";
             },
             getSpecificTemplateValues : function () {
-                return this.model.toJSON();
+                return _.clone(this.model.attributes);
             },
             events : function () {
                 // merged events of BasicView, to add an older fix for back button functionality
@@ -391,7 +391,7 @@ Next, `BasicView` collects all template parameters from the concrete View implem
 Additionally, the `data-role` will be set on the jQuery Mobile page. Commonly used attribute values are
 page, dialog, or popup.
 
-As you can see, (starting at line 74), the `goBackInHistory` function contains a manual implementation to handle the back button's action. In certain scenarios, the back button navigation functionality of jQuery Mobile was not working with older versions and disabled jQMobile's navigation sytem.
+As you can see, (starting at line 74), the `goBackInHistory` function contains a manual implementation to handle the back button's action. In certain scenarios, the back button navigation functionality of jQuery Mobile was not working with older versions and disabled jQMobile's navigation system.
 
 
 ```javascript
@@ -580,7 +580,7 @@ In special situations you will need to take action on a triggered jQuery Mobile 
 
 ```javascript
 $('#myPage').live('pagebeforecreate', function(event){
-         console.log(page was inserted into the DOM');
+         console.log('page was inserted into the DOM');
    	//run your own enhancement scripting here...
           // prevent the page plugin from making its manipulations
   	return false;

@@ -1,6 +1,6 @@
 # Backbone Boilerplate And Grunt-BBB
 
-Boilerplates provide us a starting point for working on projects. They're a base for building upon using the minimum required code to get something functional put together. When you're working on a new Backbone application, a new Model typically only takes a few lines of code to get working. 
+Boilerplates provide us a starting point for working on projects. They're a base for building upon using the minimum required code to get something functional put together. When you're working on a new Backbone application, a new Model typically only takes a few lines of code to get working.
 
 That alone probably isn't enough however, as you'll need a Collection to group those models, a View to render them and perhaps a router if you're looking to making specific views of your Collection data bookmarkable. If you're starting on a completely fresh project, you may also need a build process in place to produce an optimized version of your app that can be pushed to production.
 
@@ -12,7 +12,7 @@ This is where boilerplate solutions are useful. Rather than having to manually w
 
 ![](img/bbb.png)
 
-Out of the box, BB and Grunt-BBB provide provide us with:
+Out of the box, BB and Grunt-BBB provide us with:
 
 * Backbone, [Lodash](https://github.com/bestiejs/lodash) (an [Underscore.js](http://underscorejs.org/) alternative) and [jQuery](http://jquery.com) with an [HTML5 Boilerplate](http://html5boilerplate.com) foundation
 * Boilerplate and scaffolding support, allowing us to spend minimal time writing boilerplate for modules, collections and so on.
@@ -29,9 +29,9 @@ Notes on build tool steps:
 
 ### Backbone Boilerplate and Grunt-BBB
 
-To get started we're going to install Grunt-BBB, which will include Backbone Boilerplate and any third-party dependencies it might need such as the Grunt build tool. 
+To get started we're going to install Grunt-BBB, which will include Backbone Boilerplate and any third-party dependencies it might need such as the Grunt build tool.
 
-We can install Grunt-bBB via NPM by running:
+We can install Grunt-BBB via NPM by running:
 
 ```shell
 npm install -g bbb
@@ -172,7 +172,7 @@ require.config({
 });
 ```
 
-The first option defined in the above config is `deps: ["../vendor/jam/require.config", "main"]`. This informs RequireJS to load up additonal RequireJS configuration as well a a main.js file, which is considered the entry point for our application.
+The first option defined in the above config is `deps: ["../vendor/jam/require.config", "main"]`. This informs RequireJS to load up additional RequireJS configuration as well a a main.js file, which is considered the entry point for our application.
 
  You may notice that we haven't specified any other path information for `main`. Require will infer the default `baseUrl` using the path from our `data-main` attribute in index.html. In other words, our `baseUrl` is `app/` and any scripts we require will be loaded relative to this location. We could use the `baseUrl` option to override this default if we wanted to use a different location.
 
@@ -180,7 +180,7 @@ The next block is `paths`, which we can use to specify paths relative to the `ba
 
 After this comes `shim`, an important part of our RequireJS configuration which allows us to load libraries which are not AMD compliant. The basic idea here is that rather than requiring all libraries to implement support for AMD, the `shim` takes care of the hard work for us.
 
-Going back to `deps`, the contents of our `require.config` file can be seen below. 
+Going back to `deps`, the contents of our `require.config` file can be seen below.
 
 ```javascript
 var jam = {
@@ -228,9 +228,9 @@ var jam = {
 
 ```
 
-The `jam` object is to support configuration of [Jam](http://jamjs.org/) - a package manager for the front-end which helps instal, upgrade and configurate the dependencies used by your project. It is currently the package manager of choice for Backbone Boilerplate.
+The `jam` object is to support configuration of [Jam](http://jamjs.org/) - a package manager for the front-end which helps install, upgrade and configure the dependencies used by your project. It is currently the package manager of choice for Backbone Boilerplate.
 
-Under the `packages` array, a number of dependencies are specified for inclusion, such as Backbone, the Backbone.LayoutManager plugin, jQuery and Lo-dash. 
+Under the `packages` array, a number of dependencies are specified for inclusion, such as Backbone, the Backbone.LayoutManager plugin, jQuery and Lo-dash.
 
 For those curious about [Backbone.LayoutManager](https://github.com/tbranyen/backbone.layoutmanager), it's a Backbone plugin that provides a foundation for assembling layouts and views within Backbone.
 
@@ -364,7 +364,7 @@ define([
         el: "#main"
       }, options));
 
-      // Cache the refererence.
+      // Cache the reference.
       return this.layout = layout;
     }
   }, Backbone.Events);
@@ -392,7 +392,7 @@ $ bbb init:module
 # Grunt prompt
 Please answer the following:
 [?] Module Name foo
-[?] Do you need to make any changes to the above before continuing? (y/N) 
+[?] Do you need to make any changes to the above before continuing? (y/N)
 
 Writing app/modules/foo.js...OK
 Writing app/styles/foo.styl...OK
@@ -420,7 +420,7 @@ function(app) {
 
   // Default Model.
   Foo.Model = Backbone.Model.extend({
-  
+
   });
 
   // Default Collection.
@@ -453,7 +453,7 @@ define([
 ],
 
 // Map dependencies from above array.
-function(app) {
+function(app, Store) {
 
   // Create a new module.
   var Foo = app.module();
@@ -559,9 +559,9 @@ If you appreciated Grunt-BBB but would like to explore a tool for assisting with
 
 ![](img/yeoman.png)
 
-Yeoman is a workflow comprised of a collection of tools and best practices for helping you develop more efficiently. It's comprised of yo (a scaffolding tool), [Grunt](http://gruntjs.com)(a build tool) and [Bower](http://bower.io) (a client-side package manager). 
+Yeoman is a workflow comprised of a collection of tools and best practices for helping you develop more efficiently. It's comprised of yo (a scaffolding tool), [Grunt](http://gruntjs.com)(a build tool) and [Bower](http://bower.io) (a client-side package manager).
 
-Where Grunt-BBB focuses on offering an opionated start for Backbone projects, Yeoman allows you to scaffold apps using Backbone (or other frameworks), get Backbone plugins directly from the command-line and compile your CoffeeScript, Sass or other abstractions without additional effort.
+Where Grunt-BBB focuses on offering an opionated start for Backbone projects, Yeoman allows you to scaffold apps using Backbone (or other libraries and frameworks), get Backbone plugins directly from the command-line and compile your CoffeeScript, Sass or other abstractions without additional effort.
 
 ![](img/bower.png)
 
@@ -571,7 +571,7 @@ You may also be interested in [Brunch](http://brunch.io/), a similar project whi
 
 When building an application with Backbone, there's some additional tooling available for your day-to-day debugging workflow.
 
-Backbone DevTools was created to help with this and is a Chrome DevTools extension allowing you to inspect events, syncs, View-DOM bindings and what objects have been instantiated. 
+Backbone DevTools was created to help with this and is a Chrome DevTools extension allowing you to inspect events, syncs, View-DOM bindings and what objects have been instantiated.
 
 A useful View hierarchy is displayed in the Elements panel. Also, when you inspect a DOM element the closest View will be exposed via $view in the console.
 

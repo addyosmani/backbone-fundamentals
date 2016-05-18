@@ -147,9 +147,9 @@ This example of the first kind of test shows how to fake an AJAX request and ver
 ```javascript
 it('the callback should be executed on success', function () {
 
-    // `andCallFake()` calls a passed function when a spy
+    // `.and.callFake()` calls a passed function when a spy
     // has been called
-    spyOn($, 'ajax').andCallFake(function(options) {
+    spyOn($, 'ajax').and.callFake(function(options) {
         options.success();
     });
 
@@ -162,7 +162,7 @@ it('the callback should be executed on success', function () {
 
     // Verify that the URL of the most recent call
     // matches our expected Todo item.
-    expect($.ajax.mostRecentCall.args[0]['url']).toEqual('/todos/15');
+    expect($.ajax.calls.mostRecent().args[0]['url']).toEqual('/todos/15');
 
     // `expect(x).toHaveBeenCalled()` will pass if `x` is a
     // spy and was called.
@@ -172,7 +172,7 @@ it('the callback should be executed on success', function () {
 function getTodo(id, callback) {
     $.ajax({
         type: 'GET',
-        url: '/todos/'' + id,
+        url: '/todos/' + id,
         dataType: 'json',
         success: callback
     });
@@ -359,7 +359,7 @@ describe("Todo tests", function(){
 
 In the previous section you may have noticed that we initially declared ```this.todo``` within the scope of our ```beforeEach()``` call and were then able to continue using this reference in ```afterEach()```. 
 
-This is again down to shared function scope, which allows such declaractions to be common to all blocks (including ```runs()```). 
+This is again down to shared function scope, which allows such declarations to be common to all blocks (including ```runs()```). 
 
 Variables declared outside of the shared scope (i.e within the local scope `var todo=...`) will however not be shared.
 
@@ -367,7 +367,7 @@ Variables declared outside of the shared scope (i.e within the local scope `var 
 
 Now that we've reviewed some fundamentals, let's go through downloading Jasmine and getting everything set up to write tests.
 
-A standalone release of Jasmine can be [downloaded](https://github.com/pivotal/jasmine/downloads) from the official release page.
+A standalone release of Jasmine can be [downloaded](https://github.com/pivotal/jasmine/releases/) from the official release page.
 
 You'll need a file called SpecRunner.html in addition to the release. It can be downloaded from https://github.com/pivotal/jasmine/tree/master/lib/jasmine-core/example or as part of a download of the complete Jasmine [repo](https://github.com/pivotal/jasmine/zipball/master). Alternatively, you can ```git clone``` the main Jasmine repository from https://github.com/pivotal/jasmine.git.
 
@@ -629,7 +629,7 @@ expect($('#some-fixture')).to<the rest of your matcher would go here>
 
 The jasmine-jquery plugin loads fixtures from a directory named spec/javascripts/fixtures by default. If you wish to configure this path you can do so by initially setting ```jasmine.getFixtures().fixturesPath = 'your custom path'```.
 
-Finally, jasmine-jquery includes support for spying on jQuery events without the need for any extra plumbing work. This can be done using the ```spyOnEvent()``` and ```assert(eventName).toHaveBeenTriggered(selector)``` functions. For example:
+Finally, jasmine-jquery includes support for spying on jQuery events without the need for any extra plumbing work. This can be done using the ```spyOnEvent()``` and ```expect(eventName).toHaveBeenTriggeredOn(selector)``` functions. For example:
 
 ```javascript
 spyOnEvent($('#el'), 'click');
@@ -671,7 +671,7 @@ Backbone views typically create empty DOM elements once initialized, however the
 ```javascript
 it('Should be tied to a DOM element when created, based off the property provided.', function() {
     //what html element tag name represents this view?
-    expect(todoView.el.tagName.toLowerCase()).toBe('li');
+    expect(this.todoView.el.tagName.toLowerCase()).toBe('li');
 });
 ```
 
@@ -686,8 +686,8 @@ var todoView = Backbone.View.extend({
 If instead of testing against the ```tagName``` you would prefer to use a className instead, we can take advantage of jasmine-jquery's ```toHaveClass()``` matcher:
 
 ```
-it('Should have a class of "todos"'), function(){
-   expect(this.view.$el).toHaveClass('todos');
+it('Should have a class of "todos"', function(){
+   expect(this.todoView.$el).toHaveClass('todos');
 });
 ```
 
@@ -698,10 +698,10 @@ You may have noticed that in ```beforeEach()```, we passed our view an initial (
 ```javascript
 it('Is backed by a model instance, which provides the data.', function() {
 
-    expect(todoView.model).toBeDefined();
+    expect(this.todoView.model).toBeDefined();
 
     // what's the value for Todo.get('done') here?
-    expect(todoView.model.get('done')).toBe(false); //or toBeFalsy()
+    expect(this.todoView.model.get('done')).toBe(false); //or toBeFalsy()
 });
 ```
 
@@ -866,7 +866,7 @@ render: function() {
 ```
 
 
-However, this can get unwieldily fairly quickly. As the level of complexity and logic in our templates increase, so do the challenges associated with testing them. We can ease this process by taking advantage of modern templating libraries, many of which have already been demonstrated to work well with testing solutions such as Jasmine. 
+However, this can get unwieldy fairly quickly. As the level of complexity and logic in our templates increase, so do the challenges associated with testing them. We can ease this process by taking advantage of modern templating libraries, many of which have already been demonstrated to work well with testing solutions such as Jasmine.
 
 JavaScript templating systems (such as [Handlebars](http://handlebarsjs.com/), [Mustache](http://mustache.github.com/), and Underscore's own [micro-templating](http://underscorejs.org/#template)) support conditional logic in template strings. What this effectively means is that we can add if/else/ternery expressions inline which can then be evaluated as needed, allowing us to build even more powerful templates.
 
@@ -902,7 +902,7 @@ var TodoView = Backbone.View.extend({
   },
 
   render: function() {
-    this.$el.html(this.template(this.model.toJSON()));
+    this.$el.html(this.template(this.model.attributes));
     return this;
   },
 

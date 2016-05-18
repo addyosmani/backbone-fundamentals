@@ -35,7 +35,7 @@ For Chrome, you can open up the DevTools via the Chrome menu in the top right ha
 
 ![](img/devtools.png)
 
-Next, switch to the Console tab, from where you can enter in and run any piece of JavaScript code by hitting the return key. You can also use the Console as a multi-line editor using the Shift + Enter shortcut on Windows, or Ctrl + Enter shortcut on Mac to move from the end of one line to the start of another.
+Next, switch to the Console tab, from where you can enter in and run any piece of JavaScript code by hitting the return key. You can also use the Console as a multi-line editor using the Shift + Enter shortcut on Windows/Linux, or Ctrl + Enter shortcut on Mac to move from the end of one line to the start of another.
  
 
 ## Models
@@ -208,16 +208,21 @@ Models expose an `.attributes` attribute which represents an internal hash conta
 
 Setting values through the `.attributes` attribute on a model bypasses triggers bound to the model.
 
-Passing `{silent:true}` on change doesn't delay individual `"change:attr"` events. Instead they are silenced entirely:
+Passing `{silent:true}` on set doesn't delay individual `"change:attr"` events. Instead they are silenced entirely:
 
 ```javascript
 var Person = new Backbone.Model();
-Person.set({name: 'Jeremy'}, {silent: true});
+Person.on("change:name", function() { console.log('Name changed'); });
+Person.set({name: 'Andrew'});
+// log entry: Name changed
 
-console.log(!Person.hasChanged(0));
-// true
-console.log(!Person.hasChanged(''));
-// true
+Person.set({name: 'Jeremy'}, {silent: true});
+// no log entry
+
+console.log(Person.hasChanged("name"));
+// true: change was recorded
+console.log(Person.hasChanged(null));
+// true: something (anything) has changed
 ```
 
 Remember where possible it is best practice to use `Model.set()`, or direct instantiation as explained earlier.
@@ -334,7 +339,7 @@ Validation functions can be as simple or complex as necessary. If the attributes
 
 Should an error be returned:
 
-* An `invalid` event will triggered, setting the `validationError` property on the model with the value which is returned by this method. 
+* An `invalid` event will be triggered, setting the `validationError` property on the model with the value which is returned by this method. 
 * `.save()` will not continue and the attributes of the model will not be modified on the server.
 
 A more complete validation example can be seen below:
@@ -345,8 +350,8 @@ var Todo = Backbone.Model.extend({
     completed: false
   },
 
-  validate: function(attribs){
-    if(attribs.title === undefined){
+  validate: function(attributes){
+    if(attributes.title === undefined){
         return "Remember to set a title for your todo.";
     }
   },
@@ -366,8 +371,14 @@ console.log('completed: ' + myTodo.get('completed')); // completed: false
 
 **Note**: the `attributes` object passed to the `validate` function represents what the attributes would be after completing the current `set()` or `save()`. This object is distinct from the current attributes of the model and from the parameters passed to the operation. Since it is created by shallow copy, it is not possible to change any Number, String, or Boolean attribute of the input within the function, but it *is* possible to change attributes in nested objects.
 
-An example of this (by @fivetanley) is available [here](http://jsfiddle.net/2NdDY/7/).
+An example of this (by @fivetanley) is available [here](http://jsfiddle.net/2NdDY/270/).
 
+Note also, that validation on initialization is possible but of limited use, as the object being constructed is internally marked invalid but nevertheless passed back to the caller (continuing the above example):
+
+```javascript
+var emptyTodo = new Todo(null, {validate: true});
+console.log(emptyTodo.validationError);
+```
 
 ## Views
 
@@ -392,9 +403,15 @@ var TodoView = Backbone.View.extend({
     'blur .edit':   'close'
   },
 
-  // Re-render the titles of the todo item.
+  initialize: function (options) {
+    // In Backbone 1.1.0, if you want to access passed options in
+    // your view, you will need to save them as follows:
+    this.options = options || {};
+  },
+
+  // Re-render the title of the todo item.
   render: function() {
-    this.$el.html( this.todoTpl( this.model.toJSON() ) );
+    this.$el.html( this.todoTpl( this.model.attributes ) );
     this.input = this.$('.edit');
     return this;
   },
@@ -427,15 +444,16 @@ The central property of a view is `el` (the value logged in the last statement o
 
 There are two ways to associate a DOM element with a view: a new element can be created for the view and subsequently added to the DOM or a reference can be made to an element which already exists in the page.
 
-If you want to create a new element for your view, set any combination of the following properties on the view: `tagName`, `id`, and `className`. A new element will be created for you by the framework and a reference to it will be available at the `el` property. If nothing is specified `tagName` defaults to `div`.
+If you want to create a new element for your view, set any combination of the following properties on the view: `tagName`, `id`, and `className`. A new element will be created for you by the library and a reference to it will be available at the `el` property. If nothing is specified `tagName` defaults to `div`.
 
 In the example above, `tagName` is set to 'li', resulting in creation of an li element. The following example creates a ul element with id and class attributes:
 
 ```javascript
 var TodosView = Backbone.View.extend({
   tagName: 'ul', // required, but defaults to 'div' if not set
-  className: 'container', // optional, you can assign multiple classes to this property like so: 'container homepage'
-  id: 'todos', // optional
+  className: 'container', // optional, you can assign multiple classes to 
+                          // this property like so: 'container homepage'
+  id: 'todos' // optional
 });
 
 var todosView = new TodosView();
@@ -464,7 +482,7 @@ Note: When declaring a View, `options`, `el`, `tagName`, `id` and `className` ma
 
 **$el and $()**
 
-View logic often needs to invoke jQuery or Zepto functions on the `el` element and elements nested within it. Backbone makes it easy to do so by defining the `$el` property and `$()` function. The `view.$el` property is equivalent to `$(view.el)` and `view.$(selector)` is equivalent to `$(view.el).find(selector)`. In our TodosView example's render method, we see `this.$el` used to set the HTML of the element and `this.$()` used to find subelements of class 'edit'.
+View logic often needs to invoke jQuery or Zepto functions on the `el` element and elements nested within it. Backbone makes it easy to do so by defining the `$el` property and `$()` function. The `view.$el` property is equivalent to `$(view.el)` and `view.$(selector)` is equivalent to `$(view.el).find(selector)`. In our TodoView example's render method, we see `this.$el` used to set the HTML of the element and `this.$()` used to find subelements of class 'edit'.
 
 **setElement**
 
@@ -507,7 +525,7 @@ The "el" property represents the markup portion of the view that will be rendere
 // as follows (just to demonstrate it can be done):
 var view = new Backbone.View;
 view.setElement('<p><a><b>test</b></a></p>');
-view.$('a b').html(); // outputs "test"
+console.log(view.$('a b').html()); // outputs "test"
 ```
 
 **Understanding `render()`**
@@ -557,8 +575,15 @@ Let's try to implement the latter of these. The `render` method of a simple List
 ```javascript
 
 var ListView = Backbone.View.extend({
-  render: function(){
-    this.$el.html(this.model.toJSON());
+
+  // Compile a template for this view. In this case '...'
+  // is a placeholder for a template such as 
+  // $("#list_template").html() 
+  template: _.template(…),
+  
+  render: function() {
+    this.$el.html(this.template(this.model.attributes));
+    return this;
   }
 });
 ```
@@ -570,7 +595,7 @@ Simple enough. Let's now assume a decision is made to construct the items using 
 var ItemView = Backbone.View.extend({
   events: {},
   render: function(){
-    this.$el.html(this.model.toJSON());
+    this.$el.html(this.template(this.model.attributes));
     return this;
   }
 });
@@ -588,7 +613,7 @@ var ListView = Backbone.View.extend({
     // display in our list
     var items = this.model.get('items');
 
-    // Loop through each our items using the Underscore
+    // Loop through each of our items using the Underscore
     // _.each iterator
     _.each(items, function(item){
 
@@ -621,6 +646,7 @@ var TodoView = Backbone.View.extend({
   events: {
     'click .toggle': 'toggleCompleted',
     'dblclick label': 'edit',
+    'keypress .edit': 'updateOnEnter',
     'click .destroy': 'clear',
     'blur .edit': 'close'
   },
@@ -643,7 +669,7 @@ var TodoView = Backbone.View.extend({
 });
 ```
 
-`_.bind` only works on one method at a time, but supports currying and as it returns the bound function means that you can use `_.bind` on an anonymous function.
+`_.bind` only works on one method at a time, but effectively binds a function to an object so that anytime the function is called the value of `this` will be the object. `_.bind` also supports passing in arguments to the function in order to fill them in advance - a technique known as [partial application](http://benalman.com/news/2012/09/partial-application-in-javascript/).
 
 
 ## Collections
@@ -686,7 +712,7 @@ var Todo = Backbone.Model.extend({
 });
 
 var TodosCollection = Backbone.Collection.extend({
-  model: Todo,
+  model: Todo
 });
 
 var a = new Todo({ title: 'Go to Jamaica.'}),
@@ -710,7 +736,7 @@ console.log("Collection size: " + todos.length);
 // Logs: Collection size: 0
 ```
 
-Note that `add()` and `remove()` accept both individual models and lists of models.
+Note that both `add()` and `remove()` accept an individual model or a lists of models.
 
 Also note that when using `add()` on a collection, passing `{merge: true}` causes duplicate models to have their attributes merged in to the existing models, instead of being ignored.
 
@@ -746,7 +772,7 @@ Each model in Backbone has an `id`, which is a unique identifier that is either 
 
 The main difference between them is that the `cid` is generated by Backbone; it is helpful when you don't have a true id - this may be the case if your model has yet to be saved to the server or you aren't saving it to a database.
 
-The `idAttribute` is the identifying attribute of the model returned from the server (i.e., the `id` in your database). This tells Backbone which data field from the server should be used to populate the `id` property (think of it as a mapper). By default, it assumes `id`, but this can be customized as needed. For instance, if your server sets a unique attribute on your model named "userId" then you would set `idAttribute` to "userId" in your model definition.
+The `idAttribute` is the identifying attribute name of the model returned from the server (i.e. the `id` in your database). This tells Backbone which data field from the server should be used to populate the `id` property (think of it as a mapper). By default, it assumes `id`, but this can be customized as needed. For instance, if your server sets a unique attribute on your model named "userId" then you would set `idAttribute` to "userId" in your model definition.
 
 The value of a model's idAttribute should be set by the server when the model is saved. After this point you shouldn't need to set it manually, unless further control is required. 
 
@@ -847,6 +873,8 @@ _.extend(TodoCounter, Backbone.Events);
 // Increment counterA, triggering an event
 var incrA = function(){ 
   TodoCounter.counterA += 1; 
+  // This triggering will not 
+  // produce any effect on the counters
   TodoCounter.trigger('event'); 
 };
 
@@ -860,7 +888,7 @@ var incrB = function(){
 TodoCounter.once('event', incrA);
 TodoCounter.once('event', incrB);
 
-// Trigger the event once again
+// Trigger the event for the first time
 TodoCounter.trigger('event');
 
 // Check out output
@@ -903,8 +931,8 @@ TodosCollection.set([
 ]);
 
 // Above logs:
-// Removed go to Disneyland.
 // Completed go to Jamaica.
+// Removed go to Disneyland.
 // Added go to Disney World.
 ```
 
@@ -945,25 +973,44 @@ Note that using `Collection.reset()` doesn't fire any `add` or `remove` events. 
 Also note that listening to a [reset](http://backbonejs.org/#Collection-reset) event, the list of previous models is available in `options.previousModels`, for convenience.
 
 ```javascript
-var Todo = new Backbone.Model();
-var Todos = new Backbone.Collection([Todo])
-.on('reset', function(Todos, options) {
+var todo = new Backbone.Model();
+var todos = new Backbone.Collection([todo])
+.on('reset', function(todos, options) {
   console.log(options.previousModels);
-  console.log([Todo]);
-  console.log(options.previousModels[0] === Todo); // true
+  console.log([todo]);
+  console.log(options.previousModels[0] === todo); // true
 });
-Todos.reset([]);
+todos.reset([]);
 ```
 
-An `update()` method is available for Collections (which is also available as an option to fetch) for "smart" updating of sets of models. This method attempts to perform smart updating of a collection using a specified list of models. When a model in this list isn't present in the collection, it is added. If it is, its attributes will be merged. Models which are present in the collection but not in the list are removed.
+The `set()` method available for Collections can also be used for "smart" updating of sets of models. This method attempts to perform smart updating of a collection using a specified list of models. When a model in this list isn't present in the collection, it is added. If it's present, its attributes will be merged. Models which are present in the collection but not in the list are removed.
 
 ```javascript
-var theBeatles = new Collection(['john', 'paul', 'george', 'ringo']);
 
-theBeatles.update(['john', 'paul', 'george', 'pete']);
+// Define a model of type 'Beatle' with a 'job' attribute
+var Beatle = Backbone.Model.extend({
+  defaults: {
+    job: 'musician'
+  }
+});
 
-// Fires a `remove` event for 'ringo', and an `add` event for 'pete'.
-// Updates any of john, paul and georges's attributes that may have
+// Create models for each member of the Beatles
+var john = new Beatle({ firstName: 'John', lastName: 'Lennon'});
+var paul = new Beatle({ firstName: 'Paul', lastName: 'McCartney'});
+var george = new Beatle({ firstName: 'George', lastName: 'Harrison'});
+var ringo = new Beatle({ firstName: 'Ringo', lastName: 'Starr'});
+
+// Create a collection using our models
+var theBeatles = new Backbone.Collection([john, paul, george, ringo]);
+
+// Create a separate model for Pete Best
+var pete = new Beatle({ firstName: 'Pete', lastName: 'Best'});
+
+// Update the collection
+theBeatles.set([john, paul, george, pete]);
+
+// Fires a `remove` event for 'Ringo', and an `add` event for 'Pete'.
+// Updates any of John, Paul and Georges's attributes that may have
 // changed over the years.
 ```
 
@@ -974,16 +1021,16 @@ Backbone takes full advantage of its hard dependency on Underscore by making man
 **`forEach`: iterate over collections**
 
 ```javascript
-var Todos = new Backbone.Collection();
+var todos = new Backbone.Collection();
 
-Todos.add([
+todos.add([
   { title: 'go to Belgium.', completed: false },
   { title: 'go to China.', completed: false },
   { title: 'go to Austria.', completed: true }
 ]);
 
 // iterate over models in the collection
-Todos.forEach(function(model){
+todos.forEach(function(model){
   console.log(model.get('title'));
 });
 // Above logs:
@@ -996,7 +1043,7 @@ Todos.forEach(function(model){
 
 ```javascript
 // sort collection
-var sortedByAlphabet = Todos.sortBy(function (todo) {
+var sortedByAlphabet = todos.sortBy(function (todo) {
     return todo.get("title").toLowerCase();
 });
 
@@ -1006,6 +1053,7 @@ sortedByAlphabet.forEach(function(model){
   console.log(model.get('title'));
 });
 // Above logs:
+// - Now sorted:
 // go to Austria.
 // go to Belgium.
 // go to China.
@@ -1015,7 +1063,7 @@ sortedByAlphabet.forEach(function(model){
 
 ```javascript
 var count = 1;
-console.log(Todos.map(function(model){
+console.log(todos.map(function(model){
   return count++ + ". " + model.get('title');
 }));
 // Above logs:
@@ -1027,11 +1075,11 @@ console.log(Todos.map(function(model){
 **`min()`/`max()`: retrieve item with the min or max value of an attribute**
 
 ```javascript
-Todos.max(function(model){
+todos.max(function(model){
   return model.id;
 }).id;
 
-Todos.min(function(model){
+todos.min(function(model){
   return model.id;
 }).id;
 ```
@@ -1039,7 +1087,7 @@ Todos.min(function(model){
 **`pluck()`: extract a specific attribute**
 
 ```javascript
-var captions = Todos.pluck('caption');
+var captions = todos.pluck('caption');
 // returns list of captions
 ```
 
@@ -1059,12 +1107,12 @@ var Todos = Backbone.Collection.extend({
 });
 ```
 
-**`indexOf()`: return the item at a particular index within a collection**
+**`indexOf()`: return the index of a particular item within a collection**
 
 ```javascript
-var People = new Backbone.Collection;
+var people = new Backbone.Collection;
 
-People.comparator = function(a, b) {
+people.comparator = function(a, b) {
   return a.get('name') < b.get('name') ? -1 : 1;
 };
 
@@ -1072,24 +1120,24 @@ var tom = new Backbone.Model({name: 'Tom'});
 var rob = new Backbone.Model({name: 'Rob'});
 var tim = new Backbone.Model({name: 'Tim'});
 
-People.add(tom);
-People.add(rob);
-People.add(tim);
+people.add(tom);
+people.add(rob);
+people.add(tim);
 
-console.log(People.indexOf(rob) === 0); // true
-console.log(People.indexOf(tim) === 1); // true
-console.log(People.indexOf(tom) === 2); // true
+console.log(people.indexOf(rob) === 0); // true
+console.log(people.indexOf(tim) === 1); // true
+console.log(people.indexOf(tom) === 2); // true
 ```
 
-**`any()`: Confirm if any of the values in a collection pass an iterator truth test**
+**`any()`: confirm if any of the values in a collection pass an iterator truth test**
 
 ```javascript
-Todos.any(function(model){
+todos.any(function(model){
   return model.id === 100;
 });
 
 // or
-Todos.some(function(model){
+todos.some(function(model){
   return model.id === 100;
 });
 ```
@@ -1097,31 +1145,31 @@ Todos.some(function(model){
 **`size()`: return the size of a collection**
 
 ```javascript
-Todos.size();
+todos.size();
 
 // equivalent to
-Todos.length;
+todos.length;
 ```
 
 **`isEmpty()`: determine whether a collection is empty**
 
 ```javascript
-var isEmpty = Todos.isEmpty();
+var isEmpty = todos.isEmpty();
 ```
 
 **`groupBy()`: group a collection into groups of like items**
 
 ```javascript
-var Todos = new Backbone.Collection();
+var todos = new Backbone.Collection();
 
-Todos.add([
+todos.add([
   { title: 'go to Belgium.', completed: false },
   { title: 'go to China.', completed: false },
   { title: 'go to Austria.', completed: true }
 ]);
 
 // create groups of completed and incomplete models
-var byCompleted = Todos.groupBy('completed');
+var byCompleted = todos.groupBy('completed');
 var completed = new Backbone.Collection(byCompleted[true]);
 console.log(completed.pluck('title'));
 // logs: ["go to Austria."]
@@ -1181,10 +1229,10 @@ console.log(pairs[1]);
 var todo = new Todo({title: 'go to Austria.'});
 console.log(todo.invert());
 
-// logs: {go to Austria.: "title", false: "completed"}
+// logs: {'go to Austria.': 'title', 'false': 'completed'}
 ```
 
-The complete list of what Underscore can do can be found in its official [docs](http://documentcloud.github.com/underscore/).
+The complete list of what Underscore can do can be found in its official [documentation](http://underscorejs.org/).
 
 #### Chainable API
 
@@ -1226,7 +1274,7 @@ console.log(names); // logs: ['John', 'Harry', 'Steve']
 
 ## RESTful Persistence
 
-Thus far, all of our example data has been created in the browser. For most single page applications, the models are derived from a data set residing on a server. This is an area in which Backbone dramatically simplifies the code you need to write to perform RESTful synchronization with a server through a simple API on its models and collections.
+Thus far, all of our example data has been created in the browser. For most single page applications, the models are derived from a data store residing on a server. This is an area in which Backbone dramatically simplifies the code you need to write to perform RESTful synchronization with a server through a simple API on its models and collections.
 
 **Fetching models from the server**
 
@@ -1251,7 +1299,7 @@ todos.fetch(); // sends HTTP GET to /todos
 
 **Saving models to the server**
 
-While Backbone can retrieve an entire collection of models from the server at once, updates to models are performed individually using the model's `save()` method. When `save()` is called on a model that was fetched from the server, it constructs a URL by appending the model's id to the collection's URL and sends an HTTP PUT to the server. If the model is a new instance that was created in the browser (i.e., it doesn't have an id) then an HTTP POST is sent to the collection's URL. `Collections.create()` can be used to create a new model, add it to the collection, and send it to the server in a single method call.
+While Backbone can retrieve an entire collection of models from the server at once, updates to models are performed individually using the model's `save()` method. When `save()` is called on a model that was fetched from the server, it constructs a URL by appending the model's id to the collection's URL and sends an HTTP PUT to the server. If the model is a new instance that was created in the browser (i.e. it doesn't have an id) then an HTTP POST is sent to the collection's URL. `Collections.create()` can be used to create a new model, add it to the collection, and send it to the server in a single method call.
 
 ```javascript
 var Todo = Backbone.Model.extend({
@@ -1305,8 +1353,8 @@ todo2.destroy(); // sends HTTP DELETE to /todos/2 and removes from collection
 Calling `destroy` on a Model will return `false` if the model `isNew`:
 
 ```javascript
-var Todo = new Backbone.Model();
-console.log(Todo.destroy());
+var todo = new Backbone.Model();
+console.log(todo.destroy());
 // false
 ```
 
@@ -1314,7 +1362,7 @@ console.log(Todo.destroy());
 
 Each RESTful API method accepts a variety of options. Most importantly, all methods accept success and error callbacks which can be used to customize the handling of server responses. 
 
-Specifying the `{patch: true}` option to `Model.save()` will cause it to use HTTP PATCH to send only the changed attributes (i.e partial updates) to the server instead of the entire model i.e `model.save(attrs, {patch: true})`:
+Specifying the `{patch: true}` option to `Model.save()` will cause it to use HTTP PATCH to send only the changed attributes (i.e. partial updates) to the server instead of the entire model; i.e. `model.save(attrs, {patch: true})`:
 
 ```javascript
 // Save partial using PATCH
@@ -1672,11 +1720,11 @@ var TodoRouter = Backbone.Router.extend({
         idea to leave them at the end of a URL otherwise you may need to apply regular
         expression parsing on your fragment */
 
-        "*other"    : "defaultRoute"
+        "*other"    : "defaultRoute",
         /* This is a default route that also uses a *splat. Consider the
         default route a wildcard for URLs that are either not matched or where
         the user has incorrectly typed in a route path manually */
-        /* Sample usage: http://example.com/# <anything> */,
+        /* Sample usage: http://example.com/# <anything> */
 
         "optional(/:item)": "optionalItem",
         "named/optional/(y:z)": "namedOptionalItem"
@@ -1828,7 +1876,7 @@ A "route" event is also triggered on the router in addition to being fired on Ba
 ```javascript
 Backbone.history.on('route', onRoute);
 
-// Trigger 'route' event on router instance."
+// Trigger 'route' event on router instance.
 router.on('route', function(name, args) {
   console.log(name === 'routeEvent'); 
 });
@@ -1839,7 +1887,7 @@ Backbone.history.checkUrl();
 
 ## Backbone’s Sync API
 
-We previously discussed how Backbone supports RESTful persistence via its `fetch()` and `create()` methods on Collections and `save()`, and `delete()` methods on Models. Now we are going to take a closer look at Backbone's sync method which underlies these operations.
+We previously discussed how Backbone supports RESTful persistence via its `fetch()` and `create()` methods on Collections and `save()`, and `destroy()` methods on Models. Now we are going to take a closer look at Backbone's sync method which underlies these operations.
 
 The Backbone.sync method is an integral part of Backbone.js. It assumes a jQuery-like `$.ajax()` method, so HTTP parameters are organized based on jQuery’s API. Since some legacy servers may not support JSON-formatted requests and HTTP PUT and DELETE operations, Backbone can be configured to emulate these capabilities using the two configuration variables shown below with their default values:
 
@@ -1983,7 +2031,7 @@ Backbone.sync = function(method, model, options) {
       return MyAPI.destroy(model, success, error);
 
     case 'read':
-      if (model.attributes[model.idAttribute]) {
+      if (model.cid) {
         return MyAPI.find(model, success, error);
       } else {
         return MyAPI.findAll(model, success, error);
@@ -2016,6 +2064,6 @@ What this translates to is that if you require working with anything beyond mode
 
 In this chapter we have introduced you to the components you will be using to build applications with Backbone: Models, Views, Collections, and Routers. We've also explored the Events mix-in that Backbone uses to enhance all components with publish-subscribe capabilities and seen how it can be used with arbitrary objects. Finally, we saw how Backbone leverages the Underscore.js and jQuery/Zepto APIs to add rich manipulation and persistence features to Backbone Collections and Models.
 
-Backbone has many operations and options beyond those we have covered here and is always evolving, so be sure to visit the official [documentation](http://backbonejs.org/) for more details and the latest features. In the next chapter you will start to get your hands dirty as we walk you through implementation of your first Backbone application.
+Backbone has many operations and options beyond those we have covered here and is always evolving, so be sure to visit the official [documentation](http://backbonejs.org/) for more details and the latest features. In the next chapter you will start to get your hands dirty as we walk you through the implementation of your first Backbone application.
 
 

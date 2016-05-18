@@ -19,6 +19,10 @@ On this topic, we're going to go through a set of pagination components I (and a
 
 ### Backbone.Paginator
 
+**Note:** As of Backbone.Paginator [2.0](https://github.com/backbone-paginator/backbone.paginator/releases), the API to 
+the project has changed and includes updates which break backwards compatibility. The below section refers to Backbone.Paginator 
+1.0 which can still be downloaded [here](https://github.com/backbone-paginator/backbone.paginator/releases/tag/v1.0.0).
+
 When working with data on the client-side, the three types of pagination we are most likely to run into are:
 
 **Requests to a service layer (API)** - For example, query for results containing the term 'Paul' - if 5,000 results are available only display 20 results per page (leaving us with 250 possible result pages that can be navigated to).
@@ -165,7 +169,7 @@ If you use `$callback`, please ensure that you did use the jsonp as a `dataType`
 
 The last thing we need to do is configure our collection's `parse()` method. We want to ensure we're returning the correct part of our JSON response containing the data our collection will be populated with, which below is `response.d.results` (for the Netflix API).
 
-You might also notice that we're setting `this.totalPages` to the total page count returned by the API. This allows us to define the maximum number of (result) pages available for the current/last request so that we can clearly display this in the UI. It also allows us to infuence whether clicking say, a 'next' button should proceed with a request or not.
+You might also notice that we're setting `this.totalPages` to the total page count returned by the API. This allows us to define the maximum number of (result) pages available for the current/last request so that we can clearly display this in the UI. It also allows us to influence whether clicking say, a 'next' button should proceed with a request or not.
 
 ```javascript
         parse: function (response) {
@@ -508,7 +512,7 @@ var aClientPager = new MyClientPager([{id: 1, title: 'foo'}, {id: 2, title: 'bar
 aClientPager.bootstrap();
 ```
 
-Note: If you intend to bootstrap a clientPager, there is no need to specify a 'paginator_core' object in your configuration (since you should have already populated the clientPager with the entirety of it's necessary data)
+Note: If you intend to bootstrap a clientPager, there is no need to specify a 'paginator_core' object in your configuration (since you should have already populated the clientPager with the entirety of its necessary data)
 
 **Backbone.Paginator.requestPager:**
 
@@ -528,7 +532,7 @@ Note: Both the clientPager and requestPager ```bootstrap``` function will accept
 
 ### Styling
 
-You're of course free to customize the overall look and feel of the paginators as much as you wish. By default, all sample applications make use of the [Twitter Bootstrap](http://twitter.github.com/bootstrap) for styling links, buttons and drop-downs. 
+You're of course free to customize the overall look and feel of the paginators as much as you wish. By default, all sample applications make use of [Twitter Bootstrap](http://twitter.github.com/bootstrap) for styling links, buttons and drop-downs. 
 
 CSS classes are available to style record counts, filters, sorting and more:
 
