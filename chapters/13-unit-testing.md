@@ -455,7 +455,7 @@ it('Can contain custom validation rules, and will trigger an invalid event on fa
     // What would you need to set on the todo properties to
     // cause validation to fail?
 
-    todo.set({done:'a non-boolean value'});
+    todo.set({done:'a non-boolean value'}, {validate: true});
 
     var errorArgs = errorCallback.mostRecentCall.args;
 
