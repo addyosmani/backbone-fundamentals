@@ -580,8 +580,8 @@ You can paste the following into your text editor of choice, replacing the comme
 <body>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-<script src="http://documentcloud.github.com/underscore/underscore-min.js"></script>
-<script src="http://documentcloud.github.com/backbone/backbone-min.js"></script>
+<script src="http://underscorejs.org/underscore-min.js"></script>
+<script src="http://backbonejs.org/backbone-min.js"></script>
 <script>
   // Your code goes here
 </script>
@@ -1661,7 +1661,7 @@ var captions = todos.pluck('caption');
 var Todos = Backbone.Collection.extend({
   model: Todo,
   filterById: function(ids){
-    return this.models.filter(
+    return this.filter(
       function(c) { 
         return _.contains(ids, c.id); 
       })
@@ -1794,7 +1794,7 @@ console.log(todo.invert());
 // logs: {'go to Austria.': 'title', 'false': 'completed'}
 ```
 
-The complete list of what Underscore can do can be found in its official [documentation](http://documentcloud.github.com/underscore/).
+The complete list of what Underscore can do can be found in its official [documentation](http://underscorejs.org/).
 
 #### Chainable API
 
@@ -2461,6 +2461,12 @@ Backbone.emulateJSON = false; // set to true if server cannot handle application
 The inline Backbone.emulateHTTP option should be set to true if extended HTTP methods are not supported by the server. The Backbone.emulateJSON option should be set to true if the server does not understand the MIME type for JSON.
 
 ```javascript
+// Overwriting jQuery ajax method - now actual request will be made
+var ajaxSettings;
+$.ajax = function (ajaxRequest) {
+    ajaxSettings = ajaxRequest;
+};
+
 // Create a new library collection
 var Library = Backbone.Collection.extend({
     url : function() { return '/library'; }
@@ -2472,25 +2478,25 @@ var attrs = {
     author : "Bill Shakespeare",
     length : 123
 };
-  
+
 // Create a new Library instance
 var library = new Library;
 
 // Create a new instance of a model within our collection
 library.create(attrs, {wait: false});
-  
+
 // Update with just emulateHTTP
 library.first().save({id: '2-the-tempest', author: 'Tim Shakespeare'}, {
   emulateHTTP: true
 });
-    
+
 // Check the ajaxSettings being used for our request
-console.log(this.ajaxSettings.url === '/library/2-the-tempest'); // true
-console.log(this.ajaxSettings.type === 'POST'); // true
-console.log(this.ajaxSettings.contentType === 'application/json'); // true
+console.log(ajaxSettings.url === '/library/2-the-tempest'); // true
+console.log(ajaxSettings.type === 'POST'); // true
+console.log(ajaxSettings.contentType === 'application/json'); // true
 
 // Parse the data for the request to confirm it is as expected
-var data = JSON.parse(this.ajaxSettings.data);
+var data = JSON.parse(ajaxSettings.data);
 console.log(data.id === '2-the-tempest');  // true
 console.log(data.author === 'Tim Shakespeare'); // true
 console.log(data.length === 123); // true
@@ -2503,14 +2509,14 @@ library.first().save({id: '2-the-tempest', author: 'Tim Shakespeare'}, {
   emulateJSON: true
 });
 
-console.log(this.ajaxSettings.url === '/library/2-the-tempest'); // true
-console.log(this.ajaxSettings.type === 'PUT'); // true
-console.log(this.ajaxSettings.contentType ==='application/x-www-form-urlencoded'); // true
+console.log(ajaxSettings.url === '/library/2-the-tempest'); // true
+console.log(ajaxSettings.type === 'PUT'); // true
+console.log(ajaxSettings.contentType ==='application/x-www-form-urlencoded'); // true
 
-var data = JSON.parse(this.ajaxSettings.data.model);
-console.log(data.id === '2-the-tempest');
-console.log(data.author ==='Tim Shakespeare');
-console.log(data.length === 123);
+var data = JSON.parse(ajaxSettings.data.model);
+console.log(data.id === '2-the-tempest'); // true
+console.log(data.author ==='Tim Shakespeare'); // true
+console.log(data.length === 123); // true
 ```
 
 `Backbone.sync` is called every time Backbone tries to read, save, or delete models. It uses jQuery or Zepto's `$.ajax()` implementations to make these RESTful requests, however this can be overridden as per your needs.
@@ -3266,7 +3272,7 @@ The next part of our tutorial is going to cover completing and deleting todos. T
 
     // The DOM events specific to an item.
     events: {
-      'click .toggle': 'togglecompleted', // NEW
+      'click .toggle': 'toggleCompleted', // NEW
       'dblclick label': 'edit',
       'click .destroy': 'clear',           // NEW
       'keypress .edit': 'updateOnEnter',
@@ -3738,7 +3744,7 @@ addBook: function( e ) {
 	var formData = {};
 
 	$( '#addBook div' ).children( 'input' ).each( function( i, el ) {
-		if( $( el ).val() != '' )
+		if( $( el ).val() !== '' )
 		{
 			formData[ el.id ] = $( el ).val();
 		}
@@ -3873,7 +3879,7 @@ var application_root = __dirname,
 var app = express();
 
 //Where to serve static content
-app.use( express.static( path.join( application_root, 'site') ) );
+app.use( express.static( path.join( application_root,'../', 'site') ) );
 app.use(bodyParser());
 
 //Start server
@@ -3937,7 +3943,7 @@ app.configure( function() {
 	app.use( app.router );
 
 	//Where to serve static content
-	app.use( express.static( path.join( application_root, 'site') ) );
+	app.use( express.static( path.join( application_root, '../', site') ) );
 
 	//Show all errors in development
 	app.use( express.errorHandler({ dumpExceptions: true, showStack: true }));
@@ -9939,7 +9945,7 @@ describe("Todo tests", function(){
 
 In the previous section you may have noticed that we initially declared ```this.todo``` within the scope of our ```beforeEach()``` call and were then able to continue using this reference in ```afterEach()```. 
 
-This is again down to shared function scope, which allows such declaractions to be common to all blocks (including ```runs()```). 
+This is again down to shared function scope, which allows such declarations to be common to all blocks (including ```runs()```). 
 
 Variables declared outside of the shared scope (i.e within the local scope `var todo=...`) will however not be shared.
 
@@ -10035,7 +10041,7 @@ it('Can contain custom validation rules, and will trigger an invalid event on fa
     // What would you need to set on the todo properties to
     // cause validation to fail?
 
-    todo.set({done:'a non-boolean value'});
+    todo.set({done:'a non-boolean value'}, {validate: true});
 
     var errorArgs = errorCallback.mostRecentCall.args;
 
