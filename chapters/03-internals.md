@@ -549,9 +549,9 @@ console.log(view.$('a b').html()); // outputs "test"
       <%= title %>
     </div>
   </script>
+  <script src="jquery-min.js"></script>
   <script src="underscore-min.js"></script>
   <script src="backbone-min.js"></script>
-  <script src="jquery-min.js"></script>
   <script src="example.js"></script>
 </body>
 </html>
