@@ -508,7 +508,7 @@ function(app) {
 });
 ```
 
-If however we would like to execute some module-specific logic, when the page loads (i.e when a user hits the default route), we can pull in a module as a dependency and optionally use the Backbone LayoutManager to attach Views to our layout as follows:
+If however we would like to execute some module-specific logic, when the page loads (i.e. when a user hits the default route), we can pull in a module as a dependency and optionally use the Backbone LayoutManager to attach Views to our layout as follows:
 
 ```javascript
 define([

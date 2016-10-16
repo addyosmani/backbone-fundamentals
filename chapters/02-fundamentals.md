@@ -271,7 +271,7 @@ Let's compare two examples of HTML templates. One is implemented using the popul
 <input class="edit" value="<%= title %>">
 ```
 
-You may also use double curly brackets (i.e ```{{}}```) (or any other tag you feel comfortable with) in Microtemplates. In the case of curly brackets, this can be done by setting the Underscore ```templateSettings``` attribute as follows:
+You may also use double curly brackets (i.e. ```{{}}```) (or any other tag you feel comfortable with) in Microtemplates. In the case of curly brackets, this can be done by setting the Underscore ```templateSettings``` attribute as follows:
 
 ```javascript
 _.templateSettings = { interpolate : /\{\{(.+?)\}\}/g };

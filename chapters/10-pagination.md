@@ -59,7 +59,7 @@ If you would like to look at examples built using the components included in the
 
 ##Paginator.requestPager
 
-In this section we're going to walk through using the requestPager. You would use this component when working with a service API which itself supports pagination. This component allows users to control the pagination settings for requests to this API (i.e navigate to the next, previous, N pages) via the client-side. 
+In this section we're going to walk through using the requestPager. You would use this component when working with a service API which itself supports pagination. This component allows users to control the pagination settings for requests to this API (i.e. navigate to the next, previous, N pages) via the client-side. 
 
 The idea is that pagination, searching, and filtering of data can all be done from your Backbone application without the need for a page reload. 
 

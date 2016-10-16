@@ -647,7 +647,7 @@ The solution you opt for may need to support building non-trivial features and c
 Spend time reviewing both the source code of the framework and official list of features to see how well they fit with your requirements. There will be projects that may require modifying or extending the underlying source and thus make sure that if this might be the case, you’ve performed due diligence on the code.
 Has the framework been proven in production?
 
-i.e Have developers actually built and deployed large applications with it that are publicly accessible? Backbone has a strong portfolio of these (SoundCloud, LinkedIn, Walmart) but not all libraries and frameworks do. Ember is used in number of large apps, including the new version of ZenDesk. AngularJS has been used to build the YouTube app for PS3 amongst other places. It’s not only important to know that a library or framework works in production, but also being able to look at real world code and be inspired by what can be built with it.
+i.e. Have developers actually built and deployed large applications with it that are publicly accessible? Backbone has a strong portfolio of these (SoundCloud, LinkedIn, Walmart) but not all libraries and frameworks do. Ember is used in number of large apps, including the new version of ZenDesk. AngularJS has been used to build the YouTube app for PS3 amongst other places. It’s not only important to know that a library or framework works in production, but also being able to look at real world code and be inspired by what can be built with it.
 
 **Is the framework mature?**
 
