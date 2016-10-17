@@ -23,7 +23,7 @@ Notes on build tool steps:
 
 * Template pre-compilation: using a template library such as Underscore micro-templating or Handlebars.js generally involves three steps: (1) reading a raw template, (2) compiling it into a JavaScript function and (3) running the compiled template with your desired data. Precompiling eliminates the second step from runtime, by moving this process into a build step.
 * Concatenation is the process of combining a number of assets (in our case, script files) into a single (or fewer number) of files to reduce the number of HTTP requests required to obtain them.
-* Minification is the process of removing unnecessary characters (e.g white space, new lines, comments) from code and compressing it to reduce the overall size of the scripts being served.
+* Minification is the process of removing unnecessary characters (e.g. white space, new lines, comments) from code and compressing it to reduce the overall size of the scripts being served.
 
 ## Getting Started
 

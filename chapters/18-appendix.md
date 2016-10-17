@@ -63,7 +63,7 @@ The Event system makes it possible for:
 
 ### Models
 
-Models manage the (domain-specific) data for an application. They are concerned with neither the user-interface nor presentation layers, but instead represent structured data that an application may require. When a model changes (e.g when it is updated), it will typically notify its observers (Subscribers) that a change has occurred so that they may react accordingly.
+Models manage the (domain-specific) data for an application. They are concerned with neither the user-interface nor presentation layers, but instead represent structured data that an application may require. When a model changes (e.g. when it is updated), it will typically notify its observers (Subscribers) that a change has occurred so that they may react accordingly.
 
 Let's see a simple implementation of the Model:
 
@@ -122,7 +122,7 @@ Let's explore Views a little further using a simple JavaScript example:
 ```javascript
 // DOM View
 var View = Cranium.View = function (options) {
-  // Mix in options object (e.g extending functionality)
+  // Mix in options object (e.g. extending functionality)
   _.extend(this, options);
   this.id = _.uniqueId('view');
 };
@@ -143,7 +143,7 @@ Controllers are an intermediary between models and views which are classically r
 
 // Controller tying together a model and view
 var Controller = Cranium.Controller = function(options){
-  // Mix in options object (e.g extending functionality)
+  // Mix in options object (e.g. extending functionality)
   _.extend(this, options);
   this.id = _.uniqueId('controller');
   var parts, selector, eventType;
@@ -305,7 +305,7 @@ That said, some developers do however feel that Backbone.js better fits the desc
 
 * The presenter in MVP better describes the ```Backbone.View``` (the layer between View templates and the data bound to it) than a controller does
 * The model fits ```Backbone.Model``` (it isn't that different from the classical MVC "Model")
-* The views best represent templates (e.g Handlebars/Mustache markup templates)
+* The views best represent templates (e.g. Handlebars/Mustache markup templates)
 
 A response to this could be that the view can also just be a View (as per MVC) because Backbone is flexible enough to let it be used for multiple purposes. The V in MVC and the P in MVP can both be accomplished by ```Backbone.View``` because they're able to achieve two purposes: both rendering atomic components and assembling those components rendered by other views.
 
