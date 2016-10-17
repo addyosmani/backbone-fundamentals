@@ -561,7 +561,7 @@ To see more details and enhancements for further scripting pages of JQM read the
 
 If you consider using a `Model-Binding Plugin`, you will need to come up with an automated mechanism to enrich single components.
 
-After having a look at the previous section about Dynamic DOM Scripting, it might not be acceptable to completely re-create a component (e.g a Listview) which takes a longer time to load and to reduce the complexity of event-delegation. Instead, the component-specific plugins, which will only update the needed parts of the HTML and CSS, should be used.
+After having a look at the previous section about Dynamic DOM Scripting, it might not be acceptable to completely re-create a component (e.g. a Listview) which takes a longer time to load and to reduce the complexity of event-delegation. Instead, the component-specific plugins, which will only update the needed parts of the HTML and CSS, should be used.
 
 In the case of a Listview, you would need to call the following function to update the list of added, edited, or removed entries:
 

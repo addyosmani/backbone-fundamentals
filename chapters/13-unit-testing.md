@@ -361,7 +361,7 @@ In the previous section you may have noticed that we initially declared ```this.
 
 This is again down to shared function scope, which allows such declarations to be common to all blocks (including ```runs()```). 
 
-Variables declared outside of the shared scope (i.e within the local scope `var todo=...`) will however not be shared.
+Variables declared outside of the shared scope (i.e. within the local scope `var todo=...`) will however not be shared.
 
 ## Getting set up
 
@@ -606,7 +606,7 @@ The plugin provides a number of additional Jasmine [matchers](https://github.com
 * ```toBeChecked()``` e.g., ```expect($('<input type="checkbox" checked="checked"/>')).toBeChecked()```
 * ```toBeSelected()``` e.g., ```expect($('<option selected="selected"></option>')).toBeSelected()```
 
-and [many others](https://github.com/velesin/jasmine-jquery). The complete list of matchers supported can be found on the project homepage. It's useful to know that similar to the standard Jasmine matchers, the custom matchers above can be inverted using the .not prefix (i.e ```expect(x).not.toBe(y)```):
+and [many others](https://github.com/velesin/jasmine-jquery). The complete list of matchers supported can be found on the project homepage. It's useful to know that similar to the standard Jasmine matchers, the custom matchers above can be inverted using the .not prefix (i.e. ```expect(x).not.toBe(y)```):
 
 ```javascript
 expect($('<div>I am an example</div>')).not.toHaveText(/other/)

@@ -27,9 +27,9 @@ When working with data on the client-side, the three types of pagination we are 
 
 **Requests to a service layer (API)** - For example, query for results containing the term 'Paul' - if 5,000 results are available only display 20 results per page (leaving us with 250 possible result pages that can be navigated to).
 
-This problem actually has quite a great deal more to it, such as maintaining persistence of other URL parameters (e.g sort, query, order) which can change based on a user's search configuration in a UI. One also has to think of a clean way of hooking views up to this pagination so you can easily navigate between pages (e.g., First, Last, Next, Previous, 1,2,3), manage the number of results displayed per page and so on.
+This problem actually has quite a great deal more to it, such as maintaining persistence of other URL parameters (e.g. sort, query, order) which can change based on a user's search configuration in a UI. One also has to think of a clean way of hooking views up to this pagination so you can easily navigate between pages (e.g., First, Last, Next, Previous, 1,2,3), manage the number of results displayed per page and so on.
 
-**Further client-side pagination of data returned -** e.g we've been returned a JSON response containing 100 results. Rather than displaying all 100 to the user, we only display 20 of these results within a navigable UI in the browser.
+**Further client-side pagination of data returned -** e.g. we've been returned a JSON response containing 100 results. Rather than displaying all 100 to the user, we only display 20 of these results within a navigable UI in the browser.
 
 Similar to the request problem, client-pagination has its own challenges like navigation once again (Next, Previous, 1,2,3), sorting, order, switching the number of results to display per page and so on.
 
@@ -39,14 +39,14 @@ A request pager which simply appends results in a view rather than replacing on 
 
 **Let's now take a look at exactly what we're getting out of the box:**
 
-Backbone.Paginator is a set of opinionated components for paginating collections of data using Backbone.js. It aims to provide both solutions for assisting with pagination of requests to a server (e.g an API) as well as pagination of single-loads of data, where we may wish to further paginate a collection of N results into M pages within a view.
+Backbone.Paginator is a set of opinionated components for paginating collections of data using Backbone.js. It aims to provide both solutions for assisting with pagination of requests to a server (e.g. an API) as well as pagination of single-loads of data, where we may wish to further paginate a collection of N results into M pages within a view.
 
 ![](img/paginator-ui.png)
 
 Backbone.Paginator supports two main pagination components:
 
 * **Backbone.Paginator.requestPager**: For pagination of requests between a client and a server-side API
-* **Backbone.Paginator.clientPager**: For pagination of data returned from a server which you would like to further paginate within the UI (e.g 60 results are returned, paginate into 3 pages of 20)
+* **Backbone.Paginator.clientPager**: For pagination of data returned from a server which you would like to further paginate within the UI (e.g. 60 results are returned, paginate into 3 pages of 20)
 
 ### Live Examples
 
@@ -59,7 +59,7 @@ If you would like to look at examples built using the components included in the
 
 ##Paginator.requestPager
 
-In this section we're going to walk through using the requestPager. You would use this component when working with a service API which itself supports pagination. This component allows users to control the pagination settings for requests to this API (i.e navigate to the next, previous, N pages) via the client-side. 
+In this section we're going to walk through using the requestPager. You would use this component when working with a service API which itself supports pagination. This component allows users to control the pagination settings for requests to this API (i.e. navigate to the next, previous, N pages) via the client-side. 
 
 The idea is that pagination, searching, and filtering of data can all be done from your Backbone application without the need for a page reload. 
 
@@ -77,7 +77,7 @@ var PaginatedCollection = Backbone.Paginator.requestPager.extend({
 
 ####2. Set the model for the collection as normal
 
-Within our collection, we then (as normal) specify the model to be used with this collection followed by the URL (or base URL) for the service providing our data (e.g the Netflix API).
+Within our collection, we then (as normal) specify the model to be used with this collection followed by the URL (or base URL) for the service providing our data (e.g. the Netflix API).
 
 ```javascript
 
@@ -174,7 +174,7 @@ You might also notice that we're setting `this.totalPages` to the total page cou
 ```javascript
         parse: function (response) {
             // Be sure to change this based on how your results
-            // are structured (e.g d.results is Netflix specific)
+            // are structured (e.g. d.results is Netflix specific)
             var tags = response.d.results;
             //Normally this.totalPages would equal response.d.__count
             //but as this particular NetFlix request only returns a
@@ -538,7 +538,7 @@ CSS classes are available to style record counts, filters, sorting and more:
 
 ![](img/paginator-styling2.png)
 
-Classes are also available for styling more granular elements like page counts within `breadcrumb > pages`  e.g `.page`, `.page selected`:
+Classes are also available for styling more granular elements like page counts within `breadcrumb > pages`  e.g. `.page`, `.page selected`:
 
 ![](img/paginator-classes.png)
 

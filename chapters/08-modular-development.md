@@ -74,7 +74,7 @@ define(['foo', 'bar'],
     // dependencies (foo and bar) are mapped to function parameters
     function ( foo, bar ) {
         // return a value that defines the module export
-        // (i.e the functionality we want to expose for consumption)
+        // (i.e. the functionality we want to expose for consumption)
 
         // create your module here
         var myModule = {
@@ -103,7 +103,7 @@ define(function(require){
         bar = require('bar');
 
     // return a value that defines the module export
-    // (i.e the functionality we want to expose for consumption)
+    // (i.e. the functionality we want to expose for consumption)
 
     // create your module here
     var myModule = {
@@ -493,7 +493,7 @@ Assuming the code for our application and external dependencies are in `app/libs
 
 The paths above are relative to the `baseUrl` for our project and in our case it would make sense to make this the `app` folder. The `out` parameter informs r.js that we want to concatenate everything into a single file called `main.js` under the `dist/` directory. Note that here we do need to add the `.js` extension to the filename. Earlier, we saw that when referencing modules by filenames, you don't need to use the `.js` extension, however this is one case in which you do.
 
-Alternatively, we can specify `dir`, which will ensure the contents of our `app` directory are copied into this directory. e.g:
+Alternatively, we can specify `dir`, which will ensure the contents of our `app` directory are copied into this directory. e.g.:
 
 ```
 ({

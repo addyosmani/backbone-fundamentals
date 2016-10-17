@@ -63,7 +63,7 @@ The Event system makes it possible for:
 
 ### Models
 
-Models manage the (domain-specific) data for an application. They are concerned with neither the user-interface nor presentation layers, but instead represent structured data that an application may require. When a model changes (e.g when it is updated), it will typically notify its observers (Subscribers) that a change has occurred so that they may react accordingly.
+Models manage the (domain-specific) data for an application. They are concerned with neither the user-interface nor presentation layers, but instead represent structured data that an application may require. When a model changes (e.g. when it is updated), it will typically notify its observers (Subscribers) that a change has occurred so that they may react accordingly.
 
 Let's see a simple implementation of the Model:
 
@@ -122,7 +122,7 @@ Let's explore Views a little further using a simple JavaScript example:
 ```javascript
 // DOM View
 var View = Cranium.View = function (options) {
-  // Mix in options object (e.g extending functionality)
+  // Mix in options object (e.g. extending functionality)
   _.extend(this, options);
   this.id = _.uniqueId('view');
 };
@@ -143,7 +143,7 @@ Controllers are an intermediary between models and views which are classically r
 
 // Controller tying together a model and view
 var Controller = Cranium.Controller = function(options){
-  // Mix in options object (e.g extending functionality)
+  // Mix in options object (e.g. extending functionality)
   _.extend(this, options);
   this.id = _.uniqueId('controller');
   var parts, selector, eventType;
@@ -305,7 +305,7 @@ That said, some developers do however feel that Backbone.js better fits the desc
 
 * The presenter in MVP better describes the ```Backbone.View``` (the layer between View templates and the data bound to it) than a controller does
 * The model fits ```Backbone.Model``` (it isn't that different from the classical MVC "Model")
-* The views best represent templates (e.g Handlebars/Mustache markup templates)
+* The views best represent templates (e.g. Handlebars/Mustache markup templates)
 
 A response to this could be that the view can also just be a View (as per MVC) because Backbone is flexible enough to let it be used for multiple purposes. The V in MVC and the P in MVP can both be accomplished by ```Backbone.View``` because they're able to achieve two purposes: both rendering atomic components and assembling those components rendered by other views.
 
@@ -645,9 +645,10 @@ The solution you opt for may need to support building non-trivial features and c
 **What is the library/framework really capable of?**
 
 Spend time reviewing both the source code of the framework and official list of features to see how well they fit with your requirements. There will be projects that may require modifying or extending the underlying source and thus make sure that if this might be the case, you’ve performed due diligence on the code.
-Has the framework been proven in production?
 
-i.e Have developers actually built and deployed large applications with it that are publicly accessible? Backbone has a strong portfolio of these (SoundCloud, LinkedIn, Walmart) but not all libraries and frameworks do. Ember is used in number of large apps, including the new version of ZenDesk. AngularJS has been used to build the YouTube app for PS3 amongst other places. It’s not only important to know that a library or framework works in production, but also being able to look at real world code and be inspired by what can be built with it.
+**Has the framework been proven in production?**
+
+Have developers actually built and deployed large applications with it that are publicly accessible? Backbone has a strong portfolio of these (SoundCloud, LinkedIn, Walmart) but not all libraries and frameworks do. Ember is used in number of large apps, including the new version of ZenDesk. AngularJS has been used to build the YouTube app for PS3 amongst other places. It’s not only important to know that a library or framework works in production, but also being able to look at real world code and be inspired by what can be built with it.
 
 **Is the framework mature?**
 
@@ -656,7 +657,8 @@ I generally recommend developers don’t simply “pick one and go with it”. N
 **Is the framework flexible or opinionated?**
 
 Know what flavor you’re after as there are plenty of frameworks available which provide one or the other. Opinionated frameworks lock (or suggest) you to do things in a specific way (theirs). By design they are limiting, but place less emphasis on the developer having to figure out how things should work on their own.
-Have you really played with the framework?
+
+**Have you really played with the framework?**
 
 Write a small application without using frameworks and then attempt to refactor your code with a framework to confirm whether it’s easy to work with or not. As much as researching and reading up on code will influence your decision, it’s equally as important to write actual code using the framework to make sure you’re comfortable with the concepts it enforces.
 
