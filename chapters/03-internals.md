@@ -736,7 +736,7 @@ console.log("Collection size: " + todos.length);
 // Logs: Collection size: 0
 ```
 
-Note that `add()` and `remove()` accept both individual models and lists of models.
+Note that both `add()` and `remove()` accept an individual model or a lists of models.
 
 Also note that when using `add()` on a collection, passing `{merge: true}` causes duplicate models to have their attributes merged in to the existing models, instead of being ignored.
 
