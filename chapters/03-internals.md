@@ -1899,7 +1899,7 @@ Backbone.emulateJSON = false; // set to true if server cannot handle application
 The inline Backbone.emulateHTTP option should be set to true if extended HTTP methods are not supported by the server. The Backbone.emulateJSON option should be set to true if the server does not understand the MIME type for JSON.
 
 ```javascript
-// Overwriting jQuery ajax method - now actual request will be made
+// Overwriting jQuery ajax method - no actual request will be made
 var ajaxSettings;
 $.ajax = function (ajaxRequest) {
     ajaxSettings = ajaxRequest;
