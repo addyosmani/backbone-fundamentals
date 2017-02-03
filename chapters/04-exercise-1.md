@@ -280,8 +280,11 @@ To keep things short and simple, we won't be implementing all of the application
 
     // Add all items in the **Todos** collection at once.
     addAll: function() {
-      this.$('#todo-list').html('');
-      app.Todos.each(this.addOne, this);
+      var html = app.Todos.reduce(function (acc, todo) {
+        var view = new app.TodoView({ model: todo });
+        return acc + view.render().el;
+      }, '');
+      this.$('#todo-list').html(html);
     }
 
   });
