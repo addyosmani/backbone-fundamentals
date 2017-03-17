@@ -624,7 +624,7 @@ var ListView = Backbone.View.extend({
       // has been rendered. Here, the 'return this' is helpful
       // as the itemView renders its model. Later, we ask for 
       // its output ("el")
-      this.$el.append( itemView.render().el );
+      this.$el.append( itemView.render().$el );
     }, this);
   }
 });
