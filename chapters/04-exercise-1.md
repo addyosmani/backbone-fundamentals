@@ -68,19 +68,19 @@ We will be creating the application JavaScript files during the tutorial. Don't 
 Now let's populate the body of index.html. We'll need an `<input>` for creating new todos, a `<ul id="todo-list" />` for listing the actual todos, and a footer where we can later insert statistics and links for performing operations such as clearing completed todos. We'll add the following markup immediately inside our body tag before the script elements:
 
 ```html
-  <section id="todoapp">
-    <header id="header">
+  <section class="todoapp">
+    <header class="header">
       <h1>todos</h1>
-      <input id="new-todo" placeholder="What needs to be done?" autofocus>
+      <input class="new-todo" placeholder="What needs to be done?" autofocus>
     </header>
-    <section id="main">
-      <input id="toggle-all" type="checkbox">
+    <section class="main">
+      <input class="toggle-all" type="checkbox">
       <label for="toggle-all">Mark all as complete</label>
-      <ul id="todo-list"></ul>
+      <ul class="todo-list"></ul>
     </section>
-    <footer id="footer"></footer>
+    <footer class="footer"></footer>
   </section>
-  <div id="info">
+  <div class="info">
     <p>Double-click to edit a todo</p>
     <p>Written by <a href="https://github.com/addyosmani">Addy Osmani</a></p>
     <p>Part of <a href="http://todomvc.com">TodoMVC</a></p>
@@ -114,8 +114,8 @@ We also need to define the #stats-template template which we will use to populat
   <!-- index.html -->
 
   <script type="text/template" id="stats-template">
-    <span id="todo-count"><strong><%= remaining %></strong> <%= remaining === 1 ? 'item' : 'items' %> left</span>
-    <ul id="filters">
+    <span class="todo-count"><strong><%= remaining %></strong> <%= remaining === 1 ? 'item' : 'items' %> left</span>
+    <ul class="filters">
       <li>
         <a class="selected" href="#/">All</a>
       </li>
@@ -127,7 +127,7 @@ We also need to define the #stats-template template which we will use to populat
       </li>
     </ul>
     <% if (completed) { %>
-    <button id="clear-completed">Clear completed (<%= completed %>)</button>
+    <button class="clear-completed">Clear completed (<%= completed %>)</button>
     <% } %>
   </script>
 ```
@@ -254,7 +254,7 @@ To keep things short and simple, we won't be implementing all of the application
 
     // Instead of generating a new element, bind to the existing skeleton of
     // the App already present in the HTML.
-    el: '#todoapp',
+    el: '.todoapp',
 
     // Our template for the line of statistics at the bottom of the app.
     statsTemplate: _.template( $('#stats-template').html() ),
@@ -262,10 +262,10 @@ To keep things short and simple, we won't be implementing all of the application
     // At initialization we bind to the relevant events on the `Todos`
     // collection, when items are added or changed.
     initialize: function() {
-      this.allCheckbox = this.$('#toggle-all')[0];
-      this.$input = this.$('#new-todo');
-      this.$footer = this.$('#footer');
-      this.$main = this.$('#main');
+      this.allCheckbox = this.$('.toggle-all')[0];
+      this.$input = this.$('.new-todo');
+      this.$footer = this.$('.footer');
+      this.$main = this.$('.main');
 
       this.listenTo(app.Todos, 'add', this.addOne);
       this.listenTo(app.Todos, 'reset', this.addAll);
@@ -275,12 +275,12 @@ To keep things short and simple, we won't be implementing all of the application
     // appending its element to the `<ul>`.
     addOne: function( todo ) {
       var view = new app.TodoView({ model: todo });
-      $('#todo-list').append( view.render().el );
+      $('.todo-list').append( view.render().el );
     },
 
     // Add all items in the **Todos** collection at once.
     addAll: function() {
-      this.$('#todo-list').html('');
+      this.$('.todo-list').html('');
       app.Todos.each(this.addOne, this);
     }
 
@@ -318,7 +318,7 @@ Now, let's add some more logic to complete our AppView!
 
     // Instead of generating a new element, bind to the existing skeleton of
     // the App already present in the HTML.
-    el: '#todoapp',
+    el: '.todoapp',
 
     // Our template for the line of statistics at the bottom of the app.
     statsTemplate: _.template( $('#stats-template').html() ),
@@ -326,19 +326,19 @@ Now, let's add some more logic to complete our AppView!
     // New
     // Delegated events for creating new items, and clearing completed ones.
     events: {
-      'keypress #new-todo': 'createOnEnter',
-      'click #clear-completed': 'clearCompleted',
-      'click #toggle-all': 'toggleAllComplete'
+      'keypress .new-todo': 'createOnEnter',
+      'click .clear-completed': 'clearCompleted',
+      'click .toggle-all': 'toggleAllComplete'
     },
 
     // At initialization we bind to the relevant events on the `Todos`
     // collection, when items are added or changed. Kick things off by
     // loading any preexisting todos that might be saved in *localStorage*.
     initialize: function() {
-      this.allCheckbox = this.$('#toggle-all')[0];
-      this.$input = this.$('#new-todo');
-      this.$footer = this.$('#footer');
-      this.$main = this.$('#main');
+      this.allCheckbox = this.$('.toggle-all')[0];
+      this.$input = this.$('.new-todo');
+      this.$footer = this.$('.footer');
+      this.$main = this.$('.main');
 
       this.listenTo(app.Todos, 'add', this.addOne);
       this.listenTo(app.Todos, 'reset', this.addAll);
@@ -367,7 +367,7 @@ Now, let's add some more logic to complete our AppView!
           remaining: remaining
         }));
 
-        this.$('#filters li a')
+        this.$('.filters li a')
           .removeClass('selected')
           .filter('[href="#/' + ( app.TodoFilter || '' ) + '"]')
           .addClass('selected');
@@ -383,12 +383,12 @@ Now, let's add some more logic to complete our AppView!
     // appending its element to the `<ul>`.
     addOne: function( todo ) {
       var view = new app.TodoView({ model: todo });
-      $('#todo-list').append( view.render().el );
+      $('.todo-list').append( view.render().el );
     },
 
     // Add all items in the **Todos** collection at once.
     addAll: function() {
-      this.$('#todo-list').html('');
+      this.$('.todo-list').html('');
       app.Todos.each(this.addOne, this);
     },
 
