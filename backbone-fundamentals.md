@@ -1028,7 +1028,7 @@ The above code creates the DOM element below but doesn't append it to the DOM.
 <ul id="todos" class="container"></ul>
 ```
 
-If the element already exists in the page, you can set `el` as a CSS selector that matches the element.
+If the element already exists in the page, you can set `el` as a ID selector that matches the element.
 
 ```javascript
 el: '#footer'
