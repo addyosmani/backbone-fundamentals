@@ -30,7 +30,7 @@ app.LibraryView = Backbone.View.extend({
 						formData[ el.id ].push({ 'keyword': keyword });
 					});
 				} else if( el.id === 'releaseDate' ) {
-					formData[ el.id ] = $( '#releaseDate' ).datepicker( 'getDate' ).getTime();
+					formData[ el.id ] = new Date($( '#releaseDate' ).val());
 				} else {
 					formData[ el.id ] = $( el ).val();
 				}
