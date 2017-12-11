@@ -3,7 +3,7 @@
 ## About
 
 This is the home of [Developing Backbone.js Applications](http://shop.oreilly.com/product/0636920025344.do), an open-source book about the Backbone.js library for structuring JavaScript applications. It is released under a 
-Creative Commons Attribution-Noncommercial-No Derivative Works 3.0 United States License and is currently available for early purchase via O'Reilly if you would like to support the project.
+Creative Commons Attribution-Noncommercial-No Derivative Works 3.0 United States License. If you would likt to support the project it is available for early purchase via O'Reilly.
 
 ## Contributing
 
@@ -24,7 +24,7 @@ If you are interested in leaving a review to share your opinion on the book with
 
 You can build the book using `make` or `make -f Makefile`. This will output the HTML, ePub, Mobi, PDF and RTF versions of the book. 
 
-Note: At this time, generating all of the above formats should be straight-forward with the exception of the PDF. We have an open [pull-request](https://github.com/addyosmani/backbone-fundamentals/pull/369) for `xelatex` which is being considered and better guides for working around cross-platform PDF issues will be supplied as time allows.
+Note: At this time, generating all of the above formats should be straight-forward with the exception of the PDF. We have an open [pull-request](https://github.com/addyosmani/backbone-fundamentals/pull/369) for `xelatex` which is being considered. Better guides for working around cross-platform PDF issues will be supplied as time allows.
 
 ### Dependencies
 
