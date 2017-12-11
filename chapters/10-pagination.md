@@ -196,7 +196,7 @@ For your convenience, the following methods are made available for use in your v
 * **Collection.prevPage( options )** - go to the previous page
 * **Collection.howManyPer( n )** - set the number of items to display per page
 
-**requestPager** collection's methods `.goTo()`, `.nextPage()` and `.prevPage()` are all extensions of the original [Backbone Collection.fetch() methods](http://documentcloud.github.com/backbone/#Collection-fetch). As so, they all can take the same option object as a parameter.
+**requestPager** collection's methods `.goTo()`, `.nextPage()` and `.prevPage()` are all extensions of the original [Backbone Collection.fetch() methods](http://backbonejs.org/#Collection-fetch). As so, they all can take the same option object as a parameter.
 
 This option object can use `success` and `error` parameters to pass a function to be executed after server answer.
 
