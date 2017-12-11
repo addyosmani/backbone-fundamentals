@@ -156,7 +156,7 @@ var Todo = Backbone.Model.extend({
 
 var todo1 = new Todo();
 var todo1Attributes = todo1.toJSON();
-// Following logs: {"title":"","completed":false} 
+// Following logs: [object Object]
 console.log(todo1Attributes);
 
 var todo2 = new Todo({
@@ -164,7 +164,7 @@ var todo2 = new Todo({
   completed: true
 });
 
-// logs: {"title":"Try these examples and check results in console.","completed":true}
+// logs: [object Object]
 console.log(todo2.toJSON());
 ```
 
