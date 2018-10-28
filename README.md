@@ -7,7 +7,7 @@ Creative Commons Attribution-Noncommercial-No Derivative Works 3.0 United States
 
 ## Contributing
 
-We appreciate any and all efforts to help improve the book. Please note that the repository is structured as follows:
+We appreciate any and all efforts to help in improving the book. Please note that the repository is structured as follows:
 
 * chapters - contains the source Markdown for each chapter. This is compiled into the HTML, ePub, Mobi and other formats found in the root of the project.
 * build - contains templates and metadata for compiling the book
