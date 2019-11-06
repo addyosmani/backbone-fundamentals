@@ -1,0 +1,17 @@
+<span id="todo-count"><strong>{{remaining}}</strong> {{#if isAnyOrOneRemaining}}items{{else}}item{{/if}}</span>
+<ul id="filters" data-role="controlgroup" data-type="horizontal">
+    <li>
+        <a class="selected" href="todo/all" data-role="button">All</a>
+    </li>
+    <li>
+        <a href="todo/active" data-role="button">Active</a>
+    </li>
+    <li>
+        <a href="todo/completed" data-role="button">Completed</a>
+    </li>
+    {{#if isAnyCompleted}}
+    <li>
+        <a id="clear-completed" href="#" data-role="button" data-icon="delete" data-mini="true" data-inline="true">Clear completed ({{completed}})</a>
+    </li>
+    {{/if}}
+</ul>

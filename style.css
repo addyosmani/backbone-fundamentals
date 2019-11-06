@@ -11,8 +11,8 @@ blockquote {
 }
 body {
     font-family: "Helvetica Neue", Helvetica, "Hiragino Sans GB", Arial, sans-serif;
-    font-size: 14px;
-    line-height: 20px;
+    font-size: 18px;
+    line-height: 1.4;
     color: #000000;
     margin: 10px 13px 10px 13px;
 }
@@ -27,7 +27,7 @@ a img {
     border: none;
 }
 p {
-    margin-bottom: 9px;
+    margin-bottom: 20px;
 }
 h1,
 h2,

@@ -1,0 +1,14 @@
+    <div data-role="header">
+        {{whatis "Specific loaded Handlebars parameters:"}}
+        {{whatis this}}
+        <h2>{{headerTitle}}</h2>
+        <a id="backButton" href="href="javascript:history.go(-1);" data-icon="star" data-rel="back" >back</a>
+    </div>
+    <div data-role="content">
+        {{whatis "Template page trying to load:"}}
+        {{whatis templatePartialPageID}}
+        {{> templatePartialPageID}}
+    </div>
+    <div data-role="footer">
+        Footer
+    </div>
