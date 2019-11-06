@@ -32,7 +32,7 @@ I am indebted to the fantastic work done by the technical reviewers who helped r
 * [Samuel Clay](https://github.com/samuelclay)
 * [Mat Scales](http://github.com/wibblymat)
 * [Alex Graul](https://github.com/alexgraul)
-* [Dusan Gledovic](https://github.com/g6scheme)
+* [Dusan Gledovic](https://github.com/gschema)
 * [Sindre Sorhus](https://github.com/sindresorhus)
 
 I would also like to thank my loving family for their patience and support while I worked on this book, as well as my brilliant editor Mary Treseler.
